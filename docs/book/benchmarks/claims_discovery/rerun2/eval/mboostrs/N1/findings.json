@@ -1,0 +1,59 @@
+{
+  "library": "mboostrs 0.1.3",
+  "mean_effects": [],
+  "interactions": [],
+  "variance_drivers": [],
+  "effect_queries": {
+    "Q1": {
+      "estimate": 0.009301999811653862,
+      "lower90": -0.001995141912965647,
+      "upper90": 0.021030091747337182
+    },
+    "Q2": {
+      "estimate": -0.007911750035487608,
+      "lower90": -0.02101187641858079,
+      "upper90": 0.0040901750775726884
+    },
+    "Q3": {
+      "estimate": 0.003159810511835836,
+      "lower90": -0.014460398870295241,
+      "upper90": 0.01886279690705057
+    },
+    "Q4": {
+      "estimate": 0.014513658953200394,
+      "lower90": -0.0029451963842079716,
+      "upper90": 0.03214411287305268
+    },
+    "Q5": {
+      "estimate": 0.010374237592429001,
+      "lower90": -0.004093270802552209,
+      "upper90": 0.02564870437225669
+    },
+    "Q6": {
+      "estimate": -0.01930424730038599,
+      "lower90": -0.03795158673693147,
+      "upper90": 0.0
+    },
+    "Q7": {
+      "estimate": 0.008314280976147337,
+      "lower90": -0.0020279953092082518,
+      "upper90": 0.020482259160975895
+    },
+    "Q8": {
+      "estimate": -0.0009767746865361748,
+      "lower90": -0.01169696334323944,
+      "upper90": 0.010374224026049062
+    }
+  },
+  "warnings": [
+    "Q1: covariate not selected by the rule in the mean model; the contrast is from a refit with it added (final model plus bbs(median_income__log, df=4) (not selected))",
+    "Q2: covariate not selected by the rule in the mean model; the contrast is from a refit with it added (final model plus bbs(housing_median_age, df=4) (not selected))",
+    "Q3: covariate not selected by the rule in the mean model; the contrast is from a refit with it added (final model plus bbs(ave_occup__log, df=4) (not selected))",
+    "Q4: covariate not selected by the rule in the mean model; the contrast is from a refit with it added (final model plus bols(roof_class) (not selected))",
+    "Q5: covariate not selected by the rule in the mean model; the contrast is from a refit with it added (final model plus bbs(ave_rooms__log, df=4) (not selected))",
+    "Q6: covariate not selected by the rule in the mean model; the contrast is from a refit with it added (final model plus bbs(latitude, df=4), bbs(longitude, df=4) (not selected))",
+    "Q7: covariate not selected by the rule in the mean model; the contrast is from a refit with it added (final model plus bbs(households__log, df=4) (not selected))",
+    "Q8: covariate not selected by the rule in the mean model; the contrast is from a refit with it added (final model plus bbs(median_house_value__log, df=4) (not selected))",
+    "candidate 'mu: bbs(longitude, df=4.0); sigma: bbs(ave_occup__log, df=4)' could not be scored: fold_scores must be finite when no fold failed"
+  ]
+}

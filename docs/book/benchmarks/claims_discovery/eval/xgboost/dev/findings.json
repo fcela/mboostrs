@@ -1,0 +1,105 @@
+{
+  "library": "xgboost 3.4.0",
+  "mean_effects": [
+    {
+      "variable": "housing_median_age",
+      "shape": "threshold_increase",
+      "evidence": "Held-out MSE rises by 0.0466 when permuted (fold t=41.0); partial-dependence range 0.385 = 0.64 SD(y); shape 'threshold_increase' (linear R2 0.78, step R2 0.89)."
+    },
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "Held-out MSE rises by 0.1014 when permuted (fold t=48.3); partial-dependence range 0.834 = 1.38 SD(y); shape 'decreasing' (linear R2 0.91, step R2 0.69)."
+    },
+    {
+      "variable": "median_house_value",
+      "shape": "decreasing",
+      "evidence": "Held-out MSE rises by 0.0010 when permuted (fold t=6.0); partial-dependence range 0.062 = 0.10 SD(y); shape 'decreasing' (linear R2 0.82, step R2 0.91)."
+    },
+    {
+      "variable": "ave_occup",
+      "shape": "increasing",
+      "evidence": "Held-out MSE rises by 0.0108 when permuted (fold t=13.0); partial-dependence range 0.297 = 0.49 SD(y); shape 'increasing' (linear R2 0.94, step R2 0.64)."
+    },
+    {
+      "variable": "roof_class",
+      "shape": "categorical",
+      "evidence": "Held-out MSE rises by 0.0407 when permuted (fold t=37.1); partial dependence by level: A=+0.202, B=+0.208, C=+0.363, D=+0.564."
+    },
+    {
+      "variable": "longitude",
+      "shape": "spatial",
+      "evidence": "Joint longitude+latitude permutation test significant (Bonferroni-adjusted, 10 folds); joint partial-dependence range 0.404."
+    },
+    {
+      "variable": "latitude",
+      "shape": "spatial",
+      "evidence": "Joint longitude+latitude permutation test significant (Bonferroni-adjusted, 10 folds); joint partial-dependence range 0.404."
+    }
+  ],
+  "interactions": [
+    {
+      "variables": [
+        "housing_median_age",
+        "median_income"
+      ],
+      "evidence": "Pair model improves held-out MSE over the additive model by 0.00172 (Bonferroni p=0.00316); global additive-vs-full test p=0.000594."
+    }
+  ],
+  "variance_drivers": [
+    {
+      "variable": "households",
+      "direction": "decreases_spread",
+      "evidence": "Spread permutation test significant (Bonferroni, 10 folds); shape of log squared-residual curve: decreasing; range 0.846 on log r^2 scale."
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.48020827770233154,
+      "lower90": -0.5647369146347045,
+      "upper90": -0.44468666315078736
+    },
+    "Q2": {
+      "estimate": 0.3844287693500519,
+      "lower90": 0.33805832862854,
+      "upper90": 0.4024082317948341
+    },
+    "Q3": {
+      "estimate": 0.2204754501581192,
+      "lower90": 0.190466770529747,
+      "upper90": 0.23485599607229232
+    },
+    "Q4": {
+      "estimate": 0.36182984709739685,
+      "lower90": 0.3464897245168686,
+      "upper90": 0.380985414981842
+    },
+    "Q5": {
+      "estimate": 0.005773404147475958,
+      "lower90": -0.018084853375330567,
+      "upper90": 0.017441245308145864
+    },
+    "Q6": {
+      "estimate": 0.2639325261116028,
+      "lower90": 0.22640608623623848,
+      "upper90": 0.2806478977203369
+    },
+    "Q7": {
+      "estimate": 0.00030027588945813477,
+      "lower90": -0.00723139513283968,
+      "upper90": 0.010361240059137338
+    },
+    "Q8": {
+      "estimate": -0.06042364984750748,
+      "lower90": -0.07713097594678402,
+      "upper90": -0.03918364308774471
+    }
+  },
+  "warnings": [
+    "Missing values (train): housing_median_age=1172, total_bedrooms=141, ave_bedrooms=141; XGBoost routes them with learned default directions.",
+    "Train-vs-test adversarial AUC = 0.598; calibration weights from the density ratio.",
+    "Placebo noise column: mean MSE increase -0.00006 (p=0.697).",
+    "Prediction intervals are weighted split-conformal (OOF residual scores scaled by a spread model).",
+    "Effect-query intervals are bootstrap percentile intervals of the average contrast over training rows; they reflect model refit variability and do not include the sampling noise of y."
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "library": "xgboost 3.4.0",
+  "mean_effects": [
+    {
+      "variable": "housing_median_age",
+      "shape": "threshold_increase",
+      "evidence": "Held-out MSE rises by 0.0500 when permuted (fold t=25.4); partial-dependence range 0.384 = 0.63 SD(y); shape 'threshold_increase' (linear R2 0.75, step R2 0.86)."
+    },
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "Held-out MSE rises by 0.0992 when permuted (fold t=56.9); partial-dependence range 0.786 = 1.28 SD(y); shape 'decreasing' (linear R2 0.90, step R2 0.71)."
+    },
+    {
+      "variable": "ave_occup",
+      "shape": "increasing",
+      "evidence": "Held-out MSE rises by 0.0137 when permuted (fold t=18.8); partial-dependence range 0.329 = 0.54 SD(y); shape 'increasing' (linear R2 0.94, step R2 0.59)."
+    },
+    {
+      "variable": "roof_class",
+      "shape": "categorical",
+      "evidence": "Held-out MSE rises by 0.0411 when permuted (fold t=26.1); partial dependence by level: A=+0.207, B=+0.199, C=+0.366, D=+0.570."
+    },
+    {
+      "variable": "longitude",
+      "shape": "spatial",
+      "evidence": "Joint longitude+latitude permutation test significant (Bonferroni-adjusted, 10 folds); joint partial-dependence range 0.325."
+    },
+    {
+      "variable": "latitude",
+      "shape": "spatial",
+      "evidence": "Joint longitude+latitude permutation test significant (Bonferroni-adjusted, 10 folds); joint partial-dependence range 0.325."
+    }
+  ],
+  "interactions": [
+    {
+      "variables": [
+        "housing_median_age",
+        "median_income"
+      ],
+      "evidence": "Pair model improves held-out MSE over the additive model by 0.00146 (Bonferroni p=0.00299); global additive-vs-full test p=0.0202."
+    }
+  ],
+  "variance_drivers": [
+    {
+      "variable": "total_bedrooms",
+      "direction": "decreases_spread",
+      "evidence": "Spread permutation test significant (Bonferroni, 10 folds); shape of log squared-residual curve: decreasing; range 0.377 on log r^2 scale."
+    },
+    {
+      "variable": "households",
+      "direction": "decreases_spread",
+      "evidence": "Spread permutation test significant (Bonferroni, 10 folds); shape of log squared-residual curve: decreasing; range 0.751 on log r^2 scale."
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.42475712299346924,
+      "lower90": -0.4692871287465096,
+      "upper90": -0.37088650912046434
+    },
+    "Q2": {
+      "estimate": 0.3804193437099457,
+      "lower90": 0.3565531387925148,
+      "upper90": 0.39895502775907515
+    },
+    "Q3": {
+      "estimate": 0.2521871030330658,
+      "lower90": 0.20709775388240814,
+      "upper90": 0.2942073240876198
+    },
+    "Q4": {
+      "estimate": 0.3624822199344635,
+      "lower90": 0.338710780441761,
+      "upper90": 0.3745683550834656
+    },
+    "Q5": {
+      "estimate": -0.013631355948746204,
+      "lower90": -0.03280317559838295,
+      "upper90": 0.001049880456412211
+    },
+    "Q6": {
+      "estimate": 0.2339695543050766,
+      "lower90": 0.19460148066282273,
+      "upper90": 0.24455226361751556
+    },
+    "Q7": {
+      "estimate": 5.6333527027163655e-05,
+      "lower90": -0.0012582311581354588,
+      "upper90": 0.00209369294461794
+    },
+    "Q8": {
+      "estimate": -0.04966080188751221,
+      "lower90": -0.06895703338086605,
+      "upper90": -0.02565259514376522
+    }
+  },
+  "warnings": [
+    "Missing values (train): housing_median_age=1142, total_bedrooms=179, ave_bedrooms=179; XGBoost routes them with learned default directions.",
+    "Train-vs-test adversarial AUC = 0.597; calibration weights from the density ratio.",
+    "Placebo noise column: mean MSE increase -0.00011 (p=0.93).",
+    "Prediction intervals are weighted split-conformal (OOF residual scores scaled by a spread model).",
+    "Effect-query intervals are bootstrap percentile intervals of the average contrast over training rows; they reflect model refit variability and do not include the sampling noise of y."
+  ]
+}

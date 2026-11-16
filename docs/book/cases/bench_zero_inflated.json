@@ -1,0 +1,1508 @@
+{
+  "n_train": 1500,
+  "n_test": 4000,
+  "seeds": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "nu": 0.1,
+  "folds": 5,
+  "mstop_cap": 1600,
+  "mstop_extend": 3200,
+  "tasks": {
+    "linear": "log mu = 0.15 + 0.55 x1 - 0.30 x2; logit pi = -0.35 + 0.95 z",
+    "smooth": "log mu = 0.05 + sin(1.5 x1) + 0.30 x2; logit pi = -0.35 + 0.95 z"
+  },
+  "competitors_not_run": [
+    "R gamboostLSS::ZIPoLSS is not installed. statsmodels ZeroInflatedPoisson is the maximum-likelihood reference for the same design matrix."
+  ],
+  "results": [
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "generating ZIP",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.104881421244825,
+      "mae": 0.8652310802715694,
+      "p0_rmse": 0.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.0,
+      "pi_rmse": 0.0,
+      "_identity": {
+        "fingerprint": "sha256:2622d74ae88f1d4b2489266bea459bd1af5d3f1d51661d2d3b361b1c3c004f46",
+        "measured_at": "2026-10-24T05:07:46.122944+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:66a3c296363c39ca1b81adb811fb63118423097926620a7f64b42e821495d15a",
+        "output_digest": "sha256:566900cdf6fa33afbfd1d6cc89ba5aa7cfe97ae9ee47dd24d438429b08224c14",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "statsmodels ZIP MLE",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.1078435107175169,
+      "mae": 0.8770839258665161,
+      "p0_rmse": 0.03531322439765648,
+      "seconds": 0.019641458056867123,
+      "mstop": null,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.07591908380122593,
+      "pi_rmse": 0.07043014436672937,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:5998306e944bd3aab2e268bda0ae1f4d5abc2e32be35e720f9564450d4376870",
+        "measured_at": "2026-10-24T05:07:46.144577+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:66a3c296363c39ca1b81adb811fb63118423097926620a7f64b42e821495d15a",
+        "output_digest": "sha256:9e027ed0ae2d148738d4d1dcb9266b8d4bfb8306ad445033b5ed9f14cc637cda",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "mboostrs ZIPoLSS",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.107711942752267,
+      "mae": 0.8771632360810723,
+      "p0_rmse": 0.034718859299295204,
+      "seconds": 0.5749584590084851,
+      "mstop": [
+        3200,
+        3200
+      ],
+      "extended": true,
+      "at_boundary": true,
+      "mu_rmse": 0.07403051293233136,
+      "pi_rmse": 0.06827777655280658,
+      "mae_if_mu_used_as_mean": 1.1360860979241096,
+      "_identity": {
+        "fingerprint": "sha256:1d06639593c536611da16c905fc441171b7bd91f144b86f2c5cdd80199989cc9",
+        "measured_at": "2026-10-24T05:07:46.722602+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:66a3c296363c39ca1b81adb811fb63118423097926620a7f64b42e821495d15a",
+        "output_digest": "sha256:2424c0d6ceb503c3371003718ca7690894702421bf664f39aa9b907c2fb0a172",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "mboostrs Poisson",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.2266065466942289,
+      "mae": 0.8909808477487741,
+      "p0_rmse": 0.1506149394324652,
+      "seconds": 0.06398058403283358,
+      "mstop": 279,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.7990151303931151,
+      "_identity": {
+        "fingerprint": "sha256:96c7948334e37dd48062bfc373d6963b782f6f8570bee341c18ff7ad7aa4e9bd",
+        "measured_at": "2026-10-24T05:07:46.787729+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:66a3c296363c39ca1b81adb811fb63118423097926620a7f64b42e821495d15a",
+        "output_digest": "sha256:5cb742a9e1b8da5c118fe33e9769a26b65f34957b437af1497613cb3502354a7",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "mboostrs NBinomial",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.1520120316310314,
+      "mae": 0.8902399514256408,
+      "p0_rmse": 0.08345018682235532,
+      "seconds": 0.9366132079157978,
+      "mstop": 450,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.7984913580733225,
+      "_identity": {
+        "fingerprint": "sha256:df7dfcad53b00ee66d139a40f7080b0bb03c33cf52e2e9b95e857920688796d1",
+        "measured_at": "2026-10-24T05:07:47.725312+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:66a3c296363c39ca1b81adb811fb63118423097926620a7f64b42e821495d15a",
+        "output_digest": "sha256:f2ddbd51b383c6956629ccaa6d7ea5d015cbd87012086fc4c67d2f37e76a596d",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "mboostrs hurdle (Binomial + Hurdle)",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.1113648356635009,
+      "mae": 0.8929630149636045,
+      "p0_rmse": 0.05149226396181206,
+      "seconds": 3.3349851241800934,
+      "mstop": {
+        "gate": 94,
+        "count": 122
+      },
+      "extended": false,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:b5f48644489cadc5fd0169f26953b7acd5872f5803953fe78cb9aa2a2fae14bd",
+        "measured_at": "2026-10-24T05:07:51.062941+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:66a3c296363c39ca1b81adb811fb63118423097926620a7f64b42e821495d15a",
+        "output_digest": "sha256:5dc11b55bbe60f5770d84843bf20026595cc7b354561cba7f65867b924fbb43a",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "generating ZIP",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.1014928214676416,
+      "mae": 0.8568229934421315,
+      "p0_rmse": 0.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.0,
+      "pi_rmse": 0.0,
+      "_identity": {
+        "fingerprint": "sha256:61d3f203bd9f99cda12a64bf083b333e001bd5a13e9cedf5aa8ae6c145a0e310",
+        "measured_at": "2026-10-24T05:07:51.065268+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:151b6a14a86f142b44c1af8ce9f27100bb80914097335c1ce674e999ac0b1110",
+        "output_digest": "sha256:d1286888ee05407d679299bf3374803e6711c84466e311d02214bed94c1b425e",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "statsmodels ZIP MLE",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.1048696833436187,
+      "mae": 0.8782814466551412,
+      "p0_rmse": 0.04340723547021394,
+      "seconds": 0.017512833001092076,
+      "mstop": null,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.12012174337782519,
+      "pi_rmse": 0.04580664324891559,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:612368025ab3d744b15041a100a3830d8a6e1851ca449605375cf9cc22db6c6e",
+        "measured_at": "2026-10-24T05:07:51.084571+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:151b6a14a86f142b44c1af8ce9f27100bb80914097335c1ce674e999ac0b1110",
+        "output_digest": "sha256:6c230b5887c21aeb11e6dbe5b8cddc862e58b05a34b45563e8ab1396040c2c94",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "mboostrs ZIPoLSS",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.1048717982466214,
+      "mae": 0.8783834511845339,
+      "p0_rmse": 0.04335893434349665,
+      "seconds": 0.610901250038296,
+      "mstop": [
+        3200,
+        3200
+      ],
+      "extended": true,
+      "at_boundary": true,
+      "mu_rmse": 0.12052621164004447,
+      "pi_rmse": 0.045727072651607484,
+      "mae_if_mu_used_as_mean": 1.134023097812742,
+      "_identity": {
+        "fingerprint": "sha256:fddf8f633559cf85eecadf63bc0a2f40c47fb6bf14f662eef1037192e692b851",
+        "measured_at": "2026-10-24T05:07:51.697170+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:151b6a14a86f142b44c1af8ce9f27100bb80914097335c1ce674e999ac0b1110",
+        "output_digest": "sha256:5673f5a35916bc46bcb436d07fc622978a6bb2df07147d032f22bae84f793fe4",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "mboostrs Poisson",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.2186772931276868,
+      "mae": 0.8851672940389549,
+      "p0_rmse": 0.1678910598703993,
+      "seconds": 0.060241624945774674,
+      "mstop": 235,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.7245030594304406,
+      "_identity": {
+        "fingerprint": "sha256:982ef7e3e71f1890d1921b905d1a325b2de668d0eb5b95fa0a95825a632cb4fb",
+        "measured_at": "2026-10-24T05:07:51.758117+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:151b6a14a86f142b44c1af8ce9f27100bb80914097335c1ce674e999ac0b1110",
+        "output_digest": "sha256:643764a1629c31c86a957b1864f4db0ec351a594fad46ccba71e771b1da324e3",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "mboostrs NBinomial",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.152043227592931,
+      "mae": 0.8834341382495898,
+      "p0_rmse": 0.09829437990166251,
+      "seconds": 0.9728155001066625,
+      "mstop": 484,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.7340676531635038,
+      "_identity": {
+        "fingerprint": "sha256:42f31a924c47a19c21818eaf84d62483023e1522f7f0a847779a00b1bc2a8911",
+        "measured_at": "2026-10-24T05:07:52.731924+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:151b6a14a86f142b44c1af8ce9f27100bb80914097335c1ce674e999ac0b1110",
+        "output_digest": "sha256:056043887a26526052a681161fed77cd5a0be71ab99b69f0a970d65fd2b74e1f",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "mboostrs hurdle (Binomial + Hurdle)",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.1090785111410277,
+      "mae": 0.8914426228645257,
+      "p0_rmse": 0.061737265354821706,
+      "seconds": 3.969360458198935,
+      "mstop": {
+        "gate": 98,
+        "count": 84
+      },
+      "extended": false,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:69b0a901aa2486cbf31bd4b6657a61c4cb43aea8f9ca7a89f10d6454630e9c06",
+        "measured_at": "2026-10-24T05:07:56.703015+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:151b6a14a86f142b44c1af8ce9f27100bb80914097335c1ce674e999ac0b1110",
+        "output_digest": "sha256:cd58c220613668491245c10c1257491833e6d6a99ddc54ba3082c8c3b3a1bb77",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "generating ZIP",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.0679367188724,
+      "mae": 0.8462926287043326,
+      "p0_rmse": 0.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.0,
+      "pi_rmse": 0.0,
+      "_identity": {
+        "fingerprint": "sha256:9a04ef57f48a303a91ae6277c995b191eb3d9fac16df335912abf3cc4b26582e",
+        "measured_at": "2026-10-24T05:07:56.705406+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8f679ffe88361e1030b2ab6177ede2ffe4c1d92aad8eb19e882fba48a81b3646",
+        "output_digest": "sha256:62d3552397530ba94138e74646bb3547bc12ea1751aa3047b24754e0d105db16",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "statsmodels ZIP MLE",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.0742602081762147,
+      "mae": 0.8499674338795705,
+      "p0_rmse": 0.02382537030922957,
+      "seconds": 0.017574416007846594,
+      "mstop": null,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.20556907138220715,
+      "pi_rmse": 0.04207053803689322,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:2c2ead78d6dd21628b88c86f7a52a1b92209dbd70ea34cf0ea0ebd740d55ca6f",
+        "measured_at": "2026-10-24T05:07:56.724789+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8f679ffe88361e1030b2ab6177ede2ffe4c1d92aad8eb19e882fba48a81b3646",
+        "output_digest": "sha256:fed104b16b762b6baef163c0f7147c2443ba8ba22139ec89a59ea7e9403dbc87",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "mboostrs ZIPoLSS",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.0741278773559415,
+      "mae": 0.8500224917873284,
+      "p0_rmse": 0.023494676529424045,
+      "seconds": 0.604099916992709,
+      "mstop": [
+        3200,
+        3200
+      ],
+      "extended": true,
+      "at_boundary": true,
+      "mu_rmse": 0.20386686640024734,
+      "pi_rmse": 0.040315909735054355,
+      "mae_if_mu_used_as_mean": 1.1992609019643177,
+      "_identity": {
+        "fingerprint": "sha256:119de52075a485f14604ceb1e8cbd8b5ad157428420a252cf310e46b2e7feff7",
+        "measured_at": "2026-10-24T05:07:57.330615+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8f679ffe88361e1030b2ab6177ede2ffe4c1d92aad8eb19e882fba48a81b3646",
+        "output_digest": "sha256:f0dc5408d473e9675075e5312f5791e51758b74541c9c84007a2b67251c9291f",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "mboostrs Poisson",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.200866126207046,
+      "mae": 0.8594570639498549,
+      "p0_rmse": 0.14162096575349642,
+      "seconds": 0.060828665969893336,
+      "mstop": 1463,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.8398098114084368,
+      "_identity": {
+        "fingerprint": "sha256:cc7afbb76676b0d30bc2147279c9bd83d5972aee121558ecb30cec80091a13b5",
+        "measured_at": "2026-10-24T05:07:57.392137+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8f679ffe88361e1030b2ab6177ede2ffe4c1d92aad8eb19e882fba48a81b3646",
+        "output_digest": "sha256:ae16b9530aceeb2cde88457218c8be955bae9038ec07fd4c72433af79924ae73",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "mboostrs NBinomial",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.1202240008489404,
+      "mae": 0.8581124002910294,
+      "p0_rmse": 0.07681581636337084,
+      "seconds": 0.9598172090481967,
+      "mstop": 1597,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.8551174177204379,
+      "_identity": {
+        "fingerprint": "sha256:32038d5927013f7025c6101ec04374156281d63de93f604bd8243bb05816dc33",
+        "measured_at": "2026-10-24T05:07:58.352892+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8f679ffe88361e1030b2ab6177ede2ffe4c1d92aad8eb19e882fba48a81b3646",
+        "output_digest": "sha256:512a66cf0897bc90b90755eceab73c0655cbff9aa21a7448da1b2240286f084d",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "mboostrs hurdle (Binomial + Hurdle)",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.0799154536636801,
+      "mae": 0.8639713253237551,
+      "p0_rmse": 0.04802072398047792,
+      "seconds": 4.014285000041127,
+      "mstop": {
+        "gate": 175,
+        "count": 117
+      },
+      "extended": false,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:f870daac762fea412674c83be75da5d83f2100cf0e69c8028314f7ad4cf87399",
+        "measured_at": "2026-10-24T05:08:02.368790+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8f679ffe88361e1030b2ab6177ede2ffe4c1d92aad8eb19e882fba48a81b3646",
+        "output_digest": "sha256:19e224c1408fedbc9eb6b3fdd3f8b6ce7a5d6078fbf6a9cfbd1064d0ba7c0bc0",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "generating ZIP",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.1096900300795585,
+      "mae": 0.8621017611909801,
+      "p0_rmse": 0.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.0,
+      "pi_rmse": 0.0,
+      "_identity": {
+        "fingerprint": "sha256:69702ebea67b0d9bf8bc589247cc44dae7de3afc196f0ef916376136ebe534cb",
+        "measured_at": "2026-10-24T05:08:02.371158+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:4092085e1c6e90d3be0ad6c4cf07f68acfca90131c8a0e77e893fda9249436cc",
+        "output_digest": "sha256:f2d664421fd29d7afc63d52ee1700e8be038e956dc0e27da561a264621f29c59",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "statsmodels ZIP MLE",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.1122861662762364,
+      "mae": 0.8616860445963903,
+      "p0_rmse": 0.02813634194313608,
+      "seconds": 0.018994374899193645,
+      "mstop": null,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.1768660925827545,
+      "pi_rmse": 0.03903891884816051,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:16c36ffe2237e330e1cf273002b76963297ea988d50b9d5f34354a871f77eeed",
+        "measured_at": "2026-10-24T05:08:02.391933+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:4092085e1c6e90d3be0ad6c4cf07f68acfca90131c8a0e77e893fda9249436cc",
+        "output_digest": "sha256:45559ef8869d025d68ef48c87afb5ce61423aae448f1652bb5a4065b481ac60a",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "mboostrs ZIPoLSS",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.1122468881211267,
+      "mae": 0.861725099351737,
+      "p0_rmse": 0.027937653597325363,
+      "seconds": 0.62037408282049,
+      "mstop": [
+        3200,
+        3200
+      ],
+      "extended": true,
+      "at_boundary": true,
+      "mu_rmse": 0.17665750975179711,
+      "pi_rmse": 0.038618126902229724,
+      "mae_if_mu_used_as_mean": 1.1734214412819506,
+      "_identity": {
+        "fingerprint": "sha256:a33536b2044db57815b586ba241b773eedc045bc53de145a0ab200debc896910",
+        "measured_at": "2026-10-24T05:08:03.014047+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:4092085e1c6e90d3be0ad6c4cf07f68acfca90131c8a0e77e893fda9249436cc",
+        "output_digest": "sha256:835f4acec990947eeba35a7a8b788cd1a378bafc8ca5b4805315e10eace602cd",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "mboostrs Poisson",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.2284227079460661,
+      "mae": 0.8772084707793608,
+      "p0_rmse": 0.13998913567498414,
+      "seconds": 0.058460375061258674,
+      "mstop": 222,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.8383642806918935,
+      "_identity": {
+        "fingerprint": "sha256:4adc5d20f8f1fdb1a70884de37e3f19e58348521d867c5b8f959c8ee56440cf3",
+        "measured_at": "2026-10-24T05:08:03.073236+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:4092085e1c6e90d3be0ad6c4cf07f68acfca90131c8a0e77e893fda9249436cc",
+        "output_digest": "sha256:3aa3ac3a1b8a42f4c8cf3cc7752290ddd98e0efc6b785dc7071bcd3bfd5608d1",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "mboostrs NBinomial",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.1589792224341926,
+      "mae": 0.8748733005251668,
+      "p0_rmse": 0.0752083833446442,
+      "seconds": 0.9325265418738127,
+      "mstop": 422,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.8428612893795844,
+      "_identity": {
+        "fingerprint": "sha256:e4f87c0e68672bf548d37eebf990bd2aa6689d3b33f83776fa34697d7a095f0e",
+        "measured_at": "2026-10-24T05:08:04.006817+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:4092085e1c6e90d3be0ad6c4cf07f68acfca90131c8a0e77e893fda9249436cc",
+        "output_digest": "sha256:28f568cbbd6de6e76846f316bc0b0783c9a185158de031f6ebc7bc2796152f85",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "mboostrs hurdle (Binomial + Hurdle)",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.1161496656085996,
+      "mae": 0.8781575594290185,
+      "p0_rmse": 0.044150040366926505,
+      "seconds": 3.967004207894206,
+      "mstop": {
+        "gate": 82,
+        "count": 109
+      },
+      "extended": false,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:655ad7c1c60c2323757c921fefb5dfcc7f815de8d461a1b2199a316617a70032",
+        "measured_at": "2026-10-24T05:08:07.975592+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:4092085e1c6e90d3be0ad6c4cf07f68acfca90131c8a0e77e893fda9249436cc",
+        "output_digest": "sha256:e14591c660ee661123d54b3442ea197f57c597b6ce1e17e0788d782a75b83a36",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "generating ZIP",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.0544263048178881,
+      "mae": 0.8421296249211644,
+      "p0_rmse": 0.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.0,
+      "pi_rmse": 0.0,
+      "_identity": {
+        "fingerprint": "sha256:4f81e3270be0991224bda81f702ec155636926523da188e2dd78afd989a0a02c",
+        "measured_at": "2026-10-24T05:08:07.978245+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:33d28bc443bab8d45227962c1be913c251b312619c24bba410407d5ff993e7a2",
+        "output_digest": "sha256:286c0b15ab86050204c579c721d39a90be348dea2a5f665a7fea82a5c1cd9a80",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "statsmodels ZIP MLE",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.0744563474048638,
+      "mae": 0.868169537438346,
+      "p0_rmse": 0.05221305899567128,
+      "seconds": 0.08409783290699124,
+      "mstop": null,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 2.6106547831081985,
+      "pi_rmse": 0.06987764541618526,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:c4fa806b02e2461635d9fbc2613e8428ad8eb298ead17b77e6d17d6b36e47e25",
+        "measured_at": "2026-10-24T05:08:08.066225+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:33d28bc443bab8d45227962c1be913c251b312619c24bba410407d5ff993e7a2",
+        "output_digest": "sha256:efbe97eb1c074ad0dbf2039e90ed8cf0d08b78ba88d91bdfd01d1b260e23e68a",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "mboostrs ZIPoLSS",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.064330332510623,
+      "mae": 0.8517927310712132,
+      "p0_rmse": 0.033157457472700096,
+      "seconds": 0.855131208896637,
+      "mstop": [
+        637,
+        637
+      ],
+      "extended": true,
+      "at_boundary": false,
+      "mu_rmse": 0.20710784597331727,
+      "pi_rmse": 0.08749056061398465,
+      "mae_if_mu_used_as_mean": 1.0744858600021734,
+      "_identity": {
+        "fingerprint": "sha256:45e3f27d2727094678a299d7d6d8c422d6705b65993184e09cda5034a2ddd549",
+        "measured_at": "2026-10-24T05:08:08.980758+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:33d28bc443bab8d45227962c1be913c251b312619c24bba410407d5ff993e7a2",
+        "output_digest": "sha256:d835c3b34348e94542a7485356091dc34d46c6b0b0655c86b6ac2ed9815fd06a",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "mboostrs Poisson",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.1939301607500958,
+      "mae": 0.8630844287267968,
+      "p0_rmse": 0.1567411720123923,
+      "seconds": 0.10883575002662838,
+      "mstop": 232,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.7569165128275437,
+      "_identity": {
+        "fingerprint": "sha256:f6985c22ddce408215233bf4838a1cc4fbfcb71484271d92643cd7dd23f650a4",
+        "measured_at": "2026-10-24T05:08:09.090760+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:33d28bc443bab8d45227962c1be913c251b312619c24bba410407d5ff993e7a2",
+        "output_digest": "sha256:833be928b6ac86ef502caef031377a00a60b629dc918c6d206a2842759b0aa7e",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "mboostrs NBinomial",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.111078391704521,
+      "mae": 0.8581554376075906,
+      "p0_rmse": 0.08747791733990622,
+      "seconds": 1.0042562501039356,
+      "mstop": 496,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.7858446955392817,
+      "_identity": {
+        "fingerprint": "sha256:b10b4ae8e55c555c9bebaa66ef81d370e3bd7f8eb0d0c7c09a0d9171338ad494",
+        "measured_at": "2026-10-24T05:08:10.096405+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:33d28bc443bab8d45227962c1be913c251b312619c24bba410407d5ff993e7a2",
+        "output_digest": "sha256:497a2bcd8c543b31a68173ca008e0268272657f425c1fe82cd96af0a1c74621f",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "mboostrs hurdle (Binomial + Hurdle)",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.0645358579921553,
+      "mae": 0.8591851383292981,
+      "p0_rmse": 0.05177625409368904,
+      "seconds": 4.154087624978274,
+      "mstop": {
+        "gate": 124,
+        "count": 401
+      },
+      "extended": false,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:b3e82220879eab0195e80d9c864f90094363f7220d4b03d5787fa7b29358b2c8",
+        "measured_at": "2026-10-24T05:08:14.252955+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:33d28bc443bab8d45227962c1be913c251b312619c24bba410407d5ff993e7a2",
+        "output_digest": "sha256:9d89b606b25adfd3079eab90c4147c0fcd1ad6be3d95a0ffba682e82eca14a09",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "generating ZIP",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.0469682207692221,
+      "mae": 0.8232774262338508,
+      "p0_rmse": 0.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.0,
+      "pi_rmse": 0.0,
+      "_identity": {
+        "fingerprint": "sha256:cf5872a54590694f210e444be4c9fcfad9ace258106e9aa42192132301e30dd5",
+        "measured_at": "2026-10-24T05:08:14.256062+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:31bf7c6c934dc7ab284a970b5c4d18ab74eca5f509a73cf98bf645500b03f5a8",
+        "output_digest": "sha256:9b8433d3cf9d8a199de9299941ac78c0849fe0ba2b76223bbcd229f3e56004e8",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "statsmodels ZIP MLE",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.0534254406569408,
+      "mae": 0.8492361981164291,
+      "p0_rmse": 0.04101498606735559,
+      "seconds": 0.0830547499936074,
+      "mstop": null,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.7097372074807435,
+      "pi_rmse": 0.04144601472835207,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:3c83924095c98ea0debc5e5777d0300a78129b38db2f6feec8cd6ab0b32fd412",
+        "measured_at": "2026-10-24T05:08:14.342888+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:31bf7c6c934dc7ab284a970b5c4d18ab74eca5f509a73cf98bf645500b03f5a8",
+        "output_digest": "sha256:8ea9b9c8a562700285961ca79279a21c4db4b8c9bf57382c997208df4868c018",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "mboostrs ZIPoLSS",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.0477869619762037,
+      "mae": 0.8323137786648344,
+      "p0_rmse": 0.022106524843533655,
+      "seconds": 0.8915642499923706,
+      "mstop": [
+        637,
+        637
+      ],
+      "extended": true,
+      "at_boundary": false,
+      "mu_rmse": 0.10216261183410812,
+      "pi_rmse": 0.05467399525188675,
+      "mae_if_mu_used_as_mean": 1.0961784085965023,
+      "_identity": {
+        "fingerprint": "sha256:e08ea7421b5cb0dc31f6ecb90760f0ccfe3fc2ae01e9e90e01a32613187c0821",
+        "measured_at": "2026-10-24T05:08:15.248098+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:31bf7c6c934dc7ab284a970b5c4d18ab74eca5f509a73cf98bf645500b03f5a8",
+        "output_digest": "sha256:9ff146dbe32a8a391d7e03ba5e8242a63326af5ef2b8f87be5c27e368bdc379d",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "mboostrs Poisson",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.1617742536950038,
+      "mae": 0.8395621657495053,
+      "p0_rmse": 0.1459707498835187,
+      "seconds": 0.2840360419359058,
+      "mstop": 3185,
+      "extended": true,
+      "at_boundary": false,
+      "mu_rmse": 0.8236478986919689,
+      "_identity": {
+        "fingerprint": "sha256:278ce79f6f5e0d93acac5e969bd55b4db321d21c5ec2cb2571ee9152488ebe02",
+        "measured_at": "2026-10-24T05:08:15.533918+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:31bf7c6c934dc7ab284a970b5c4d18ab74eca5f509a73cf98bf645500b03f5a8",
+        "output_digest": "sha256:f36c13aea1d66863a11bdda37fb7e020af5c793bf3bbc8490fff2226fa5b06a5",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "mboostrs NBinomial",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.0952478831225885,
+      "mae": 0.8377022513527227,
+      "p0_rmse": 0.07420604688705047,
+      "seconds": 1.075456582941115,
+      "mstop": 1597,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.8282460145443908,
+      "_identity": {
+        "fingerprint": "sha256:cfe21ba2f259c5d08ae193b91f5789fd2af67146814bd72a43563354502691ee",
+        "measured_at": "2026-10-24T05:08:16.610927+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:31bf7c6c934dc7ab284a970b5c4d18ab74eca5f509a73cf98bf645500b03f5a8",
+        "output_digest": "sha256:63d3d31701021ac8e2d4394128ff12943f51a04520acd54bdf9ef5d14580fe08",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "mboostrs hurdle (Binomial + Hurdle)",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.0527458897099053,
+      "mae": 0.8383126908833638,
+      "p0_rmse": 0.055745512598089006,
+      "seconds": 4.21139149973169,
+      "mstop": {
+        "gate": 2672,
+        "count": 445
+      },
+      "extended": true,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:44f4306e4f4f4b7ff9bff28adbb79201c9e2af7b8d26f6da5a4ecd03689ffdb2",
+        "measured_at": "2026-10-24T05:08:20.825331+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:31bf7c6c934dc7ab284a970b5c4d18ab74eca5f509a73cf98bf645500b03f5a8",
+        "output_digest": "sha256:c947a2049469a312f307014d32b56a1c4c5ca8731efcbc013d1401060a71cc23",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "generating ZIP",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.036460729280336,
+      "mae": 0.816246164490289,
+      "p0_rmse": 0.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.0,
+      "pi_rmse": 0.0,
+      "_identity": {
+        "fingerprint": "sha256:977b8212cace67bbf97177cbb479821e6808ce940b07e9f0f29e1ad8d949665c",
+        "measured_at": "2026-10-24T05:08:20.828932+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:3bbbc54ced0b47949a00c28b1a00d3f5ae4d3de02445fb9f95f96b9258984775",
+        "output_digest": "sha256:1fc6453d3b17fb035f7638abe4005af2ab7f2a99e43bc1f6db0dfe2d3caaa823",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "statsmodels ZIP MLE",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.292426616080476,
+      "mae": 1.2383523276437371,
+      "p0_rmse": 0.05261020797011621,
+      "seconds": 0.10118450014851987,
+      "mstop": null,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 18.556068387272138,
+      "pi_rmse": 0.09163781752457924,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:30dd17438faf35a5cbd945047ec8b5eb437f6d6e61ff8a80e3c16a55a90ea199",
+        "measured_at": "2026-10-24T05:08:20.933904+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:3bbbc54ced0b47949a00c28b1a00d3f5ae4d3de02445fb9f95f96b9258984775",
+        "output_digest": "sha256:9196be9eee745e73a3fa9701ede51cd96f4e24556d91cbbf2b92f5a7c9e183ae",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "mboostrs ZIPoLSS",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.0469416895363275,
+      "mae": 0.8354199267233248,
+      "p0_rmse": 0.037999126053339535,
+      "seconds": 0.8649668751750141,
+      "mstop": [
+        637,
+        637
+      ],
+      "extended": true,
+      "at_boundary": false,
+      "mu_rmse": 0.8822806780180432,
+      "pi_rmse": 0.07992250196547748,
+      "mae_if_mu_used_as_mean": 1.0616971814253264,
+      "_identity": {
+        "fingerprint": "sha256:655e1ba891ffd13d4d00ba5b8126994e2a85969614be40e695bc288c10da66f4",
+        "measured_at": "2026-10-24T05:08:21.811950+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:3bbbc54ced0b47949a00c28b1a00d3f5ae4d3de02445fb9f95f96b9258984775",
+        "output_digest": "sha256:ac8b0eff8b9f2ae41f8a831c5780736ebc8f87d6a2a354f27407768d2ad2dc48",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "mboostrs Poisson",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.1690995466584833,
+      "mae": 0.8458043241970991,
+      "p0_rmse": 0.1411638097006946,
+      "seconds": 0.10922437510453165,
+      "mstop": 266,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 1.0964713083754163,
+      "_identity": {
+        "fingerprint": "sha256:f22c65eedc8608a227be5308f464224d6f6ccf00969822ac27ad0b74c6e06f4d",
+        "measured_at": "2026-10-24T05:08:21.922303+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:3bbbc54ced0b47949a00c28b1a00d3f5ae4d3de02445fb9f95f96b9258984775",
+        "output_digest": "sha256:0c4f36baf171ab62d93c738bb0ba2f98bf74ae3b4944a014ea663a3582932528",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "mboostrs NBinomial",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.0885726555051825,
+      "mae": 0.8520182200249089,
+      "p0_rmse": 0.0774201982888466,
+      "seconds": 1.0696682501584291,
+      "mstop": 513,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 1.3171717679067216,
+      "_identity": {
+        "fingerprint": "sha256:3b1ac137f2ada96b0f628fa493bbb0611a61378081de4c6e077aa117e9023721",
+        "measured_at": "2026-10-24T05:08:22.993380+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:3bbbc54ced0b47949a00c28b1a00d3f5ae4d3de02445fb9f95f96b9258984775",
+        "output_digest": "sha256:2b0376777040cc783af3f207252842829c6bcb71f3e4c20ba297a8e123a2a6cf",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "mboostrs hurdle (Binomial + Hurdle)",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.0474053844058198,
+      "mae": 0.8371433484427178,
+      "p0_rmse": 0.05405853472029028,
+      "seconds": 4.073376748943701,
+      "mstop": {
+        "gate": 298,
+        "count": 120
+      },
+      "extended": false,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:c75b025bdbee659ca9e925975c05a45781a6e7c96d8648ee703851dc2e1a0200",
+        "measured_at": "2026-10-24T05:08:27.069198+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:3bbbc54ced0b47949a00c28b1a00d3f5ae4d3de02445fb9f95f96b9258984775",
+        "output_digest": "sha256:2db675039a4650e0d0ff2b0302d538c47016a481bb7070f298b242df5ea9b31f",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "generating ZIP",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.069506962779391,
+      "mae": 0.859137398588101,
+      "p0_rmse": 0.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.0,
+      "pi_rmse": 0.0,
+      "_identity": {
+        "fingerprint": "sha256:3e1dc04309459b57e7492068a747a7a6da2e5ed8acbaefd41e893ab35766e9fc",
+        "measured_at": "2026-10-24T05:08:27.072295+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:38bf14ceb5baa1b974c0d4f7c183a341bfccbb7418192e278c8437d8c629b567",
+        "output_digest": "sha256:e95e54d75557a1439d9898aeecfd6c22a52639f381f6ceaa07d80b10f1f97f8f",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "statsmodels ZIP MLE",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 2.66346969521287,
+      "mae": 0.8667027437018174,
+      "p0_rmse": 0.06742847651612342,
+      "seconds": 0.10242520808242261,
+      "mstop": null,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 1160.065263079212,
+      "pi_rmse": 0.1031611451721947,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:995d6e4e454cff3b33d7d16f2b057169557b81a7fdf6b99e1c3717eaf7354a5e",
+        "measured_at": "2026-10-24T05:08:27.178493+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:38bf14ceb5baa1b974c0d4f7c183a341bfccbb7418192e278c8437d8c629b567",
+        "output_digest": "sha256:d514b0656bc04031bfb5ac9c335cdc3f0c63df0d1f1431b0db9220186683453c",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "mboostrs ZIPoLSS",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.0813000009092266,
+      "mae": 0.8653950333694401,
+      "p0_rmse": 0.046122639525794415,
+      "seconds": 0.8749617498833686,
+      "mstop": [
+        637,
+        637
+      ],
+      "extended": true,
+      "at_boundary": false,
+      "mu_rmse": 0.2616148042205472,
+      "pi_rmse": 0.10956059117922243,
+      "mae_if_mu_used_as_mean": 1.095348951521185,
+      "_identity": {
+        "fingerprint": "sha256:190f642bf2f7367d7a50c2a128720c11452732be9774a0aa3770f462f172c633",
+        "measured_at": "2026-10-24T05:08:28.066978+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:38bf14ceb5baa1b974c0d4f7c183a341bfccbb7418192e278c8437d8c629b567",
+        "output_digest": "sha256:df6bd35a1d1b005372e91f03d25fcff24586dbeb030a3f990b1cad36e2691a52",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "mboostrs Poisson",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.2121203079377556,
+      "mae": 0.876616097312167,
+      "p0_rmse": 0.1519636824927201,
+      "seconds": 0.11061479104682803,
+      "mstop": 193,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.8760411423910193,
+      "_identity": {
+        "fingerprint": "sha256:b582eb51e02f59238a370b9ea8e79ddc03929ce3346c510db4add3d9024feb19",
+        "measured_at": "2026-10-24T05:08:28.178724+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:38bf14ceb5baa1b974c0d4f7c183a341bfccbb7418192e278c8437d8c629b567",
+        "output_digest": "sha256:7d4752ef0704c504a15f41e9cc1087602609df622aaf9e7e93e856fd2c66af60",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "mboostrs NBinomial",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.1274286714422048,
+      "mae": 0.8741456848793199,
+      "p0_rmse": 0.08622123220064995,
+      "seconds": 1.0716020830441266,
+      "mstop": 372,
+      "extended": false,
+      "at_boundary": false,
+      "mu_rmse": 0.886223702127062,
+      "_identity": {
+        "fingerprint": "sha256:e4d447b3df7540c6d3b4869eda200ea00ee2d6d35f2526f1cd8204d9be7d5bb6",
+        "measured_at": "2026-10-24T05:08:29.251768+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:38bf14ceb5baa1b974c0d4f7c183a341bfccbb7418192e278c8437d8c629b567",
+        "output_digest": "sha256:21716899aac7a2ee65e0d46ff6bc2af7236ef2b6bd0e27194225d71baeebd9c7",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "mboostrs hurdle (Binomial + Hurdle)",
+      "n_train": 1500,
+      "n_test": 4000,
+      "nll": 1.0855652937514912,
+      "mae": 0.8763555119293558,
+      "p0_rmse": 0.07431313520394144,
+      "seconds": 4.03787870821543,
+      "mstop": {
+        "gate": 89,
+        "count": 260
+      },
+      "extended": false,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:dd033923d1ec629739349ac0bfe1bffbb7f179afdf85d508b1a59efe54a97b88",
+        "measured_at": "2026-10-24T05:08:33.292027+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:38bf14ceb5baa1b974c0d4f7c183a341bfccbb7418192e278c8437d8c629b567",
+        "output_digest": "sha256:2da05d5e839eb22f33f7b209274fab35e8f9b451cb9be81e2cf5be21fb303460",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    }
+  ],
+  "coefficient_reading": {
+    "sigma_intercept_coef": 1.524103142126837,
+    "sigma_offset": -2.197224577336219,
+    "sigma_intercept_plus_offset": -0.6731214352093822,
+    "sigma_intercept_truth": -0.35,
+    "mu_intercept_coef": 0.27144638454867764,
+    "mu_offset": -0.14695441295666337,
+    "mu_intercept_plus_offset": 0.12449197159201428,
+    "mu_intercept_truth": 0.15,
+    "coef_doc_first_line": "Per-parameter aggregated coefficients (sum of nu*coef per learner)."
+  },
+  "usability": {
+    "probes": [
+      {
+        "label": "gamboost(family=ZIPoLSS())",
+        "outcome": "TypeError",
+        "detail": "ZIPoLSS is a distributional family (parameters: mu, sigma). gamboost() fits one predictor. Use glmboostLSS() or gamboostLSS(), for example mb.gamboostLSS(formula, data, family=mb.ZIPoLSS())."
+      },
+      {
+        "label": "glmboost(family=ZIPoLSS())",
+        "outcome": "TypeError",
+        "detail": "ZIPoLSS is a distributional family (parameters: mu, sigma). glmboost() fits one predictor. Use glmboostLSS() or gamboostLSS(), for example mb.gamboostLSS(formula, data, family=mb.ZIPoLSS())."
+      },
+      {
+        "label": "gamboostLSS(family=Poisson())",
+        "outcome": "TypeError",
+        "detail": "Poisson is a single-predictor family. gamboostLSS() needs a distributional family such as GaussianLSS or ZIPoLSS. Fit Poisson with glmboost() or gamboost(), for example mb.gamboost(formula, data, family=mb.Poisson())."
+      },
+      {
+        "label": "glmboostLSS(family=Poisson())",
+        "outcome": "TypeError",
+        "detail": "Poisson is a single-predictor family. glmboostLSS() needs a distributional family such as GaussianLSS or ZIPoLSS. Fit Poisson with glmboost() or gamboost(), for example mb.gamboost(formula, data, family=mb.Poisson())."
+      }
+    ],
+    "autospec_seconds": 20.335357333067805,
+    "scan_lss_seconds": 0.16360262501984835,
+    "scan_lss_top": [
+      {
+        "family": "ZeroAdjustedPoissonLSS",
+        "status": "ok",
+        "cvrisk": 1.1859900622686306,
+        "risk": 1772.2013640861921,
+        "error": null
+      },
+      {
+        "family": "NBinomialLSS",
+        "status": "ok",
+        "cvrisk": 1.1967876295895246,
+        "risk": 1790.1171031118768,
+        "error": null
+      },
+      {
+        "family": "GeometricLSS",
+        "status": "ok",
+        "cvrisk": 1.20166552861996,
+        "risk": 1800.165083446765,
+        "error": null
+      },
+      {
+        "family": "ZINBLSS",
+        "status": "ok",
+        "cvrisk": 1.2055676820034888,
+        "risk": 1805.1629058606904,
+        "error": null
+      },
+      {
+        "family": "NegativeBinomialLSS",
+        "status": "ok",
+        "cvrisk": 1.2105098207913498,
+        "risk": 1811.8369935771461,
+        "error": null
+      },
+      {
+        "family": "ZIPoLSS",
+        "status": "ok",
+        "cvrisk": 1.2107899272132103,
+        "risk": 1811.2573343862264,
+        "error": null
+      },
+      {
+        "family": "PoissonLSS",
+        "status": "ok",
+        "cvrisk": 1.253629471526112,
+        "risk": 1874.8376600395814,
+        "error": null
+      }
+    ],
+    "autospec_family": "NBinomial",
+    "autospec_formula": "y ~ bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(z, df=4.0) + bbs(noise, df=4.0)",
+    "autospec_mentions_zip": true,
+    "autospec_warnings": [
+      "response 'y' has whole-number values stored as floating point; autospec assumes counts and selects Poisson. Pass family=Gaussian() for a rounded continuous measurement or declare another known family.",
+      "the lowest cross-validated risk is at [300], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(600, 1) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [300], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(600, 1) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [300, 300], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(600, 2) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [300, 300], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(600, 2) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [300, 300], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(600, 2) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [300, 300, 300], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(600, 3) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [300, 300], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(600, 2) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [1200, 1200], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(2400, 2) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [1200, 1200], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(2400, 2) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [1200, 1200], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(2400, 2) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [1200, 1200, 1200], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(2400, 3) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [4800, 4800], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(9600, 2) -- and refit with a control whose mstop covers it.",
+      "response 'y' has whole-number values stored as floating point; autospec assumes counts and selects Poisson. Pass family=Gaussian() for a rounded continuous measurement or declare another known family.",
+      "the lowest cross-validated risk is at [300], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(600, 1) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [300], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(600, 1) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [300, 300], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(600, 2) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [300, 300], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(600, 2) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [300, 300], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(600, 2) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [300, 300, 300], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(600, 3) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [300, 300], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(600, 2) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [1200, 1200], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(2400, 2) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [1200, 1200], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(2400, 2) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [1200, 1200], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(2400, 2) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [1200, 1200, 1200], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(2400, 3) -- and refit with a control whose mstop covers it.",
+      "the lowest cross-validated risk is at [4800, 4800], the largest budget in the grid, so the reported optimum is where the search stopped rather than where the risk turns. Extend the grid -- mb.diagonal_grid(9600, 2) -- and refit with a control whose mstop covers it."
+    ],
+    "autospec_report_excerpt": "autospec: y ~ bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(z, df=4.0) + bbs(noise, df=4.0)\n\nfolds: 5 random folds (rows, not groups, are held out)\n\nresponse: Poisson counts (inferred from 11 whole-number values; if they are rounded measurements pass family=Gaussian(), and if they are ordered classes pass family=PropOdds(n_levels=11))\n\ndata hygiene (no fit -- scans only)\n  y: 872 of 1500 values are exactly zero (58%) -- a count or positive family will fit the mass at zero through the mean. scan_lss_families(..., support='counts') ranks ZIPoLSS and ZeroAdjustedPoissonLSS; autospec's family probe does not try them\n\nfamily: NBinomial \u2014 58% exact zeros: the count scan (cvrisk, 4800 steps) ranks ZINBLSS first at 1.148 vs PoissonLSS 1.250, its held-out risk minimum interior at 2058 steps, so the zeros get their own component; recommending NBinomial, the best single-parameter family \u2014 fit ZINBLSS directly with glmboostLSS for the scan winner (1500 held-out rows)\n\nshapes: not measured; each column keeps the learner its dtype implies\n\nstructure: not screened\n  interaction rule: heredity none\ncolumn screen (marginal, no fit; 4 candidate columns): curve: x1; line: z, x2; none: noise\npre-exploration",
+    "zip_doc_first_paragraph": "Zero-inflated Poisson family: ``mu`` (log link, Poisson mean), ``sigma``\n    (logit link, zero-inflation probability). Matches R ``gamboostLSS::ZIPoLSS()``\n    (wrapping gamlss.dist ``ZIP``). Requires non-negative integer counts.",
+    "hurdle_doc_excerpt": "The count part of a hurdle model: a zero-truncated negative binomial. A negative binomial with a log link, conditioned on the count being positive, as ``mboost::Hurdle()``. Fit it to the positive counts only; whether a count is positive is a separate binary model (``Binomial`` on ``y > 0``), and the two together describe counts with more or fewer zeros than one negative binomial allows. The dispersion ``sigma`` is re-estimated at every step by a Brent search on (0, 100), matching R's ``optimize``. ``sigma`` is the gamlss dispersion, so the variance is ``mu + sigma * mu**2`` and the size is ``1 / sigma``. That is the reciprocal of :class:`NBinomial`, whose ``sigma`` is the size (``mu + mu**2 / sigma``). ``predict(type=\"response\")`` returns ``exp(f)``, the mean of the untruncated negative binomial, as mboost does; the mean of the truncated count is that divided by ``1 - (1 + exp(f) * sigma) ** (-1 / sigma)``."
+  },
+  "provenance": {
+    "commit": "f54f1531831e3f14a2db0bd238cf36238683d5ed",
+    "working_tree": {
+      "dirty": false,
+      "status_digest": null,
+      "commit_source": "working directory"
+    },
+    "native_build": {
+      "package_version": "0.1.3",
+      "source_digest": "sha256:a771766f1a4820a76b9d908fbc12ed53123e648afcb8583181708b5273ca6b49",
+      "git_revision": "e9c670d73f2aff2d153b2c02b4cf8a71aa2c46e2",
+      "git_dirty": false,
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+      "target": "aarch64-apple-darwin",
+      "profile": "release",
+      "target_features": "aes,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+      "crate_features": "",
+      "abi_version": 1,
+      "build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+    },
+    "platform": {
+      "system": "Darwin",
+      "release": "25.3.0",
+      "machine": "arm64",
+      "cpu": "arm",
+      "python": "3.12.11"
+    },
+    "versions": {
+      "mboostrs": "0.1.3",
+      "numpy": "2.4.6",
+      "rpy2": "3.6.7",
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "R": "4.5.1",
+      "mboost": "2.9.11",
+      "scipy": "1.16.3",
+      "statsmodels": "0.15.0",
+      "scikit-learn": "1.9.0",
+      "polars": "1.41.0",
+      "patsy": "1.0.3"
+    },
+    "compiler_flags": {
+      "RUSTFLAGS": null,
+      "CARGO_PROFILE": "release"
+    },
+    "threads": {
+      "logical_cpus": 10,
+      "r_mclapply_default_cores": "2",
+      "RAYON_NUM_THREADS": null,
+      "OMP_NUM_THREADS": null,
+      "OPENBLAS_NUM_THREADS": null,
+      "MKL_NUM_THREADS": null
+    },
+    "created_at": "2026-10-24T05:07:45.120566+00:00",
+    "runner": "benches/bench_zero_inflated.py",
+    "runner_sha256": "164b9dc23c74e1147488a0494cc9f8bc6a0c624edc6b3f21350742d00edc7a3e",
+    "protocol": {
+      "kind": "seeded predictive-method comparison",
+      "design": {
+        "n_train": 1500,
+        "n_test": 4000,
+        "seeds": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "nu": 0.1,
+        "folds": 5,
+        "mstop_cap": 1600,
+        "mstop_extend": 3200,
+        "tasks": {
+          "linear": "log mu = 0.15 + 0.55 x1 - 0.30 x2; logit pi = -0.35 + 0.95 z",
+          "smooth": "log mu = 0.05 + sin(1.5 x1) + 0.30 x2; logit pi = -0.35 + 0.95 z"
+        }
+      },
+      "timing": "runner perf_counter regions; method-specific fit/tuning/prediction work",
+      "order": "sequential task, seed, method order in the recorded runner",
+      "timing_claim": "descriptive elapsed times; no paired equal-work speedup or timing interval",
+      "warmup": "no dedicated warmup; imports and provenance collection excluded from timers"
+    },
+    "repeats": {
+      "training_seeds": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "test": "one independently generated test sample per seed/task, shared across methods"
+    },
+    "uncertainty": {
+      "scope": "descriptive timing spread across training seeds, not repeated identical-input trials",
+      "groups": [
+        {
+          "task": "linear",
+          "method": "generating ZIP",
+          "n": 4,
+          "seconds_sd": 0.0,
+          "seconds_se": 0.0
+        },
+        {
+          "task": "linear",
+          "method": "statsmodels ZIP MLE",
+          "n": 4,
+          "seconds_sd": 0.0010582007602964515,
+          "seconds_se": 0.0005291003801482257
+        },
+        {
+          "task": "linear",
+          "method": "mboostrs ZIPoLSS",
+          "n": 4,
+          "seconds_sd": 0.019588535873904685,
+          "seconds_se": 0.009794267936952343
+        },
+        {
+          "task": "linear",
+          "method": "mboostrs Poisson",
+          "n": 4,
+          "seconds_sd": 0.002300604626380014,
+          "seconds_se": 0.001150302313190007
+        },
+        {
+          "task": "linear",
+          "method": "mboostrs NBinomial",
+          "n": 4,
+          "seconds_sd": 0.019154348306402332,
+          "seconds_se": 0.009577174153201166
+        },
+        {
+          "task": "linear",
+          "method": "mboostrs hurdle (Binomial + Hurdle)",
+          "n": 4,
+          "seconds_sd": 0.3250112494997197,
+          "seconds_se": 0.16250562474985986
+        },
+        {
+          "task": "smooth",
+          "method": "generating ZIP",
+          "n": 4,
+          "seconds_sd": 0.0,
+          "seconds_se": 0.0
+        },
+        {
+          "task": "smooth",
+          "method": "statsmodels ZIP MLE",
+          "n": 4,
+          "seconds_sd": 0.010545049168667112,
+          "seconds_se": 0.005272524584333556
+        },
+        {
+          "task": "smooth",
+          "method": "mboostrs ZIPoLSS",
+          "n": 4,
+          "seconds_sd": 0.015546484189706496,
+          "seconds_se": 0.007773242094853248
+        },
+        {
+          "task": "smooth",
+          "method": "mboostrs Poisson",
+          "n": 4,
+          "seconds_sd": 0.08724221105552785,
+          "seconds_se": 0.04362110552776392
+        },
+        {
+          "task": "smooth",
+          "method": "mboostrs NBinomial",
+          "n": 4,
+          "seconds_sd": 0.034078072173993716,
+          "seconds_se": 0.017039036086996858
+        },
+        {
+          "task": "smooth",
+          "method": "mboostrs hurdle (Binomial + Hurdle)",
+          "n": 4,
+          "seconds_sd": 0.07837801725058618,
+          "seconds_se": 0.03918900862529309
+        }
+      ]
+    }
+  }
+}

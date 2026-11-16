@@ -1,0 +1,530 @@
+{
+  "dataset": {
+    "source": "mb.datasets.fdic_bank_yearend()",
+    "panel_rows": 43906,
+    "train_rows": 5174,
+    "test_rows": 1126,
+    "n_test_banks": 687
+  },
+  "unfold_before_soak": {
+    "leads": [
+      {
+        "kind": "basis_interaction",
+        "slope_column": "brokered_share",
+        "slope_transform": "log1p",
+        "threshold_column": "year",
+        "cutpoint": 2023.0,
+        "term": "btree(year, by=log1p(brokered_share), maxdepth=1)",
+        "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, by=log1p(brokered_share), maxdepth=1)",
+        "screen_r2": 0.04366419915432361,
+        "interpretation": "typed basis interaction; the tree learns the cutpoint; compare before adoption",
+        "screens_positive": true
+      },
+      {
+        "kind": "basis_interaction",
+        "slope_column": "log_assets",
+        "slope_transform": "log1p",
+        "threshold_column": "year",
+        "cutpoint": 2023.0,
+        "term": "btree(year, by=log1p(log_assets), maxdepth=1)",
+        "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, by=log1p(log_assets), maxdepth=1)",
+        "screen_r2": 0.03839246560889126,
+        "interpretation": "typed basis interaction; the tree learns the cutpoint; compare before adoption",
+        "screens_positive": true
+      },
+      {
+        "kind": "log1p_slope",
+        "column": "brokered_share",
+        "term": "bols(log1p(brokered_share))",
+        "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bols(log1p(brokered_share))",
+        "screen_r2": 0.010981759380191443,
+        "interpretation": "typed structure lead; compare before adoption",
+        "screens_positive": true
+      },
+      {
+        "kind": "hinge_term",
+        "column": "loan_ratio",
+        "cutpoint": 0.5284910617686447,
+        "term": "bols(pmax(loan_ratio, 0.528491))",
+        "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bols(pmax(loan_ratio, 0.528491))",
+        "screen_r2": 0.010776827039414577,
+        "interpretation": "typed structure lead; compare before adoption",
+        "screens_positive": true
+      },
+      {
+        "kind": "cutpoint_indicator",
+        "column": "loan_ratio",
+        "cutpoint": 0.6601367307688093,
+        "term": "btree(loan_ratio, maxdepth=1)",
+        "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(loan_ratio, maxdepth=1)",
+        "screen_r2": 0.007334376606535572,
+        "interpretation": "typed structure lead; compare before adoption",
+        "screens_positive": false
+      },
+      {
+        "kind": "basis_interaction",
+        "slope_column": "brokered_share",
+        "slope_transform": "log1p",
+        "threshold_column": "loan_ratio",
+        "cutpoint": 0.6601367307688093,
+        "term": "btree(loan_ratio, by=log1p(brokered_share), maxdepth=1)",
+        "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(loan_ratio, by=log1p(brokered_share), maxdepth=1)",
+        "screen_r2": 0.004893173021649179,
+        "interpretation": "typed basis interaction; the tree learns the cutpoint; compare before adoption",
+        "screens_positive": false
+      },
+      {
+        "kind": "cutpoint_indicator",
+        "column": "ib_share",
+        "cutpoint": 0.7722766391159495,
+        "term": "btree(ib_share, maxdepth=1)",
+        "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(ib_share, maxdepth=1)",
+        "screen_r2": 0.003878046645834435,
+        "interpretation": "typed structure lead; compare before adoption",
+        "screens_positive": false
+      },
+      {
+        "kind": "hinge_term",
+        "column": "ib_share",
+        "cutpoint": 0.702336555770108,
+        "term": "bols(pmax(ib_share, 0.702337))",
+        "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bols(pmax(ib_share, 0.702337))",
+        "screen_r2": 0.002328836569829679,
+        "interpretation": "typed structure lead; compare before adoption",
+        "screens_positive": false
+      }
+    ],
+    "bar": "screen_r2 >= 1% of target variance"
+  },
+  "compare": {
+    "rows": [
+      {
+        "specification": "current",
+        "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+        "out-of-fold risk": 0.24360130742968747,
+        "change": 0.0,
+        "change se": 0.0
+      },
+      {
+        "specification": "tree soak",
+        "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse)",
+        "out-of-fold risk": 0.22055918683354364,
+        "change": -0.023042120596143828,
+        "change se": 0.0065127809628704155
+      },
+      {
+        "specification": "brokered regime",
+        "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, by=log1p(brokered_share), maxdepth=1)",
+        "out-of-fold risk": 0.23557635807699376,
+        "change": -0.008024949352693711,
+        "change se": 0.0025045889263006797
+      },
+      {
+        "specification": "assets regime",
+        "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, by=log1p(log_assets), maxdepth=1)",
+        "out-of-fold risk": 0.24360130742968747,
+        "change": 0.0,
+        "change se": 0.0
+      },
+      {
+        "specification": "year x brokered",
+        "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(brokered_share, df=2.5, knots=5)",
+        "out-of-fold risk": 0.23881691694109308,
+        "change": -0.004784390488594387,
+        "change se": 0.0014662892443814742
+      },
+      {
+        "specification": "year x assets",
+        "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(log_assets, df=2.5, knots=5)",
+        "out-of-fold risk": 0.23810148300447354,
+        "change": -0.005499824425213934,
+        "change se": 0.0006307357033017581
+      }
+    ],
+    "two_se_candidates": [
+      {
+        "candidate": "tree soak",
+        "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse)",
+        "change": -0.023042120596143828,
+        "change_se": 0.0065127809628704155
+      },
+      {
+        "candidate": "brokered regime",
+        "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, by=log1p(brokered_share), maxdepth=1)",
+        "change": -0.008024949352693711,
+        "change_se": 0.0025045889263006797
+      },
+      {
+        "candidate": "year x assets",
+        "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(log_assets, df=2.5, knots=5)",
+        "change": -0.005499824425213934,
+        "change_se": 0.0006307357033017581
+      },
+      {
+        "candidate": "year x brokered",
+        "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(brokered_share, df=2.5, knots=5)",
+        "change": -0.004784390488594387,
+        "change_se": 0.0014662892443814742
+      }
+    ],
+    "winner_gaps": [
+      {
+        "candidate": "brokered regime",
+        "gap_vs_best": 0.015017171243450117,
+        "paired_se": 0.0052573010059327446,
+        "within_two_se": false
+      },
+      {
+        "candidate": "year x assets",
+        "gap_vs_best": 0.017542296170929894,
+        "paired_se": 0.006707129286876817,
+        "within_two_se": false
+      },
+      {
+        "candidate": "year x brokered",
+        "gap_vs_best": 0.01825773010754944,
+        "paired_se": 0.0056574995928336275,
+        "within_two_se": false
+      }
+    ]
+  },
+  "adopted": {
+    "candidate": "tree soak",
+    "spec": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse)",
+    "tuned_mstop": 22,
+    "note": "the typed regime form clears the additive incumbent; the tree clears by more, and winner_gaps reports the paired SE of that gap"
+  },
+  "soak_splits": {
+    "year (btree)": {
+      "variables": [
+        "year",
+        "log_assets",
+        "loan_ratio",
+        "brokered_share",
+        "deposit_funding",
+        "ib_share",
+        "offices"
+      ],
+      "splits": [
+        {
+          "variable": "year",
+          "cutpoint": 2022.5,
+          "steps": 22
+        },
+        {
+          "variable": "year",
+          "cutpoint": 2023.5,
+          "steps": 16
+        },
+        {
+          "variable": "year",
+          "cutpoint": 2020.5,
+          "steps": 12
+        },
+        {
+          "variable": "offices",
+          "cutpoint": 2.5,
+          "steps": 11
+        },
+        {
+          "variable": "year",
+          "cutpoint": 2017.5,
+          "steps": 10
+        },
+        {
+          "variable": "year",
+          "cutpoint": 2019.5,
+          "steps": 10
+        },
+        {
+          "variable": "year",
+          "cutpoint": 2018.5,
+          "steps": 9
+        },
+        {
+          "variable": "offices",
+          "cutpoint": 8.5,
+          "steps": 7
+        }
+      ]
+    }
+  },
+  "post_soak_rescreen": {
+    "structure_leads": [
+      {
+        "kind": "hinge_term",
+        "column": "year",
+        "cutpoint": 2019.0,
+        "term": "bols(pmax(year, 2019))",
+        "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse) + bols(pmax(year, 2019))",
+        "screen_r2": 0.0006933422784147101,
+        "interpretation": "typed structure lead; compare before adoption",
+        "screens_positive": false
+      },
+      {
+        "kind": "cutpoint_indicator",
+        "column": "year",
+        "cutpoint": 2020.5,
+        "term": "btree(year, maxdepth=1)",
+        "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse) + btree(year, maxdepth=1)",
+        "screen_r2": 0.0006498952983141492,
+        "interpretation": "typed structure lead; compare before adoption",
+        "screens_positive": false
+      },
+      {
+        "kind": "cutpoint_indicator",
+        "column": "log_assets",
+        "cutpoint": 11.782519241950206,
+        "term": "btree(log_assets, maxdepth=1)",
+        "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse) + btree(log_assets, maxdepth=1)",
+        "screen_r2": 0.0005435990310128982,
+        "interpretation": "typed structure lead; compare before adoption",
+        "screens_positive": false
+      },
+      {
+        "kind": "basis_interaction",
+        "slope_column": "brokered_share",
+        "slope_transform": "log1p",
+        "threshold_column": "log_assets",
+        "cutpoint": 11.782519241950206,
+        "term": "btree(log_assets, by=log1p(brokered_share), maxdepth=1)",
+        "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse) + btree(log_assets, by=log1p(brokered_share), maxdepth=1)",
+        "screen_r2": 0.0004977359025390021,
+        "interpretation": "typed basis interaction; the tree learns the cutpoint; compare before adoption",
+        "screens_positive": false
+      },
+      {
+        "kind": "basis_interaction",
+        "slope_column": "brokered_share",
+        "slope_transform": "log1p",
+        "threshold_column": "year",
+        "cutpoint": 2020.5,
+        "term": "btree(year, by=log1p(brokered_share), maxdepth=1)",
+        "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse) + btree(year, by=log1p(brokered_share), maxdepth=1)",
+        "screen_r2": 0.00034396832292993355,
+        "interpretation": "typed basis interaction; the tree learns the cutpoint; compare before adoption",
+        "screens_positive": false
+      },
+      {
+        "kind": "log1p_slope",
+        "column": "log_assets",
+        "term": "bols(log1p(log_assets))",
+        "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse) + bols(log1p(log_assets))",
+        "screen_r2": 0.00026822112857514393,
+        "interpretation": "typed structure lead; compare before adoption",
+        "screens_positive": false
+      },
+      {
+        "kind": "hinge_term",
+        "column": "log_assets",
+        "cutpoint": 13.518263133194319,
+        "term": "bols(pmax(log_assets, 13.5183))",
+        "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse) + bols(pmax(log_assets, 13.5183))",
+        "screen_r2": 0.00024741291874312175,
+        "interpretation": "typed structure lead; compare before adoption",
+        "screens_positive": false
+      },
+      {
+        "kind": "cutpoint_indicator",
+        "column": "ib_share",
+        "cutpoint": 0.275882686293881,
+        "term": "btree(ib_share, maxdepth=1)",
+        "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse) + btree(ib_share, maxdepth=1)",
+        "screen_r2": 0.00022119958657805324,
+        "interpretation": "typed structure lead; compare before adoption",
+        "screens_positive": false
+      }
+    ],
+    "screen_positive": 0,
+    "top_pairs": [
+      {
+        "left": "year",
+        "right": "loan_ratio",
+        "removed": -0.00020825157331168243,
+        "thresholded_sibling_suggested": false,
+        "threshold_column": null,
+        "sibling_term": null,
+        "next_action": null
+      },
+      {
+        "left": "loan_ratio",
+        "right": "deposit_funding",
+        "removed": -0.0002420833117111748,
+        "thresholded_sibling_suggested": false,
+        "threshold_column": null,
+        "sibling_term": null,
+        "next_action": null
+      },
+      {
+        "left": "year",
+        "right": "log_assets",
+        "removed": -0.0003550584264293416,
+        "thresholded_sibling_suggested": false,
+        "threshold_column": null,
+        "sibling_term": null,
+        "next_action": null
+      },
+      {
+        "left": "log_assets",
+        "right": "loan_ratio",
+        "removed": -0.0003948368026887583,
+        "thresholded_sibling_suggested": false,
+        "threshold_column": null,
+        "sibling_term": null,
+        "next_action": null
+      },
+      {
+        "left": "year",
+        "right": "ib_share",
+        "removed": -0.00041128417521194005,
+        "thresholded_sibling_suggested": false,
+        "threshold_column": null,
+        "sibling_term": null,
+        "next_action": null
+      },
+      {
+        "left": "log_assets",
+        "right": "brokered_share",
+        "removed": -0.00045321071363702004,
+        "thresholded_sibling_suggested": false,
+        "threshold_column": null,
+        "sibling_term": null,
+        "next_action": null
+      }
+    ]
+  },
+  "final_evaluate": {
+    "score": 0.2511906834371538,
+    "score_name": "mse",
+    "n_test": 1126,
+    "task": "one-time untouched-test evaluation"
+  },
+  "elapsed_seconds": 1.5949935410171747,
+  "budget": {
+    "budget": {
+      "seconds": null,
+      "fits": 250,
+      "memory_mb": null
+    },
+    "fit_charges": 32,
+    "elapsed_seconds": 1.5688743330538273,
+    "peak_memory_mb": 192.265625,
+    "memory_scope": "absolute process-lifetime high-water RSS, MiB",
+    "limits": "fit admission is hard; time and memory checked between native calls",
+    "failed_fit_accounting": "failed native batches retain their full reserved charge; actual completed folds unknown",
+    "stopped": null,
+    "blocked_request": null,
+    "operation_count": 32,
+    "recent_operations": [
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 25,
+        "seconds": 0.01188925001770258,
+        "peak_memory_mb": 189.484375
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 26,
+        "seconds": 0.011757291969843209,
+        "peak_memory_mb": 189.8125
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 27,
+        "seconds": 0.06316008302383125,
+        "peak_memory_mb": 190.796875
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 28,
+        "seconds": 0.06319141597487032,
+        "peak_memory_mb": 191.484375
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 29,
+        "seconds": 0.06287741602864116,
+        "peak_memory_mb": 191.578125
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 30,
+        "seconds": 0.06311858294066042,
+        "peak_memory_mb": 191.59375
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 31,
+        "seconds": 0.08422812493517995,
+        "peak_memory_mb": 191.59375
+      },
+      {
+        "operation": "preexplore_json",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 32,
+        "seconds": 0.262226999970153,
+        "peak_memory_mb": 191.65625
+      }
+    ]
+  },
+  "provenance": {
+    "created_at": "2026-10-01T03:36:36+00:00",
+    "commit": {
+      "sha": "701a4057f298d066c7ed09702d095bc3f8c5749a",
+      "dirty": true,
+      "status_digest": "sha256:dbf93bd35a532bcd553bed3a856322d72bef8ed0c123c097c4af0164a0463e38",
+      "commit_source": "working directory"
+    },
+    "platform": {
+      "system": "Darwin",
+      "release": "25.3.0",
+      "machine": "arm64",
+      "cpu": "arm",
+      "python": "3.12.11"
+    },
+    "versions": {
+      "mboostrs": "0.1.3",
+      "numpy": "2.4.6",
+      "rpy2": "3.6.7",
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "R": "4.5.1",
+      "mboost": "2.9.11"
+    },
+    "threads": {
+      "logical_cpus": 10,
+      "r_mclapply_default_cores": "2",
+      "RAYON_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": null,
+      "OPENBLAS_NUM_THREADS": null,
+      "MKL_NUM_THREADS": null,
+      "per_fit": 1
+    },
+    "protocol": {
+      "kind": "teaching-case transcript, one deterministic run",
+      "dataset": "mb.datasets.fdic_bank_yearend()",
+      "response": "deposit_rate",
+      "response_definition": "100 * EDEP / DEPI (percent on interest-bearing deposits)",
+      "search": "additive baseline, pre-soak unfold (structure_candidates), one compare over typed regime forms, tensors and the tree soak, adopt the measured winner, btree_splits + post-soak rescreen, freeze, final_evaluate",
+      "holdout": "banks never seen in training (the pre-explore case's split)"
+    },
+    "repeats": {
+      "runs": 1
+    },
+    "uncertainty": "none; a single deterministic run at fixed seeds"
+  }
+}

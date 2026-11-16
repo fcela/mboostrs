@@ -1,0 +1,71 @@
+{
+  "seed": 1,
+  "mstops": {
+    "propensity": 897,
+    "response": 4,
+    "e_r": 370,
+    "m": 109,
+    "tau": 13,
+    "m_emp": 27,
+    "tau_emp": 1
+  },
+  "second_stage": "bbs(lprior, df=4) + bbs(education, df=4)",
+  "second_stage_mstop": 36,
+  "clip": [
+    0.01,
+    0.99
+  ],
+  "treatment_refit_p": {
+    "age": 0.010582186998995442,
+    "education": 0.15249714786248408,
+    "ethnicity": 0.1161875336636371,
+    "region": 0.6359476242923812,
+    "prior_earnings": 1.3211653993039363e-14,
+    "months_unemployed": 0.09666886651050201,
+    "distance_km": 6.034616097389954e-09,
+    "caseworker_note_len": 0.2967470268478417
+  },
+  "outcome_refit_p": {
+    "age": 0.3368362483302865,
+    "education": 0.001024735348516076,
+    "region": 0.7074827401911811,
+    "prior_earnings": 0.0,
+    "months_unemployed": 0.32503601105405466,
+    "distance_km": 0.22531766644845702,
+    "caseworker_note_len": 0.294805686771726,
+    "enrolled": 0.001380088442162694
+  },
+  "earnings_if_employed_p": 3.4556986227361436e-08,
+  "share_propensity_below_0.02_train": 0.142,
+  "share_propensity_below_0.02_test": 0.085,
+  "decisions": [
+    "training rows 1500; enrolled 460; responded 1282; test rows 4000",
+    "age: p(treatment)=0.0106, p(outcome)=0.337 -> irrelevant",
+    "education: p(treatment)=0.152, p(outcome)=0.00102 -> outcome_only",
+    "experience: equals age - education - 6; its components are confounders",
+    "ethnicity: p(treatment)=0.116, p(outcome)=nan -> irrelevant",
+    "smsa: p(treatment)=nan, p(outcome)=nan -> irrelevant",
+    "region: p(treatment)=0.636, p(outcome)=0.707 -> irrelevant",
+    "parttime: p(treatment)=nan, p(outcome)=nan -> irrelevant",
+    "prior_earnings: p(treatment)=1.32e-14, p(outcome)=0 -> confounder",
+    "months_unemployed: p(treatment)=0.0967, p(outcome)=0.325 -> irrelevant",
+    "distance_km: p(treatment)=6.03e-09, p(outcome)=0.225 -> treatment_only",
+    "caseworker_note_len: p(treatment)=0.297, p(outcome)=0.295 -> irrelevant",
+    "distance_km: treatment-only and independent of every confounder given the other covariates (min p=0.489, 1 tests) -> instrument",
+    "adjustment set: ['education', 'prior_earnings']",
+    "nuisance specifications: {'propensity': 'bbs(education, df=4) + bbs(lprior, df=4)', 'response': 'bbs(age, df=4) + bbs(education, df=4) + bols(ethnicity) + bols(smsa) + bols(region) + bols(parttime) + bbs(lprior, df=4) + bbs(months_unemployed, df=4) + bbs(distance_km, df=4) + bbs(caseworker_note_len, df=4) + bols(enrolled)', 'm': 'bbs(education, df=4) + bbs(lprior, df=4)', 'tau': 'bbs(education, df=4) + bbs(lprior, df=4)', 'm_emp': 'bbs(education, df=4) + bbs(lprior, df=4)', 'tau_emp': 'bbs(education, df=4) + bbs(lprior, df=4)'}",
+    "nuisance mstop: {'propensity': 897, 'response': 4, 'e_r': 370, 'm': 109, 'tau': 13, 'm_emp': 27, 'tau_emp': 1}",
+    "cross-fitted propensity: min 0.0001199, max 0.9252, share below 0.02 0.142",
+    "CATE_educ_lt12: 218 applicants, estimate 5,696",
+    "CATE_educ_ge16: 371 applicants, estimate 13,288",
+    "CATE_prior_q1: 375 applicants, estimate 2,789",
+    "CATE_prior_q4: 375 applicants, estimate 25,105",
+    "CATE_age_lt25: 234 applicants, estimate 4,529",
+    "test propensity: share below 0.02 0.085",
+    "limited overlap above 39,000: 410 applicants, 5 enrolled",
+    "second-stage score winsorized to [-71,520, 114,325]",
+    "second stage adopted: bbs(lprior, df=4) + bbs(education, df=4)",
+    "bbs(education, df=4): not a modifier (refit p across winsorization levels up to 0.78)",
+    "earnings among employed respondents: enrolment term p=3.46e-08"
+  ]
+}

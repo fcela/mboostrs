@@ -1,0 +1,570 @@
+{
+ "outcome": "le_raceadj_q1_F",
+ "weights": "pop",
+ "n": 437,
+ "learners": 80,
+ "mstop_optimal": 3054,
+ "cutoff": 0.8049999999999999,
+ "rows": [
+  {
+   "learner": "cur_smoke_q1 [scalar]",
+   "column": "cur_smoke_q1",
+   "group": "health_behaviour",
+   "kind": "scalar",
+   "freq": 1.0
+  },
+  {
+   "learner": "lon,lat [bspatial]",
+   "column": "lon",
+   "group": "spatial",
+   "kind": "bspatial",
+   "freq": 1.0
+  },
+  {
+   "learner": "census_division [brandom]",
+   "column": "census_division",
+   "group": "division",
+   "kind": "brandom",
+   "freq": 0.94
+  },
+  {
+   "learner": "unemp_rate [scalar]",
+   "column": "unemp_rate",
+   "group": "labour_market",
+   "kind": "scalar",
+   "freq": 0.65
+  },
+  {
+   "learner": "pop_density [scalar]",
+   "column": "pop_density",
+   "group": "migration_composition",
+   "kind": "scalar",
+   "freq": 0.535
+  },
+  {
+   "learner": "poor_share [scalar]",
+   "column": "poor_share",
+   "group": "income_inequality",
+   "kind": "scalar",
+   "freq": 0.415
+  },
+  {
+   "learner": "cs_race_theil_2000 [bbs]",
+   "column": "cs_race_theil_2000",
+   "group": "segregation",
+   "kind": "bbs",
+   "freq": 0.39
+  },
+  {
+   "learner": "tax_st_diff_top20 [scalar]",
+   "column": "tax_st_diff_top20",
+   "group": "local_government",
+   "kind": "scalar",
+   "freq": 0.345
+  },
+  {
+   "learner": "exercise_any_q1 [scalar]",
+   "column": "exercise_any_q1",
+   "group": "health_behaviour",
+   "kind": "scalar",
+   "freq": 0.33
+  },
+  {
+   "learner": "ccd_exp_tot [bbs]",
+   "column": "ccd_exp_tot",
+   "group": "education",
+   "kind": "bbs",
+   "freq": 0.325
+  },
+  {
+   "learner": "mammogram_10 [scalar]",
+   "column": "mammogram_10",
+   "group": "healthcare_access",
+   "kind": "scalar",
+   "freq": 0.29
+  },
+  {
+   "learner": "cs00_seg_inc_aff75 [bbs]",
+   "column": "cs00_seg_inc_aff75",
+   "group": "segregation",
+   "kind": "bbs",
+   "freq": 0.245
+  },
+  {
+   "learner": "cs_frac_black [bbs]",
+   "column": "cs_frac_black",
+   "group": "migration_composition",
+   "kind": "bbs",
+   "freq": 0.235
+  },
+  {
+   "learner": "inc_share_1perc [bbs]",
+   "column": "inc_share_1perc",
+   "group": "income_inequality",
+   "kind": "bbs",
+   "freq": 0.23
+  },
+  {
+   "learner": "crime_total [scalar]",
+   "column": "crime_total",
+   "group": "social_cohesion",
+   "kind": "scalar",
+   "freq": 0.225
+  },
+  {
+   "learner": "pop_d_2000_1980 [scalar]",
+   "column": "pop_d_2000_1980",
+   "group": "labour_market",
+   "kind": "scalar",
+   "freq": 0.215
+  },
+  {
+   "learner": "cs_born_foreign [bbs]",
+   "column": "cs_born_foreign",
+   "group": "migration_composition",
+   "kind": "bbs",
+   "freq": 0.205
+  },
+  {
+   "learner": "gini99 [bbs]",
+   "column": "gini99",
+   "group": "income_inequality",
+   "kind": "bbs",
+   "freq": 0.19
+  },
+  {
+   "learner": "crime_total [bbs]",
+   "column": "crime_total",
+   "group": "social_cohesion",
+   "kind": "bbs",
+   "freq": 0.17
+  },
+  {
+   "learner": "cs00_seg_inc [bbs]",
+   "column": "cs00_seg_inc",
+   "group": "segregation",
+   "kind": "bbs",
+   "freq": 0.165
+  },
+  {
+   "learner": "bmi_obese_q1 [scalar]",
+   "column": "bmi_obese_q1",
+   "group": "health_behaviour",
+   "kind": "scalar",
+   "freq": 0.16
+  },
+  {
+   "learner": "scap_ski90pcm [scalar]",
+   "column": "scap_ski90pcm",
+   "group": "social_cohesion",
+   "kind": "scalar",
+   "freq": 0.15
+  },
+  {
+   "learner": "cs_born_foreign [scalar]",
+   "column": "cs_born_foreign",
+   "group": "migration_composition",
+   "kind": "scalar",
+   "freq": 0.145
+  },
+  {
+   "learner": "reimb_penroll_adj10 [bbs]",
+   "column": "reimb_penroll_adj10",
+   "group": "healthcare_access",
+   "kind": "bbs",
+   "freq": 0.13
+  },
+  {
+   "learner": "diab_eyeexam_10 [scalar]",
+   "column": "diab_eyeexam_10",
+   "group": "healthcare_access",
+   "kind": "scalar",
+   "freq": 0.13
+  },
+  {
+   "learner": "reimb_penroll_adj10 [scalar]",
+   "column": "reimb_penroll_adj10",
+   "group": "healthcare_access",
+   "kind": "scalar",
+   "freq": 0.12
+  },
+  {
+   "learner": "pop_density [bbs]",
+   "column": "pop_density",
+   "group": "migration_composition",
+   "kind": "bbs",
+   "freq": 0.11
+  },
+  {
+   "learner": "cs_educ_ba [bbs]",
+   "column": "cs_educ_ba",
+   "group": "education",
+   "kind": "bbs",
+   "freq": 0.085
+  },
+  {
+   "learner": "cs_frac_hisp [scalar]",
+   "column": "cs_frac_hisp",
+   "group": "migration_composition",
+   "kind": "scalar",
+   "freq": 0.085
+  },
+  {
+   "learner": "primcarevis_10 [scalar]",
+   "column": "primcarevis_10",
+   "group": "healthcare_access",
+   "kind": "scalar",
+   "freq": 0.06
+  },
+  {
+   "learner": "scap_ski90pcm [bbs]",
+   "column": "scap_ski90pcm",
+   "group": "social_cohesion",
+   "kind": "bbs",
+   "freq": 0.06
+  },
+  {
+   "learner": "cs_frac_black [scalar]",
+   "column": "cs_frac_black",
+   "group": "migration_composition",
+   "kind": "scalar",
+   "freq": 0.06
+  },
+  {
+   "learner": "inc_share_1perc [scalar]",
+   "column": "inc_share_1perc",
+   "group": "income_inequality",
+   "kind": "scalar",
+   "freq": 0.05
+  },
+  {
+   "learner": "cs00_seg_inc_aff75 [scalar]",
+   "column": "cs00_seg_inc_aff75",
+   "group": "segregation",
+   "kind": "scalar",
+   "freq": 0.05
+  },
+  {
+   "learner": "mig_inflow [bbs]",
+   "column": "mig_inflow",
+   "group": "migration_composition",
+   "kind": "bbs",
+   "freq": 0.05
+  },
+  {
+   "learner": "cs_frac_hisp [bbs]",
+   "column": "cs_frac_hisp",
+   "group": "migration_composition",
+   "kind": "bbs",
+   "freq": 0.045
+  },
+  {
+   "learner": "gini99 [scalar]",
+   "column": "gini99",
+   "group": "income_inequality",
+   "kind": "scalar",
+   "freq": 0.04
+  },
+  {
+   "learner": "cs00_seg_inc_pov25 [bbs]",
+   "column": "cs00_seg_inc_pov25",
+   "group": "segregation",
+   "kind": "bbs",
+   "freq": 0.04
+  },
+  {
+   "learner": "primcarevis_10 [bbs]",
+   "column": "primcarevis_10",
+   "group": "healthcare_access",
+   "kind": "bbs",
+   "freq": 0.035
+  },
+  {
+   "learner": "cs_labforce [scalar]",
+   "column": "cs_labforce",
+   "group": "labour_market",
+   "kind": "scalar",
+   "freq": 0.03
+  },
+  {
+   "learner": "taxrate [scalar]",
+   "column": "taxrate",
+   "group": "local_government",
+   "kind": "scalar",
+   "freq": 0.03
+  },
+  {
+   "learner": "cs_elf_ind_man [scalar]",
+   "column": "cs_elf_ind_man",
+   "group": "labour_market",
+   "kind": "scalar",
+   "freq": 0.025
+  },
+  {
+   "learner": "frac_middleclass [bbs]",
+   "column": "frac_middleclass",
+   "group": "income_inequality",
+   "kind": "bbs",
+   "freq": 0.02
+  },
+  {
+   "learner": "cs_race_theil_2000 [scalar]",
+   "column": "cs_race_theil_2000",
+   "group": "segregation",
+   "kind": "scalar",
+   "freq": 0.02
+  },
+  {
+   "learner": "dropout_r [scalar]",
+   "column": "dropout_r",
+   "group": "education",
+   "kind": "scalar",
+   "freq": 0.02
+  },
+  {
+   "learner": "mort_30day_hosp_z [scalar]",
+   "column": "mort_30day_hosp_z",
+   "group": "healthcare_access",
+   "kind": "scalar",
+   "freq": 0.015
+  },
+  {
+   "learner": "med_prev_qual_z [bbs]",
+   "column": "med_prev_qual_z",
+   "group": "healthcare_access",
+   "kind": "bbs",
+   "freq": 0.015
+  },
+  {
+   "learner": "ccd_pup_tch_ratio [scalar]",
+   "column": "ccd_pup_tch_ratio",
+   "group": "education",
+   "kind": "scalar",
+   "freq": 0.015
+  },
+  {
+   "learner": "subcty_exp_pc [scalar]",
+   "column": "subcty_exp_pc",
+   "group": "local_government",
+   "kind": "scalar",
+   "freq": 0.015
+  },
+  {
+   "learner": "amb_disch_per1000_10 [bbs]",
+   "column": "amb_disch_per1000_10",
+   "group": "healthcare_access",
+   "kind": "bbs",
+   "freq": 0.01
+  },
+  {
+   "learner": "poor_share [bbs]",
+   "column": "poor_share",
+   "group": "income_inequality",
+   "kind": "bbs",
+   "freq": 0.01
+  },
+  {
+   "learner": "unemp_rate [bbs]",
+   "column": "unemp_rate",
+   "group": "labour_market",
+   "kind": "bbs",
+   "freq": 0.01
+  },
+  {
+   "learner": "dropout_r [bbs]",
+   "column": "dropout_r",
+   "group": "education",
+   "kind": "bbs",
+   "freq": 0.01
+  },
+  {
+   "learner": "mig_outflow [scalar]",
+   "column": "mig_outflow",
+   "group": "migration_composition",
+   "kind": "scalar",
+   "freq": 0.01
+  },
+  {
+   "learner": "bmi_obese_q1 [bbs]",
+   "column": "bmi_obese_q1",
+   "group": "health_behaviour",
+   "kind": "bbs",
+   "freq": 0.005
+  },
+  {
+   "learner": "med_prev_qual_z [scalar]",
+   "column": "med_prev_qual_z",
+   "group": "healthcare_access",
+   "kind": "scalar",
+   "freq": 0.005
+  },
+  {
+   "learner": "mammogram_10 [bbs]",
+   "column": "mammogram_10",
+   "group": "healthcare_access",
+   "kind": "bbs",
+   "freq": 0.005
+  },
+  {
+   "learner": "cs00_seg_inc [scalar]",
+   "column": "cs00_seg_inc",
+   "group": "segregation",
+   "kind": "scalar",
+   "freq": 0.005
+  },
+  {
+   "learner": "rel_tot [scalar]",
+   "column": "rel_tot",
+   "group": "social_cohesion",
+   "kind": "scalar",
+   "freq": 0.005
+  },
+  {
+   "learner": "cs_elf_ind_man [bbs]",
+   "column": "cs_elf_ind_man",
+   "group": "labour_market",
+   "kind": "bbs",
+   "freq": 0.005
+  },
+  {
+   "learner": "taxrate [bbs]",
+   "column": "taxrate",
+   "group": "local_government",
+   "kind": "bbs",
+   "freq": 0.005
+  },
+  {
+   "learner": "tax_st_diff_top20 [bbs]",
+   "column": "tax_st_diff_top20",
+   "group": "local_government",
+   "kind": "bbs",
+   "freq": 0.005
+  },
+  {
+   "learner": "cur_smoke_q1 [bbs]",
+   "column": "cur_smoke_q1",
+   "group": "health_behaviour",
+   "kind": "bbs",
+   "freq": 0.0
+  },
+  {
+   "learner": "exercise_any_q1 [bbs]",
+   "column": "exercise_any_q1",
+   "group": "health_behaviour",
+   "kind": "bbs",
+   "freq": 0.0
+  },
+  {
+   "learner": "puninsured2010 [scalar]",
+   "column": "puninsured2010",
+   "group": "healthcare_access",
+   "kind": "scalar",
+   "freq": 0.0
+  },
+  {
+   "learner": "puninsured2010 [bbs]",
+   "column": "puninsured2010",
+   "group": "healthcare_access",
+   "kind": "bbs",
+   "freq": 0.0
+  },
+  {
+   "learner": "mort_30day_hosp_z [bbs]",
+   "column": "mort_30day_hosp_z",
+   "group": "healthcare_access",
+   "kind": "bbs",
+   "freq": 0.0
+  },
+  {
+   "learner": "diab_eyeexam_10 [bbs]",
+   "column": "diab_eyeexam_10",
+   "group": "healthcare_access",
+   "kind": "bbs",
+   "freq": 0.0
+  },
+  {
+   "learner": "amb_disch_per1000_10 [scalar]",
+   "column": "amb_disch_per1000_10",
+   "group": "healthcare_access",
+   "kind": "scalar",
+   "freq": 0.0
+  },
+  {
+   "learner": "frac_middleclass [scalar]",
+   "column": "frac_middleclass",
+   "group": "income_inequality",
+   "kind": "scalar",
+   "freq": 0.0
+  },
+  {
+   "learner": "cs00_seg_inc_pov25 [scalar]",
+   "column": "cs00_seg_inc_pov25",
+   "group": "segregation",
+   "kind": "scalar",
+   "freq": 0.0
+  },
+  {
+   "learner": "rel_tot [bbs]",
+   "column": "rel_tot",
+   "group": "social_cohesion",
+   "kind": "bbs",
+   "freq": 0.0
+  },
+  {
+   "learner": "cs_labforce [bbs]",
+   "column": "cs_labforce",
+   "group": "labour_market",
+   "kind": "bbs",
+   "freq": 0.0
+  },
+  {
+   "learner": "pop_d_2000_1980 [bbs]",
+   "column": "pop_d_2000_1980",
+   "group": "labour_market",
+   "kind": "bbs",
+   "freq": 0.0
+  },
+  {
+   "learner": "cs_educ_ba [scalar]",
+   "column": "cs_educ_ba",
+   "group": "education",
+   "kind": "scalar",
+   "freq": 0.0
+  },
+  {
+   "learner": "ccd_pup_tch_ratio [bbs]",
+   "column": "ccd_pup_tch_ratio",
+   "group": "education",
+   "kind": "bbs",
+   "freq": 0.0
+  },
+  {
+   "learner": "ccd_exp_tot [scalar]",
+   "column": "ccd_exp_tot",
+   "group": "education",
+   "kind": "scalar",
+   "freq": 0.0
+  },
+  {
+   "learner": "mig_inflow [scalar]",
+   "column": "mig_inflow",
+   "group": "migration_composition",
+   "kind": "scalar",
+   "freq": 0.0
+  },
+  {
+   "learner": "mig_outflow [bbs]",
+   "column": "mig_outflow",
+   "group": "migration_composition",
+   "kind": "bbs",
+   "freq": 0.0
+  },
+  {
+   "learner": "subcty_exp_pc [bbs]",
+   "column": "subcty_exp_pc",
+   "group": "local_government",
+   "kind": "bbs",
+   "freq": 0.0
+  }
+ ]
+}

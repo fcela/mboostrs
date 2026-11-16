@@ -1,0 +1,1 @@
+pickle.load(open('C-real-model.pkl','rb')) -> d; d['model'].predict(X) where X is a pandas DataFrame with exactly the 10 columns ['age','sex','bmi','bp','s1','s2','s3','s4','s5','s6'] in that order (no y column); returns response-scale predictions, one per row.

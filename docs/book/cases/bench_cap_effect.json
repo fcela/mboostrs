@@ -1,0 +1,603 @@
+{
+ "provenance": {
+  "created_at": "2026-10-24T00:26:40+00:00",
+  "commit": {
+   "sha": "de3eae04cab685c768d6f2349707b4002995208d",
+   "dirty": true,
+   "status_digest": "sha256:62d7741d926d9eebd2f8044ab958fdf8b1dcb52708e82f52933859069a19d53d",
+   "commit_source": "working directory"
+  },
+  "platform": {
+   "system": "Darwin",
+   "release": "25.3.0",
+   "machine": "arm64",
+   "cpu": "arm",
+   "python": "3.12.11"
+  },
+  "versions": {
+   "mboostrs": "0.1.3",
+   "numpy": "2.4.6",
+   "rpy2": "3.6.7",
+   "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+   "R": "4.5.1",
+   "mboost": "2.9.11"
+  },
+  "threads": {
+   "logical_cpus": 10,
+   "r_mclapply_default_cores": "2",
+   "RAYON_NUM_THREADS": null,
+   "OMP_NUM_THREADS": null,
+   "OPENBLAS_NUM_THREADS": null,
+   "MKL_NUM_THREADS": null,
+   "per_fit": 1
+  },
+  "protocol": {
+   "row_counts": [
+    1000,
+    5000,
+    20000
+   ],
+   "source": "benches/bench_cap_effect.py"
+  },
+  "repeats": {
+   "outer_splits": 3
+  },
+  "uncertainty": "per-split scores; summarised by mean and standard error"
+ },
+ "protocol": {
+  "repeats": 3,
+  "n_configs": 12,
+  "inner_folds": 3,
+  "seed": 20240811,
+  "row_counts": [
+   1000,
+   5000,
+   20000
+  ],
+  "grid_changes": "mboostrs mstop extends to 5000; XGBoost n_estimators extends to 2000; otherwise bench_libraries.py grids",
+  "scoring": "R2 on 75/25 split, predictions clipped to the training response range",
+  "source": "benches/bench_cap_effect.py"
+ },
+ "results": [
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 1000,
+   "p": 8,
+   "repeat": 0,
+   "library": "mboostrs GAMBoost",
+   "family": "additive",
+   "mode": "configs",
+   "score": 0.7149334296266763,
+   "best_params": {
+    "mstop": 1500,
+    "nu": 0.3,
+    "df": 4.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 0.26,
+   "total_seconds": 0.27
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 1000,
+   "p": 8,
+   "repeat": 0,
+   "library": "XGBoost depth 1",
+   "family": "additive",
+   "mode": "configs",
+   "score": 0.6788369608332079,
+   "best_params": {
+    "n_estimators": 2000,
+    "learning_rate": 0.05,
+    "subsample": 1.0,
+    "reg_lambda": 1.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 6.56,
+   "total_seconds": 7.11
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 1000,
+   "p": 8,
+   "repeat": 0,
+   "library": "XGBoost",
+   "family": "interactions",
+   "mode": "configs",
+   "score": 0.7141496388486206,
+   "best_params": {
+    "n_estimators": 200,
+    "learning_rate": 0.05,
+    "max_depth": 3,
+    "subsample": 0.7,
+    "reg_lambda": 10.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 47.16,
+   "total_seconds": 47.37
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 1000,
+   "p": 8,
+   "repeat": 1,
+   "library": "mboostrs GAMBoost",
+   "family": "additive",
+   "mode": "configs",
+   "score": 0.6360813157249579,
+   "best_params": {
+    "mstop": 3000,
+    "nu": 0.1,
+    "df": 3.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 0.8,
+   "total_seconds": 0.83
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 1000,
+   "p": 8,
+   "repeat": 1,
+   "library": "XGBoost depth 1",
+   "family": "additive",
+   "mode": "configs",
+   "score": 0.673060984087084,
+   "best_params": {
+    "n_estimators": 2000,
+    "learning_rate": 0.1,
+    "subsample": 1.0,
+    "reg_lambda": 10.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 13.74,
+   "total_seconds": 14.78
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 1000,
+   "p": 8,
+   "repeat": 1,
+   "library": "XGBoost",
+   "family": "interactions",
+   "mode": "configs",
+   "score": 0.7004606544884886,
+   "best_params": {
+    "n_estimators": 500,
+    "learning_rate": 0.02,
+    "max_depth": 3,
+    "subsample": 0.7,
+    "reg_lambda": 10.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 43.61,
+   "total_seconds": 44.26
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 1000,
+   "p": 8,
+   "repeat": 2,
+   "library": "mboostrs GAMBoost",
+   "family": "additive",
+   "mode": "configs",
+   "score": 0.6769521573022104,
+   "best_params": {
+    "mstop": 1500,
+    "nu": 0.1,
+    "df": 4.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 0.67,
+   "total_seconds": 0.69
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 1000,
+   "p": 8,
+   "repeat": 2,
+   "library": "XGBoost depth 1",
+   "family": "additive",
+   "mode": "configs",
+   "score": 0.6513951452679511,
+   "best_params": {
+    "n_estimators": 2000,
+    "learning_rate": 0.1,
+    "subsample": 1.0,
+    "reg_lambda": 10.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 16.11,
+   "total_seconds": 17.21
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 1000,
+   "p": 8,
+   "repeat": 2,
+   "library": "XGBoost",
+   "family": "interactions",
+   "mode": "configs",
+   "score": 0.6708208530516677,
+   "best_params": {
+    "n_estimators": 2000,
+    "learning_rate": 0.05,
+    "max_depth": 4,
+    "subsample": 0.7,
+    "reg_lambda": 0.1
+   },
+   "configs_tried": 12,
+   "tune_seconds": 62.26,
+   "total_seconds": 65.31
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 5000,
+   "p": 8,
+   "repeat": 0,
+   "library": "mboostrs GAMBoost",
+   "family": "additive",
+   "mode": "configs",
+   "score": 0.7485111180129613,
+   "best_params": {
+    "mstop": 3000,
+    "nu": 0.1,
+    "df": 6.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 0.62,
+   "total_seconds": 0.67
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 5000,
+   "p": 8,
+   "repeat": 0,
+   "library": "XGBoost depth 1",
+   "family": "additive",
+   "mode": "configs",
+   "score": 0.7714163509966646,
+   "best_params": {
+    "n_estimators": 2000,
+    "learning_rate": 0.05,
+    "subsample": 1.0,
+    "reg_lambda": 1.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 11.5,
+   "total_seconds": 12.48
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 5000,
+   "p": 8,
+   "repeat": 0,
+   "library": "XGBoost",
+   "family": "interactions",
+   "mode": "configs",
+   "score": 0.8283593326131912,
+   "best_params": {
+    "n_estimators": 2000,
+    "learning_rate": 0.02,
+    "max_depth": 4,
+    "subsample": 1.0,
+    "reg_lambda": 0.1
+   },
+   "configs_tried": 12,
+   "tune_seconds": 57.97,
+   "total_seconds": 60.07
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 5000,
+   "p": 8,
+   "repeat": 1,
+   "library": "mboostrs GAMBoost",
+   "family": "additive",
+   "mode": "configs",
+   "score": 0.6729067873223137,
+   "best_params": {
+    "mstop": 1500,
+    "nu": 0.3,
+    "df": 6.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 0.72,
+   "total_seconds": 0.74
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 5000,
+   "p": 8,
+   "repeat": 1,
+   "library": "XGBoost depth 1",
+   "family": "additive",
+   "mode": "configs",
+   "score": 0.7145236205167282,
+   "best_params": {
+    "n_estimators": 2000,
+    "learning_rate": 0.1,
+    "subsample": 1.0,
+    "reg_lambda": 10.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 10.16,
+   "total_seconds": 10.9
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 5000,
+   "p": 8,
+   "repeat": 1,
+   "library": "XGBoost",
+   "family": "interactions",
+   "mode": "configs",
+   "score": 0.7964339272105562,
+   "best_params": {
+    "n_estimators": 500,
+    "learning_rate": 0.1,
+    "max_depth": 4,
+    "subsample": 0.7,
+    "reg_lambda": 1.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 37.1,
+   "total_seconds": 37.6
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 5000,
+   "p": 8,
+   "repeat": 2,
+   "library": "mboostrs GAMBoost",
+   "family": "additive",
+   "mode": "configs",
+   "score": 0.7140822583728557,
+   "best_params": {
+    "mstop": 1500,
+    "nu": 0.3,
+    "df": 4.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 0.47,
+   "total_seconds": 0.49
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 5000,
+   "p": 8,
+   "repeat": 2,
+   "library": "XGBoost depth 1",
+   "family": "additive",
+   "mode": "configs",
+   "score": 0.7491915614403385,
+   "best_params": {
+    "n_estimators": 2000,
+    "learning_rate": 0.1,
+    "subsample": 1.0,
+    "reg_lambda": 10.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 9.6,
+   "total_seconds": 10.26
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 5000,
+   "p": 8,
+   "repeat": 2,
+   "library": "XGBoost",
+   "family": "interactions",
+   "mode": "configs",
+   "score": 0.8121336918856816,
+   "best_params": {
+    "n_estimators": 2000,
+    "learning_rate": 0.02,
+    "max_depth": 4,
+    "subsample": 0.7,
+    "reg_lambda": 10.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 37.4,
+   "total_seconds": 39.32
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 20000,
+   "p": 8,
+   "repeat": 0,
+   "library": "mboostrs GAMBoost",
+   "family": "additive",
+   "mode": "configs",
+   "score": 0.712858751360234,
+   "best_params": {
+    "mstop": 3000,
+    "nu": 0.1,
+    "df": 6.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 0.72,
+   "total_seconds": 0.77
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 20000,
+   "p": 8,
+   "repeat": 0,
+   "library": "XGBoost depth 1",
+   "family": "additive",
+   "mode": "configs",
+   "score": 0.7422602223895383,
+   "best_params": {
+    "n_estimators": 1000,
+    "learning_rate": 0.1,
+    "subsample": 0.7,
+    "reg_lambda": 0.1
+   },
+   "configs_tried": 12,
+   "tune_seconds": 8.68,
+   "total_seconds": 9.11
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 20000,
+   "p": 8,
+   "repeat": 0,
+   "library": "XGBoost",
+   "family": "interactions",
+   "mode": "configs",
+   "score": 0.8403015222759115,
+   "best_params": {
+    "n_estimators": 2000,
+    "learning_rate": 0.02,
+    "max_depth": 8,
+    "subsample": 0.7,
+    "reg_lambda": 10.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 50.99,
+   "total_seconds": 55.5
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 20000,
+   "p": 8,
+   "repeat": 1,
+   "library": "mboostrs GAMBoost",
+   "family": "additive",
+   "mode": "configs",
+   "score": 0.7192301391148863,
+   "best_params": {
+    "mstop": 1500,
+    "nu": 0.3,
+    "df": 6.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 0.94,
+   "total_seconds": 0.97
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 20000,
+   "p": 8,
+   "repeat": 1,
+   "library": "XGBoost depth 1",
+   "family": "additive",
+   "mode": "configs",
+   "score": 0.7578524826353442,
+   "best_params": {
+    "n_estimators": 2000,
+    "learning_rate": 0.1,
+    "subsample": 1.0,
+    "reg_lambda": 10.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 8.68,
+   "total_seconds": 9.3
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 20000,
+   "p": 8,
+   "repeat": 1,
+   "library": "XGBoost",
+   "family": "interactions",
+   "mode": "configs",
+   "score": 0.8406519871125623,
+   "best_params": {
+    "n_estimators": 500,
+    "learning_rate": 0.1,
+    "max_depth": 6,
+    "subsample": 1.0,
+    "reg_lambda": 10.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 37.76,
+   "total_seconds": 38.45
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 20000,
+   "p": 8,
+   "repeat": 2,
+   "library": "mboostrs GAMBoost",
+   "family": "additive",
+   "mode": "configs",
+   "score": 0.740019041836378,
+   "best_params": {
+    "mstop": 3000,
+    "nu": 0.1,
+    "df": 6.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 0.75,
+   "total_seconds": 0.79
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 20000,
+   "p": 8,
+   "repeat": 2,
+   "library": "XGBoost depth 1",
+   "family": "additive",
+   "mode": "configs",
+   "score": 0.7777231238156891,
+   "best_params": {
+    "n_estimators": 2000,
+    "learning_rate": 0.1,
+    "subsample": 1.0,
+    "reg_lambda": 10.0
+   },
+   "configs_tried": 12,
+   "tune_seconds": 9.1,
+   "total_seconds": 9.73
+  },
+  {
+   "dataset": "california",
+   "task": "regression",
+   "n": 20000,
+   "p": 8,
+   "repeat": 2,
+   "library": "XGBoost",
+   "family": "interactions",
+   "mode": "configs",
+   "score": 0.8574487566067999,
+   "best_params": {
+    "n_estimators": 2000,
+    "learning_rate": 0.05,
+    "max_depth": 4,
+    "subsample": 0.7,
+    "reg_lambda": 0.1
+   },
+   "configs_tried": 12,
+   "tune_seconds": 33.71,
+   "total_seconds": 35.51
+  }
+ ]
+}

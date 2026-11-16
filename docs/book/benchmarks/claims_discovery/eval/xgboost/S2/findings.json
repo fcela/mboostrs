@@ -1,0 +1,83 @@
+{
+  "library": "xgboost 3.4.0",
+  "mean_effects": [
+    {
+      "variable": "housing_median_age",
+      "shape": "threshold_increase",
+      "evidence": "Held-out MSE rises by 0.0840 when permuted (fold t=12.4); partial-dependence range 0.493 = 0.81 SD(y); shape 'threshold_increase' (linear R2 0.69, step R2 0.92)."
+    },
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "Held-out MSE rises by 0.0762 when permuted (fold t=9.3); partial-dependence range 0.702 = 1.15 SD(y); shape 'decreasing' (linear R2 0.88, step R2 0.70)."
+    },
+    {
+      "variable": "roof_class",
+      "shape": "categorical",
+      "evidence": "Held-out MSE rises by 0.0172 when permuted (fold t=4.8); partial dependence by level: A=+0.277, B=+0.265, C=+0.363, D=+0.512."
+    }
+  ],
+  "interactions": [],
+  "variance_drivers": [
+    {
+      "variable": "population",
+      "direction": "nonmonotone",
+      "evidence": "Spread permutation test significant (Bonferroni, 10 folds); shape of log squared-residual curve: u_shaped; range 0.785 on log r^2 scale."
+    },
+    {
+      "variable": "households",
+      "direction": "decreases_spread",
+      "evidence": "Spread permutation test significant (Bonferroni, 10 folds); shape of log squared-residual curve: threshold_decrease; range 0.546 on log r^2 scale."
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.4000129997730255,
+      "lower90": -0.4870671659708023,
+      "upper90": -0.3134685441851617
+    },
+    "Q2": {
+      "estimate": 0.4804143011569977,
+      "lower90": 0.39470929354429246,
+      "upper90": 0.539056020975113
+    },
+    "Q3": {
+      "estimate": 0.13655899465084076,
+      "lower90": 0.07715502269566059,
+      "upper90": 0.2219112791121006
+    },
+    "Q4": {
+      "estimate": 0.23504237830638885,
+      "lower90": 0.14977238699793816,
+      "upper90": 0.26927380263805384
+    },
+    "Q5": {
+      "estimate": -0.0019764869939535856,
+      "lower90": -0.07742542326450348,
+      "upper90": 0.035258812643587586
+    },
+    "Q6": {
+      "estimate": 0.10980061441659927,
+      "lower90": 0.04634841475635767,
+      "upper90": 0.1679780200123787
+    },
+    "Q7": {
+      "estimate": -0.005337969865649939,
+      "lower90": -0.02416552910581231,
+      "upper90": 0.034353098180145
+    },
+    "Q8": {
+      "estimate": -0.10120442509651184,
+      "lower90": -0.13336195051670074,
+      "upper90": -0.014408605848439098
+    }
+  },
+  "warnings": [
+    "Missing values (train): housing_median_age=68, total_bedrooms=7, ave_bedrooms=7; XGBoost routes them with learned default directions.",
+    "Only 800 training rows: intervals and tests are wider and screening has less power.",
+    "Train-vs-test adversarial AUC = 0.573; calibration weights from the density ratio.",
+    "Placebo noise column: mean MSE increase 0.00094 (p=0.179).",
+    "Prediction intervals are weighted split-conformal (OOF residual scores scaled by a spread model).",
+    "Effect-query intervals are bootstrap percentile intervals of the average contrast over training rows; they reflect model refit variability and do not include the sampling noise of y."
+  ]
+}

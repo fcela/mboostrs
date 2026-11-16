@@ -1,0 +1,58 @@
+{
+  "library": "interpret 0.7.8 (ExplainableBoostingRegressor)",
+  "mean_effects": [],
+  "interactions": [],
+  "variance_drivers": [],
+  "effect_queries": {
+    "Q1": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q2": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q3": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q4": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q5": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q6": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q7": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q8": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    }
+  },
+  "warnings": [
+    "Missing values in training rows: housing_median_age (1264), total_bedrooms (154), ave_bedrooms (154). EBM routes missing values to a separate bin per term (missing='separate').",
+    "Missing values in test rows: housing_median_age (405), total_bedrooms (49), ave_bedrooms (49).",
+    "Covariates removed from the final model (no out-of-fold gain given the others): longitude, latitude, housing_median_age, total_rooms, total_bedrooms, population, households, median_income, median_house_value, ave_rooms, ave_bedrooms, ave_occup, roof_class.",
+    "Train-versus-test classifier AUC 0.609: calibration uses density-ratio weights (effective sample size 12360 of 15480).",
+    "Effect queries whose covariates are outside the prediction model are fixed at 0 with a zero-width interval: Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8. Their evidence is the drop-one test.",
+    "Effect-query intervals are percentiles of 30 Bayesian-bootstrap refits of the prediction model, with tuning and variable selection fixed. They do not include selection uncertainty.",
+    "No interaction passed the paired test among the top FAST candidates.",
+    "No covariate passed the drop-one test; the mean model is a constant. Do not read the predictions as covariate-driven."
+  ]
+}

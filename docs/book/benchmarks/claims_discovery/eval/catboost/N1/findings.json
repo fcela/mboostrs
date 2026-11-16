@@ -1,0 +1,58 @@
+{
+  "library": "catboost 1.2.10",
+  "mean_effects": [],
+  "interactions": [],
+  "variance_drivers": [],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.000242,
+      "lower90": -0.00337,
+      "upper90": 0.007724
+    },
+    "Q2": {
+      "estimate": -0.002231,
+      "lower90": -0.010514,
+      "upper90": 0.000206
+    },
+    "Q3": {
+      "estimate": 0.004614,
+      "lower90": -0.003641,
+      "upper90": 0.020469
+    },
+    "Q4": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.007004
+    },
+    "Q5": {
+      "estimate": 0.000922,
+      "lower90": -0.001484,
+      "upper90": 0.013907
+    },
+    "Q6": {
+      "estimate": -0.00769,
+      "lower90": -0.017654,
+      "upper90": 0.001359
+    },
+    "Q7": {
+      "estimate": 0.01301,
+      "lower90": -0.003627,
+      "upper90": 0.021709
+    },
+    "Q8": {
+      "estimate": -0.00206,
+      "lower90": -0.008366,
+      "upper90": 0.004461
+    }
+  },
+  "warnings": [
+    "Test rows differ from training rows in median_income: standardised mean difference 0.54 (test mean 4.539, training mean 3.648).",
+    "Test rows differ from training rows in median_house_value: standardised mean difference 0.33 (test mean 2.342e+05, training mean 1.977e+05).",
+    "housing_median_age has 1264 missing values in training (8.2%); CatBoost sends missing values to a learned side of each split.",
+    "total_bedrooms has 154 missing values in training (1.0%); CatBoost sends missing values to a learned side of each split.",
+    "ave_bedrooms has 154 missing values in training (1.0%); CatBoost sends missing values to a learned side of each split.",
+    "No covariate passed the association test; mean_effects is empty.",
+    "Effect-query intervals are 5th to 95th percentiles of bootstrap refits with fixed settings; they do not include tuning uncertainty or model bias.",
+    "Prediction intervals are calibrated on training out-of-fold residuals; coverage on a shifted test book is not guaranteed."
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "library": "xgboost 3.4.0",
+  "mean_effects": [
+    {
+      "variable": "housing_median_age",
+      "shape": "threshold_increase",
+      "evidence": "Held-out MSE rises by 0.0517 when permuted (fold t=37.2); partial-dependence range 0.396 = 0.65 SD(y); shape 'threshold_increase' (linear R2 0.78, step R2 0.90)."
+    },
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "Held-out MSE rises by 0.0981 when permuted (fold t=34.3); partial-dependence range 0.831 = 1.37 SD(y); shape 'decreasing' (linear R2 0.92, step R2 0.70)."
+    },
+    {
+      "variable": "ave_occup",
+      "shape": "increasing",
+      "evidence": "Held-out MSE rises by 0.0111 when permuted (fold t=21.0); partial-dependence range 0.294 = 0.48 SD(y); shape 'increasing' (linear R2 0.97, step R2 0.62)."
+    },
+    {
+      "variable": "roof_class",
+      "shape": "categorical",
+      "evidence": "Held-out MSE rises by 0.0371 when permuted (fold t=36.0); partial dependence by level: A=+0.215, B=+0.218, C=+0.363, D=+0.567."
+    },
+    {
+      "variable": "longitude",
+      "shape": "spatial",
+      "evidence": "Joint longitude+latitude permutation test significant (Bonferroni-adjusted, 10 folds); joint partial-dependence range 0.410."
+    },
+    {
+      "variable": "latitude",
+      "shape": "spatial",
+      "evidence": "Joint longitude+latitude permutation test significant (Bonferroni-adjusted, 10 folds); joint partial-dependence range 0.410."
+    }
+  ],
+  "interactions": [],
+  "variance_drivers": [
+    {
+      "variable": "population",
+      "direction": "decreases_spread",
+      "evidence": "Spread permutation test significant (Bonferroni, 10 folds); shape of log squared-residual curve: decreasing; range 0.425 on log r^2 scale."
+    },
+    {
+      "variable": "households",
+      "direction": "decreases_spread",
+      "evidence": "Spread permutation test significant (Bonferroni, 10 folds); shape of log squared-residual curve: decreasing; range 0.815 on log r^2 scale."
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.4067300260066986,
+      "lower90": -0.4501638412475586,
+      "upper90": -0.3690447568893433
+    },
+    "Q2": {
+      "estimate": 0.3889513313770294,
+      "lower90": 0.35154772400856016,
+      "upper90": 0.40572311729192734
+    },
+    "Q3": {
+      "estimate": 0.21530956029891968,
+      "lower90": 0.1861748553812504,
+      "upper90": 0.2434103712439537
+    },
+    "Q4": {
+      "estimate": 0.35176363587379456,
+      "lower90": 0.332452067732811,
+      "upper90": 0.3703117147088051
+    },
+    "Q5": {
+      "estimate": -0.006493069231510162,
+      "lower90": -0.02409388665109873,
+      "upper90": 0.0003016626535099929
+    },
+    "Q6": {
+      "estimate": 0.2827637791633606,
+      "lower90": 0.25218336582183837,
+      "upper90": 0.3376639917492866
+    },
+    "Q7": {
+      "estimate": 0.0,
+      "lower90": -0.008549294923432172,
+      "upper90": 0.003152409568428992
+    },
+    "Q8": {
+      "estimate": -0.03544829785823822,
+      "lower90": -0.05507593620568514,
+      "upper90": -0.009675682475790407
+    }
+  },
+  "warnings": [
+    "Missing values (train): housing_median_age=1156, total_bedrooms=161, ave_bedrooms=161; XGBoost routes them with learned default directions.",
+    "Train-vs-test adversarial AUC = 0.596; calibration weights from the density ratio.",
+    "Placebo noise column: mean MSE increase -0.00008 (p=0.815).",
+    "Prediction intervals are weighted split-conformal (OOF residual scores scaled by a spread model).",
+    "Effect-query intervals are bootstrap percentile intervals of the average contrast over training rows; they reflect model refit variability and do not include the sampling noise of y."
+  ]
+}

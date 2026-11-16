@@ -1,0 +1,256 @@
+{
+ "scorecard_id": "mboostrs-scorecard/2.1",
+ "scorecard_sha256": "ccfd33a0b7f9c2cbadc910912551273e66046aaf82c36440d2c286df0cc43fad",
+ "library": "mboostrs",
+ "model_revision": "39b75694779613fee77e9efa5b4ad0b481703f78",
+ "benchmark_protocol_id": "competitive-refresh/1",
+ "mode": "automated pipeline",
+ "dimensions": [
+  {
+   "id": "D1a",
+   "name": "Relationship recovery under a prescribed specification",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D1b",
+   "name": "Relationship discovery from data alone",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D2",
+   "name": "Causal humility and support",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D3",
+   "name": "Explanation quality",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D4",
+   "name": "Importance quantification",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D5",
+   "name": "Experimental iteration speed",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D6",
+   "name": "Robustness across conditions",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D7",
+   "name": "Human-friendliness",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D8",
+   "name": "Agent-friendliness",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D9",
+   "name": "Uncertainty honesty (calibration)",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D10",
+   "name": "Reproducibility and auditability",
+   "score": 5,
+   "status": "scored",
+   "evidence": [
+    "small.json",
+    "small_summary.json"
+   ],
+   "justification": "This instrument retains code, environment, loaded package/binary and input/partition/output hashes, explicit failed-job records and a reproducible assessment. It is not a general end-user workflow score."
+  },
+  {
+   "id": "D11",
+   "name": "Predictive validity",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  }
+ ],
+ "aggregate": null,
+ "task_profiles": [
+  {
+   "task": "bike_future",
+   "dimension": "D11",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "small_summary.json",
+    "PROTOCOL.md"
+   ],
+   "justification": "All 3 outer jobs completed. Mean test loss 0.262342 improves on the prespecified same-tier Ridge/logistic reference 1.62868; paired draws and descriptive spread are reported. Historical comparators, unequal search budgets and known tasks cannot establish level 4 or 5."
+  },
+  {
+   "task": "bike_iid",
+   "dimension": "D11",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "small_summary.json",
+    "PROTOCOL.md"
+   ],
+   "justification": "All 3 outer jobs completed. Mean test loss 0.134476 improves on the prespecified same-tier Ridge/logistic reference 1.01051; paired draws and descriptive spread are reported. Historical comparators, unequal search budgets and known tasks cannot establish level 4 or 5."
+  },
+  {
+   "task": "cancer",
+   "dimension": "D11",
+   "score": 1,
+   "status": "scored",
+   "evidence": [
+    "small_summary.json",
+    "PROTOCOL.md",
+    "small_cancer.json"
+   ],
+   "justification": "All 3 outer jobs completed. Mean test loss 0.117876 fails to beat the prespecified same-tier Ridge/logistic reference 0.111138; paired draws and descriptive spread are reported. Historical comparators, unequal search budgets and known tasks cannot establish level 4 or 5."
+  },
+  {
+   "task": "concrete",
+   "dimension": "D11",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "small_summary.json",
+    "PROTOCOL.md"
+   ],
+   "justification": "All 3 outer jobs completed. Mean test loss 31.9232 improves on the prespecified same-tier Ridge/logistic reference 108.071; paired draws and descriptive spread are reported. Historical comparators, unequal search budgets and known tasks cannot establish level 4 or 5."
+  },
+  {
+   "task": "correlated_proxies",
+   "dimension": "D11",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "small_summary.json",
+    "PROTOCOL.md"
+   ],
+   "justification": "All 5 outer jobs completed. Mean test loss 0.24346 improves on the prespecified same-tier Ridge/logistic reference 0.713147; paired draws and descriptive spread are reported. Historical comparators, unequal search budgets and known tasks cannot establish level 4 or 5."
+  },
+  {
+   "task": "credit",
+   "dimension": "D11",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "small_summary.json",
+    "PROTOCOL.md"
+   ],
+   "justification": "All 3 outer jobs completed. Mean test loss 0.505554 improves on the prespecified same-tier Ridge/logistic reference 0.514452; paired draws and descriptive spread are reported. Historical comparators, unequal search budgets and known tasks cannot establish level 4 or 5."
+  },
+  {
+   "task": "diamonds",
+   "dimension": "D11",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "small_summary.json",
+    "PROTOCOL.md"
+   ],
+   "justification": "All 3 outer jobs completed. Mean test loss 0.0135329 improves on the prespecified same-tier Ridge/logistic reference 0.029148; paired draws and descriptive spread are reported. Historical comparators, unequal search budgets and known tasks cannot establish level 4 or 5."
+  },
+  {
+   "task": "housing_iid",
+   "dimension": "D11",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [
+    "small_summary.json",
+    "PROTOCOL.md"
+   ],
+   "justification": "Incomplete outer evidence or simple reference; no grade assigned."
+  },
+  {
+   "task": "housing_spatial",
+   "dimension": "D11",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [
+    "small_summary.json",
+    "PROTOCOL.md"
+   ],
+   "justification": "Incomplete outer evidence or simple reference; no grade assigned."
+  },
+  {
+   "task": "joint_boundary",
+   "dimension": "D11",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "small_summary.json",
+    "PROTOCOL.md"
+   ],
+   "justification": "All 5 outer jobs completed. Mean test loss 0.394296 improves on the prespecified same-tier Ridge/logistic reference 9.14233; paired draws and descriptive spread are reported. Historical comparators, unequal search budgets and known tasks cannot establish level 4 or 5."
+  },
+  {
+   "task": "protein",
+   "dimension": "D11",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "small_summary.json",
+    "PROTOCOL.md"
+   ],
+   "justification": "All 3 outer jobs completed. Mean test loss 25.2497 improves on the prespecified same-tier Ridge/logistic reference 27.4687; paired draws and descriptive spread are reported. Historical comparators, unequal search budgets and known tasks cannot establish level 4 or 5."
+  },
+  {
+   "task": "smooth_sparse",
+   "dimension": "D11",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "small_summary.json",
+    "PROTOCOL.md"
+   ],
+   "justification": "All 5 outer jobs completed. Mean test loss 0.251959 improves on the prespecified same-tier Ridge/logistic reference 0.712761; paired draws and descriptive spread are reported. Historical comparators, unequal search budgets and known tasks cannot establish level 4 or 5."
+  },
+  {
+   "task": "superconductivity",
+   "dimension": "D11",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [
+    "small_summary.json",
+    "PROTOCOL.md"
+   ],
+   "justification": "Incomplete outer evidence or simple reference; no grade assigned."
+  }
+ ]
+}

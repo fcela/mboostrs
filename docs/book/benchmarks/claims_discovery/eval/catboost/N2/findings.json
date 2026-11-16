@@ -1,0 +1,63 @@
+{
+  "library": "catboost 1.2.10",
+  "mean_effects": [
+    {
+      "variable": "total_bedrooms",
+      "shape": "inverted_u",
+      "evidence": "held-out permutation: squared-error increase 0.0003 (z=4.2); partial dependence 0.291 at 72 to 0.293 at 1723."
+    }
+  ],
+  "interactions": [],
+  "variance_drivers": [],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.002205,
+      "lower90": -0.013143,
+      "upper90": 0.002783
+    },
+    "Q2": {
+      "estimate": -0.000554,
+      "lower90": -0.002492,
+      "upper90": 0.004758
+    },
+    "Q3": {
+      "estimate": 0.014492,
+      "lower90": -0.001199,
+      "upper90": 0.019225
+    },
+    "Q4": {
+      "estimate": 0.0,
+      "lower90": -1.1e-05,
+      "upper90": 0.0
+    },
+    "Q5": {
+      "estimate": 0.005408,
+      "lower90": -0.001956,
+      "upper90": 0.018528
+    },
+    "Q6": {
+      "estimate": -0.001211,
+      "lower90": -0.006463,
+      "upper90": 0.011052
+    },
+    "Q7": {
+      "estimate": 0.000225,
+      "lower90": -0.007647,
+      "upper90": 0.013929
+    },
+    "Q8": {
+      "estimate": 0.005625,
+      "lower90": -0.004628,
+      "upper90": 0.010439
+    }
+  },
+  "warnings": [
+    "Test rows differ from training rows in median_income: standardised mean difference 0.54 (test mean 4.539, training mean 3.648).",
+    "Test rows differ from training rows in median_house_value: standardised mean difference 0.33 (test mean 2.342e+05, training mean 1.977e+05).",
+    "housing_median_age has 1237 missing values in training (8.0%); CatBoost sends missing values to a learned side of each split.",
+    "total_bedrooms has 139 missing values in training (0.9%); CatBoost sends missing values to a learned side of each split.",
+    "ave_bedrooms has 139 missing values in training (0.9%); CatBoost sends missing values to a learned side of each split.",
+    "Effect-query intervals are 5th to 95th percentiles of bootstrap refits with fixed settings; they do not include tuning uncertainty or model bias.",
+    "Prediction intervals are calibrated on training out-of-fold residuals; coverage on a shifted test book is not guaranteed."
+  ]
+}

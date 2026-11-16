@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/fcela/mboostrs/docs/schemas/parity-result.schema.json",
+  "title": "mboostrs parity result",
+  "$defs": {
+    "nonNegativeMeasurement": {
+      "description": "A non-negative measurement, or null if never measured. inf/NaN (a comparison that could not be evaluated, or was the worst on record) are encoded as the strings JSON has no numeric token for.",
+      "anyOf": [
+        { "type": "number", "minimum": 0 },
+        { "type": "null" },
+        { "enum": ["Infinity", "NaN"] }
+      ]
+    }
+  },
+  "type": "object",
+  "required": [
+    "schema_version",
+    "kind",
+    "started_at",
+    "finished_at",
+    "scope",
+    "pytest_exit_status",
+    "summary",
+    "commit",
+    "platform",
+    "versions",
+    "results"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "kind": { "const": "mboostrs-parity-result" },
+    "scope": { "enum": ["full", "focused", "test"] },
+    "pytest_exit_status": { "type": "integer" },
+    "summary": {
+      "type": "object",
+      "required": ["selected", "status_counts"]
+    },
+    "commit": { "type": ["string", "null"] },
+    "platform": { "type": "object" },
+    "versions": { "type": "object" },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "node_id",
+          "status",
+          "duration_seconds",
+          "measurement_status",
+          "comparison_count",
+          "measured_error",
+          "tolerance",
+          "validation_ids",
+          "compared_outputs"
+        ],
+        "properties": {
+          "node_id": { "type": "string" },
+          "status": {
+            "enum": ["passed", "failed", "skipped", "xfailed", "xpassed", "not_run"]
+          },
+          "measurement_status": { "enum": ["measured", "not_emitted"] },
+          "comparison_count": { "type": "integer", "minimum": 0 },
+          "duration_seconds": { "type": "number", "minimum": 0 },
+          "measured_error": {
+            "type": "object",
+            "required": ["absolute", "relative", "normalized_to_tolerance"],
+            "properties": {
+              "absolute": { "$ref": "#/$defs/nonNegativeMeasurement" },
+              "relative": { "$ref": "#/$defs/nonNegativeMeasurement" },
+              "normalized_to_tolerance": { "$ref": "#/$defs/nonNegativeMeasurement" }
+            }
+          },
+          "tolerance": {
+            "type": "object",
+            "required": ["atol", "rtol"],
+            "properties": {
+              "atol": { "$ref": "#/$defs/nonNegativeMeasurement" },
+              "rtol": { "$ref": "#/$defs/nonNegativeMeasurement" },
+              "atol_min": { "$ref": "#/$defs/nonNegativeMeasurement" },
+              "rtol_min": { "$ref": "#/$defs/nonNegativeMeasurement" }
+            }
+          },
+          "validation_ids": { "type": "array", "items": { "type": "string" } },
+          "compared_outputs": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}

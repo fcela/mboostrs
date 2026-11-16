@@ -1,0 +1,156 @@
+[build-system]
+requires = ["maturin>=1.8,<2"]
+build-backend = "maturin"
+
+[project]
+name = "mboostrs"
+version = "0.2.0"
+description = "Additive and distributional statistical modeling with a Rust engine"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+    { name = "mboostrs contributors" },
+]
+keywords = ["boosting", "mboostrs", "gamboostLSS", "rust", "statistical-learning"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Rust",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
+dependencies = [
+    "numpy>=1.26",
+    "polars>=1",
+]
+
+[project.optional-dependencies]
+bench-compare = [
+    # Competitor libraries for benches/bench_competitors.py. Optional: the
+    # runner reports missing ones rather than failing.
+    "pygam>=0.9",
+    "statsmodels>=0.14",
+    "lightgbm>=4",
+    "scikit-learn>=1.3",
+]
+dev = [
+    # Benchmark-report tests import and exercise the table-rendering helpers.
+    "great-tables>=1.1",
+    # Documentation and release-contract tests read YAML configuration files.
+    "PyYAML>=6",
+    "pytest>=8",
+    "pytest-xdist",
+    "jsonschema>=4",
+    "ruff>=0.8",
+    "maturin>=1.8,<2",
+    "hypothesis>=6.100",
+    # The test suite and docs/book/generate_figures.py exercise the pandas
+    # interoperability paths; the pandas output of the datasets needs pyarrow.
+    "pandas>=2",
+    "pyarrow>=16",
+]
+r-parity = [
+    "rpy2>=3.5",
+    "jsonschema>=4",
+]
+benchmark = [
+    "jsonschema>=4",
+    "memray>=1.19; platform_system != 'Windows'",
+    "rpy2>=3.5",
+]
+sklearn = [
+    "scikit-learn>=1.3",
+]
+pandas = [
+    # Only `output="pandas"` needs it. Polars is the hard dependency every
+    # other output mode goes through, so this stays optional — but it was
+    # previously undeclared anywhere while `datasets` routed `output="records"`
+    # through pandas, and it works today only because pandas arrives
+    # transitively in some environments.
+    "pandas>=2",
+]
+plot = [
+    # `mboostrs.plot` and every `model.plot*()` method. Nothing else in the
+    # package imports Altair, and importing it eagerly cost 509 ms of a 559 ms
+    # `import mboostrs` -- 453 in Altair itself, which pulls jsonschema and,
+    # through it, rfc3987_syntax, whose module body alone took 349 ms. A
+    # caller who never draws a chart paid that to fit a model.
+    #
+    # vl-convert is what registers Altair's SVG renderer and loads the bundled
+    # fonts. Without it charts still render, as vega-embed HTML.
+    "altair>=5.5",
+    "vl-convert-python>=1.7",
+]
+arrow = [
+    # No package code imports pyarrow. Polars converts to and from pandas
+    # without it on current versions, so it was a hard dependency for a path
+    # that does not exist; it stays declared here for an environment whose
+    # Polars build does need it for the Arrow interchange.
+    "pyarrow>=16",
+]
+
+[project.urls]
+Homepage = "https://github.com/fcela/mboostrs"
+Issues = "https://github.com/fcela/mboostrs/issues"
+
+[tool.maturin]
+manifest-path = "crates/mboostrs-py/Cargo.toml"
+module-name = "mboostrs._rust"
+python-source = "python"
+features = ["pyo3/extension-module"]
+# Bundled DM Sans + CommitMono fonts (SIL OFL 1.1) used by the Altair
+# theme for static export; see python/mboostrs/fonts/OFL-LICENSE.txt.
+include = [
+    { path = "python/mboostrs/fonts/*", format = ["sdist", "wheel"] },
+    { path = "python/mboostrs/capability_manifest.json", format = ["sdist", "wheel"] },
+    { path = "python/mboostrs/agent_docs/SKILL.md", format = ["sdist", "wheel"] },
+    { path = "python/mboostrs/agent_docs/topics/*.md", format = ["sdist", "wheel"] },
+    { path = "python/mboostrs/agent_docs/examples/*.md", format = ["sdist", "wheel"] },
+    { path = "python/mboostrs/datasets/fdic_bank_yearend.parquet", format = ["sdist", "wheel"] },
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# "." only, so `from benches import ...` and `from tools import ...` resolve.
+# Do NOT add "python" here. On CI the package is installed from a built wheel;
+# putting python/ on the path makes the source tree shadow that wheel, and the
+# source tree has no compiled `mboostrs._rust`, so every test module fails to
+# import. This was fixed once in bf7385d and regressed in bafadaa — locally the
+# editable install already makes `import mboostrs` resolve, so the entry buys
+# nothing and breaks CI.
+pythonpath = ["."]
+markers = [
+    "r_parity: tests that require R + rpy2 (deselected by default on CI)",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+# Install native fallbacks before importing their consumers. Imports below
+# that required bootstrap call intentionally are not at the top of the module.
+"python/mboostrs/__init__.py" = ["E402"]
+
+# Parity tests embed R source as Python strings (E501); importorskip(...) before
+# imports is an intentional idiom (E402), and it forces an import order the
+# sorter would undo (I001) -- a test that skips when rpy2 is absent has to
+# check for it before importing what depends on it.
+"tests/**" = ["E501", "E402", "I001"]
+"benches/**" = ["E501", "E402", "I001"]
+"tools/**" = ["E501"]
+# Generated by tools/generate_rust_stub.py from the extension's own signatures.
+# Its line lengths are the signatures' -- the deprecated `fit_gamboost` array
+# entry point takes 89 arguments and remains until the scheduled 0.2 removal -- so
+# wrapping them here would be reformatting a generated file to hide the shape
+# of the API it describes.
+"python/mboostrs/_rust.pyi" = ["E501", "I001"]

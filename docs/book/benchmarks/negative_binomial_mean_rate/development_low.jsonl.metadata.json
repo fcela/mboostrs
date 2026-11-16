@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-19T05:55:43+00:00",
+  "commit": "b86a1d1903590ffe2cb9f214d096d661ee972098",
+  "working_tree": {
+    "dirty": true,
+    "status_digest": "sha256:94bde967f5404ea082a607f9c9b35efe0d239f2ee54afd7da155f09949906bde",
+    "commit_source": "working directory"
+  },
+  "platform": {
+    "system": "Darwin",
+    "release": "25.3.0",
+    "machine": "arm64",
+    "cpu": "arm",
+    "python": "3.12.11"
+  },
+  "versions": {
+    "mboostrs": "0.1.3",
+    "numpy": "2.4.6",
+    "rpy2": "3.6.7",
+    "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+    "R": "4.5.1",
+    "mboost": "2.9.11",
+    "scipy": "1.16.3",
+    "pandas": "2.3.3",
+    "ngboost": "0.5.11",
+    "mssm": "1.2.5",
+    "scikit-learn": "1.9.0",
+    "catboost": "1.2.10",
+    "lightgbm": "4.7.0"
+  },
+  "threads": {
+    "logical_cpus": 10,
+    "r_mclapply_default_cores": "2",
+    "RAYON_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "build_info": {
+    "package_version": "0.1.3",
+    "source_digest": "sha256:2ca05527393e6153cce73642f587ed8cb0068173aa1bf4b749701ebc075e4e24",
+    "git_revision": "2936a7b2f9147c1939257f11df2911f402269de3",
+    "git_dirty": false,
+    "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+    "target": "aarch64-apple-darwin",
+    "profile": "release",
+    "target_features": "aes,bf16,bti,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,i8mm,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+    "crate_features": "",
+    "abi_version": 1,
+    "build_id": "sha256:3a278e5f5a56a24e81dd72e65b84b90d51778298a46ff1f97f414ad2a807cc2e"
+  },
+  "scripts": {
+    "/private/tmp/mboostrs-nb-rate/benches/prototype_negative_binomial_mean_rate.py": "1d2db411ac8a00697ee169e4433ed2e41022a7631bb1e656da6d7b30a4d69a81",
+    "/private/tmp/mboostrs-nb-rate/benches/study_poisson_tuning_consistency.py": "7cb3f625fba4fb6a43b0c9452f9c67498ece2648b4a0fe77cf038059cb409c6a",
+    "/private/tmp/mboostrs-nb-rate/benches/study_discovery_calibration.py": "9d07a42ac6c6f2e538b600c8038547e1803aed32936aa1ff4ae85796dcbda883",
+    "/private/tmp/mboostrs-nb-rate/benches/observe_calibration_scores.py": "18f4b399d818de34b5668fc4e3e1bf2daa72e7bac87f6218649748a4c5696540",
+    "/private/tmp/mboostrs-nb-rate/benches/study_evidence.py": "dffb2875189b6ccc346fdae546ca3d1b95f69e761dfe8f6b0db8aabc048f9a5c",
+    "/private/tmp/mboostrs-nb-rate/benches/evidence_float_codec.py": "8af5976cd3fd05dcefd6df56fd5f4754f1aa6c5c9337df56453b3e476d27b9ae"
+  },
+  "thread_environment": {
+    "RAYON_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "protocol": {
+    "id": "negative-binomial-mean-rate/1",
+    "phase": "development",
+    "sha256": "e9ca729b07ba2c5efe361ea4757a769cd0827ce8c6478e1d07558b1ba4155d6b"
+  },
+  "repeats": {
+    "seeds": [
+      6607100,
+      6607101,
+      6607102,
+      6607103,
+      6607104,
+      6607105,
+      6607106,
+      6607107,
+      6607108,
+      6607109
+    ],
+    "panel": "low",
+    "test_seed_offset": 100000
+  },
+  "uncertainty": {
+    "unit": "one independent training and test draw; pair methods within a draw",
+    "summary": "mean and Monte Carlo standard error across draws",
+    "timing": "elapsed whole-workflow costs, not controlled implementation speed ratios"
+  },
+  "memory": {
+    "status": "not measured"
+  },
+  "loaded_sources": {
+    "discover.py": "5cf5a3927c18f056c5af2df3f2ed3eb29b646c6f96a05746a713a858ce31cc0f",
+    "explore.py": "590a5d9ccee4d88ccaabc38c90107980987c3e6bd6cdc3250c44b3612fa1b4be",
+    "conformal.py": "4da522ecff7da9ac326774bfe50f3617dd526f7c2c161fdbafcfd006a5f29b46",
+    "gamboost.py": "1970cc85f089d21977b4b6b7e87db2d778ad23a67e07746e85532670bddf1241",
+    "families.py": "d9443de1b068c8ad5baf429f3a56da04d0692b3f62dac2c02e7eb6c180753b2b"
+  },
+  "records": 90,
+  "compressed_sha256": "877cb68de4fb016887e08ce6a5307d1a4e5b7a3536fbf7668137d313ff6a34cf",
+  "uncompressed_sha256": "6cf0fe27683d7e315ac9170cefbc77b6cfb2b60bc225cb1b01aa97deacc41a26"
+}

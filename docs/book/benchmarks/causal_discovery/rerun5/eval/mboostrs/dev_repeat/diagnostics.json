@@ -1,0 +1,625 @@
+{
+  "seed": 1,
+  "n_train": 12000,
+  "n_test": 4000,
+  "roles_tests": {
+    "age": {
+      "p_enrolment": 1.0401842087872124e-06,
+      "p_outcome": 7.984400506364852e-07,
+      "role": "confounder",
+      "redundant": false
+    },
+    "education": {
+      "p_enrolment": 0.015244760518503745,
+      "p_outcome": 1.1207265380734579e-36,
+      "role": "confounder",
+      "redundant": false
+    },
+    "experience": {
+      "p_enrolment": 1.98659135650482e-124,
+      "p_outcome": 2.0004871512146132e-123,
+      "role": "confounder",
+      "redundant": true
+    },
+    "ethnicity": {
+      "p_enrolment": 2.041975361209656e-05,
+      "p_outcome": 0.591582476754656,
+      "role": "treatment_only",
+      "redundant": false
+    },
+    "smsa": {
+      "p_enrolment": 1.6649123888427534e-40,
+      "p_outcome": 0.0007908756558037189,
+      "role": "confounder",
+      "redundant": false
+    },
+    "region": {
+      "p_enrolment": 0.0003654918229460817,
+      "p_outcome": 0.06215502351695028,
+      "role": "treatment_only",
+      "redundant": false
+    },
+    "parttime": {
+      "p_enrolment": 0.4219926663459791,
+      "p_outcome": 0.0007874900038239429,
+      "role": "outcome_only",
+      "redundant": false
+    },
+    "prior_earnings": {
+      "p_enrolment": 1.3309261174399713e-264,
+      "p_outcome": 7.7978905424e-313,
+      "role": "confounder",
+      "redundant": false
+    },
+    "months_unemployed": {
+      "p_enrolment": 2.3823981457002152e-18,
+      "p_outcome": 6.322872258815489e-10,
+      "role": "confounder",
+      "redundant": false
+    },
+    "distance_km": {
+      "p_enrolment": 1.0498230848974247e-51,
+      "p_outcome": 0.3876551516400166,
+      "role": "instrument",
+      "redundant": false
+    },
+    "caseworker_note_len": {
+      "p_enrolment": 0.30295656608181176,
+      "p_outcome": 0.9948289405010833,
+      "role": "irrelevant",
+      "redundant": false
+    }
+  },
+  "redundant": [
+    "experience"
+  ],
+  "spec": {
+    "covariates": [
+      "age",
+      "education",
+      "ethnicity",
+      "smsa",
+      "region",
+      "parttime",
+      "prior_earnings",
+      "months_unemployed"
+    ],
+    "post_treatment": [
+      "certificate",
+      "responded",
+      "hours_post"
+    ],
+    "estimand": "ate"
+  },
+  "ate_main": {
+    "estimate": 5574.661466298243,
+    "interval": [
+      4318.128687214648,
+      6831.194245381837
+    ],
+    "standard_error": 763.9176875649534,
+    "outcome_model": {
+      "requested": "auto",
+      "used": "pooled",
+      "outcome_interactions": true,
+      "reason": "the sparse-arm check flagged propensity bin(s) [0, 1]"
+    },
+    "propensity_learner": {
+      "requested": "auto",
+      "chosen": "smooth+trees",
+      "candidates": [
+        "smooth",
+        "smooth+trees"
+      ],
+      "out_of_fold_deviance": {
+        "smooth": 0.9304499591140226,
+        "smooth+trees": 0.9095658846637132
+      },
+      "terms": {
+        "smooth": "bbs(age, df=4) + bbs(education, df=4) + bols(ethnicity) + bols(smsa) + bols(region) + bols(parttime) + bbs(prior_earnings, df=4) + bbs(months_unemployed, df=4)",
+        "smooth+trees": "bbs(age, df=4) + bbs(education, df=4) + bols(ethnicity) + bols(smsa) + bols(region) + bols(parttime) + bbs(prior_earnings, df=4) + bbs(months_unemployed, df=4) + btree(age, maxdepth=1) + btree(education, maxdepth=1) + btree(prior_earnings, maxdepth=1) + btree(months_unemployed, maxdepth=1)"
+      }
+    },
+    "repeat_estimates": [
+      5785.306283316508,
+      5438.680415790854,
+      5574.661466298243
+    ]
+  },
+  "ate_single_partition": {
+    "estimate": 5604.076310741153,
+    "interval": [
+      4382.450151881181,
+      6825.702469601125
+    ],
+    "standard_error": 742.6959693210523
+  },
+  "att": {
+    "estimate": 3695.8033617148963,
+    "interval": [
+      3227.9774319703797,
+      4163.629291459412
+    ]
+  },
+  "emp": {
+    "estimate": 0.1047724682030308,
+    "interval": [
+      0.08858645236755107,
+      0.12095848403851052
+    ]
+  },
+  "log_earnings_employed": {
+    "estimate": 0.15339030930553885,
+    "interval": [
+      0.11168273440970368,
+      0.19509788420137403
+    ]
+  },
+  "modifier_tests": {
+    "primary": {
+      "age": {
+        "p": 0.05014123418640053,
+        "coef": -883.3534588409542,
+        "holm": 0.3509886393048037
+      },
+      "education": {
+        "p": 0.04292502498184436,
+        "coef": 867.6695498102907,
+        "holm": 0.3434001998547549
+      },
+      "ethnicity": {
+        "p": 0.20282030804717976,
+        "coef": 2487.383610936456,
+        "holm": 1.0
+      },
+      "smsa": {
+        "p": 0.881444027189886,
+        "coef": 130.35945584347874,
+        "holm": 1.0
+      },
+      "region": {
+        "p": 0.2509352033028437,
+        "coef": -1516.6588018264456,
+        "holm": 1.0
+      },
+      "parttime": {
+        "p": 0.4209893807025926,
+        "coef": -820.0813264329986,
+        "holm": 1.0
+      },
+      "prior_earnings": {
+        "p": 0.28718796814593217,
+        "coef": 1008.5672065607279,
+        "holm": 1.0
+      },
+      "months_unemployed": {
+        "p": 0.45203271016070445,
+        "coef": 365.5634430547557,
+        "holm": 1.0
+      }
+    },
+    "robustness": [
+      {
+        "label": "smooth propensity, separate outcome",
+        "ate": 6413.793801623499,
+        "joint": {
+          "age": {
+            "p": 0.07490482771239035,
+            "coef": -683.7809126320268,
+            "holm": 0.5243337939867324
+          },
+          "education": {
+            "p": 0.34362961031421224,
+            "coef": 387.2779850504495,
+            "holm": 1.0
+          },
+          "ethnicity": {
+            "p": 0.19085280354553225,
+            "coef": 1698.3090136172675,
+            "holm": 1.0
+          },
+          "smsa": {
+            "p": 0.898067898352796,
+            "coef": 118.75434794862107,
+            "holm": 1.0
+          },
+          "region": {
+            "p": 0.6319075864958732,
+            "coef": -921.6154428912405,
+            "holm": 1.0
+          },
+          "parttime": {
+            "p": 0.9961296362537609,
+            "coef": 4.1509765023852765,
+            "holm": 1.0
+          },
+          "prior_earnings": {
+            "p": 6.799780588404834e-05,
+            "coef": 1885.1001100618575,
+            "holm": 0.0005439824470723867
+          },
+          "months_unemployed": {
+            "p": 0.25275463898198913,
+            "coef": 477.51961500410243,
+            "holm": 1.0
+          }
+        }
+      },
+      {
+        "label": "two-part outcome",
+        "ate": 5754.565767530145,
+        "joint": {
+          "age": {
+            "p": 0.05130989728552854,
+            "coef": -854.4390396799884,
+            "holm": 0.35916928099869977
+          },
+          "education": {
+            "p": 0.018111790304323687,
+            "coef": 948.6572253556551,
+            "holm": 0.1448943224345895
+          },
+          "ethnicity": {
+            "p": 0.37872286693380397,
+            "coef": 1672.5205956130594,
+            "holm": 1.0
+          },
+          "smsa": {
+            "p": 0.4339837743102468,
+            "coef": 695.9307162403187,
+            "holm": 1.0
+          },
+          "region": {
+            "p": 0.16696156702504703,
+            "coef": -1625.9291223747014,
+            "holm": 1.0
+          },
+          "parttime": {
+            "p": 0.2699111823995688,
+            "coef": -1001.0184848552362,
+            "holm": 1.0
+          },
+          "prior_earnings": {
+            "p": 0.45897737491654544,
+            "coef": 606.4607859609688,
+            "holm": 1.0
+          },
+          "months_unemployed": {
+            "p": 0.7249500742328159,
+            "coef": 154.16098003955403,
+            "holm": 1.0
+          }
+        }
+      },
+      {
+        "label": "trees propensity, pooled outcome",
+        "ate": 5785.306283316508,
+        "joint": {
+          "age": {
+            "p": 0.0042191365861552225,
+            "coef": -1830.4241396864093,
+            "holm": 0.03375309268924178
+          },
+          "education": {
+            "p": 0.8101181626227164,
+            "coef": 126.59516329332189,
+            "holm": 1.0
+          },
+          "ethnicity": {
+            "p": 0.6551386596728044,
+            "coef": 898.2751582679324,
+            "holm": 1.0
+          },
+          "smsa": {
+            "p": 0.4174429671120493,
+            "coef": -867.2036821731591,
+            "holm": 1.0
+          },
+          "region": {
+            "p": 0.12427759047293493,
+            "coef": -1948.9034424473227,
+            "holm": 0.6213879523646747
+          },
+          "parttime": {
+            "p": 0.1965461641785543,
+            "coef": 2934.851559281781,
+            "holm": 0.7861846567142172
+          },
+          "prior_earnings": {
+            "p": 0.03125080524429311,
+            "coef": 5864.497431515662,
+            "holm": 0.2187556367100518
+          },
+          "months_unemployed": {
+            "p": 0.07269673044451674,
+            "coef": 1382.878631695226,
+            "holm": 0.43618038266710046
+          }
+        }
+      }
+    ]
+  },
+  "overlap": {
+    "bounds": [
+      0.02,
+      0.98
+    ],
+    "n": 12000,
+    "n_below": 2475,
+    "n_above": 0,
+    "regions": [
+      {
+        "covariate": "age",
+        "kind": "numeric",
+        "region": null,
+        "rows_in_region": 0,
+        "share_outside_in_region": null,
+        "share_outside_elsewhere": 0.20625
+      },
+      {
+        "covariate": "education",
+        "kind": "numeric",
+        "region": null,
+        "rows_in_region": 0,
+        "share_outside_in_region": null,
+        "share_outside_elsewhere": 0.20625
+      },
+      {
+        "covariate": "ethnicity",
+        "kind": "categorical",
+        "levels": [
+          {
+            "level": "afam",
+            "rows": 932,
+            "share_outside": 0.04721030042918455,
+            "flagged": false
+          },
+          {
+            "level": "cauc",
+            "rows": 11068,
+            "share_outside": 0.21964221178171306,
+            "flagged": false
+          }
+        ],
+        "flagged_levels": []
+      },
+      {
+        "covariate": "smsa",
+        "kind": "categorical",
+        "levels": [
+          {
+            "level": "no",
+            "rows": 3115,
+            "share_outside": 0.17495987158908508,
+            "flagged": false
+          },
+          {
+            "level": "yes",
+            "rows": 8885,
+            "share_outside": 0.21722003376477209,
+            "flagged": false
+          }
+        ],
+        "flagged_levels": []
+      },
+      {
+        "covariate": "region",
+        "kind": "categorical",
+        "levels": [
+          {
+            "level": "midwest",
+            "rows": 2922,
+            "share_outside": 0.21423682409308692,
+            "flagged": false
+          },
+          {
+            "level": "northeast",
+            "rows": 2757,
+            "share_outside": 0.24555676459920203,
+            "flagged": false
+          },
+          {
+            "level": "south",
+            "rows": 3717,
+            "share_outside": 0.15173527037933818,
+            "flagged": false
+          },
+          {
+            "level": "west",
+            "rows": 2604,
+            "share_outside": 0.23348694316436253,
+            "flagged": false
+          }
+        ],
+        "flagged_levels": []
+      },
+      {
+        "covariate": "parttime",
+        "kind": "categorical",
+        "levels": [
+          {
+            "level": "no",
+            "rows": 10970,
+            "share_outside": 0.22297174111212398,
+            "flagged": false
+          },
+          {
+            "level": "yes",
+            "rows": 1030,
+            "share_outside": 0.02815533980582524,
+            "flagged": false
+          }
+        ],
+        "flagged_levels": []
+      },
+      {
+        "covariate": "prior_earnings",
+        "kind": "numeric",
+        "region": [
+          45230.0,
+          812670.0
+        ],
+        "rows_in_region": 2400,
+        "share_outside_in_region": 0.8975,
+        "share_outside_elsewhere": 0.0334375
+      },
+      {
+        "covariate": "months_unemployed",
+        "kind": "numeric",
+        "region": [
+          0.0,
+          0.0
+        ],
+        "rows_in_region": 1469,
+        "share_outside_in_region": 0.5153165418652145,
+        "share_outside_elsewhere": 0.16313740385528439
+      }
+    ],
+    "estimand": "ate",
+    "estimate": 5604.076310741153,
+    "standard_error": 742.6959693210523,
+    "estimate_inside": 3985.59206199776,
+    "standard_error_inside": 450.4438575924935,
+    "n_inside": 9525,
+    "n_outside": 2475,
+    "share_outside": 0.20625
+  },
+  "rank": {
+    "share": 0.2,
+    "gain": 7896.041300249547,
+    "top_count": 800,
+    "overlap_restricted_gain": 6593.485144544999,
+    "overlap_restricted_gain_interval": [
+      4909.54738405984,
+      8277.422905030158
+    ],
+    "overlap_restricted_count": 800,
+    "shortfall": 0,
+    "tied_rows": 0,
+    "outside_overlap_test": 274,
+    "outside_overlap_in_top_by_cate": 267
+  },
+  "effect_model": {
+    "describe": "tau(x) for enrolled on earnings_post, additive in ['age', 'prior_earnings', 'education']; smooth terms chosen by cross-validated R-loss (smooth 2.70665e+08); penalized smooths (REML, edf 4.34 in total); per-row percentile intervals from 200 row resamples of the second stage, with the pseudo-outcome held fixed (these cover the sampling variation of the second stage; a bias of the estimate, such as one from the nuisance models or from a penalized smooth that flattens a sharp effect, is not covered). A constant effect (the ATE) has out-of-fold R-loss 2.70818e+08, against 2.70665e+08 for smooth: the constant's loss minus smooth's is 153260 (standard error 169051). Pseudo-outcome r_winsorized, clipped to [-3.74097e+06, 4.38138e+06] for 202 rows. Smooth modifiers are fitted over their 1st to 99th percentile range, and their effect is held flat beyond it; ['prior_earnings'] enter on the log scale. Mean in-sample effect 5086.73 (no interval; see aipw). Propensities clipped to (0.01, 0.99) for 812 rows; nuisances from 5-fold cross-fitting with smooth terms. 11.3% of fitting rows have propensity outside (0.02, 0.98). Identification assumes consistency: each observed outcome equals the potential outcome under the observed treatment; conditional exchangeability: potential outcomes are independent of treatment given the baseline covariates; positivity: both treatment levels have positive probability across the target covariate support; no interference: one unit's treatment does not change another unit's outcome.",
+    "claimed_modifiers": [],
+    "lead_modifiers": [
+      "age",
+      "prior_earnings",
+      "education"
+    ],
+    "median_p": {
+      "age": 0.05072556573596453,
+      "education": 0.1932773176480283,
+      "ethnicity": 0.29077158749049187,
+      "smsa": 0.6577139007500664,
+      "region": 0.20894838516394537,
+      "parttime": 0.3454502815510807,
+      "prior_earnings": 0.15921938669511265,
+      "months_unemployed": 0.3523936745713468
+    },
+    "constant_rloss": 270817817.77681005,
+    "terms_selection": {
+      "rule": "requested",
+      "lowest_loss": "smooth"
+    },
+    "interval_method": "second_stage_bootstrap"
+  },
+  "sensitivity_grid": {
+    "outcome_effects": [
+      2628.6,
+      6571.5,
+      13143.0
+    ],
+    "imbalances": [
+      0.1,
+      0.25,
+      0.5
+    ]
+  },
+  "iv": {
+    "instrument": "distance_km",
+    "rows": 10072,
+    "estimate": 4788.942743009756,
+    "lower90": -1952.3174204568486,
+    "upper90": 11530.20290647636,
+    "first_stage_f": 105.5879216058099,
+    "weak_instrument": false
+  },
+  "test_shift": {
+    "age": {
+      "train_mean": 37.44316666666667,
+      "test_mean": 35.775
+    },
+    "education": {
+      "train_mean": 13.069333333333333,
+      "test_mean": 12.798
+    },
+    "prior_earnings": {
+      "train_mean": 31672.97,
+      "test_mean": 25883.6575
+    },
+    "months_unemployed": {
+      "train_mean": 2.7271666666666667,
+      "test_mean": 3.15025
+    }
+  },
+  "timings_seconds": {
+    "roles": 103.37,
+    "ate_main": 34.16,
+    "aipw_others": 57.36,
+    "modifiers": 25.75,
+    "effect_model": 13.17,
+    "ranking": 13.17,
+    "overlap": 0.01,
+    "iv": 1.5,
+    "sensitivity": 0.0
+  },
+  "total_seconds": 242.72,
+  "warnings_all": [
+    "experience is an exact linear combination of the other pre-enrolment columns; it is not put in the adjustment set, and its information is carried by the columns it is built from.",
+    "No covariate passed the claim rule (joint p below 0.05 in the primary fit, at the median of four nuisance fits, with one sign). Candidates by median joint p: age p=0.0507 (-883, -684, -854, -1830 dollars per SD); prior_earnings p=0.159 (+1009, +1885, +606, +5864 dollars per SD); education p=0.193 (+868, +387, +949, +127 dollars per SD); region p=0.209 (-1517, -922, -1626, -1949 dollars per SD). The joint p-value of each covariate moved across fold splits (the single-split fit gave p near 0.004 for age and 0.03 for prior earnings), so no covariate is claimed as an effect modifier."
+  ],
+  "python_warnings": [
+    "1 fold prediction in this call asked 1 learner(s) to predict outside the range they were fitted on. bbs(__ci_given1), covariate __ci_given1: 1 below -3 and 2 above 59 (worst 0.065 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not cons",
+    "1 learner(s) are asked to predict outside the range they were fitted on. bbs(months_unemployed), covariate months_unemployed: 1 above 18 (worst 0.22 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.22 training range",
+    "274 of 4000 new rows have an estimated propensity outside [0.02, 0.98]: their effects are extrapolated from rows the other treatment arm rarely reaches. The rows are flagged in the outside_overlap column when predict(..., interval=True) is used.",
+    "3 learner(s) are asked to predict outside the range they were fitted on. bbs(education, df=4, boundary.knots=c(4,18)), covariate education: 47 below 4 (worst 0.29 training ranges out); bbs(prior_earnings, df=4, boundary.knots=c(8.2133817370345721,11.628504274618901)), covariate prior_earnings: 113 b",
+    "5 fold predictions in this call asked 1 learner(s) to predict outside the range they were fitted on. bbs(months_unemployed), covariate months_unemployed: 1 above 17 (worst 0.059 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constr",
+    "5 fold predictions in this call asked 1 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 1 below 2420 and 1 above 627520 (worst 0.3 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit do",
+    "5 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(distance_km), covariate distance_km: 3 above 125.1 (worst 0.86 training ranges out); bbs(months_unemployed), covariate months_unemployed: 1 above 17 (worst 0.059 training ranges out). A spline ba",
+    "5 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(distance_km), covariate distance_km: 3 above 125.1 (worst 0.86 training ranges out); bbs(prior_earnings), covariate prior_earnings: 1 below 2420 and 1 above 627520 (worst 0.3 training ranges out)",
+    "5 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 1 below 2420 and 1 above 627520 (worst 0.3 training ranges out); bbs(months_unemployed), covariate months_unemployed: 1 above 17 (worst 0.059 training r",
+    "5 fold predictions in this call asked 3 learner(s) to predict outside the range they were fitted on. bbs(distance_km), covariate distance_km: 3 above 125.1 (worst 0.86 training ranges out); bbs(prior_earnings), covariate prior_earnings: 1 below 2420 and 1 above 627520 (worst 0.3 training ranges out)",
+    "6 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(__ci_given9), covariate __ci_given9: 1 below 2420 and 1 above 627520 (worst 0.3 training ranges out); bbs(months_unemployed), covariate months_unemployed: 1 above 17 (worst 0.059 training ranges ",
+    "6 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 1 below 2420 and 1 above 627520 (worst 0.3 training ranges out); bbs(__ci_given9), covariate __ci_given9: 1 above 17 (worst 0.059 training ranges out). ",
+    "6 fold predictions in this call asked 3 learner(s) to predict outside the range they were fitted on. bbs(__ci_given10), covariate __ci_given10: 3 above 125.1 (worst 0.86 training ranges out); bbs(prior_earnings), covariate prior_earnings: 1 below 2420 and 1 above 627520 (worst 0.3 training ranges ou",
+    "6 fold predictions in this call asked 3 learner(s) to predict outside the range they were fitted on. bbs(distance_km), covariate distance_km: 3 above 125.1 (worst 0.86 training ranges out); bbs(__ci_given10), covariate __ci_given10: 1 below 2420 and 1 above 627520 (worst 0.3 training ranges out); bb",
+    "6 fold predictions in this call asked 3 learner(s) to predict outside the range they were fitted on. bbs(distance_km), covariate distance_km: 3 above 125.1 (worst 0.86 training ranges out); bbs(prior_earnings), covariate prior_earnings: 1 below 2420 and 1 above 627520 (worst 0.3 training ranges out)",
+    "6 fold predictions in this call asked 3 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings, df=4, boundary.knots=c(8.2133817370345721,11.628504274618901)), covariate prior_earnings: 17 below 8.21338 and 26 above 11.6285 (worst 0.58 training ranges out); bbs(education, df",
+    "aipw, control-arm outcome model: 5 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(months_unemployed), covariate months_unemployed: 8 above 12 (worst 0.42 training ranges out); bbs(months_unemployed), covariate months_unemployed: 3 above 13 (wor",
+    "aipw, pooled outcome model: 10 fold predictions in this call asked 4 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 1 below 2420 and 1 above 627520 (worst 0.3 training ranges out); bbs(prior_earnings), by=enrolled, covariate prior_earnings",
+    "aipw, pooled outcome model: 2 fold predictions in this call asked 4 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 1 above 627520 (worst 0.3 training ranges out); bbs(prior_earnings), by=enrolled, covariate prior_earnings: 1 above 627520 (",
+    "aipw, pooled outcome model: 4 fold predictions in this call asked 4 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 5 above 238880 (worst 2.4 training ranges out); bbs(prior_earnings), by=enrolled, covariate prior_earnings: 5 above 238880 (",
+    "aipw, propensity model: 1 fold prediction in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 1 above 627520 (worst 0.3 training ranges out); bbs(months_unemployed), covariate months_unemployed: 1 above 17 (worst 0.059 trai",
+    "aipw, propensity model: 2 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 5 above 238880 (worst 2.4 training ranges out); bbs(months_unemployed), covariate months_unemployed: 1 above 15 (worst 0.2 train",
+    "aipw, propensity model: 5 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 1 below 2420 and 1 above 627520 (worst 0.3 training ranges out); bbs(prior_earnings), covariate prior_earnings: 1 above 627520 (",
+    "aipw, response (observation) model: 1 fold prediction in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 1 above 627520 (worst 0.3 training ranges out); bbs(months_unemployed), covariate months_unemployed: 1 above 17 (wors",
+    "aipw, response (observation) model: 5 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 1 below 2420 and 1 above 627520 (worst 0.3 training ranges out); bbs(prior_earnings), covariate prior_earnings: 1 ab",
+    "aipw, treated-arm outcome model: 5 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 52 above 83100 (worst 9 training ranges out); bbs(prior_earnings), covariate prior_earnings: 1 below 2420 and 77 above ",
+    "aipw: 1 fitted outcome mean(s) lie outside [-439930, 879860], more than 1 times the width of the observed outcome range [0, 439930] beyond either end (mu0: 0 rows, mu1: 1 rows). The pooled outcome model extrapolates for those rows, and the estimate uses these means, so an error in them enters the es",
+    "aipw: 1 fitted outcome mean(s) lie outside [-439930, 879860], more than 1 times the width of the observed outcome range [0, 439930] beyond either end (mu0: 0 rows, mu1: 1 rows). The separate outcome model extrapolates for those rows, and the estimate uses these means, so an error in them enters the ",
+    "aipw: 2 propensity bin(s) hold more than 5% of all rows but fewer than 20 rows of an arm. The outcome model of that arm is fitted from too few rows there and extrapolates, so the estimate and its interval are unreliable for those rows. The fitted model is outcome_model='pooled' with outcome_interact",
+    "aipw: 2 propensity bin(s) hold more than 5% of all rows but fewer than 20 rows of an arm. The outcome model of that arm is fitted from too few rows there and extrapolates, so the estimate and its interval are unreliable for those rows. The fitted model is outcome_model='separate' (one outcome model ",
+    "aipw: 3 fitted outcome mean(s) lie outside [1.63207, 18.6755], more than 1 times the width of the observed outcome range [7.31322, 12.9944] beyond either end (mu0: 0 rows, mu1: 3 rows). The pooled outcome model extrapolates for those rows, and the estimate uses these means, so an error in them enter",
+    "aipw: 3 propensity bin(s) hold more than 5% of all rows but fewer than 20 rows of an arm. The outcome model of that arm is fitted from too few rows there and extrapolates, so the estimate and its interval are unreliable for those rows. The fitted model is outcome_model='pooled' with outcome_interact",
+    "aipw: the cross-validated risk of the pooled outcome model(s) was still falling at max_mstop=800 steps, the largest step count the search may reach, so mstop=800 is where that search stopped, not where the risk turns. The search starts at mstop=200 and doubles while the risk falls. Raise aipw(max_ms",
+    "aipw: the cross-validated risk of the propensity, response (observation) model(s) was still falling at max_mstop=800 steps, the largest step count the search may reach, so mstop=800 is where that search stopped, not where the risk turns. The search starts at mstop=200 and doubles while the risk fall",
+    "aipw: the cross-validated risk of the response (observation) model(s) was still falling at max_mstop=800 steps, the largest step count the search may reach, so mstop=800 is where that search stopped, not where the risk turns. The search starts at mstop=200 and doubles while the risk falls. Raise aip",
+    "aipw: the cross-validated risk of the response (observation), log outcome among positive rows model(s) was still falling at max_mstop=800 steps, the largest step count the search may reach, so mstop=800 is where that search stopped, not where the risk turns. The search starts at mstop=200 and double",
+    "effect_model, pooled outcome model: 1 fold prediction in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 1 above 627520 (worst 0.3 training ranges out); bbs(months_unemployed), covariate months_unemployed: 1 above 17 (wors",
+    "effect_model, propensity model: 1 fold prediction in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 1 above 627520 (worst 0.3 training ranges out); bbs(months_unemployed), covariate months_unemployed: 1 above 17 (worst 0.",
+    "effect_model, response (observation) model: 1 fold prediction in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 1 above 627520 (worst 0.3 training ranges out); bbs(months_unemployed), covariate months_unemployed: 1 above ",
+    "terms='smooth' does not beat a constant effect by more than its standard error. Out-of-fold R-loss 2.70665e+08 for 'smooth' against 2.70818e+08 for the constant effect (the ATE), a difference of 153260 with standard error 169051. The modifiers add no reliable heterogeneity at this sample size: repor",
+    "the cross-validated risk was still falling at 1600 steps, when the search reached its limit (max_mstop=1600), so mstop=1600 is where the grid stopped rather than where the risk turns. To search further, raise max_mstop above 1600, or raise nu to take larger steps. Guide: python -m mboostrs guide fit"
+  ]
+}

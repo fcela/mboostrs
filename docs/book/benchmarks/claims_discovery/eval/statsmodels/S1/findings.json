@@ -1,0 +1,85 @@
+{
+  "library": "statsmodels 0.15.0",
+  "mean_effects": [
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "drop-one F=95.7 on 2 df, p=6.4e-38, Holm-adjusted p=2.5e-37 over 4 terms; average fitted y +0.942 at 0.9351 (1st pct) to -0.033 at 8.515 (99th pct)"
+    },
+    {
+      "variable": "housing_median_age",
+      "shape": "increasing",
+      "evidence": "drop-one F=19.4 on 2 df, p=6.2e-09, Holm-adjusted p=1.6e-08 over 4 terms; average fitted y +0.186 at 4 (1st pct) to +0.653 at 52 (99th pct)"
+    },
+    {
+      "variable": "ave_occup",
+      "shape": "increasing",
+      "evidence": "drop-one F=19.5 on 2 df, p=5.3e-09, Holm-adjusted p=1.6e-08 over 4 terms; average fitted y +0.093 at 1.555 (1st pct) to +0.612 at 5.108 (99th pct)"
+    },
+    {
+      "variable": "roof_class",
+      "shape": "categorical",
+      "evidence": "drop-one F=13.5 on 3 df, p=1.3e-08, Holm-adjusted p=1.6e-08 over 4 terms; average fitted y by level: A +0.229, B +0.234, C +0.355, D +0.584"
+    }
+  ],
+  "interactions": [],
+  "variance_drivers": [
+    {
+      "variable": "population",
+      "direction": "decreases_spread",
+      "evidence": "drop-one F=12.3 on 2 df, p=5.4e-06, Holm-adjusted p=5.4e-06 over 1 terms; sigma 0.892 at 68.94 (1st pct) to 0.271 at 5467 (99th pct)"
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.456079,
+      "lower90": -0.515303,
+      "upper90": -0.399237
+    },
+    "Q2": {
+      "estimate": 0.296225,
+      "lower90": 0.228842,
+      "upper90": 0.384592
+    },
+    "Q3": {
+      "estimate": 0.304302,
+      "lower90": 0.226782,
+      "upper90": 0.37821
+    },
+    "Q4": {
+      "estimate": 0.355116,
+      "lower90": 0.233507,
+      "upper90": 0.463682
+    },
+    "Q5": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q6": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q7": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q8": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    }
+  },
+  "warnings": [
+    "Missing values were imputed by linear regression on the other covariates (training rows only), and a missing indicator is kept in every model. Missing counts: train {'housing_median_age': 55, 'ave_bedrooms': 7}, test {'housing_median_age': 388, 'ave_bedrooms': 45}.",
+    "Covariate shift between train and test: housing_median_age: standardized mean difference test minus train = -0.14; median_income: standardized mean difference test minus train = +0.45; ave_rooms: standardized mean difference test minus train = +0.15; median_house_value: standardized mean difference test minus train = +0.27",
+    "Rows with housing_median_age missing have fitted y +0.140 (90% CI +0.026 to +0.255) relative to the imputed-value prediction; the imputation does not remove that difference.",
+    "Rows with ave_bedrooms missing have fitted y -0.166 (90% CI -0.473 to +0.140) relative to the imputed-value prediction; the imputation does not remove that difference.",
+    "Effect-query intervals are bootstrap intervals for the selected terms. They do not include uncertainty from variable selection or from tuning.",
+    "Prediction intervals use standardized training residual quantiles. Coverage of the 90% interval on the training rows is 0.900.",
+    "row_id is not used as a covariate. Its correlation with y in the training file is -0.09; it is treated as an identifier, not as a covariate.",
+    "Interactions are screened for pairs of main effects only; no three-way terms are searched."
+  ]
+}

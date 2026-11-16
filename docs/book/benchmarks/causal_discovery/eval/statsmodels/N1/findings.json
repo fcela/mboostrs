@@ -1,0 +1,93 @@
+{
+  "library": "statsmodels 0.15.0",
+  "effect_queries": {
+    "ATE": {
+      "estimate": 115.19421569446874,
+      "lower90": -500.5461416906434,
+      "upper90": 615.546200478048
+    },
+    "ATT": {
+      "estimate": 115.19421569446877,
+      "lower90": -381.12357085035546,
+      "upper90": 556.2313439486769
+    },
+    "CATE_educ_lt12": {
+      "estimate": 115.19421569446874,
+      "lower90": -453.04895398133175,
+      "upper90": 1049.9851071298378
+    },
+    "CATE_educ_ge16": {
+      "estimate": 115.19421569446875,
+      "lower90": -1106.389505768938,
+      "upper90": 651.7864844918488
+    },
+    "CATE_prior_q1": {
+      "estimate": 115.19421569446874,
+      "lower90": -552.1251695445834,
+      "upper90": 598.0809921155783
+    },
+    "CATE_prior_q4": {
+      "estimate": 115.19421569446877,
+      "lower90": -839.5319348420323,
+      "upper90": 724.1342335234764
+    },
+    "CATE_age_lt25": {
+      "estimate": 115.19421569446875,
+      "lower90": -542.2006698719335,
+      "upper90": 686.1059698266995
+    },
+    "EMP_ATE": {
+      "estimate": 0.008434612634805523,
+      "lower90": -0.014460792913142792,
+      "upper90": 0.025733851583471398
+    }
+  },
+  "roles": {
+    "age": "instrument",
+    "education": "confounder",
+    "experience": "confounder",
+    "ethnicity": "treatment_only",
+    "smsa": "outcome_only",
+    "region": "treatment_only",
+    "parttime": "irrelevant",
+    "prior_earnings": "confounder",
+    "months_unemployed": "instrument",
+    "distance_km": "instrument",
+    "caseworker_note_len": "irrelevant",
+    "enrolled": "treatment",
+    "certificate": "mediator",
+    "responded": "post_treatment_selection",
+    "hours_post": "mediator",
+    "earnings_post": "outcome"
+  },
+  "adjustment_set": [
+    "education",
+    "prior_earnings"
+  ],
+  "effect_modifiers": [],
+  "channels": {
+    "employment": false,
+    "earnings_if_employed": false
+  },
+  "limited_overlap": [
+    {
+      "description": "Applicants with prior earnings at or above 40000 dollars: enrolment in the program-year data is below 2 per cent there, so the data cannot show what enrolment did for them; their effects are extrapolated from applicants with lower earnings.",
+      "variable": "prior_earnings"
+    }
+  ],
+  "warnings": [
+    "Specs chosen by 5-fold CV: propensity=quad, outcome(Y)=pe_int, outcome(E)=quad.",
+    "Redundant columns (exact linear function of earlier columns, not used): ['experience'].",
+    "Enrolment is essentially absent for prior earnings at or above 40000 dollars: pooled enrolment above that value is below 2 per cent. The share of training applicants there is 0.264, and of test applicants 0.185. Effects there are extrapolations.",
+    "Prior earnings in the effect model is held at 39725 dollars (99th percentile of enrolled applicants) above that value. Without this cap the ATE point estimate is 115.2 dollars and EMP_ATE is 0.0084.",
+    "ATE point estimate across propensity and outcome specifications (dollars): min 32.1, max 120.5.",
+    "Mean prior earnings: training 31476, test 25785. The new applicants are poorer on this variable than the program-year applicants.",
+    "Instrument check (log distance): first-stage F = 133.2; 2SLS effect on responders' earnings = -5925.6 dollars (90% interval -12322.1 to 470.8); this is a complier effect and its interval is wide.",
+    "Earnings among employed (residual log hourly wage, Lee-type bounds with induced share 0.000): naive difference -0.060, bounds [-0.060, -0.060]. The employment effect is not positive at the 90% level, so the bounds are not read as evidence about wages.",
+    "Response to the follow-up survey depends on enrolment: logit coefficient 0.576 (p = 1.5e-19). Earnings are observed only for responders; the analysis assumes that, given covariates and enrolment, response is unrelated to earnings.",
+    "Omitted-variable robustness value of the linear enrolment coefficient on responders' earnings: 0.003 (value that keeps the 90% interval above zero: 0.000).",
+    "Employment effect model (probability scale) keeps: months -0.0143 (90% bootstrap -0.0255 to -0.0117).",
+    "",
+    "Library message (3465x): RuntimeWarning: overflow encountered in exp"
+  ]
+}

@@ -1,0 +1,96 @@
+{
+ "study": "slid_lss_sim",
+ "scorecard": "mboostrs-scorecard/2.1",
+ "mboostrs_combined_commit_sha": "e79fa6140ee013e1f024b4fc296b0deabc1712ca",
+ "started": "2026-10-16T17:10:41",
+ "finished": "2026-10-16T17:12:18",
+ "wall_seconds": 97.25797390937805,
+ "final": true,
+ "command": "run.py --arms sim,slid --seeds 0,1,2,3,4,5,6,7,8,9 --methods mb_lss_known,mb_discover --out rerun_combined/results.parquet",
+ "host": "grok-bot-vm-294129123",
+ "python": "3.13.5 (main, Aug 10 2026, 12:06:59) [GCC 14.2.0]",
+ "python_flags": {
+  "MBOOSTRS_SITE": "/workspace/agent-test/bench4/site-combined",
+  "PYTHONPATH": "/workspace/agent-test/bench4/site-combined"
+ },
+ "mboostrs_file": "/workspace/agent-test/bench4/site-combined/mboostrs/__init__.py",
+ "mboostrs_version": "0.1.3",
+ "mboostrs_build_sha_declared": "0ae6f81d",
+ "mboostrs_build_info_git_revision": "65f71c769e868a84d1338fdb38b0bfbcb6e106ab",
+ "mboostrs_build_info_source_digest": "sha256:351509cce615affc9e000df96344b1f4bd9a83feb611b88f5c1ba27c59f24e9e",
+ "mboostrs_build_info": {
+  "package_version": "0.1.3",
+  "source_digest": "sha256:351509cce615affc9e000df96344b1f4bd9a83feb611b88f5c1ba27c59f24e9e",
+  "git_revision": "65f71c769e868a84d1338fdb38b0bfbcb6e106ab",
+  "git_dirty": false,
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13) | binary: rustc | commit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67 | commit-date: 2026-10-13 | host: x86_64-unknown-linux-gnu | release: 1.99.1 | LLVM version: 23.1.1",
+  "target": "x86_64-unknown-linux-gnu",
+  "profile": "release",
+  "target_features": "fxsr,sse,sse2",
+  "crate_features": "",
+  "abi_version": 1,
+  "build_id": "sha256:209047552d8f67410f977b16ef89f68013626482ec8e057372cd9c83cb31769e"
+ },
+ "packages": {
+  "numpy": "2.5.3",
+  "scipy": "1.16.3",
+  "polars": "2.0.0",
+  "statsmodels": "0.15.0",
+  "patsy": "1.0.3",
+  "pygam": "0.12.0",
+  "lightgbm": "4.7.0",
+  "xgboost": "3.4.1",
+  "catboost": "1.2.10",
+  "sklearn": "1.9.1",
+  "interpret": "0.7.8",
+  "aplr": "unknown"
+ },
+ "arms": [
+  "sim",
+  "slid"
+ ],
+ "seeds": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9
+ ],
+ "slid": {
+  "url": "https://vincentarelbundock.github.io/Rdatasets/csv/carData/SLID.csv",
+  "sha256": "7081ea37b8bc867992e95ff23e98e5e3cd6f7f3d1855374d4af5d27826fe4de0",
+  "file": "SLID.csv"
+ },
+ "generator": {
+  "file": "generator.py",
+  "answer_key": "answer_key.md",
+  "n_train": 3000,
+  "n_test": 3000,
+  "n_covariates": 8
+ },
+ "drop_cols_whatif": {
+  "sim": [
+   "x1",
+   "x2",
+   "x3",
+   "g",
+   "x5"
+  ],
+  "slid": [
+   "age",
+   "education",
+   "sex",
+   "language"
+  ]
+ },
+ "results_file": "rerun_combined/results.parquet",
+ "results_rows": 260,
+ "mboostrs_rows_fresh": 40,
+ "competitor_rows_reused": 220,
+ "competitor_rows_source": "/workspace/agent-test/wt-bench4/docs/book/benchmarks/slid_lss_sim/results.parquet"
+}

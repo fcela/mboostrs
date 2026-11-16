@@ -1,0 +1,2354 @@
+{
+ "task": "binary",
+ "design": {
+  "source": "https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/carData/Mroz.csv",
+  "sha256": "e7d618f518d247ce0ef29ff551b28d4c2d260faabad4955cf9164f2908fbd0b5",
+  "train_frac": 0.8,
+  "seeds": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "tree_settings": {
+   "rounds": 400,
+   "learning_rate": 0.05
+  },
+  "threads": {
+   "RAYON_NUM_THREADS": "1",
+   "OMP_NUM_THREADS": "1"
+  },
+  "scaling_sizes": null
+ },
+ "versions": {
+  "mboostrs": "0.1.3",
+  "polars": "2.0.0",
+  "numpy": "2.5.3",
+  "scipy": "1.16.3",
+  "statsmodels": "0.15.0",
+  "scikit-learn": "1.9.1",
+  "pygam": "0.12.0",
+  "lightgbm": "4.7.0",
+  "xgboost": "3.4.1",
+  "catboost": "1.2.10"
+ },
+ "elapsed_seconds": 74.2244164943695,
+ "results": [
+  {
+   "method": "mboostrs Binomial",
+   "seed": 0,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.053172044004895724,
+   "log_loss": 0.5333656831684815,
+   "brier": 0.18306293279923025,
+   "auc": 0.7910873440285204,
+   "warnings": [],
+   "mstop": 164,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs suggest_terms",
+   "seed": 0,
+   "variant": "with lwg",
+   "status": "error",
+   "seconds": 0.055983770987950265,
+   "error": "MboostrsValueError: unknown Brandom level 7 at observation 127; the code was not observed during fitting. To predict a level the fit never saw as an average group (the mean of the term's level coefficients), pass unseen_levels=\"average\"; for a zero coefficient, the value the ridge penalty shrinks every level towards, pass unseen_levels=\"zero_effect\""
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 0,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 2.191040150995832,
+   "log_loss": 0.5337531440195225,
+   "brier": 0.18295670494214528,
+   "auc": 0.7926916221033868,
+   "warnings": [
+    "UserWarning: optimal mstop 50 is within 5% of the search cap 51; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 51 is within 5% of the search cap 51; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: predict() with default type='link' returns the half log-odds (mboost +/-1 coding) for Binomial; pass type='response' for response scale."
+   ],
+   "formula": "lfp ~ brandom(k5, df=4.0) + bbs(age, df=4.0) + bbs(lwg, df=4.0) + bbs(inc, df=4.0)",
+   "family": "Binomial()"
+  },
+  {
+   "method": "statsmodels Logit",
+   "seed": 0,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.0044764240010408685,
+   "log_loss": 0.644495309424881,
+   "brier": 0.2266898466477708,
+   "auc": 0.6777183600713014,
+   "warnings": []
+  },
+  {
+   "method": "sklearn LogisticRegression",
+   "seed": 0,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.0056539780052844435,
+   "log_loss": 0.6438442973313248,
+   "brier": 0.22651962114965793,
+   "auc": 0.6775401069518717,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LogisticGAM",
+   "seed": 0,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.39792436799325515,
+   "log_loss": 0.5272649360054971,
+   "brier": 0.180794409489911,
+   "auc": 0.7992869875222817,
+   "warnings": [
+    "DeprecationWarning: Bitwise inversion '~' on bool is deprecated and will be removed in Python 3.16. This returns the bitwise inversion of the underlying int object and is usually not what you expect from negating a bool. Use the 'not' operator for boolean nega",
+    "RuntimeWarning: divide by zero encountered in divide",
+    "RuntimeWarning: invalid value encountered in divide",
+    "RuntimeWarning: invalid value encountered in multiply",
+    "RuntimeWarning: overflow encountered in divide",
+    "RuntimeWarning: overflow encountered in exp",
+    "RuntimeWarning: overflow encountered in square"
+   ]
+  },
+  {
+   "method": "LightGBM",
+   "seed": 0,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.07040600599430036,
+   "log_loss": 0.7114729097951623,
+   "brier": 0.21233751780327662,
+   "auc": 0.7935828877005348,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 0,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.10930147999897599,
+   "log_loss": 0.5281906869562284,
+   "brier": 0.18242746612926575,
+   "auc": 0.7914438502673797,
+   "warnings": [],
+   "rounds": 57
+  },
+  {
+   "method": "XGBoost",
+   "seed": 0,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.06835227999545168,
+   "log_loss": 0.607275304078843,
+   "brier": 0.20843378190923395,
+   "auc": 0.7680926916221034,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 0,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.21094477199949324,
+   "log_loss": 0.5494035675121265,
+   "brier": 0.18615602057306815,
+   "auc": 0.8,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 0,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.3181427819945384,
+   "log_loss": 0.8764366960031917,
+   "brier": 0.23971303073500205,
+   "auc": 0.7647058823529412,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs Binomial",
+   "seed": 0,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.03089634099160321,
+   "log_loss": 0.646432678577865,
+   "brier": 0.22706514253504156,
+   "auc": 0.6716577540106952,
+   "warnings": [],
+   "mstop": 76,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs suggest_terms",
+   "seed": 0,
+   "variant": "without lwg",
+   "status": "error",
+   "seconds": 0.033825107995653525,
+   "error": "MboostrsValueError: unknown Brandom level 7 at observation 127; the code was not observed during fitting. To predict a level the fit never saw as an average group (the mean of the term's level coefficients), pass unseen_levels=\"average\"; for a zero coefficient, the value the ridge penalty shrinks every level towards, pass unseen_levels=\"zero_effect\""
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 0,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 1.6485229300014907,
+   "log_loss": 0.6476494353142029,
+   "brier": 0.22764105798749823,
+   "auc": 0.6707664884135472,
+   "warnings": [
+    "UserWarning: predict() with default type='link' returns the half log-odds (mboost +/-1 coding) for Binomial; pass type='response' for response scale."
+   ],
+   "formula": "lfp ~ brandom(k5, df=4.0) + bbs(age, df=4.0) + bols(wc) + bbs(inc, df=4.0)",
+   "family": "Binomial()"
+  },
+  {
+   "method": "statsmodels Logit",
+   "seed": 0,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.0024071669904515147,
+   "log_loss": 0.6388889257587453,
+   "brier": 0.22177768520608016,
+   "auc": 0.692156862745098,
+   "warnings": []
+  },
+  {
+   "method": "sklearn LogisticRegression",
+   "seed": 0,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.004833140992559493,
+   "log_loss": 0.6383587133547538,
+   "brier": 0.22171298502742445,
+   "auc": 0.6914438502673798,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LogisticGAM",
+   "seed": 0,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.26201895900885575,
+   "log_loss": 0.6394669181674341,
+   "brier": 0.22356811815952535,
+   "auc": 0.6816399286987522,
+   "warnings": [
+    "DeprecationWarning: Bitwise inversion '~' on bool is deprecated and will be removed in Python 3.16. This returns the bitwise inversion of the underlying int object and is usually not what you expect from negating a bool. Use the 'not' operator for boolean nega",
+    "RuntimeWarning: divide by zero encountered in divide",
+    "RuntimeWarning: invalid value encountered in divide",
+    "RuntimeWarning: invalid value encountered in multiply",
+    "RuntimeWarning: overflow encountered in divide",
+    "RuntimeWarning: overflow encountered in exp",
+    "RuntimeWarning: overflow encountered in square"
+   ]
+  },
+  {
+   "method": "LightGBM",
+   "seed": 0,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.07351246100733988,
+   "log_loss": 0.8321824745818487,
+   "brier": 0.27236041616639284,
+   "auc": 0.623885918003565,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 0,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.06002954400901217,
+   "log_loss": 0.6425904801293781,
+   "brier": 0.22571085013411424,
+   "auc": 0.6670231729055258,
+   "warnings": [],
+   "rounds": 27
+  },
+  {
+   "method": "XGBoost",
+   "seed": 0,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.060072783002397045,
+   "log_loss": 0.7834640177435531,
+   "brier": 0.2669589555521947,
+   "auc": 0.618716577540107,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 0,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.14304793599876575,
+   "log_loss": 0.6678844001022352,
+   "brier": 0.23298285747941141,
+   "auc": 0.668270944741533,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 0,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.3113508670066949,
+   "log_loss": 0.8854290270218055,
+   "brier": 0.2861465152526134,
+   "auc": 0.604812834224599,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs Binomial",
+   "seed": 1,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.0835954119975213,
+   "log_loss": 0.5365913037826372,
+   "brier": 0.1836635481996034,
+   "auc": 0.7962432915921288,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(lwg): 2 below -1.76644 (worst 0.058 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -"
+   ],
+   "mstop": 282,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs suggest_terms",
+   "seed": 1,
+   "variant": "with lwg",
+   "status": "error",
+   "seconds": 0.08631490300467703,
+   "error": "MboostrsValueError: unknown Brandom level 3 at observation 36; the code was not observed during fitting. To predict a level the fit never saw as an average group (the mean of the term's level coefficients), pass unseen_levels=\"average\"; for a zero coefficient, the value the ridge penalty shrinks every level towards, pass unseen_levels=\"zero_effect\""
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 1,
+   "variant": "with lwg",
+   "status": "error",
+   "seconds": 2.1777870189980604,
+   "error": "MboostrsValueError: unknown Brandom level 3 at observation 36; the code was not observed during fitting. To predict a level the fit never saw as an average group (the mean of the term's level coefficients), pass unseen_levels=\"average\"; for a zero coefficient, the value the ridge penalty shrinks every level towards, pass unseen_levels=\"zero_effect\""
+  },
+  {
+   "method": "statsmodels Logit",
+   "seed": 1,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.002286104005179368,
+   "log_loss": 0.6364728985278267,
+   "brier": 0.22024829959680228,
+   "auc": 0.70608228980322,
+   "warnings": []
+  },
+  {
+   "method": "sklearn LogisticRegression",
+   "seed": 1,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.006156488991109654,
+   "log_loss": 0.6357458592858957,
+   "brier": 0.22011537310461524,
+   "auc": 0.7059033989266547,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LogisticGAM",
+   "seed": 1,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.2669149830035167,
+   "log_loss": 0.5399238126943836,
+   "brier": 0.1845617651402043,
+   "auc": 0.7906976744186045,
+   "warnings": [
+    "DeprecationWarning: Bitwise inversion '~' on bool is deprecated and will be removed in Python 3.16. This returns the bitwise inversion of the underlying int object and is usually not what you expect from negating a bool. Use the 'not' operator for boolean nega",
+    "RuntimeWarning: divide by zero encountered in divide",
+    "RuntimeWarning: invalid value encountered in multiply"
+   ]
+  },
+  {
+   "method": "LightGBM",
+   "seed": 1,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.06442180200247094,
+   "log_loss": 0.6297579831781052,
+   "brier": 0.19206282031661842,
+   "auc": 0.8221824686940965,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 1,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.10271410700806882,
+   "log_loss": 0.475308108672715,
+   "brier": 0.15718552056948698,
+   "auc": 0.838819320214669,
+   "warnings": [],
+   "rounds": 57
+  },
+  {
+   "method": "XGBoost",
+   "seed": 1,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.06463476100179832,
+   "log_loss": 0.5495605184634937,
+   "brier": 0.180565378452423,
+   "auc": 0.8121645796064401,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 1,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.1935475220088847,
+   "log_loss": 0.4886347090629283,
+   "brier": 0.16030026853505894,
+   "auc": 0.8413237924865833,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 1,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.46158889499201905,
+   "log_loss": 0.7338517682819048,
+   "brier": 0.20651696694730148,
+   "auc": 0.8098389982110913,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs Binomial",
+   "seed": 1,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.02389306199620478,
+   "log_loss": 0.6239045468412664,
+   "brier": 0.2174680195999974,
+   "auc": 0.6994633273703041,
+   "warnings": [
+    "UserWarning: optimal mstop 97 is within 5% of the search cap 100; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "mstop": 97,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs suggest_terms",
+   "seed": 1,
+   "variant": "without lwg",
+   "status": "error",
+   "seconds": 0.053668006003135815,
+   "error": "MboostrsValueError: unknown Brandom level 3 at observation 36; the code was not observed during fitting. To predict a level the fit never saw as an average group (the mean of the term's level coefficients), pass unseen_levels=\"average\"; for a zero coefficient, the value the ridge penalty shrinks every level towards, pass unseen_levels=\"zero_effect\""
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 1,
+   "variant": "without lwg",
+   "status": "error",
+   "seconds": 1.7397443020017818,
+   "error": "MboostrsValueError: unknown Brandom level 3 at observation 36; the code was not observed during fitting. To predict a level the fit never saw as an average group (the mean of the term's level coefficients), pass unseen_levels=\"average\"; for a zero coefficient, the value the ridge penalty shrinks every level towards, pass unseen_levels=\"zero_effect\""
+  },
+  {
+   "method": "statsmodels Logit",
+   "seed": 1,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.0020393700106069446,
+   "log_loss": 0.6266195588989364,
+   "brier": 0.2177835713720992,
+   "auc": 0.7033989266547406,
+   "warnings": []
+  },
+  {
+   "method": "sklearn LogisticRegression",
+   "seed": 1,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.004372017996502109,
+   "log_loss": 0.6261317041813603,
+   "brier": 0.21766814171732243,
+   "auc": 0.7035778175313059,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LogisticGAM",
+   "seed": 1,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.1951178990129847,
+   "log_loss": 0.6293617005278744,
+   "brier": 0.2193584137278457,
+   "auc": 0.6974955277280858,
+   "warnings": [
+    "DeprecationWarning: Bitwise inversion '~' on bool is deprecated and will be removed in Python 3.16. This returns the bitwise inversion of the underlying int object and is usually not what you expect from negating a bool. Use the 'not' operator for boolean nega"
+   ]
+  },
+  {
+   "method": "LightGBM",
+   "seed": 1,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.056147686002077535,
+   "log_loss": 0.823742951279565,
+   "brier": 0.27140236795112355,
+   "auc": 0.6529516994633273,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 1,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.0636834189936053,
+   "log_loss": 0.6507735142199997,
+   "brier": 0.22961123559164268,
+   "auc": 0.6544722719141324,
+   "warnings": [],
+   "rounds": 16
+  },
+  {
+   "method": "XGBoost",
+   "seed": 1,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.07844142700196244,
+   "log_loss": 0.793567618601863,
+   "brier": 0.27429454100334444,
+   "auc": 0.6153846153846153,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 1,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.12252976100717206,
+   "log_loss": 0.6765266025157817,
+   "brier": 0.23127218982876357,
+   "auc": 0.6822898032200357,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 1,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.30960641500132624,
+   "log_loss": 0.9254099590316728,
+   "brier": 0.3075180238977104,
+   "auc": 0.6173524150268336,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs Binomial",
+   "seed": 2,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.047911054993164726,
+   "log_loss": 0.4759910319167265,
+   "brier": 0.15827568746912488,
+   "auc": 0.8628490632732415,
+   "warnings": [],
+   "mstop": 163,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs suggest_terms",
+   "seed": 2,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.05555409600492567,
+   "log_loss": 0.4850076674935217,
+   "brier": 0.16168312769179108,
+   "auc": 0.8596677271120536,
+   "warnings": [],
+   "formula": "lfp ~ brandom(k5, df=4.0) + brandom(k618, df=4.0) + bbs(age, df=4.0) + brandom(wc, df=4.0) + brandom(hc, df=4.0) + bbs(lwg, df=4.0) + bbs(inc, df=4.0)",
+   "mstop": 121,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 2,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 2.0984910860133823,
+   "log_loss": 0.4773468426975626,
+   "brier": 0.1586543204074215,
+   "auc": 0.8628490632732414,
+   "warnings": [
+    "UserWarning: predict() with default type='link' returns the half log-odds (mboost +/-1 coding) for Binomial; pass type='response' for response scale."
+   ],
+   "formula": "lfp ~ brandom(k5, df=4.0) + bbs(age, df=4.0) + bbs(lwg, df=4.0) + bbs(inc, df=4.0)",
+   "family": "Binomial()"
+  },
+  {
+   "method": "statsmodels Logit",
+   "seed": 2,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.003171370000927709,
+   "log_loss": 0.586043995448236,
+   "brier": 0.19906673636672786,
+   "auc": 0.7769529869211735,
+   "warnings": []
+  },
+  {
+   "method": "sklearn LogisticRegression",
+   "seed": 2,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.0045605350023834035,
+   "log_loss": 0.5865133310355145,
+   "brier": 0.19932711884533694,
+   "auc": 0.7765995051254859,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LogisticGAM",
+   "seed": 2,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.26493146500433795,
+   "log_loss": 0.46522335558670297,
+   "brier": 0.1545367547434195,
+   "auc": 0.8644397313538352,
+   "warnings": [
+    "DeprecationWarning: Bitwise inversion '~' on bool is deprecated and will be removed in Python 3.16. This returns the bitwise inversion of the underlying int object and is usually not what you expect from negating a bool. Use the 'not' operator for boolean nega",
+    "RuntimeWarning: divide by zero encountered in divide",
+    "RuntimeWarning: invalid value encountered in multiply"
+   ]
+  },
+  {
+   "method": "LightGBM",
+   "seed": 2,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.06477816100232303,
+   "log_loss": 0.5742467866789455,
+   "brier": 0.17288189236266313,
+   "auc": 0.8434075645104276,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 2,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.09229040300124325,
+   "log_loss": 0.48341674475816526,
+   "brier": 0.16150438748256252,
+   "auc": 0.8462354188759279,
+   "warnings": [],
+   "rounds": 46
+  },
+  {
+   "method": "XGBoost",
+   "seed": 2,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.06466714201087598,
+   "log_loss": 0.478454605877455,
+   "brier": 0.16008505938777112,
+   "auc": 0.8533050547896783,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 2,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.1473284890089417,
+   "log_loss": 0.44149186029475557,
+   "brier": 0.1478843519638981,
+   "auc": 0.8681512902085543,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 2,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.3241084460023558,
+   "log_loss": 0.5555171624495271,
+   "brier": 0.1777070492178099,
+   "auc": 0.8400494874513962,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs Binomial",
+   "seed": 2,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.028408568003214896,
+   "log_loss": 0.6022123762653054,
+   "brier": 0.20694235260947988,
+   "auc": 0.7681159420289856,
+   "warnings": [],
+   "mstop": 72,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs suggest_terms",
+   "seed": 2,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.0296208499930799,
+   "log_loss": 0.6059011667783791,
+   "brier": 0.20860796611699145,
+   "auc": 0.7695298692117356,
+   "warnings": [],
+   "formula": "lfp ~ brandom(k5, df=4.0) + brandom(k618, df=4.0) + bbs(age, df=4.0) + brandom(wc, df=4.0) + brandom(hc, df=4.0) + bbs(inc, df=4.0)",
+   "mstop": 58,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 2,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 1.4561048239993397,
+   "log_loss": 0.5998133478781905,
+   "brier": 0.20592674524903432,
+   "auc": 0.7681159420289855,
+   "warnings": [
+    "UserWarning: predict() with default type='link' returns the half log-odds (mboost +/-1 coding) for Binomial; pass type='response' for response scale."
+   ],
+   "formula": "lfp ~ brandom(k5, df=4.0) + bbs(age, df=4.0) + bols(wc) + bbs(inc, df=4.0)",
+   "family": "Binomial()"
+  },
+  {
+   "method": "statsmodels Logit",
+   "seed": 2,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.002108644010149874,
+   "log_loss": 0.5980269794049397,
+   "brier": 0.20427794107006808,
+   "auc": 0.7606928243195475,
+   "warnings": []
+  },
+  {
+   "method": "sklearn LogisticRegression",
+   "seed": 2,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.003987493997556157,
+   "log_loss": 0.5983919425661611,
+   "brier": 0.2045017567840633,
+   "auc": 0.761046306115235,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LogisticGAM",
+   "seed": 2,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.18353017199842725,
+   "log_loss": 0.5947366451055651,
+   "brier": 0.20375890256924906,
+   "auc": 0.7606928243195475,
+   "warnings": [
+    "DeprecationWarning: Bitwise inversion '~' on bool is deprecated and will be removed in Python 3.16. This returns the bitwise inversion of the underlying int object and is usually not what you expect from negating a bool. Use the 'not' operator for boolean nega"
+   ]
+  },
+  {
+   "method": "LightGBM",
+   "seed": 2,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.059631044990965165,
+   "log_loss": 0.7457280888227578,
+   "brier": 0.2549942114676215,
+   "auc": 0.6607458465889006,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 2,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.049954202986555174,
+   "log_loss": 0.6442867800767466,
+   "brier": 0.22661705864499548,
+   "auc": 0.6860197949805585,
+   "warnings": [],
+   "rounds": 16
+  },
+  {
+   "method": "XGBoost",
+   "seed": 2,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.05456310500449035,
+   "log_loss": 0.7125541974947671,
+   "brier": 0.25175601691868954,
+   "auc": 0.6408624955814776,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 2,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.11887420499988366,
+   "log_loss": 0.6445414795318535,
+   "brier": 0.22721057454952082,
+   "auc": 0.6884057971014493,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 2,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.2962165009957971,
+   "log_loss": 0.8147554286877086,
+   "brier": 0.2735543098986472,
+   "auc": 0.6256627783669141,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs Binomial",
+   "seed": 3,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.04893028299557045,
+   "log_loss": 0.5034235762646923,
+   "brier": 0.16787168793718998,
+   "auc": 0.8326278659611993,
+   "warnings": [
+    "UserWarning: optimal mstop 190 is within 5% of the search cap 200; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "mstop": 190,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs suggest_terms",
+   "seed": 3,
+   "variant": "with lwg",
+   "status": "error",
+   "seconds": 0.05095436400733888,
+   "error": "MboostrsValueError: unknown Brandom level 7 at observation 3; the code was not observed during fitting. To predict a level the fit never saw as an average group (the mean of the term's level coefficients), pass unseen_levels=\"average\"; for a zero coefficient, the value the ridge penalty shrinks every level towards, pass unseen_levels=\"zero_effect\""
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 3,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 2.0929829660017276,
+   "log_loss": 0.5069392906290832,
+   "brier": 0.16984768491050148,
+   "auc": 0.8285714285714286,
+   "warnings": [
+    "UserWarning: optimal mstop 51 is within 5% of the search cap 52; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 52 is within 5% of the search cap 52; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: predict() with default type='link' returns the half log-odds (mboost +/-1 coding) for Binomial; pass type='response' for response scale."
+   ],
+   "formula": "lfp ~ brandom(k5, df=4.0) + bbs(age, df=4.0) + bbs(lwg, df=4.0) + bbs(inc, df=4.0)",
+   "family": "Binomial()"
+  },
+  {
+   "method": "statsmodels Logit",
+   "seed": 3,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.0021929290087427944,
+   "log_loss": 0.5982398359381428,
+   "brier": 0.20666169905905246,
+   "auc": 0.7407407407407407,
+   "warnings": []
+  },
+  {
+   "method": "sklearn LogisticRegression",
+   "seed": 3,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.0041124690033029765,
+   "log_loss": 0.5985697929451449,
+   "brier": 0.20677734462823993,
+   "auc": 0.7410934744268076,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LogisticGAM",
+   "seed": 3,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.30729180001071654,
+   "log_loss": 0.5026056476663078,
+   "brier": 0.16801660441180236,
+   "auc": 0.8291005291005291,
+   "warnings": [
+    "DeprecationWarning: Bitwise inversion '~' on bool is deprecated and will be removed in Python 3.16. This returns the bitwise inversion of the underlying int object and is usually not what you expect from negating a bool. Use the 'not' operator for boolean nega",
+    "RuntimeWarning: divide by zero encountered in divide",
+    "RuntimeWarning: invalid value encountered in multiply"
+   ]
+  },
+  {
+   "method": "LightGBM",
+   "seed": 3,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.06333931699919049,
+   "log_loss": 0.6312207578691176,
+   "brier": 0.17750440346322133,
+   "auc": 0.8354497354497353,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 3,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.10578730999259278,
+   "log_loss": 0.49874331734850985,
+   "brier": 0.160777482896051,
+   "auc": 0.8414462081128747,
+   "warnings": [],
+   "rounds": 57
+  },
+  {
+   "method": "XGBoost",
+   "seed": 3,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.06778424201183952,
+   "log_loss": 0.5546077611518481,
+   "brier": 0.1776992043437176,
+   "auc": 0.8197530864197531,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 3,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.15350154500629287,
+   "log_loss": 0.5319726372386926,
+   "brier": 0.17316128354487426,
+   "auc": 0.8250440917107584,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 3,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.31268536200514063,
+   "log_loss": 0.6993156914325311,
+   "brier": 0.19046848826224524,
+   "auc": 0.8252204585537919,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs Binomial",
+   "seed": 3,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.026689835998695344,
+   "log_loss": 0.6286492776422885,
+   "brier": 0.21904212965702574,
+   "auc": 0.7028218694885361,
+   "warnings": [],
+   "mstop": 83,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs suggest_terms",
+   "seed": 3,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.0301642030099174,
+   "log_loss": 0.6321188268495329,
+   "brier": 0.22075584228086936,
+   "auc": 0.6989417989417989,
+   "warnings": [],
+   "formula": "lfp ~ brandom(k5, df=4.0) + brandom(k618, df=4.0) + bbs(age, df=4.0) + brandom(wc, df=4.0) + brandom(hc, df=4.0) + bbs(inc, df=4.0)",
+   "mstop": 64,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 3,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 1.6885787100036396,
+   "log_loss": 0.6294412142861961,
+   "brier": 0.2195844096003213,
+   "auc": 0.7005291005291004,
+   "warnings": [
+    "UserWarning: predict() with default type='link' returns the half log-odds (mboost +/-1 coding) for Binomial; pass type='response' for response scale."
+   ],
+   "formula": "lfp ~ brandom(k5, df=4.0) + bbs(age, df=4.0) + bols(wc) + bbs(inc, df=4.0)",
+   "family": "Binomial()"
+  },
+  {
+   "method": "statsmodels Logit",
+   "seed": 3,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.0022283880098257214,
+   "log_loss": 0.6069212871802561,
+   "brier": 0.20964305970711783,
+   "auc": 0.7377425044091711,
+   "warnings": []
+  },
+  {
+   "method": "sklearn LogisticRegression",
+   "seed": 3,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.004457688992260955,
+   "log_loss": 0.6072715077124284,
+   "brier": 0.2097687825960539,
+   "auc": 0.7384479717813051,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LogisticGAM",
+   "seed": 3,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.17474294498970266,
+   "log_loss": 0.6416831069514971,
+   "brier": 0.2247821263084396,
+   "auc": 0.6941798941798941,
+   "warnings": [
+    "DeprecationWarning: Bitwise inversion '~' on bool is deprecated and will be removed in Python 3.16. This returns the bitwise inversion of the underlying int object and is usually not what you expect from negating a bool. Use the 'not' operator for boolean nega"
+   ]
+  },
+  {
+   "method": "LightGBM",
+   "seed": 3,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.057070347989792936,
+   "log_loss": 0.8534553041132519,
+   "brier": 0.28373623652005076,
+   "auc": 0.5984126984126985,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 3,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.057555093997507356,
+   "log_loss": 0.6475386856159183,
+   "brier": 0.22781674934351487,
+   "auc": 0.6861552028218694,
+   "warnings": [],
+   "rounds": 19
+  },
+  {
+   "method": "XGBoost",
+   "seed": 3,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.06262234300083946,
+   "log_loss": 0.727418783614227,
+   "brier": 0.24913385166865362,
+   "auc": 0.6461199294532627,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 3,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.13483686800464056,
+   "log_loss": 0.673804369884702,
+   "brier": 0.23428852066121197,
+   "auc": 0.6768077601410935,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 3,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.2966241730027832,
+   "log_loss": 0.8007367038487414,
+   "brier": 0.2684180009307399,
+   "auc": 0.6421516754850088,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs Binomial",
+   "seed": 4,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.09753863699734211,
+   "log_loss": 0.5118018072452046,
+   "brier": 0.1748990182974764,
+   "auc": 0.8058608058608059,
+   "warnings": [],
+   "mstop": 273,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs suggest_terms",
+   "seed": 4,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.06379707099404186,
+   "log_loss": 0.5097672606695339,
+   "brier": 0.17394623468747256,
+   "auc": 0.8075091575091575,
+   "warnings": [],
+   "formula": "lfp ~ brandom(k5, df=4.0) + brandom(k618, df=4.0) + bbs(age, df=4.0) + brandom(wc, df=4.0) + brandom(hc, df=4.0) + bbs(lwg, df=4.0) + bbs(inc, df=4.0)",
+   "mstop": 176,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 4,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 2.102278229998774,
+   "log_loss": 0.5112742717735465,
+   "brier": 0.1746903858360995,
+   "auc": 0.8054945054945055,
+   "warnings": [
+    "ExtrapolationWarning: 1 value(s) of 'inc' lie below its smallest training value 1.2; log(inc) holds them there, so their effect is the one at the training minimum",
+    "UserWarning: optimal mstop 55 is within 5% of the search cap 57; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 56 is within 5% of the search cap 57; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 57 is within 5% of the search cap 57; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: predict() with default type='link' returns the half log-odds (mboost +/-1 coding) for Binomial; pass type='response' for response scale."
+   ],
+   "formula": "lfp ~ brandom(k5, df=4.0) + bbs(age, df=4.0) + bbs(lwg, df=4.0) + bbs(log(inc), df=4.0)",
+   "family": "Binomial()"
+  },
+  {
+   "method": "statsmodels Logit",
+   "seed": 4,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.002162089993362315,
+   "log_loss": 0.6067650696760416,
+   "brier": 0.20946807708009668,
+   "auc": 0.7087912087912088,
+   "warnings": []
+  },
+  {
+   "method": "sklearn LogisticRegression",
+   "seed": 4,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.004649252994568087,
+   "log_loss": 0.6064235859558109,
+   "brier": 0.20933482610668044,
+   "auc": 0.7080586080586081,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LogisticGAM",
+   "seed": 4,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.2741219559975434,
+   "log_loss": 0.521176590016109,
+   "brier": 0.17852915663541097,
+   "auc": 0.7994505494505495,
+   "warnings": [
+    "DeprecationWarning: Bitwise inversion '~' on bool is deprecated and will be removed in Python 3.16. This returns the bitwise inversion of the underlying int object and is usually not what you expect from negating a bool. Use the 'not' operator for boolean nega",
+    "RuntimeWarning: divide by zero encountered in divide",
+    "RuntimeWarning: invalid value encountered in multiply"
+   ]
+  },
+  {
+   "method": "LightGBM",
+   "seed": 4,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.0822286559996428,
+   "log_loss": 0.7205270233839537,
+   "brier": 0.19752975074672963,
+   "auc": 0.8172161172161173,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 4,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.09983956800715532,
+   "log_loss": 0.5174010328343227,
+   "brier": 0.17658144999927702,
+   "auc": 0.8067765567765568,
+   "warnings": [],
+   "rounds": 57
+  },
+  {
+   "method": "XGBoost",
+   "seed": 4,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.06760024100367445,
+   "log_loss": 0.6002432103253383,
+   "brier": 0.1935334803188466,
+   "auc": 0.8001831501831502,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 4,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.14444949899916537,
+   "log_loss": 0.5381877044381733,
+   "brier": 0.1798700713465198,
+   "auc": 0.8135531135531137,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 4,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.2937709539983189,
+   "log_loss": 0.7665864394634185,
+   "brier": 0.19591394439229373,
+   "auc": 0.8225274725274726,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs Binomial",
+   "seed": 4,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.0850947559956694,
+   "log_loss": 0.6313696951411917,
+   "brier": 0.22043536050613546,
+   "auc": 0.6695970695970695,
+   "warnings": [],
+   "mstop": 362,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs suggest_terms",
+   "seed": 4,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.03836328300531022,
+   "log_loss": 0.6243140726536922,
+   "brier": 0.21689095014585705,
+   "auc": 0.6772893772893772,
+   "warnings": [
+    "UserWarning: optimal mstop 96 is within 5% of the search cap 100; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "formula": "lfp ~ brandom(k5, df=4.0) + brandom(k618, df=4.0) + bbs(age, df=4.0) + brandom(wc, df=4.0) + brandom(hc, df=4.0) + bbs(inc, df=4.0)",
+   "mstop": 96,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 4,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 1.4784852050070185,
+   "log_loss": 0.6253556105592528,
+   "brier": 0.2171528080078991,
+   "auc": 0.6765567765567765,
+   "warnings": [
+    "ExtrapolationWarning: 1 value(s) of 'inc' lie below its smallest training value 1.2; log(inc) holds them there, so their effect is the one at the training minimum",
+    "UserWarning: predict() with default type='link' returns the half log-odds (mboost +/-1 coding) for Binomial; pass type='response' for response scale."
+   ],
+   "formula": "lfp ~ brandom(k5, df=4.0) + bbs(age, df=4.0) + bols(wc) + bols(hc) + bbs(log(inc), df=4.0)",
+   "family": "Binomial()"
+  },
+  {
+   "method": "statsmodels Logit",
+   "seed": 4,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.001625061995582655,
+   "log_loss": 0.6310388263646206,
+   "brier": 0.2196055435554245,
+   "auc": 0.6725274725274726,
+   "warnings": []
+  },
+  {
+   "method": "sklearn LogisticRegression",
+   "seed": 4,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.004025611997349188,
+   "log_loss": 0.6306078206469671,
+   "brier": 0.21947318520917417,
+   "auc": 0.6727106227106228,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LogisticGAM",
+   "seed": 4,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.18167924699082505,
+   "log_loss": 0.6350760149926167,
+   "brier": 0.22264554543587417,
+   "auc": 0.6606227106227106,
+   "warnings": [
+    "DeprecationWarning: Bitwise inversion '~' on bool is deprecated and will be removed in Python 3.16. This returns the bitwise inversion of the underlying int object and is usually not what you expect from negating a bool. Use the 'not' operator for boolean nega"
+   ]
+  },
+  {
+   "method": "LightGBM",
+   "seed": 4,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.059954483003821224,
+   "log_loss": 0.9245632273198117,
+   "brier": 0.30544377978734566,
+   "auc": 0.5752747252747253,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 4,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.059907583010499366,
+   "log_loss": 0.6583218457793095,
+   "brier": 0.23387903035497437,
+   "auc": 0.6275641025641026,
+   "warnings": [],
+   "rounds": 34
+  },
+  {
+   "method": "XGBoost",
+   "seed": 4,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.05478799800039269,
+   "log_loss": 0.8091455910552219,
+   "brier": 0.28230700810718873,
+   "auc": 0.5699633699633699,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 4,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.15295864800282288,
+   "log_loss": 0.7281447713107462,
+   "brier": 0.2594819194727498,
+   "auc": 0.5939560439560441,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 4,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.31316061099641956,
+   "log_loss": 0.9557090951029398,
+   "brier": 0.30026190166994426,
+   "auc": 0.5864468864468864,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs Binomial",
+   "seed": 5,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.07845187300699763,
+   "log_loss": 0.5121921620634217,
+   "brier": 0.17275944408369046,
+   "auc": 0.8178210678210679,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(inc): 2 above 88 (worst 0.091 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0"
+   ],
+   "mstop": 258,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs suggest_terms",
+   "seed": 5,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.08338499399542343,
+   "log_loss": 0.5103946922025528,
+   "brier": 0.1725391494446163,
+   "auc": 0.8172799422799424,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(inc): 2 above 88 (worst 0.091 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0"
+   ],
+   "formula": "lfp ~ brandom(k5, df=4.0) + brandom(k618, df=4.0) + bbs(age, df=4.0) + brandom(wc, df=4.0) + brandom(hc, df=4.0) + bbs(lwg, df=4.0) + bbs(inc, df=4.0)",
+   "mstop": 207,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 5,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 2.359487537003588,
+   "log_loss": 0.5112593883239934,
+   "brier": 0.17202014253118894,
+   "auc": 0.8201659451659451,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(inc): 2 above 88 (worst 0.091 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0",
+    "UserWarning: optimal mstop 76 is within 5% of the search cap 78; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 78 is within 5% of the search cap 78; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: predict() with default type='link' returns the half log-odds (mboost +/-1 coding) for Binomial; pass type='response' for response scale."
+   ],
+   "formula": "lfp ~ brandom(k5, df=4.0) + bbs(age, df=4.0) + bols(hc) + bbs(lwg, df=4.0) + bbs(inc, df=4.0)",
+   "family": "Binomial()"
+  },
+  {
+   "method": "statsmodels Logit",
+   "seed": 5,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.002136490002158098,
+   "log_loss": 0.6472197994197985,
+   "brier": 0.22407597444201222,
+   "auc": 0.6892135642135643,
+   "warnings": []
+  },
+  {
+   "method": "sklearn LogisticRegression",
+   "seed": 5,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.003896362002706155,
+   "log_loss": 0.6465350388596156,
+   "brier": 0.22398026639498372,
+   "auc": 0.6886724386724387,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LogisticGAM",
+   "seed": 5,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.47994825000932906,
+   "log_loss": 0.5130309350701716,
+   "brier": 0.17243141195448822,
+   "auc": 0.8207070707070707,
+   "warnings": [
+    "DeprecationWarning: Bitwise inversion '~' on bool is deprecated and will be removed in Python 3.16. This returns the bitwise inversion of the underlying int object and is usually not what you expect from negating a bool. Use the 'not' operator for boolean nega",
+    "RuntimeWarning: divide by zero encountered in divide",
+    "RuntimeWarning: invalid value encountered in divide",
+    "RuntimeWarning: invalid value encountered in multiply",
+    "RuntimeWarning: overflow encountered in divide",
+    "RuntimeWarning: overflow encountered in exp",
+    "RuntimeWarning: overflow encountered in square"
+   ]
+  },
+  {
+   "method": "LightGBM",
+   "seed": 5,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.06475669100473169,
+   "log_loss": 0.6509981641368757,
+   "brier": 0.19896851194638066,
+   "auc": 0.8172799422799423,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 5,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.09554018199560232,
+   "log_loss": 0.4971664818195581,
+   "brier": 0.17011001867251635,
+   "auc": 0.8145743145743146,
+   "warnings": [],
+   "rounds": 57
+  },
+  {
+   "method": "XGBoost",
+   "seed": 5,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.05887756199808791,
+   "log_loss": 0.5352739612710669,
+   "brier": 0.18398311202613615,
+   "auc": 0.820436507936508,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 5,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.1616238029964734,
+   "log_loss": 0.49613736776888834,
+   "brier": 0.16710756351246436,
+   "auc": 0.8414502164502164,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 5,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.29647307899722364,
+   "log_loss": 0.691587727628707,
+   "brier": 0.1965638170804984,
+   "auc": 0.8127705627705629,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs Binomial",
+   "seed": 5,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.03722101199673489,
+   "log_loss": 0.6446565351192532,
+   "brier": 0.22455601104946316,
+   "auc": 0.6666666666666666,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(inc): 2 above 88 (worst 0.091 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0"
+   ],
+   "mstop": 98,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs suggest_terms",
+   "seed": 5,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.03123847300594207,
+   "log_loss": 0.6426175817589802,
+   "brier": 0.22332860684079633,
+   "auc": 0.6706349206349207,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(inc): 2 above 88 (worst 0.091 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0",
+    "UserWarning: optimal mstop 97 is within 5% of the search cap 100; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "formula": "lfp ~ brandom(k5, df=4.0) + brandom(k618, df=4.0) + bbs(age, df=4.0) + brandom(wc, df=4.0) + brandom(hc, df=4.0) + bbs(inc, df=4.0)",
+   "mstop": 97,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 5,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 1.5302965010050684,
+   "log_loss": 0.6444794076136211,
+   "brier": 0.22406053159003161,
+   "auc": 0.6666666666666666,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(inc): 2 above 88 (worst 0.091 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0",
+    "UserWarning: optimal mstop 49 is within 5% of the search cap 50; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: predict() with default type='link' returns the half log-odds (mboost +/-1 coding) for Binomial; pass type='response' for response scale."
+   ],
+   "formula": "lfp ~ brandom(k5, df=4.0) + bbs(age, df=4.0) + bols(wc) + bols(hc) + bbs(inc, df=4.0)",
+   "family": "Binomial()"
+  },
+  {
+   "method": "statsmodels Logit",
+   "seed": 5,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.001816523988964036,
+   "log_loss": 0.6503874705686266,
+   "brier": 0.22555078763431685,
+   "auc": 0.6664862914862915,
+   "warnings": []
+  },
+  {
+   "method": "sklearn LogisticRegression",
+   "seed": 5,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.0035818579926854,
+   "log_loss": 0.6498836336405593,
+   "brier": 0.22548885290647164,
+   "auc": 0.6664862914862915,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LogisticGAM",
+   "seed": 5,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.4037448890012456,
+   "log_loss": 0.6446419029090807,
+   "brier": 0.22353271302527994,
+   "auc": 0.6711760461760462,
+   "warnings": [
+    "DeprecationWarning: Bitwise inversion '~' on bool is deprecated and will be removed in Python 3.16. This returns the bitwise inversion of the underlying int object and is usually not what you expect from negating a bool. Use the 'not' operator for boolean nega",
+    "RuntimeWarning: divide by zero encountered in divide",
+    "RuntimeWarning: invalid value encountered in divide",
+    "RuntimeWarning: invalid value encountered in multiply",
+    "RuntimeWarning: overflow encountered in divide",
+    "RuntimeWarning: overflow encountered in exp",
+    "RuntimeWarning: overflow encountered in square"
+   ]
+  },
+  {
+   "method": "LightGBM",
+   "seed": 5,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.05743962300766725,
+   "log_loss": 0.8513198867086612,
+   "brier": 0.2870536554658547,
+   "auc": 0.5918109668109668,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 5,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.05862733599497005,
+   "log_loss": 0.6647987095547272,
+   "brier": 0.23598494420107596,
+   "auc": 0.6201298701298702,
+   "warnings": [],
+   "rounds": 28
+  },
+  {
+   "method": "XGBoost",
+   "seed": 5,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.059486405007191934,
+   "log_loss": 0.7721396295403112,
+   "brier": 0.2696405549631296,
+   "auc": 0.6048881673881674,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 5,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.12302502199599985,
+   "log_loss": 0.7170467610818686,
+   "brier": 0.24639524869389692,
+   "auc": 0.6248196248196248,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 5,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.28348959199502133,
+   "log_loss": 0.8882287170463753,
+   "brier": 0.29130719955496603,
+   "auc": 0.5921717171717172,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs Binomial",
+   "seed": 6,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.043965253003989346,
+   "log_loss": 0.5049892385528919,
+   "brier": 0.1712380175869065,
+   "auc": 0.8554778554778555,
+   "warnings": [],
+   "mstop": 153,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs suggest_terms",
+   "seed": 6,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.04955186900042463,
+   "log_loss": 0.5060811631678029,
+   "brier": 0.17154385550688694,
+   "auc": 0.8564491064491065,
+   "warnings": [],
+   "formula": "lfp ~ brandom(k5, df=4.0) + brandom(k618, df=4.0) + bbs(age, df=4.0) + brandom(wc, df=4.0) + brandom(hc, df=4.0) + bbs(lwg, df=4.0) + bbs(inc, df=4.0)",
+   "mstop": 145,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 6,
+   "variant": "with lwg",
+   "status": "error",
+   "seconds": 1.9809436969953822,
+   "error": "ValueError: cannot parse formula term: 'bols(log(inc))'"
+  },
+  {
+   "method": "statsmodels Logit",
+   "seed": 6,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.0021986960055073723,
+   "log_loss": 0.6211164619803867,
+   "brier": 0.2131971528683107,
+   "auc": 0.7371794871794872,
+   "warnings": []
+  },
+  {
+   "method": "sklearn LogisticRegression",
+   "seed": 6,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.0044134049967397004,
+   "log_loss": 0.6209275677655761,
+   "brier": 0.21323485921009205,
+   "auc": 0.736985236985237,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LogisticGAM",
+   "seed": 6,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.40434503500000574,
+   "log_loss": 0.4984248431672776,
+   "brier": 0.1689926075110782,
+   "auc": 0.8560606060606061,
+   "warnings": [
+    "DeprecationWarning: Bitwise inversion '~' on bool is deprecated and will be removed in Python 3.16. This returns the bitwise inversion of the underlying int object and is usually not what you expect from negating a bool. Use the 'not' operator for boolean nega",
+    "RuntimeWarning: divide by zero encountered in divide",
+    "RuntimeWarning: invalid value encountered in divide",
+    "RuntimeWarning: invalid value encountered in multiply",
+    "RuntimeWarning: overflow encountered in divide",
+    "RuntimeWarning: overflow encountered in exp",
+    "RuntimeWarning: overflow encountered in square"
+   ]
+  },
+  {
+   "method": "LightGBM",
+   "seed": 6,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.07206767601019237,
+   "log_loss": 0.633995476919191,
+   "brier": 0.18383827991646567,
+   "auc": 0.8504273504273505,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 6,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.08847128800698556,
+   "log_loss": 0.4875736236978714,
+   "brier": 0.1616732122065078,
+   "auc": 0.8659673659673659,
+   "warnings": [],
+   "rounds": 46
+  },
+  {
+   "method": "XGBoost",
+   "seed": 6,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.06615458900341764,
+   "log_loss": 0.49996737025204785,
+   "brier": 0.16004322198162121,
+   "auc": 0.8708236208236207,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 6,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.1473508600029163,
+   "log_loss": 0.48887473950813876,
+   "brier": 0.15886932981288868,
+   "auc": 0.8760683760683762,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 6,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.3818957500043325,
+   "log_loss": 0.6339964707874588,
+   "brier": 0.18111500149109624,
+   "auc": 0.858974358974359,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs Binomial",
+   "seed": 6,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.027452382011688314,
+   "log_loss": 0.6216908554422655,
+   "brier": 0.21604615675694241,
+   "auc": 0.7276612276612276,
+   "warnings": [],
+   "mstop": 72,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs suggest_terms",
+   "seed": 6,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.028344537000521086,
+   "log_loss": 0.6223993478993982,
+   "brier": 0.21639076574831634,
+   "auc": 0.7274669774669774,
+   "warnings": [],
+   "formula": "lfp ~ brandom(k5, df=4.0) + brandom(k618, df=4.0) + bbs(age, df=4.0) + brandom(wc, df=4.0) + brandom(hc, df=4.0) + bbs(inc, df=4.0)",
+   "mstop": 58,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 6,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 1.65361361799296,
+   "log_loss": 0.6199165089171997,
+   "brier": 0.21541178928288382,
+   "auc": 0.7297979797979798,
+   "warnings": [
+    "ExtrapolationWarning: 1 value(s) of 'inc' lie below its smallest training value 1.2; log(inc) holds them there, so their effect is the one at the training minimum",
+    "UserWarning: predict() with default type='link' returns the half log-odds (mboost +/-1 coding) for Binomial; pass type='response' for response scale."
+   ],
+   "formula": "lfp ~ brandom(k5, df=4.0) + bbs(age, df=4.0) + bols(wc) + bbs(log(inc), df=4.0)",
+   "family": "Binomial()"
+  },
+  {
+   "method": "statsmodels Logit",
+   "seed": 6,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.002865966991521418,
+   "log_loss": 0.6288863523224204,
+   "brier": 0.2194602892227398,
+   "auc": 0.7000777000777,
+   "warnings": []
+  },
+  {
+   "method": "sklearn LogisticRegression",
+   "seed": 6,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.004836654989048839,
+   "log_loss": 0.6286264732399872,
+   "brier": 0.21937980380734348,
+   "auc": 0.69988344988345,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LogisticGAM",
+   "seed": 6,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.32118631100456696,
+   "log_loss": 0.6186878111035401,
+   "brier": 0.21449126639888427,
+   "auc": 0.7247474747474748,
+   "warnings": [
+    "DeprecationWarning: Bitwise inversion '~' on bool is deprecated and will be removed in Python 3.16. This returns the bitwise inversion of the underlying int object and is usually not what you expect from negating a bool. Use the 'not' operator for boolean nega",
+    "RuntimeWarning: divide by zero encountered in divide",
+    "RuntimeWarning: invalid value encountered in divide",
+    "RuntimeWarning: invalid value encountered in multiply",
+    "RuntimeWarning: overflow encountered in divide",
+    "RuntimeWarning: overflow encountered in exp",
+    "RuntimeWarning: overflow encountered in square"
+   ]
+  },
+  {
+   "method": "LightGBM",
+   "seed": 6,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.054114938000566326,
+   "log_loss": 0.7998933139638968,
+   "brier": 0.25263582221469943,
+   "auc": 0.7086247086247086,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 6,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.048379686995758675,
+   "log_loss": 0.6358382946838805,
+   "brier": 0.2223273619060439,
+   "auc": 0.6896853146853147,
+   "warnings": [],
+   "rounds": 16
+  },
+  {
+   "method": "XGBoost",
+   "seed": 6,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.055802628994570114,
+   "log_loss": 0.7106001141437928,
+   "brier": 0.2372162809045605,
+   "auc": 0.7194055944055945,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 6,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.1373710539919557,
+   "log_loss": 0.6669004715656401,
+   "brier": 0.22909033321822853,
+   "auc": 0.7272727272727273,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 6,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.3211532869900111,
+   "log_loss": 0.7934582431244276,
+   "brier": 0.2593850152888085,
+   "auc": 0.6998834498834497,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs Binomial",
+   "seed": 7,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.08156989299459383,
+   "log_loss": 0.47390986024295245,
+   "brier": 0.1586455388754311,
+   "auc": 0.8502155172413792,
+   "warnings": [],
+   "mstop": 281,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs suggest_terms",
+   "seed": 7,
+   "variant": "with lwg",
+   "status": "error",
+   "seconds": 0.06208506600523833,
+   "error": "MboostrsValueError: unknown Brandom level 8 at observation 27; the code was not observed during fitting. To predict a level the fit never saw as an average group (the mean of the term's level coefficients), pass unseen_levels=\"average\"; for a zero coefficient, the value the ridge penalty shrinks every level towards, pass unseen_levels=\"zero_effect\""
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 7,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 2.2753419289947487,
+   "log_loss": 0.4711763634237909,
+   "brier": 0.15702070248813327,
+   "auc": 0.8538074712643678,
+   "warnings": [
+    "UserWarning: optimal mstop 83 is within 5% of the search cap 83; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: predict() with default type='link' returns the half log-odds (mboost +/-1 coding) for Binomial; pass type='response' for response scale."
+   ],
+   "formula": "lfp ~ brandom(k5, df=4.0) + bbs(age, df=4.0) + bols(hc) + bbs(lwg, df=4.0) + bbs(inc, df=4.0)",
+   "family": "Binomial()"
+  },
+  {
+   "method": "statsmodels Logit",
+   "seed": 7,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.002283839989104308,
+   "log_loss": 0.5942240690488171,
+   "brier": 0.20516258587784378,
+   "auc": 0.7334770114942528,
+   "warnings": []
+  },
+  {
+   "method": "sklearn LogisticRegression",
+   "seed": 7,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.004880496999248862,
+   "log_loss": 0.5942099850427452,
+   "brier": 0.20512233259302437,
+   "auc": 0.7334770114942528,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LogisticGAM",
+   "seed": 7,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.34686553799838293,
+   "log_loss": 0.4790726144860808,
+   "brier": 0.1611739869246865,
+   "auc": 0.8433908045977012,
+   "warnings": [
+    "DeprecationWarning: Bitwise inversion '~' on bool is deprecated and will be removed in Python 3.16. This returns the bitwise inversion of the underlying int object and is usually not what you expect from negating a bool. Use the 'not' operator for boolean nega",
+    "RuntimeWarning: divide by zero encountered in divide",
+    "RuntimeWarning: invalid value encountered in multiply"
+   ]
+  },
+  {
+   "method": "LightGBM",
+   "seed": 7,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.07947313199110795,
+   "log_loss": 0.6732975510155137,
+   "brier": 0.20909622036214476,
+   "auc": 0.8080100574712643,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 7,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.09547301000566222,
+   "log_loss": 0.48696240052638223,
+   "brier": 0.16513745866216406,
+   "auc": 0.8293821839080459,
+   "warnings": [],
+   "rounds": 56
+  },
+  {
+   "method": "XGBoost",
+   "seed": 7,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.06606985599501058,
+   "log_loss": 0.5575665517992322,
+   "brier": 0.1878675540202368,
+   "auc": 0.8230962643678161,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 7,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.14300258699222468,
+   "log_loss": 0.524976252487044,
+   "brier": 0.1772460107225571,
+   "auc": 0.8160919540229885,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 7,
+   "variant": "with lwg",
+   "status": "success",
+   "seconds": 0.27913391700712964,
+   "log_loss": 0.7671654973683639,
+   "brier": 0.21479671102715853,
+   "auc": 0.8151939655172413,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs Binomial",
+   "seed": 7,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.04258481500437483,
+   "log_loss": 0.6375053465395795,
+   "brier": 0.2231773668620085,
+   "auc": 0.65625,
+   "warnings": [],
+   "mstop": 150,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs suggest_terms",
+   "seed": 7,
+   "variant": "without lwg",
+   "status": "error",
+   "seconds": 0.04670274199452251,
+   "error": "MboostrsValueError: unknown Brandom level 8 at observation 27; the code was not observed during fitting. To predict a level the fit never saw as an average group (the mean of the term's level coefficients), pass unseen_levels=\"average\"; for a zero coefficient, the value the ridge penalty shrinks every level towards, pass unseen_levels=\"zero_effect\""
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 7,
+   "variant": "without lwg",
+   "status": "error",
+   "seconds": 1.5043230229930487,
+   "error": "MboostrsValueError: unknown Brandom level 8 at observation 27; the code was not observed during fitting. To predict a level the fit never saw as an average group (the mean of the term's level coefficients), pass unseen_levels=\"average\"; for a zero coefficient, the value the ridge penalty shrinks every level towards, pass unseen_levels=\"zero_effect\""
+  },
+  {
+   "method": "statsmodels Logit",
+   "seed": 7,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.0026871470035985112,
+   "log_loss": 0.6093821281835685,
+   "brier": 0.21022648257862586,
+   "auc": 0.7135416666666666,
+   "warnings": []
+  },
+  {
+   "method": "sklearn LogisticRegression",
+   "seed": 7,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.006011561999912374,
+   "log_loss": 0.6093992321518569,
+   "brier": 0.21024861977709497,
+   "auc": 0.7140804597701149,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LogisticGAM",
+   "seed": 7,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.1924576830060687,
+   "log_loss": 0.641220035089846,
+   "brier": 0.22506343600564413,
+   "auc": 0.6519396551724138,
+   "warnings": [
+    "DeprecationWarning: Bitwise inversion '~' on bool is deprecated and will be removed in Python 3.16. This returns the bitwise inversion of the underlying int object and is usually not what you expect from negating a bool. Use the 'not' operator for boolean nega"
+   ]
+  },
+  {
+   "method": "LightGBM",
+   "seed": 7,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.06418330399901606,
+   "log_loss": 0.9209950088798112,
+   "brier": 0.30617242067936223,
+   "auc": 0.5770474137931035,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 7,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.05900310698780231,
+   "log_loss": 0.6749603679862287,
+   "brier": 0.24042421014166132,
+   "auc": 0.6008441091954022,
+   "warnings": [],
+   "rounds": 24
+  },
+  {
+   "method": "XGBoost",
+   "seed": 7,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.0617262860032497,
+   "log_loss": 0.8068783293842086,
+   "brier": 0.2894173877716814,
+   "auc": 0.5478627873563218,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 7,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.12640915600059088,
+   "log_loss": 0.7652649750680662,
+   "brier": 0.26948183883422183,
+   "auc": 0.5815373563218391,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 7,
+   "variant": "without lwg",
+   "status": "success",
+   "seconds": 0.3046238109964179,
+   "log_loss": 0.9840883833651487,
+   "brier": 0.32171931947389787,
+   "auc": 0.5581896551724138,
+   "warnings": []
+  }
+ ],
+ "memory": [
+  {
+   "status": "success",
+   "seconds": 0.06075510100345127,
+   "peak_rss_mb": 317.1171875,
+   "peak_rss_growth_mb": 9.3671875,
+   "rss_before_mb": 307.75,
+   "method": "mboostrs Binomial"
+  },
+  {
+   "status": "error",
+   "error": "mboostrs._errors.MboostrsValueError: unknown Brandom level 7 at observation 127; the code was not observed during fitting. To predict a level the fit never saw as an average group (the mean of the term's level coefficients), pass unseen_levels=\"average\"; for a zero coefficient, the value the ridge p",
+   "method": "mboostrs suggest_terms"
+  },
+  {
+   "status": "success",
+   "seconds": 2.128565991006326,
+   "peak_rss_mb": 321.1171875,
+   "peak_rss_growth_mb": 13.8125,
+   "rss_before_mb": 307.3046875,
+   "method": "mboostrs autospec"
+  },
+  {
+   "status": "success",
+   "seconds": 0.003117925996775739,
+   "peak_rss_mb": 309.79296875,
+   "peak_rss_growth_mb": 2.44921875,
+   "rss_before_mb": 307.34375,
+   "method": "statsmodels Logit"
+  },
+  {
+   "status": "success",
+   "seconds": 0.02053999199415557,
+   "peak_rss_mb": 310.03125,
+   "peak_rss_growth_mb": 2.27734375,
+   "rss_before_mb": 307.75390625,
+   "method": "sklearn LogisticRegression"
+  },
+  {
+   "status": "success",
+   "seconds": 0.42056754999794066,
+   "peak_rss_mb": 317.328125,
+   "peak_rss_growth_mb": 9.84765625,
+   "rss_before_mb": 307.48046875,
+   "method": "pyGAM LogisticGAM"
+  },
+  {
+   "status": "success",
+   "seconds": 0.08370974499848671,
+   "peak_rss_mb": 316.71484375,
+   "peak_rss_growth_mb": 8.6015625,
+   "rss_before_mb": 308.11328125,
+   "method": "LightGBM"
+  },
+  {
+   "status": "success",
+   "seconds": 0.10811274898878764,
+   "peak_rss_mb": 315.875,
+   "peak_rss_growth_mb": 7.99609375,
+   "rss_before_mb": 307.87890625,
+   "method": "LightGBM (CV rounds)"
+  },
+  {
+   "status": "success",
+   "seconds": 0.09195653100323398,
+   "peak_rss_mb": 317.58984375,
+   "peak_rss_growth_mb": 10.0234375,
+   "rss_before_mb": 307.56640625,
+   "method": "XGBoost"
+  },
+  {
+   "status": "success",
+   "seconds": 0.19901481799024623,
+   "peak_rss_mb": 319.11328125,
+   "peak_rss_growth_mb": 11.58984375,
+   "rss_before_mb": 307.5234375,
+   "method": "CatBoost"
+  },
+  {
+   "status": "success",
+   "seconds": 0.2934645920031471,
+   "peak_rss_mb": 311.0625,
+   "peak_rss_growth_mb": 3.515625,
+   "rss_before_mb": 307.546875,
+   "method": "sklearn HGB"
+  }
+ ],
+ "lines_of_code": {
+  "mboostrs Binomial": 5,
+  "mboostrs suggest_terms": 6,
+  "mboostrs autospec": 4,
+  "statsmodels Logit": 2,
+  "sklearn LogisticRegression": 5,
+  "pyGAM LogisticGAM": 8,
+  "LightGBM": 2,
+  "LightGBM (CV rounds)": 2,
+  "XGBoost": 2,
+  "CatBoost": 2,
+  "sklearn HGB": 2
+ },
+ "evidence": {
+  "lwg_by_lfp": [
+   {
+    "lfp": 0,
+    "rows": 325,
+    "mean": 0.9745641535384616,
+    "sd": 0.29236614338485695,
+    "min": -0.0058346,
+    "max": 1.7576321,
+    "share_negative": 0.003076923076923077
+   },
+   {
+    "lfp": 1,
+    "rows": 428,
+    "mean": 1.190173178504673,
+    "sd": 0.7231938924906476,
+    "min": -2.0541239,
+    "max": 3.2188759,
+    "share_negative": 0.0397196261682243
+   }
+  ]
+ },
+ "provenance": {
+  "commit": "836c450c8c85f2b706088a74e66bd06d8fea6eec",
+  "working_tree": {
+   "dirty": true,
+   "status_digest": "sha256:37c65e2c53bf96c16149e0e9a81c65faa833a4c6d1ad72029c30d89bd0a3be31",
+   "commit_source": "working directory"
+  },
+  "native_build": {
+   "package_version": "0.1.3",
+   "source_digest": "sha256:f58c71ef847a1d65fc25d85f1fef58e898427a00042ec3164b94ac05dc233c11",
+   "git_revision": "836c450c8c85f2b706088a74e66bd06d8fea6eec",
+   "git_dirty": false,
+   "rustc": "rustc 1.99.0 (b940084d7 2026-09-28) | binary: rustc | commit-hash: b940084d7eb6a299eb4bfeb8e34901bc051e7ac4 | commit-date: 2026-09-28 | host: x86_64-unknown-linux-gnu | release: 1.99.0 | LLVM version: 23.1.1",
+   "target": "x86_64-unknown-linux-gnu",
+   "profile": "release",
+   "target_features": "fxsr,sse,sse2",
+   "crate_features": "",
+   "abi_version": 1,
+   "build_id": "sha256:da0e960499e05f7ef4b2a9ab985d91232fdbf52f325ccd73b99ce90c6ce8f42e"
+  },
+  "platform": {
+   "system": "Linux",
+   "release": "6.12.94+",
+   "machine": "x86_64",
+   "cpu": "Intel(R) Xeon(R) Processor",
+   "python": "3.13.5"
+  },
+  "versions": {
+   "mboostrs": "0.1.3",
+   "numpy": "2.5.3",
+   "rpy2": null,
+   "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+   "R": null,
+   "mboost": null
+  },
+  "compiler_flags": {
+   "RUSTFLAGS": null,
+   "CARGO_PROFILE": "release"
+  },
+  "threads": {
+   "logical_cpus": 8,
+   "r_mclapply_default_cores": null,
+   "RAYON_NUM_THREADS": "1",
+   "OMP_NUM_THREADS": "1",
+   "OPENBLAS_NUM_THREADS": "1",
+   "MKL_NUM_THREADS": "1"
+  },
+  "created_at": "2026-10-08T22:18:26+00:00",
+  "runner": "benches/bench_public_tasks.py",
+  "runner_sha256": "ccd6242f4a5b001aa64890663b6294b25d5a40880ffca4d80c5da61365055d51",
+  "timing": "perf_counter around each method's whole workflow (tuning, fit, predict); descriptive elapsed times, single-threaded, sequential",
+  "memory": "peak resident set growth of one fit in a fresh process: VmHWM after the fit minus VmRSS before it, with the high-water mark reset (clear_refs) after imports and data loading; seed 0 only"
+ }
+}

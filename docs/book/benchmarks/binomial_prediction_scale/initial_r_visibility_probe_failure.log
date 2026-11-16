@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/private/tmp/mboostrs-binomial-cancer/benches/audit_binomial_prediction_scale.py", line 161, in <module>
+    run()
+  File "/private/tmp/mboostrs-binomial-cancer/benches/audit_binomial_prediction_scale.py", line 153, in run
+    synthetic_reference=synthetic_reference, r_cancer_paths=r_path_validation(x, y))
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/mboostrs-binomial-cancer/benches/audit_binomial_prediction_scale.py", line 31, in r_path_validation
+    if not bool(ro.r('requireNamespace("mboost", quietly=TRUE)')[0]):
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+TypeError: 'NoneType' object is not subscriptable

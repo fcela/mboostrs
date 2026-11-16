@@ -1,0 +1,116 @@
+.........................................F.............................. [ 16%]
+........................................................................ [ 32%]
+........................................................................ [ 48%]
+........................................................................ [ 65%]
+........................................................................ [ 81%]
+........................................................................ [ 97%]
+.........                                                                [100%]
+=================================== FAILURES ===================================
+______ test_dropped_main_effect_can_return_after_the_dominant_interaction ______
+
+    def test_dropped_main_effect_can_return_after_the_dominant_interaction():
+        # Regression for axis_xor draw2 in the frozen mechanism study; this is
+        # development evidence, not an independent policy confirmation draw.
+        rng = np.random.default_rng(202610172)
+        x = rng.uniform(-1, 1, (2800, 5))
+        y = 3*np.sign(x[:, 0])*np.sign(x[:, 1])+x[:, 2]+rng.normal(0, .5, 2800)
+        data = pl.DataFrame({name: x[:, i] for i, name in enumerate(["x1", "x2", "x3", "n0", "n1"])})
+        data = data.with_columns(pl.Series("y", y))
+        result = mb.discover(data.head(800), "y", folds=5, seed=2, max_mstop=1600)
+        assert any(e["variables"] == ["x3"] for e in result.mean_effects)
+        recovery = [r for r in result.log if r["stage"] == "mean recovery" and r["adopted"]]
+        assert any("x3" in row["candidate"] and row["change"] < -2*row["se"] for row in recovery)
+        prediction = result.model.predict(data.tail(2000).drop("y"), type="response", extrapolation="clip")
+>       assert np.mean((prediction-y[800:])**2) < .7
+                        ^^^^^^^^^^^^^^^^^^
+E       TypeError: unsupported operand type(s) for -: 'dict' and 'float'
+
+tests/test_discover_mean_recovery.py:21: TypeError
+=============================== warnings summary ===============================
+tests/test_discover_rerun2_friction.py::test_compare_specifications_rows_carry_a_note_key
+  /private/tmp/mboostrs-spread-screen/python/mboostrs/_extrapolation.py:187: ExtrapolationWarning: 1 fold prediction in this call asked 1 learner(s) to predict outside the range they were fitted on. bbs(h), covariate h: 2 above 1784.48 (worst 0.48 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.48 training ranges out that is an assumption, not an estimate. Pass compare_specifications(extrapolation='allow') to accept it, or extrapolation='clip' to hold the effect flat outside the range instead, or extrapolation='error' to refuse. Guide: python -m mboostrs guide modeling-tactics.
+    with routine_warnings(stacklevel=3, owner=fn.__name__):
+
+tests/test_discoverability_79.py::test_zero_row_table_keeps_its_columns[AicResult]
+  /private/tmp/mboostrs-spread-screen/python/mboostrs/glmboost.py:870: UserWarning: optimal mstop 40 is within 5% of the search cap 40; the search range was exhausted — consider increasing mstop and re-running cvrisk.
+    result = CvRiskResult(
+
+tests/test_discoverability_79.py::test_zero_row_table_keeps_its_columns[AicResult]
+  /private/tmp/mboostrs-spread-screen/tests/test_discoverability_79.py:97: RuntimeWarning: the cross-validated risk is still falling at mstop=40, the largest iteration evaluated, so the reported optimal_mstop=40 is where the path stopped rather than where the risk turns. Refit with a larger mstop and cross-validate again on the same folds: `model.continue_to(80)` then `cvrisk(folds=...)`. (`continue_to` resumes the retained gradient where the fit kept one, and otherwise costs a full path; `parity_notes(include_global=True)` says which routes resume.)
+    cvr = glm.cvrisk(type="kfold", B=3, seed=1, parallel=False)
+
+tests/test_discoverability_79.py::test_zero_row_table_keeps_its_columns[AicResult]
+  /private/tmp/mboostrs-spread-screen/tests/test_discoverability_79.py:100: UserWarning: aipw: 10 propensity bin(s) hold more than 5% of all rows but fewer than 20 rows of an arm. The outcome model of that arm is fitted from too few rows there and extrapolates, so the estimate and its interval are unreliable for those rows. The fitted model is outcome_model='pooled' with outcome_interactions=True (one model with the treatment times each baseline term), chosen by outcome_model='auto' because this check flagged the bins. (1) bin 0 with propensity in [0.0785, 0.248] holds 10.0% of all rows and only 4 treated and 12 control rows (counts: 4 treated, 12 control); covariates x1 in [-2.711, -1.034]; x2 in [-1.779, 0.8803]. (2) bin 1 with propensity in [0.2513, 0.3291] holds 10.0% of all rows and only 4 treated and 12 control rows (counts: 4 treated, 12 control); covariates x1 in [-1.482, -0.6886]; x2 in [-1.392, 0.952]. (3) bin 2 with propensity in [0.3292, 0.3862] holds 10.0% of all rows and only 6 treated and 10 control rows (counts: 6 treated, 10 control); covariates x1 in [-1.227, -0.3452]; x2 in [-1.54, 1.972]. (4) bin 3 with propensity in [0.3963, 0.4382] holds 10.0% of all rows and only 7 treated and 9 control rows (counts: 7 treated, 9 control); covariates x1 in [-0.7146, -0.07204]; x2 in [-1.76, 1.867]. (5) bin 4 with propensity in [0.4418, 0.4844] holds 10.0% of all rows and only 8 treated and 8 control rows (counts: 8 treated, 8 control); covariates x1 in [-0.6832, 0.109]; x2 in [-2.458, 2.02]. (6) bin 5 with propensity in [0.488, 0.5233] holds 10.0% of all rows and only 4 treated and 12 control rows (counts: 4 treated, 12 control); covariates x1 in [-0.1765, 0.2544]; x2 in [-1.555, 1.392]. (7) bin 6 with propensity in [0.5239, 0.5698] holds 10.0% of all rows and only 10 treated and 6 control rows (counts: 10 treated, 6 control); covariates x1 in [0.033, 0.6631]; x2 in [-1.617, 0.7821]. (8) bin 7 with propensity in [0.5718, 0.6234] holds 10.0% of all rows and only 9 treated and 7 control rows (counts: 9 treated, 7 control); covariates x1 in [0.006515, 0.7522]; x2 in [-2.019, 1.785]. (9) bin 8 with propensity in [0.6286, 0.6803] holds 10.0% of all rows and only 11 treated and 5 control rows (counts: 11 treated, 5 control); covariates x1 in [0.5811, 0.9145]; x2 in [-1.031, 3.1]. (10) bin 9 with propensity in [0.6904, 0.8877] holds 10.0% of all rows and only 13 treated and 3 control rows (counts: 13 treated, 3 control); covariates x1 in [0.8624, 2.548]; x2 in [-2.711, 2.872]. Pass outcome_model='pooled' for one model without interactions, or outcome_model='separate' for one model per arm, to choose the model yourself, or state the target population without that region.
+    "AIPWResult": mb.aipw(data, spec, folds=3, mstop=30, tune=False),
+
+tests/test_discoverability_79.py::test_zero_row_table_keeps_its_columns[AicResult]
+  /private/tmp/mboostrs-spread-screen/python/mboostrs/explore.py:978: ExtrapolationWarning: 2 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(x2), covariate x2: 5 above 1.82843 (worst 0.28 training ranges out); bbs(x2), covariate x2: 2 below -2.01927 (worst 0.14 training ranges out); bbs(x1), covariate x1: 2 below -2.25085 and 1 above 2.11784 (worst 0.11 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.28 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics.
+    forward_extrapolation(extrapolated, stacklevel=2)
+
+tests/test_discoverability_79.py::test_zero_row_table_keeps_its_columns[CvRiskResult]
+  /private/tmp/mboostrs-spread-screen/tests/test_discoverability_79.py:138: UserWarning: optimal mstop 40 is within 5% of the search cap 40; the search range was exhausted — consider increasing mstop and re-running cvrisk.
+    return mb.CvRiskResult(
+
+tests/test_specification_assistants.py::test_term_report_and_cv_risk_read_every_backend
+  /private/tmp/mboostrs-spread-screen/tests/test_specification_assistants.py:83: UserWarning: brandom(city) is scored on folds that split its groups: in 3 of 3 folds, rows of a group are held out while other rows of the same group train the fold, so the score partly rewards memorized group effects. Folds that keep each group on one side, such as mboostrs.folds.grouped_folds, measure prediction in new groups instead. Guide: python -m mboostrs guide pitfalls.
+    risks[label] = mb.cv_risk("bols(x) + brandom(city, df=4)", data, "y",
+
+tests/test_specification_assistants.py::test_term_report_and_cv_risk_read_every_backend
+tests/test_specification_assistants.py::test_the_shape_search_only_tries_shapes_that_fit
+  /private/tmp/mboostrs-spread-screen/python/mboostrs/explore.py:2295: UserWarning: brandom(city) is scored on folds that split its groups: in 3 of 3 folds, rows of a group are held out while other rows of the same group train the fold, so the score partly rewards memorized group effects. Folds that keep each group on one side, such as mboostrs.folds.grouped_folds, measure prediction in new groups instead. Guide: python -m mboostrs guide pitfalls.
+    result = cv_risk(candidate.spec, data, response, family, folds, mstop, nu,
+
+tests/test_specification_assistants.py::test_the_two_scores_can_rank_specifications_differently
+  /private/tmp/mboostrs-spread-screen/python/mboostrs/explore.py:978: ExtrapolationWarning: 2 fold predictions in this call asked 1 learner(s) to predict outside the range they were fitted on. bbs(x), covariate x: 2 above 1.65406 (worst 0.14 training ranges out); bbs(x), covariate x: 1 below -2.12857 (worst 0.089 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.14 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics.
+    forward_extrapolation(extrapolated, stacklevel=2)
+
+tests/test_specification_assistants.py::test_the_search_optimism_matches_the_hand_computed_estimate
+tests/test_specification_assistants.py::test_the_competitive_set_holds_candidates_within_one_paired_se
+tests/test_specification_assistants.py::test_history_extends_the_search_across_calls
+  /private/tmp/mboostrs-spread-screen/python/mboostrs/_extrapolation.py:187: ExtrapolationWarning: 3 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(z), covariate z: 1 below -2.61356 (worst 0.14 training ranges out); bbs(x), covariate x: 1 below -2.12857 (worst 0.089 training ranges out); bbs(x), covariate x: 1 above 2.00042 (worst 0.054 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.14 training ranges out that is an assumption, not an estimate. Pass compare_specifications(extrapolation='allow') to accept it, or extrapolation='clip' to hold the effect flat outside the range instead, or extrapolation='error' to refuse. Guide: python -m mboostrs guide modeling-tactics.
+    with routine_warnings(stacklevel=3, owner=fn.__name__):
+
+tests/test_specification_assistants.py::test_the_search_optimism_is_partition_averaged_on_repeated_folds
+  /private/tmp/mboostrs-spread-screen/python/mboostrs/_extrapolation.py:187: ExtrapolationWarning: 8 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(z), covariate z: 2 below -2.20042 (worst 0.25 training ranges out); bbs(z), covariate z: 1 below -2.61356 (worst 0.14 training ranges out); bbs(x), covariate x: 2 below -2.03533 (worst 0.11 training ranges out); bbs(x), covariate x: 1 below -2.12857 and 1 above 2.00042 (worst 0.094 training ranges out); bbs(z), covariate z: 2 above 1.72197 (worst 0.061 training ranges out); bbs(x), covariate x: 1 above 2.00042 (worst 0.054 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.25 training ranges out that is an assumption, not an estimate. Pass compare_specifications(extrapolation='allow') to accept it, or extrapolation='clip' to hold the effect flat outside the range instead, or extrapolation='error' to refuse. Guide: python -m mboostrs guide modeling-tactics.
+    with routine_warnings(stacklevel=3, owner=fn.__name__):
+
+tests/test_specification_assistants.py::test_a_group_term_on_folds_that_split_its_groups_warns
+  /private/tmp/mboostrs-spread-screen/python/mboostrs/explore.py:978: ExtrapolationWarning: 1 fold prediction in this call asked 1 learner(s) to predict outside the range they were fitted on. bbs(x), covariate x: 2 below -2.01927 and 1 above 2.87157 (worst 0.14 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.14 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics.
+    forward_extrapolation(extrapolated, stacklevel=2)
+
+tests/test_specification_assistants.py::test_a_comparison_warns_when_folds_split_the_groups_of_a_candidate
+  /private/tmp/mboostrs-spread-screen/python/mboostrs/_extrapolation.py:187: ExtrapolationWarning: 2 fold predictions in this call asked 1 learner(s) to predict outside the range they were fitted on. bbs(x), covariate x: 2 below -2.01927 and 1 above 2.87157 (worst 0.14 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.14 training ranges out that is an assumption, not an estimate. Pass compare_specifications(extrapolation='allow') to accept it, or extrapolation='clip' to hold the effect flat outside the range instead, or extrapolation='error' to refuse. Guide: python -m mboostrs guide modeling-tactics.
+    with routine_warnings(stacklevel=3, owner=fn.__name__):
+
+tests/test_specification_assistants.py::test_a_suggestion_carries_the_specification_it_produces
+  /private/tmp/mboostrs-spread-screen/python/mboostrs/_extrapolation.py:187: ExtrapolationWarning: 2 fold predictions in this call asked 1 learner(s) to predict outside the range they were fitted on. bbs(w), covariate w: 3 above 2.0449 (worst 0.11 training ranges out); bbs(w), covariate w: 1 below -2.93219 (worst 0.066 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.11 training ranges out that is an assumption, not an estimate. Pass term_report(extrapolation='allow') to accept it, or extrapolation='clip' to hold the effect flat outside the range instead, or extrapolation='error' to refuse. Guide: python -m mboostrs guide modeling-tactics.
+    with routine_warnings(stacklevel=3, owner=fn.__name__):
+
+tests/test_specification_assistants.py::test_a_shape_suggestion_says_what_the_new_shape_assumes
+  /private/tmp/mboostrs-spread-screen/python/mboostrs/_extrapolation.py:187: ExtrapolationWarning: 1 fold prediction in this call asked 1 learner(s) to predict outside the range they were fitted on. bbs(x), covariate x: 1 above 2.12944 (worst 0.099 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.099 training ranges out that is an assumption, not an estimate. Pass term_report(extrapolation='allow') to accept it, or extrapolation='clip' to hold the effect flat outside the range instead, or extrapolation='error' to refuse. Guide: python -m mboostrs guide modeling-tactics.
+    with routine_warnings(stacklevel=3, owner=fn.__name__):
+
+tests/test_specification_assistants.py::test_a_distributional_model_is_suggested_when_the_spread_moves
+  /private/tmp/mboostrs-spread-screen/python/mboostrs/_extrapolation.py:187: ExtrapolationWarning: 1 fold prediction in this call asked 1 learner(s) to predict outside the range they were fitted on. bbs(z), covariate z: 2 below -2.74372 (worst 0.15 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.15 training ranges out that is an assumption, not an estimate. Pass term_report(extrapolation='allow') to accept it, or extrapolation='clip' to hold the effect flat outside the range instead, or extrapolation='error' to refuse. Guide: python -m mboostrs guide modeling-tactics.
+    with routine_warnings(stacklevel=3, owner=fn.__name__):
+
+tests/test_specification_assistants.py::test_no_distributional_suggestion_when_the_spread_is_flat
+  /private/tmp/mboostrs-spread-screen/python/mboostrs/_extrapolation.py:187: ExtrapolationWarning: 3 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(x), covariate x: 4 below -2.49389 (worst 0.097 training ranges out); bbs(x), covariate x: 1 above 2.91413 (worst 0.068 training ranges out); bbs(z), covariate z: 1 below -2.9952 and 1 above 2.5729 (worst 0.061 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.097 training ranges out that is an assumption, not an estimate. Pass term_report(extrapolation='allow') to accept it, or extrapolation='clip' to hold the effect flat outside the range instead, or extrapolation='error' to refuse. Guide: python -m mboostrs guide modeling-tactics.
+    with routine_warnings(stacklevel=3, owner=fn.__name__):
+
+tests/test_specification_assistants.py::test_no_distributional_suggestion_for_a_non_gaussian_fit
+  /private/tmp/mboostrs-spread-screen/python/mboostrs/_extrapolation.py:187: ExtrapolationWarning: 1 fold prediction in this call asked 1 learner(s) to predict outside the range they were fitted on. bbs(x), covariate x: 1 below -2.61134 and 2 above 2.43173 (worst 0.068 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.068 training ranges out that is an assumption, not an estimate. Pass term_report(extrapolation='allow') to accept it, or extrapolation='clip' to hold the effect flat outside the range instead, or extrapolation='error' to refuse. Guide: python -m mboostrs guide modeling-tactics.
+    with routine_warnings(stacklevel=3, owner=fn.__name__):
+
+tests/test_specification_assistants.py::test_an_interaction_suggestion_names_the_trade_off
+  /private/tmp/mboostrs-spread-screen/python/mboostrs/_extrapolation.py:187: ExtrapolationWarning: 3 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(x), covariate x: 2 above 2.08892 (worst 0.12 training ranges out); bbs(z), covariate z: 1 above 2.13935 (worst 0.12 training ranges out); bbs(z), covariate z: 1 below -2.66519 (worst 0.056 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.12 training ranges out that is an assumption, not an estimate. Pass term_report(extrapolation='allow') to accept it, or extrapolation='clip' to hold the effect flat outside the range instead, or extrapolation='error' to refuse. Guide: python -m mboostrs guide modeling-tactics.
+    with routine_warnings(stacklevel=3, owner=fn.__name__):
+
+tests/test_compare_specifications_lss.py::test_inner_tuned_mstop_counts_its_fits_exactly
+  /private/tmp/mboostrs-spread-screen/python/mboostrs/_extrapolation.py:188: RuntimeWarning: compare_specifications for specification 'constant': the inner mstop search stopped at max_mstop=500 in 1 of 3 outer folds, with the cross-validated risk still falling there, so those folds' mstop values are floors rather than optima. To search further, pass a larger max_mstop (now 500).
+    return fn(*args, **kwargs)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_discover_mean_recovery.py::test_dropped_main_effect_can_return_after_the_dominant_interaction
+1 failed, 440 passed, 23 warnings in 10.64s

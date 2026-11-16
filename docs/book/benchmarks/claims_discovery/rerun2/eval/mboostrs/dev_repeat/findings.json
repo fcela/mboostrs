@@ -1,0 +1,112 @@
+{
+  "library": "mboostrs 0.1.3",
+  "mean_effects": [
+    {
+      "variable": "ave_occup",
+      "shape": "increasing",
+      "evidence": "average fitted mean moves by +0.381 from the 2nd to the 98th percentile of ave_occup (range 0.381; main term). removing its term changes the joint score by +0.0197 (SE 0.0008)"
+    },
+    {
+      "variable": "roof_class",
+      "shape": "categorical",
+      "evidence": "level means relative to A: A +0.000, B +0.013, C +0.172, D +0.388. removing its term changes the joint score by +0.0398 (SE 0.0016)"
+    },
+    {
+      "variable": "housing_median_age_missing",
+      "shape": "categorical",
+      "evidence": "missing-value indicator: average mean is +0.067 when the value is missing. removing its term changes the joint score by +0.0006 (SE 0.0002)"
+    },
+    {
+      "variable": "housing_median_age",
+      "shape": "threshold_increase",
+      "evidence": "average fitted mean moves by +0.334 from the 2nd to the 98th percentile of housing_median_age (range 0.393; main term). removing its main term leaves the joint score unchanged: the tensor term that includes it has the same column space"
+    },
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "average fitted mean moves by -0.933 from the 2nd to the 98th percentile of median_income (range 0.933; main term). removing its main term leaves the joint score unchanged: the tensor term that includes it has the same column space"
+    },
+    {
+      "variable": "longitude",
+      "shape": "spatial",
+      "evidence": "enters through the adopted longitude x latitude surface. removing its term changes the joint score by +0.0029 (SE 0.0008)"
+    },
+    {
+      "variable": "latitude",
+      "shape": "spatial",
+      "evidence": "enters through the adopted longitude x latitude surface. removing its term changes the joint score by +0.0029 (SE 0.0008)"
+    }
+  ],
+  "interactions": [
+    {
+      "variables": [
+        "longitude",
+        "latitude"
+      ],
+      "evidence": "removing the term raises the joint score by 0.0029 (SE 0.0008); the term is kept"
+    },
+    {
+      "variables": [
+        "housing_median_age",
+        "median_income"
+      ],
+      "evidence": "removing the term raises the joint score by 0.0031 (SE 0.0007); the term is kept"
+    }
+  ],
+  "variance_drivers": [
+    {
+      "variable": "households",
+      "direction": "decreases_spread",
+      "evidence": "log sigma moves by -0.799 from the 5th to the 95th percentile of households; adding it lowers the out-of-fold joint score by 0.0653 (SE 0.0025)"
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.47483928176289836,
+      "lower90": -0.49100780168407226,
+      "upper90": -0.45892786828045
+    },
+    "Q2": {
+      "estimate": 0.40807303158791547,
+      "lower90": 0.38268138652844685,
+      "upper90": 0.4314280884989584
+    },
+    "Q3": {
+      "estimate": 0.2373911724149486,
+      "lower90": 0.21832128142318286,
+      "upper90": 0.2520934705951417
+    },
+    "Q4": {
+      "estimate": 0.3838239048884086,
+      "lower90": 0.3656121396587426,
+      "upper90": 0.4037631209469905
+    },
+    "Q5": {
+      "estimate": 0.02202029236130137,
+      "lower90": 0.0,
+      "upper90": 0.04255093730976178
+    },
+    "Q6": {
+      "estimate": 0.2959633591061524,
+      "lower90": 0.26834009933457365,
+      "upper90": 0.3248666041244913
+    },
+    "Q7": {
+      "estimate": -0.0026949501716635143,
+      "lower90": -0.01590292585233112,
+      "upper90": 0.010425134636389981
+    },
+    "Q8": {
+      "estimate": -0.014582013946447031,
+      "lower90": -0.031179229424287254,
+      "upper90": 0.0006595931281504653
+    }
+  },
+  "warnings": [
+    "discover: its mean-stage stopping iteration sat at the end of its grid; the final stopping iteration is tuned again in this run",
+    "Q5: covariate not selected by the rule in the mean model; the contrast is from a refit with it added (final model plus bbs(ave_rooms__log, df=4) (not selected))",
+    "Q7: covariate not selected by the rule in the mean model; the contrast is from a refit with it added (final model plus bbs(households__log, df=4) (not selected))",
+    "Q8: covariate not selected by the rule in the mean model; the contrast is from a refit with it added (final model plus bbs(median_house_value__log, df=4) (not selected))",
+    "discover proposed the interaction brandom(roof_class) %X% brandom(housing_median_age_missing); the joint-score check of the mean terms rejected it (removing it lowers the out-of-fold score by more than the term adds on the location-scale model)"
+  ]
+}

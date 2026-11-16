@@ -1,0 +1,28 @@
+[    0.0s] train 12000 rows, test 4000 rows
+[  132.4s] role age: enrolment p=1.04e-06, outcome p=7.98e-07 -> confounder
+[  132.4s] role education: enrolment p=0.0152, outcome p=1.12e-36 -> confounder
+[  132.4s] role experience: enrolment p=1.99e-124, outcome p=2e-123 -> confounder (exact linear combination; marginal tests)
+[  132.4s] role ethnicity: enrolment p=2.04e-05, outcome p=0.592 -> treatment_only
+[  132.4s] role smsa: enrolment p=1.66e-40, outcome p=0.000791 -> confounder
+[  132.4s] role region: enrolment p=0.000365, outcome p=0.0622 -> treatment_only
+[  132.4s] role parttime: enrolment p=0.422, outcome p=0.000787 -> outcome_only
+[  132.4s] role prior_earnings: enrolment p=1.33e-264, outcome p=7.8e-313 -> confounder
+[  132.4s] role months_unemployed: enrolment p=2.38e-18, outcome p=6.32e-10 -> confounder
+[  132.4s] role distance_km: enrolment p=1.05e-51, outcome p=0.388 -> instrument
+[  132.4s] role caseworker_note_len: enrolment p=0.303, outcome p=0.995 -> irrelevant
+[  177.8s] ATE 5574.7 [4318.1, 6831.2]
+[  248.3s] ATT 3695.8 [3228.0, 4163.6]; EMP 0.1048 [0.0886, 0.1210]
+[  257.5s] log earnings among employed 0.1534 [0.1117, 0.1951]
+[  257.5s] CATE_educ_lt12: 7009.6 [1636.7, 12382.5] n=1878
+[  257.5s] CATE_educ_ge16: 5464.2 [3094.3, 7834.1] n=3023
+[  257.5s] CATE_prior_q1: 3459.1 [2943.2, 3975.1] n=3002
+[  257.5s] CATE_prior_q4: 11298.4 [6833.4, 15763.4] n=3001
+[  257.5s] CATE_age_lt25: 4439.1 [3501.8, 5376.4] n=1938
+[  265.8s] robustness smooth propensity, separate outcome: ATE 6413.8
+[  281.5s] robustness two-part outcome: ATE 5754.6
+[  292.8s] robustness trees propensity, pooled outcome: ATE 5785.3
+[  309.5s] effect_model on ['age', 'prior_earnings', 'education']: tau(x) for enrolled on earnings_post, additive in ['age', 'prior_earnings', 'education']; smooth ter...
+[  309.8s] top 20% by cate: mean cate 7896.0, of which outside overlap 267; overlap-restricted ranking mean 6593.5
+[  309.8s] overlap: share outside 0.206; inside estimate 3985.59206199776
+[  311.6s] IV (distance_km, responders): 4788.9, first-stage F 105.6
+[  311.6s] wrote dev_out/findings.json and dev_out/cate_predictions.parquet in 311.6 s

@@ -1,0 +1,29 @@
+{
+  "scale": "bols(log_households)",
+  "location": [
+    "bbs(housing_median_age, df=4)",
+    "bbs(log_median_income, df=4)",
+    "bbs(latitude, df=4, by=ave_occup)"
+  ],
+  "steps": 400,
+  "nu": 0.1,
+  "logged": [
+    "ave_bedrooms",
+    "ave_rooms",
+    "households",
+    "median_house_value",
+    "median_income"
+  ],
+  "categories": {
+    "roof_class": {
+      "A": 0,
+      "B": 1,
+      "C": 2,
+      "D": 3
+    }
+  },
+  "flags": [
+    "miss_housing_median_age",
+    "miss_ave_bedrooms"
+  ]
+}

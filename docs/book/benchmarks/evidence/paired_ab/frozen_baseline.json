@@ -1,0 +1,108 @@
+{
+ "instrument": "paired-ab/v1.1",
+ "status": "frozen",
+ "frozen_at": "2026-10-14T11:55:42.310916+00:00",
+ "git_commit_main": "11d58e3830ba6723436c599c5e19f8b26bd14781",
+ "design": {
+  "panels": [
+   "interaction",
+   "kinked",
+   "linear_factors",
+   "smooth_additive",
+   "threshold_jump"
+  ],
+  "n_replicates": 8,
+  "seeds": "511000+replicate",
+  "n_total": 1000,
+  "partitions": "600 train / 150 selection / 150 calibration / 100 test",
+  "B_budget": 32,
+  "A_stopping": "doubling growth, ceiling 3200"
+ },
+ "replicates": 40,
+ "arm_failures": 0,
+ "scales": {
+  "linear_factors": 8.102888962224746,
+  "smooth_additive": 7.675623477230569,
+  "kinked": 1.3378625650257985,
+  "interaction": 0.8511395142015785,
+  "threshold_jump": 2.137527240863843
+ },
+ "summary": {
+  "interaction": {
+   "n": 8,
+   "estimation_excess_median": 0.06417279246112506,
+   "discovery_gap_median": -0.014522642979877997,
+   "partial_knowledge_gap_median": 0.07478707616368904,
+   "end_to_end_excess_median": 0.052637012380442105,
+   "B_structural_recall_median": 1.0,
+   "B_structural_fdp_median": 0.0,
+   "A_supplied_boundary_rate": 0.0
+  },
+  "kinked": {
+   "n": 8,
+   "estimation_excess_median": 0.008081640730384152,
+   "discovery_gap_median": 0.00018075985536058456,
+   "partial_knowledge_gap_median": 0.002365291807286842,
+   "end_to_end_excess_median": 0.007553505025595373,
+   "B_structural_recall_median": 1.0,
+   "B_structural_fdp_median": 0.0,
+   "A_supplied_boundary_rate": 0.125
+  },
+  "linear_factors": {
+   "n": 8,
+   "estimation_excess_median": 0.0005735052065788419,
+   "discovery_gap_median": -5.6008242282251224e-05,
+   "partial_knowledge_gap_median": 0.0004253980811067121,
+   "end_to_end_excess_median": -7.649665803450808e-05,
+   "B_structural_recall_median": 0.75,
+   "B_structural_fdp_median": 0.25,
+   "A_supplied_boundary_rate": 0.0
+  },
+  "smooth_additive": {
+   "n": 8,
+   "estimation_excess_median": -0.0008399963718209372,
+   "discovery_gap_median": 0.00038842865983654154,
+   "partial_knowledge_gap_median": 0.00010179651342843697,
+   "end_to_end_excess_median": -0.00045156771198439564,
+   "B_structural_recall_median": 1.0,
+   "B_structural_fdp_median": 0.0,
+   "A_supplied_boundary_rate": 0.25
+  },
+  "threshold_jump": {
+   "n": 8,
+   "estimation_excess_median": 0.005804132910225334,
+   "discovery_gap_median": 0.006027957206204016,
+   "partial_knowledge_gap_median": 0.008875473017993688,
+   "end_to_end_excess_median": 0.012262986004066495,
+   "B_structural_recall_median": 1.0,
+   "B_structural_fdp_median": 0.0,
+   "A_supplied_boundary_rate": 0.0
+  }
+ },
+ "floors_rmse": {
+  "linear_factors": {
+   "supplied": 1.200606304011799e-15,
+   "partial": 0.00013055721992461468
+  },
+  "smooth_additive": {
+   "supplied": 0.008697335262413236,
+   "partial": 0.008804676421226272
+  },
+  "kinked": {
+   "supplied": 0.004198365384281166,
+   "partial": 0.005852846773407686
+  },
+  "interaction": {
+   "supplied": 8.699236207693932e-05,
+   "partial": 0.2550251205609817
+  },
+  "threshold_jump": {
+   "supplied": 0.0010608203613138231,
+   "partial": 0.1032256703301418
+  }
+ },
+ "known_defects": [
+  "structural accounting: brandom term used_columns records the term string (e.g. brandom(g, df=4.0)) instead of the resolved column (g); linear_factors structural recall 0.75 / FDP 0.25 is this artifact, not a discovery failure. Predictive gaps unaffected. Pre-existing since v1.0; fix scheduled for next instrument version."
+ ],
+ "supersedes": "rerun #2 numbers (v1.0 battery: different n, partitions, stopping rule, task set \u2014 not comparable); v2 archived artifacts on feat/paired-estimation-discovery-511"
+}

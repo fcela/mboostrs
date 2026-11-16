@@ -1,0 +1,73 @@
+{
+  "library": "pygam 0.12.0",
+  "mean_effects": [
+    {
+      "variable": "housing_median_age",
+      "shape": "threshold_increase",
+      "evidence": "held-out MSE rises by 0.02623 (se 0.00402) when removed; term spans 0.680 on the claim scale over the 2nd-98th percentile range"
+    },
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "held-out MSE rises by 0.01292 (se 0.00298) when removed; term spans 1.082 on the claim scale over the 2nd-98th percentile range"
+    }
+  ],
+  "interactions": [],
+  "variance_drivers": [
+    {
+      "variable": "households",
+      "direction": "decreases_spread",
+      "evidence": "log-scale curve is decreasing; held-out log-scale MSE rises by 0.04140 (se 0.00890) when removed; scale ratio across the grid 2.67"
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.52003,
+      "lower90": -0.60392,
+      "upper90": -0.44025
+    },
+    "Q2": {
+      "estimate": 0.67886,
+      "lower90": 0.55619,
+      "upper90": 0.78472
+    },
+    "Q3": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q4": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q5": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q6": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q7": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q8": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    }
+  },
+  "warnings": [
+    "housing_median_age missing in 68 train rows and 359 test rows; filled from a GAM on longitude, latitude, median_income and log median_house_value fitted to the observed rows",
+    "ave_bedrooms missing in 7 train rows and 50 test rows; filled with the training median",
+    "test feature values outside the training range were clipped before prediction (210 values)",
+    "out-of-fold 90 percent interval coverage on the training rows: 0.900",
+    "pyGAM p-values are not used for selection because pyGAM marks them as unreliable when smoothing parameters are estimated",
+    "effect query intervals are percentile bootstrap intervals over 100 refits with the smoothing parameter held fixed"
+  ]
+}

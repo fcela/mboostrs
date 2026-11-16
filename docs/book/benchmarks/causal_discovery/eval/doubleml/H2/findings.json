@@ -1,0 +1,357 @@
+{
+  "library": "doubleml 0.11.4",
+  "effect_queries": {
+    "ATE": {
+      "estimate": 4739.694329116215,
+      "lower90": 2453.7924043747353,
+      "upper90": 7025.596253857695
+    },
+    "ATT": {
+      "estimate": 3297.228077347893,
+      "lower90": 2829.4152961643413,
+      "upper90": 3765.0408585314444
+    },
+    "CATE_educ_lt12": {
+      "estimate": 4347.550445092038,
+      "lower90": 3219.683517901325,
+      "upper90": 5475.41737228275
+    },
+    "CATE_educ_ge16": {
+      "estimate": 9505.864685976027,
+      "lower90": 1353.397596649398,
+      "upper90": 17658.331775302657
+    },
+    "CATE_prior_q1": {
+      "estimate": 3114.9741873926087,
+      "lower90": 2601.283865784745,
+      "upper90": 3628.664509000472
+    },
+    "CATE_prior_q4": {
+      "estimate": 8888.817334440286,
+      "lower90": -22.329881630408636,
+      "upper90": 17799.964550510984
+    },
+    "CATE_age_lt25": {
+      "estimate": 3267.2231241753016,
+      "lower90": 2370.771937605483,
+      "upper90": 4163.67431074512
+    },
+    "EMP_ATE": {
+      "estimate": 0.07841692858198965,
+      "lower90": 0.055703613476838075,
+      "upper90": 0.10113024368714123
+    }
+  },
+  "roles": {
+    "age": "confounder",
+    "education": "outcome_only",
+    "experience": "confounder",
+    "ethnicity": "treatment_only",
+    "smsa": "outcome_only",
+    "region": "treatment_only",
+    "parttime": "outcome_only",
+    "prior_earnings": "confounder",
+    "months_unemployed": "confounder",
+    "distance_km": "instrument",
+    "caseworker_note_len": "irrelevant",
+    "enrolled": "treatment",
+    "certificate": "mediator",
+    "responded": "post_treatment_selection",
+    "hours_post": "mediator",
+    "earnings_post": "outcome"
+  },
+  "adjustment_set": [
+    "age",
+    "education",
+    "ethnicity",
+    "smsa",
+    "region",
+    "parttime",
+    "prior_earnings",
+    "months_unemployed"
+  ],
+  "effect_modifiers": [
+    {
+      "variable": "education",
+      "direction": "nonmonotone",
+      "evidence": "BH-adjusted equal-means p=0.022 (raw 0.00275); group effects in dollars: <12 4389, 12-15 2165, >=16 5717"
+    },
+    {
+      "variable": "distance_km",
+      "direction": "larger_when_higher",
+      "evidence": "BH-adjusted equal-means p=0.031 (raw 0.00775); group effects in dollars: low 2209, mid 2406, high 4845"
+    }
+  ],
+  "channels": {
+    "employment": true,
+    "earnings_if_employed": true
+  },
+  "limited_overlap": [
+    {
+      "description": "Applicants with prior earnings above 40,000 dollars: 0.9% enrolled in the program year (27.0% of training applicants, 17.3% of test applicants). Few applicants there were enrolled, so the data do not separate individual effects in this range; test applicants there are assigned the average effect of the training applicants in the range.",
+      "variable": "prior_earnings"
+    }
+  ],
+  "warnings": [
+    "experience equals age - education - 6 exactly; it is not entered separately, and the adjustment uses age and education.",
+    "distance_km is treated as an instrument and is not in the adjustment set; the ATE uses the other pre-treatment columns.",
+    "CATE model fitted on applicants with prior earnings up to 40,000 dollars (8755 of 12000 training applicants).",
+    "Test applicants above 40,000 dollars of prior earnings (694 applicants) receive the average effect of the 3245 training applicants above that value: 8881 dollars (90% interval 634 to 17128). Individual differences in that range are not estimated.",
+    "months_unemployed: group effects over the full file (<=1 2419, 2-3 7104, >=4 4347) differ in direction from the overlap region (<=1 3756, 2-3 3201, >=4 2831). The modifier claim uses the overlap region.",
+    "age: group effects over the full file (<25 3267, 25-39 5582, >=40 4434) differ in direction from the overlap region (<25 3437, 25-39 3032, >=40 3283). The modifier claim uses the overlap region.",
+    "Share of training applicants with out-of-fold enrolment propensity below 0.05: 25.8%.",
+    "Dropping one adjustment column at a time changes the ATE (one repetition, dollars): prior_earnings -9950, months_unemployed +217, education -107, age -134.",
+    "Test-applicant CATE range: -8676 to 10366 dollars.",
+    "Response was treated as missing at random given enrolment and the adjustment set; the data cannot test this.",
+    "Earnings channels are split on responders who are employed; conditioning on employment is conditioning on a post-treatment variable, so the channel estimates describe the employed group and are not a decomposition of the ATE."
+  ],
+  "details": {
+    "nuisance_learners": {
+      "outcome": "rf_leaf20",
+      "enrol_model": "rf_leaf40",
+      "selection_model": "rf_leaf40"
+    },
+    "cate_basis": "edu_lin_inter",
+    "cate_basis_scores": {
+      "const": 1481761111.6968281,
+      "edu_lin": 1482221639.3734853,
+      "edu_lin_inter": 1481737217.150137,
+      "edu_months_bins": 1483033828.816485
+    },
+    "n_rep": 2,
+    "seed": 1,
+    "screen": [
+      {
+        "column": "age",
+        "chi2_enrol": 31.0,
+        "p_enrol": 2.5776988195253895e-08,
+        "p_earn": 0.781891580278735,
+        "p_emp": 0.00031874190338204825,
+        "r2_on_other_blocks": 0.105,
+        "role": "confounder"
+      },
+      {
+        "column": "education",
+        "chi2_enrol": 1.97,
+        "p_enrol": 0.16019215157721886,
+        "p_earn": 2.462998856984633e-21,
+        "p_emp": 1.3433754210544102e-36,
+        "r2_on_other_blocks": 0.205,
+        "role": "outcome_only"
+      },
+      {
+        "column": "ethnicity",
+        "chi2_enrol": 15.01,
+        "p_enrol": 0.00010677196610827476,
+        "p_earn": 0.11854544385240902,
+        "p_emp": 0.7920002900872887,
+        "r2_on_other_blocks": 0.045,
+        "role": "treatment_only"
+      },
+      {
+        "column": "smsa",
+        "chi2_enrol": 0.18,
+        "p_enrol": 0.6707192573347694,
+        "p_earn": 0.0028505139093927684,
+        "p_emp": 0.6494095038967747,
+        "r2_on_other_blocks": 0.46,
+        "role": "outcome_only"
+      },
+      {
+        "column": "region",
+        "chi2_enrol": 16.72,
+        "p_enrol": 0.0008055204686524451,
+        "p_earn": 0.0394318691790442,
+        "p_emp": 0.7854310788901397,
+        "r2_on_other_blocks": 0.034,
+        "role": "treatment_only"
+      },
+      {
+        "column": "parttime",
+        "chi2_enrol": 2.19,
+        "p_enrol": 0.13866430558278697,
+        "p_earn": 0.0006648022061885728,
+        "p_emp": 0.003957837124451891,
+        "r2_on_other_blocks": 0.126,
+        "role": "outcome_only"
+      },
+      {
+        "column": "prior_earnings",
+        "chi2_enrol": 1047.36,
+        "p_enrol": 9.121190986316755e-230,
+        "p_earn": 3.41497252193251e-11,
+        "p_emp": 1.0497538967703317e-31,
+        "r2_on_other_blocks": 0.287,
+        "role": "confounder"
+      },
+      {
+        "column": "months_unemployed",
+        "chi2_enrol": 56.0,
+        "p_enrol": 7.264952828535714e-14,
+        "p_earn": 0.009864915837323004,
+        "p_emp": 1.340293044146613e-16,
+        "r2_on_other_blocks": 0.294,
+        "role": "confounder"
+      },
+      {
+        "column": "distance_km",
+        "chi2_enrol": 162.82,
+        "p_enrol": 2.7347547404968274e-37,
+        "p_earn": 0.8380521179323944,
+        "p_emp": 0.2950681715468915,
+        "r2_on_other_blocks": 0.449,
+        "role": "instrument"
+      },
+      {
+        "column": "caseworker_note_len",
+        "chi2_enrol": 0.96,
+        "p_enrol": 0.3260375302984629,
+        "p_earn": 0.8413510535174309,
+        "p_emp": 0.09993972130799116,
+        "r2_on_other_blocks": 0.001,
+        "role": "irrelevant"
+      }
+    ],
+    "effect_modifier_tests": {
+      "education": {
+        "raw_p": 0.002747585667080419,
+        "bh_p": 0.021980685336643352
+      },
+      "distance_km": {
+        "raw_p": 0.00774576833239436,
+        "bh_p": 0.03098307332957744
+      },
+      "ethnicity": {
+        "raw_p": 0.029862170210231468,
+        "bh_p": 0.07963245389395059
+      },
+      "smsa": {
+        "raw_p": 0.04691402087623457,
+        "bh_p": 0.09382804175246914
+      },
+      "parttime": {
+        "raw_p": 0.2028610561117242,
+        "bh_p": 0.3245776897787587
+      },
+      "months_unemployed": {
+        "raw_p": 0.7301573711068956,
+        "bh_p": 0.9175301492092622
+      },
+      "age": {
+        "raw_p": 0.8997912511805926,
+        "bh_p": 0.9175301492092622
+      },
+      "caseworker_note_len": {
+        "raw_p": 0.9175301492092622,
+        "bh_p": 0.9175301492092622
+      }
+    },
+    "effect_modifier_group_effects_overlap": {
+      "education": {
+        "<12": 4388.542748426763,
+        "12-15": 2165.026391256859,
+        ">=16": 5716.701324274338
+      },
+      "months_unemployed": {
+        "<=1": 3756.1162807732903,
+        "2-3": 3200.9697370017543,
+        ">=4": 2830.91732887585
+      },
+      "age": {
+        "<25": 3437.144195311219,
+        "25-39": 3031.886674430025,
+        ">=40": 3282.700167374129
+      },
+      "distance_km": {
+        "low": 2208.8044614024657,
+        "mid": 2405.5686665447947,
+        "high": 4845.340761012796
+      },
+      "caseworker_note_len": {
+        "low": 2979.2458073306025,
+        "mid": 3344.8511614722697,
+        "high": 3290.3538467283006
+      },
+      "ethnicity": {
+        "cauc": 3432.826006629567,
+        "afam": 1002.2540728731964
+      },
+      "parttime": {
+        "no": 3319.5908371692285,
+        "yes": 2355.45652594081
+      },
+      "smsa": {
+        "no": 4429.556155414783,
+        "yes": 2711.7437924222586
+      }
+    },
+    "effect_modifier_group_effects_full_file": {
+      "education": {
+        "<12": 4347.550445092038,
+        "12-15": 2856.6917848230532,
+        ">=16": 9505.864685976027
+      },
+      "prior_earnings": {
+        "<=q25": 3114.9741873926087,
+        "mid": 3477.4928973159804,
+        ">=q75": 8888.817334440286
+      },
+      "months_unemployed": {
+        "<=1": 2418.5635141993644,
+        "2-3": 7104.319588439476,
+        ">=4": 4346.877721201673
+      },
+      "age": {
+        "<25": 3267.2231241753016,
+        "25-39": 5581.576300840787,
+        ">=40": 4433.599514812862
+      },
+      "distance_km": {
+        "low": 10001.755666790166,
+        "mid": 1120.4476101561168,
+        "high": 2949.1632934753798
+      },
+      "caseworker_note_len": {
+        "low": 4946.46077182716,
+        "mid": 4362.542230912546,
+        "high": 4907.296580491762
+      },
+      "ethnicity": {
+        "cauc": 4932.587944929154,
+        "afam": 2503.7071581974565
+      },
+      "parttime": {
+        "no": 5040.149696825097,
+        "yes": 1701.7567222819857
+      },
+      "smsa": {
+        "no": 4113.538269572222,
+        "yes": 4956.940751840483
+      }
+    },
+    "employment_ate": 0.07841692858198965,
+    "hours_ate_all_responders": {
+      "estimate": 188.9467187379371,
+      "lower90": 145.30954728705754,
+      "upper90": 232.58389018881664
+    },
+    "earnings_if_employed_complete_case": {
+      "estimate_k_dollars": 3.8193966989502046,
+      "lower90": 0.7633973373438288,
+      "upper90": 6.8753960605565805
+    },
+    "hours_if_employed_complete_case": {
+      "estimate": 74.20998850473343,
+      "lower90": 49.4001003568283,
+      "upper90": 99.01987665263857
+    },
+    "drop_one_changes_in_ate": {
+      "prior_earnings": -9949.927901294846,
+      "months_unemployed": 217.02895540288046,
+      "education": -107.45681175576283,
+      "age": -134.268103893658
+    },
+    "seconds_headline": 12.3,
+    "seconds_total": 160.6
+  }
+}

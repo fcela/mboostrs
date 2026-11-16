@@ -1,0 +1,78 @@
+{
+  "library": "catboost 1.2.10",
+  "mean_effects": [
+    {
+      "variable": "housing_median_age",
+      "shape": "u_shaped",
+      "evidence": "held-out permutation: squared-error increase 0.0592 (z=7.0); partial dependence 0.244 at 5 to 0.627 at 52."
+    },
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "held-out permutation: squared-error increase 0.0870 (z=8.5); partial dependence 0.708 at 1.243 to -0.080 at 8.149."
+    },
+    {
+      "variable": "roof_class",
+      "shape": "categorical",
+      "evidence": "held-out permutation: squared-error increase 0.0309 (z=4.7); level means: A=0.255, B=0.253, C=0.414, D=0.551."
+    }
+  ],
+  "interactions": [],
+  "variance_drivers": [],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.465819,
+      "lower90": -0.477177,
+      "upper90": -0.301375
+    },
+    "Q2": {
+      "estimate": 0.43972,
+      "lower90": 0.387212,
+      "upper90": 0.514034
+    },
+    "Q3": {
+      "estimate": 0.155846,
+      "lower90": 0.065381,
+      "upper90": 0.198281
+    },
+    "Q4": {
+      "estimate": 0.296249,
+      "lower90": 0.169943,
+      "upper90": 0.301234
+    },
+    "Q5": {
+      "estimate": 0.019993,
+      "lower90": -0.073831,
+      "upper90": 0.065309
+    },
+    "Q6": {
+      "estimate": 0.193118,
+      "lower90": 0.094301,
+      "upper90": 0.213767
+    },
+    "Q7": {
+      "estimate": 0.019694,
+      "lower90": -0.019984,
+      "upper90": 0.024603
+    },
+    "Q8": {
+      "estimate": -0.111702,
+      "lower90": -0.162227,
+      "upper90": -0.044551
+    }
+  },
+  "warnings": [
+    "Test rows differ from training rows in median_income: standardised mean difference 0.59 (test mean 4.539, training mean 3.57).",
+    "2.2% of test rows have median_income outside the training range; tree predictions are constant beyond the range.",
+    "Test rows differ from training rows in median_house_value: standardised mean difference 0.31 (test mean 2.342e+05, training mean 1.989e+05).",
+    "Test rows differ from training rows in ave_rooms: standardised mean difference 0.24 (test mean 5.708, training mean 5.247).",
+    "Test rows differ from training rows in ave_occup: standardised mean difference 0.41 (test mean 3.189, training mean 2.888).",
+    "housing_median_age has 68 missing values in training (8.5%); CatBoost sends missing values to a learned side of each split.",
+    "total_bedrooms has 7 missing values in training (0.9%); CatBoost sends missing values to a learned side of each split.",
+    "ave_bedrooms has 7 missing values in training (0.9%); CatBoost sends missing values to a learned side of each split.",
+    "Only 800 training rows: the association and interaction tests have low power and the intervals are wide.",
+    "Borderline association, not called as mean effects (z between 3 and 4): latitude (z=3.4).",
+    "Effect-query intervals are 5th to 95th percentiles of bootstrap refits with fixed settings; they do not include tuning uncertainty or model bias.",
+    "Prediction intervals are calibrated on training out-of-fold residuals; coverage on a shifted test book is not guaranteed."
+  ]
+}

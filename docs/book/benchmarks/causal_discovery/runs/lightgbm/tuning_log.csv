@@ -1,0 +1,26 @@
+stage,family,config,num_leaves,mcs_frac,n_estimators,learning_rate,validation_loss,loss,kept,note
+grid,propensity,A,7,0.01,300,0.03,0.449843,logloss,false,"lightgbm hyperparameter grid (run.py, dev seed 1)"
+grid,propensity,B,15,0.02,300,0.03,0.454246,logloss,false,"lightgbm hyperparameter grid (run.py, dev seed 1)"
+grid,propensity,C,7,0.05,300,0.03,0.449258,logloss,true,"lightgbm hyperparameter grid (run.py, dev seed 1)"
+grid,response,A,7,0.01,300,0.03,0.438464,logloss,false,"lightgbm hyperparameter grid (run.py, dev seed 1)"
+grid,response,B,15,0.02,300,0.03,0.442203,logloss,false,"lightgbm hyperparameter grid (run.py, dev seed 1)"
+grid,response,C,7,0.05,300,0.03,0.437481,logloss,true,"lightgbm hyperparameter grid (run.py, dev seed 1)"
+grid,outcome,A,7,0.01,300,0.03,355684557.741715,mse,true,"lightgbm hyperparameter grid (run.py, dev seed 1)"
+grid,outcome,B,15,0.02,300,0.03,362590376.634026,mse,false,"lightgbm hyperparameter grid (run.py, dev seed 1)"
+grid,outcome,C,7,0.05,300,0.03,369050261.416265,mse,false,"lightgbm hyperparameter grid (run.py, dev seed 1)"
+grid,employment,A,7,0.01,300,0.03,0.570398,logloss,false,"lightgbm hyperparameter grid (run.py, dev seed 1)"
+grid,employment,B,15,0.02,300,0.03,0.581795,logloss,false,"lightgbm hyperparameter grid (run.py, dev seed 1)"
+grid,employment,C,7,0.05,300,0.03,0.569669,logloss,true,"lightgbm hyperparameter grid (run.py, dev seed 1)"
+grid,wage,A,7,0.01,300,0.03,240175019.416777,mse,true,"lightgbm hyperparameter grid (run.py, dev seed 1)"
+grid,wage,B,15,0.02,300,0.03,244228499.257169,mse,false,"lightgbm hyperparameter grid (run.py, dev seed 1)"
+grid,wage,C,7,0.05,300,0.03,249249849.081003,mse,false,"lightgbm hyperparameter grid (run.py, dev seed 1)"
+grid,cate,A,7,0.01,300,0.03,1007923666.30417,mse_pseudo_outcome,true,"lightgbm hyperparameter grid (run.py, dev seed 1)"
+grid,cate,B,15,0.02,300,0.03,1017763023.42219,mse_pseudo_outcome,false,"lightgbm hyperparameter grid (run.py, dev seed 1)"
+grid,cate,C,7,0.05,300,0.03,1023028797.244872,mse_pseudo_outcome,false,"lightgbm hyperparameter grid (run.py, dev seed 1)"
+design,"design: first version, E_MIN 0.01, ATT as mean of ATE-form pseudo-outcome over treated",-,,,,,,n/a,false,ATE 3629; ATT 6283; not kept
+design,"design: E_MIN 0.03, same ATT form",-,,,,,,n/a,false,ATE 2921; ATT 3922; not kept
+design,"design: E_MIN 0.05, efficient ATT score",-,,,,,,n/a,false,ATE 2799; ATT 3630; not kept (sensitivity only)
+design,"design: E_MIN 0.01, efficient ATT score",-,,,,,,n/a,false,ATE 3617; ATT 3634; not kept (sensitivity only)
+design,"design: E_MIN 0.02, efficient ATT score, winsorised stage-2 target (kept)",-,,,,,,n/a,true,ATE 3078 (dev exploration); final run ATE 3102; kept
+design,diagnostic: linear_tree leaves in outcome models,-,,,,,,n/a,false,sparse-region predictions more extreme; not kept
+design,design: single covariate-screen partition,-,,,,,,n/a,false,ethnicity and region z near threshold; replaced by two-partition average; not kept

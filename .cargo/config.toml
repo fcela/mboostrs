@@ -1,0 +1,17 @@
+# Release and source builds use Rust's portable target baseline.  PyPI wheel
+# tags do not encode an x86 microarchitecture, so compiling a generally tagged
+# wheel for x86-64-v3 can install successfully and then terminate the process
+# with SIGILL on an older CPU.  Developers benchmarking known hardware may set
+# RUSTFLAGS="-C target-cpu=native" locally; that flag must not enter release or
+# CI configuration.
+
+# Stack size for spawned threads, test threads and rayon workers included. In
+# an unoptimized test build, faer's SVD inside `df` calibration needs about
+# 1.6-1.8 MiB on one worker (a 200-column kernel design), against the 2 MiB
+# default, and a worker that steals another test's job while it waits nests
+# the two: `cargo test` aborted with "thread '<unknown>' has overflowed its
+# stack" in 2 of 20 runs (issue #174). A release build needs under 128 KiB
+# for the same call. Applies to cargo-run processes only; an already-set
+# RUST_MIN_STACK wins.
+[env]
+RUST_MIN_STACK = "8388608"

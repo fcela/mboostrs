@@ -1,0 +1,123 @@
+{
+  "library": "interpret 0.7.8 (ExplainableBoostingRegressor)",
+  "mean_effects": [
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "Removing it raises out-of-fold MSE by 6.4 percent (Holm p=6.4e-34; worse in 5 of 5 folds). Partial effect runs from +0.492 at the 2nd percentile to -0.426 at the 98th percentile on the log scale."
+    },
+    {
+      "variable": "roof_class",
+      "shape": "categorical",
+      "evidence": "Removing it raises out-of-fold MSE by 6.1 percent (Holm p=4.3e-47; worse in 5 of 5 folds). Partial effects by class: A -0.105, B -0.103, C +0.044, D +0.268."
+    },
+    {
+      "variable": "housing_median_age",
+      "shape": "nonmonotone",
+      "evidence": "Removing it raises out-of-fold MSE by 5.8 percent (Holm p=2.3e-37; worse in 5 of 5 folds). Partial effect runs from -0.110 at the 2nd percentile to +0.263 at the 98th percentile on the log scale."
+    },
+    {
+      "variable": "longitude",
+      "shape": "spatial",
+      "evidence": "Removing it raises out-of-fold MSE by 1.2 percent (Holm p=5e-15; worse in 5 of 5 folds). Partial effect runs from -0.141 at the 2nd percentile to +0.049 at the 98th percentile on the log scale."
+    },
+    {
+      "variable": "latitude",
+      "shape": "spatial",
+      "evidence": "Removing it raises out-of-fold MSE by 1.2 percent (Holm p=2.5e-11; worse in 5 of 5 folds). Partial effect runs from -0.172 at the 2nd percentile to -0.005 at the 98th percentile on the log scale."
+    },
+    {
+      "variable": "ave_occup",
+      "shape": "increasing",
+      "evidence": "Removing it raises out-of-fold MSE by 0.7 percent (Holm p=0.0026; worse in 5 of 5 folds). Partial effect runs from -0.201 at the 2nd percentile to +0.227 at the 98th percentile on the log scale."
+    }
+  ],
+  "interactions": [
+    {
+      "variables": [
+        "median_income",
+        "housing_median_age"
+      ],
+      "evidence": "Adding the pair lowers out-of-fold MSE by 0.5 percent over the mains model (Holm p=3e-06; better in 5 of 5 folds)."
+    },
+    {
+      "variables": [
+        "longitude",
+        "latitude"
+      ],
+      "evidence": "Adding the pair lowers out-of-fold MSE by 0.3 percent over the mains model (Holm p=5.1e-05; better in 5 of 5 folds)."
+    }
+  ],
+  "variance_drivers": [
+    {
+      "variable": "households",
+      "direction": "decreases_spread",
+      "evidence": "Permuting it on held-out rows raises squared error on log squared residuals by 0.8 percent (Holm p=9e-12; worse in 5 of 5 folds). Spread-model curve shape: decreasing."
+    },
+    {
+      "variable": "population",
+      "direction": "decreases_spread",
+      "evidence": "Permuting it on held-out rows raises squared error on log squared residuals by 0.7 percent (Holm p=1.4e-09; worse in 5 of 5 folds). Spread-model curve shape: decreasing."
+    },
+    {
+      "variable": "total_rooms",
+      "direction": "decreases_spread",
+      "evidence": "Permuting it on held-out rows raises squared error on log squared residuals by 0.6 percent (Holm p=2.7e-08; worse in 5 of 5 folds). Spread-model curve shape: decreasing."
+    },
+    {
+      "variable": "total_bedrooms",
+      "direction": "decreases_spread",
+      "evidence": "Permuting it on held-out rows raises squared error on log squared residuals by 0.3 percent (Holm p=3.9e-05; worse in 5 of 5 folds). Spread-model curve shape: decreasing."
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.4632263934637843,
+      "lower90": -0.4882884764335364,
+      "upper90": -0.4250510808938279
+    },
+    "Q2": {
+      "estimate": 0.4086310785066271,
+      "lower90": 0.3748054625815752,
+      "upper90": 0.4289961616003285
+    },
+    "Q3": {
+      "estimate": 0.2964130511278915,
+      "lower90": 0.26740836166566506,
+      "upper90": 0.3219425742138924
+    },
+    "Q4": {
+      "estimate": 0.3735740064510711,
+      "lower90": 0.3498841440810205,
+      "upper90": 0.3959953091023185
+    },
+    "Q5": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q6": {
+      "estimate": 0.3279759423767164,
+      "lower90": 0.2620149855432863,
+      "upper90": 0.34674504724658417
+    },
+    "Q7": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q8": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    }
+  },
+  "warnings": [
+    "Missing values in training rows: housing_median_age (1186), total_bedrooms (168), ave_bedrooms (168). EBM routes missing values to a separate bin per term (missing='separate').",
+    "Missing values in test rows: housing_median_age (394), total_bedrooms (57), ave_bedrooms (57).",
+    "Covariates removed from the final model (no out-of-fold gain given the others): total_rooms, total_bedrooms, population, households, median_house_value, ave_rooms, ave_bedrooms.",
+    "Train-versus-test classifier AUC 0.609: calibration uses density-ratio weights (effective sample size 12286 of 15480).",
+    "Effect queries whose covariates are outside the prediction model are fixed at 0 with a zero-width interval: Q5, Q7, Q8. Their evidence is the drop-one test.",
+    "Effect-query intervals are percentiles of 30 Bayesian-bootstrap refits of the prediction model, with tuning and variable selection fixed. They do not include selection uncertainty."
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "library": "lightgbm 4.7.0",
+  "effect_queries": {
+    "ATE": {
+      "estimate": 10483.050435645813,
+      "lower90": 4310.500329068929,
+      "upper90": 16655.600542222695
+    },
+    "ATT": {
+      "estimate": 3431.0197876014586,
+      "lower90": 2051.7357984590435,
+      "upper90": 4810.303776743874
+    },
+    "CATE_educ_lt12": {
+      "estimate": 7990.341468007901,
+      "lower90": 4810.597624819411,
+      "upper90": 11170.085311196392
+    },
+    "CATE_educ_ge16": {
+      "estimate": 24492.87793322722,
+      "lower90": 2046.9473443069292,
+      "upper90": 46938.80852214751
+    },
+    "CATE_prior_q1": {
+      "estimate": 2964.4334887296286,
+      "lower90": 1697.6104995401502,
+      "upper90": 4231.256477919107
+    },
+    "CATE_prior_q4": {
+      "estimate": 30144.80881075852,
+      "lower90": 6640.983384238967,
+      "upper90": 53648.63423727808
+    },
+    "CATE_age_lt25": {
+      "estimate": 5722.90589730432,
+      "lower90": 3843.8942443532032,
+      "upper90": 7601.917550255437
+    },
+    "EMP_ATE": {
+      "estimate": 0.10088232757394378,
+      "lower90": 0.0423316352606682,
+      "upper90": 0.15943301988721936
+    }
+  },
+  "roles": {
+    "age": "irrelevant",
+    "education": "irrelevant",
+    "experience": "irrelevant",
+    "ethnicity": "irrelevant",
+    "smsa": "irrelevant",
+    "region": "irrelevant",
+    "parttime": "irrelevant",
+    "prior_earnings": "confounder",
+    "months_unemployed": "irrelevant",
+    "distance_km": "irrelevant",
+    "caseworker_note_len": "irrelevant",
+    "enrolled": "treatment",
+    "certificate": "mediator",
+    "responded": "post_treatment_selection",
+    "hours_post": "mediator",
+    "earnings_post": "outcome"
+  },
+  "adjustment_set": [
+    "prior_earnings"
+  ],
+  "effect_modifiers": [
+    {
+      "variable": "prior_earnings",
+      "direction": "nonmonotone",
+      "evidence": "median split: effect difference (above minus at or below median) 15432 dollars, 95% bootstrap interval 1574 to 29290; quartile means of the pseudo-outcome 2840, 2695, 6253, 30145"
+    }
+  ],
+  "channels": {
+    "employment": true,
+    "earnings_if_employed": true
+  },
+  "limited_overlap": [
+    {
+      "description": "applicants with prior_earnings of about 40250 or more have a cross-fitted enrolment probability below 0.05 (369 of 1500 program-year applicants, enrolled share 0.024); the effect for them rests on few enrolled cases. 708 of 4000 new applicants fall in this region.",
+      "variable": "prior_earnings"
+    }
+  ],
+  "warnings": [
+    "Response to the follow-up survey is modelled as missing at random given the covariates and enrolment. This cannot be checked with these data; if response depends on unmeasured earnings, the earnings effects are biased.",
+    "Enrolled share is 0.609 in the bottom quartile of prior_earnings and 0.024 in the top quartile; the adjusted effects depend on the no-unmeasured-confounding assumption. See sensitivity.json for a bias table.",
+    "Channel decomposition uses employment and earnings-among-employed models; the wage part is conditional on employment and is not a randomized comparison.",
+    "Intervals are normal approximations: estimate plus or minus 1.645 times the standard deviation over 30 bootstrap replicates of the full pipeline.",
+    "Effect-modifier claims are based on 95% bootstrap intervals of median-split contrasts, with no adjustment for the number of contrasts tested.",
+    "Covariate roles were assigned by a LightGBM drop-one screen with z threshold 2.0; instrument status is a rule (enrolment z at least 4.0), not a test of the exclusion restriction.",
+    "Instrumental-variable check with distance_km: beta 15573 dollars per unit of enrolment, first-stage partial correlation -0.165; this estimate applies to applicants whose enrolment responds to distance."
+  ]
+}

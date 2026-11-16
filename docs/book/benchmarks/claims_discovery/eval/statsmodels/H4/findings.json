@@ -1,0 +1,95 @@
+{
+  "library": "statsmodels 0.15.0",
+  "mean_effects": [
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "drop-one F=720.6 on 4 df, p<1e-300, Holm-adjusted p<1e-300 over 5 terms; average fitted y +0.874 at 1.046 (1st pct) to -0.121 at 8.768 (99th pct)"
+    },
+    {
+      "variable": "housing_median_age",
+      "shape": "threshold_increase",
+      "evidence": "drop-one F=261.3 on 4 df, p=1.2e-217, Holm-adjusted p=4.9e-217 over 5 terms; average fitted y +0.203 at 4 (1st pct) to +0.612 at 52 (99th pct)"
+    },
+    {
+      "variable": "ave_occup",
+      "shape": "increasing",
+      "evidence": "drop-one F=148.8 on 4 df, p=4.5e-125, Holm-adjusted p=8.9e-125 over 5 terms; average fitted y +0.069 at 1.528 (1st pct) to +0.463 at 5.394 (99th pct)"
+    },
+    {
+      "variable": "roof_class",
+      "shape": "categorical",
+      "evidence": "drop-one F=292.8 on 3 df, p=7.4e-185, Holm-adjusted p=2.2e-184 over 5 terms; average fitted y by level: A +0.210, B +0.216, C +0.365, D +0.574"
+    },
+    {
+      "variable": "longitude",
+      "shape": "spatial",
+      "evidence": "joint longitude-latitude spline surface, drop-one F=27.7 on 16 df, p=5.7e-83, Holm-adjusted p=5.7e-83 over 5 terms; the two coordinates are not separable in the fit"
+    },
+    {
+      "variable": "latitude",
+      "shape": "spatial",
+      "evidence": "joint longitude-latitude spline surface, drop-one F=27.7 on 16 df, p=5.7e-83, Holm-adjusted p=5.7e-83 over 5 terms; the two coordinates are not separable in the fit"
+    }
+  ],
+  "interactions": [],
+  "variance_drivers": [
+    {
+      "variable": "households",
+      "direction": "decreases_spread",
+      "evidence": "drop-one F=187.3 on 4 df, p=5.2e-157, Holm-adjusted p=5.2e-157 over 1 terms; sigma 0.957 at 32 (1st pct) to 0.241 at 1920 (99th pct)"
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.459247,
+      "lower90": -0.476383,
+      "upper90": -0.442105
+    },
+    "Q2": {
+      "estimate": 0.398204,
+      "lower90": 0.375865,
+      "upper90": 0.417662
+    },
+    "Q3": {
+      "estimate": 0.274111,
+      "lower90": 0.254356,
+      "upper90": 0.291534
+    },
+    "Q4": {
+      "estimate": 0.363992,
+      "lower90": 0.337796,
+      "upper90": 0.390784
+    },
+    "Q5": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q6": {
+      "estimate": 0.278153,
+      "lower90": 0.247586,
+      "upper90": 0.309278
+    },
+    "Q7": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q8": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    }
+  },
+  "warnings": [
+    "Missing values were imputed by linear regression on the other covariates (training rows only), and a missing indicator is kept in every model. Missing counts: train {'housing_median_age': 1200, 'ave_bedrooms': 164}, test {'housing_median_age': 369, 'ave_bedrooms': 62}.",
+    "Covariate shift between train and test: median_income: standardized mean difference test minus train = +0.44; ave_rooms: standardized mean difference test minus train = +0.15; median_house_value: standardized mean difference test minus train = +0.31",
+    "Rows with housing_median_age missing have fitted y +0.077 (90% CI +0.052 to +0.102) relative to the imputed-value prediction; the imputation does not remove that difference.",
+    "Rows with ave_bedrooms missing have fitted y -0.036 (90% CI -0.099 to +0.026) relative to the imputed-value prediction; the imputation does not remove that difference.",
+    "Effect-query intervals are bootstrap intervals for the selected terms. They do not include uncertainty from variable selection or from tuning.",
+    "Prediction intervals use standardized training residual quantiles. Coverage of the 90% interval on the training rows is 0.900.",
+    "row_id is not used as a covariate. Its correlation with y in the training file is -0.12; it is treated as an identifier, not as a covariate.",
+    "Interactions are screened for pairs of main effects only; no three-way terms are searched."
+  ]
+}

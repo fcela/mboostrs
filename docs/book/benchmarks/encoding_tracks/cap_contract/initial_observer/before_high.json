@@ -1,0 +1,2364 @@
+{
+ "schema_version": 1,
+ "created_at": "2026-10-15T15:43:48+00:00",
+ "commit": "ae3d4a53dae95f24974dbe2c37184d087767e9a2",
+ "working_tree": {
+  "dirty": true,
+  "status_digest": "sha256:458a4506f87669827805fe1034ee7a84e0a32ac2339fcdf8cee60e79b4c76589",
+  "commit_source": "working directory"
+ },
+ "platform": {
+  "system": "Darwin",
+  "release": "25.3.0",
+  "machine": "arm64",
+  "cpu": "arm",
+  "python": "3.12.11"
+ },
+ "versions": {
+  "mboostrs": "0.1.3",
+  "numpy": "2.4.6",
+  "rpy2": "3.6.7",
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "R": "4.5.1",
+  "mboost": "2.9.11",
+  "scipy": "1.16.3",
+  "pandas": "2.3.3",
+  "ngboost": "0.5.11",
+  "mssm": "1.2.5",
+  "scikit-learn": "1.9.0"
+ },
+ "threads": {
+  "logical_cpus": 10,
+  "r_mclapply_default_cores": "2",
+  "RAYON_NUM_THREADS": "1",
+  "OMP_NUM_THREADS": "1",
+  "OPENBLAS_NUM_THREADS": "1",
+  "MKL_NUM_THREADS": "1"
+ },
+ "build_info": {
+  "package_version": "0.1.3",
+  "source_digest": "sha256:2b3a791562af5d697351fb80918745b25d504eec49f074ad1b4b0a07a4d88b61",
+  "git_revision": "056d475c5edc718172161788d2cf5659cda63576",
+  "git_dirty": false,
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+  "target": "aarch64-apple-darwin",
+  "profile": "release",
+  "target_features": "aes,bf16,bti,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,i8mm,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+  "crate_features": "",
+  "abi_version": 1,
+  "build_id": "sha256:ca68a8985619f64c7d261afc7f5092a4e6aab718edf11ebd8e94034c04e53ac0"
+ },
+ "scripts": {
+  "/private/tmp/mboostrs-encoding-study/benches/bench_discover_cap.py": "004060a4bfd23e9564fdc30ec31a2237afafdb0467c6de66bfba348897cb58c7"
+ },
+ "thread_environment": {
+  "RAYON_NUM_THREADS": "1",
+  "OMP_NUM_THREADS": "1",
+  "OPENBLAS_NUM_THREADS": "1"
+ },
+ "protocol": {
+  "id": "discover-cap/1",
+  "phase": "before",
+  "mode": "high",
+  "specs": [
+   [
+    "high",
+    "shifted",
+    0,
+    "mboostrs_discover"
+   ],
+   [
+    "high",
+    "shifted",
+    1,
+    "mboostrs_discover"
+   ],
+   [
+    "high",
+    "shifted",
+    2,
+    "mboostrs_discover"
+   ],
+   [
+    "high",
+    "shifted",
+    3,
+    "mboostrs_discover"
+   ],
+   [
+    "high",
+    "shifted",
+    4,
+    "mboostrs_discover"
+   ],
+   [
+    "high",
+    "shifted",
+    5,
+    "mboostrs_discover"
+   ],
+   [
+    "high",
+    "shifted",
+    6,
+    "mboostrs_discover"
+   ],
+   [
+    "high",
+    "shifted",
+    7,
+    "mboostrs_discover"
+   ]
+  ],
+  "library_source_revision": "4c4a2703e6c9eeb6f006fb3c5321c4c4b7921e2b",
+  "document_sha256": "6a49f38d87067289a7a57fb3d6e3789f0be55612bd1e3c97532590dfdeaa0b70"
+ },
+ "repeats": {
+  "paired_latent_draws": 8
+ },
+ "uncertainty": {
+  "unit": "one independent training and test draw; pair methods within a draw",
+  "summary": "mean and Monte Carlo standard error across draws",
+  "timing": "elapsed whole-workflow costs, not controlled implementation speed ratios"
+ },
+ "memory": {
+  "status": "not measured"
+ },
+ "results": [
+  {
+   "task": "shifted",
+   "seed": 0,
+   "method": "mboostrs_discover",
+   "formula": "bbs(x2, df=4.0) + bols(g) + bbs(x1, df=4) + bbs(x1, by=g)",
+   "mstop": 9266,
+   "log": [
+    {
+     "stage": "setup",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "no missing values in the data or newdata: fits use na_action='omit', the same rows without the imputation terms that 'impute' adds to every model",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "rule",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "rule in force: mu heredity none",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "draft",
+     "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(n0, df=4.0) + bbs(n1, df=4.0) + bols(g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "6 terms from the columns, each continuous column a P-spline at df=4",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "mean effects",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.12 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.11744543968234211
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x3, df=4.0)",
+     "score": 2.8184055556705996,
+     "change": -0.012787636546213399,
+     "se": 0.00847664486344746,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(n1, df=4.0)",
+     "score": 2.807187081862415,
+     "change": -0.011218473808184637,
+     "se": 0.01000447376489291,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x1, df=4.0)",
+     "score": 2.796511554222005,
+     "change": -0.01067552764041002,
+     "se": 0.009860800232656074,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(n0, df=4.0)",
+     "score": 2.7893834169888394,
+     "change": -0.007128137233165521,
+     "se": 0.008864846676522074,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x2, df=4.0)",
+     "score": 2.7893834169888394,
+     "change": 0.06721885798060612,
+     "se": 0.02423883216639392,
+     "adopted": true,
+     "reason": "kept: removing it raises out-of-fold risk by more than 2 change se",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bols(g)",
+     "score": 2.7893834169888394,
+     "change": 0.010874500647844343,
+     "se": 0.002355526571745556,
+     "adopted": true,
+     "reason": "kept: removing it raises out-of-fold risk by more than 2 change se",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "interactions",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.01 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.01339250011369586
+    },
+    {
+     "stage": "interactions",
+     "candidate": "bbs(x1, by=g)",
+     "score": 2.3383118755031007,
+     "change": -0.46325605202831577,
+     "se": 0.02098491058987969,
+     "adopted": true,
+     "reason": "adopted: lowers out-of-fold risk by more than 2.54 change se (screen score 1.468)",
+     "estimated_seconds": null,
+     "reference_terms": [
+      "bbs(x2, df=4.0)",
+      "bols(g)",
+      "bbs(x1, df=4)"
+     ]
+    },
+    {
+     "stage": "spread",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "no predictor's residual spread has |t| >= 2; constant scale kept. Tested the spread against 5 column(s): x1, x2, x3, n0, n1",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "tune",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.01 s for the first tune_mstop of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.009821249870583415
+    },
+    {
+     "stage": "tune",
+     "candidate": "bbs(x2, df=4.0) + bols(g) + bbs(x1, df=4) + bbs(x1, by=g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "cross-validated stopping iteration over 5 folds on a grid of 12800 steps after 7 doubling(s)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "final model",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.0018720000516623259
+    },
+    {
+     "stage": "estimate",
+     "candidate": "refit",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.0018835000228136778
+    },
+    {
+     "stage": "refit",
+     "candidate": "bbs(x2, df=4.0) + bols(g) + bbs(x1, df=4) + bbs(x1, by=g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": true,
+     "reason": "REML refit of the adopted terms",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "dropped terms",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "error: MboostrsValueError: learner 'bbs(x1, df=4)': the term is reproduced entirely by the other terms of the refit (a duplicate term?)",
+     "estimated_seconds": null
+    }
+   ],
+   "tuning_stages": [],
+   "mse": 1.0401420480799457,
+   "input_digest": "sha256:380650ec3723f39b671db7eaec351903602590a763d8634ed7be90fb6079f95a",
+   "latent_digest": "sha256:6ba8b1079f7c62a0077b9779c2be1122cdbf915fb5658e93cd43e8130805e8f5",
+   "prediction_digest": "sha256:efb7aa2a1c59b3e38393589ad44a2d2c4da0e1924317b411238a21aa254c8115",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "03dcbffba8d10119edd76be7f6206638a272325714f36c2188f315b94f636cab",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_discover_cap",
+      "bench_encoding_tracks",
+      "bench_predictive_tracks",
+      "benchmark_contract",
+      "study_evidence"
+     ],
+     "runner_hash": "522affc3c3920ceb46e945615c538d0454e38263c80ce9d4372b56e058464e7a",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/private/tmp/mboostrs-572/python/mboostrs",
+      "extension": "/private/tmp/mboostrs-572/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "d5ce490b8572f307a55ecdfe7d46ca900b47b2ce910ef6fc97db611a5551e92e"
+     }
+    },
+    "measured_at": "2026-10-15T15:43:49+00:00",
+    "wall_seconds": 1.798537254333496
+   }
+  },
+  {
+   "task": "shifted",
+   "seed": 1,
+   "method": "mboostrs_discover",
+   "formula": "bbs(x2, df=4.0) + bbs(x1, df=4) + bbs(x1, by=g)",
+   "mstop": 9999,
+   "log": [
+    {
+     "stage": "setup",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "no missing values in the data or newdata: fits use na_action='omit', the same rows without the imputation terms that 'impute' adds to every model",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "rule",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "rule in force: mu heredity none",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "draft",
+     "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(n0, df=4.0) + bbs(n1, df=4.0) + bols(g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "6 terms from the columns, each continuous column a P-spline at df=4",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "mean effects",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.11 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.1114924973808229
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(n0, df=4.0)",
+     "score": 3.069796743484734,
+     "change": -0.028572378402441423,
+     "se": 0.017548681127165202,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(n1, df=4.0)",
+     "score": 3.0430198656598284,
+     "change": -0.026776877824905565,
+     "se": 0.015579270580831544,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x1, df=4.0)",
+     "score": 3.027128301773297,
+     "change": -0.015891563886531568,
+     "se": 0.02121036298863152,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x3, df=4.0)",
+     "score": 3.019874978041215,
+     "change": -0.007253323732081984,
+     "se": 0.00875455474559615,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bols(g)",
+     "score": 3.020784131322224,
+     "change": 0.0009091532810092673,
+     "se": 0.0251786424426231,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x2, df=4.0)",
+     "score": 3.020784131322224,
+     "change": 0.12414078721577848,
+     "se": 0.03953520566387156,
+     "adopted": true,
+     "reason": "kept: removing it raises out-of-fold risk by more than 2 change se",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "interactions",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.01 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.010445420630276203
+    },
+    {
+     "stage": "interactions",
+     "candidate": "bbs(x1, by=g)",
+     "score": 2.5351126858117845,
+     "change": -0.5021135351183168,
+     "se": 0.01587197025145595,
+     "adopted": true,
+     "reason": "adopted: lowers out-of-fold risk by more than 2.54 change se (screen score 1.493)",
+     "estimated_seconds": null,
+     "reference_terms": [
+      "bbs(x2, df=4.0)",
+      "bbs(x1, df=4)"
+     ]
+    },
+    {
+     "stage": "spread",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "no predictor's residual spread has |t| >= 2; constant scale kept. Tested the spread against 5 column(s): x1, x2, x3, n0, n1",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "tune",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.01 s for the first tune_mstop of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.00815949635580182
+    },
+    {
+     "stage": "tune",
+     "candidate": "bbs(x2, df=4.0) + bbs(x1, df=4) + bbs(x1, by=g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "boundary: the cross-validated risk is still falling at the end of the mstop grid (25600 steps after 8 doubling(s)); the full adopted term set is kept, at mstop=9999, and the stopping iteration is not resolved",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "final model",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.0014826669357717037
+    },
+    {
+     "stage": "estimate",
+     "candidate": "refit",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.0014517499366775155
+    },
+    {
+     "stage": "refit",
+     "candidate": "bbs(x2, df=4.0) + bbs(x1, df=4) + bbs(x1, by=g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": true,
+     "reason": "REML refit of the adopted terms",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "dropped terms",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "error: MboostrsValueError: learner 'bbs(x1, df=4)': the term is reproduced entirely by the other terms of the refit (a duplicate term?)",
+     "estimated_seconds": null
+    }
+   ],
+   "tuning_stages": [],
+   "mse": 1.040483076188361,
+   "input_digest": "sha256:c2aac4efe887f0ecfe5de703cb783360abfacb5f02299fd7e49e23a2b7c0c2ad",
+   "latent_digest": "sha256:aeb2e78fc3d7b4ef320a1dcfdece9585c30e6db4c466079b330706951012cd8e",
+   "prediction_digest": "sha256:6e20e68d179ee7128feaa8a804a9431b21150d3e772036c7d644ce47d3e528ce",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "882119654bd95d59f18dbb912082953f4084b52b92c094c86e0e1cb40007d14b",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_discover_cap",
+      "bench_encoding_tracks",
+      "bench_predictive_tracks",
+      "benchmark_contract",
+      "study_evidence"
+     ],
+     "runner_hash": "522affc3c3920ceb46e945615c538d0454e38263c80ce9d4372b56e058464e7a",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/private/tmp/mboostrs-572/python/mboostrs",
+      "extension": "/private/tmp/mboostrs-572/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "d5ce490b8572f307a55ecdfe7d46ca900b47b2ce910ef6fc97db611a5551e92e"
+     }
+    },
+    "measured_at": "2026-10-15T15:43:51+00:00",
+    "wall_seconds": 1.8572337627410889
+   }
+  },
+  {
+   "task": "shifted",
+   "seed": 2,
+   "method": "mboostrs_discover",
+   "formula": "bbs(x1, df=4) + bbs(x1, by=g)",
+   "mstop": 9997,
+   "log": [
+    {
+     "stage": "setup",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "no missing values in the data or newdata: fits use na_action='omit', the same rows without the imputation terms that 'impute' adds to every model",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "rule",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "rule in force: mu heredity none",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "draft",
+     "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(n0, df=4.0) + bbs(n1, df=4.0) + bols(g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "6 terms from the columns, each continuous column a P-spline at df=4",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "mean effects",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.11 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.1122464332729578
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x3, df=4.0)",
+     "score": 3.085190740834021,
+     "change": -0.01861969068684388,
+     "se": 0.009486519986439712,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(n1, df=4.0)",
+     "score": 3.0668771586658004,
+     "change": -0.018313582168220766,
+     "se": 0.009243209243385335,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(n0, df=4.0)",
+     "score": 3.046276616905817,
+     "change": -0.020600541759983493,
+     "se": 0.021688947394466383,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bols(g)",
+     "score": 3.044180962862338,
+     "change": -0.0020956540434786675,
+     "se": 0.0008889020289680648,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x2, df=4.0)",
+     "score": 3.1163805893347116,
+     "change": 0.07219962647237343,
+     "se": 0.03879772178899149,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x1, df=4.0)",
+     "score": 3.1315925244093625,
+     "change": 0.015211935074650906,
+     "se": 0.010840074921664519,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "1",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "no mean term survived: the mean model is y ~ 1",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "interactions",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.01 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.00754582928493619
+    },
+    {
+     "stage": "interactions",
+     "candidate": "bbs(x1, by=g)",
+     "score": 2.569212749852962,
+     "change": -0.5471678394817494,
+     "se": 0.018626385722743225,
+     "adopted": true,
+     "reason": "adopted: lowers out-of-fold risk by more than 2.54 change se (screen score 1.667)",
+     "estimated_seconds": null,
+     "reference_terms": [
+      "bbs(x1, df=4)"
+     ]
+    },
+    {
+     "stage": "estimate",
+     "candidate": "spread",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.04 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.043084160424768925
+    },
+    {
+     "stage": "spread",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "tested the spread against 5 column(s) (x1, x2, x3, n0, n1); 1 nominated at |t| >= 2: n1",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "spread",
+     "candidate": "sigma: bbs(n1, df=4)",
+     "score": 1.9529550231498196,
+     "change": -0.0008627721466814009,
+     "se": 0.004306239441104781,
+     "adopted": false,
+     "reason": "rejected: the best log-scale term does not beat the constant scale by 2 change se",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "tune",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.01 s for the first tune_mstop of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.006387251894921064
+    },
+    {
+     "stage": "tune",
+     "candidate": "bbs(x1, df=4) + bbs(x1, by=g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "boundary: the cross-validated risk is still falling at the end of the mstop grid (25600 steps after 8 doubling(s)); the full adopted term set is kept, at mstop=9997, and the stopping iteration is not resolved",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "final model",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.0011149999918416142
+    },
+    {
+     "stage": "estimate",
+     "candidate": "refit",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.0010460000485181808
+    },
+    {
+     "stage": "refit",
+     "candidate": "bbs(x1, df=4) + bbs(x1, by=g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": true,
+     "reason": "REML refit of the adopted terms",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "dropped terms",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "error: MboostrsValueError: learner 'bbs(x1, df=4)': the term is reproduced entirely by the other terms of the refit (a duplicate term?)",
+     "estimated_seconds": null
+    }
+   ],
+   "tuning_stages": [],
+   "mse": 1.0857860856892367,
+   "input_digest": "sha256:9daca85afe3fd8231055a4b4154f34d7594ed09548eb8564884bfdb813a9d735",
+   "latent_digest": "sha256:1cf8ca2b9c96be0e2bd6a378990f89adbdcefb416d9f2aaacde2e0c0840817ad",
+   "prediction_digest": "sha256:e3fa3853c459c827a453e57bd12531e49ca0d250e1bb52b79c11ef91972a4317",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "af02ed19a358b3c786d17ed408421aa6ac8472bcda03b872f222804a90e6c905",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_discover_cap",
+      "bench_encoding_tracks",
+      "bench_predictive_tracks",
+      "benchmark_contract",
+      "study_evidence"
+     ],
+     "runner_hash": "522affc3c3920ceb46e945615c538d0454e38263c80ce9d4372b56e058464e7a",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/private/tmp/mboostrs-572/python/mboostrs",
+      "extension": "/private/tmp/mboostrs-572/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "d5ce490b8572f307a55ecdfe7d46ca900b47b2ce910ef6fc97db611a5551e92e"
+     }
+    },
+    "measured_at": "2026-10-15T15:43:53+00:00",
+    "wall_seconds": 1.7616140842437744
+   }
+  },
+  {
+   "task": "shifted",
+   "seed": 3,
+   "method": "mboostrs_discover",
+   "formula": "bbs(x1, df=4) + bbs(x1, by=g)",
+   "mstop": 8769,
+   "log": [
+    {
+     "stage": "setup",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "no missing values in the data or newdata: fits use na_action='omit', the same rows without the imputation terms that 'impute' adds to every model",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "rule",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "rule in force: mu heredity none",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "draft",
+     "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(n0, df=4.0) + bbs(n1, df=4.0) + bols(g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "6 terms from the columns, each continuous column a P-spline at df=4",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "mean effects",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.11 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.11212396901100874
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x1, df=4.0)",
+     "score": 3.0177045920716714,
+     "change": -0.011915749933673947,
+     "se": 0.006473871976472817,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bols(g)",
+     "score": 3.0177045920716714,
+     "change": 0.0,
+     "se": 0.0,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x3, df=4.0)",
+     "score": 3.0213100367612866,
+     "change": 0.0036054446896152115,
+     "se": 0.010070362093430327,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(n0, df=4.0)",
+     "score": 3.0546235250570786,
+     "change": 0.03331348829579195,
+     "se": 0.017236923547094267,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(n1, df=4.0)",
+     "score": 3.092239764532961,
+     "change": 0.03761623947588255,
+     "se": 0.030315270694895823,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x2, df=4.0)",
+     "score": 3.159161669044079,
+     "change": 0.06692190451111779,
+     "se": 0.05268435070061765,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "1",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "no mean term survived: the mean model is y ~ 1",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "interactions",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.01 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.007252079667523503
+    },
+    {
+     "stage": "interactions",
+     "candidate": "bbs(x1, by=g)",
+     "score": 2.6609328598709077,
+     "change": -0.5314752271511627,
+     "se": 0.02102549161430534,
+     "adopted": true,
+     "reason": "adopted: lowers out-of-fold risk by more than 2.54 change se (screen score 1.531)",
+     "estimated_seconds": null,
+     "reference_terms": [
+      "bbs(x1, df=4)"
+     ]
+    },
+    {
+     "stage": "interactions",
+     "candidate": "bbs(x2, by=g)",
+     "score": 2.6141221829515238,
+     "change": 0.0,
+     "se": 0.0,
+     "adopted": false,
+     "reason": "rejected: does not lower out-of-fold risk by 2.54 change se (screen score 0.04759)",
+     "estimated_seconds": null,
+     "reference_terms": [
+      "bbs(x1, df=4)",
+      "bbs(x1, by=g)",
+      "bbs(x2, df=4)"
+     ]
+    },
+    {
+     "stage": "interactions",
+     "candidate": "bbs(x2, df=2.5, knots=5) %X% bbs(n1, df=2.5, knots=5)",
+     "score": 2.6202520266008116,
+     "change": 0.011551692301829508,
+     "se": 0.004483448400110322,
+     "adopted": false,
+     "reason": "rejected: does not lower out-of-fold risk by 2.54 change se (screen score 0.00736)",
+     "estimated_seconds": null,
+     "reference_terms": [
+      "bbs(x1, df=4)",
+      "bbs(x1, by=g)",
+      "bbs(x2, df=2.5, knots=5)",
+      "bbs(n1, df=2.5, knots=5)"
+     ]
+    },
+    {
+     "stage": "estimate",
+     "candidate": "spread",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.04 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.04295832943171263
+    },
+    {
+     "stage": "spread",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "tested the spread against 5 column(s) (x1, x2, x3, n0, n1); 1 nominated at |t| >= 2: n0",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "spread",
+     "candidate": "sigma: bbs(n0, df=4)",
+     "score": 1.9617266853246904,
+     "change": -0.0024820762338484403,
+     "se": 0.004645034260742655,
+     "adopted": false,
+     "reason": "rejected: the best log-scale term does not beat the constant scale by 2 change se",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "tune",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.01 s for the first tune_mstop of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.0060870002489537
+    },
+    {
+     "stage": "tune",
+     "candidate": "bbs(x1, df=4) + bbs(x1, by=g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "cross-validated stopping iteration over 5 folds on a grid of 12800 steps after 7 doubling(s)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "final model",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.0010432499693706632
+    },
+    {
+     "stage": "estimate",
+     "candidate": "refit",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.0009913749527186155
+    },
+    {
+     "stage": "refit",
+     "candidate": "bbs(x1, df=4) + bbs(x1, by=g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": true,
+     "reason": "REML refit of the adopted terms",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "dropped terms",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "error: MboostrsValueError: learner 'bbs(x1, df=4)': the term is reproduced entirely by the other terms of the refit (a duplicate term?)",
+     "estimated_seconds": null
+    }
+   ],
+   "tuning_stages": [],
+   "mse": 1.0756611200173294,
+   "input_digest": "sha256:32ac0feee9a4cc66bd0e04f2baf92144508a4a167b7e12f3765221d0af07778f",
+   "latent_digest": "sha256:a05ae961bc8d436e74fe0f29a363549b4cbd7611d07649ad0b84259c192c0fb0",
+   "prediction_digest": "sha256:fea813a1c13c79099ef27ef547bc886309b98d0fb19d834830f1807fc5681f1f",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "495d1b5f15b27ace7c0b6c213812602d1f252fb569130c356cd6f3ad014dc21b",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_discover_cap",
+      "bench_encoding_tracks",
+      "bench_predictive_tracks",
+      "benchmark_contract",
+      "study_evidence"
+     ],
+     "runner_hash": "522affc3c3920ceb46e945615c538d0454e38263c80ce9d4372b56e058464e7a",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/private/tmp/mboostrs-572/python/mboostrs",
+      "extension": "/private/tmp/mboostrs-572/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "d5ce490b8572f307a55ecdfe7d46ca900b47b2ce910ef6fc97db611a5551e92e"
+     }
+    },
+    "measured_at": "2026-10-15T15:43:54+00:00",
+    "wall_seconds": 1.7103970050811768
+   }
+  },
+  {
+   "task": "shifted",
+   "seed": 4,
+   "method": "mboostrs_discover",
+   "formula": "bbs(x1, df=4) + bbs(x1, by=g)",
+   "mstop": 9999,
+   "log": [
+    {
+     "stage": "setup",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "no missing values in the data or newdata: fits use na_action='omit', the same rows without the imputation terms that 'impute' adds to every model",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "rule",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "rule in force: mu heredity none",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "draft",
+     "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(n0, df=4.0) + bbs(n1, df=4.0) + bols(g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "6 terms from the columns, each continuous column a P-spline at df=4",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "mean effects",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.11 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.10984312510117888
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x3, df=4.0)",
+     "score": 3.081493974379028,
+     "change": -0.025058897838075023,
+     "se": 0.021748950866415085,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(n0, df=4.0)",
+     "score": 3.055817173674287,
+     "change": -0.025676800704740987,
+     "se": 0.01487804092545102,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x1, df=4.0)",
+     "score": 3.0437665434236933,
+     "change": -0.01205063025059383,
+     "se": 0.011294315190560266,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bols(g)",
+     "score": 3.030007098470473,
+     "change": -0.013759444953220346,
+     "se": 0.010194763382615405,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(n1, df=4.0)",
+     "score": 3.0194810716414837,
+     "change": -0.010526026828989288,
+     "se": 0.010696025537113385,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x2, df=4.0)",
+     "score": 3.078933880807972,
+     "change": 0.05945280916648832,
+     "se": 0.0314988443741998,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "1",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "no mean term survived: the mean model is y ~ 1",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "interactions",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.01 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.007764589972794056
+    },
+    {
+     "stage": "interactions",
+     "candidate": "bbs(x1, by=g)",
+     "score": 2.551537927253103,
+     "change": -0.5492064460813002,
+     "se": 0.012959707756714072,
+     "adopted": true,
+     "reason": "adopted: lowers out-of-fold risk by more than 2.54 change se (screen score 1.524)",
+     "estimated_seconds": null,
+     "reference_terms": [
+      "bbs(x1, df=4)"
+     ]
+    },
+    {
+     "stage": "interactions",
+     "candidate": "bbs(x2, by=g)",
+     "score": 2.5071507763127476,
+     "change": 0.0,
+     "se": 0.0,
+     "adopted": false,
+     "reason": "rejected: does not lower out-of-fold risk by 2.54 change se (screen score 0.02445)",
+     "estimated_seconds": null,
+     "reference_terms": [
+      "bbs(x1, df=4)",
+      "bbs(x1, by=g)",
+      "bbs(x2, df=4)"
+     ]
+    },
+    {
+     "stage": "spread",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "no predictor's residual spread has |t| >= 2; constant scale kept. Tested the spread against 5 column(s): x1, x2, x3, n0, n1",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "tune",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.01 s for the first tune_mstop of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.00618525012396276
+    },
+    {
+     "stage": "tune",
+     "candidate": "bbs(x1, df=4) + bbs(x1, by=g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "boundary: the cross-validated risk is still falling at the end of the mstop grid (25600 steps after 8 doubling(s)); the full adopted term set is kept, at mstop=9999, and the stopping iteration is not resolved",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "final model",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.0010602909605950117
+    },
+    {
+     "stage": "estimate",
+     "candidate": "refit",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.0010071250144392252
+    },
+    {
+     "stage": "refit",
+     "candidate": "bbs(x1, df=4) + bbs(x1, by=g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": true,
+     "reason": "REML refit of the adopted terms",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "dropped terms",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "error: MboostrsValueError: learner 'bbs(x1, df=4)': the term is reproduced entirely by the other terms of the refit (a duplicate term?)",
+     "estimated_seconds": null
+    }
+   ],
+   "tuning_stages": [],
+   "mse": 1.1177705179836148,
+   "input_digest": "sha256:c5a4f0efa82cf9a09287e859e2ba4b14e09327c4b4bcadffb0f698f1b000c415",
+   "latent_digest": "sha256:0d870dfce858a2fbf2dc330b41196135a2d77e7b443b0fbd72fdc7476be06765",
+   "prediction_digest": "sha256:a6a1257981f07728d87bb4969b43d632646bc3bfc2ff5f1df6886556d8644a48",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "419ba7910b41fa4b99d5ada33a0ae4a1bcb8b0295b3ce4a5d7769838a120b8ff",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_discover_cap",
+      "bench_encoding_tracks",
+      "bench_predictive_tracks",
+      "benchmark_contract",
+      "study_evidence"
+     ],
+     "runner_hash": "522affc3c3920ceb46e945615c538d0454e38263c80ce9d4372b56e058464e7a",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/private/tmp/mboostrs-572/python/mboostrs",
+      "extension": "/private/tmp/mboostrs-572/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "d5ce490b8572f307a55ecdfe7d46ca900b47b2ce910ef6fc97db611a5551e92e"
+     }
+    },
+    "measured_at": "2026-10-15T15:43:56+00:00",
+    "wall_seconds": 1.7350759506225586
+   }
+  },
+  {
+   "task": "shifted",
+   "seed": 5,
+   "method": "mboostrs_discover",
+   "formula": "bbs(x2, df=4.0) + bbs(x1, df=4) + bbs(x1, by=g)",
+   "mstop": 9274,
+   "log": [
+    {
+     "stage": "setup",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "no missing values in the data or newdata: fits use na_action='omit', the same rows without the imputation terms that 'impute' adds to every model",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "rule",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "rule in force: mu heredity none",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "draft",
+     "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(n0, df=4.0) + bbs(n1, df=4.0) + bols(g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "6 terms from the columns, each continuous column a P-spline at df=4",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "mean effects",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.11 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.11076040507759899
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x3, df=4.0)",
+     "score": 2.93727539960813,
+     "change": -0.011103919478596236,
+     "se": 0.005660912857631568,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(n1, df=4.0)",
+     "score": 2.9265828914898613,
+     "change": -0.01069250811826894,
+     "se": 0.008711746341174643,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x1, df=4.0)",
+     "score": 2.9224205373525978,
+     "change": -0.004162354137263513,
+     "se": 0.005917864648958481,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bols(g)",
+     "score": 2.922165413273577,
+     "change": -0.0002551240790209519,
+     "se": 0.000715100287792807,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(n0, df=4.0)",
+     "score": 2.9341869052856073,
+     "change": 0.01202149201203051,
+     "se": 0.01538564419614525,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x2, df=4.0)",
+     "score": 2.9341869052856073,
+     "change": 0.0750023049425228,
+     "se": 0.030273684482213296,
+     "adopted": true,
+     "reason": "kept: removing it raises out-of-fold risk by more than 2 change se",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "interactions",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.01 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.010773329995572567
+    },
+    {
+     "stage": "interactions",
+     "candidate": "bbs(x1, by=g)",
+     "score": 2.434643559642578,
+     "change": -0.5023267344322133,
+     "se": 0.03085837937815011,
+     "adopted": true,
+     "reason": "adopted: lowers out-of-fold risk by more than 2.54 change se (screen score 1.482)",
+     "estimated_seconds": null,
+     "reference_terms": [
+      "bbs(x2, df=4.0)",
+      "bbs(x1, df=4)"
+     ]
+    },
+    {
+     "stage": "spread",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "no predictor's residual spread has |t| >= 2; constant scale kept. Tested the spread against 5 column(s): x1, x2, x3, n0, n1",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "tune",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.01 s for the first tune_mstop of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.008206745842471719
+    },
+    {
+     "stage": "tune",
+     "candidate": "bbs(x2, df=4.0) + bbs(x1, df=4) + bbs(x1, by=g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "cross-validated stopping iteration over 5 folds on a grid of 12800 steps after 7 doubling(s)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "final model",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.0014458750374615192
+    },
+    {
+     "stage": "estimate",
+     "candidate": "refit",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.0013805830385535955
+    },
+    {
+     "stage": "refit",
+     "candidate": "bbs(x2, df=4.0) + bbs(x1, df=4) + bbs(x1, by=g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": true,
+     "reason": "REML refit of the adopted terms",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "dropped terms",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "error: MboostrsValueError: learner 'bbs(x1, df=4)': the term is reproduced entirely by the other terms of the refit (a duplicate term?)",
+     "estimated_seconds": null
+    }
+   ],
+   "tuning_stages": [],
+   "mse": 1.0574528940662482,
+   "input_digest": "sha256:abb250a9b03083263ab65e36cac333c76dc59367cd37c106b662f35af888e150",
+   "latent_digest": "sha256:05ad911c211d893a22e2ade4db3ca4a1d38e5e6a3cc76e2050c6620bca82a5cc",
+   "prediction_digest": "sha256:4010eaf82be344e120939ba8b8fe2c0953e973b3db767f133799998be9784fd8",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "328a5dd6736618926ab1f97c361558c35b1d3104c4057cdf97c17aeb13d268dc",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_discover_cap",
+      "bench_encoding_tracks",
+      "bench_predictive_tracks",
+      "benchmark_contract",
+      "study_evidence"
+     ],
+     "runner_hash": "522affc3c3920ceb46e945615c538d0454e38263c80ce9d4372b56e058464e7a",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/private/tmp/mboostrs-572/python/mboostrs",
+      "extension": "/private/tmp/mboostrs-572/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "d5ce490b8572f307a55ecdfe7d46ca900b47b2ce910ef6fc97db611a5551e92e"
+     }
+    },
+    "measured_at": "2026-10-15T15:43:58+00:00",
+    "wall_seconds": 1.6836888790130615
+   }
+  },
+  {
+   "task": "shifted",
+   "seed": 6,
+   "method": "mboostrs_discover",
+   "formula": "bbs(x1, df=4) + bbs(x1, by=g) + bbs(x2, df=4) + bbs(x2, by=g)",
+   "mstop": 9915,
+   "log": [
+    {
+     "stage": "setup",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "no missing values in the data or newdata: fits use na_action='omit', the same rows without the imputation terms that 'impute' adds to every model",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "rule",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "rule in force: mu heredity none",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "draft",
+     "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(n0, df=4.0) + bbs(n1, df=4.0) + bols(g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "6 terms from the columns, each continuous column a P-spline at df=4",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "mean effects",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.11 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.11223044071812183
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(n0, df=4.0)",
+     "score": 2.8635029711088,
+     "change": -0.02669867925845537,
+     "se": 0.016306147457463258,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x3, df=4.0)",
+     "score": 2.8447559920370726,
+     "change": -0.0187469790717274,
+     "se": 0.018562375700917674,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x1, df=4.0)",
+     "score": 2.8366348533652768,
+     "change": -0.008121138671795869,
+     "se": 0.0067252784166672635,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(n1, df=4.0)",
+     "score": 2.823586479511534,
+     "change": -0.013048373853742579,
+     "se": 0.01597858789251962,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bols(g)",
+     "score": 2.821722381051842,
+     "change": -0.001864098459692265,
+     "se": 0.003508812393516813,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x2, df=4.0)",
+     "score": 2.8553404736636865,
+     "change": 0.03361809261184456,
+     "se": 0.07763254169482206,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "1",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "no mean term survived: the mean model is y ~ 1",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "interactions",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.01 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.007168749580159783
+    },
+    {
+     "stage": "interactions",
+     "candidate": "bbs(x1, by=g)",
+     "score": 2.3538440959736144,
+     "change": -0.5193568268793243,
+     "se": 0.009880714132316832,
+     "adopted": true,
+     "reason": "adopted: lowers out-of-fold risk by more than 2.54 change se (screen score 1.503)",
+     "estimated_seconds": null,
+     "reference_terms": [
+      "bbs(x1, df=4)"
+     ]
+    },
+    {
+     "stage": "interactions",
+     "candidate": "bbs(x2, by=g)",
+     "score": 2.333978376195174,
+     "change": -0.0035287174042557545,
+     "se": 0.0010204329394755839,
+     "adopted": true,
+     "reason": "adopted: lowers out-of-fold risk by more than 2.54 change se (screen score 0.05004)",
+     "estimated_seconds": null,
+     "reference_terms": [
+      "bbs(x1, df=4)",
+      "bbs(x1, by=g)",
+      "bbs(x2, df=4)"
+     ]
+    },
+    {
+     "stage": "spread",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "no predictor's residual spread has |t| >= 2; constant scale kept. Tested the spread against 5 column(s): x1, x2, x3, n0, n1",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "tune",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.01 s for the first tune_mstop of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.01055874559096992
+    },
+    {
+     "stage": "tune",
+     "candidate": "bbs(x1, df=4) + bbs(x1, by=g) + bbs(x2, df=4) + bbs(x2, by=g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "boundary: the cross-validated risk is still falling at the end of the mstop grid (25600 steps after 8 doubling(s)); the full adopted term set is kept, at mstop=9915, and the stopping iteration is not resolved",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "final model",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.0019312499789521098
+    },
+    {
+     "stage": "estimate",
+     "candidate": "refit",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.001858999952673912
+    },
+    {
+     "stage": "refit",
+     "candidate": "bbs(x1, df=4) + bbs(x1, by=g) + bbs(x2, df=4) + bbs(x2, by=g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": true,
+     "reason": "REML refit of the adopted terms",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "dropped terms",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "error: MboostrsValueError: learner 'bbs(x1, df=4)': the term is reproduced entirely by the other terms of the refit (a duplicate term?)",
+     "estimated_seconds": null
+    }
+   ],
+   "tuning_stages": [],
+   "mse": 1.0137024517287836,
+   "input_digest": "sha256:12c8e8152fed065f214d409f56a5fe8a3fcbddc26aed130a1d9fad924e6c6779",
+   "latent_digest": "sha256:d6cfbcb4225447c0eacc6743a0f802ee155341cd822aecdbc562c73bfb013604",
+   "prediction_digest": "sha256:910806ebdcefa15e3a1f8d17cf720ec0d55d7b8ea8f9161bf86989f61925506f",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "d9198630c493ce96a1d1cca9ef776b9f200ece1923680b14208e63928492243a",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_discover_cap",
+      "bench_encoding_tracks",
+      "bench_predictive_tracks",
+      "benchmark_contract",
+      "study_evidence"
+     ],
+     "runner_hash": "522affc3c3920ceb46e945615c538d0454e38263c80ce9d4372b56e058464e7a",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/private/tmp/mboostrs-572/python/mboostrs",
+      "extension": "/private/tmp/mboostrs-572/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "d5ce490b8572f307a55ecdfe7d46ca900b47b2ce910ef6fc97db611a5551e92e"
+     }
+    },
+    "measured_at": "2026-10-15T15:44:00+00:00",
+    "wall_seconds": 2.0542778968811035
+   }
+  },
+  {
+   "task": "shifted",
+   "seed": 7,
+   "method": "mboostrs_discover",
+   "formula": "bbs(x1, df=4) + bbs(x1, by=g)",
+   "mstop": 10000,
+   "log": [
+    {
+     "stage": "setup",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "no missing values in the data or newdata: fits use na_action='omit', the same rows without the imputation terms that 'impute' adds to every model",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "rule",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "rule in force: mu heredity none",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "draft",
+     "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(n0, df=4.0) + bbs(n1, df=4.0) + bols(g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "6 terms from the columns, each continuous column a P-spline at df=4",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "mean effects",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.11 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.10972790536470711
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(n1, df=4.0)",
+     "score": 2.8676833890352036,
+     "change": -0.01493239364446719,
+     "se": 0.020777702819412783,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x1, df=4.0)",
+     "score": 2.853850145134806,
+     "change": -0.01383324390039764,
+     "se": 0.007549510724638762,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bols(g)",
+     "score": 2.8413846193283057,
+     "change": -0.012465525806500288,
+     "se": 0.012598549643751608,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(n0, df=4.0)",
+     "score": 2.8343598018838145,
+     "change": -0.007024817444491127,
+     "se": 0.006320181502012754,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x3, df=4.0)",
+     "score": 2.840149248580616,
+     "change": 0.00578944669680137,
+     "se": 0.029834479603600063,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "bbs(x2, df=4.0)",
+     "score": 2.8641610095947896,
+     "change": 0.024011761014173683,
+     "se": 0.015112372529308506,
+     "adopted": false,
+     "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "mean effects",
+     "candidate": "1",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "no mean term survived: the mean model is y ~ 1",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "interactions",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.01 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.007662919815629721
+    },
+    {
+     "stage": "interactions",
+     "candidate": "bbs(x1, by=g)",
+     "score": 2.409442974321906,
+     "change": -0.47660102463359344,
+     "se": 0.022865589397740627,
+     "adopted": true,
+     "reason": "adopted: lowers out-of-fold risk by more than 2.54 change se (screen score 1.357)",
+     "estimated_seconds": null,
+     "reference_terms": [
+      "bbs(x1, df=4)"
+     ]
+    },
+    {
+     "stage": "spread",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "no predictor's residual spread has |t| >= 2; constant scale kept. Tested the spread against 5 column(s): x1, x2, x3, n0, n1",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "tune",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.01 s for the first tune_mstop of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.006092747440561652
+    },
+    {
+     "stage": "tune",
+     "candidate": "bbs(x1, df=4) + bbs(x1, by=g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "boundary: the cross-validated risk is still falling at the end of the mstop grid (25600 steps after 8 doubling(s)); the full adopted term set is kept, at mstop=10000, and the stopping iteration is not resolved",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "estimate",
+     "candidate": "final model",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.0011200410081073642
+    },
+    {
+     "stage": "estimate",
+     "candidate": "refit",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+     "estimated_seconds": 0.0010780830634757876
+    },
+    {
+     "stage": "refit",
+     "candidate": "bbs(x1, df=4) + bbs(x1, by=g)",
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": true,
+     "reason": "REML refit of the adopted terms",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "dropped terms",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "error: MboostrsValueError: learner 'bbs(x1, df=4)': the term is reproduced entirely by the other terms of the refit (a duplicate term?)",
+     "estimated_seconds": null
+    }
+   ],
+   "tuning_stages": [],
+   "mse": 1.2140728498789004,
+   "input_digest": "sha256:8f5538af0bc9940b1a788e677906543d85b59795e2978e8d54f676119689529b",
+   "latent_digest": "sha256:a03f587249f6f1590ca758c901097264b938105ec1861572e47d2a0c081c05be",
+   "prediction_digest": "sha256:cd64a6d8aa86d5051c61e91a01cd89f4317150d312dd9e7bbca2923c6d930b69",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "87b66fb3b436030b82d872763d070c43f3f512dd8f202b22f98aab63972511d9",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_discover_cap",
+      "bench_encoding_tracks",
+      "bench_predictive_tracks",
+      "benchmark_contract",
+      "study_evidence"
+     ],
+     "runner_hash": "522affc3c3920ceb46e945615c538d0454e38263c80ce9d4372b56e058464e7a",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/private/tmp/mboostrs-572/python/mboostrs",
+      "extension": "/private/tmp/mboostrs-572/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "d5ce490b8572f307a55ecdfe7d46ca900b47b2ce910ef6fc97db611a5551e92e"
+     }
+    },
+    "measured_at": "2026-10-15T15:44:02+00:00",
+    "wall_seconds": 1.709718942642212
+   }
+  }
+ ]
+}

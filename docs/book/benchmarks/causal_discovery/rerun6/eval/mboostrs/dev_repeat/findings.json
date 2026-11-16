@@ -1,0 +1,110 @@
+{
+  "library": "mboostrs 0.1.3",
+  "effect_queries": {
+    "ATE": {
+      "estimate": 5657.562661700687,
+      "lower90": 4432.700256017494,
+      "upper90": 6882.425067383881
+    },
+    "ATT": {
+      "estimate": 3836.0064856681524,
+      "lower90": 3378.541586999088,
+      "upper90": 4293.4713843372165
+    },
+    "CATE_educ_lt12": {
+      "estimate": 6660.7087551874665,
+      "lower90": 662.0573368092655,
+      "upper90": 12659.360173565667
+    },
+    "CATE_educ_ge16": {
+      "estimate": 6309.983264396371,
+      "lower90": 4398.951738094126,
+      "upper90": 8221.014790698617
+    },
+    "CATE_prior_q1": {
+      "estimate": 3619.8895293985847,
+      "lower90": 3121.050214542777,
+      "upper90": 4118.728844254392
+    },
+    "CATE_prior_q4": {
+      "estimate": 11454.79181380604,
+      "lower90": 6991.814324924389,
+      "upper90": 15917.76930268769
+    },
+    "CATE_age_lt25": {
+      "estimate": 4547.567353235892,
+      "lower90": 3639.6429142335974,
+      "upper90": 5455.491792238187
+    },
+    "EMP_ATE": {
+      "estimate": 0.10346179209936143,
+      "lower90": 0.0870755696745972,
+      "upper90": 0.11984801452412566
+    }
+  },
+  "roles": {
+    "age": "confounder",
+    "education": "confounder",
+    "experience": "confounder",
+    "ethnicity": "treatment_only",
+    "smsa": "confounder",
+    "region": "treatment_only",
+    "parttime": "confounder",
+    "prior_earnings": "confounder",
+    "months_unemployed": "confounder",
+    "distance_km": "instrument",
+    "caseworker_note_len": "irrelevant",
+    "enrolled": "treatment",
+    "certificate": "mediator",
+    "responded": "post_treatment_selection",
+    "hours_post": "mediator",
+    "earnings_post": "outcome"
+  },
+  "adjustment_set": [
+    "age",
+    "education",
+    "experience",
+    "ethnicity",
+    "smsa",
+    "region",
+    "parttime",
+    "prior_earnings",
+    "months_unemployed",
+    "caseworker_note_len"
+  ],
+  "effect_modifiers": [
+    {
+      "variable": "education",
+      "direction": "larger_when_higher",
+      "evidence": "BLP slope 1164 dollars per standard deviation of education among rows with overlap, p = 0.0024, Holm-adjusted p = 0.0214"
+    }
+  ],
+  "channels": {
+    "employment": true,
+    "earnings_if_employed": true
+  },
+  "limited_overlap": [
+    {
+      "description": "applicants with prior earnings above about 42,000 dollars, where the estimated enrolment probability is below 0.02 or above 0.98 (2472 training rows, 17 of them enrolled); the effect there is an extrapolation of the outcome model",
+      "variable": "prior_earnings"
+    },
+    {
+      "description": "applicants who did not answer the follow-up survey; their earnings are unobserved, and the analysis assumes they are missing at random given the covariates and enrolment",
+      "variable": "responded"
+    }
+  ],
+  "warnings": [
+    "ATE model: outcome model 'two_part' had the lowest out-of-fold squared error among auto, separate, two_part; the three models give ATE estimates from 5658 to 6084 dollars (spread 426, against a 90% interval width of 2450). The model choice is a source of error beyond the interval.",
+    "Limited overlap: 0.206 of training applicants have an estimated enrolment probability outside (0.02, 0.98). Their mean augmented score is 11173 dollars and contributes 2302 of the 5658 ATE; the estimate restricted to the rows inside the bounds is 4227 dollars.",
+    "ATT is 3836 dollars (90% interval 3379 to 4293) against 5658 for the ATE. The ATT averages over enrolled applicants, who have prior earnings mostly below the eligibility limit, so it depends less on the extrapolation above that limit.",
+    "Missing follow-up: earnings are missing for applicants who did not answer the survey, and enrolment changes the response rate. The estimates assume the outcome is missing at random given the covariates and enrolment (outcome_missing='ipw'); the data cannot test this assumption.",
+    "Roles: the treatment-only versus instrument split follows the variable type (numeric exposure: instrument; categorical: treatment_only). Independence of an instrument from unmeasured causes of earnings is not testable; the instrumental-variable check gives 5104 dollars (90% interval -1679 to 11888), first-stage F 104.6.",
+    "Sensitivity: dropping prior_earnings from the adjustment set moves the ATE by -10715 dollars. An omitted confounder with an outcome effect of d dollars per standard deviation and a treated-minus-control imbalance of b standard deviations moves the estimate by d times b dollars; the estimate reaches zero at a product of 5658 dollars.",
+    "Applicant effects: the model with the lowest held-out loss is log_prior; its gain over a constant effect is 3003924 dollars with standard error 7193044. The variation by applicant is not supported over a constant effect at two standard errors, so the per-applicant values are estimates with wide intervals.",
+    "Applicant intervals (lower90, upper90) cover sampling error in the second stage only; they exclude error in the nuisance models and in the choice of model.",
+    "Ranking: 540 of 4000 test applicants have an estimated enrolment probability outside (0.02, 0.98); their cate and interval are null in cate_predictions.parquet and they are not ranked.",
+    "Test file: 0.181 of test applicants have prior earnings above 40,000 against 0.269 in training; the test file is not a random sample of the program-year applicants.",
+    "Wage channel: among responding applicants in work, enrolment changes log earnings by 0.147 (95% interval 0.126 to 0.168). This contrast conditions on employment, which enrolment can change, so it is not a causal contrast on its own.",
+    "Library warnings: 29 distinct warnings were issued by the library calls; they are listed in run_record.json under warnings_all."
+  ]
+}

@@ -1,0 +1,208 @@
+{
+ "note": "combined discovery path on the real SLID arm; recorded separately because results.parquet does not store SLID selection extras",
+ "mboostrs_file": "/workspace/agent-test/bench4/site-combined/mboostrs/__init__.py",
+ "family_all_seeds": [
+  "Gaussian"
+ ],
+ "rows": [
+  {
+   "seed": 0,
+   "arm": "slid",
+   "method": "mb_discover",
+   "family": "Gaussian",
+   "formula": "bbs(education, df=4.0) + bbs(age, df=4.0) + bols(sex) + bbs(age, by=sex)",
+   "spread_formula": null,
+   "loc_terms": [
+    "age",
+    "age:sex",
+    "education",
+    "sex"
+   ],
+   "scale_terms": [],
+   "n_warnings": 0,
+   "warnings": [],
+   "fit_seconds": 1.2721807956695557
+  },
+  {
+   "seed": 1,
+   "arm": "slid",
+   "method": "mb_discover",
+   "family": "Gaussian",
+   "formula": "bbs(education, df=4.0) + bbs(age, df=4.0) + bols(sex) + bbs(age, by=sex)",
+   "spread_formula": null,
+   "loc_terms": [
+    "age",
+    "age:sex",
+    "education",
+    "sex"
+   ],
+   "scale_terms": [],
+   "n_warnings": 1,
+   "warnings": [
+    "boundary: the mean model's stopping iteration is at the end of the mstop grid (400 steps); the full adopted term set is kept at mstop=398; to search further, pass discover(max_mstop=...) above 400; a larger value lets the grid double past it"
+   ],
+   "fit_seconds": 1.1487934589385986
+  },
+  {
+   "seed": 2,
+   "arm": "slid",
+   "method": "mb_discover",
+   "family": "Gaussian",
+   "formula": "bbs(education, df=4.0) + bbs(age, df=4.0) + bols(sex)",
+   "spread_formula": null,
+   "loc_terms": [
+    "age",
+    "education",
+    "sex"
+   ],
+   "scale_terms": [],
+   "n_warnings": 2,
+   "warnings": [
+    "boundary: the mean model's stopping iteration is at the end of the mstop grid (400 steps); the full adopted term set is kept at mstop=400; to search further, pass discover(max_mstop=...) above 400; a larger value lets the grid double past it",
+    "2 fold predictions in this call asked 1 learner(s) to predict outside the range they were fitted on. bbs(education), covariate education: 6 below 2 (worst 0.11 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.11 training ranges out that is an assumption, not an estimate. Pass discover(extrapolation='allow') to accept it, or extrapolation='clip' to hold the effect flat outside the range instead, or extrapolation='error' to refuse. Guide: python -m mboostrs guide modeling-tactics."
+   ],
+   "fit_seconds": 0.9989988803863525
+  },
+  {
+   "seed": 3,
+   "arm": "slid",
+   "method": "mb_discover",
+   "family": "Gaussian",
+   "formula": "bbs(education, df=4.0) + bbs(age, df=4.0) + bols(sex) + bbs(age, by=sex)",
+   "spread_formula": null,
+   "loc_terms": [
+    "age",
+    "age:sex",
+    "education",
+    "sex"
+   ],
+   "scale_terms": [],
+   "n_warnings": 0,
+   "warnings": [],
+   "fit_seconds": 1.1377155780792236
+  },
+  {
+   "seed": 4,
+   "arm": "slid",
+   "method": "mb_discover",
+   "family": "Gaussian",
+   "formula": "bbs(education, df=4.0) + bbs(age, df=4.0) + bols(sex) + bbs(age, by=sex)",
+   "spread_formula": null,
+   "loc_terms": [
+    "age",
+    "age:sex",
+    "education",
+    "sex"
+   ],
+   "scale_terms": [],
+   "n_warnings": 1,
+   "warnings": [
+    "2 fold predictions in this call asked 1 learner(s) to predict outside the range they were fitted on. bbs(education), covariate education: 2 below 1 (worst 0.053 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.053 training ranges out that is an assumption, not an estimate. Pass discover(extrapolation='allow') to accept it, or extrapolation='clip' to hold the effect flat outside the range instead, or extrapolation='error' to refuse. Guide: python -m mboostrs guide modeling-tactics."
+   ],
+   "fit_seconds": 1.1632964611053467
+  },
+  {
+   "seed": 5,
+   "arm": "slid",
+   "method": "mb_discover",
+   "family": "Gaussian",
+   "formula": "bbs(education, df=4.0) + bbs(age, df=4.0) + bols(sex) + bbs(age, by=sex)",
+   "spread_formula": null,
+   "loc_terms": [
+    "age",
+    "age:sex",
+    "education",
+    "sex"
+   ],
+   "scale_terms": [],
+   "n_warnings": 1,
+   "warnings": [
+    "boundary: the mean model's stopping iteration is at the end of the mstop grid (400 steps); the full adopted term set is kept at mstop=395; to search further, pass discover(max_mstop=...) above 400; a larger value lets the grid double past it"
+   ],
+   "fit_seconds": 1.2039296627044678
+  },
+  {
+   "seed": 6,
+   "arm": "slid",
+   "method": "mb_discover",
+   "family": "Gaussian",
+   "formula": "bbs(education, df=4.0) + bbs(age, df=4.0) + bols(sex)",
+   "spread_formula": null,
+   "loc_terms": [
+    "age",
+    "education",
+    "sex"
+   ],
+   "scale_terms": [],
+   "n_warnings": 1,
+   "warnings": [
+    "boundary: the mean model's stopping iteration is at the end of the mstop grid (400 steps); the full adopted term set is kept at mstop=400; to search further, pass discover(max_mstop=...) above 400; a larger value lets the grid double past it"
+   ],
+   "fit_seconds": 1.0546979904174805
+  },
+  {
+   "seed": 7,
+   "arm": "slid",
+   "method": "mb_discover",
+   "family": "Gaussian",
+   "formula": "bbs(education, df=4.0) + bbs(age, df=4.0) + bols(sex)",
+   "spread_formula": null,
+   "loc_terms": [
+    "age",
+    "education",
+    "sex"
+   ],
+   "scale_terms": [],
+   "n_warnings": 1,
+   "warnings": [
+    "boundary: the mean model's stopping iteration is at the end of the mstop grid (400 steps); the full adopted term set is kept at mstop=394; to search further, pass discover(max_mstop=...) above 400; a larger value lets the grid double past it"
+   ],
+   "fit_seconds": 1.0109460353851318
+  },
+  {
+   "seed": 8,
+   "arm": "slid",
+   "method": "mb_discover",
+   "family": "Gaussian",
+   "formula": "bbs(education, df=4.0) + bbs(age, df=4.0) + bols(sex) + bbs(age, by=sex)",
+   "spread_formula": null,
+   "loc_terms": [
+    "age",
+    "age:sex",
+    "education",
+    "sex"
+   ],
+   "scale_terms": [],
+   "n_warnings": 1,
+   "warnings": [
+    "boundary: the mean model's stopping iteration is at the end of the mstop grid (400 steps); the full adopted term set is kept at mstop=400; to search further, pass discover(max_mstop=...) above 400; a larger value lets the grid double past it"
+   ],
+   "fit_seconds": 1.1751816272735596
+  },
+  {
+   "seed": 9,
+   "arm": "slid",
+   "method": "mb_discover",
+   "family": "Gaussian",
+   "formula": "bbs(education, df=4.0) + bbs(age, df=4.0) + bols(sex) + bbs(age, by=sex)",
+   "spread_formula": "bbs(age, df=4)",
+   "loc_terms": [
+    "age",
+    "age:sex",
+    "education",
+    "sex"
+   ],
+   "scale_terms": [
+    "age"
+   ],
+   "n_warnings": 0,
+   "warnings": [],
+   "fit_seconds": 1.3806726932525635
+  }
+ ],
+ "sample": {
+  "seed": 0,
+  "formula": "bbs(education, df=4.0) + bbs(age, df=4.0) + bols(sex) + bbs(age, by=sex)",
+  "spread_formula": null
+ }
+}

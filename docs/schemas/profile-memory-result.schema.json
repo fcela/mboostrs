@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/fcela/mboostrs/docs/schemas/profile-memory-result.schema.json",
+  "title": "mboostrs measured profile and memory result",
+  "type": "object",
+  "required": ["schema_version", "kind", "created_at", "metadata", "measurement", "results"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "kind": {"const": "mboostrs-profile-memory-result"},
+    "created_at": {"type": "string"},
+    "metadata": {"type": "object"},
+    "measurement": {"type": "object"},
+    "results": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "route", "n", "learners", "basis_width", "mstop", "seed", "input_digest", "output_digest",
+          "peak_rss_bytes", "baseline_rss_bytes", "incremental_peak_rss_bytes", "factor_cache_bytes",
+          "gram_cache_bytes", "phases_ns", "phase_share", "measured_total_ns", "execution_report"
+        ],
+        "properties": {
+          "route": {"enum": ["gaussian_gram", "general_block"]},
+          "n": {"type": "integer", "minimum": 1},
+          "learners": {"type": "integer", "minimum": 1},
+          "basis_width": {"type": "integer", "minimum": 1},
+          "mstop": {"type": "integer", "minimum": 1},
+          "seed": {"type": "integer"},
+          "input_digest": {"type": "string", "pattern": "^sha256:"},
+          "output_digest": {"type": "string", "pattern": "^sha256:"},
+          "peak_rss_bytes": {"type": "integer", "minimum": 1},
+          "baseline_rss_bytes": {"type": "integer", "minimum": 1},
+          "incremental_peak_rss_bytes": {"type": "integer", "minimum": 0},
+          "factor_cache_bytes": {"type": "integer", "minimum": 0},
+          "gram_cache_bytes": {"type": "integer", "minimum": 0},
+          "phases_ns": {"type": "object"},
+          "phase_share": {"type": "object"},
+          "measured_total_ns": {"type": "integer", "minimum": 1},
+          "execution_report": {"type": "object"}
+        }
+      }
+    }
+  }
+}

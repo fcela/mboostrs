@@ -1,0 +1,415 @@
+{
+  "seed": 1,
+  "train": "<hidden>/reps/N2/train.parquet",
+  "test": "<hidden>/reps/N2/test.parquet",
+  "eligibility_cut": {
+    "prior_earnings_cut": 39792.700000000004,
+    "enrolment_rate_at_or_below": 0.41426940639269405,
+    "enrolment_rate_above": 0.013580246913580247
+  },
+  "role_tests": {
+    "age": {
+      "p_treat": 3.05791280642176e-07,
+      "p_outcome": 1.9408044138974158e-07,
+      "distinct": 53
+    },
+    "education": {
+      "p_treat": 0.0002523163967149691,
+      "p_outcome": 2.435274218061491e-50,
+      "distinct": 19
+    },
+    "prior_earnings": {
+      "p_treat": 1.457969923833596e-263,
+      "p_outcome": 0.0,
+      "distinct": 5563
+    },
+    "months_unemployed": {
+      "p_treat": 7.383494179806415e-14,
+      "p_outcome": 4.4620110854485744e-09,
+      "distinct": 19
+    },
+    "distance_km": {
+      "p_treat": 1.19012099925805e-40,
+      "p_outcome": 0.22831809079851306,
+      "distinct": 629
+    },
+    "caseworker_note_len": {
+      "p_treat": 0.5853636950444145,
+      "p_outcome": 0.8090186433023292,
+      "distinct": 380
+    },
+    "ethnicity": {
+      "p_treat": 0.00015436673309686343,
+      "p_outcome": 0.661370721068147,
+      "distinct": 2
+    },
+    "smsa": {
+      "p_treat": 0.981544664726638,
+      "p_outcome": 0.000702577620622191,
+      "distinct": 2
+    },
+    "parttime": {
+      "p_treat": 0.47280570321675547,
+      "p_outcome": 0.0007490493611441739,
+      "distinct": 2
+    },
+    "region": {
+      "p_treat": 0.0004479220757949721,
+      "p_outcome": 0.29183105549693866,
+      "distinct": 4
+    }
+  },
+  "roles": {
+    "age": "confounder",
+    "education": "confounder",
+    "prior_earnings": "confounder",
+    "months_unemployed": "confounder",
+    "distance_km": "instrument",
+    "caseworker_note_len": "irrelevant",
+    "ethnicity": "treatment_only",
+    "smsa": "outcome_only",
+    "parttime": "outcome_only",
+    "region": "treatment_only",
+    "experience": "confounder",
+    "enrolled": "treatment",
+    "earnings_post": "outcome",
+    "certificate": "mediator",
+    "hours_post": "mediator",
+    "responded": "post_treatment_selection"
+  },
+  "smooth_baseline": false,
+  "aipw": {
+    "ATE": {
+      "estimate": 145.34485405593287,
+      "interval": [
+        -1187.666496034186,
+        1478.3562041460518
+      ]
+    },
+    "ATT": {
+      "estimate": -252.74956871070654,
+      "interval": [
+        -782.7913025510428,
+        277.2921651296298
+      ]
+    },
+    "EMP": {
+      "estimate": 0.007307506744960714,
+      "interval": [
+        -0.020495634879468257,
+        0.03511064836938969
+      ]
+    },
+    "propensity_min": 0.00028219307647134393,
+    "propensity_max": 0.9596646315249266,
+    "n_clipped_propensity": 904,
+    "outcome_model": "pooled",
+    "n_missing_outcome": 1927
+  },
+  "subgroups": {
+    "CATE_educ_lt12": {
+      "estimate": 252.1185524537412,
+      "lower90": -720.4685298893246,
+      "upper90": 1224.705634796807,
+      "n": 1886
+    },
+    "CATE_educ_ge16": {
+      "estimate": -108.91903973790785,
+      "lower90": -3670.317369474184,
+      "upper90": 3452.479289998368,
+      "n": 3001
+    },
+    "CATE_prior_q1": {
+      "estimate": -295.10666132067405,
+      "lower90": -801.3669578001438,
+      "upper90": 211.15363515879568,
+      "n": 3000
+    },
+    "CATE_prior_q4": {
+      "estimate": -1138.7218994884574,
+      "lower90": -5052.395072300877,
+      "upper90": 2774.951273323962,
+      "n": 3002
+    },
+    "CATE_age_lt25": {
+      "estimate": -198.83782819155766,
+      "lower90": -1033.04706370146,
+      "upper90": 635.3714073183448,
+      "n": 2005
+    }
+  },
+  "prior_quartiles": {
+    "q25": 15917.5,
+    "q75": 41180.0
+  },
+  "channels": {
+    "earnings_of_employed_controls_weighted_like_enrolled": 21661.554386783966,
+    "earnings_of_employed_controls_unweighted": 39348.06425540513,
+    "employment_effect": 0.007307506744960714,
+    "residual_earnings_effect": -12.94710073182503,
+    "residual_lower90": -831.2520584317726,
+    "residual_upper90": 805.3578569681226
+  },
+  "overlap": {
+    "share_outside_bounds": 0.1825,
+    "share_outside_bounds_above_cut": 0.6759259259259259,
+    "treated_above_cut": 44,
+    "rows_above_cut": 3240
+  },
+  "overlap_report": {
+    "share_outside": 0.1825,
+    "estimate_inside": 846.5696711363548
+  },
+  "modifier_tests": [
+    {
+      "variable": "education",
+      "statistic": 0.4424574443802716,
+      "p_value": 0.5059543708275318,
+      "threshold": 0.00625,
+      "kept": false,
+      "direction": "larger_when_higher"
+    },
+    {
+      "variable": "prior_earnings",
+      "statistic": 2.6006768358692356,
+      "p_value": 0.10685026097489958,
+      "threshold": 0.00625,
+      "kept": false,
+      "direction": "larger_when_higher"
+    },
+    {
+      "variable": "age",
+      "statistic": 1.6732588997275128,
+      "p_value": 0.19585306230959143,
+      "threshold": 0.00625,
+      "kept": false,
+      "direction": "larger_when_higher"
+    },
+    {
+      "variable": "months_unemployed",
+      "statistic": 0.004072010523800541,
+      "p_value": 0.9491209790726414,
+      "threshold": 0.00625,
+      "kept": false,
+      "direction": "larger_when_higher"
+    },
+    {
+      "variable": "parttime",
+      "statistic": 0.3966624149082969,
+      "p_value": 0.5288326491485538,
+      "threshold": 0.00625,
+      "kept": false,
+      "direction": "larger_when_higher"
+    },
+    {
+      "variable": "smsa",
+      "statistic": 2.39091317301851,
+      "p_value": 0.12207458353626366,
+      "threshold": 0.00625,
+      "kept": false,
+      "direction": "larger_when_lower"
+    },
+    {
+      "variable": "ethnicity",
+      "statistic": 1.3151724286698743,
+      "p_value": 0.25148826547116365,
+      "threshold": 0.00625,
+      "kept": false,
+      "direction": "larger_when_lower"
+    },
+    {
+      "variable": "region",
+      "statistic": 1.479504932894343,
+      "p_value": 0.2179117141087833,
+      "threshold": 0.00625,
+      "kept": false,
+      "direction": "larger_when_higher"
+    }
+  ],
+  "modifiers_kept": [],
+  "modifiers_joint_p_values": {},
+  "modifier_clip_bounds": {
+    "education": [
+      3.0,
+      18.0
+    ],
+    "prior_earnings": [
+      3340.0,
+      51160.0
+    ],
+    "age": [
+      18.0,
+      66.0
+    ],
+    "months_unemployed": [
+      0.0,
+      10.0
+    ]
+  },
+  "propensity_model": {
+    "formula": "enrolled ~ bols(age) + bols(education) + bols(experience) + bols(ethnicity) + bols(smsa) + bols(region) + bols(parttime) + bols(prior_earnings) + bols(months_unemployed) + bols(prior_above_cut)",
+    "mstop": 585
+  },
+  "cate_summary": {
+    "mean": 145.3448540559329,
+    "sd": 2.842170943040401e-14,
+    "min": 145.34485405593287,
+    "max": 145.34485405593287
+  },
+  "ranking": {
+    "n_test": 4000,
+    "n_chosen": 800,
+    "n_outside_overlap": 512,
+    "shortfall": 0,
+    "gain_mean_per_applicant": 145.3448540559329,
+    "gain_total_top20": 116275.88324474632,
+    "share_chosen_above_cut": 0.05875,
+    "test_share_above_cut": 0.182,
+    "test_share_outside_overlap": 0.128
+  },
+  "sensitivity_grid": [
+    {
+      "outcome_effect": 1000.0,
+      "imbalance": 0.1,
+      "assumed_bias": 100.0,
+      "adjusted_estimate": 45.34485405593287,
+      "changes_sign": false,
+      "lower": -1287.666496034186,
+      "upper": 1378.3562041460518,
+      "interval_includes_zero": true
+    },
+    {
+      "outcome_effect": 1000.0,
+      "imbalance": 0.25,
+      "assumed_bias": 250.0,
+      "adjusted_estimate": -104.65514594406713,
+      "changes_sign": true,
+      "lower": -1437.666496034186,
+      "upper": 1228.3562041460518,
+      "interval_includes_zero": true
+    },
+    {
+      "outcome_effect": 1000.0,
+      "imbalance": 0.5,
+      "assumed_bias": 500.0,
+      "adjusted_estimate": -354.65514594406716,
+      "changes_sign": true,
+      "lower": -1687.666496034186,
+      "upper": 978.3562041460518,
+      "interval_includes_zero": true
+    },
+    {
+      "outcome_effect": 2500.0,
+      "imbalance": 0.1,
+      "assumed_bias": 250.0,
+      "adjusted_estimate": -104.65514594406713,
+      "changes_sign": true,
+      "lower": -1437.666496034186,
+      "upper": 1228.3562041460518,
+      "interval_includes_zero": true
+    },
+    {
+      "outcome_effect": 2500.0,
+      "imbalance": 0.25,
+      "assumed_bias": 625.0,
+      "adjusted_estimate": -479.65514594406716,
+      "changes_sign": true,
+      "lower": -1812.666496034186,
+      "upper": 853.3562041460518,
+      "interval_includes_zero": true
+    },
+    {
+      "outcome_effect": 2500.0,
+      "imbalance": 0.5,
+      "assumed_bias": 1250.0,
+      "adjusted_estimate": -1104.655145944067,
+      "changes_sign": true,
+      "lower": -2437.666496034186,
+      "upper": 228.35620414605182,
+      "interval_includes_zero": true
+    },
+    {
+      "outcome_effect": 5000.0,
+      "imbalance": 0.1,
+      "assumed_bias": 500.0,
+      "adjusted_estimate": -354.65514594406716,
+      "changes_sign": true,
+      "lower": -1687.666496034186,
+      "upper": 978.3562041460518,
+      "interval_includes_zero": true
+    },
+    {
+      "outcome_effect": 5000.0,
+      "imbalance": 0.25,
+      "assumed_bias": 1250.0,
+      "adjusted_estimate": -1104.655145944067,
+      "changes_sign": true,
+      "lower": -2437.666496034186,
+      "upper": 228.35620414605182,
+      "interval_includes_zero": true
+    },
+    {
+      "outcome_effect": 5000.0,
+      "imbalance": 0.5,
+      "assumed_bias": 2500.0,
+      "adjusted_estimate": -2354.655145944067,
+      "changes_sign": true,
+      "lower": -3687.666496034186,
+      "upper": -1021.6437958539482,
+      "interval_includes_zero": false
+    }
+  ],
+  "benchmark": [
+    {
+      "omitted_covariate": "prior_earnings",
+      "full_estimate": 145.34485405593287,
+      "omitted_estimate": -3311.48898548391,
+      "estimate_shift": -3456.8338395398428,
+      "absolute_shift": 3456.8338395398428,
+      "shift_in_full_standard_errors": 5.082679772816155,
+      "omitted_propensity_min": 0.0040201584613856365,
+      "omitted_propensity_max": 0.9678879158936674,
+      "benchmark": "leave_one_measured_covariate_out"
+    },
+    {
+      "omitted_covariate": "education",
+      "full_estimate": 145.34485405593287,
+      "omitted_estimate": 337.55558461238013,
+      "estimate_shift": 192.21073055644726,
+      "absolute_shift": 192.21073055644726,
+      "shift_in_full_standard_errors": 0.28261282944612603,
+      "omitted_propensity_min": 0.0005534993432088455,
+      "omitted_propensity_max": 0.9649273580403642,
+      "benchmark": "leave_one_measured_covariate_out"
+    },
+    {
+      "omitted_covariate": "months_unemployed",
+      "full_estimate": 145.34485405593287,
+      "omitted_estimate": -160.74813014711305,
+      "estimate_shift": -306.09298420304594,
+      "absolute_shift": 306.09298420304594,
+      "shift_in_full_standard_errors": 0.45005710185273284,
+      "omitted_propensity_min": 0.00025798430445386474,
+      "omitted_propensity_max": 0.9036497945838927,
+      "benchmark": "leave_one_measured_covariate_out"
+    }
+  ],
+  "notes": [
+    "eligibility cut on prior_earnings chosen from data: 39793 (enrolment 0.414 at or below, 0.0136 above)",
+    "role test age: enrolment p=3.06e-07; earnings given enrolment p=1.94e-07",
+    "role test education: enrolment p=0.000252; earnings given enrolment p=2.44e-50",
+    "role test prior_earnings: enrolment p=1.46e-263; earnings given enrolment p=0",
+    "role test months_unemployed: enrolment p=7.38e-14; earnings given enrolment p=4.46e-09",
+    "role test distance_km: enrolment p=1.19e-40; earnings given enrolment p=0.228",
+    "role test caseworker_note_len: enrolment p=0.585; earnings given enrolment p=0.809",
+    "role test ind_afam: enrolment p=0.000154; earnings given enrolment p=0.661",
+    "role test ind_smsa_yes: enrolment p=0.982; earnings given enrolment p=0.000703",
+    "role test ind_parttime_yes: enrolment p=0.473; earnings given enrolment p=0.000749",
+    "role test ind_region_south: enrolment p=0.000149; earnings given enrolment p=0.0973",
+    "role test ind_region_west: enrolment p=0.675; earnings given enrolment p=0.183",
+    "role test ind_region_northeast: enrolment p=0.739; earnings given enrolment p=0.899",
+    "outcome model out-of-fold MSE: linear 3.245e+08, spline 3.289e+08; chosen: linear",
+    "modifier screen (univariate linear REML term test, Bonferroni over 8 candidates, threshold 0.0063): education p=0.506; prior_earnings p=0.107; age p=0.196; months_unemployed p=0.949; parttime p=0.529; smsa p=0.122; ethnicity p=0.251; region p=0.218"
+  ],
+  "runtime_seconds": 103.25164818763733
+}

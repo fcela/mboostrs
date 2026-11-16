@@ -1,0 +1,793 @@
+{
+  "seed": 1,
+  "n_train": 15480,
+  "n_test": 5160,
+  "covariates": [
+    "longitude",
+    "latitude",
+    "housing_median_age",
+    "total_rooms",
+    "total_bedrooms",
+    "population",
+    "households",
+    "median_income",
+    "median_house_value",
+    "ave_rooms",
+    "ave_bedrooms",
+    "ave_occup",
+    "roof_class",
+    "housing_median_age_missing",
+    "total_bedrooms_missing",
+    "ave_bedrooms_missing"
+  ],
+  "train_medians_filled": {
+    "housing_median_age": 29.0,
+    "total_bedrooms": 438.0,
+    "ave_bedrooms": 1.0506329113924051
+  },
+  "discover_formula": "bbs(log(median_house_value), df=4.0) + bbs(log(ave_occup), df=4.0) + bols(roof_class) + bbs(longitude, df=2.5, knots=5) + bbs(latitude, df=2.5, knots=5) + bbs(longitude, df=2.5, knots=5) %X% bbs(latitude, df=2.5, knots=5) + brandom(roof_class) %X% brandom(housing_median_age_missing) + bbs(housing_median_age, df=2.5, knots=5) + bbs(log(median_income), df=2.5, knots=5) + bbs(housing_median_age, df=2.5, knots=5) %X% bbs(log(median_income), df=2.5, knots=5)",
+  "discover_log": [
+    {
+      "stage": "setup",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no missing values in the data or newdata: fits use na_action='omit', the same rows without the imputation terms that 'impute' adds to every model"
+    },
+    {
+      "stage": "rule",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "rule in force: mu heredity none"
+    },
+    {
+      "stage": "draft",
+      "candidate": "log(total_rooms)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "right-skewed positive predictor: sample skewness 4.00 (above 1), minimum 2 above 0, so its smooth is fitted on log(total_rooms); contrasts and predictions take the original scale"
+    },
+    {
+      "stage": "draft",
+      "candidate": "log(total_bedrooms)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "right-skewed positive predictor: sample skewness 3.33 (above 1), minimum 2 above 0, so its smooth is fitted on log(total_bedrooms); contrasts and predictions take the original scale"
+    },
+    {
+      "stage": "draft",
+      "candidate": "log(population)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "right-skewed positive predictor: sample skewness 4.83 (above 1), minimum 3 above 0, so its smooth is fitted on log(population); contrasts and predictions take the original scale"
+    },
+    {
+      "stage": "draft",
+      "candidate": "log(households)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "right-skewed positive predictor: sample skewness 3.23 (above 1), minimum 2 above 0, so its smooth is fitted on log(households); contrasts and predictions take the original scale"
+    },
+    {
+      "stage": "draft",
+      "candidate": "log(median_income)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "right-skewed positive predictor: sample skewness 1.29 (above 1), minimum 0.4999 above 0, so its smooth is fitted on log(median_income); contrasts and predictions take the original scale"
+    },
+    {
+      "stage": "draft",
+      "candidate": "log(median_house_value)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "right-skewed positive predictor: sample skewness 1.05 (above 1), minimum 14999 above 0, so its smooth is fitted on log(median_house_value); contrasts and predictions take the original scale"
+    },
+    {
+      "stage": "draft",
+      "candidate": "log(ave_rooms)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "right-skewed positive predictor: sample skewness 23.06 (above 1), minimum 0.888889 above 0, so its smooth is fitted on log(ave_rooms); contrasts and predictions take the original scale"
+    },
+    {
+      "stage": "draft",
+      "candidate": "log(ave_bedrooms)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "right-skewed positive predictor: sample skewness 33.37 (above 1), minimum 0.375 above 0, so its smooth is fitted on log(ave_bedrooms); contrasts and predictions take the original scale"
+    },
+    {
+      "stage": "draft",
+      "candidate": "log(ave_occup)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "right-skewed positive predictor: sample skewness 77.90 (above 1), minimum 0.692308 above 0, so its smooth is fitted on log(ave_occup); contrasts and predictions take the original scale"
+    },
+    {
+      "stage": "draft",
+      "candidate": "bols(roof_class)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "4 unordered levels: one coefficient per level as bols; brandom shrinks level effects and is for more levels"
+    },
+    {
+      "stage": "draft",
+      "candidate": "bbs(longitude, df=4.0) + bbs(latitude, df=4.0) + bbs(housing_median_age, df=4.0) + bbs(log(total_rooms), df=4.0) + bbs(log(total_bedrooms), df=4.0) + bbs(log(population), df=4.0) + bbs(log(households), df=4.0) + bbs(log(median_income), df=4.0) + bbs(log(median_house_value), df=4.0) + bbs(log(ave_rooms), df=4.0) + bbs(log(ave_bedrooms), df=4.0) + bbs(log(ave_occup), df=4.0) + bols(roof_class) + bols(housing_median_age_missing) + bols(total_bedrooms_missing) + bols(ave_bedrooms_missing)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "16 terms from the columns, each continuous column a P-spline at df=4"
+    },
+    {
+      "stage": "mean effects",
+      "candidate": "bbs(log(ave_bedrooms), df=4.0)",
+      "score": 0.22369302511220407,
+      "change": -0.00011568380364010422,
+      "se": 0.0001001073158341038,
+      "adopted": false,
+      "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)"
+    },
+    {
+      "stage": "mean effects",
+      "candidate": "bbs(log(ave_rooms), df=4.0)",
+      "score": 0.22366240147554067,
+      "change": -3.062363666339607e-05,
+      "se": 3.062363666337386e-05,
+      "adopted": false,
+      "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)"
+    },
+    {
+      "stage": "mean effects",
+      "candidate": "bbs(log(population), df=4.0)",
+      "score": 0.22364563684743732,
+      "change": -1.6764628103349555e-05,
+      "se": 1.676462810337176e-05,
+      "adopted": false,
+      "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)"
+    },
+    {
+      "stage": "mean effects",
+      "candidate": "bbs(log(total_rooms), df=4.0)",
+      "score": 0.22362949000928198,
+      "change": -1.6146838155345344e-05,
+      "se": 1.6436069282205064e-05,
+      "adopted": false,
+      "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)"
+    },
+    {
+      "stage": "mean effects",
+      "candidate": "bbs(log(households), df=4.0)",
+      "score": 0.22362949000928198,
+      "change": 0.0,
+      "se": 0.0,
+      "adopted": false,
+      "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)"
+    },
+    {
+      "stage": "mean effects",
+      "candidate": "bbs(log(total_bedrooms), df=4.0)",
+      "score": 0.22359808345901871,
+      "change": -3.140655026326322e-05,
+      "se": 2.4058351412618242e-05,
+      "adopted": false,
+      "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)"
+    },
+    {
+      "stage": "mean effects",
+      "candidate": "bols(total_bedrooms_missing)",
+      "score": 0.22359808345901871,
+      "change": 0.0,
+      "se": 0.0,
+      "adopted": false,
+      "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)"
+    },
+    {
+      "stage": "mean effects",
+      "candidate": "bols(ave_bedrooms_missing)",
+      "score": 0.22359808345901871,
+      "change": 0.0,
+      "se": 0.0,
+      "adopted": false,
+      "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)"
+    },
+    {
+      "stage": "mean effects",
+      "candidate": "bols(housing_median_age_missing)",
+      "score": 0.22365668989819198,
+      "change": 5.860643917326991e-05,
+      "se": 8.99104771577576e-05,
+      "adopted": false,
+      "reason": "dropped: removing it does not raise out-of-fold risk by more than 2 change se (the least useful term this round)"
+    },
+    {
+      "stage": "mean effects",
+      "candidate": "bbs(longitude, df=4.0)",
+      "score": 0.22365668989819198,
+      "change": 0.0009562140934628593,
+      "se": 0.0001385969927235658,
+      "adopted": true,
+      "reason": "kept: removing it raises out-of-fold risk by more than 2 change se"
+    },
+    {
+      "stage": "mean effects",
+      "candidate": "bbs(latitude, df=4.0)",
+      "score": 0.22365668989819198,
+      "change": 0.0011902324766057126,
+      "se": 0.00016859263994854667,
+      "adopted": true,
+      "reason": "kept: removing it raises out-of-fold risk by more than 2 change se"
+    },
+    {
+      "stage": "mean effects",
+      "candidate": "bbs(housing_median_age, df=4.0)",
+      "score": 0.22365668989819198,
+      "change": 0.015349577220788169,
+      "se": 0.0005763437942982221,
+      "adopted": true,
+      "reason": "kept: removing it raises out-of-fold risk by more than 2 change se"
+    },
+    {
+      "stage": "mean effects",
+      "candidate": "bbs(log(median_income), df=4.0)",
+      "score": 0.22365668989819198,
+      "change": 0.028283450371015262,
+      "se": 0.0011679010011472362,
+      "adopted": true,
+      "reason": "kept: removing it raises out-of-fold risk by more than 2 change se"
+    },
+    {
+      "stage": "mean effects",
+      "candidate": "bbs(log(median_house_value), df=4.0)",
+      "score": 0.22365668989819198,
+      "change": 9.536540969129481e-05,
+      "se": 4.536492729605018e-05,
+      "adopted": true,
+      "reason": "kept: removing it raises out-of-fold risk by more than 2 change se"
+    },
+    {
+      "stage": "mean effects",
+      "candidate": "bbs(log(ave_occup), df=4.0)",
+      "score": 0.22365668989819198,
+      "change": 0.00731458034996893,
+      "se": 0.00020821382644526358,
+      "adopted": true,
+      "reason": "kept: removing it raises out-of-fold risk by more than 2 change se"
+    },
+    {
+      "stage": "mean effects",
+      "candidate": "bols(roof_class)",
+      "score": 0.22365668989819198,
+      "change": 0.014890554436192943,
+      "se": 0.0005807877615796539,
+      "adopted": true,
+      "reason": "kept: removing it raises out-of-fold risk by more than 2 change se"
+    },
+    {
+      "stage": "interactions",
+      "candidate": "bbs(longitude, df=2.5, knots=5) %X% bbs(latitude, df=2.5, knots=5)",
+      "score": 0.22289808379288817,
+      "change": -0.002869656816908539,
+      "se": 0.00023080867855051525,
+      "adopted": true,
+      "reason": "adopted: lowers out-of-fold risk by more than 2.54 change se (screen score 0.002346)"
+    },
+    {
+      "stage": "interactions",
+      "candidate": "brandom(roof_class) %X% brandom(housing_median_age_missing)",
+      "score": 0.22170598381655546,
+      "change": -0.0011920999763327111,
+      "se": 0.00016576165219416995,
+      "adopted": true,
+      "reason": "adopted: lowers out-of-fold risk by more than 2.54 change se (screen score 0.001148)"
+    },
+    {
+      "stage": "interactions",
+      "candidate": "bbs(housing_median_age, df=2.5, knots=5) %X% bbs(log(median_income), df=2.5, knots=5)",
+      "score": 0.22086807506982345,
+      "change": -0.002732470655109648,
+      "se": 0.000508761928444026,
+      "adopted": true,
+      "reason": "adopted: lowers out-of-fold risk by more than 2.54 change se (screen score 0.001094)"
+    },
+    {
+      "stage": "interactions",
+      "candidate": "bbs(latitude, df=2.5, knots=5) %X% bbs(housing_median_age, df=2.5, knots=5)",
+      "score": 0.2208717617041208,
+      "change": 3.6866342973396193e-06,
+      "se": 3.6866342973562724e-06,
+      "adopted": false,
+      "reason": "rejected: does not lower out-of-fold risk by 2.54 change se (screen score 0.0009041)"
+    },
+    {
+      "stage": "interactions",
+      "candidate": "bbs(longitude, by=housing_median_age_missing)",
+      "score": 0.2208724666506349,
+      "change": 4.391580811446971e-06,
+      "se": 3.5787150311419315e-06,
+      "adopted": false,
+      "reason": "rejected: does not lower out-of-fold risk by 2.54 change se (screen score 0.0008487)"
+    },
+    {
+      "stage": "spread",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "not run: spread=False"
+    },
+    {
+      "stage": "tune",
+      "candidate": "bbs(log(median_house_value), df=4.0) + bbs(log(ave_occup), df=4.0) + bols(roof_class) + bbs(longitude, df=2.5, knots=5) + bbs(latitude, df=2.5, knots=5) + bbs(longitude, df=2.5, knots=5) %X% bbs(latitude, df=2.5, knots=5) + brandom(roof_class) %X% brandom(housing_median_age_missing) + bbs(housing_median_age, df=2.5, knots=5) + bbs(log(median_income), df=2.5, knots=5) + bbs(housing_median_age, df=2.5, knots=5) %X% bbs(log(median_income), df=2.5, knots=5)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "boundary: the cross-validated risk is still falling at the end of the mstop grid (400 steps after 2 doubling(s)); the full adopted term set is kept, at mstop=400, and the stopping iteration is not resolved"
+    },
+    {
+      "stage": "refit",
+      "candidate": "bbs(log(median_house_value), df=4.0) + bbs(log(ave_occup), df=4.0) + bols(roof_class) + bbs(longitude, df=2.5, knots=5) + bbs(latitude, df=2.5, knots=5) + bbs(longitude, df=2.5, knots=5) %X% bbs(latitude, df=2.5, knots=5) + brandom(roof_class) %X% brandom(housing_median_age_missing) + bbs(housing_median_age, df=2.5, knots=5) + bbs(log(median_income), df=2.5, knots=5) + bbs(housing_median_age, df=2.5, knots=5) %X% bbs(log(median_income), df=2.5, knots=5)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": true,
+      "reason": "REML refit of the adopted terms"
+    },
+    {
+      "stage": "refit",
+      "candidate": "bbs(longitude, df=4.0) + bbs(latitude, df=4.0) + bbs(housing_median_age, df=4.0) + bbs(log(total_rooms), df=4.0) + bbs(log(total_bedrooms), df=4.0) + bbs(log(population), df=4.0) + bbs(log(households), df=4.0) + bbs(log(median_income), df=4.0) + bbs(log(ave_rooms), df=4.0) + bbs(log(ave_bedrooms), df=4.0) + bols(housing_median_age_missing) + bols(total_bedrooms_missing) + bols(ave_bedrooms_missing)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "REML refit of the model before elimination, used only for the contrasts of the dropped terms"
+    }
+  ],
+  "spread_candidates": {
+    "longitude": "bbs(longitude, df=4)",
+    "latitude": "bbs(latitude, df=4)",
+    "housing_median_age": "bbs(housing_median_age, df=4)",
+    "total_rooms": "bbs(total_rooms__log, df=4)",
+    "total_bedrooms": "bbs(total_bedrooms__log, df=4)",
+    "population": "bbs(population__log, df=4)",
+    "households": "bbs(households__log, df=4)",
+    "median_income": "bbs(median_income__log, df=4)",
+    "median_house_value": "bbs(median_house_value__log, df=4)",
+    "ave_rooms": "bbs(ave_rooms__log, df=4)",
+    "ave_bedrooms": "bbs(ave_bedrooms__log, df=4)",
+    "ave_occup": "bbs(ave_occup__log, df=4)",
+    "roof_class": "bols(roof_class)",
+    "housing_median_age_missing": "bols(housing_median_age_missing)",
+    "total_bedrooms_missing": "bols(total_bedrooms_missing)",
+    "ave_bedrooms_missing": "bols(ave_bedrooms_missing)"
+  },
+  "spread_adopted": [
+    "households"
+  ],
+  "mean_check": [
+    {
+      "stage": "mean check A: interactions",
+      "configuration": "drop bbs(longitude, df=2.5, knots=5) %X% bbs(latitude, df=2.5, knots=5)",
+      "change": 0.002807529419390331,
+      "se": 0.0005401465843910985,
+      "score": 0.6381545853397776,
+      "verdict": "kept",
+      "note": "",
+      "keep": true
+    },
+    {
+      "stage": "mean check A: interactions",
+      "configuration": "drop brandom(roof_class) %X% brandom(housing_median_age_missing)",
+      "change": -0.05905926850835652,
+      "se": 0.0030070601318823854,
+      "score": 0.6381545853397776,
+      "verdict": "dropped",
+      "note": "",
+      "keep": false
+    },
+    {
+      "stage": "mean check A: interactions",
+      "configuration": "drop bbs(housing_median_age, df=2.5, knots=5) %X% bbs(median_income__log, df=2.5, knots=5)",
+      "change": 0.004142903128156461,
+      "se": 0.0005065642541041323,
+      "score": 0.6381545853397776,
+      "verdict": "kept",
+      "note": "",
+      "keep": true
+    },
+    {
+      "stage": "mean check B: main effects",
+      "configuration": "drop bbs(median_house_value__log, df=4.0)",
+      "change": -0.00021249180139892854,
+      "se": 0.00024079731249128885,
+      "score": 0.5790953168314211,
+      "verdict": "dropped",
+      "note": "",
+      "keep": false
+    },
+    {
+      "stage": "mean check B: main effects",
+      "configuration": "drop bbs(ave_occup__log, df=4.0)",
+      "change": 0.01864612242210284,
+      "se": 0.0011126981792920364,
+      "score": 0.5790953168314211,
+      "verdict": "kept",
+      "note": "",
+      "keep": true
+    },
+    {
+      "stage": "mean check B: main effects",
+      "configuration": "drop bols(roof_class)",
+      "change": 0.04051315172049763,
+      "se": 0.002018927023063322,
+      "score": 0.5790953168314211,
+      "verdict": "kept",
+      "note": "",
+      "keep": true
+    },
+    {
+      "stage": "mean check B: main effects",
+      "configuration": "drop bbs(longitude, df=2.5, knots=5)",
+      "change": 0.0,
+      "se": 0.0,
+      "score": 0.5790953168314211,
+      "verdict": "kept",
+      "note": "removal leaves the score unchanged",
+      "keep": true
+    },
+    {
+      "stage": "mean check B: main effects",
+      "configuration": "drop bbs(latitude, df=2.5, knots=5)",
+      "change": 0.0,
+      "se": 0.0,
+      "score": 0.5790953168314211,
+      "verdict": "kept",
+      "note": "removal leaves the score unchanged",
+      "keep": true
+    },
+    {
+      "stage": "mean check B: main effects",
+      "configuration": "drop bbs(housing_median_age, df=2.5, knots=5)",
+      "change": 0.0,
+      "se": 0.0,
+      "score": 0.5790953168314211,
+      "verdict": "kept",
+      "note": "removal leaves the score unchanged",
+      "keep": true
+    },
+    {
+      "stage": "mean check B: main effects",
+      "configuration": "drop bbs(median_income__log, df=2.5, knots=5)",
+      "change": 0.0,
+      "se": 0.0,
+      "score": 0.5790953168314211,
+      "verdict": "kept",
+      "note": "removal leaves the score unchanged",
+      "keep": true
+    },
+    {
+      "stage": "mean check C: additions",
+      "configuration": "add bbs(households__log, df=4)",
+      "change": 0.0002948385694508948,
+      "se": 0.00014525902009753902,
+      "score": 0.5788828250300222,
+      "verdict": "not added",
+      "note": "",
+      "keep": false
+    },
+    {
+      "stage": "mean check C: additions",
+      "configuration": "add bbs(population__log, df=4)",
+      "change": 0.00032376219335783496,
+      "se": 0.00013814181290459712,
+      "score": 0.5788828250300222,
+      "verdict": "not added",
+      "note": "",
+      "keep": false
+    },
+    {
+      "stage": "mean check C: additions",
+      "configuration": "add bbs(total_rooms__log, df=4)",
+      "change": 0.0001897977577288712,
+      "se": 0.00012619640249833742,
+      "score": 0.5788828250300222,
+      "verdict": "not added",
+      "note": "",
+      "keep": false
+    },
+    {
+      "stage": "mean check C: additions",
+      "configuration": "add bbs(median_house_value__log, df=4)",
+      "change": 0.00021249180139881751,
+      "se": 0.00024079731249128264,
+      "score": 0.5788828250300222,
+      "verdict": "not added",
+      "note": "",
+      "keep": false
+    },
+    {
+      "stage": "mean check C: additions",
+      "configuration": "add bbs(ave_rooms__log, df=4)",
+      "change": 0.00032589121234027907,
+      "se": 0.0001634545037880829,
+      "score": 0.5788828250300222,
+      "verdict": "not added",
+      "note": "",
+      "keep": false
+    },
+    {
+      "stage": "mean check C: additions",
+      "configuration": "add bbs(total_bedrooms__log, df=4)",
+      "change": 0.00025988281230271415,
+      "se": 0.00011222924739561219,
+      "score": 0.5788828250300222,
+      "verdict": "not added",
+      "note": "",
+      "keep": false
+    }
+  ],
+  "final_mu": "bbs(ave_occup__log, df=4.0) + bols(roof_class) + bbs(longitude, df=2.5, knots=5) + bbs(latitude, df=2.5, knots=5) + bbs(longitude, df=2.5, knots=5) %X% bbs(latitude, df=2.5, knots=5) + bbs(housing_median_age, df=2.5, knots=5) + bbs(median_income__log, df=2.5, knots=5) + bbs(housing_median_age, df=2.5, knots=5) %X% bbs(median_income__log, df=2.5, knots=5)",
+  "final_sigma": "bbs(households__log, df=4)",
+  "mstop": 5000,
+  "mstop_at_cap": true,
+  "variance_curves": {
+    "households": {
+      "grid": [
+        124.0,
+        223.0,
+        279.0,
+        330.0,
+        382.0,
+        439.0,
+        508.0,
+        600.0,
+        746.0,
+        1151.0499999999993
+      ],
+      "curve": [
+        -0.47755286617524634,
+        -0.6677240694777831,
+        -0.7148276720617107,
+        -0.7902741599726169,
+        -0.8563959910741693,
+        -0.8998763726138677,
+        -0.9387487000413816,
+        -1.0050677308483338,
+        -1.1136897257035092,
+        -1.1072105029174362
+      ],
+      "shape": "nonmonotone",
+      "change": -0.6296576367421898
+    }
+  },
+  "rejected_interactions": [
+    "brandom(roof_class) %X% brandom(housing_median_age_missing)"
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.4952683695317224,
+      "lower90": -0.511961562959053,
+      "upper90": -0.47970178725682594,
+      "draw_sd": 0.009954038348335206,
+      "support_rows": 15480,
+      "selected_by_rule": true,
+      "refit": "final model"
+    },
+    "Q2": {
+      "estimate": 0.43212784340494065,
+      "lower90": 0.4096865714212487,
+      "upper90": 0.4549618342795869,
+      "draw_sd": 0.013664346184070655,
+      "support_rows": 15480,
+      "selected_by_rule": true,
+      "refit": "final model"
+    },
+    "Q3": {
+      "estimate": 0.25859293108977305,
+      "lower90": 0.24127974736441068,
+      "upper90": 0.2745198529111379,
+      "draw_sd": 0.010214202887644014,
+      "support_rows": 15480,
+      "selected_by_rule": true,
+      "refit": "final model"
+    },
+    "Q4": {
+      "estimate": 0.3724072940644438,
+      "lower90": 0.3529844412516077,
+      "upper90": 0.39081902587155365,
+      "draw_sd": 0.01214259422278629,
+      "support_rows": 15480,
+      "selected_by_rule": true,
+      "refit": "final model"
+    },
+    "Q5": {
+      "estimate": -0.0036651977966489445,
+      "lower90": -0.022775561512248358,
+      "upper90": 0.0171056726335605,
+      "draw_sd": 0.012456952553764205,
+      "support_rows": 15480,
+      "selected_by_rule": false,
+      "refit": "final model plus bbs(ave_rooms__log, df=4) (not selected)",
+      "draft_lower90": -0.022775561512248358,
+      "draft_upper90": 0.0171056726335605
+    },
+    "Q6": {
+      "estimate": 0.28871214562374814,
+      "lower90": 0.2633410574220557,
+      "upper90": 0.31467728846418636,
+      "draw_sd": 0.01615285468357762,
+      "support_rows": 15480,
+      "selected_by_rule": true,
+      "refit": "final model"
+    },
+    "Q7": {
+      "estimate": 0.0038704482055597522,
+      "lower90": -0.010627638403114745,
+      "upper90": 0.017283717117789085,
+      "draw_sd": 0.008488930159354159,
+      "support_rows": 15480,
+      "selected_by_rule": false,
+      "refit": "final model plus bbs(households__log, df=4) (not selected)",
+      "draft_lower90": -0.010627638403114745,
+      "draft_upper90": 0.017283717117789085
+    },
+    "Q8": {
+      "estimate": 0.006045583713393541,
+      "lower90": -0.010915962637548841,
+      "upper90": 0.020778248293355596,
+      "draw_sd": 0.010197469466278473,
+      "support_rows": 15480,
+      "selected_by_rule": false,
+      "refit": "final model plus bbs(median_house_value__log, df=4) (not selected)",
+      "draft_lower90": -0.010915962637548841,
+      "draft_upper90": 0.020778248293355596
+    }
+  },
+  "coverage_heldout_train": {
+    "overall": {
+      "n": 15480,
+      "coverage": 0.8992894056847546,
+      "mean_width": 1.4023042847801572
+    },
+    "roof_class=D": {
+      "n": 2738,
+      "coverage": 0.9010226442658875,
+      "mean_width": 1.4741573627079052
+    },
+    "roof_class=C": {
+      "n": 3987,
+      "coverage": 0.8986706797090545,
+      "mean_width": 1.4247957968268292
+    },
+    "roof_class=B": {
+      "n": 5419,
+      "coverage": 0.8990588669496217,
+      "mean_width": 1.3815446587684996
+    },
+    "roof_class=A": {
+      "n": 3336,
+      "coverage": 0.8989808153477218,
+      "mean_width": 1.3501726982876268
+    },
+    "households=small": {
+      "n": 5180,
+      "coverage": 0.9038610038610039,
+      "mean_width": 1.820912274635543
+    },
+    "households=middle": {
+      "n": 5162,
+      "coverage": 0.9017822549399458,
+      "mean_width": 1.321663485922951
+    },
+    "households=large": {
+      "n": 5138,
+      "coverage": 0.8921759439470611,
+      "mean_width": 1.0612919095855293
+    },
+    "latitude=north": {
+      "n": 5160,
+      "coverage": 0.8951550387596899,
+      "mean_width": 1.4503949227885329
+    },
+    "latitude=middle": {
+      "n": 5018,
+      "coverage": 0.8991630131526505,
+      "mean_width": 1.379367127726133
+    },
+    "latitude=south": {
+      "n": 5302,
+      "coverage": 0.9034326669181441,
+      "mean_width": 1.377210162179983
+    },
+    "median_income=high": {
+      "n": 5158,
+      "coverage": 0.902287708414114,
+      "mean_width": 1.3888975139950719
+    },
+    "median_income=middle": {
+      "n": 5159,
+      "coverage": 0.8993991083543322,
+      "mean_width": 1.3595365569072655
+    },
+    "median_income=low": {
+      "n": 5163,
+      "coverage": 0.8961843889211699,
+      "mean_width": 1.4584326659162643
+    }
+  },
+  "extrapolation_report": "shape: (2, 12)\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 parameter \u2506 term       \u2506 covariate  \u2506 kind   \u2506 \u2026 \u2506 train_high \u2506 new_low  \u2506 new_high \u2506 worst_dist \u2502\n\u2502 ---       \u2506 ---        \u2506 ---        \u2506 ---    \u2506   \u2506 ---        \u2506 ---      \u2506 ---      \u2506 ance       \u2502\n\u2502 str       \u2506 str        \u2506 str        \u2506 str    \u2506   \u2506 f64        \u2506 f64      \u2506 f64      \u2506 ---        \u2502\n\u2502           \u2506            \u2506            \u2506        \u2506   \u2506            \u2506          \u2506          \u2506 f64        \u2502\n\u255e\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u256a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u256a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u256a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u256a\u2550\u2550\u2550\u256a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u256a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u256a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u256a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2561\n\u2502 mu        \u2506 bbs(ave_oc \u2506 ave_occup_ \u2506 spline \u2506 \u2026 \u2506 6.396453   \u2506 0.219265 \u2506 7.125551 \u2506 0.107788   \u2502\n\u2502           \u2506 cup__log)  \u2506 _log       \u2506 basis  \u2506   \u2506            \u2506          \u2506          \u2506            \u2502\n\u2502 sigma     \u2506 bbs(househ \u2506 households \u2506 spline \u2506 \u2026 \u2506 8.586346   \u2506 0.693147 \u2506 8.713089 \u2506 0.016057   \u2502\n\u2502           \u2506 olds__log) \u2506 __log      \u2506 basis  \u2506   \u2506            \u2506          \u2506          \u2506            \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518",
+  "validate_issues": [
+    {
+      "kind": "extrapolation",
+      "severity": "warning",
+      "parameter": "mu",
+      "term": "bbs(ave_occup__log)",
+      "column": "ave_occup__log",
+      "count": "1",
+      "n_rows": "5160",
+      "worst_distance": "0.10778809464737311",
+      "levels": "None",
+      "message": "bbs(ave_occup__log), covariate ave_occup__log: 1 row(s) outside the training range [-0.367725, 6.39645], farthest 0.11 training ranges out",
+      "suggested_policy": "predict(extrapolation='clip') holds the effect at the training edge; extrapolation='error' refuses these rows; extrapolation='allow' keeps the edge-slope continuation"
+    },
+    {
+      "kind": "extrapolation",
+      "severity": "warning",
+      "parameter": "sigma",
+      "term": "bbs(households__log)",
+      "column": "households__log",
+      "count": "1",
+      "n_rows": "5160",
+      "worst_distance": "0.016057218401247332",
+      "levels": "None",
+      "message": "bbs(households__log), covariate households__log: 1 row(s) outside the training range [0.693147, 8.58635], farthest 0.016 training ranges out",
+      "suggested_policy": "predict(extrapolation='clip') holds the effect at the training edge; extrapolation='error' refuses these rows; extrapolation='allow' keeps the edge-slope continuation"
+    },
+    {
+      "kind": "extra_column",
+      "severity": "warning",
+      "parameter": "None",
+      "term": "None",
+      "column": "None",
+      "count": "18",
+      "n_rows": "5160",
+      "worst_distance": "None",
+      "levels": "None",
+      "message": "18 columns are not read by any term; predict ignores them: 'total_rooms', 'total_bedrooms', 'population', 'households', 'median_income', 'median_house_value', 'ave_rooms', 'ave_bedrooms', 'ave_occup', 'housing_median_age_missing', 'total_bedrooms_missing', 'ave_bedrooms_missing', 'total_rooms__log', 'total_bedrooms__log', 'population__log', 'median_house_value__log', 'ave_rooms__log', 'ave_bedrooms__log'",
+      "suggested_policy": "none needed; drop the column(s) to silence this issue"
+    }
+  ],
+  "null_run": {
+    "mean_terms": [
+      "1"
+    ],
+    "interactions": []
+  }
+}

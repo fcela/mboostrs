@@ -1,0 +1,26 @@
+[08:11:01] loaded train 15480 rows, test 5160 rows, 16 covariates
+[08:11:01] stage 1: discover (mean, constant spread)
+[08:11:53] discover mean: 10 terms
+[08:11:53] stage 2: spread search over all covariates
+[08:13:07] spread round 1: best households change=-0.08206 se=0.01169 adopt=True
+[08:13:30] spread round 2: best total_bedrooms change=-0.00029 se=0.00024 adopt=False
+[08:13:30] stage 3: mean check under the spread model
+[08:14:58] mean terms after check: 9: bbs(ave_occup__log, df=4.0) + bols(roof_class) + bols(housing_median_age_missing) + bbs(longitude, df=2.5, knots=5) + bbs(latitude, df=2.5, knots=5) + bbs(longitude, df=2.5, knots=5) %X% bbs(latitude, df=2.5, knots=5) + bbs(housing_median_age, df=2.5, knots=5) + bbs(median_income__log, df=2.5, knots=5) + bbs(housing_median_age, df=2.5, knots=5) %X% bbs(median_income__log, df=2.5, knots=5)
+[08:14:58] stage 4: tune stopping iteration of the final model
+[08:15:10] final mstop=5000 (at cap)
+[08:15:13] stage 5: shapes, interactions and spread direction
+[08:15:15] stage 6: effect queries
+[08:15:20] Q1 median_income: -0.4714 [-0.4884, -0.4563]
+[08:15:20] Q2 housing_median_age: +0.4094 [+0.3864, +0.4361]
+[08:15:20] Q3 ave_occup: +0.2485 [+0.2324, +0.2677]
+[08:15:21] Q4 roof_class: +0.3709 [+0.3516, +0.3913]
+[08:15:32] Q5 ave_rooms: -0.0012 [-0.0255, +0.0214] (not selected)
+[08:15:33] Q6 latitude+longitude: +0.2993 [+0.2758, +0.3241]
+[08:15:44] Q7 households: -0.0276 [-0.0419, +0.0000] (not selected)
+[08:15:58] Q8 median_house_value: -0.0286 [-0.0479, +0.0000] (not selected)
+[08:15:58] stage 7: prediction intervals
+[08:16:01] stage 7b: cross-fitted coverage on held-out training rows
+[08:16:38] held-out coverage overall 0.900; worst subgroup gap 0.010
+[08:16:38] stage 8: extrapolation and validation of test rows
+[08:16:38] stage 9: null run with permuted response
+[08:17:32] null run mean terms: 0; interactions: 0

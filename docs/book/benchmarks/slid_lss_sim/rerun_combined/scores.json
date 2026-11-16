@@ -1,0 +1,129 @@
+{
+ "scorecard_id": "mboostrs-scorecard/2.1",
+ "benchmark_protocol_id": "slid_lss_sim/1",
+ "measured_dimensions": [
+  "D11",
+  "D1a",
+  "D1b",
+  "D5",
+  "D9"
+ ],
+ "dimensions": [
+  {
+   "id": "D1a",
+   "name": "Relationship recovery under a prescribed specification",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "results.parquet",
+    "evidence.json",
+    "answer_key.md"
+   ],
+   "justification": "Track A - prescribed specification, sim arm only. Unchanged from the baseline: RMSE(mu) 0.056 (SE 0.003) and RMSE(log sigma) 0.014 (0.002), better than the classical GAMLSS-style comparator (0.123, 0.043). The x3 slopes are recovered at 1.458 and -1.035 against the true 1.5 and -1.0. The fix PRs touch the discovery path, not the known-specification fits, so this dimension does not move. Anchor 4 is not assigned: the prescribed formula leaves no open structure to validate."
+  },
+  {
+   "id": "D1b",
+   "name": "Relationship discovery from data alone",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "results.parquet",
+    "evidence.json",
+    "answer_key.md"
+   ],
+   "justification": "Track B - data and response name only. sim is unchanged: location precision 0.980, recall 1.000 (x3-by-g in 10/10), scale precision and recall 1.000 (x5), zero false discoveries among x6/x7/x8, zero traps, Gaussian in 10/10. The real SLID arm no longer collapses: discovery now infers Gaussian and returns a non-empty model on 10/10 seeds, so the stated reason for withholding anchor 4 (the real-data arm collapses) is removed. Anchor 4 stays unassigned because the study still rests on one planted-truth DGP family and does not publish recovery rates across several structure types."
+  },
+  {
+   "id": "D2",
+   "name": "Causal humility and support",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D3",
+   "name": "Explanation quality",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D4",
+   "name": "Importance quantification",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D5",
+   "name": "Experimental iteration speed",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "results.parquet",
+    "evidence.json"
+   ],
+   "justification": "Iteration speed is essentially unchanged and slightly faster throughout. Sim (3000x8): the known-spec LSS fit is 0.264 s median (p90 0.304) and a drop-one what-if 0.228 s; discovery 3.225 s median and 2.364 s per what-if. SLID (2007x4): known 0.140 s and 0.107 s. SLID discovery is the one visible move in this dimension: 1.137 s per fit, down from the baseline's 1.840 s, and 0.666 s per what-if down from 1.106 s, because the Gaussian family now selected converges faster than the divergent Gamma did. Seconds per fit leave this at anchor 3; anchor 4's sub-second refits hold for the known-spec path only."
+  },
+  {
+   "id": "D6",
+   "name": "Robustness across conditions",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D7",
+   "name": "Human-friendliness",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D8",
+   "name": "Agent-friendliness",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D9",
+   "name": "Uncertainty honesty (calibration)",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "results.parquet",
+    "evidence.json"
+   ],
+   "justification": "Calibration is unchanged where it was good and repaired on the one track that failed. sim known: 95% coverage 0.9481 (gap -0.19 pp, SE 0.13), 80% 0.7979 (-0.21 pp, 0.27). SLID known: 0.9548 (+0.48 pp, 0.19) and 0.8119 (+1.19 pp, 0.50). SLID discovery, which undercovered at 0.716 (gap -8.4 pp) when it returned the intercept-only model, now covers 0.8037 (gap +0.37 pp, SE 0.47) at 80% and 0.9499 (-0.01 pp) at 95%. Anchor 4 is not assigned: small-n and extrapolation adaptation are not measured."
+  },
+  {
+   "id": "D10",
+   "name": "Reproducibility and auditability",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D11",
+   "name": "Predictive validity",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "results.parquet",
+    "evidence.json",
+    "BENCHMARK_GUIDANCE.md"
+   ],
+   "justification": "Primary loss is the Gaussian CRPS; the best competitor is a per-seed retrospective best and comparator settings are untuned. sim is unchanged: known -4.56% (SE 0.16), discovery -4.44% (0.16); RMSE -1.02% and -0.99%. SLID known is unchanged at +0.58% (0.13) CRPS, inside the 1% goal. SLID discovery moves from +34.07% (0.47) to +1.15% (0.17) CRPS, and from +28.76% (0.42) to +0.85% (0.15) RMSE: the intercept-only model is gone. Anchor 4 is not assigned because tuning and compute budgets are not matched across the comparator field."
+  }
+ ],
+ "aggregate": null,
+ "summary_ref": "evidence.json"
+}

@@ -1,0 +1,671 @@
+{
+  "meta": {
+    "source": "/home/hatch/workspace/mboostrs-pr/docs/benchmarks/competitive_shootout_results.json",
+    "method": "mboost_hybrid",
+    "accounting": "used_inputs = split-used columns of retained learners; candidate_inputs = all candidate columns of retained learners",
+    "fidelity_note": "partitions reproduce the saved partition_digest exactly; old accounting on each refit reproduces the saved buggy used_inputs; prediction digests differ in the 5th decimal (refit built with rustc 1.99.0 vs saved 1.95.0 codegen) with no effect on the discrete split-column counts",
+    "n_cells": 30,
+    "all_digests_ok": false,
+    "all_refits_ok": true
+  },
+  "cells": [
+    {
+      "task": "housing_iid",
+      "seed": 0,
+      "digest_ok": false,
+      "refit_ok": true,
+      "fit_seconds": 74.84,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 8,
+      "candidate_inputs": 8,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 1083,
+      "term_variables": {
+        "longitude (btree)": "age,bedrooms,income,latitude,longitude,occupancy,population,rooms"
+      },
+      "term_split_columns": {
+        "longitude (btree)": "age,bedrooms,income,latitude,longitude,occupancy,population,rooms"
+      }
+    },
+    {
+      "task": "housing_iid",
+      "seed": 1,
+      "digest_ok": false,
+      "refit_ok": true,
+      "fit_seconds": 51.62,
+      "saved_used_inputs": 2,
+      "old_accounting_on_refit": 2,
+      "used_inputs": 8,
+      "candidate_inputs": 8,
+      "native_terms": 3,
+      "univariate_terms": 2,
+      "joint_terms": 1,
+      "mstop": 1200,
+      "term_variables": {
+        "longitude (bbs)": "longitude",
+        "latitude": "latitude",
+        "longitude (btree)": "age,bedrooms,income,latitude,longitude,occupancy,population,rooms"
+      },
+      "term_split_columns": {
+        "longitude (bbs)": "longitude",
+        "latitude": "latitude",
+        "longitude (btree)": "age,bedrooms,income,latitude,longitude,occupancy,population,rooms"
+      }
+    },
+    {
+      "task": "housing_iid",
+      "seed": 2,
+      "digest_ok": false,
+      "refit_ok": true,
+      "fit_seconds": 34.45,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 8,
+      "candidate_inputs": 8,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 758,
+      "term_variables": {
+        "longitude (btree)": "age,bedrooms,income,latitude,longitude,occupancy,population,rooms"
+      },
+      "term_split_columns": {
+        "longitude (btree)": "age,bedrooms,income,latitude,longitude,occupancy,population,rooms"
+      }
+    },
+    {
+      "task": "housing_spatial",
+      "seed": 0,
+      "digest_ok": false,
+      "refit_ok": true,
+      "fit_seconds": 19.32,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 8,
+      "candidate_inputs": 8,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 196,
+      "term_variables": {
+        "longitude (btree)": "age,bedrooms,income,latitude,longitude,occupancy,population,rooms"
+      },
+      "term_split_columns": {
+        "longitude (btree)": "age,bedrooms,income,latitude,longitude,occupancy,population,rooms"
+      }
+    },
+    {
+      "task": "housing_spatial",
+      "seed": 1,
+      "digest_ok": false,
+      "refit_ok": true,
+      "fit_seconds": 44.62,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 8,
+      "candidate_inputs": 8,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 821,
+      "term_variables": {
+        "longitude (btree)": "age,bedrooms,income,latitude,longitude,occupancy,population,rooms"
+      },
+      "term_split_columns": {
+        "longitude (btree)": "age,bedrooms,income,latitude,longitude,occupancy,population,rooms"
+      }
+    },
+    {
+      "task": "housing_spatial",
+      "seed": 2,
+      "digest_ok": false,
+      "refit_ok": true,
+      "fit_seconds": 26.19,
+      "saved_used_inputs": 2,
+      "old_accounting_on_refit": 2,
+      "used_inputs": 8,
+      "candidate_inputs": 8,
+      "native_terms": 2,
+      "univariate_terms": 1,
+      "joint_terms": 1,
+      "mstop": 505,
+      "term_variables": {
+        "bedrooms": "bedrooms",
+        "longitude (btree)": "age,bedrooms,income,latitude,longitude,occupancy,population,rooms"
+      },
+      "term_split_columns": {
+        "bedrooms": "bedrooms",
+        "longitude (btree)": "age,bedrooms,income,latitude,longitude,occupancy,population,rooms"
+      }
+    },
+    {
+      "task": "bike_iid",
+      "seed": 0,
+      "digest_ok": false,
+      "refit_ok": true,
+      "fit_seconds": 48.78,
+      "saved_used_inputs": 5,
+      "old_accounting_on_refit": 5,
+      "used_inputs": 11,
+      "candidate_inputs": 11,
+      "native_terms": 5,
+      "univariate_terms": 4,
+      "joint_terms": 1,
+      "mstop": 1078,
+      "term_variables": {
+        "hr": "hr",
+        "mnth": "mnth",
+        "temp": "temp",
+        "windspeed": "windspeed",
+        "season (btree)": "holiday,hr,hum,mnth,season,temp,weathersit,weekday,windspeed,workingday,yr"
+      },
+      "term_split_columns": {
+        "hr": "hr",
+        "mnth": "mnth",
+        "temp": "temp",
+        "windspeed": "windspeed",
+        "season (btree)": "holiday,hr,hum,mnth,season,temp,weathersit,weekday,windspeed,workingday,yr"
+      }
+    },
+    {
+      "task": "bike_iid",
+      "seed": 1,
+      "digest_ok": false,
+      "refit_ok": true,
+      "fit_seconds": 59.96,
+      "saved_used_inputs": 2,
+      "old_accounting_on_refit": 2,
+      "used_inputs": 13,
+      "candidate_inputs": 13,
+      "native_terms": 2,
+      "univariate_terms": 0,
+      "joint_terms": 2,
+      "mstop": 1198,
+      "term_variables": {
+        "brandom(weathersit, df=4)": "brandom(weathersit, df=4)",
+        "season (btree)": "holiday,hr,hum,mnth,season,temp,weathersit,weekday,windspeed,workingday,yr"
+      },
+      "term_split_columns": {
+        "brandom(weathersit, df=4)": "brandom(weathersit, df=4)",
+        "season (btree)": "holiday,hr,hum,mnth,season,temp,weathersit,weekday,windspeed,workingday,yr"
+      }
+    },
+    {
+      "task": "bike_iid",
+      "seed": 2,
+      "digest_ok": false,
+      "refit_ok": true,
+      "fit_seconds": 58.08,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 11,
+      "candidate_inputs": 11,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 1191,
+      "term_variables": {
+        "season (btree)": "holiday,hr,hum,mnth,season,temp,weathersit,weekday,windspeed,workingday,yr"
+      },
+      "term_split_columns": {
+        "season (btree)": "holiday,hr,hum,mnth,season,temp,weathersit,weekday,windspeed,workingday,yr"
+      }
+    },
+    {
+      "task": "bike_future",
+      "seed": 0,
+      "digest_ok": false,
+      "refit_ok": true,
+      "fit_seconds": 10.52,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 10,
+      "candidate_inputs": 11,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 111,
+      "term_variables": {
+        "season (btree)": "holiday,hr,hum,mnth,season,temp,weathersit,weekday,windspeed,workingday,yr"
+      },
+      "term_split_columns": {
+        "season (btree)": "holiday,hr,hum,mnth,season,temp,weathersit,weekday,windspeed,workingday"
+      }
+    },
+    {
+      "task": "bike_future",
+      "seed": 1,
+      "digest_ok": false,
+      "refit_ok": true,
+      "fit_seconds": 91.88,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 11,
+      "candidate_inputs": 11,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 1156,
+      "term_variables": {
+        "season (btree)": "holiday,hr,hum,mnth,season,temp,weathersit,weekday,windspeed,workingday,yr"
+      },
+      "term_split_columns": {
+        "season (btree)": "holiday,hr,hum,mnth,season,temp,weathersit,weekday,windspeed,workingday,yr"
+      }
+    },
+    {
+      "task": "bike_future",
+      "seed": 2,
+      "digest_ok": false,
+      "refit_ok": true,
+      "fit_seconds": 39.8,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 11,
+      "candidate_inputs": 11,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 873,
+      "term_variables": {
+        "season (btree)": "holiday,hr,hum,mnth,season,temp,weathersit,weekday,windspeed,workingday,yr"
+      },
+      "term_split_columns": {
+        "season (btree)": "holiday,hr,hum,mnth,season,temp,weathersit,weekday,windspeed,workingday,yr"
+      }
+    },
+    {
+      "task": "diamonds",
+      "seed": 0,
+      "digest_ok": false,
+      "refit_ok": true,
+      "fit_seconds": 38.12,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 8,
+      "candidate_inputs": 8,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 541,
+      "term_variables": {
+        "carat (btree)": "carat,clarity,color,cut,depth,table,x,z"
+      },
+      "term_split_columns": {
+        "carat (btree)": "carat,clarity,color,cut,depth,table,x,z"
+      }
+    },
+    {
+      "task": "diamonds",
+      "seed": 1,
+      "digest_ok": false,
+      "refit_ok": true,
+      "fit_seconds": 44.9,
+      "saved_used_inputs": 5,
+      "old_accounting_on_refit": 5,
+      "used_inputs": 8,
+      "candidate_inputs": 8,
+      "native_terms": 5,
+      "univariate_terms": 4,
+      "joint_terms": 1,
+      "mstop": 1145,
+      "term_variables": {
+        "depth": "depth",
+        "table": "table",
+        "x": "x",
+        "z": "z",
+        "carat (btree)": "carat,clarity,color,cut,depth,table,x,z"
+      },
+      "term_split_columns": {
+        "depth": "depth",
+        "table": "table",
+        "x": "x",
+        "z": "z",
+        "carat (btree)": "carat,clarity,color,cut,depth,table,x,z"
+      }
+    },
+    {
+      "task": "diamonds",
+      "seed": 2,
+      "digest_ok": true,
+      "refit_ok": true,
+      "fit_seconds": 42.73,
+      "saved_used_inputs": 2,
+      "old_accounting_on_refit": 2,
+      "used_inputs": 8,
+      "candidate_inputs": 8,
+      "native_terms": 3,
+      "univariate_terms": 2,
+      "joint_terms": 1,
+      "mstop": 1185,
+      "term_variables": {
+        "carat (bbs)": "carat",
+        "x": "x",
+        "carat (btree)": "carat,clarity,color,cut,depth,table,x,z"
+      },
+      "term_split_columns": {
+        "carat (bbs)": "carat",
+        "x": "x",
+        "carat (btree)": "carat,clarity,color,cut,depth,table,x,z"
+      }
+    },
+    {
+      "task": "protein",
+      "seed": 0,
+      "digest_ok": true,
+      "refit_ok": true,
+      "fit_seconds": 35.61,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 9,
+      "candidate_inputs": 9,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 461,
+      "term_variables": {
+        "F1 (btree)": "F1,F2,F3,F4,F5,F6,F7,F8,F9"
+      },
+      "term_split_columns": {
+        "F1 (btree)": "F1,F2,F3,F4,F5,F6,F7,F8,F9"
+      }
+    },
+    {
+      "task": "protein",
+      "seed": 1,
+      "digest_ok": true,
+      "refit_ok": true,
+      "fit_seconds": 26.48,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 9,
+      "candidate_inputs": 9,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 272,
+      "term_variables": {
+        "F1 (btree)": "F1,F2,F3,F4,F5,F6,F7,F8,F9"
+      },
+      "term_split_columns": {
+        "F1 (btree)": "F1,F2,F3,F4,F5,F6,F7,F8,F9"
+      }
+    },
+    {
+      "task": "protein",
+      "seed": 2,
+      "digest_ok": true,
+      "refit_ok": true,
+      "fit_seconds": 106.83,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 9,
+      "candidate_inputs": 9,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 1112,
+      "term_variables": {
+        "F1 (btree)": "F1,F2,F3,F4,F5,F6,F7,F8,F9"
+      },
+      "term_split_columns": {
+        "F1 (btree)": "F1,F2,F3,F4,F5,F6,F7,F8,F9"
+      }
+    },
+    {
+      "task": "superconductivity",
+      "seed": 0,
+      "digest_ok": true,
+      "refit_ok": true,
+      "fit_seconds": 310.43,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 81,
+      "candidate_inputs": 81,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 197,
+      "term_variables": {
+        "number_of_elements (btree)": "entropy_Density,entropy_ElectronAffinity,entropy_FusionHeat,entropy_ThermalConductivity,entropy_Valence,entropy_atomic_mass,entropy_atomic_radius,entropy_fie,gmean_Density,gmean_ElectronAffinity,gmean_FusionHeat,gmean_ThermalConductivity,gmean_Valence,gmean_atomic_mass,gmean_atomic_radius,gmean_fie,mean_Density,mean_ElectronAffinity,mean_FusionHeat,mean_ThermalConductivity,mean_Valence,mean_atomic_mass,mean_atomic_radius,mean_fie,number_of_elements,range_Density,range_ElectronAffinity,range_FusionHeat,range_ThermalConductivity,range_Valence,range_atomic_mass,range_atomic_radius,range_fie,std_Density,std_ElectronAffinity,std_FusionHeat,std_ThermalConductivity,std_Valence,std_atomic_mass,std_atomic_radius,std_fie,wtd_entropy_Density,wtd_entropy_ElectronAffinity,wtd_entropy_FusionHeat,wtd_entropy_ThermalConductivity,wtd_entropy_Valence,wtd_entropy_atomic_mass,wtd_entropy_atomic_radius,wtd_entropy_fie,wtd_gmean_Density,wtd_gmean_ElectronAffinity,wtd_gmean_FusionHeat,wtd_gmean_ThermalConductivity,wtd_gmean_Valence,wtd_gmean_atomic_mass,wtd_gmean_atomic_radius,wtd_gmean_fie,wtd_mean_Density,wtd_mean_ElectronAffinity,wtd_mean_FusionHeat,wtd_mean_ThermalConductivity,wtd_mean_Valence,wtd_mean_atomic_mass,wtd_mean_atomic_radius,wtd_mean_fie,wtd_range_Density,wtd_range_ElectronAffinity,wtd_range_FusionHeat,wtd_range_ThermalConductivity,wtd_range_Valence,wtd_range_atomic_mass,wtd_range_atomic_radius,wtd_range_fie,wtd_std_Density,wtd_std_ElectronAffinity,wtd_std_FusionHeat,wtd_std_ThermalConductivity,wtd_std_Valence,wtd_std_atomic_mass,wtd_std_atomic_radius,wtd_std_fie"
+      },
+      "term_split_columns": {
+        "number_of_elements (btree)": "entropy_Density,entropy_ElectronAffinity,entropy_FusionHeat,entropy_ThermalConductivity,entropy_Valence,entropy_atomic_mass,entropy_atomic_radius,entropy_fie,gmean_Density,gmean_ElectronAffinity,gmean_FusionHeat,gmean_ThermalConductivity,gmean_Valence,gmean_atomic_mass,gmean_atomic_radius,gmean_fie,mean_Density,mean_ElectronAffinity,mean_FusionHeat,mean_ThermalConductivity,mean_Valence,mean_atomic_mass,mean_atomic_radius,mean_fie,number_of_elements,range_Density,range_ElectronAffinity,range_FusionHeat,range_ThermalConductivity,range_Valence,range_atomic_mass,range_atomic_radius,range_fie,std_Density,std_ElectronAffinity,std_FusionHeat,std_ThermalConductivity,std_Valence,std_atomic_mass,std_atomic_radius,std_fie,wtd_entropy_Density,wtd_entropy_ElectronAffinity,wtd_entropy_FusionHeat,wtd_entropy_ThermalConductivity,wtd_entropy_Valence,wtd_entropy_atomic_mass,wtd_entropy_atomic_radius,wtd_entropy_fie,wtd_gmean_Density,wtd_gmean_ElectronAffinity,wtd_gmean_FusionHeat,wtd_gmean_ThermalConductivity,wtd_gmean_Valence,wtd_gmean_atomic_mass,wtd_gmean_atomic_radius,wtd_gmean_fie,wtd_mean_Density,wtd_mean_ElectronAffinity,wtd_mean_FusionHeat,wtd_mean_ThermalConductivity,wtd_mean_Valence,wtd_mean_atomic_mass,wtd_mean_atomic_radius,wtd_mean_fie,wtd_range_Density,wtd_range_ElectronAffinity,wtd_range_FusionHeat,wtd_range_ThermalConductivity,wtd_range_Valence,wtd_range_atomic_mass,wtd_range_atomic_radius,wtd_range_fie,wtd_std_Density,wtd_std_ElectronAffinity,wtd_std_FusionHeat,wtd_std_ThermalConductivity,wtd_std_Valence,wtd_std_atomic_mass,wtd_std_atomic_radius,wtd_std_fie"
+      }
+    },
+    {
+      "task": "superconductivity",
+      "seed": 1,
+      "digest_ok": true,
+      "refit_ok": true,
+      "fit_seconds": 300.58,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 81,
+      "candidate_inputs": 81,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 472,
+      "term_variables": {
+        "number_of_elements (btree)": "entropy_Density,entropy_ElectronAffinity,entropy_FusionHeat,entropy_ThermalConductivity,entropy_Valence,entropy_atomic_mass,entropy_atomic_radius,entropy_fie,gmean_Density,gmean_ElectronAffinity,gmean_FusionHeat,gmean_ThermalConductivity,gmean_Valence,gmean_atomic_mass,gmean_atomic_radius,gmean_fie,mean_Density,mean_ElectronAffinity,mean_FusionHeat,mean_ThermalConductivity,mean_Valence,mean_atomic_mass,mean_atomic_radius,mean_fie,number_of_elements,range_Density,range_ElectronAffinity,range_FusionHeat,range_ThermalConductivity,range_Valence,range_atomic_mass,range_atomic_radius,range_fie,std_Density,std_ElectronAffinity,std_FusionHeat,std_ThermalConductivity,std_Valence,std_atomic_mass,std_atomic_radius,std_fie,wtd_entropy_Density,wtd_entropy_ElectronAffinity,wtd_entropy_FusionHeat,wtd_entropy_ThermalConductivity,wtd_entropy_Valence,wtd_entropy_atomic_mass,wtd_entropy_atomic_radius,wtd_entropy_fie,wtd_gmean_Density,wtd_gmean_ElectronAffinity,wtd_gmean_FusionHeat,wtd_gmean_ThermalConductivity,wtd_gmean_Valence,wtd_gmean_atomic_mass,wtd_gmean_atomic_radius,wtd_gmean_fie,wtd_mean_Density,wtd_mean_ElectronAffinity,wtd_mean_FusionHeat,wtd_mean_ThermalConductivity,wtd_mean_Valence,wtd_mean_atomic_mass,wtd_mean_atomic_radius,wtd_mean_fie,wtd_range_Density,wtd_range_ElectronAffinity,wtd_range_FusionHeat,wtd_range_ThermalConductivity,wtd_range_Valence,wtd_range_atomic_mass,wtd_range_atomic_radius,wtd_range_fie,wtd_std_Density,wtd_std_ElectronAffinity,wtd_std_FusionHeat,wtd_std_ThermalConductivity,wtd_std_Valence,wtd_std_atomic_mass,wtd_std_atomic_radius,wtd_std_fie"
+      },
+      "term_split_columns": {
+        "number_of_elements (btree)": "entropy_Density,entropy_ElectronAffinity,entropy_FusionHeat,entropy_ThermalConductivity,entropy_Valence,entropy_atomic_mass,entropy_atomic_radius,entropy_fie,gmean_Density,gmean_ElectronAffinity,gmean_FusionHeat,gmean_ThermalConductivity,gmean_Valence,gmean_atomic_mass,gmean_atomic_radius,gmean_fie,mean_Density,mean_ElectronAffinity,mean_FusionHeat,mean_ThermalConductivity,mean_Valence,mean_atomic_mass,mean_atomic_radius,mean_fie,number_of_elements,range_Density,range_ElectronAffinity,range_FusionHeat,range_ThermalConductivity,range_Valence,range_atomic_mass,range_atomic_radius,range_fie,std_Density,std_ElectronAffinity,std_FusionHeat,std_ThermalConductivity,std_Valence,std_atomic_mass,std_atomic_radius,std_fie,wtd_entropy_Density,wtd_entropy_ElectronAffinity,wtd_entropy_FusionHeat,wtd_entropy_ThermalConductivity,wtd_entropy_Valence,wtd_entropy_atomic_mass,wtd_entropy_atomic_radius,wtd_entropy_fie,wtd_gmean_Density,wtd_gmean_ElectronAffinity,wtd_gmean_FusionHeat,wtd_gmean_ThermalConductivity,wtd_gmean_Valence,wtd_gmean_atomic_mass,wtd_gmean_atomic_radius,wtd_gmean_fie,wtd_mean_Density,wtd_mean_ElectronAffinity,wtd_mean_FusionHeat,wtd_mean_ThermalConductivity,wtd_mean_Valence,wtd_mean_atomic_mass,wtd_mean_atomic_radius,wtd_mean_fie,wtd_range_Density,wtd_range_ElectronAffinity,wtd_range_FusionHeat,wtd_range_ThermalConductivity,wtd_range_Valence,wtd_range_atomic_mass,wtd_range_atomic_radius,wtd_range_fie,wtd_std_Density,wtd_std_ElectronAffinity,wtd_std_FusionHeat,wtd_std_ThermalConductivity,wtd_std_Valence,wtd_std_atomic_mass,wtd_std_atomic_radius,wtd_std_fie"
+      }
+    },
+    {
+      "task": "superconductivity",
+      "seed": 2,
+      "digest_ok": true,
+      "refit_ok": true,
+      "fit_seconds": 293.42,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 81,
+      "candidate_inputs": 81,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 471,
+      "term_variables": {
+        "number_of_elements (btree)": "entropy_Density,entropy_ElectronAffinity,entropy_FusionHeat,entropy_ThermalConductivity,entropy_Valence,entropy_atomic_mass,entropy_atomic_radius,entropy_fie,gmean_Density,gmean_ElectronAffinity,gmean_FusionHeat,gmean_ThermalConductivity,gmean_Valence,gmean_atomic_mass,gmean_atomic_radius,gmean_fie,mean_Density,mean_ElectronAffinity,mean_FusionHeat,mean_ThermalConductivity,mean_Valence,mean_atomic_mass,mean_atomic_radius,mean_fie,number_of_elements,range_Density,range_ElectronAffinity,range_FusionHeat,range_ThermalConductivity,range_Valence,range_atomic_mass,range_atomic_radius,range_fie,std_Density,std_ElectronAffinity,std_FusionHeat,std_ThermalConductivity,std_Valence,std_atomic_mass,std_atomic_radius,std_fie,wtd_entropy_Density,wtd_entropy_ElectronAffinity,wtd_entropy_FusionHeat,wtd_entropy_ThermalConductivity,wtd_entropy_Valence,wtd_entropy_atomic_mass,wtd_entropy_atomic_radius,wtd_entropy_fie,wtd_gmean_Density,wtd_gmean_ElectronAffinity,wtd_gmean_FusionHeat,wtd_gmean_ThermalConductivity,wtd_gmean_Valence,wtd_gmean_atomic_mass,wtd_gmean_atomic_radius,wtd_gmean_fie,wtd_mean_Density,wtd_mean_ElectronAffinity,wtd_mean_FusionHeat,wtd_mean_ThermalConductivity,wtd_mean_Valence,wtd_mean_atomic_mass,wtd_mean_atomic_radius,wtd_mean_fie,wtd_range_Density,wtd_range_ElectronAffinity,wtd_range_FusionHeat,wtd_range_ThermalConductivity,wtd_range_Valence,wtd_range_atomic_mass,wtd_range_atomic_radius,wtd_range_fie,wtd_std_Density,wtd_std_ElectronAffinity,wtd_std_FusionHeat,wtd_std_ThermalConductivity,wtd_std_Valence,wtd_std_atomic_mass,wtd_std_atomic_radius,wtd_std_fie"
+      },
+      "term_split_columns": {
+        "number_of_elements (btree)": "entropy_Density,entropy_ElectronAffinity,entropy_FusionHeat,entropy_ThermalConductivity,entropy_Valence,entropy_atomic_mass,entropy_atomic_radius,entropy_fie,gmean_Density,gmean_ElectronAffinity,gmean_FusionHeat,gmean_ThermalConductivity,gmean_Valence,gmean_atomic_mass,gmean_atomic_radius,gmean_fie,mean_Density,mean_ElectronAffinity,mean_FusionHeat,mean_ThermalConductivity,mean_Valence,mean_atomic_mass,mean_atomic_radius,mean_fie,number_of_elements,range_Density,range_ElectronAffinity,range_FusionHeat,range_ThermalConductivity,range_Valence,range_atomic_mass,range_atomic_radius,range_fie,std_Density,std_ElectronAffinity,std_FusionHeat,std_ThermalConductivity,std_Valence,std_atomic_mass,std_atomic_radius,std_fie,wtd_entropy_Density,wtd_entropy_ElectronAffinity,wtd_entropy_FusionHeat,wtd_entropy_ThermalConductivity,wtd_entropy_Valence,wtd_entropy_atomic_mass,wtd_entropy_atomic_radius,wtd_entropy_fie,wtd_gmean_Density,wtd_gmean_ElectronAffinity,wtd_gmean_FusionHeat,wtd_gmean_ThermalConductivity,wtd_gmean_Valence,wtd_gmean_atomic_mass,wtd_gmean_atomic_radius,wtd_gmean_fie,wtd_mean_Density,wtd_mean_ElectronAffinity,wtd_mean_FusionHeat,wtd_mean_ThermalConductivity,wtd_mean_Valence,wtd_mean_atomic_mass,wtd_mean_atomic_radius,wtd_mean_fie,wtd_range_Density,wtd_range_ElectronAffinity,wtd_range_FusionHeat,wtd_range_ThermalConductivity,wtd_range_Valence,wtd_range_atomic_mass,wtd_range_atomic_radius,wtd_range_fie,wtd_std_Density,wtd_std_ElectronAffinity,wtd_std_FusionHeat,wtd_std_ThermalConductivity,wtd_std_Valence,wtd_std_atomic_mass,wtd_std_atomic_radius,wtd_std_fie"
+      }
+    },
+    {
+      "task": "concrete",
+      "seed": 0,
+      "digest_ok": true,
+      "refit_ok": true,
+      "fit_seconds": 6.39,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 8,
+      "candidate_inputs": 8,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 1198,
+      "term_variables": {
+        "cement (btree)": "age,blast_furnace_slag,cement,coarse_aggregate,fine_aggregate,fly_ash,superplasticizer,water"
+      },
+      "term_split_columns": {
+        "cement (btree)": "age,blast_furnace_slag,cement,coarse_aggregate,fine_aggregate,fly_ash,superplasticizer,water"
+      }
+    },
+    {
+      "task": "concrete",
+      "seed": 1,
+      "digest_ok": true,
+      "refit_ok": true,
+      "fit_seconds": 6.07,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 8,
+      "candidate_inputs": 8,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 734,
+      "term_variables": {
+        "cement (btree)": "age,blast_furnace_slag,cement,coarse_aggregate,fine_aggregate,fly_ash,superplasticizer,water"
+      },
+      "term_split_columns": {
+        "cement (btree)": "age,blast_furnace_slag,cement,coarse_aggregate,fine_aggregate,fly_ash,superplasticizer,water"
+      }
+    },
+    {
+      "task": "concrete",
+      "seed": 2,
+      "digest_ok": true,
+      "refit_ok": true,
+      "fit_seconds": 6.21,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 8,
+      "candidate_inputs": 8,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 1179,
+      "term_variables": {
+        "cement (btree)": "age,blast_furnace_slag,cement,coarse_aggregate,fine_aggregate,fly_ash,superplasticizer,water"
+      },
+      "term_split_columns": {
+        "cement (btree)": "age,blast_furnace_slag,cement,coarse_aggregate,fine_aggregate,fly_ash,superplasticizer,water"
+      }
+    },
+    {
+      "task": "credit",
+      "seed": 0,
+      "digest_ok": true,
+      "refit_ok": true,
+      "fit_seconds": 1.69,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 19,
+      "candidate_inputs": 20,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 90,
+      "term_variables": {
+        "checking_status (btree)": "age,checking_status,credit_amount,credit_history,duration,employment,existing_credits,foreign_worker,housing,installment_commitment,job,num_dependents,other_parties,other_payment_plans,own_telephone,personal_status,property_magnitude,purpose,residence_since,savings_status"
+      },
+      "term_split_columns": {
+        "checking_status (btree)": "age,checking_status,credit_amount,credit_history,duration,employment,existing_credits,foreign_worker,housing,installment_commitment,job,other_parties,other_payment_plans,own_telephone,personal_status,property_magnitude,purpose,residence_since,savings_status"
+      }
+    },
+    {
+      "task": "credit",
+      "seed": 1,
+      "digest_ok": true,
+      "refit_ok": true,
+      "fit_seconds": 1.17,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 18,
+      "candidate_inputs": 20,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 61,
+      "term_variables": {
+        "checking_status (btree)": "age,checking_status,credit_amount,credit_history,duration,employment,existing_credits,foreign_worker,housing,installment_commitment,job,num_dependents,other_parties,other_payment_plans,own_telephone,personal_status,property_magnitude,purpose,residence_since,savings_status"
+      },
+      "term_split_columns": {
+        "checking_status (btree)": "age,checking_status,credit_amount,credit_history,duration,employment,foreign_worker,installment_commitment,job,num_dependents,other_parties,other_payment_plans,own_telephone,personal_status,property_magnitude,purpose,residence_since,savings_status"
+      }
+    },
+    {
+      "task": "credit",
+      "seed": 2,
+      "digest_ok": true,
+      "refit_ok": true,
+      "fit_seconds": 1.84,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 19,
+      "candidate_inputs": 20,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 105,
+      "term_variables": {
+        "checking_status (btree)": "age,checking_status,credit_amount,credit_history,duration,employment,existing_credits,foreign_worker,housing,installment_commitment,job,num_dependents,other_parties,other_payment_plans,own_telephone,personal_status,property_magnitude,purpose,residence_since,savings_status"
+      },
+      "term_split_columns": {
+        "checking_status (btree)": "age,checking_status,credit_amount,credit_history,duration,employment,existing_credits,housing,installment_commitment,job,num_dependents,other_parties,other_payment_plans,own_telephone,personal_status,property_magnitude,purpose,residence_since,savings_status"
+      }
+    },
+    {
+      "task": "cancer",
+      "seed": 0,
+      "digest_ok": true,
+      "refit_ok": true,
+      "fit_seconds": 30.11,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 30,
+      "candidate_inputs": 30,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 913,
+      "term_variables": {
+        "x0 (btree)": "x0,x1,x10,x11,x12,x13,x14,x15,x16,x17,x18,x19,x2,x20,x21,x22,x23,x24,x25,x26,x27,x28,x29,x3,x4,x5,x6,x7,x8,x9"
+      },
+      "term_split_columns": {
+        "x0 (btree)": "x0,x1,x10,x11,x12,x13,x14,x15,x16,x17,x18,x19,x2,x20,x21,x22,x23,x24,x25,x26,x27,x28,x29,x3,x4,x5,x6,x7,x8,x9"
+      }
+    },
+    {
+      "task": "cancer",
+      "seed": 1,
+      "digest_ok": true,
+      "refit_ok": true,
+      "fit_seconds": 7.34,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 30,
+      "candidate_inputs": 30,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 204,
+      "term_variables": {
+        "x0 (btree)": "x0,x1,x10,x11,x12,x13,x14,x15,x16,x17,x18,x19,x2,x20,x21,x22,x23,x24,x25,x26,x27,x28,x29,x3,x4,x5,x6,x7,x8,x9"
+      },
+      "term_split_columns": {
+        "x0 (btree)": "x0,x1,x10,x11,x12,x13,x14,x15,x16,x17,x18,x19,x2,x20,x21,x22,x23,x24,x25,x26,x27,x28,x29,x3,x4,x5,x6,x7,x8,x9"
+      }
+    },
+    {
+      "task": "cancer",
+      "seed": 2,
+      "digest_ok": true,
+      "refit_ok": true,
+      "fit_seconds": 40.27,
+      "saved_used_inputs": 1,
+      "old_accounting_on_refit": 1,
+      "used_inputs": 30,
+      "candidate_inputs": 30,
+      "native_terms": 1,
+      "univariate_terms": 0,
+      "joint_terms": 1,
+      "mstop": 1195,
+      "term_variables": {
+        "x0 (btree)": "x0,x1,x10,x11,x12,x13,x14,x15,x16,x17,x18,x19,x2,x20,x21,x22,x23,x24,x25,x26,x27,x28,x29,x3,x4,x5,x6,x7,x8,x9"
+      },
+      "term_split_columns": {
+        "x0 (btree)": "x0,x1,x10,x11,x12,x13,x14,x15,x16,x17,x18,x19,x2,x20,x21,x22,x23,x24,x25,x26,x27,x28,x29,x3,x4,x5,x6,x7,x8,x9"
+      }
+    }
+  ]
+}

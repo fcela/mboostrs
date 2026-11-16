@@ -1,0 +1,100 @@
+{
+  "library": "mboostrs 0.1.3",
+  "effect_queries": {
+    "ATE": {
+      "estimate": 4930.189291221964,
+      "lower90": 3433.1074731576223,
+      "upper90": 6427.271109286305
+    },
+    "ATT": {
+      "estimate": 3773.595343331476,
+      "lower90": 3213.351304915772,
+      "upper90": 4333.839381747181
+    },
+    "EMP_ATE": {
+      "estimate": 0.098334748543198,
+      "lower90": 0.07681323118083344,
+      "upper90": 0.11985626590556256
+    },
+    "CATE_educ_lt12": {
+      "estimate": 7213.868534780016,
+      "lower90": 1427.195497766641,
+      "upper90": 13000.54157179339
+    },
+    "CATE_educ_ge16": {
+      "estimate": 3782.090890573124,
+      "lower90": 1793.83359053073,
+      "upper90": 5770.3481906155175
+    },
+    "CATE_prior_q1": {
+      "estimate": 3510.2362165926615,
+      "lower90": 2994.527475563453,
+      "upper90": 4025.94495762187
+    },
+    "CATE_prior_q4": {
+      "estimate": 8347.26247019997,
+      "lower90": 3801.7339800184955,
+      "upper90": 12892.790960381444
+    },
+    "CATE_age_lt25": {
+      "estimate": 4364.438904050409,
+      "lower90": 3440.590977901667,
+      "upper90": 5288.286830199151
+    }
+  },
+  "roles": {
+    "age": "confounder",
+    "education": "confounder",
+    "experience": "confounder",
+    "ethnicity": "treatment_only",
+    "smsa": "outcome_only",
+    "region": "treatment_only",
+    "parttime": "outcome_only",
+    "prior_earnings": "confounder",
+    "months_unemployed": "confounder",
+    "distance_km": "instrument",
+    "caseworker_note_len": "irrelevant",
+    "enrolled": "treatment",
+    "certificate": "mediator",
+    "responded": "post_treatment_selection",
+    "hours_post": "mediator",
+    "earnings_post": "outcome"
+  },
+  "adjustment_set": [
+    "age",
+    "education",
+    "experience",
+    "ethnicity",
+    "smsa",
+    "region",
+    "parttime",
+    "prior_earnings",
+    "months_unemployed"
+  ],
+  "effect_modifiers": [
+    {
+      "variable": "education",
+      "direction": "larger_when_higher",
+      "evidence": "univariate REML term test on doubly robust scores over 9305 overlap rows: p=0.00244 (Bonferroni threshold 0.0063 over 8 candidates)"
+    }
+  ],
+  "channels": {
+    "employment": true,
+    "earnings_if_employed": true
+  },
+  "limited_overlap": [
+    {
+      "description": "applicants with prior earnings above 39900 dollars: 32 enrolled among 3238 rows; the cross-fitted enrolment probability is below 0.02 for 83% of them, so their effects are extrapolated",
+      "variable": "prior_earnings"
+    }
+  ],
+  "warnings": [
+    "22.5% of training rows have a cross-fitted enrolment probability outside (0.02, 0.98)",
+    "1302 training rows had propensity clipped to (0.01, 0.99)",
+    "1928 training rows have no follow-up survey; the estimates assume survey response is random given the covariates and enrolment",
+    "the ATE depends on the prior-earnings region above the cut, where few applicants enrolled; its interval does not include that model dependence",
+    "eligibility cut on prior_earnings chosen from data: 39900 (enrolment 0.417 at or below, 0.0099 above)",
+    "outcome model out-of-fold MSE: linear 3.329e+08, spline 3.377e+08; chosen: linear",
+    "modifier screen (univariate linear REML term test, Bonferroni over 8 candidates, threshold 0.0063): education p=0.00244 KEPT; prior_earnings p=0.0093; age p=0.0958; months_unemployed p=0.0532; parttime p=0.205; smsa p=0.309; ethnicity p=0.154; region p=0.215"
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "library": "interpret 0.7.8 (ExplainableBoostingRegressor)",
+  "mean_effects": [
+    {
+      "variable": "housing_median_age",
+      "shape": "u_shaped",
+      "evidence": "Removing it raises out-of-fold MSE by 8.3 percent (Holm p=0.00026; worse in 4 of 5 folds). Partial effect runs from -0.078 at the 2nd percentile to +0.294 at the 98th percentile on the log scale."
+    },
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "Removing it raises out-of-fold MSE by 5.3 percent (Holm p=0.0089; worse in 5 of 5 folds). Partial effect runs from +0.321 at the 2nd percentile to -0.346 at the 98th percentile on the log scale."
+    }
+  ],
+  "interactions": [],
+  "variance_drivers": [
+    {
+      "variable": "total_bedrooms",
+      "direction": "nonmonotone",
+      "evidence": "Permuting it on held-out rows raises squared error on log squared residuals by 1.1 percent (Holm p=0.0061; worse in 4 of 5 folds). Spread-model curve shape: nonmonotone."
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.3903445379317714,
+      "lower90": -0.4767839173620222,
+      "upper90": -0.23838197310525358
+    },
+    "Q2": {
+      "estimate": 0.4235300001285273,
+      "lower90": 0.25305728081843487,
+      "upper90": 0.523376750984901
+    },
+    "Q3": {
+      "estimate": 0.1865902431790316,
+      "lower90": 0.07006263520393267,
+      "upper90": 0.24705662128336678
+    },
+    "Q4": {
+      "estimate": 0.3509652405847049,
+      "lower90": 0.23913862731150748,
+      "upper90": 0.4091268003968267
+    },
+    "Q5": {
+      "estimate": -0.048545444331517265,
+      "lower90": -0.19095159711751217,
+      "upper90": 0.05792626447899213
+    },
+    "Q6": {
+      "estimate": 0.1450071859103938,
+      "lower90": 0.03325473372076804,
+      "upper90": 0.19309228584305574
+    },
+    "Q7": {
+      "estimate": -0.021742153085081536,
+      "lower90": -0.07966144327817501,
+      "upper90": 0.009223328567602256
+    },
+    "Q8": {
+      "estimate": -0.1006678464942049,
+      "lower90": -0.1500828665161219,
+      "upper90": -0.039928520789443624
+    }
+  },
+  "warnings": [
+    "Missing values in training rows: housing_median_age (68), total_bedrooms (7), ave_bedrooms (7). EBM routes missing values to a separate bin per term (missing='separate').",
+    "Missing values in test rows: housing_median_age (359), total_bedrooms (50), ave_bedrooms (50).",
+    "Train-versus-test classifier AUC 0.620: calibration uses density-ratio weights (effective sample size 671 of 800).",
+    "Out-of-fold interval coverage differs from 0.90 by up to 0.032 in a subgroup (see diagnostics.json).",
+    "Effect-query intervals are percentiles of 30 Bayesian-bootstrap refits of the prediction model, with tuning and variable selection fixed. They do not include selection uncertainty.",
+    "No interaction passed the paired test among the top FAST candidates."
+  ]
+}

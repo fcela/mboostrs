@@ -1,0 +1,3181 @@
+{
+ "task": "spatial",
+ "design": {
+  "source": "https://raw.githubusercontent.com/filipkral/meuse/master/meuse.txt",
+  "sha256": "b27776bc1cad63c4bf308923c86a5a76a0a02566ac75984b018df2a477b52f64",
+  "train_frac": 0.8,
+  "seeds": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "tree_settings": {
+   "rounds": 400,
+   "learning_rate": 0.05
+  },
+  "threads": {
+   "RAYON_NUM_THREADS": "1",
+   "OMP_NUM_THREADS": "1"
+  },
+  "scaling_sizes": null
+ },
+ "versions": {
+  "mboostrs": "0.1.3",
+  "polars": "2.0.0",
+  "numpy": "2.5.3",
+  "scipy": "1.16.3",
+  "statsmodels": "0.15.0",
+  "scikit-learn": "1.9.1",
+  "pygam": "0.12.0",
+  "lightgbm": "4.7.0",
+  "xgboost": "3.4.1",
+  "catboost": "1.2.10"
+ },
+ "elapsed_seconds": 410.2143552303314,
+ "results": [
+  {
+   "method": "mboostrs covariates",
+   "seed": 0,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.018907126010162756,
+   "rmse": 0.35910683082571737,
+   "mae": 0.29740011087944246,
+   "r2": 0.7257133148630357,
+   "warnings": [],
+   "mstop": 46,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + bspatial",
+   "seed": 0,
+   "variant": null,
+   "status": "success",
+   "seconds": 2.1798057520063594,
+   "rmse": 0.3414434509891914,
+   "mae": 0.24310063006723587,
+   "r2": 0.7520323833226132,
+   "warnings": [
+    "UserWarning: optimal mstop 390 is within 5% of the search cap 400; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "mstop": 390,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + btree(x, y)",
+   "seed": 0,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.03310466599941719,
+   "rmse": 0.2719541657577536,
+   "mae": 0.2184809235481232,
+   "r2": 0.8426927188989473,
+   "warnings": [],
+   "mstop": 218,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 0,
+   "variant": null,
+   "status": "success",
+   "seconds": 16.535563786004786,
+   "rmse": 0.35211089515898514,
+   "mae": 0.24036477274528054,
+   "r2": 0.7362962411897195,
+   "warnings": [
+    "RuntimeWarning: the training risk rose on 20 of 74 boosting steps (largest rise 14.3 of the risk before it); the final risk is 102.894% above its minimum at step 67: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently ",
+    "RuntimeWarning: the training risk rose on 20 of 74 boosting steps (largest rise 41.3 of the risk before it); the final risk is 212.804% above its minimum at step 26: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently ",
+    "RuntimeWarning: the training risk rose on 21 of 74 boosting steps (largest rise 130 of the risk before it); the final risk is 28.454% above its minimum at step 20: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently de",
+    "RuntimeWarning: the training risk rose on 22 of 74 boosting steps (largest rise 93.2 of the risk before it); the final risk is 137.765% above its minimum at step 26: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently ",
+    "RuntimeWarning: the training risk rose on 23 of 74 boosting steps (largest rise 22.5 of the risk before it); the final risk is 12.673% above its minimum at step 52: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently d",
+    "RuntimeWarning: the training risk rose on 53 of 200 boosting steps (largest rise 195 of the risk before it); the final risk is 146.030% above its minimum at step 108: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently",
+    "UserWarning: optimal mstop 152 is within 5% of the search cap 152; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "formula": "log_zinc ~ bspatial(x, y, df=6.0) + bbs(dist, df=4.0) + bbs(elev, df=4.0) + brandom(ffreq, df=4.0)"
+  },
+  {
+   "method": "statsmodels OLS (published trend)",
+   "seed": 0,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0016444969951407984,
+   "rmse": 0.3605292048402968,
+   "mae": 0.3074571008730023,
+   "r2": 0.7235361861504188,
+   "warnings": []
+  },
+  {
+   "method": "regression kriging (OLS + GP)",
+   "seed": 0,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.11987364999367855,
+   "rmse": 0.31071412785893715,
+   "mae": 0.234268530711218,
+   "r2": 0.7946572401582185,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LinearGAM + te(x, y)",
+   "seed": 0,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.3263167480035918,
+   "rmse": 0.30993085592432645,
+   "mae": 0.255453372493802,
+   "r2": 0.7956912227065032,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM",
+   "seed": 0,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.03133576299296692,
+   "rmse": 0.29683510108640027,
+   "mae": 0.23350693363115435,
+   "r2": 0.8125920956187334,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 0,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06302560699987225,
+   "rmse": 0.29580469824102834,
+   "mae": 0.23135899319954797,
+   "r2": 0.8138909344264569,
+   "warnings": [],
+   "rounds": 99
+  },
+  {
+   "method": "XGBoost",
+   "seed": 0,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0646192869899096,
+   "rmse": 0.30549405977126093,
+   "mae": 0.2472742349087562,
+   "r2": 0.8014988928774822,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 0,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.11274408700410277,
+   "rmse": 0.2521146470313785,
+   "mae": 0.20919930037798334,
+   "r2": 0.8648072045010176,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 0,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.10130816500168294,
+   "rmse": 0.24343503630437105,
+   "mae": 0.20226933330992403,
+   "r2": 0.8739555981616641,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs covariates",
+   "seed": 1,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.00942789799591992,
+   "rmse": 0.3908274823841595,
+   "mae": 0.2952348066415043,
+   "r2": 0.6726467385725028,
+   "warnings": [],
+   "mstop": 75,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + bspatial",
+   "seed": 1,
+   "variant": null,
+   "status": "success",
+   "seconds": 2.4810304240090773,
+   "rmse": 0.301958751898961,
+   "mae": 0.2412798831237052,
+   "r2": 0.8045922764628378,
+   "warnings": [],
+   "mstop": 668,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + btree(x, y)",
+   "seed": 1,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.026300739002181217,
+   "rmse": 0.2999149344940603,
+   "mae": 0.243569771711016,
+   "r2": 0.8072285710134509,
+   "warnings": [],
+   "mstop": 294,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 1,
+   "variant": null,
+   "status": "error",
+   "seconds": 9.739499800998601,
+   "error": "PanicException: digamma requires x > 0, got 0"
+  },
+  {
+   "method": "statsmodels OLS (published trend)",
+   "seed": 1,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0022111939906608313,
+   "rmse": 0.40161769246036855,
+   "mae": 0.32064471331839556,
+   "r2": 0.6543216700376773,
+   "warnings": []
+  },
+  {
+   "method": "regression kriging (OLS + GP)",
+   "seed": 1,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.13164586998755112,
+   "rmse": 0.31351923095211626,
+   "mae": 0.22707387533538229,
+   "r2": 0.789343505723263,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LinearGAM + te(x, y)",
+   "seed": 1,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.27178205200470984,
+   "rmse": 0.3211866004867842,
+   "mae": 0.26176197218500835,
+   "r2": 0.7789139606466925,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM",
+   "seed": 1,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0292579789966112,
+   "rmse": 0.3406664189351017,
+   "mae": 0.26435708543097647,
+   "r2": 0.7512831935900517,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 1,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.07339665200561285,
+   "rmse": 0.3353158803792116,
+   "mae": 0.25867693674339626,
+   "r2": 0.7590345785159524,
+   "warnings": [],
+   "rounds": 157
+  },
+  {
+   "method": "XGBoost",
+   "seed": 1,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.05740479599626269,
+   "rmse": 0.34055698609284635,
+   "mae": 0.26254528630185286,
+   "r2": 0.7514429593545764,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 1,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.060612270986894146,
+   "rmse": 0.28833691028060776,
+   "mae": 0.22210419406986154,
+   "r2": 0.8218249198302459,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 1,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.08962288599286694,
+   "rmse": 0.3014316798931282,
+   "mae": 0.24287883199535368,
+   "r2": 0.8052738533449689,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs covariates",
+   "seed": 2,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.018025766999926418,
+   "rmse": 0.36941099725608695,
+   "mae": 0.2919573099450691,
+   "r2": 0.7395438274266006,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(dist): 3 above 0.749591 (worst 0.17 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -"
+   ],
+   "mstop": 162,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + bspatial",
+   "seed": 2,
+   "variant": null,
+   "status": "success",
+   "seconds": 3.71604250499513,
+   "rmse": 0.42806283210083873,
+   "mae": 0.27965376394824637,
+   "r2": 0.6502722812505247,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(dist): 3 above 0.749591 (worst 0.17 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -"
+   ],
+   "mstop": 1431,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + btree(x, y)",
+   "seed": 2,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.011864571992191486,
+   "rmse": 0.30684913111730866,
+   "mae": 0.2484943915166549,
+   "r2": 0.8202930763192587,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(dist): 3 above 0.749591 (worst 0.17 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -",
+    "UserWarning: optimal mstop 95 is within 5% of the search cap 100; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "mstop": 95,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 2,
+   "variant": null,
+   "status": "success",
+   "seconds": 14.073685253999429,
+   "rmse": 0.4314131330299754,
+   "mae": 0.2821373153678019,
+   "r2": 0.644776460390489,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(dist): 3 above 0.749591 (worst 0.17 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -",
+    "UserWarning: optimal mstop 196 is within 5% of the search cap 200; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 200 is within 5% of the search cap 200; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 493 is within 5% of the search cap 493; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "formula": "log_zinc ~ bspatial(x, y, df=6.0) + bbs(dist, df=4.0) + bbs(elev, df=4.0) + brandom(ffreq, df=4.0)"
+  },
+  {
+   "method": "statsmodels OLS (published trend)",
+   "seed": 2,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.002652214010595344,
+   "rmse": 0.3871046043297208,
+   "mae": 0.3049250156101682,
+   "r2": 0.713996276033127,
+   "warnings": []
+  },
+  {
+   "method": "regression kriging (OLS + GP)",
+   "seed": 2,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.16313257400179282,
+   "rmse": 0.37712235805031147,
+   "mae": 0.2695847514291998,
+   "r2": 0.7285564193666549,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LinearGAM + te(x, y)",
+   "seed": 2,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.3490897300071083,
+   "rmse": 0.3388025165299895,
+   "mae": 0.2527297095811066,
+   "r2": 0.7809172069602086,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM",
+   "seed": 2,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.03447301000414882,
+   "rmse": 0.30467688495762824,
+   "mae": 0.2497790762998192,
+   "r2": 0.822828432558518,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 2,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.062303546990733594,
+   "rmse": 0.2956646976487696,
+   "mae": 0.2424348293181399,
+   "r2": 0.8331547066718281,
+   "warnings": [],
+   "rounds": 120
+  },
+  {
+   "method": "XGBoost",
+   "seed": 2,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06551363600010518,
+   "rmse": 0.3009393517911103,
+   "mae": 0.24658746426254863,
+   "r2": 0.827148570156665,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 2,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0666966099961428,
+   "rmse": 0.30691431377251727,
+   "mae": 0.23134209126655364,
+   "r2": 0.820216719455833,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 2,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.10212641399994027,
+   "rmse": 0.347767608347138,
+   "mae": 0.244476228833309,
+   "r2": 0.7691694579943293,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs covariates",
+   "seed": 3,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.011043179998523556,
+   "rmse": 0.3370428137812244,
+   "mae": 0.26892569839296177,
+   "r2": 0.6970605486862749,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 1 below 5.7 (worst 0.11 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at ",
+    "UserWarning: optimal mstop 96 is within 5% of the search cap 100; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "mstop": 96,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + bspatial",
+   "seed": 3,
+   "variant": null,
+   "status": "success",
+   "seconds": 6.522230678005144,
+   "rmse": 0.3100690715377849,
+   "mae": 0.245010481736677,
+   "r2": 0.7436091108318299,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 1 below 5.7 (worst 0.11 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at "
+   ],
+   "mstop": 1794,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + btree(x, y)",
+   "seed": 3,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.05084373000136111,
+   "rmse": 0.3115968383870358,
+   "mae": 0.262084931972407,
+   "r2": 0.7410763170824612,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 1 below 5.7 (worst 0.11 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at "
+   ],
+   "mstop": 417,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 3,
+   "variant": null,
+   "status": "success",
+   "seconds": 22.152443020997453,
+   "rmse": 0.32875003930525193,
+   "mae": 0.26108288085613435,
+   "r2": 0.7117845102337254,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 1 below 5.7 (worst 0.11 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at ",
+    "RuntimeWarning: the training risk rose on 1 of 7 boosting steps (largest rise 4.41 of the risk before it); the final risk is 134.504% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently des",
+    "RuntimeWarning: the training risk rose on 1 of 7 boosting steps (largest rise 4.46 of the risk before it); the final risk is 12.781% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently desc",
+    "RuntimeWarning: the training risk rose on 1 of 7 boosting steps (largest rise 4.77 of the risk before it); the final risk is 88.367% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently desc",
+    "RuntimeWarning: the training risk rose on 1 of 7 boosting steps (largest rise 4.8 of the risk before it); the final risk is 0.000% above its minimum at step 7: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently descen",
+    "RuntimeWarning: the training risk rose on 1 of 7 boosting steps (largest rise 4.8 of the risk before it); the final risk is 9.195% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently descen",
+    "RuntimeWarning: the training risk rose on 60 of 200 boosting steps (largest rise 186 of the risk before it); the final risk is 120.615% above its minimum at step 154: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently",
+    "UserWarning: optimal mstop 200 is within 5% of the search cap 200; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 216 is within 5% of the search cap 216; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 400 is within 5% of the search cap 400; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 601 is within 5% of the search cap 615; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 615 is within 5% of the search cap 615; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "formula": "log_zinc ~ bspatial(x, y, df=6.0) + btree(dist) + bbs(elev, df=4.0) + brandom(ffreq, df=4.0)"
+  },
+  {
+   "method": "statsmodels OLS (published trend)",
+   "seed": 3,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0019403869955567643,
+   "rmse": 0.31444068311067447,
+   "mae": 0.2627415059257923,
+   "r2": 0.7363285223519667,
+   "warnings": []
+  },
+  {
+   "method": "regression kriging (OLS + GP)",
+   "seed": 3,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.09445112300454639,
+   "rmse": 0.29492821532680674,
+   "mae": 0.2397158914984591,
+   "r2": 0.7680372031712619,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LinearGAM + te(x, y)",
+   "seed": 3,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.301750926009845,
+   "rmse": 0.34875609167531596,
+   "mae": 0.2907692017887703,
+   "r2": 0.6756385037780791,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM",
+   "seed": 3,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.03610493899032008,
+   "rmse": 0.32182756932279233,
+   "mae": 0.26096885748274734,
+   "r2": 0.7237945897796938,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 3,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06411065200518351,
+   "rmse": 0.30101579364193604,
+   "mae": 0.24580236907894545,
+   "r2": 0.7583625431942085,
+   "warnings": [],
+   "rounds": 127
+  },
+  {
+   "method": "XGBoost",
+   "seed": 3,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06592257700685877,
+   "rmse": 0.29335319246706837,
+   "mae": 0.23984695179574328,
+   "r2": 0.7705081174290169,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 3,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0727696110116085,
+   "rmse": 0.31385712023585816,
+   "mae": 0.26334382085814095,
+   "r2": 0.7373062972582356,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 3,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.08900636799808126,
+   "rmse": 0.33042715844129117,
+   "mae": 0.2824221867008391,
+   "r2": 0.7088363452679821,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs covariates",
+   "seed": 4,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.011074570007622242,
+   "rmse": 0.3626900437548539,
+   "mae": 0.275514156572242,
+   "r2": 0.771428294421552,
+   "warnings": [],
+   "mstop": 45,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + bspatial",
+   "seed": 4,
+   "variant": null,
+   "status": "success",
+   "seconds": 1.6433233370044036,
+   "rmse": 0.31300004534584797,
+   "mae": 0.23318136715669252,
+   "r2": 0.8297684701404322,
+   "warnings": [],
+   "mstop": 162,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + btree(x, y)",
+   "seed": 4,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.01515198800188955,
+   "rmse": 0.31902109382720845,
+   "mae": 0.2432323437173146,
+   "r2": 0.8231561338974483,
+   "warnings": [
+    "UserWarning: optimal mstop 97 is within 5% of the search cap 100; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "mstop": 97,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 4,
+   "variant": null,
+   "status": "error",
+   "seconds": 8.903628019994358,
+   "error": "PanicException: digamma requires x > 0, got 0"
+  },
+  {
+   "method": "statsmodels OLS (published trend)",
+   "seed": 4,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.003795209006057121,
+   "rmse": 0.383332794710986,
+   "mae": 0.3013837354357841,
+   "r2": 0.7446692317142249,
+   "warnings": []
+  },
+  {
+   "method": "regression kriging (OLS + GP)",
+   "seed": 4,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.16644672400434501,
+   "rmse": 0.2803934093901395,
+   "mae": 0.2287352577894591,
+   "r2": 0.8633886434272096,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LinearGAM + te(x, y)",
+   "seed": 4,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.31479222599591594,
+   "rmse": 0.2862213729980564,
+   "mae": 0.23500287100667483,
+   "r2": 0.8576507043468522,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM",
+   "seed": 4,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0383772740024142,
+   "rmse": 0.3123032823810743,
+   "mae": 0.24071670725370667,
+   "r2": 0.8305255243864124,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 4,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.05873581599735189,
+   "rmse": 0.33048962513414204,
+   "mae": 0.27048632232023107,
+   "r2": 0.8102128246290823,
+   "warnings": [],
+   "rounds": 104
+  },
+  {
+   "method": "XGBoost",
+   "seed": 4,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06963922700379044,
+   "rmse": 0.2872465728008453,
+   "mae": 0.218337879158819,
+   "r2": 0.8566291326242018,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 4,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.062245148001238704,
+   "rmse": 0.2865979596288642,
+   "mae": 0.23377538446184132,
+   "r2": 0.857275874844562,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 4,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.13701269499142654,
+   "rmse": 0.3201290109455583,
+   "mae": 0.2568745892210383,
+   "r2": 0.821925691355221,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs covariates",
+   "seed": 5,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.014255023008445278,
+   "rmse": 0.33712368435129186,
+   "mae": 0.24106289890148982,
+   "r2": 0.7830357747606738,
+   "warnings": [],
+   "mstop": 69,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + bspatial",
+   "seed": 5,
+   "variant": null,
+   "status": "success",
+   "seconds": 3.776936829002807,
+   "rmse": 0.34539482848999525,
+   "mae": 0.243168244926078,
+   "r2": 0.7722589796598789,
+   "warnings": [],
+   "mstop": 932,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + btree(x, y)",
+   "seed": 5,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.030590584996389225,
+   "rmse": 0.2787511352654104,
+   "mae": 0.2082835088049417,
+   "r2": 0.8516652546835877,
+   "warnings": [],
+   "mstop": 241,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 5,
+   "variant": null,
+   "status": "success",
+   "seconds": 18.552929773999495,
+   "rmse": 0.35420190414596586,
+   "mae": 0.2399298226492666,
+   "r2": 0.7604967650191532,
+   "warnings": [
+    "RuntimeWarning: the training risk rose on 56 of 200 boosting steps (largest rise 51.2 of the risk before it); the final risk is 17.035% above its minimum at step 161: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently",
+    "RuntimeWarning: the training risk rose on 6 of 29 boosting steps (largest rise 14.4 of the risk before it); the final risk is 246.599% above its minimum at step 16: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently d",
+    "RuntimeWarning: the training risk rose on 6 of 29 boosting steps (largest rise 5.21 of the risk before it); the final risk is 57.022% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently des",
+    "RuntimeWarning: the training risk rose on 6 of 29 boosting steps (largest rise 54.3 of the risk before it); the final risk is 35.922% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently des",
+    "RuntimeWarning: the training risk rose on 7 of 29 boosting steps (largest rise 9.32 of the risk before it); the final risk is 37.751% above its minimum at step 10: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently de",
+    "RuntimeWarning: the training risk rose on 8 of 29 boosting steps (largest rise 15.2 of the risk before it); the final risk is 0.000% above its minimum at step 29: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently des",
+    "UserWarning: optimal mstop 200 is within 5% of the search cap 200; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 327 is within 5% of the search cap 327; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "formula": "log_zinc ~ bspatial(x, y, df=6.0) + bbs(dist, df=4.0) + bols(elev) + brandom(ffreq, df=4.0) + brandom(soil, df=4.0)"
+  },
+  {
+   "method": "statsmodels OLS (published trend)",
+   "seed": 5,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0016924060037126765,
+   "rmse": 0.38166785931490727,
+   "mae": 0.2949901342354269,
+   "r2": 0.7219129411987322,
+   "warnings": []
+  },
+  {
+   "method": "regression kriging (OLS + GP)",
+   "seed": 5,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.07818970900552813,
+   "rmse": 0.3859254643696383,
+   "mae": 0.2623368438944626,
+   "r2": 0.7156740679533998,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LinearGAM + te(x, y)",
+   "seed": 5,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.2879820579983061,
+   "rmse": 0.33287771308915454,
+   "mae": 0.23638286420280144,
+   "r2": 0.7884665566322301,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM",
+   "seed": 5,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.031018458990729414,
+   "rmse": 0.3747162614329974,
+   "mae": 0.2641796260276052,
+   "r2": 0.7319506974575715,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 5,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.07195511600002646,
+   "rmse": 0.3642066556836381,
+   "mae": 0.25960664003197714,
+   "r2": 0.7467757131327439,
+   "warnings": [],
+   "rounds": 182
+  },
+  {
+   "method": "XGBoost",
+   "seed": 5,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.055331689000013284,
+   "rmse": 0.33099368371276056,
+   "mae": 0.23693380052641852,
+   "r2": 0.7908542647069898,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 5,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06458592400304042,
+   "rmse": 0.3020479186018535,
+   "mae": 0.21348339095721586,
+   "r2": 0.8258348350536904,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 5,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.09191111198742874,
+   "rmse": 0.31870621122622705,
+   "mae": 0.23394721364626136,
+   "r2": 0.806094264307013,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs covariates",
+   "seed": 6,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.011360607997630723,
+   "rmse": 0.3182149624790326,
+   "mae": 0.23607734519316795,
+   "r2": 0.7640372961517083,
+   "warnings": [],
+   "mstop": 73,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + bspatial",
+   "seed": 6,
+   "variant": null,
+   "status": "success",
+   "seconds": 1.8394902530126274,
+   "rmse": 0.32188112870041774,
+   "mae": 0.2329220868076895,
+   "r2": 0.7585689059285463,
+   "warnings": [
+    "UserWarning: optimal mstop 381 is within 5% of the search cap 400; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "mstop": 381,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + btree(x, y)",
+   "seed": 6,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.029022692004218698,
+   "rmse": 0.3328139934522717,
+   "mae": 0.26004679575459666,
+   "r2": 0.7418897045540378,
+   "warnings": [],
+   "mstop": 374,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 6,
+   "variant": null,
+   "status": "error",
+   "seconds": 9.191141802002676,
+   "error": "PanicException: digamma requires x > 0, got 0"
+  },
+  {
+   "method": "statsmodels OLS (published trend)",
+   "seed": 6,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0018672790029086173,
+   "rmse": 0.3740155125599113,
+   "mae": 0.2780290272642801,
+   "r2": 0.6740271708004176,
+   "warnings": []
+  },
+  {
+   "method": "regression kriging (OLS + GP)",
+   "seed": 6,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.1441401850024704,
+   "rmse": 0.37038741110160334,
+   "mae": 0.2309312173477313,
+   "r2": 0.6803206335346624,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LinearGAM + te(x, y)",
+   "seed": 6,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.291439562002779,
+   "rmse": 0.3305294680713298,
+   "mae": 0.24329230715789135,
+   "r2": 0.7454210207923588,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM",
+   "seed": 6,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.03202776100079063,
+   "rmse": 0.31715128592271324,
+   "mae": 0.2581868105576401,
+   "r2": 0.7656121342022707,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 6,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06007659299939405,
+   "rmse": 0.29553977459784486,
+   "mae": 0.23741103080678727,
+   "r2": 0.7964673688829694,
+   "warnings": [],
+   "rounds": 108
+  },
+  {
+   "method": "XGBoost",
+   "seed": 6,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.05890047900902573,
+   "rmse": 0.2782980376155987,
+   "mae": 0.23763691924477848,
+   "r2": 0.819522752307191,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 6,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.07063190499320626,
+   "rmse": 0.29179494686109364,
+   "mae": 0.22011064216362353,
+   "r2": 0.8015926736135474,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 6,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.09826613099721726,
+   "rmse": 0.2859729032974167,
+   "mae": 0.2285007869420522,
+   "r2": 0.809431138081224,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs covariates",
+   "seed": 7,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.008861430003889836,
+   "rmse": 0.4056283696789739,
+   "mae": 0.32997675721552383,
+   "r2": 0.7257862621166181,
+   "warnings": [],
+   "mstop": 60,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + bspatial",
+   "seed": 7,
+   "variant": null,
+   "status": "success",
+   "seconds": 3.7601505229977192,
+   "rmse": 0.42616953924696627,
+   "mae": 0.283342390810884,
+   "r2": 0.697310486848689,
+   "warnings": [],
+   "mstop": 1006,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + btree(x, y)",
+   "seed": 7,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.017815365004935302,
+   "rmse": 0.3639967539659061,
+   "mae": 0.25599211752860285,
+   "r2": 0.7791855010443074,
+   "warnings": [
+    "UserWarning: optimal mstop 195 is within 5% of the search cap 200; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "mstop": 195,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 7,
+   "variant": null,
+   "status": "success",
+   "seconds": 11.559134505005204,
+   "rmse": 0.4293012481738419,
+   "mae": 0.28228029049541836,
+   "r2": 0.692845510744498,
+   "warnings": [
+    "UserWarning: optimal mstop 200 is within 5% of the search cap 200; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 337 is within 5% of the search cap 337; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "formula": "log_zinc ~ bspatial(x, y, df=6.0) + bbs(dist, df=4.0) + bbs(elev, df=4.0) + brandom(ffreq, df=4.0)"
+  },
+  {
+   "method": "statsmodels OLS (published trend)",
+   "seed": 7,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.001290001004235819,
+   "rmse": 0.41452988457446505,
+   "mae": 0.3466060301530727,
+   "r2": 0.7136189640333936,
+   "warnings": []
+  },
+  {
+   "method": "regression kriging (OLS + GP)",
+   "seed": 7,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.12819691198819783,
+   "rmse": 0.37824819266232207,
+   "mae": 0.28939925735859645,
+   "r2": 0.7615560607920365,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LinearGAM + te(x, y)",
+   "seed": 7,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.2994838649901794,
+   "rmse": 0.46331551555714484,
+   "mae": 0.3302307541986932,
+   "r2": 0.6422445543956796,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM",
+   "seed": 7,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.03148553099890705,
+   "rmse": 0.4421762929004863,
+   "mae": 0.30456174448623635,
+   "r2": 0.6741456871077515,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 7,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.09245692100375891,
+   "rmse": 0.424946560367094,
+   "mae": 0.29490593278260513,
+   "r2": 0.6990452505552724,
+   "warnings": [],
+   "rounds": 215
+  },
+  {
+   "method": "XGBoost",
+   "seed": 7,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06465343199670315,
+   "rmse": 0.3496149291017107,
+   "mae": 0.27695626238153825,
+   "r2": 0.7962899273497512,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 7,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06048944500798825,
+   "rmse": 0.34993264898138854,
+   "mae": 0.2541211258958066,
+   "r2": 0.795919507533814,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 7,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.09553143799712416,
+   "rmse": 0.4066655175022276,
+   "mae": 0.28498063538682306,
+   "r2": 0.7243821997143112,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs covariates",
+   "seed": 8,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.018518130003940314,
+   "rmse": 0.39453704812289014,
+   "mae": 0.3338111000131318,
+   "r2": 0.6730139432203707,
+   "warnings": [
+    "UserWarning: optimal mstop 389 is within 5% of the search cap 400; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "mstop": 389,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + bspatial",
+   "seed": 8,
+   "variant": null,
+   "status": "success",
+   "seconds": 1.8113692460028687,
+   "rmse": 0.37023763146349514,
+   "mae": 0.2917421831058081,
+   "r2": 0.7120515334303196,
+   "warnings": [],
+   "mstop": 234,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + btree(x, y)",
+   "seed": 8,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.017280830012168735,
+   "rmse": 0.3335454125076202,
+   "mae": 0.2641148856379627,
+   "r2": 0.7662973720902687,
+   "warnings": [],
+   "mstop": 149,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 8,
+   "variant": null,
+   "status": "success",
+   "seconds": 9.89464015699923,
+   "rmse": 0.35874716833268144,
+   "mae": 0.27767191341957603,
+   "r2": 0.7296473594264862,
+   "warnings": [
+    "UserWarning: optimal mstop 195 is within 5% of the search cap 200; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 85 is within 5% of the search cap 86; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 86 is within 5% of the search cap 86; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "formula": "log_zinc ~ bspatial(x, y, df=6.0) + bbs(dist, df=4.0) + bbs(elev, df=4.0) + brandom(ffreq, df=4.0)"
+  },
+  {
+   "method": "statsmodels OLS (published trend)",
+   "seed": 8,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.001708533993223682,
+   "rmse": 0.4252897617359008,
+   "mae": 0.3454196047422336,
+   "r2": 0.6200525730213351,
+   "warnings": []
+  },
+  {
+   "method": "regression kriging (OLS + GP)",
+   "seed": 8,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.12311593399499543,
+   "rmse": 0.3835623118506505,
+   "mae": 0.28419039572004523,
+   "r2": 0.6909523060096645,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LinearGAM + te(x, y)",
+   "seed": 8,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.27913914898817893,
+   "rmse": 0.377222571459138,
+   "mae": 0.3172909431066687,
+   "r2": 0.7010841151708017,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM",
+   "seed": 8,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.029399157006992027,
+   "rmse": 0.32104044475671134,
+   "mae": 0.2531211198887439,
+   "r2": 0.7834923984580888,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 8,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0719714099977864,
+   "rmse": 0.31983629357816157,
+   "mae": 0.25653796258532807,
+   "r2": 0.7851134961061866,
+   "warnings": [],
+   "rounds": 180
+  },
+  {
+   "method": "XGBoost",
+   "seed": 8,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06439508098992519,
+   "rmse": 0.3295233721545675,
+   "mae": 0.2737819578981522,
+   "r2": 0.7718995727305407,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 8,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06569411601230968,
+   "rmse": 0.31455843823447094,
+   "mae": 0.2525070398115544,
+   "r2": 0.7921469833291135,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 8,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.10334998299367726,
+   "rmse": 0.336450164272213,
+   "mae": 0.2654448078251878,
+   "r2": 0.7622091487631025,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs covariates",
+   "seed": 9,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.009551045994157903,
+   "rmse": 0.36474144689164834,
+   "mae": 0.2968081278328366,
+   "r2": 0.7127106191521406,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 1 below 5.7 (worst 0.11 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at "
+   ],
+   "mstop": 69,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + bspatial",
+   "seed": 9,
+   "variant": null,
+   "status": "success",
+   "seconds": 2.4246766680007568,
+   "rmse": 0.3182776774632982,
+   "mae": 0.23626524069279628,
+   "r2": 0.7812431300373134,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 1 below 5.7 (worst 0.11 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at "
+   ],
+   "mstop": 537,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + btree(x, y)",
+   "seed": 9,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.05105387499497738,
+   "rmse": 0.29502754299663925,
+   "mae": 0.220956305455045,
+   "r2": 0.8120360923592174,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 1 below 5.7 (worst 0.11 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at "
+   ],
+   "mstop": 585,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 9,
+   "variant": null,
+   "status": "success",
+   "seconds": 14.596665883989772,
+   "rmse": 0.31888071287592384,
+   "mae": 0.23594545939193118,
+   "r2": 0.7804133947448769,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 1 below 5.7 (worst 0.11 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at ",
+    "RuntimeWarning: the training risk rose on 1 of 7 boosting steps (largest rise 4.69 of the risk before it); the final risk is 13.927% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently desc",
+    "RuntimeWarning: the training risk rose on 1 of 7 boosting steps (largest rise 4.7 of the risk before it); the final risk is 58.027% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently desce",
+    "RuntimeWarning: the training risk rose on 1 of 7 boosting steps (largest rise 4.73 of the risk before it); the final risk is 42.547% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently desc",
+    "RuntimeWarning: the training risk rose on 1 of 7 boosting steps (largest rise 4.76 of the risk before it); the final risk is 141.450% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently des",
+    "RuntimeWarning: the training risk rose on 1 of 7 boosting steps (largest rise 4.91 of the risk before it); the final risk is 70.763% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently desc",
+    "RuntimeWarning: the training risk rose on 52 of 200 boosting steps (largest rise 192 of the risk before it); the final risk is 228.744% above its minimum at step 33: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently ",
+    "UserWarning: optimal mstop 187 is within 5% of the search cap 187; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "formula": "log_zinc ~ bspatial(x, y, df=6.0) + bbs(dist, df=4.0) + bbs(elev, df=4.0) + brandom(ffreq, df=4.0)"
+  },
+  {
+   "method": "statsmodels OLS (published trend)",
+   "seed": 9,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0021426780003821477,
+   "rmse": 0.4019908786467668,
+   "mae": 0.32737617489857423,
+   "r2": 0.6510351068399676,
+   "warnings": []
+  },
+  {
+   "method": "regression kriging (OLS + GP)",
+   "seed": 9,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.12793296499876305,
+   "rmse": 0.3702822050148657,
+   "mae": 0.24345550501888127,
+   "r2": 0.7039159431158506,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LinearGAM + te(x, y)",
+   "seed": 9,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.2729173499974422,
+   "rmse": 0.3817621072236619,
+   "mae": 0.28075556941273283,
+   "r2": 0.6852722923215687,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM",
+   "seed": 9,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.03034763300092891,
+   "rmse": 0.33253169736569455,
+   "mae": 0.2401916551172371,
+   "r2": 0.7612103832629717,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 9,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.07456394800101407,
+   "rmse": 0.32412596053481535,
+   "mae": 0.22909175636633644,
+   "r2": 0.7731300508047301,
+   "warnings": [],
+   "rounds": 175
+  },
+  {
+   "method": "XGBoost",
+   "seed": 9,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.05850040100631304,
+   "rmse": 0.26310146661332035,
+   "mae": 0.21394028917189564,
+   "r2": 0.8505155980810771,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 9,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06891946500400081,
+   "rmse": 0.3013481911141864,
+   "mae": 0.22758624329765517,
+   "r2": 0.8038959702945789,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 9,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.10748678300296888,
+   "rmse": 0.28928264982234597,
+   "mae": 0.20852687977765874,
+   "r2": 0.8192850366130411,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs covariates",
+   "seed": 10,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.009439896006369963,
+   "rmse": 0.41205714977025576,
+   "mae": 0.3213227182696467,
+   "r2": 0.6606937785412278,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 1 below 5.7 (worst 0.11 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at "
+   ],
+   "mstop": 56,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + bspatial",
+   "seed": 10,
+   "variant": null,
+   "status": "success",
+   "seconds": 3.617543985004886,
+   "rmse": 0.3899870043097599,
+   "mae": 0.2805312171181903,
+   "r2": 0.6960674703526151,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 1 below 5.7 (worst 0.11 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at "
+   ],
+   "mstop": 870,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + btree(x, y)",
+   "seed": 10,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.02774458599742502,
+   "rmse": 0.31453386988851434,
+   "mae": 0.23857674138285084,
+   "r2": 0.8022976865884933,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 1 below 5.7 (worst 0.11 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at "
+   ],
+   "mstop": 222,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 10,
+   "variant": null,
+   "status": "error",
+   "seconds": 10.207863987001474,
+   "error": "PanicException: digamma requires x > 0, got 0"
+  },
+  {
+   "method": "statsmodels OLS (published trend)",
+   "seed": 10,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0017218779976246879,
+   "rmse": 0.41318759990368426,
+   "mae": 0.3183784285752964,
+   "r2": 0.6588294987409691,
+   "warnings": []
+  },
+  {
+   "method": "regression kriging (OLS + GP)",
+   "seed": 10,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.08726984700479079,
+   "rmse": 0.3256711908688906,
+   "mae": 0.24815425465431637,
+   "r2": 0.7880489370127125,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LinearGAM + te(x, y)",
+   "seed": 10,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.2768795619922457,
+   "rmse": 0.39133619104140066,
+   "mae": 0.29862046800598924,
+   "r2": 0.6939608819273841,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM",
+   "seed": 10,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.02929593500448391,
+   "rmse": 0.3548214831538506,
+   "mae": 0.266615696987517,
+   "r2": 0.7484080574342193,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 10,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06514913799765054,
+   "rmse": 0.3358228844204753,
+   "mae": 0.24468943751022176,
+   "r2": 0.774629281342849,
+   "warnings": [],
+   "rounds": 124
+  },
+  {
+   "method": "XGBoost",
+   "seed": 10,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06213045799813699,
+   "rmse": 0.3040335325985082,
+   "mae": 0.21241560747908153,
+   "r2": 0.8152774624741178,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 10,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06289581400051247,
+   "rmse": 0.3100044024317095,
+   "mae": 0.22770674528868926,
+   "r2": 0.8079507403508553,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 10,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.10555821801244747,
+   "rmse": 0.3197745582963895,
+   "mae": 0.25816387140907504,
+   "r2": 0.7956546639042493,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs covariates",
+   "seed": 11,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.011550504001206718,
+   "rmse": 0.3776738764792376,
+   "mae": 0.3077407296720503,
+   "r2": 0.7723685941707013,
+   "warnings": [],
+   "mstop": 65,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + bspatial",
+   "seed": 11,
+   "variant": null,
+   "status": "success",
+   "seconds": 1.8728174480056623,
+   "rmse": 0.35619535228888877,
+   "mae": 0.27224200652986574,
+   "r2": 0.7975234251778389,
+   "warnings": [],
+   "mstop": 269,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + btree(x, y)",
+   "seed": 11,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.02034384799480904,
+   "rmse": 0.3001247075706957,
+   "mae": 0.23824846987930742,
+   "r2": 0.856252007427811,
+   "warnings": [],
+   "mstop": 188,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 11,
+   "variant": null,
+   "status": "success",
+   "seconds": 16.727302209998015,
+   "rmse": 0.35682242448897167,
+   "mae": 0.2728413166821191,
+   "r2": 0.7968098886773103,
+   "warnings": [
+    "RuntimeWarning: the training risk rose on 32 of 114 boosting steps (largest rise 17.7 of the risk before it); the final risk is 246.698% above its minimum at step 43: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently",
+    "RuntimeWarning: the training risk rose on 35 of 114 boosting steps (largest rise 137 of the risk before it); the final risk is 13.334% above its minimum at step 101: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently ",
+    "RuntimeWarning: the training risk rose on 35 of 114 boosting steps (largest rise 75.1 of the risk before it); the final risk is 0.994% above its minimum at step 102: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently ",
+    "RuntimeWarning: the training risk rose on 35 of 114 boosting steps (largest rise 75.4 of the risk before it); the final risk is 135.812% above its minimum at step 105: the step nu=0.3 is too large for this loss's curvature, so the path does not consistentl",
+    "RuntimeWarning: the training risk rose on 39 of 114 boosting steps (largest rise 129 of the risk before it); the final risk is 0.786% above its minimum at step 100: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently d",
+    "RuntimeWarning: the training risk rose on 42 of 200 boosting steps (largest rise 147 of the risk before it); the final risk is 210.418% above its minimum at step 90: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently ",
+    "UserWarning: optimal mstop 80 is within 5% of the search cap 80; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "formula": "log_zinc ~ bspatial(x, y, df=6.0) + bbs(dist, df=4.0) + bbs(elev, df=4.0) + brandom(ffreq, df=4.0)"
+  },
+  {
+   "method": "statsmodels OLS (published trend)",
+   "seed": 11,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0015318349906010553,
+   "rmse": 0.38400389712249544,
+   "mae": 0.3182080665331905,
+   "r2": 0.7646741952690734,
+   "warnings": []
+  },
+  {
+   "method": "regression kriging (OLS + GP)",
+   "seed": 11,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.10048266699595843,
+   "rmse": 0.2970731753477743,
+   "mae": 0.24679537143442856,
+   "r2": 0.8591602759885446,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LinearGAM + te(x, y)",
+   "seed": 11,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.29522241100494284,
+   "rmse": 0.38459747490373636,
+   "mae": 0.3041952599393141,
+   "r2": 0.7639461186574873,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM",
+   "seed": 11,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.028843998996308073,
+   "rmse": 0.2593758463338151,
+   "mae": 0.19061797252112261,
+   "r2": 0.8926363293865672,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 11,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0596814699965762,
+   "rmse": 0.26196290660033206,
+   "mae": 0.19837889231524705,
+   "r2": 0.8904839201683672,
+   "warnings": [],
+   "rounds": 140
+  },
+  {
+   "method": "XGBoost",
+   "seed": 11,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06461404300353024,
+   "rmse": 0.3356154460653714,
+   "mae": 0.2656925726390373,
+   "r2": 0.820244507580161,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 11,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06318607000866905,
+   "rmse": 0.2582996434628044,
+   "mae": 0.1928947943192575,
+   "r2": 0.8935254282152024,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 11,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0902748939988669,
+   "rmse": 0.3019771119395291,
+   "mae": 0.24123829607965852,
+   "r2": 0.8544720729115688,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs covariates",
+   "seed": 12,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.013738837995333597,
+   "rmse": 0.37595212356335317,
+   "mae": 0.285130577263398,
+   "r2": 0.7488261333855936,
+   "warnings": [
+    "UserWarning: optimal mstop 191 is within 5% of the search cap 200; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "mstop": 191,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + bspatial",
+   "seed": 12,
+   "variant": null,
+   "status": "success",
+   "seconds": 2.4411899030092172,
+   "rmse": 0.3788831064348601,
+   "mae": 0.2514163939447753,
+   "r2": 0.7448944837549322,
+   "warnings": [],
+   "mstop": 657,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + btree(x, y)",
+   "seed": 12,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.05381956401106436,
+   "rmse": 0.2815647390937015,
+   "mae": 0.22544553068833248,
+   "r2": 0.8591146292051993,
+   "warnings": [],
+   "mstop": 585,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 12,
+   "variant": null,
+   "status": "success",
+   "seconds": 16.519942140992498,
+   "rmse": 0.3782511144951173,
+   "mae": 0.2495845548067724,
+   "r2": 0.7457448260520649,
+   "warnings": [
+    "RuntimeWarning: the training risk rose on 41 of 168 boosting steps (largest rise 46 of the risk before it); the final risk is 0.000% above its minimum at step 168: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently de",
+    "RuntimeWarning: the training risk rose on 43 of 168 boosting steps (largest rise 155 of the risk before it); the final risk is 122.887% above its minimum at step 154: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently",
+    "RuntimeWarning: the training risk rose on 43 of 168 boosting steps (largest rise 96.8 of the risk before it); the final risk is 88.443% above its minimum at step 160: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently",
+    "RuntimeWarning: the training risk rose on 48 of 168 boosting steps (largest rise 132 of the risk before it); the final risk is 126.260% above its minimum at step 150: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently",
+    "RuntimeWarning: the training risk rose on 49 of 168 boosting steps (largest rise 109 of the risk before it); the final risk is 196.880% above its minimum at step 166: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently",
+    "RuntimeWarning: the training risk rose on 55 of 200 boosting steps (largest rise 163 of the risk before it); the final risk is 205.730% above its minimum at step 136: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently",
+    "UserWarning: optimal mstop 175 is within 5% of the search cap 175; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "formula": "log_zinc ~ bspatial(x, y, df=6.0) + bbs(dist, df=4.0) + btree(elev) + brandom(ffreq, df=4.0)"
+  },
+  {
+   "method": "statsmodels OLS (published trend)",
+   "seed": 12,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0012306100106798112,
+   "rmse": 0.43129883188914153,
+   "mae": 0.36011182948811343,
+   "r2": 0.669428102598661,
+   "warnings": []
+  },
+  {
+   "method": "regression kriging (OLS + GP)",
+   "seed": 12,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.09076439100317657,
+   "rmse": 0.374660909944547,
+   "mae": 0.29421001141904485,
+   "r2": 0.7505484919379443,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LinearGAM + te(x, y)",
+   "seed": 12,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.32146996998926625,
+   "rmse": 0.37951248652302544,
+   "mae": 0.28029758990514586,
+   "r2": 0.7440462448919275,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM",
+   "seed": 12,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.030636782001238316,
+   "rmse": 0.3534729337391618,
+   "mae": 0.2529110146085517,
+   "r2": 0.7779648687716391,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 12,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.060215967998374254,
+   "rmse": 0.33597977439853327,
+   "mae": 0.24650815402302903,
+   "r2": 0.7993978261611161,
+   "warnings": [],
+   "rounds": 118
+  },
+  {
+   "method": "XGBoost",
+   "seed": 12,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.057877992003341205,
+   "rmse": 0.29935910510024444,
+   "mae": 0.2158222926852528,
+   "r2": 0.8407445474776214,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 12,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06364356599806342,
+   "rmse": 0.3168904317145817,
+   "mae": 0.2498541060942946,
+   "r2": 0.8215454526611874,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 12,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.09110791799321305,
+   "rmse": 0.32798846698362555,
+   "mae": 0.2639846531411771,
+   "r2": 0.8088270188610657,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs covariates",
+   "seed": 13,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.012077431005309336,
+   "rmse": 0.31159323471341244,
+   "mae": 0.25134915175738276,
+   "r2": 0.8182912421061206,
+   "warnings": [
+    "UserWarning: optimal mstop 192 is within 5% of the search cap 200; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "mstop": 192,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + bspatial",
+   "seed": 13,
+   "variant": null,
+   "status": "success",
+   "seconds": 1.9862216760084266,
+   "rmse": 0.2635908056400628,
+   "mae": 0.22419272006074517,
+   "r2": 0.8699649780930604,
+   "warnings": [],
+   "mstop": 324,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + btree(x, y)",
+   "seed": 13,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.029403597000055015,
+   "rmse": 0.23438861745490383,
+   "mae": 0.18775619603609778,
+   "r2": 0.8971811232935986,
+   "warnings": [],
+   "mstop": 379,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 13,
+   "variant": null,
+   "status": "error",
+   "seconds": 8.809605411996017,
+   "error": "PanicException: digamma requires x > 0, got 0"
+  },
+  {
+   "method": "statsmodels OLS (published trend)",
+   "seed": 13,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.002118003001669422,
+   "rmse": 0.3423422666616801,
+   "mae": 0.27324088214430364,
+   "r2": 0.7806584723611342,
+   "warnings": []
+  },
+  {
+   "method": "regression kriging (OLS + GP)",
+   "seed": 13,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.08400665099907201,
+   "rmse": 0.24255546399070443,
+   "mae": 0.19743569257287427,
+   "r2": 0.889891221481138,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LinearGAM + te(x, y)",
+   "seed": 13,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.2896243990107905,
+   "rmse": 0.3175731832750357,
+   "mae": 0.24686174757019116,
+   "r2": 0.8112497807138818,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM",
+   "seed": 13,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.03138537899940275,
+   "rmse": 0.24479058603561993,
+   "mae": 0.19367432878045493,
+   "r2": 0.8878525910035301,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 13,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.052128619005088694,
+   "rmse": 0.2535086270171679,
+   "mae": 0.1971681829965072,
+   "r2": 0.8797222468824397,
+   "warnings": [],
+   "rounds": 111
+  },
+  {
+   "method": "XGBoost",
+   "seed": 13,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06085839599836618,
+   "rmse": 0.2747155988251897,
+   "mae": 0.22088305016348755,
+   "r2": 0.8587571538199738,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 13,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06309735600370914,
+   "rmse": 0.2632665456110439,
+   "mae": 0.22276052873855662,
+   "r2": 0.8702847102235877,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 13,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.10175530299602542,
+   "rmse": 0.24581390521897034,
+   "mae": 0.21588331255015303,
+   "r2": 0.8869129921992236,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs covariates",
+   "seed": 14,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.010407538007711992,
+   "rmse": 0.4253782040972023,
+   "mae": 0.3242085791041597,
+   "r2": 0.7048138640340849,
+   "warnings": [
+    "ExtrapolationWarning: 2 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 1 below 5.7 (worst 0.11 training ranges out); bbs(dist): 1 above 0.809742 (worst 0.087 training ranges out). A spline basis continues by its edge slope outs"
+   ],
+   "mstop": 55,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + bspatial",
+   "seed": 14,
+   "variant": null,
+   "status": "success",
+   "seconds": 1.9218564150069142,
+   "rmse": 0.35816396589334903,
+   "mae": 0.25785906862411606,
+   "r2": 0.7907288938456014,
+   "warnings": [
+    "ExtrapolationWarning: 2 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 1 below 5.7 (worst 0.11 training ranges out); bbs(dist): 1 above 0.809742 (worst 0.087 training ranges out). A spline basis continues by its edge slope outs"
+   ],
+   "mstop": 240,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + btree(x, y)",
+   "seed": 14,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.03008731199952308,
+   "rmse": 0.32128613791714394,
+   "mae": 0.24030540643370119,
+   "r2": 0.8316048940640036,
+   "warnings": [
+    "ExtrapolationWarning: 2 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 1 below 5.7 (worst 0.11 training ranges out); bbs(dist): 1 above 0.809742 (worst 0.087 training ranges out). A spline basis continues by its edge slope outs"
+   ],
+   "mstop": 231,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 14,
+   "variant": null,
+   "status": "success",
+   "seconds": 15.913484693999635,
+   "rmse": 0.35717007271902657,
+   "mae": 0.2568081000305169,
+   "r2": 0.7918887231793392,
+   "warnings": [
+    "ExtrapolationWarning: 2 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 1 below 5.7 (worst 0.11 training ranges out); bbs(dist): 1 above 0.809742 (worst 0.087 training ranges out). A spline basis continues by its edge slope outs",
+    "RuntimeWarning: the training risk rose on 25 of 105 boosting steps (largest rise 152 of the risk before it); the final risk is 0.000% above its minimum at step 105: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently d",
+    "RuntimeWarning: the training risk rose on 25 of 105 boosting steps (largest rise 39.7 of the risk before it); the final risk is 122.158% above its minimum at step 77: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently",
+    "RuntimeWarning: the training risk rose on 27 of 105 boosting steps (largest rise 68.3 of the risk before it); the final risk is 242.000% above its minimum at step 57: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently",
+    "RuntimeWarning: the training risk rose on 28 of 105 boosting steps (largest rise 77.9 of the risk before it); the final risk is 61.910% above its minimum at step 43: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently ",
+    "RuntimeWarning: the training risk rose on 31 of 105 boosting steps (largest rise 138 of the risk before it); the final risk is 0.000% above its minimum at step 105: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently d",
+    "RuntimeWarning: the training risk rose on 47 of 200 boosting steps (largest rise 194 of the risk before it); the final risk is 263.837% above its minimum at step 192: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently",
+    "UserWarning: optimal mstop 72 is within 5% of the search cap 72; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "formula": "log_zinc ~ bspatial(x, y, df=6.0) + bbs(dist, df=4.0) + bbs(elev, df=4.0) + brandom(ffreq, df=4.0)"
+  },
+  {
+   "method": "statsmodels OLS (published trend)",
+   "seed": 14,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.001499239995609969,
+   "rmse": 0.40588993411881447,
+   "mae": 0.32468727194968855,
+   "r2": 0.7312415970946052,
+   "warnings": []
+  },
+  {
+   "method": "regression kriging (OLS + GP)",
+   "seed": 14,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.07843983599741478,
+   "rmse": 0.3026801972614101,
+   "mae": 0.2265431175516151,
+   "r2": 0.8505439479452557,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LinearGAM + te(x, y)",
+   "seed": 14,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.2721821859886404,
+   "rmse": 0.4143633144442338,
+   "mae": 0.3121868502731942,
+   "r2": 0.7199032395373783,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM",
+   "seed": 14,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.02834804200392682,
+   "rmse": 0.3316850402490978,
+   "mae": 0.2620861980884719,
+   "r2": 0.8205277704870811,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 14,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06835710399900563,
+   "rmse": 0.3317596810219664,
+   "mae": 0.26319940582499457,
+   "r2": 0.8204469862998403,
+   "warnings": [],
+   "rounds": 145
+  },
+  {
+   "method": "XGBoost",
+   "seed": 14,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.05850919599470217,
+   "rmse": 0.32482453993169397,
+   "mae": 0.2504686653636384,
+   "r2": 0.8278753170345405,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 14,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06248332100221887,
+   "rmse": 0.3057760603669796,
+   "mae": 0.2300595784861125,
+   "r2": 0.8474709901198474,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 14,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0889296329987701,
+   "rmse": 0.32879086027841875,
+   "mae": 0.2682711809794412,
+   "r2": 0.8236461430357711,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs covariates",
+   "seed": 15,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.009998408000683412,
+   "rmse": 0.42827123371442216,
+   "mae": 0.33852896110885883,
+   "r2": 0.691551062121406,
+   "warnings": [],
+   "mstop": 61,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + bspatial",
+   "seed": 15,
+   "variant": null,
+   "status": "success",
+   "seconds": 1.7993330340104876,
+   "rmse": 0.34352655948717764,
+   "mae": 0.2734564957395363,
+   "r2": 0.8015431426894182,
+   "warnings": [
+    "UserWarning: optimal mstop 389 is within 5% of the search cap 400; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "mstop": 389,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + btree(x, y)",
+   "seed": 15,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.02851670898962766,
+   "rmse": 0.3549586859851728,
+   "mae": 0.27760730646765536,
+   "r2": 0.7881145739040811,
+   "warnings": [],
+   "mstop": 261,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 15,
+   "variant": null,
+   "status": "success",
+   "seconds": 25.726879519002978,
+   "rmse": 0.3332467370507614,
+   "mae": 0.25943685462632166,
+   "r2": 0.8132428311534423,
+   "warnings": [
+    "RuntimeWarning: the training risk rose on 1 of 8 boosting steps (largest rise 4.5 of the risk before it); the final risk is 37.615% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently desce",
+    "RuntimeWarning: the training risk rose on 1 of 8 boosting steps (largest rise 4.52 of the risk before it); the final risk is 74.428% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently desc",
+    "RuntimeWarning: the training risk rose on 1 of 8 boosting steps (largest rise 4.55 of the risk before it); the final risk is 91.572% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently desc",
+    "RuntimeWarning: the training risk rose on 1 of 8 boosting steps (largest rise 4.57 of the risk before it); the final risk is 120.412% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently des",
+    "RuntimeWarning: the training risk rose on 2 of 8 boosting steps (largest rise 40.3 of the risk before it); the final risk is 250.565% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently des",
+    "RuntimeWarning: the training risk rose on 58 of 200 boosting steps (largest rise 85.6 of the risk before it); the final risk is 174.456% above its minimum at step 97: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently",
+    "UserWarning: optimal mstop 200 is within 5% of the search cap 200; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 2312 is within 5% of the search cap 2404; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 369 is within 5% of the search cap 369; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "formula": "log_zinc ~ bspatial(x, y, df=6.0) + bbs(dist, df=4.0) + bbs(elev, df=4.0) + brandom(ffreq, df=4.0) + brandom(soil, df=4.0)"
+  },
+  {
+   "method": "statsmodels OLS (published trend)",
+   "seed": 15,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0014801009965594858,
+   "rmse": 0.4435365601937159,
+   "mae": 0.35619585445010554,
+   "r2": 0.6691704317676987,
+   "warnings": []
+  },
+  {
+   "method": "regression kriging (OLS + GP)",
+   "seed": 15,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.15173110499745235,
+   "rmse": 0.36145116458521226,
+   "mae": 0.2760624528808433,
+   "r2": 0.7802925786947039,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LinearGAM + te(x, y)",
+   "seed": 15,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.27252334299555514,
+   "rmse": 0.3675094315100253,
+   "mae": 0.2843677933588,
+   "r2": 0.7728658436980851,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM",
+   "seed": 15,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0291648379934486,
+   "rmse": 0.3195592740947367,
+   "mae": 0.24047765021488166,
+   "r2": 0.8282691490215813,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 15,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.07035459599865135,
+   "rmse": 0.3266774799541534,
+   "mae": 0.2513335741920202,
+   "r2": 0.820533305645358,
+   "warnings": [],
+   "rounds": 162
+  },
+  {
+   "method": "XGBoost",
+   "seed": 15,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0552353859966388,
+   "rmse": 0.381098608922931,
+   "mae": 0.28015661269473674,
+   "r2": 0.7557580846044492,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 15,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.063771496003028,
+   "rmse": 0.3477959686652203,
+   "mae": 0.2631918342682061,
+   "r2": 0.7965795748846491,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 15,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.09030383199569769,
+   "rmse": 0.32350823694888986,
+   "mae": 0.2501252468345098,
+   "r2": 0.8239985864699161,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs covariates",
+   "seed": 16,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.012391206008032896,
+   "rmse": 0.3487322991286626,
+   "mae": 0.27577712900880547,
+   "r2": 0.734927129253924,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 1 below 5.7 (worst 0.11 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at "
+   ],
+   "mstop": 58,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + bspatial",
+   "seed": 16,
+   "variant": null,
+   "status": "success",
+   "seconds": 11.197104639999452,
+   "rmse": 0.3869629635457683,
+   "mae": 0.2598875395960166,
+   "r2": 0.6736228570710197,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 1 below 5.7 (worst 0.11 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at "
+   ],
+   "mstop": 4253,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + btree(x, y)",
+   "seed": 16,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.047556165998685174,
+   "rmse": 0.3018050890282471,
+   "mae": 0.21623492713787526,
+   "r2": 0.8014663840423213,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 1 below 5.7 (worst 0.11 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at "
+   ],
+   "mstop": 599,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 16,
+   "variant": null,
+   "status": "success",
+   "seconds": 28.437324260012247,
+   "rmse": 0.3785636346298416,
+   "mae": 0.25896425840809123,
+   "r2": 0.6876376217125415,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 1 below 5.7 (worst 0.11 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at ",
+    "RuntimeWarning: the training risk rose on 1 of 7 boosting steps (largest rise 4.32 of the risk before it); the final risk is 150.920% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently des",
+    "RuntimeWarning: the training risk rose on 1 of 7 boosting steps (largest rise 4.53 of the risk before it); the final risk is 96.453% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently desc",
+    "RuntimeWarning: the training risk rose on 1 of 7 boosting steps (largest rise 4.61 of the risk before it); the final risk is 14.835% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently desc",
+    "RuntimeWarning: the training risk rose on 1 of 7 boosting steps (largest rise 4.67 of the risk before it); the final risk is 130.937% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently des",
+    "RuntimeWarning: the training risk rose on 1 of 7 boosting steps (largest rise 4.96 of the risk before it); the final risk is 25.908% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently desc",
+    "RuntimeWarning: the training risk rose on 53 of 200 boosting steps (largest rise 121 of the risk before it); the final risk is 208.323% above its minimum at step 147: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently",
+    "UserWarning: optimal mstop 1374 is within 5% of the search cap 1375; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 1375 is within 5% of the search cap 1375; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 306 is within 5% of the search cap 306; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 400 is within 5% of the search cap 400; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 840 is within 5% of the search cap 840; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "formula": "log_zinc ~ bspatial(x, y, df=6.0) + bbs(dist, df=4.0) + bbs(elev, df=4.0) + brandom(ffreq, df=4.0)"
+  },
+  {
+   "method": "statsmodels OLS (published trend)",
+   "seed": 16,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0017868389986688271,
+   "rmse": 0.33252603355808213,
+   "mae": 0.2757296523120633,
+   "r2": 0.7589915667292312,
+   "warnings": []
+  },
+  {
+   "method": "regression kriging (OLS + GP)",
+   "seed": 16,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.11140994599554688,
+   "rmse": 0.3241860159703191,
+   "mae": 0.23962953258773828,
+   "r2": 0.7709293279227944,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LinearGAM + te(x, y)",
+   "seed": 16,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.28258020599605516,
+   "rmse": 0.39112128423595,
+   "mae": 0.2867446611643068,
+   "r2": 0.6665706421738726,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM",
+   "seed": 16,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.02845100399281364,
+   "rmse": 0.31697515671220816,
+   "mae": 0.26109912139586117,
+   "r2": 0.7810064186600193,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 16,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.10364214899891522,
+   "rmse": 0.31091437363267027,
+   "mae": 0.2595855404750022,
+   "r2": 0.7893009703427118,
+   "warnings": [],
+   "rounds": 228
+  },
+  {
+   "method": "XGBoost",
+   "seed": 16,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06378173299890477,
+   "rmse": 0.2648700516962686,
+   "mae": 0.21785260810322687,
+   "r2": 0.8470862115610416,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 16,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06281914599821903,
+   "rmse": 0.26142398134438904,
+   "mae": 0.18928551399018598,
+   "r2": 0.8510392726062905,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 16,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.10965093699633144,
+   "rmse": 0.33744573740613076,
+   "mae": 0.22905674471834894,
+   "r2": 0.7518074000468197,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs covariates",
+   "seed": 17,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0096041829965543,
+   "rmse": 0.35659628529165777,
+   "mae": 0.2801484650973845,
+   "r2": 0.7642878431528677,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 2 below 5.76 (worst 0.12 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at"
+   ],
+   "mstop": 70,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + bspatial",
+   "seed": 17,
+   "variant": null,
+   "status": "success",
+   "seconds": 1.8842244889965514,
+   "rmse": 0.29054375298565116,
+   "mae": 0.23269045387315626,
+   "r2": 0.8435226666287186,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 2 below 5.76 (worst 0.12 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at"
+   ],
+   "mstop": 317,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + btree(x, y)",
+   "seed": 17,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.030930225999327376,
+   "rmse": 0.27889841274445104,
+   "mae": 0.22748828825211692,
+   "r2": 0.8558148818755418,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 2 below 5.76 (worst 0.12 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at",
+    "UserWarning: optimal mstop 391 is within 5% of the search cap 400; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "mstop": 391,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 17,
+   "variant": null,
+   "status": "error",
+   "seconds": 8.97515917099372,
+   "error": "PanicException: digamma requires x > 0, got 0"
+  },
+  {
+   "method": "statsmodels OLS (published trend)",
+   "seed": 17,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0020583969890139997,
+   "rmse": 0.33201766238368147,
+   "mae": 0.2773402381130016,
+   "r2": 0.7956612523414529,
+   "warnings": []
+  },
+  {
+   "method": "regression kriging (OLS + GP)",
+   "seed": 17,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.10202668800775427,
+   "rmse": 0.30525676040163063,
+   "mae": 0.25558392380089867,
+   "r2": 0.8272735154502522,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LinearGAM + te(x, y)",
+   "seed": 17,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.30592340999282897,
+   "rmse": 0.2950678527201852,
+   "mae": 0.23213137091114064,
+   "r2": 0.8386116636473969,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM",
+   "seed": 17,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.033016540997778066,
+   "rmse": 0.27881509998192355,
+   "mae": 0.21296240038236092,
+   "r2": 0.8559010112027193,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 17,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0669296809937805,
+   "rmse": 0.25009933794995365,
+   "mae": 0.1970988815670527,
+   "r2": 0.8840546231471949,
+   "warnings": [],
+   "rounds": 114
+  },
+  {
+   "method": "XGBoost",
+   "seed": 17,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06757749400276225,
+   "rmse": 0.2637285982850267,
+   "mae": 0.21621635971340886,
+   "r2": 0.8710733182012673,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 17,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06783040300069842,
+   "rmse": 0.23872457281881926,
+   "mae": 0.19276947347205795,
+   "r2": 0.8943614084982012,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 17,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.08671001299808268,
+   "rmse": 0.25060988971340353,
+   "mae": 0.19508319887740513,
+   "r2": 0.8835807591341454,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs covariates",
+   "seed": 18,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.009227571004885249,
+   "rmse": 0.41066549599360375,
+   "mae": 0.29217234024698296,
+   "r2": 0.6924684804769397,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 3 below 5.8 (worst 0.13 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at "
+   ],
+   "mstop": 75,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + bspatial",
+   "seed": 18,
+   "variant": null,
+   "status": "success",
+   "seconds": 1.5569197020085994,
+   "rmse": 0.38468663924947977,
+   "mae": 0.2738950905926786,
+   "r2": 0.7301469011275954,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 3 below 5.8 (worst 0.13 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at "
+   ],
+   "mstop": 187,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + btree(x, y)",
+   "seed": 18,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.03078430400637444,
+   "rmse": 0.3086008766444155,
+   "mae": 0.2353569806709413,
+   "r2": 0.8263369137494223,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 3 below 5.8 (worst 0.13 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at "
+   ],
+   "mstop": 305,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 18,
+   "variant": null,
+   "status": "success",
+   "seconds": 9.519072651994065,
+   "rmse": 0.3873963816398385,
+   "mae": 0.2593251445845143,
+   "r2": 0.7263318074072371,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(elev): 3 below 5.8 (worst 0.13 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at ",
+    "UserWarning: optimal mstop 82 is within 5% of the search cap 83; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "UserWarning: optimal mstop 83 is within 5% of the search cap 83; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "formula": "log_zinc ~ bspatial(x, y, df=6.0) + bbs(dist, df=4.0) + bbs(elev, df=4.0) + brandom(ffreq, df=4.0)"
+  },
+  {
+   "method": "statsmodels OLS (published trend)",
+   "seed": 18,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.0015165990043897182,
+   "rmse": 0.3525199666097914,
+   "mae": 0.27341796806903507,
+   "r2": 0.7733891788151614,
+   "warnings": []
+  },
+  {
+   "method": "regression kriging (OLS + GP)",
+   "seed": 18,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.12997526698745787,
+   "rmse": 0.2664800673064574,
+   "mae": 0.2102814660551304,
+   "r2": 0.8705080822600183,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LinearGAM + te(x, y)",
+   "seed": 18,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.2879404120030813,
+   "rmse": 0.33228324466823667,
+   "mae": 0.23179360296588006,
+   "r2": 0.7986599884706085,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM",
+   "seed": 18,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.02916147100040689,
+   "rmse": 0.2851014811926327,
+   "mae": 0.2307005735804243,
+   "r2": 0.8517781767389696,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 18,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.042558083005133085,
+   "rmse": 0.2816060835909267,
+   "mae": 0.21702019101576012,
+   "r2": 0.8553903518659083,
+   "warnings": [],
+   "rounds": 85
+  },
+  {
+   "method": "XGBoost",
+   "seed": 18,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.07743929199932609,
+   "rmse": 0.28616275951681963,
+   "mae": 0.21909968152449327,
+   "r2": 0.8506726238148155,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 18,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.07051541299733799,
+   "rmse": 0.27602059408823587,
+   "mae": 0.2049202602489136,
+   "r2": 0.8610699549554826,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 18,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.09057131299050525,
+   "rmse": 0.2319676420176674,
+   "mae": 0.17330716840120336,
+   "r2": 0.901877632202507,
+   "warnings": []
+  },
+  {
+   "method": "mboostrs covariates",
+   "seed": 19,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.008826407007290982,
+   "rmse": 0.29229657861634806,
+   "mae": 0.2350323713001673,
+   "r2": 0.8435120012759909,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(dist): 3 above 0.749591 (worst 0.17 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -"
+   ],
+   "mstop": 48,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + bspatial",
+   "seed": 19,
+   "variant": null,
+   "status": "success",
+   "seconds": 1.502986941995914,
+   "rmse": 0.23740902711211578,
+   "mae": 0.18808943726483582,
+   "r2": 0.8967647463067435,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(dist): 3 above 0.749591 (worst 0.17 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -"
+   ],
+   "mstop": 146,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs + btree(x, y)",
+   "seed": 19,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.026516833997447975,
+   "rmse": 0.18469310530507244,
+   "mae": 0.15276062768438717,
+   "r2": 0.9375208749180988,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(dist): 3 above 0.749591 (worst 0.17 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -"
+   ],
+   "mstop": 348,
+   "at_boundary": false
+  },
+  {
+   "method": "mboostrs autospec",
+   "seed": 19,
+   "variant": null,
+   "status": "success",
+   "seconds": 15.39437224600988,
+   "rmse": 0.2273513296996981,
+   "mae": 0.1799731927902377,
+   "r2": 0.9053264701345444,
+   "warnings": [
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(dist): 3 above 0.749591 (worst 0.17 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -",
+    "RuntimeWarning: the training risk rose on 1 of 7 boosting steps (largest rise 4.18 of the risk before it); the final risk is 57.241% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently desc",
+    "RuntimeWarning: the training risk rose on 1 of 7 boosting steps (largest rise 4.43 of the risk before it); the final risk is 111.278% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently des",
+    "RuntimeWarning: the training risk rose on 1 of 7 boosting steps (largest rise 4.46 of the risk before it); the final risk is 28.023% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently desc",
+    "RuntimeWarning: the training risk rose on 1 of 7 boosting steps (largest rise 4.52 of the risk before it); the final risk is 3.901% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently desce",
+    "RuntimeWarning: the training risk rose on 1 of 7 boosting steps (largest rise 4.6 of the risk before it); the final risk is 83.171% above its minimum at step 0: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently desce",
+    "RuntimeWarning: the training risk rose on 54 of 200 boosting steps (largest rise 151 of the risk before it); the final risk is 82.013% above its minimum at step 196: the step nu=0.3 is too large for this loss's curvature, so the path does not consistently ",
+    "UserWarning: optimal mstop 53 is within 5% of the search cap 53; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk."
+   ],
+   "formula": "log_zinc ~ bspatial(x, y, df=6.0) + bbs(dist, df=4.0) + bols(elev) + brandom(ffreq, df=4.0)"
+  },
+  {
+   "method": "statsmodels OLS (published trend)",
+   "seed": 19,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.001369931997032836,
+   "rmse": 0.3187233126995672,
+   "mae": 0.2675719494279424,
+   "r2": 0.8139364794468599,
+   "warnings": []
+  },
+  {
+   "method": "regression kriging (OLS + GP)",
+   "seed": 19,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.12874596499023028,
+   "rmse": 0.2160281541153351,
+   "mae": 0.16977200605548776,
+   "r2": 0.9145220137364709,
+   "warnings": []
+  },
+  {
+   "method": "pyGAM LinearGAM + te(x, y)",
+   "seed": 19,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.2687386269972194,
+   "rmse": 0.23418043700626992,
+   "mae": 0.19688661016516107,
+   "r2": 0.8995535026949175,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM",
+   "seed": 19,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.027719519988750108,
+   "rmse": 0.22645868570712696,
+   "mae": 0.18264164825105134,
+   "r2": 0.9060684394337686,
+   "warnings": []
+  },
+  {
+   "method": "LightGBM (CV rounds)",
+   "seed": 19,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06177321700670291,
+   "rmse": 0.22047906271061657,
+   "mae": 0.17870052869911549,
+   "r2": 0.9109634587843163,
+   "warnings": [],
+   "rounds": 137
+  },
+  {
+   "method": "XGBoost",
+   "seed": 19,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06227702699834481,
+   "rmse": 0.2218415208189991,
+   "mae": 0.169671652401983,
+   "r2": 0.9098596499122117,
+   "warnings": []
+  },
+  {
+   "method": "CatBoost",
+   "seed": 19,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.06599833001382649,
+   "rmse": 0.21551233561578914,
+   "mae": 0.16318860971863713,
+   "r2": 0.9149297243682942,
+   "warnings": []
+  },
+  {
+   "method": "sklearn HGB",
+   "seed": 19,
+   "variant": null,
+   "status": "success",
+   "seconds": 0.09258517299895175,
+   "rmse": 0.18811209816928257,
+   "mae": 0.15637051306163643,
+   "r2": 0.9351862681911554,
+   "warnings": []
+  }
+ ],
+ "memory": [
+  {
+   "status": "success",
+   "seconds": 0.017495641004643403,
+   "peak_rss_mb": 313.79296875,
+   "peak_rss_growth_mb": 5.01171875,
+   "rss_before_mb": 308.78125,
+   "method": "mboostrs covariates"
+  },
+  {
+   "status": "success",
+   "seconds": 1.9865817989921197,
+   "peak_rss_mb": 391.53125,
+   "peak_rss_growth_mb": 82.23046875,
+   "rss_before_mb": 309.30078125,
+   "method": "mboostrs + bspatial"
+  },
+  {
+   "status": "success",
+   "seconds": 0.03599965600005817,
+   "peak_rss_mb": 315.4375,
+   "peak_rss_growth_mb": 6.0078125,
+   "rss_before_mb": 309.4296875,
+   "method": "mboostrs + btree(x, y)"
+  },
+  {
+   "status": "success",
+   "seconds": 17.252446145997965,
+   "peak_rss_mb": 501.0859375,
+   "peak_rss_growth_mb": 192.3828125,
+   "rss_before_mb": 308.703125,
+   "method": "mboostrs autospec"
+  },
+  {
+   "status": "success",
+   "seconds": 0.001653788989642635,
+   "peak_rss_mb": 311.35546875,
+   "peak_rss_growth_mb": 1.83984375,
+   "rss_before_mb": 309.515625,
+   "method": "statsmodels OLS (published trend)"
+  },
+  {
+   "status": "success",
+   "seconds": 0.1281424100016011,
+   "peak_rss_mb": 313.34765625,
+   "peak_rss_growth_mb": 4.37109375,
+   "rss_before_mb": 308.9765625,
+   "method": "regression kriging (OLS + GP)"
+  },
+  {
+   "status": "success",
+   "seconds": 0.27204915799666196,
+   "peak_rss_mb": 321.05859375,
+   "peak_rss_growth_mb": 12.01953125,
+   "rss_before_mb": 309.0390625,
+   "method": "pyGAM LinearGAM + te(x, y)"
+  },
+  {
+   "status": "success",
+   "seconds": 0.041942381008993834,
+   "peak_rss_mb": 315.58203125,
+   "peak_rss_growth_mb": 6.5546875,
+   "rss_before_mb": 309.02734375,
+   "method": "LightGBM"
+  },
+  {
+   "status": "success",
+   "seconds": 0.06179495899414178,
+   "peak_rss_mb": 316.16015625,
+   "peak_rss_growth_mb": 7.1953125,
+   "rss_before_mb": 308.96484375,
+   "method": "LightGBM (CV rounds)"
+  },
+  {
+   "status": "success",
+   "seconds": 0.064209115007543,
+   "peak_rss_mb": 318.75,
+   "peak_rss_growth_mb": 9.62109375,
+   "rss_before_mb": 309.12890625,
+   "method": "XGBoost"
+  },
+  {
+   "status": "success",
+   "seconds": 0.11348191899014637,
+   "peak_rss_mb": 318.38671875,
+   "peak_rss_growth_mb": 9.94140625,
+   "rss_before_mb": 308.4453125,
+   "method": "CatBoost"
+  },
+  {
+   "status": "success",
+   "seconds": 0.10551454599772114,
+   "peak_rss_mb": 310.57421875,
+   "peak_rss_growth_mb": 1.953125,
+   "rss_before_mb": 308.62109375,
+   "method": "sklearn HGB"
+  }
+ ],
+ "lines_of_code": {
+  "mboostrs covariates": 5,
+  "mboostrs + bspatial": 5,
+  "mboostrs + btree(x, y)": 5,
+  "mboostrs autospec": 4,
+  "statsmodels OLS (published trend)": 2,
+  "regression kriging (OLS + GP)": 7,
+  "pyGAM LinearGAM + te(x, y)": 5,
+  "LightGBM": 2,
+  "LightGBM (CV rounds)": 2,
+  "XGBoost": 2,
+  "CatBoost": 2,
+  "sklearn HGB": 2
+ },
+ "evidence": {},
+ "provenance": {
+  "commit": "836c450c8c85f2b706088a74e66bd06d8fea6eec",
+  "working_tree": {
+   "dirty": true,
+   "status_digest": "sha256:37c65e2c53bf96c16149e0e9a81c65faa833a4c6d1ad72029c30d89bd0a3be31",
+   "commit_source": "working directory"
+  },
+  "native_build": {
+   "package_version": "0.1.3",
+   "source_digest": "sha256:f58c71ef847a1d65fc25d85f1fef58e898427a00042ec3164b94ac05dc233c11",
+   "git_revision": "836c450c8c85f2b706088a74e66bd06d8fea6eec",
+   "git_dirty": false,
+   "rustc": "rustc 1.99.0 (b940084d7 2026-09-28) | binary: rustc | commit-hash: b940084d7eb6a299eb4bfeb8e34901bc051e7ac4 | commit-date: 2026-09-28 | host: x86_64-unknown-linux-gnu | release: 1.99.0 | LLVM version: 23.1.1",
+   "target": "x86_64-unknown-linux-gnu",
+   "profile": "release",
+   "target_features": "fxsr,sse,sse2",
+   "crate_features": "",
+   "abi_version": 1,
+   "build_id": "sha256:da0e960499e05f7ef4b2a9ab985d91232fdbf52f325ccd73b99ce90c6ce8f42e"
+  },
+  "platform": {
+   "system": "Linux",
+   "release": "6.12.94+",
+   "machine": "x86_64",
+   "cpu": "Intel(R) Xeon(R) Processor",
+   "python": "3.13.5"
+  },
+  "versions": {
+   "mboostrs": "0.1.3",
+   "numpy": "2.5.3",
+   "rpy2": null,
+   "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+   "R": null,
+   "mboost": null
+  },
+  "compiler_flags": {
+   "RUSTFLAGS": null,
+   "CARGO_PROFILE": "release"
+  },
+  "threads": {
+   "logical_cpus": 8,
+   "r_mclapply_default_cores": null,
+   "RAYON_NUM_THREADS": "1",
+   "OMP_NUM_THREADS": "1",
+   "OPENBLAS_NUM_THREADS": "1",
+   "MKL_NUM_THREADS": "1"
+  },
+  "created_at": "2026-10-08T22:25:20+00:00",
+  "runner": "benches/bench_public_tasks.py",
+  "runner_sha256": "ccd6242f4a5b001aa64890663b6294b25d5a40880ffca4d80c5da61365055d51",
+  "timing": "perf_counter around each method's whole workflow (tuning, fit, predict); descriptive elapsed times, single-threaded, sequential",
+  "memory": "peak resident set growth of one fit in a fresh process: VmHWM after the fit minus VmRSS before it, with the high-water mark reset (clear_refs) after imports and data loading; seed 0 only"
+ }
+}

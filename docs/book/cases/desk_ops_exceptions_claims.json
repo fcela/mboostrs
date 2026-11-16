@@ -1,0 +1,55 @@
+{
+  "challenge": "cos_unseen_2026-09-29",
+  "final_spec": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(vendor_n, by=has_legacy_stack)",
+  "mstop": 183,
+  "family": "NBinomial",
+  "holdout_rmse": 6.590886150298107,
+  "holdout_mae": 2.3414108966989886,
+  "holdout_mean_poisson_deviance": 15.354325392940616,
+  "final_evaluate_summary": {
+    "score": 21.838247154465503,
+    "score_name": "mse",
+    "n_test": 650,
+    "task": "one-time untouched-test evaluation"
+  },
+  "drivers": [
+    "quarter",
+    "region",
+    "aum_bn",
+    "complexity_score",
+    "overnight_frac",
+    "vendor_n",
+    "has_legacy_stack",
+    "staff_per_bn",
+    "vol_proxy",
+    "rate_env",
+    "util_ratio"
+  ],
+  "interactions_claimed": [],
+  "adopted": [
+    "pair_4"
+  ],
+  "priority_from_dual": [
+    "aum_bn",
+    "aum_bn_proxy",
+    "complexity_score",
+    "complexity_z",
+    "vendor_n",
+    "has_legacy_stack",
+    "desk_id",
+    "region",
+    "staff_per_bn",
+    "util_ratio",
+    "overnight_frac",
+    "quarter",
+    "rate_env",
+    "vol_proxy"
+  ],
+  "proxies_excluded_from_baseline": [
+    "aum_bn_proxy",
+    "complexity_z"
+  ],
+  "gaps_observed_count": 2,
+  "notes": "Claims written BEFORE unseal. Grouped desk_id folds; na_action=omit; full pre_scan native/neural/dual + interaction_screen + pair_candidates + tree_candidate; two-SE adopt. Proxies compared but not auto-adopted.",
+  "elapsed_seconds": 16.41290850006044
+}

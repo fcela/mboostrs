@@ -1,0 +1,108 @@
+{
+  "library": "mboostrs 0.1.3",
+  "mean_effects": [
+    {
+      "variable": "ave_occup",
+      "shape": "increasing",
+      "evidence": "average fitted mean moves by +0.373 from the 2nd to the 98th percentile of ave_occup (range 0.373; main term). removing its term changes the joint score by +0.0190 (SE 0.0011)"
+    },
+    {
+      "variable": "roof_class",
+      "shape": "categorical",
+      "evidence": "level means relative to A: A +0.000, B -0.000, C +0.151, D +0.368. removing its term changes the joint score by +0.0371 (SE 0.0012)"
+    },
+    {
+      "variable": "housing_median_age",
+      "shape": "inverted_u",
+      "evidence": "average fitted mean moves by +0.370 from the 2nd to the 98th percentile of housing_median_age (range 0.423; main term). removing its main term leaves the joint score unchanged: the tensor term that includes it has the same column space"
+    },
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "average fitted mean moves by -0.923 from the 2nd to the 98th percentile of median_income (range 0.923; main term). removing its main term leaves the joint score unchanged: the tensor term that includes it has the same column space"
+    },
+    {
+      "variable": "longitude",
+      "shape": "spatial",
+      "evidence": "enters through the adopted longitude x latitude surface. removing its term changes the joint score by +0.0043 (SE 0.0006)"
+    },
+    {
+      "variable": "latitude",
+      "shape": "spatial",
+      "evidence": "enters through the adopted longitude x latitude surface. removing its term changes the joint score by +0.0043 (SE 0.0006)"
+    }
+  ],
+  "interactions": [
+    {
+      "variables": [
+        "longitude",
+        "latitude"
+      ],
+      "evidence": "removing the term raises the joint score by 0.0043 (SE 0.0006); the term is kept"
+    },
+    {
+      "variables": [
+        "housing_median_age",
+        "median_income"
+      ],
+      "evidence": "removing the term raises the joint score by 0.0045 (SE 0.0008); the term is kept"
+    }
+  ],
+  "variance_drivers": [
+    {
+      "variable": "households",
+      "direction": "decreases_spread",
+      "evidence": "log sigma moves by -0.747 from the 5th to the 95th percentile of households; adding it lowers the out-of-fold joint score by 0.0897 (SE 0.0133)"
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.45729993678168346,
+      "lower90": -0.4732005783728175,
+      "upper90": -0.4380923228166784
+    },
+    "Q2": {
+      "estimate": 0.439370216805488,
+      "lower90": 0.4116070744885373,
+      "upper90": 0.46277072866718977
+    },
+    "Q3": {
+      "estimate": 0.2339628531547441,
+      "lower90": 0.2179597956590893,
+      "upper90": 0.2498468779293631
+    },
+    "Q4": {
+      "estimate": 0.36055394550380676,
+      "lower90": 0.3414860887119541,
+      "upper90": 0.37974943155192886
+    },
+    "Q5": {
+      "estimate": 0.009198681872013335,
+      "lower90": -0.011011053836196718,
+      "upper90": 0.027236723489963352
+    },
+    "Q6": {
+      "estimate": 0.2761989187788221,
+      "lower90": 0.25219380432814265,
+      "upper90": 0.30283067533089336
+    },
+    "Q7": {
+      "estimate": -0.01735631337980857,
+      "lower90": -0.031175794824890628,
+      "upper90": 0.0
+    },
+    "Q8": {
+      "estimate": -0.01395354810333652,
+      "lower90": -0.029088954178374246,
+      "upper90": 0.0057956166438444786
+    }
+  },
+  "warnings": [
+    "final stopping iteration reached the cap 5000: the cross-validated risk was still falling; the model is close to its unpenalised limit",
+    "discover: its mean-stage stopping iteration sat at the end of its grid; the final stopping iteration is tuned again in this run",
+    "Q5: covariate not selected by the rule in the mean model; the contrast is from a refit with it added (final model plus bbs(ave_rooms__log, df=4) (not selected))",
+    "Q7: covariate not selected by the rule in the mean model; the contrast is from a refit with it added (final model plus bbs(households__log, df=4) (not selected))",
+    "Q8: covariate not selected by the rule in the mean model; the contrast is from a refit with it added (final model plus bbs(median_house_value__log, df=4) (not selected))",
+    "the cross-validated risk was still falling at 5000 steps, when the search reached its limit (max_mstop=5000), so mstop=5000 is where the grid stopped rather than where the risk turns. To search further, raise max_mstop above 5000, or raise nu to take larger steps."
+  ]
+}

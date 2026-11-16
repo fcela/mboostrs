@@ -1,0 +1,199 @@
+{
+  "provenance": {
+    "created_at": "2026-09-25T05:16:32+00:00",
+    "commit": {
+      "sha": "3f8d272d4b323ec1b6c67a4e46b32602c8eb1b8e",
+      "dirty": true,
+      "status_digest": "sha256:4115b65bdac567000e098bccfb710f41d16e704501ed2cc64aff07f7d45b421c"
+    },
+    "platform": {
+      "system": "Darwin",
+      "release": "25.3.0",
+      "machine": "arm64",
+      "cpu": "arm",
+      "python": "3.12.11"
+    },
+    "versions": {
+      "mboostrs": "0.1.3",
+      "numpy": "2.4.6",
+      "rpy2": "3.6.7",
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "R": "4.5.1",
+      "mboost": "2.9.11"
+    },
+    "threads": {
+      "logical_cpus": 10,
+      "r_mclapply_default_cores": "2",
+      "RAYON_NUM_THREADS": null,
+      "OMP_NUM_THREADS": null,
+      "OPENBLAS_NUM_THREADS": null,
+      "MKL_NUM_THREADS": null,
+      "per_fit": 1
+    },
+    "protocol": {
+      "design": "bench_spatial.py simulation; 1000 training and 3000 each interpolation/gap test rows",
+      "seeds": 8,
+      "formula": "y ~ bbs(x1, df=4) + bbs(x2, df=4) + bbs(x3, df=4) + bspatial(lon, lat, knots=K, df=6)",
+      "knots": [
+        12,
+        20
+      ],
+      "tuning": "tune_mstop with shared 5-fold cv_weights per seed, max_mstop=20000",
+      "timed_boundary": "tune_mstop fit plus predictions on the interpolation and gap test samples",
+      "score": "RMSE against noise-free signal on each test sample",
+      "comparison": "paired within each seed on the current working tree; separate from bench_spatial.json"
+    },
+    "repeats": {
+      "seeds": 8,
+      "knots_per_seed": 2
+    },
+    "uncertainty": "raw paired seeds; mean and paired standard error"
+  },
+  "protocol": {
+    "design": "bench_spatial.py simulation; 1000 training and 3000 each interpolation/gap test rows",
+    "seeds": 8,
+    "formula": "y ~ bbs(x1, df=4) + bbs(x2, df=4) + bbs(x3, df=4) + bspatial(lon, lat, knots=K, df=6)",
+    "knots": [
+      12,
+      20
+    ],
+    "tuning": "tune_mstop with shared 5-fold cv_weights per seed, max_mstop=20000",
+    "timed_boundary": "tune_mstop fit plus predictions on the interpolation and gap test samples",
+    "score": "RMSE against noise-free signal on each test sample",
+    "comparison": "paired within each seed on the current working tree; separate from bench_spatial.json"
+  },
+  "source_files_sha256": {
+    "bench_spatial.py": "ceb9c056f3bd243dc9be53b3ad10cce221eed4cc6897f4b2895676b8b7901ea6",
+    "gamboost.py": "0ba6abf6ddc5a87b157de7d23bf564df31ec0a4348bd0a8d2890589632541e95"
+  },
+  "results": [
+    {
+      "seed": 0,
+      "knots": 12,
+      "mstop": 781,
+      "rmse_interpolation": 0.11347662927356246,
+      "rmse_gap": 0.06756910643642355,
+      "seconds": 1.7803890705108643
+    },
+    {
+      "seed": 0,
+      "knots": 20,
+      "mstop": 871,
+      "rmse_interpolation": 0.11160575963460323,
+      "rmse_gap": 0.06699277203375341,
+      "seconds": 17.02623724937439
+    },
+    {
+      "seed": 1,
+      "knots": 12,
+      "mstop": 2652,
+      "rmse_interpolation": 0.11437327529605942,
+      "rmse_gap": 0.10987153504237611,
+      "seconds": 4.970524072647095
+    },
+    {
+      "seed": 1,
+      "knots": 20,
+      "mstop": 2207,
+      "rmse_interpolation": 0.11363282543375776,
+      "rmse_gap": 0.10683500267545733,
+      "seconds": 28.58562994003296
+    },
+    {
+      "seed": 2,
+      "knots": 12,
+      "mstop": 2816,
+      "rmse_interpolation": 0.1056096166621529,
+      "rmse_gap": 0.07659315384622119,
+      "seconds": 5.452625274658203
+    },
+    {
+      "seed": 2,
+      "knots": 20,
+      "mstop": 2626,
+      "rmse_interpolation": 0.10774583039415918,
+      "rmse_gap": 0.088263894912281,
+      "seconds": 28.129743099212646
+    },
+    {
+      "seed": 3,
+      "knots": 12,
+      "mstop": 1584,
+      "rmse_interpolation": 0.1638405136035754,
+      "rmse_gap": 0.27451523811701084,
+      "seconds": 4.657531023025513
+    },
+    {
+      "seed": 3,
+      "knots": 20,
+      "mstop": 1689,
+      "rmse_interpolation": 0.1648545703562845,
+      "rmse_gap": 0.281228696583399,
+      "seconds": 27.207130193710327
+    },
+    {
+      "seed": 4,
+      "knots": 12,
+      "mstop": 5833,
+      "rmse_interpolation": 0.16004843272893415,
+      "rmse_gap": 0.2915784070196684,
+      "seconds": 9.120856046676636
+    },
+    {
+      "seed": 4,
+      "knots": 20,
+      "mstop": 4030,
+      "rmse_interpolation": 0.13306920228549032,
+      "rmse_gap": 0.20452921852951744,
+      "seconds": 45.69916892051697
+    },
+    {
+      "seed": 5,
+      "knots": 12,
+      "mstop": 9798,
+      "rmse_interpolation": 0.14372753422916681,
+      "rmse_gap": 0.25803490930721135,
+      "seconds": 16.461626768112183
+    },
+    {
+      "seed": 5,
+      "knots": 20,
+      "mstop": 6304,
+      "rmse_interpolation": 0.13453054528079364,
+      "rmse_gap": 0.23820849063689653,
+      "seconds": 87.4756429195404
+    },
+    {
+      "seed": 6,
+      "knots": 12,
+      "mstop": 2901,
+      "rmse_interpolation": 0.13172816767980436,
+      "rmse_gap": 0.17944643760691034,
+      "seconds": 5.849884033203125
+    },
+    {
+      "seed": 6,
+      "knots": 20,
+      "mstop": 2759,
+      "rmse_interpolation": 0.1278246973752333,
+      "rmse_gap": 0.16152461444087657,
+      "seconds": 31.392550945281982
+    },
+    {
+      "seed": 7,
+      "knots": 12,
+      "mstop": 1151,
+      "rmse_interpolation": 0.13733745978679743,
+      "rmse_gap": 0.22610183405949902,
+      "seconds": 3.0588250160217285
+    },
+    {
+      "seed": 7,
+      "knots": 20,
+      "mstop": 1127,
+      "rmse_interpolation": 0.13711919640339962,
+      "rmse_gap": 0.22782994082350624,
+      "seconds": 17.60011315345764
+    }
+  ]
+}

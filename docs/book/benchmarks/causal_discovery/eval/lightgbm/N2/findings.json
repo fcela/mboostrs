@@ -1,0 +1,97 @@
+{
+  "library": "lightgbm 4.7.0",
+  "effect_queries": {
+    "ATE": {
+      "estimate": -1934.7192492982692,
+      "lower90": -3239.9416155154704,
+      "upper90": -629.4968830810683
+    },
+    "ATT": {
+      "estimate": -200.47773873344713,
+      "lower90": -559.2002590854921,
+      "upper90": 158.2447816185979
+    },
+    "CATE_educ_lt12": {
+      "estimate": -435.5564583962537,
+      "lower90": -1743.1230565167068,
+      "upper90": 872.0101397241995
+    },
+    "CATE_educ_ge16": {
+      "estimate": -4994.0288606332915,
+      "lower90": -7171.357416510185,
+      "upper90": -2816.700304756397
+    },
+    "CATE_prior_q1": {
+      "estimate": -379.2335172454066,
+      "lower90": -802.8183703981292,
+      "upper90": 44.35133590731607
+    },
+    "CATE_prior_q4": {
+      "estimate": -8016.04018689622,
+      "lower90": -12482.449976276968,
+      "upper90": -3549.6303975154715
+    },
+    "CATE_age_lt25": {
+      "estimate": -787.6115103863543,
+      "lower90": -2026.7272865033842,
+      "upper90": 451.50426573067546
+    },
+    "EMP_ATE": {
+      "estimate": -0.0031679765446844758,
+      "lower90": -0.022892236462356184,
+      "upper90": 0.016556283372987236
+    }
+  },
+  "roles": {
+    "age": "confounder",
+    "education": "confounder",
+    "experience": "confounder",
+    "ethnicity": "irrelevant",
+    "smsa": "irrelevant",
+    "region": "irrelevant",
+    "parttime": "irrelevant",
+    "prior_earnings": "confounder",
+    "months_unemployed": "confounder",
+    "distance_km": "instrument",
+    "caseworker_note_len": "irrelevant",
+    "enrolled": "treatment",
+    "certificate": "mediator",
+    "responded": "post_treatment_selection",
+    "hours_post": "mediator",
+    "earnings_post": "outcome"
+  },
+  "adjustment_set": [
+    "age",
+    "education",
+    "experience",
+    "prior_earnings",
+    "months_unemployed"
+  ],
+  "effect_modifiers": [
+    {
+      "variable": "prior_earnings",
+      "direction": "nonmonotone",
+      "evidence": "median split: effect difference (above minus at or below median) -3336 dollars, 95% bootstrap interval -6339 to -333; quartile means of the pseudo-outcome -379, -154, 808, -8014"
+    }
+  ],
+  "channels": {
+    "employment": false,
+    "earnings_if_employed": true
+  },
+  "limited_overlap": [
+    {
+      "description": "applicants with prior_earnings of about 26510 or more have a cross-fitted enrolment probability below 0.05 (3189 of 12000 program-year applicants, enrolled share 0.011); the effect for them rests on few enrolled cases. 723 of 4000 new applicants fall in this region.",
+      "variable": "prior_earnings"
+    }
+  ],
+  "warnings": [
+    "Response to the follow-up survey is modelled as missing at random given the covariates and enrolment. This cannot be checked with these data; if response depends on unmeasured earnings, the earnings effects are biased.",
+    "Enrolled share is 0.613 in the bottom quartile of prior_earnings and 0.010 in the top quartile; the adjusted effects depend on the no-unmeasured-confounding assumption. See sensitivity.json for a bias table.",
+    "Channel decomposition uses employment and earnings-among-employed models; the wage part is conditional on employment and is not a randomized comparison.",
+    "Intervals are normal approximations: estimate plus or minus 1.645 times the standard deviation over 16 bootstrap replicates of the full pipeline.",
+    "Effect-modifier claims are based on 95% bootstrap intervals of median-split contrasts, with no adjustment for the number of contrasts tested.",
+    "Covariate roles were assigned by a LightGBM drop-one screen with z threshold 2.0; instrument status is a rule (enrolment z at least 4.0), not a test of the exclusion restriction.",
+    "Instrumental-variable check with distance_km: beta 4992 dollars per unit of enrolment, first-stage partial correlation -0.153; this estimate applies to applicants whose enrolment responds to distance.",
+    "The bootstrap stopped after 16 of 30 replicates to stay within the time budget."
+  ]
+}

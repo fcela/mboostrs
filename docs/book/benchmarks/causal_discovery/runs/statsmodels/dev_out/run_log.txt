@@ -1,0 +1,62 @@
+{
+  "effect_queries": {
+    "ATE": {
+      "estimate": 4669.942889343741,
+      "lower90": 3691.7108490391356,
+      "upper90": 5387.902106282735
+    },
+    "ATT": {
+      "estimate": 3514.7606274053514,
+      "lower90": 3181.3782761964976,
+      "upper90": 4226.994449465307
+    },
+    "CATE_educ_lt12": {
+      "estimate": 3999.2672338794887,
+      "lower90": 1704.0470425350882,
+      "upper90": 4267.513160757854
+    },
+    "CATE_educ_ge16": {
+      "estimate": 5346.1554405015695,
+      "lower90": 3941.6619588914127,
+      "upper90": 7440.529006693832
+    },
+    "CATE_prior_q1": {
+      "estimate": 2842.974397460572,
+      "lower90": 2246.1257165168054,
+      "upper90": 4327.886706583233
+    },
+    "CATE_prior_q4": {
+      "estimate": 6179.817223840812,
+      "lower90": 3626.413088713709,
+      "upper90": 7742.136232296431
+    },
+    "CATE_age_lt25": {
+      "estimate": 3343.2719443899214,
+      "lower90": 3183.630680852595,
+      "upper90": 4988.382173419303
+    },
+    "EMP_ATE": {
+      "estimate": 0.07377659000893741,
+      "lower90": 0.056323298807165,
+      "upper90": 0.09731896833752492
+    }
+  },
+  "channels": {
+    "employment": true,
+    "earnings_if_employed": false
+  },
+  "adjustment_set": [
+    "age",
+    "region",
+    "prior_earnings",
+    "months_unemployed"
+  ],
+  "effect_modifiers": [
+    {
+      "variable": "smsa",
+      "direction": "larger_when_higher",
+      "evidence": "Effect-model coefficient 2346.1 dollars (metro vs not); 90% bootstrap interval 1611.2 to 4337.8; first-stage p < 0.05."
+    }
+  ]
+}
+elapsed 26.6 s

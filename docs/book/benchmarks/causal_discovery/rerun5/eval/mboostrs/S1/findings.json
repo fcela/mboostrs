@@ -1,0 +1,100 @@
+{
+  "library": "mboostrs 0.1.3",
+  "effect_queries": {
+    "CATE_educ_lt12": {
+      "estimate": 4612.366055404167,
+      "lower90": 1757.3023797301662,
+      "upper90": 7467.429731078168,
+      "n": 218
+    },
+    "CATE_educ_ge16": {
+      "estimate": 17241.70129134567,
+      "lower90": 13858.728902492148,
+      "upper90": 20624.673680199194,
+      "n": 371
+    },
+    "CATE_prior_q1": {
+      "estimate": 2743.773575425061,
+      "lower90": 1206.9274576076568,
+      "upper90": 4280.6196932424655,
+      "n": 375
+    },
+    "CATE_prior_q4": {
+      "estimate": 26819.731270939054,
+      "lower90": -2848.3809045772687,
+      "upper90": 56487.84344645537,
+      "n": 375
+    },
+    "CATE_age_lt25": {
+      "estimate": 3660.24206738954,
+      "lower90": 486.02562167998894,
+      "upper90": 6834.458513099091,
+      "n": 234
+    },
+    "ATE": {
+      "estimate": 9549.99821095194,
+      "lower90": 1838.5306305324348,
+      "upper90": 17261.465791371447
+    },
+    "ATT": {
+      "estimate": 3590.439703236176,
+      "lower90": 2250.3399929722245,
+      "upper90": 4930.539413500127
+    },
+    "EMP_ATE": {
+      "estimate": 0.022862720738066614,
+      "lower90": -0.0925241222602892,
+      "upper90": 0.13824956373642242
+    }
+  },
+  "roles": {
+    "age": "irrelevant",
+    "education": "outcome_only",
+    "experience": "confounder",
+    "ethnicity": "irrelevant",
+    "smsa": "irrelevant",
+    "region": "irrelevant",
+    "parttime": "irrelevant",
+    "prior_earnings": "confounder",
+    "months_unemployed": "irrelevant",
+    "distance_km": "confounder",
+    "caseworker_note_len": "irrelevant",
+    "enrolled": "treatment",
+    "certificate": "mediator",
+    "responded": "post_treatment_selection",
+    "hours_post": "mediator",
+    "earnings_post": "outcome"
+  },
+  "adjustment_set": [
+    "education",
+    "prior_earnings",
+    "distance_km"
+  ],
+  "effect_modifiers": [],
+  "channels": {
+    "employment": false,
+    "earnings_if_employed": true
+  },
+  "limited_overlap": [
+    {
+      "description": "applicants with prior_earnings between 50,210 and 144,380: 88% of the 225 training applicants there have an enrolment propensity outside the overlap bounds, so the effect for them rests on the outcome model rather than on comparable enrolled and non-enrolled applicants.",
+      "variable": "prior_earnings"
+    },
+    {
+      "description": "applicants whose follow-up earnings are not recorded: their effect is identified only if non-response is unrelated to earnings given the adjustment set and enrolment (218 training applicants).",
+      "variable": "responded"
+    }
+  ],
+  "warnings": [
+    "Enrolled and non-enrolled applicants differ in pre-enrolment columns: mean prior earnings 17,160 against 37,081; the estimates adjust for the columns listed under roles.",
+    "experience is an exact linear combination of the other pre-enrolment columns; it is not put in the adjustment set, and its information is carried by the columns it is built from.",
+    "Candidates ['prior_earnings', 'distance_km'] passed the joint-test rule, but the R-learner smooth on them does not beat a constant effect by more than one SE (gain 914,901, SE 2,187,143); none is claimed.",
+    "No covariate passed the claim rule (joint p below 0.05 in the primary fit, at the median of four nuisance fits, with one sign). Candidates by median joint p: prior_earnings p=0.0188 (+5482, +6149, +4466, +9160 dollars per SD); distance_km p=0.0492 (-1687, -1346, -1656, -1215 dollars per SD); education p=0.821 (+292, +437, -48, +286 dollars per SD). The joint p-value of each covariate moved across fold splits (the single-split fit gave p near 0.004 for age and 0.03 for prior earnings), so no covariate is claimed as an effect modifier.",
+    "14.2% of training rows have a cross-fitted propensity outside the overlap bounds; the all-rows ATE depends on the outcome model in those rows, and the overlap-bounded estimate is 6,251 dollars.",
+    "Certificate and hours worked are measured during or after the program and are mediators; they are not adjusted for, so the estimates are total effects that include the paths through them.",
+    "Test applicants differ from training applicants in means: prior_earnings 30,972.0 (train) against 25,196.5 (test). Per-applicant effects for test applicants outside the training range are extrapolated.",
+    "Test applicants outside the propensity overlap bounds: 8.3%. 327 of the 800 applicants at the top of the cate order are among them; their effects come from the outcome model, not from comparable enrolled and non-enrolled applicants. Restricting the top group to the overlap region gives 800 applicants with mean cate 13,720 dollars.",
+    "Test applicants outside the training range of an effect-model term: 5.9%.",
+    "No covariate passed the modifier rule, so no effect modifier is claimed. The per-applicant effects and the ranking come from a model on the lead covariates ['prior_earnings', 'distance_km', 'education'], whose evidence is weak; the ranking carries less information than the interval widths suggest."
+  ]
+}

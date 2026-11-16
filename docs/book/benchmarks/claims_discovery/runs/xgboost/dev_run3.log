@@ -1,0 +1,25 @@
+[    0.1s] n_train=15480 n_test=5160 features=13 sd(y)=0.6054
+[    4.3s] tune depth_subsample depth=2 mcw=5.0 subs=0.8 colsub=1.0 lam=1.0 eta=0.05 rounds=263 rmse=0.47101
+[    9.0s] tune depth_subsample depth=2 mcw=5.0 subs=1.0 colsub=1.0 lam=1.0 eta=0.05 rounds=284 rmse=0.47082
+[   12.6s] tune depth_subsample depth=3 mcw=5.0 subs=0.8 colsub=1.0 lam=1.0 eta=0.05 rounds=159 rmse=0.47173
+[   15.5s] tune depth_subsample depth=3 mcw=5.0 subs=1.0 colsub=1.0 lam=1.0 eta=0.05 rounds=159 rmse=0.47154
+[   18.7s] tune depth_subsample depth=4 mcw=5.0 subs=0.8 colsub=1.0 lam=1.0 eta=0.05 rounds=114 rmse=0.47250
+[   22.2s] tune depth_subsample depth=4 mcw=5.0 subs=1.0 colsub=1.0 lam=1.0 eta=0.05 rounds=116 rmse=0.47261
+[   28.5s] tune depth_subsample depth=6 mcw=5.0 subs=0.8 colsub=1.0 lam=1.0 eta=0.05 rounds=78 rmse=0.47541
+[   33.5s] tune depth_subsample depth=6 mcw=5.0 subs=1.0 colsub=1.0 lam=1.0 eta=0.05 rounds=81 rmse=0.47576
+[   37.1s] tune one_factor depth=2 mcw=1.0 subs=1.0 colsub=1.0 lam=1.0 eta=0.05 rounds=260 rmse=0.47097
+[   41.3s] tune one_factor depth=2 mcw=20.0 subs=1.0 colsub=1.0 lam=1.0 eta=0.05 rounds=317 rmse=0.47068
+[   44.4s] tune one_factor depth=2 mcw=50.0 subs=1.0 colsub=1.0 lam=1.0 eta=0.05 rounds=318 rmse=0.47030
+[   48.0s] tune one_factor depth=2 mcw=5.0 subs=1.0 colsub=0.7 lam=1.0 eta=0.05 rounds=337 rmse=0.47101
+[   51.7s] tune one_factor depth=2 mcw=5.0 subs=1.0 colsub=1.0 lam=10.0 eta=0.05 rounds=306 rmse=0.47058
+[   60.4s] tune learning_rate depth=2 mcw=50.0 subs=1.0 colsub=1.0 lam=1.0 eta=0.02 rounds=714 rmse=0.47052
+[   60.4s] final config {'max_depth': 2, 'min_child_weight': 50.0, 'subsample': 1.0, 'colsample_bytree': 1.0, 'reg_lambda': 1.0, 'eta': 0.05} rounds=350
+[   66.8s] OOF rmse=0.47009 R2=0.3970
+[   76.2s] mean-model screening done
+[   84.4s] partial dependence done
+[  126.8s] interaction tests done
+[  138.1s] spread model done
+[  140.1s] conformal calibration coverage on OOF residuals=0.900, shift AUC=0.598
+[  140.1s] prediction intervals done
+[  172.1s] done: wrote dev_out
+python run.py --train  --test  --out dev_out --seed 1  153.38s user 23.49s system 101% cpu 2:54.83 total

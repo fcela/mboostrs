@@ -1,0 +1,95 @@
+{
+ "instrument": "paired-ab/v1.1",
+ "floors": {
+  "linear_factors": {
+   "supplied": {
+    "rmse": 1.200606304011799e-15,
+    "n_rows": 5000,
+    "mstop": 3000,
+    "nu": 0.3,
+    "formula": "y ~ bols(x0) + bols(x1) + bols(x2) + brandom(g)",
+    "note": "noiseless fit of the formula; includes a small optimization shortfall, not pure basis error"
+   },
+   "partial": {
+    "rmse": 0.00013055721992461468,
+    "n_rows": 5000,
+    "mstop": 3000,
+    "nu": 0.3,
+    "formula": "y ~ bbs(x0) + bbs(x1) + bbs(x2) + bbs(x3) + bbs(x4) + bbs(x5) + bbs(x6) + bbs(x7) + bbs(x8) + bbs(x9) + brandom(g)",
+    "note": "noiseless fit of the formula; includes a small optimization shortfall, not pure basis error"
+   }
+  },
+  "smooth_additive": {
+   "supplied": {
+    "rmse": 0.008697335262413236,
+    "n_rows": 5000,
+    "mstop": 3000,
+    "nu": 0.3,
+    "formula": "y ~ bbs(x0) + bbs(x1) + bols(x2)",
+    "note": "noiseless fit of the formula; includes a small optimization shortfall, not pure basis error"
+   },
+   "partial": {
+    "rmse": 0.008804676421226272,
+    "n_rows": 5000,
+    "mstop": 3000,
+    "nu": 0.3,
+    "formula": "y ~ bbs(x0) + bbs(x1) + bbs(x2) + bbs(x3) + bbs(x4) + bbs(x5) + bbs(x6) + bbs(x7)",
+    "note": "noiseless fit of the formula; includes a small optimization shortfall, not pure basis error"
+   }
+  },
+  "kinked": {
+   "supplied": {
+    "rmse": 0.004198365384281166,
+    "n_rows": 5000,
+    "mstop": 3000,
+    "nu": 0.3,
+    "formula": "y ~ hinge(x0) + hinge(x1) + bbs(x2)",
+    "note": "noiseless fit of the formula; includes a small optimization shortfall, not pure basis error"
+   },
+   "partial": {
+    "rmse": 0.005852846773407686,
+    "n_rows": 5000,
+    "mstop": 3000,
+    "nu": 0.3,
+    "formula": "y ~ bbs(x0) + bbs(x1) + bbs(x2) + bbs(x3) + bbs(x4) + bbs(x5) + bbs(x6)",
+    "note": "noiseless fit of the formula; includes a small optimization shortfall, not pure basis error"
+   }
+  },
+  "interaction": {
+   "supplied": {
+    "rmse": 8.699236207693932e-05,
+    "n_rows": 5000,
+    "mstop": 3000,
+    "nu": 0.3,
+    "formula": "y ~ bbs(x0) %X% bbs(x1) + bbs(x2) + bols(x3)",
+    "note": "noiseless fit of the formula; includes a small optimization shortfall, not pure basis error"
+   },
+   "partial": {
+    "rmse": 0.2550251205609817,
+    "n_rows": 5000,
+    "mstop": 3000,
+    "nu": 0.3,
+    "formula": "y ~ bbs(x0) + bbs(x1) + bbs(x2) + bbs(x3) + bbs(x4) + bbs(x5)",
+    "note": "noiseless fit of the formula; includes a small optimization shortfall, not pure basis error"
+   }
+  },
+  "threshold_jump": {
+   "supplied": {
+    "rmse": 0.0010608203613138231,
+    "n_rows": 5000,
+    "mstop": 3000,
+    "nu": 0.3,
+    "formula": "y ~ bbs(x0) + btree(x1, maxdepth=2, selection=sse)",
+    "note": "noiseless fit of the formula; includes a small optimization shortfall, not pure basis error"
+   },
+   "partial": {
+    "rmse": 0.1032256703301418,
+    "n_rows": 5000,
+    "mstop": 3000,
+    "nu": 0.3,
+    "formula": "y ~ bbs(x0) + bbs(x1) + bbs(x2) + bbs(x3) + bbs(x4) + bbs(x5) + bbs(x6) + bbs(x7) + bbs(x8) + bbs(x9)",
+    "note": "noiseless fit of the formula; includes a small optimization shortfall, not pure basis error"
+   }
+  }
+ }
+}

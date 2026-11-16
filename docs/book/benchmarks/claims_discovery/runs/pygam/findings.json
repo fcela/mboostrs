@@ -1,0 +1,101 @@
+{
+  "library": "pygam 0.12.0",
+  "mean_effects": [
+    {
+      "variable": "longitude",
+      "shape": "spatial",
+      "evidence": "joint 2-D smooth of longitude and latitude; held-out MSE rises by 0.00549 (se 0.00031) when it is removed; effect range over the training grid 0.855"
+    },
+    {
+      "variable": "latitude",
+      "shape": "spatial",
+      "evidence": "joint 2-D smooth of longitude and latitude; held-out MSE rises by 0.00549 (se 0.00031) when it is removed; effect range over the training grid 0.855"
+    },
+    {
+      "variable": "housing_median_age",
+      "shape": "inverted_u",
+      "evidence": "held-out MSE rises by 0.01312 (se 0.00077) when removed; term spans 0.482 on the claim scale over the 2nd-98th percentile range"
+    },
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "held-out MSE rises by 0.01533 (se 0.00082) when removed; term spans 0.743 on the claim scale over the 2nd-98th percentile range"
+    },
+    {
+      "variable": "roof_class",
+      "shape": "categorical",
+      "evidence": "term effect relative to level A: A +0.000, B +0.012, C +0.169, D +0.382"
+    },
+    {
+      "variable": "ave_occup",
+      "shape": "increasing",
+      "evidence": "held-out MSE rises by 0.00520 (se 0.00028) when removed; term spans 0.376 on the claim scale over the 2nd-98th percentile range"
+    }
+  ],
+  "interactions": [
+    {
+      "variables": [
+        "housing_median_age",
+        "median_income"
+      ],
+      "evidence": "residual screen delta -0.000743 (se 0.000116); joint refit of the reduced model lowers held-out MSE"
+    }
+  ],
+  "variance_drivers": [
+    {
+      "variable": "households",
+      "direction": "decreases_spread",
+      "evidence": "log-scale curve is decreasing; held-out log-scale MSE rises by 0.04008 (se 0.00249) when removed; scale ratio across the grid 2.80"
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.48124,
+      "lower90": -0.51075,
+      "upper90": -0.45225
+    },
+    "Q2": {
+      "estimate": 0.39551,
+      "lower90": 0.34535,
+      "upper90": 0.447
+    },
+    "Q3": {
+      "estimate": 0.22948,
+      "lower90": 0.19934,
+      "upper90": 0.25484
+    },
+    "Q4": {
+      "estimate": 0.38235,
+      "lower90": 0.35677,
+      "upper90": 0.41163
+    },
+    "Q5": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q6": {
+      "estimate": 0.34571,
+      "lower90": 0.31733,
+      "upper90": 0.3747
+    },
+    "Q7": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q8": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    }
+  },
+  "warnings": [
+    "housing_median_age missing in 1172 train rows and 361 test rows; filled from a GAM on longitude, latitude, median_income and log median_house_value fitted to the observed rows",
+    "ave_bedrooms missing in 141 train rows and 40 test rows; filled with the training median",
+    "test feature values outside the training range were clipped before prediction (5 values)",
+    "out-of-fold 90 percent interval coverage on the training rows: 0.900",
+    "pyGAM p-values are not used for selection because pyGAM marks them as unreliable when smoothing parameters are estimated",
+    "effect query intervals are percentile bootstrap intervals over 100 refits with the smoothing parameter held fixed"
+  ]
+}

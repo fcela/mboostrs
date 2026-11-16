@@ -1,0 +1,230 @@
+{
+ "source_revision": "0d10362",
+ "source_path": "docs/book/benchmarks/d5_gap_closing_round3.ipynb",
+ "purpose": "Historical diagnostic; link-clipped Binomial log losses are invalid probability scores; the coefficient comparison is not a convergence test.",
+ "cells": [
+  {
+   "index": 0,
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# D5 Gap-Closing Round 3\n",
+    "\n",
+    "Issue #602. Four deficits from the honest accounting, attacked root-cause-first.\n",
+    "Protocol: same splits, fixed seeds, mboostrs vs CatBoost/LightGBM/XGBoost.\n",
+    "Every number below is from an executed cell."
+   ]
+  },
+  {
+   "index": 2,
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-10-17T04:43:03.578649Z",
+     "iopub.status.busy": "2026-10-17T04:43:03.578479Z",
+     "iopub.status.idle": "2026-10-17T04:43:06.843016Z",
+     "shell.execute_reply": "2026-10-17T04:43:06.842166Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "mboostrs: /home/hatch/workspace/mboostrs-main/python/mboostrs/__init__.py\n"
+     ]
+    }
+   ],
+   "source": [
+    "import time\n",
+    "import numpy as np\n",
+    "import polars as pl\n",
+    "from sklearn.datasets import load_breast_cancer, load_diabetes\n",
+    "from sklearn.model_selection import train_test_split\n",
+    "from sklearn.metrics import log_loss, mean_squared_error\n",
+    "from sklearn.linear_model import LogisticRegression, Ridge\n",
+    "from sklearn.preprocessing import StandardScaler\n",
+    "import mboostrs as mb\n",
+    "import catboost, lightgbm, xgboost\n",
+    "import warnings\n",
+    "warnings.filterwarnings(\"ignore\")\n",
+    "\n",
+    "SEED = 602\n",
+    "print(\"mboostrs:\", mb.__file__)"
+   ]
+  },
+  {
+   "index": 10,
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Deficit 3: Cancer panel\n",
+    "\n",
+    "Wisconsin breast cancer (n=569, p=30), binary classification, log-loss.\n",
+    "Prior: +108.7% excess. #509 diagnosed mstop overshoot (overfitting)."
+   ]
+  },
+  {
+   "index": 11,
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-10-17T04:43:41.364866Z",
+     "iopub.status.busy": "2026-10-17T04:43:41.364629Z",
+     "iopub.status.idle": "2026-10-17T04:43:44.878167Z",
+     "shell.execute_reply": "2026-10-17T04:43:44.877728Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "seed 0: mb=0.2549 cb=0.0569 lgb=0.0458 logreg=0.0909 excess=456%\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "seed 1: mb=0.3979 cb=0.1410 lgb=0.1277 logreg=0.1329 excess=212%\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "seed 2: mb=0.3279 cb=0.1127 lgb=0.1662 logreg=0.1294 excess=191%\n"
+     ]
+    }
+   ],
+   "source": [
+    "X, y = load_breast_cancer(return_X_y=True)\n",
+    "\n",
+    "def run_cancer(seed):\n",
+    "    Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.3, random_state=seed)\n",
+    "    df_tr = pl.DataFrame({f\"x{i}\": Xtr[:, i] for i in range(30)}).with_columns(pl.Series(\"y\", ytr))\n",
+    "    df_te = pl.DataFrame({f\"x{i}\": Xte[:, i] for i in range(30)}).with_columns(pl.Series(\"y\", yte))\n",
+    "    formula = \"y ~ \" + \" + \".join(f\"bbs(x{i})\" for i in range(30))\n",
+    "    out = {}\n",
+    "    for name, ms in [(\"mb_200\", 200), (\"mb_500\", 500)]:\n",
+    "        m = mb.gamboost(formula, data=df_tr, family=mb.Binomial(),\n",
+    "                        control=mb.boost_control(mstop=ms))\n",
+    "        p = np.clip(m.predict(df_te), 1e-6, 1-1e-6)\n",
+    "        out[name] = log_loss(yte, p)\n",
+    "    cb = catboost.CatBoostClassifier(iterations=200, depth=4, learning_rate=0.05,\n",
+    "                                     random_seed=seed, verbose=False).fit(Xtr, ytr)\n",
+    "    out[\"catboost\"] = log_loss(yte, np.clip(cb.predict_proba(Xte)[:, 1], 1e-6, 1-1e-6))\n",
+    "    lgb = lightgbm.LGBMClassifier(n_estimators=200, max_depth=4, learning_rate=0.05,\n",
+    "                                  random_state=seed, verbose=-1).fit(Xtr, ytr)\n",
+    "    out[\"lightgbm\"] = log_loss(yte, np.clip(lgb.predict_proba(Xte)[:, 1], 1e-6, 1-1e-6))\n",
+    "    lr = LogisticRegression(max_iter=1000).fit(Xtr, ytr)\n",
+    "    out[\"logreg\"] = log_loss(yte, lr.predict_proba(Xte)[:, 1])\n",
+    "    return out\n",
+    "\n",
+    "for seed in [0, 1, 2]:\n",
+    "    r = run_cancer(seed)\n",
+    "    best = min(r[\"catboost\"], r[\"lightgbm\"])\n",
+    "    excess = (r[\"mb_200\"] - best) / best * 100\n",
+    "    print(f\"seed {seed}: mb={r['mb_200']:.4f} cb={r['catboost']:.4f} lgb={r['lightgbm']:.4f} \"\n",
+    "          f\"logreg={r['logreg']:.4f} excess={excess:.0f}%\")"
+   ]
+  },
+  {
+   "index": 12,
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Root cause: Binomial coefficients don't match the MLE\n",
+    "\n",
+    "mboostrs's Binomial boosting finds coefficients with only r=0.23 correlation\n",
+    "to sklearn's logistic regression. Gaussian boosting is fine (competitive with\n",
+    "Ridge on diabetes). The problem is Binomial-specific \u2014 the boosting update\n",
+    "for the logit link is not converging to the right solution."
+   ]
+  },
+  {
+   "index": 13,
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-10-17T04:43:44.882523Z",
+     "iopub.status.busy": "2026-10-17T04:43:44.882260Z",
+     "iopub.status.idle": "2026-10-17T04:43:45.626165Z",
+     "shell.execute_reply": "2026-10-17T04:43:45.624738Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "mboostrs beta norm: 60.8\n",
+      "sklearn beta norm: 87.3\n",
+      "correlation: 0.23\n",
+      "\n",
+      "mboostrs Gaussian MSE: 3136\n",
+      "Ridge MSE: 3238\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Coefficient comparison\n",
+    "Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.3, random_state=0)\n",
+    "df_tr = pl.DataFrame({f\"x{i}\": Xtr[:, i] for i in range(30)}).with_columns(pl.Series(\"y\", ytr))\n",
+    "m = mb.gamboost(\"y ~ \" + \" + \".join(f\"bols(x{i})\" for i in range(30)),\n",
+    "                data=df_tr, family=mb.Binomial(),\n",
+    "                control=mb.boost_control(mstop=500))\n",
+    "c = m.coef()\n",
+    "def get_slope(v):\n",
+    "    return float(v[1]) if isinstance(v, (list, np.ndarray)) and len(v) > 1 else 0.0\n",
+    "mb_beta = np.array([get_slope(c[f\"x{i}\"]) for i in range(30)])\n",
+    "lr = LogisticRegression(max_iter=2000, C=1e6).fit(Xtr, ytr)\n",
+    "print(f\"mboostrs beta norm: {np.linalg.norm(mb_beta):.1f}\")\n",
+    "print(f\"sklearn beta norm: {np.linalg.norm(lr.coef_[0]):.1f}\")\n",
+    "print(f\"correlation: {np.corrcoef(mb_beta, lr.coef_[0])[0, 1]:.2f}\")\n",
+    "\n",
+    "# Gaussian sanity check\n",
+    "Xd, yd = load_diabetes(return_X_y=True)\n",
+    "Xtr, Xte, ytr, yte = train_test_split(Xd, yd, test_size=0.3, random_state=0)\n",
+    "df_tr = pl.DataFrame({f\"x{i}\": Xtr[:, i] for i in range(10)}).with_columns(pl.Series(\"y\", ytr))\n",
+    "df_te = pl.DataFrame({f\"x{i}\": Xte[:, i] for i in range(10)}).with_columns(pl.Series(\"y\", yte))\n",
+    "m = mb.gamboost(\"y ~ \" + \" + \".join(f\"bols(x{i})\" for i in range(10)),\n",
+    "                data=df_tr, family=mb.Gaussian(),\n",
+    "                control=mb.boost_control(mstop=500))\n",
+    "ridge = Ridge().fit(Xtr, ytr)\n",
+    "from sklearn.metrics import mean_squared_error\n",
+    "print(f\"\\nmboostrs Gaussian MSE: {mean_squared_error(yte, m.predict(df_te)):.0f}\")\n",
+    "print(f\"Ridge MSE: {mean_squared_error(yte, ridge.predict(Xte)):.0f}\")"
+   ]
+  },
+  {
+   "index": 14,
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Verdict: FILED AS STRUCTURAL.** The Binomial boosting update needs\n",
+    "investigation (gradient/link handling). Filed as a separate issue; not a\n",
+    "tuning or model-form problem."
+   ]
+  },
+  {
+   "index": 18,
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Summary\n",
+    "\n",
+    "| Deficit | Verdict |\n",
+    "|---|---|\n",
+    "| 1. Quine Poisson | **Narrowed** \u2014 benchmark artifact + screening-nu bug fixed |\n",
+    "| 2. Large-n binning | **Closed** \u2014 3.3x speedup, beats LightGBM |\n",
+    "| 3. Cancer | **Structural** \u2014 Binomial optimization issue, filed separately |\n",
+    "| 4. joint_boundary | **Structural** \u2014 single-tree capacity, confirmed |"
+   ]
+  }
+ ]
+}

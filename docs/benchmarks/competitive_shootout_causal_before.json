@@ -1,0 +1,2355 @@
+{
+ "schema_version": 1,
+ "created_at": "2026-10-06T00:32:57+00:00",
+ "commit": "530798688281566750b84ffe4719849abce42719",
+ "working_tree": {
+  "dirty": true,
+  "status_digest": "sha256:3a5028028c78c6db150eaaa87b742b65983559e9412570a00440d15886f2013d",
+  "commit_source": "working directory"
+ },
+ "platform": {
+  "system": "Darwin",
+  "release": "25.3.0",
+  "machine": "arm64",
+  "cpu": "arm",
+  "python": "3.12.11"
+ },
+ "versions": {
+  "mboostrs": "0.1.3",
+  "numpy": "2.4.6",
+  "rpy2": "3.6.7",
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "R": "4.5.1",
+  "mboost": "2.9.11",
+  "scipy": "1.16.3",
+  "pandas": "2.3.3",
+  "ngboost": "0.5.11",
+  "mssm": "1.2.5",
+  "scikit-learn": "1.9.0"
+ },
+ "threads": {
+  "logical_cpus": 10,
+  "r_mclapply_default_cores": "2",
+  "RAYON_NUM_THREADS": "1",
+  "OMP_NUM_THREADS": "1",
+  "OPENBLAS_NUM_THREADS": "1",
+  "MKL_NUM_THREADS": "1"
+ },
+ "build_info": {
+  "package_version": "0.1.3",
+  "source_digest": "sha256:43c91f7e37301d1b2d471e20fdadd3bc5d56cbf72a400a1f813960bd6f2b5a47",
+  "git_revision": "7b6ee810e0dc83da72a82ba516b40b0ed40a0ad5",
+  "git_dirty": false,
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+  "target": "aarch64-apple-darwin",
+  "profile": "release",
+  "target_features": "aes,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+  "crate_features": "",
+  "abi_version": 1,
+  "build_id": "sha256:f39ee7b9bd1b7c019eb60e5470c8fc19ce89b6814aa78bcfe7e1f27a84cd0485"
+ },
+ "scripts": {
+  "/Users/fcela/src/public_github/mboostrs/benches/probe_causal_confirmation.py": "751f463279a8362f7b07e617a6d52c10c14075381de55c9e252bb0e2367e9bd3"
+ },
+ "thread_environment": {
+  "RAYON_NUM_THREADS": "1",
+  "OMP_NUM_THREADS": "1",
+  "OPENBLAS_NUM_THREADS": "1"
+ },
+ "protocol": {
+  "document": "docs/benchmarks/competitive_shootout_protocol.md",
+  "purpose": "frozen confirmation of a causal candidate change",
+  "method": "mboostrs effect_model, folds=3, max_mstop=1600, same as the study",
+  "draws": "7..13",
+  "scenarios": [
+   "smooth_effect",
+   "joint_effect",
+   "weak_overlap",
+   "omitted_confounder"
+  ],
+  "specs": [
+   [
+    "smooth_effect",
+    7
+   ],
+   [
+    "smooth_effect",
+    8
+   ],
+   [
+    "smooth_effect",
+    9
+   ],
+   [
+    "smooth_effect",
+    10
+   ],
+   [
+    "smooth_effect",
+    11
+   ],
+   [
+    "smooth_effect",
+    12
+   ],
+   [
+    "smooth_effect",
+    13
+   ],
+   [
+    "joint_effect",
+    7
+   ],
+   [
+    "joint_effect",
+    8
+   ],
+   [
+    "joint_effect",
+    9
+   ],
+   [
+    "joint_effect",
+    10
+   ],
+   [
+    "joint_effect",
+    11
+   ],
+   [
+    "joint_effect",
+    12
+   ],
+   [
+    "joint_effect",
+    13
+   ],
+   [
+    "weak_overlap",
+    7
+   ],
+   [
+    "weak_overlap",
+    8
+   ],
+   [
+    "weak_overlap",
+    9
+   ],
+   [
+    "weak_overlap",
+    10
+   ],
+   [
+    "weak_overlap",
+    11
+   ],
+   [
+    "weak_overlap",
+    12
+   ],
+   [
+    "weak_overlap",
+    13
+   ],
+   [
+    "omitted_confounder",
+    7
+   ],
+   [
+    "omitted_confounder",
+    8
+   ],
+   [
+    "omitted_confounder",
+    9
+   ],
+   [
+    "omitted_confounder",
+    10
+   ],
+   [
+    "omitted_confounder",
+    11
+   ],
+   [
+    "omitted_confounder",
+    12
+   ],
+   [
+    "omitted_confounder",
+    13
+   ]
+  ],
+  "timeout_seconds": 600
+ },
+ "repeats": {
+  "note": "seven independent draws per scenario, unseen by the change"
+ },
+ "uncertainty": {
+  "unit": "one independent training and test draw; pair methods within a draw",
+  "summary": "mean and Monte Carlo standard error across draws",
+  "timing": "elapsed whole-workflow costs, not controlled implementation speed ratios"
+ },
+ "memory": {
+  "status": "not measured"
+ },
+ "results": [
+  {
+   "scenario": "smooth_effect",
+   "seed": 7,
+   "terms": "smooth",
+   "pehe": 0.09513567893197013,
+   "ate": 1.0348798423160623,
+   "ate_error": 0.03487984231606234,
+   "cv_rloss": {
+    "smooth": 3.525261114094601,
+    "stumps": 3.531422332713787
+   },
+   "tau_mstop": {
+    "smooth": 90,
+    "stumps": 36
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.08708403984456245,
+    0.9219691617370499
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "a754634ca97422e0cde545d0dbfad864e9ab5202c7e31fa6c43d9e09907c79ed",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:32:58+00:00",
+    "wall_seconds": 1.8079280853271484
+   }
+  },
+  {
+   "scenario": "smooth_effect",
+   "seed": 8,
+   "terms": "smooth",
+   "pehe": 0.16116747002766743,
+   "ate": 0.9980595842721041,
+   "ate_error": -0.0019404157278959389,
+   "cv_rloss": {
+    "smooth": 3.4034943208551396,
+    "stumps": 3.410482098654659
+   },
+   "tau_mstop": {
+    "smooth": 26,
+    "stumps": 21
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.08185411565029709,
+    0.9221937471573755
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "1ad7190795a1c3d646cdec709acdf5b884bc46fec92cc342aeb89d08eedb935f",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:00+00:00",
+    "wall_seconds": 1.787057876586914
+   }
+  },
+  {
+   "scenario": "smooth_effect",
+   "seed": 9,
+   "terms": "stumps",
+   "pehe": 0.13413256558219303,
+   "ate": 0.9835663534294867,
+   "ate_error": -0.01643364657051327,
+   "cv_rloss": {
+    "smooth": 2.8550426647187983,
+    "stumps": 2.843128915711835
+   },
+   "tau_mstop": {
+    "smooth": 197,
+    "stumps": 59
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.0805561241487513,
+    0.9149361603470725
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "471296f54a1442e968a58fa1b6d343d034a0d5c72c69d47c4b89e5594e1bb900",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:01+00:00",
+    "wall_seconds": 1.8017539978027344
+   }
+  },
+  {
+   "scenario": "smooth_effect",
+   "seed": 10,
+   "terms": "smooth",
+   "pehe": 0.09342277490467221,
+   "ate": 0.9895192911183892,
+   "ate_error": -0.01048070888161079,
+   "cv_rloss": {
+    "smooth": 2.6149471700229845,
+    "stumps": 2.6285441286471194
+   },
+   "tau_mstop": {
+    "smooth": 104,
+    "stumps": 59
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.07925650080926346,
+    0.9204028964830643
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "fd0b3012f8b2c605f553d61a2546cd178db34197ae1d512f2f0c809c12e0109c",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:03+00:00",
+    "wall_seconds": 1.7798950672149658
+   }
+  },
+  {
+   "scenario": "smooth_effect",
+   "seed": 11,
+   "terms": "smooth",
+   "pehe": 0.1099378455347963,
+   "ate": 0.9728961643265522,
+   "ate_error": -0.027103835673447763,
+   "cv_rloss": {
+    "smooth": 2.985333774482411,
+    "stumps": 2.988901200758375
+   },
+   "tau_mstop": {
+    "smooth": 51,
+    "stumps": 38
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.08010651566671899,
+    0.9227256807969184
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "5d7460cf82c36e7a4c4867a3f90a9425742d3d220cdb988041fe840fe10a92ab",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:05+00:00",
+    "wall_seconds": 1.84185791015625
+   }
+  },
+  {
+   "scenario": "smooth_effect",
+   "seed": 12,
+   "terms": "stumps",
+   "pehe": 0.13075174591772756,
+   "ate": 0.9730317752187324,
+   "ate_error": -0.02696822478126759,
+   "cv_rloss": {
+    "smooth": 4.279723802555309,
+    "stumps": 4.1719669400905595
+   },
+   "tau_mstop": {
+    "smooth": 1522,
+    "stumps": 76
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.081525536130874,
+    0.9221455834182893
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "afab59a82bd0a3743aa57e547ae7173f498d7435f3a47d35f68d51f48bfb8cc1",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:07+00:00",
+    "wall_seconds": 2.18764591217041
+   }
+  },
+  {
+   "scenario": "smooth_effect",
+   "seed": 13,
+   "terms": "stumps",
+   "pehe": 0.1457077559514095,
+   "ate": 0.9642583939786182,
+   "ate_error": -0.03574160602138177,
+   "cv_rloss": {
+    "smooth": 4.204534220078684,
+    "stumps": 4.182561166356991
+   },
+   "tau_mstop": {
+    "smooth": 85,
+    "stumps": 59
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.08637166108547106,
+    0.9191379997996467
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "6ceb29bfd8b3aee5f0fb6f547fd4533a2c7be79717feb60be8a22b2d301e2c24",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:09+00:00",
+    "wall_seconds": 1.7452538013458252
+   }
+  },
+  {
+   "scenario": "joint_effect",
+   "seed": 7,
+   "terms": "stumps",
+   "pehe": 1.53208932951721,
+   "ate": 0.7643688323073916,
+   "ate_error": -0.2356311676926084,
+   "cv_rloss": {
+    "smooth": 11.430121189862227,
+    "stumps": 11.302367596570472
+   },
+   "tau_mstop": {
+    "smooth": 97,
+    "stumps": 55
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.08708403984456245,
+    0.9219691617370499
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "53b7ae827c9eea92fdd5c98b6c23961db09588aadb2bb95d7ca511a568e89e23",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:11+00:00",
+    "wall_seconds": 1.6745259761810303
+   }
+  },
+  {
+   "scenario": "joint_effect",
+   "seed": 8,
+   "terms": "stumps",
+   "pehe": 1.5334549167485974,
+   "ate": 0.775141459647235,
+   "ate_error": -0.22485854035276498,
+   "cv_rloss": {
+    "smooth": 11.458516037975572,
+    "stumps": 11.168265483846923
+   },
+   "tau_mstop": {
+    "smooth": 96,
+    "stumps": 54
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.08185411565029709,
+    0.9221937471573755
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "80fffac66fbb0b1324b18c2b23f560195be3bcc91e80a13bbbdf4c8e81b79220",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:12+00:00",
+    "wall_seconds": 1.7252707481384277
+   }
+  },
+  {
+   "scenario": "joint_effect",
+   "seed": 9,
+   "terms": "stumps",
+   "pehe": 1.5762366374317247,
+   "ate": 0.7190719966932834,
+   "ate_error": -0.28092800330671663,
+   "cv_rloss": {
+    "smooth": 10.236744846498981,
+    "stumps": 10.084140577230555
+   },
+   "tau_mstop": {
+    "smooth": 746,
+    "stumps": 86
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.0805561241487513,
+    0.9149361603470725
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "bc847c332c4c7547536dc9073b9ff37719ac3d6036f62efd1669a23bfc04c03d",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:14+00:00",
+    "wall_seconds": 1.9507908821105957
+   }
+  },
+  {
+   "scenario": "joint_effect",
+   "seed": 10,
+   "terms": "stumps",
+   "pehe": 1.5399354979995652,
+   "ate": 0.7719015289318608,
+   "ate_error": -0.22809847106813919,
+   "cv_rloss": {
+    "smooth": 8.94469863364646,
+    "stumps": 8.810517235101022
+   },
+   "tau_mstop": {
+    "smooth": 364,
+    "stumps": 46
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.07925650080926346,
+    0.9204028964830643
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "981e2115243941f0db81e5a185f336ed4403889c9962ba8723bcba9b816ab308",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:16+00:00",
+    "wall_seconds": 1.8091049194335938
+   }
+  },
+  {
+   "scenario": "joint_effect",
+   "seed": 11,
+   "terms": "stumps",
+   "pehe": 1.540002021397308,
+   "ate": 0.7393326893036717,
+   "ate_error": -0.2606673106963283,
+   "cv_rloss": {
+    "smooth": 11.151591657502964,
+    "stumps": 10.848523656730855
+   },
+   "tau_mstop": {
+    "smooth": 193,
+    "stumps": 47
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.08010651566671899,
+    0.9227256807969184
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "b69361570655219729a918a1d472b58c24993a60335f8b4f6aaf72a2dc174876",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:18+00:00",
+    "wall_seconds": 1.7610969543457031
+   }
+  },
+  {
+   "scenario": "joint_effect",
+   "seed": 12,
+   "terms": "stumps",
+   "pehe": 1.584097204746046,
+   "ate": 0.7255442803470367,
+   "ate_error": -0.27445571965296334,
+   "cv_rloss": {
+    "smooth": 11.279912827422974,
+    "stumps": 11.076520110901809
+   },
+   "tau_mstop": {
+    "smooth": 1594,
+    "stumps": 84
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.081525536130874,
+    0.9221455834182893
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "a03e5ea35751ac5fcffc1f001a08f2ce670cb3c9b762362a511e0220aa70bdb2",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:20+00:00",
+    "wall_seconds": 2.099942922592163
+   }
+  },
+  {
+   "scenario": "joint_effect",
+   "seed": 13,
+   "terms": "stumps",
+   "pehe": 1.5255874961083182,
+   "ate": 0.7554042847107193,
+   "ate_error": -0.2445957152892807,
+   "cv_rloss": {
+    "smooth": 13.368129960341236,
+    "stumps": 13.16788397684433
+   },
+   "tau_mstop": {
+    "smooth": 39,
+    "stumps": 47
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.08637166108547106,
+    0.9191379997996467
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "db0376046214681d652b0a3c0ce74e6f0b36633828a923ba59a0ba343094e51e",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:22+00:00",
+    "wall_seconds": 1.7404899597167969
+   }
+  },
+  {
+   "scenario": "weak_overlap",
+   "seed": 7,
+   "terms": "smooth",
+   "pehe": 0.19946981456993207,
+   "ate": 1.0106217757255496,
+   "ate_error": 0.010621775725549565,
+   "cv_rloss": {
+    "smooth": 122.96794596282844,
+    "stumps": 124.15873177345662
+   },
+   "tau_mstop": {
+    "smooth": 42,
+    "stumps": 3
+   },
+   "n_clipped": 3,
+   "propensity_range": [
+    0.0030464364399915675,
+    0.9973846211604571
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "82f4b5aff06bdda230fd0b0274471e3e49d14920155f4c5d094290e0e28484a6",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:23+00:00",
+    "wall_seconds": 1.8829128742218018
+   }
+  },
+  {
+   "scenario": "weak_overlap",
+   "seed": 8,
+   "terms": "smooth",
+   "pehe": 0.16072173203856369,
+   "ate": 0.9510245517948143,
+   "ate_error": -0.048975448205185734,
+   "cv_rloss": {
+    "smooth": 147.8188420776098,
+    "stumps": 147.8342853468096
+   },
+   "tau_mstop": {
+    "smooth": 42,
+    "stumps": 8
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.003120415714135435,
+    0.9974176599848905
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "b454c613aa36b099a1b67e145bc63a5fae46c2af5e2321d778d4ddaaec47b8f0",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:25+00:00",
+    "wall_seconds": 1.886479139328003
+   }
+  },
+  {
+   "scenario": "weak_overlap",
+   "seed": 9,
+   "terms": "stumps",
+   "pehe": 0.5433086790934911,
+   "ate": 0.9057211846526488,
+   "ate_error": -0.09427881534735116,
+   "cv_rloss": {
+    "smooth": 77.86766208821635,
+    "stumps": 77.78630478144785
+   },
+   "tau_mstop": {
+    "smooth": 1,
+    "stumps": 2
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.0028287287216746696,
+    0.9968579606483281
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "e31fbbf7f7c887320f2abcf4f737cc1a92d100944c84620c9d6c9b44be3af32d",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:27+00:00",
+    "wall_seconds": 1.9346320629119873
+   }
+  },
+  {
+   "scenario": "weak_overlap",
+   "seed": 10,
+   "terms": "stumps",
+   "pehe": 0.5374582456967244,
+   "ate": 0.9903267106931647,
+   "ate_error": -0.009673289306835309,
+   "cv_rloss": {
+    "smooth": 93.509638768083,
+    "stumps": 93.32312666596003
+   },
+   "tau_mstop": {
+    "smooth": 16,
+    "stumps": 2
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.002653182863926905,
+    0.9973879162772749
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "f8935f41e48e9c96c78b3998e74809283dcc87ceca3573fd19bf7a9059807ced",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:29+00:00",
+    "wall_seconds": 1.8199701309204102
+   }
+  },
+  {
+   "scenario": "weak_overlap",
+   "seed": 11,
+   "terms": "stumps",
+   "pehe": 0.1649024898465133,
+   "ate": 1.0061110224975,
+   "ate_error": 0.006111022497500063,
+   "cv_rloss": {
+    "smooth": 68.09471800977194,
+    "stumps": 67.07715738043714
+   },
+   "tau_mstop": {
+    "smooth": 56,
+    "stumps": 30
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.002713699664699374,
+    0.9974254125235257
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "124c9bf2ccec3c43d5f3be893eacbfd89fdfec9218b9c01c407c69d53d13b30b",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:31+00:00",
+    "wall_seconds": 1.830394983291626
+   }
+  },
+  {
+   "scenario": "weak_overlap",
+   "seed": 12,
+   "terms": "stumps",
+   "pehe": 0.2144790430188728,
+   "ate": 0.9675936633775798,
+   "ate_error": -0.032406336622420207,
+   "cv_rloss": {
+    "smooth": 134.71833952868312,
+    "stumps": 132.1855112198475
+   },
+   "tau_mstop": {
+    "smooth": 21,
+    "stumps": 19
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.0027147649639123273,
+    0.9973673060598486
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "66f0ea6f0451cca62e9e83954c148ec3e8f2fbff45fa23e8d373494b4da77bbd",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:33+00:00",
+    "wall_seconds": 1.9105300903320312
+   }
+  },
+  {
+   "scenario": "weak_overlap",
+   "seed": 13,
+   "terms": "stumps",
+   "pehe": 0.3186757900348211,
+   "ate": 1.0245208919091078,
+   "ate_error": 0.024520891909107778,
+   "cv_rloss": {
+    "smooth": 148.16011806005636,
+    "stumps": 146.3362947257519
+   },
+   "tau_mstop": {
+    "smooth": 18,
+    "stumps": 21
+   },
+   "n_clipped": 3,
+   "propensity_range": [
+    0.002936826081167194,
+    0.9972063057958176
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "cca7f11bbc903a642bbc3f19afce9c0eb01f86ef573b7d96787d47d641539fcb",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:35+00:00",
+    "wall_seconds": 1.7957630157470703
+   }
+  },
+  {
+   "scenario": "omitted_confounder",
+   "seed": 7,
+   "terms": "smooth",
+   "pehe": 2.4831431457484747,
+   "ate": 3.491676504336542,
+   "ate_error": 2.491676504336542,
+   "cv_rloss": {
+    "smooth": 15.136025006850891,
+    "stumps": 15.178489929619117
+   },
+   "tau_mstop": {
+    "smooth": 37,
+    "stumps": 84
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.00045373424063475796,
+    0.9979110576528224
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "1e52c4578e22e9c7baf37a3294ffa6abdfcb5bfc23dcdb4bb175884fcdb1355e",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:37+00:00",
+    "wall_seconds": 1.6817798614501953
+   }
+  },
+  {
+   "scenario": "omitted_confounder",
+   "seed": 8,
+   "terms": "stumps",
+   "pehe": 2.5125646451323815,
+   "ate": 3.5210770727415412,
+   "ate_error": 2.5210770727415412,
+   "cv_rloss": {
+    "smooth": 15.734485039181285,
+    "stumps": 15.722737613552217
+   },
+   "tau_mstop": {
+    "smooth": 11,
+    "stumps": 10
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.00040679571112045934,
+    0.9998049555152759
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "75927330629bb254fd4defe8dea0341141f2e8eeddc1427b88e404ea344da132",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:38+00:00",
+    "wall_seconds": 1.782994031906128
+   }
+  },
+  {
+   "scenario": "omitted_confounder",
+   "seed": 9,
+   "terms": "smooth",
+   "pehe": 2.3412553323375693,
+   "ate": 3.332034104519227,
+   "ate_error": 2.332034104519227,
+   "cv_rloss": {
+    "smooth": 17.727273250320366,
+    "stumps": 17.834099542773735
+   },
+   "tau_mstop": {
+    "smooth": 36,
+    "stumps": 39
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.0006145237624373595,
+    0.9994388850777954
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "109df14c4c94decc04a86843e58c3f86ce6ba22392e47283a4b7793bcbae6f73",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:40+00:00",
+    "wall_seconds": 1.6816301345825195
+   }
+  },
+  {
+   "scenario": "omitted_confounder",
+   "seed": 10,
+   "terms": "smooth",
+   "pehe": 2.379814849109681,
+   "ate": 3.3452694786634627,
+   "ate_error": 2.3452694786634627,
+   "cv_rloss": {
+    "smooth": 20.33995566032539,
+    "stumps": 20.388776354457573
+   },
+   "tau_mstop": {
+    "smooth": 29,
+    "stumps": 17
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.0003313434351126598,
+    0.9994739719075685
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "e38125683df93c9c652538e63458fd8b5fbf87fdb0cfb0465630bdf96b501aa8",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:42+00:00",
+    "wall_seconds": 1.7481989860534668
+   }
+  },
+  {
+   "scenario": "omitted_confounder",
+   "seed": 11,
+   "terms": "smooth",
+   "pehe": 2.3820204280882407,
+   "ate": 3.3863001713892653,
+   "ate_error": 2.3863001713892653,
+   "cv_rloss": {
+    "smooth": 24.384334357920938,
+    "stumps": 24.60464986653645
+   },
+   "tau_mstop": {
+    "smooth": 54,
+    "stumps": 5
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.0006772263541830715,
+    0.9997097431425469
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "497492891ce66397e98e298700d65856240556911063a9eadc51d552f7487aef",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:43+00:00",
+    "wall_seconds": 1.803238868713379
+   }
+  },
+  {
+   "scenario": "omitted_confounder",
+   "seed": 12,
+   "terms": "stumps",
+   "pehe": 2.4829586636483723,
+   "ate": 3.4501451531415444,
+   "ate_error": 2.4501451531415444,
+   "cv_rloss": {
+    "smooth": 17.25079715505193,
+    "stumps": 17.227369628552676
+   },
+   "tau_mstop": {
+    "smooth": 93,
+    "stumps": 42
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.001363371789437968,
+    0.9991810108518091
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "c68a1075a7b9d57911c8c66678a6f4b1d8e28dedc98ee04234384898554f7417",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:45+00:00",
+    "wall_seconds": 1.7097461223602295
+   }
+  },
+  {
+   "scenario": "omitted_confounder",
+   "seed": 13,
+   "terms": "smooth",
+   "pehe": 2.4377048486384836,
+   "ate": 3.4241629132164846,
+   "ate_error": 2.4241629132164846,
+   "cv_rloss": {
+    "smooth": 20.68278405994919,
+    "stumps": 20.777550426082076
+   },
+   "tau_mstop": {
+    "smooth": 15,
+    "stumps": 9
+   },
+   "n_clipped": 0,
+   "propensity_range": [
+    0.0002961470610445249,
+    0.9994989349347887
+   ],
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "919bef0ed11ec99d894a9639d284fb5d9b4842755b91264d332e3e5826789087",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_competitive_shootout",
+      "bench_shootout_causal",
+      "benchmark_contract",
+      "probe_causal_confirmation",
+      "shootout_data",
+      "shootout_metrics",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "99548aa785169da6d8c1e0c07949aa24d93eadb9d199b91a5dc036a646172dbd",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "aab856c61a7d1e7358999c3bb454e543bfb2abb37983aee7b4e3963cabf970a3"
+     }
+    },
+    "measured_at": "2026-10-06T00:33:47+00:00",
+    "wall_seconds": 1.6869170665740967
+   }
+  }
+ ]
+}

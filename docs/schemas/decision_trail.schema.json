@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "mboostrs decision trail",
+  "description": "The evidence behind one automated modelling procedure: the inputs it saw, the folds it reused, every decision it made, the model it adopted, and the uncertainty it measured. One trail is written per fit(), and two runs with the same seed, data and version produce bit-identical trails on one platform. See docs/design/unified-procedure.md sections 3.6 and 5.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "provenance",
+    "data",
+    "folds",
+    "criterion",
+    "steps",
+    "final",
+    "uncertainty",
+    "budget"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "provenance": {
+      "type": "object",
+      "description": "What produced the trail. No timestamps: two runs with the same seed must compare equal.",
+      "required": ["mboostrs", "git_sha", "seed", "blas_threads"],
+      "properties": {
+        "mboostrs": {"type": "string"},
+        "git_sha": {"type": ["string", "null"]},
+        "seed": {"type": "integer"},
+        "blas_threads": {"type": ["integer", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "data": {
+      "type": "object",
+      "description": "The training table as the procedure read it.",
+      "required": ["n", "response", "columns"],
+      "properties": {
+        "n": {"type": "integer", "minimum": 0},
+        "response": {"type": "string"},
+        "columns": {
+          "type": "object",
+          "description": "Column name to the kind the procedure typed it as (numeric, categorical, group, ...).",
+          "additionalProperties": {"type": "string"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "folds": {
+      "type": "object",
+      "description": "The one fold set every candidate was scored on.",
+      "required": ["scheme", "K", "R", "hash"],
+      "properties": {
+        "scheme": {"type": "string"},
+        "K": {"type": "integer", "minimum": 0},
+        "R": {"type": "integer", "minimum": 0},
+        "hash": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "criterion": {
+      "type": "string",
+      "description": "The single scoring rule every decision minimised."
+    },
+    "steps": {
+      "type": "array",
+      "description": "One record per decision, in the order the procedure made them.",
+      "items": {"$ref": "#/$defs/step"}
+    },
+    "final": {
+      "type": "object",
+      "required": ["formula", "family", "mstop"],
+      "properties": {
+        "formula": {"type": "string"},
+        "family": {"type": "string"},
+        "mstop": {"type": "integer"}
+      },
+      "additionalProperties": false
+    },
+    "uncertainty": {
+      "type": "object",
+      "required": ["method"],
+      "properties": {
+        "method": {"enum": ["stability", "bootstrap", "none"]},
+        "B": {"type": ["integer", "null"]},
+        "pi_thr": {"type": ["number", "null"]},
+        "terms": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["term", "pi"],
+            "properties": {
+              "term": {"type": "string"},
+              "pi": {"type": ["number", "null"]}
+            }
+          }
+        },
+        "expected_false_selections_bound": {"type": ["number", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "budget": {
+      "type": "object",
+      "required": ["setting", "spent", "degradations"],
+      "properties": {
+        "setting": {"enum": ["quick", "standard", "thorough"]},
+        "spent": {"type": "number"},
+        "degradations": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "candidate": {
+      "type": "object",
+      "required": ["spec"],
+      "properties": {
+        "spec": {"type": "string"},
+        "score": {"type": ["number", "null"]},
+        "d": {"type": ["number", "null"]},
+        "se": {"type": ["number", "null"]},
+        "status": {"enum": ["ok", "failed", "skipped"]},
+        "reason": {"type": ["string", "null"]}
+      }
+    },
+    "step": {
+      "type": "object",
+      "required": ["step", "decision"],
+      "properties": {
+        "step": {"type": ["integer", "string"]},
+        "decision": {"type": "string"},
+        "incumbent": {"type": ["string", "null"]},
+        "candidates": {"type": "array", "items": {"$ref": "#/$defs/candidate"}},
+        "threshold": {"type": ["number", "null"]},
+        "adopted": {"type": ["string", "null"]},
+        "rule": {"type": ["string", "null"]},
+        "reason": {"type": ["string", "null"]},
+        "reference": {"type": ["string", "null"]},
+        "d": {"type": ["number", "null"]},
+        "se": {"type": ["number", "null"]},
+        "verdict": {"type": ["string", "null"]}
+      }
+    }
+  }
+}

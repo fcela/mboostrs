@@ -1,0 +1,1978 @@
+{
+ "study": "issue-898-dlib-vs-autospec-tuning",
+ "main_commit": "1f7f37513dfbd41b48612ee8b1f019b51a5d382e",
+ "meta": {
+  "mboostrs_version": "0.2.0",
+  "dlib_version": "20.0.1",
+  "python": "3.12.3",
+  "autospec_budget": 200,
+  "seed": 0,
+  "n_folds": 5,
+  "nu_bounds": [
+   0.02,
+   1.0
+  ]
+ },
+ "panels_ran": 7,
+ "dlib_panel_wins": 3,
+ "dlib_majority": false,
+ "verdict": "dlib does not win a majority of the panels run: per the issue's win rule the record closes the question and no reimplementation is proposed",
+ "summary_rows": [
+  {
+   "panel": "cancer",
+   "n_dev": 364,
+   "route_mstop": 625,
+   "route_risk": 0.09072105141944221,
+   "budget_fits": 52,
+   "dlib_nu": 0.4433364468140377,
+   "dlib_mstop": 479,
+   "dlib_risk": 0.09047873340417,
+   "dlib_evals": 10,
+   "dlib_fits": 50,
+   "margin": 0.0002423180152722193,
+   "paired_se": 0.0010460055025396844,
+   "dlib_wins": false,
+   "route_seconds": 14.7,
+   "dlib_seconds": 2.9
+  },
+  {
+   "panel": "bike_iid",
+   "n_dev": 4000,
+   "route_mstop": 9993,
+   "route_risk": 0.35339657947094893,
+   "budget_fits": 136,
+   "dlib_nu": 0.5319212738526274,
+   "dlib_mstop": 9844,
+   "dlib_risk": 0.3533529412417735,
+   "dlib_evals": 27,
+   "dlib_fits": 135,
+   "margin": 4.363822917541338e-05,
+   "paired_se": 0.00047344513272239765,
+   "dlib_wins": false,
+   "route_seconds": 196.0,
+   "dlib_seconds": 40.6
+  },
+  {
+   "panel": "bike_future",
+   "n_dev": 4000,
+   "route_mstop": 9994,
+   "route_risk": 0.2833879242569311,
+   "budget_fits": 106,
+   "dlib_nu": 0.9900200504243722,
+   "dlib_mstop": 9915,
+   "dlib_risk": 0.28281037427221883,
+   "dlib_evals": 21,
+   "dlib_fits": 105,
+   "margin": 0.0005775499847122667,
+   "paired_se": 0.00025775591446740954,
+   "dlib_wins": true,
+   "route_seconds": 48.5,
+   "dlib_seconds": 12.6
+  },
+  {
+   "panel": "concrete",
+   "n_dev": 659,
+   "route_mstop": 9941,
+   "route_risk": 29.903495567631758,
+   "budget_fits": 78,
+   "dlib_nu": 0.6092323757507371,
+   "dlib_mstop": 9868,
+   "dlib_risk": 28.845142814861692,
+   "dlib_evals": 15,
+   "dlib_fits": 75,
+   "margin": 1.058352752770066,
+   "paired_se": 0.4980822714174701,
+   "dlib_wins": true,
+   "route_seconds": 34.4,
+   "dlib_seconds": 39.1
+  },
+  {
+   "panel": "joint_boundary",
+   "n_dev": 3200,
+   "route_mstop": 9,
+   "route_risk": 9.353730226340783,
+   "budget_fits": 36,
+   "dlib_nu": 0.16346515216969157,
+   "dlib_mstop": 57,
+   "dlib_risk": 9.365270404696176,
+   "dlib_evals": 7,
+   "dlib_fits": 35,
+   "margin": -0.011540178355392783,
+   "paired_se": 0.009844506983880036,
+   "dlib_wins": false,
+   "route_seconds": 7.3,
+   "dlib_seconds": 0.2
+  },
+  {
+   "panel": "smooth_sparse",
+   "n_dev": 3200,
+   "route_mstop": 145,
+   "route_risk": 0.25047802126225155,
+   "budget_fits": 45,
+   "dlib_nu": 0.44494886449151616,
+   "dlib_mstop": 101,
+   "dlib_risk": 0.25048881315304683,
+   "dlib_evals": 9,
+   "dlib_fits": 45,
+   "margin": -1.0791890795280867e-05,
+   "paired_se": 2.2637391691258933e-05,
+   "dlib_wins": false,
+   "route_seconds": 7.0,
+   "dlib_seconds": 0.4
+  },
+  {
+   "panel": "housing_iid",
+   "n_dev": 4000,
+   "route_mstop": 195,
+   "route_risk": 0.06083592696210969,
+   "budget_fits": 132,
+   "dlib_nu": 0.25836926540290817,
+   "dlib_mstop": 475,
+   "dlib_risk": 0.05905294285045866,
+   "dlib_evals": 26,
+   "dlib_fits": 130,
+   "margin": 0.00178298411165103,
+   "paired_se": 0.00091441055921044,
+   "dlib_wins": true,
+   "route_seconds": 188.3,
+   "dlib_seconds": 51.7
+  }
+ ],
+ "panels": {
+  "cancer": {
+   "task": "cancer",
+   "seed": 0,
+   "n_dev": 364,
+   "kind": "binary",
+   "categorical": [],
+   "route": {
+    "formula": "y ~ bbs(x1, df=4.0) + btree(x3) + bbs(x4, df=4.0) + bbs(x7, df=4.0) + bbs(log(x10), df=4.0) + btree(x11) + bbs(x20, df=4.0) + bbs(x21, df=4.0) + bbs(x22, df=4.0) + bbs(x24, df=4.0) + bbs(x26, df=4.0) + bbs(x27, df=4.0) + bbs(x28, df=4.0)",
+    "family": "Binomial()",
+    "mstop": 625,
+    "nu": 0.3,
+    "risk": 0.09072105141944221,
+    "fits_total": 52,
+    "seconds": 14.7,
+    "probe_log": [
+     {
+      "fits": 5,
+      "chosen": 419,
+      "risk_at_chosen": 0.09920343986189291
+     },
+     {
+      "fits": 5,
+      "chosen": 956,
+      "risk_at_chosen": 0.09351894105111079
+     },
+     {
+      "fits": 5,
+      "chosen": 625,
+      "risk_at_chosen": 0.09072105141944221
+     }
+    ],
+    "anytime": [
+     {
+      "fits": 5,
+      "best_risk": 0.09920343986189291
+     },
+     {
+      "fits": 10,
+      "best_risk": 0.09351894105111079
+     },
+     {
+      "fits": 15,
+      "best_risk": 0.09072105141944221
+     }
+    ],
+    "grid_largest": 956,
+    "evidence_chosen_matches": true
+   },
+   "dlib": {
+    "nu": 0.4433364468140377,
+    "mstop": 479,
+    "risk": 0.09047873340417,
+    "max_calls": 10,
+    "evaluations": 10,
+    "fits_spent": 50,
+    "seconds": 2.9,
+    "evaluations_log": [
+     {
+      "nu": 0.51,
+      "mstop": 479,
+      "risk": 0.09055850758604958,
+      "fits_after": 5
+     },
+     {
+      "nu": 0.24860721732219948,
+      "mstop": 729,
+      "risk": 0.09083809734222882,
+      "fits_after": 10
+     },
+     {
+      "nu": 0.16346515216969157,
+      "mstop": 270,
+      "risk": 0.09918218552549384,
+      "fits_after": 15
+     },
+     {
+      "nu": 0.9958638887489094,
+      "mstop": 948,
+      "risk": 0.09836621324641841,
+      "fits_after": 20
+     },
+     {
+      "nu": 0.3812155559776872,
+      "mstop": 479,
+      "risk": 0.09049022397026403,
+      "fits_after": 25
+     },
+     {
+      "nu": 0.9830258882225784,
+      "mstop": 14,
+      "risk": 0.11859142062109485,
+      "fits_after": 30
+     },
+     {
+      "nu": 0.4433364468140377,
+      "mstop": 479,
+      "risk": 0.09047873340417,
+      "fits_after": 35
+     },
+     {
+      "nu": 0.026255671664134915,
+      "mstop": 955,
+      "risk": 0.10834218014569204,
+      "fits_after": 40
+     },
+     {
+      "nu": 0.4208966981937008,
+      "mstop": 479,
+      "risk": 0.0906934417672273,
+      "fits_after": 45
+     },
+     {
+      "nu": 0.6354297034833227,
+      "mstop": 709,
+      "risk": 0.09194882037616167,
+      "fits_after": 50
+     }
+    ],
+    "anytime": [
+     {
+      "fits": 5,
+      "best_risk": 0.09055850758604958
+     },
+     {
+      "fits": 10,
+      "best_risk": 0.09055850758604958
+     },
+     {
+      "fits": 15,
+      "best_risk": 0.09055850758604958
+     },
+     {
+      "fits": 20,
+      "best_risk": 0.09055850758604958
+     },
+     {
+      "fits": 25,
+      "best_risk": 0.09049022397026403
+     },
+     {
+      "fits": 30,
+      "best_risk": 0.09049022397026403
+     },
+     {
+      "fits": 35,
+      "best_risk": 0.09047873340417
+     },
+     {
+      "fits": 40,
+      "best_risk": 0.09047873340417
+     },
+     {
+      "fits": 45,
+      "best_risk": 0.09047873340417
+     },
+     {
+      "fits": 50,
+      "best_risk": 0.09047873340417
+     }
+    ]
+   },
+   "comparison": {
+    "route_fold_risks": [
+     0.04410646817385603,
+     0.07304352043039004,
+     0.2193918729423353,
+     0.05890682010270257,
+     0.05815657544792713
+    ],
+    "dlib_fold_risks": [
+     0.04317044986701704,
+     0.07137006034873469,
+     0.22262909924556787,
+     0.05976596042138116,
+     0.05545809713814924
+    ],
+    "paired_se": 0.0010460055025396844,
+    "margin_route_minus_dlib": 0.0002423180152722193,
+    "dlib_wins": false,
+    "judge_note": "per-fold risks recomputed once per configuration with cvrisk on the shared folds; not charged to either arm's search budget"
+   }
+  },
+  "bike_iid": {
+   "task": "bike_iid",
+   "seed": 0,
+   "n_dev": 4000,
+   "kind": "regression",
+   "categorical": [
+    "season",
+    "holiday",
+    "workingday",
+    "weathersit",
+    "weekday"
+   ],
+   "route": {
+    "formula": "y ~ brandom(season, df=4.0) + bols(holiday) + bols(workingday) + brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(mnth, df=4.0) + bols(yr) + bbs(temp, df=4.0) + bbs(hum, df=4.0) + bbs(windspeed, df=4.0)",
+    "family": "Gaussian()",
+    "mstop": 9993,
+    "nu": 0.3,
+    "risk": 0.35339657947094893,
+    "fits_total": 136,
+    "seconds": 196.0,
+    "probe_log": [
+     {
+      "fits": 5,
+      "chosen": 9993,
+      "risk_at_chosen": 0.35339657947094855
+     },
+     {
+      "fits": 5,
+      "chosen": 9993,
+      "risk_at_chosen": 0.3533965794709485
+     },
+     {
+      "fits": 5,
+      "chosen": 10000,
+      "risk_at_chosen": 0.3625965710294894
+     },
+     {
+      "fits": 5,
+      "chosen": 9955,
+      "risk_at_chosen": 0.354186204796732
+     },
+     {
+      "fits": 5,
+      "chosen": 9995,
+      "risk_at_chosen": 0.3559701719619093
+     },
+     {
+      "fits": 5,
+      "chosen": 9999,
+      "risk_at_chosen": 0.35987164596846294
+     }
+    ],
+    "anytime": [
+     {
+      "fits": 5,
+      "best_risk": 0.35339657947094855
+     },
+     {
+      "fits": 10,
+      "best_risk": 0.3533965794709485
+     },
+     {
+      "fits": 15,
+      "best_risk": 0.3533965794709485
+     },
+     {
+      "fits": 20,
+      "best_risk": 0.3533965794709485
+     },
+     {
+      "fits": 25,
+      "best_risk": 0.3533965794709485
+     },
+     {
+      "fits": 30,
+      "best_risk": 0.3533965794709485
+     }
+    ],
+    "grid_largest": 10000,
+    "evidence_chosen_matches": true
+   },
+   "dlib": {
+    "nu": 0.5319212738526274,
+    "mstop": 9844,
+    "risk": 0.3533529412417735,
+    "max_calls": 27,
+    "evaluations": 27,
+    "fits_spent": 135,
+    "seconds": 40.6,
+    "evaluations_log": [
+     {
+      "nu": 0.51,
+      "mstop": 5001,
+      "risk": 0.35345337483666367,
+      "fits_after": 5
+     },
+     {
+      "nu": 0.24860721732219948,
+      "mstop": 7627,
+      "risk": 0.35356438533480217,
+      "fits_after": 10
+     },
+     {
+      "nu": 0.16346515216969157,
+      "mstop": 2819,
+      "risk": 0.35818047274108444,
+      "fits_after": 15
+     },
+     {
+      "nu": 0.9958638887489094,
+      "mstop": 9915,
+      "risk": 0.35341026686055044,
+      "fits_after": 20
+     },
+     {
+      "nu": 0.8516030470181073,
+      "mstop": 9915,
+      "risk": 0.35339297754998167,
+      "fits_after": 25
+     },
+     {
+      "nu": 0.9981902014897808,
+      "mstop": 386,
+      "risk": 0.36001731022052896,
+      "fits_after": 30
+     },
+     {
+      "nu": 0.8129253190245666,
+      "mstop": 9915,
+      "risk": 0.3533891310278797,
+      "fits_after": 35
+     },
+     {
+      "nu": 0.5322107167523192,
+      "mstop": 9844,
+      "risk": 0.3533538541923502,
+      "fits_after": 40
+     },
+     {
+      "nu": 0.2287880029998206,
+      "mstop": 9844,
+      "risk": 0.3534647553294979,
+      "fits_after": 45
+     },
+     {
+      "nu": 0.632742573568006,
+      "mstop": 9870,
+      "risk": 0.35337679258738863,
+      "fits_after": 50
+     },
+     {
+      "nu": 0.5048490513425323,
+      "mstop": 9844,
+      "risk": 0.3533825937383574,
+      "fits_after": 55
+     },
+     {
+      "nu": 0.5261556197265012,
+      "mstop": 8093,
+      "risk": 0.35336413525166693,
+      "fits_after": 60
+     },
+     {
+      "nu": 0.6080663951904439,
+      "mstop": 9844,
+      "risk": 0.3533709372592311,
+      "fits_after": 65
+     },
+     {
+      "nu": 0.4343103923127576,
+      "mstop": 9877,
+      "risk": 0.3533734290334043,
+      "fits_after": 70
+     },
+     {
+      "nu": 0.5610268742434604,
+      "mstop": 9844,
+      "risk": 0.35335394475586956,
+      "fits_after": 75
+     },
+     {
+      "nu": 0.573608174193325,
+      "mstop": 8620,
+      "risk": 0.353357373466498,
+      "fits_after": 80
+     },
+     {
+      "nu": 0.5465350006664381,
+      "mstop": 9844,
+      "risk": 0.3533622262709191,
+      "fits_after": 85
+     },
+     {
+      "nu": 0.47957327752013035,
+      "mstop": 8581,
+      "risk": 0.35339514802795646,
+      "fits_after": 90
+     },
+     {
+      "nu": 0.5319212738526274,
+      "mstop": 9844,
+      "risk": 0.3533529412417735,
+      "fits_after": 95
+     },
+     {
+      "nu": 0.5284354408450653,
+      "mstop": 6946,
+      "risk": 0.35337756057577857,
+      "fits_after": 100
+     },
+     {
+      "nu": 0.5129573542430963,
+      "mstop": 9844,
+      "risk": 0.35337429332372927,
+      "fits_after": 105
+     },
+     {
+      "nu": 0.5339097198301451,
+      "mstop": 8970,
+      "risk": 0.353355424779232,
+      "fits_after": 110
+     },
+     {
+      "nu": 0.5224393140478618,
+      "mstop": 9844,
+      "risk": 0.3533790034069383,
+      "fits_after": 115
+     },
+     {
+      "nu": 0.4686360335556799,
+      "mstop": 9753,
+      "risk": 0.3533802777131146,
+      "fits_after": 120
+     },
+     {
+      "nu": 0.5294553046121695,
+      "mstop": 9844,
+      "risk": 0.3533548256208628,
+      "fits_after": 125
+     },
+     {
+      "nu": 0.5567424794426784,
+      "mstop": 7718,
+      "risk": 0.3533644632190623,
+      "fits_after": 130
+     },
+     {
+      "nu": 0.5309569705620889,
+      "mstop": 9844,
+      "risk": 0.3533549586086808,
+      "fits_after": 135
+     }
+    ],
+    "anytime": [
+     {
+      "fits": 5,
+      "best_risk": 0.35345337483666367
+     },
+     {
+      "fits": 10,
+      "best_risk": 0.35345337483666367
+     },
+     {
+      "fits": 15,
+      "best_risk": 0.35345337483666367
+     },
+     {
+      "fits": 20,
+      "best_risk": 0.35341026686055044
+     },
+     {
+      "fits": 25,
+      "best_risk": 0.35339297754998167
+     },
+     {
+      "fits": 30,
+      "best_risk": 0.35339297754998167
+     },
+     {
+      "fits": 35,
+      "best_risk": 0.3533891310278797
+     },
+     {
+      "fits": 40,
+      "best_risk": 0.3533538541923502
+     },
+     {
+      "fits": 45,
+      "best_risk": 0.3533538541923502
+     },
+     {
+      "fits": 50,
+      "best_risk": 0.3533538541923502
+     },
+     {
+      "fits": 55,
+      "best_risk": 0.3533538541923502
+     },
+     {
+      "fits": 60,
+      "best_risk": 0.3533538541923502
+     },
+     {
+      "fits": 65,
+      "best_risk": 0.3533538541923502
+     },
+     {
+      "fits": 70,
+      "best_risk": 0.3533538541923502
+     },
+     {
+      "fits": 75,
+      "best_risk": 0.3533538541923502
+     },
+     {
+      "fits": 80,
+      "best_risk": 0.3533538541923502
+     },
+     {
+      "fits": 85,
+      "best_risk": 0.3533538541923502
+     },
+     {
+      "fits": 90,
+      "best_risk": 0.3533538541923502
+     },
+     {
+      "fits": 95,
+      "best_risk": 0.3533529412417735
+     },
+     {
+      "fits": 100,
+      "best_risk": 0.3533529412417735
+     },
+     {
+      "fits": 105,
+      "best_risk": 0.3533529412417735
+     },
+     {
+      "fits": 110,
+      "best_risk": 0.3533529412417735
+     },
+     {
+      "fits": 115,
+      "best_risk": 0.3533529412417735
+     },
+     {
+      "fits": 120,
+      "best_risk": 0.3533529412417735
+     },
+     {
+      "fits": 125,
+      "best_risk": 0.3533529412417735
+     },
+     {
+      "fits": 130,
+      "best_risk": 0.3533529412417735
+     },
+     {
+      "fits": 135,
+      "best_risk": 0.3533529412417735
+     }
+    ]
+   },
+   "comparison": {
+    "route_fold_risks": [
+     0.3347531033357062,
+     0.37553769558454925,
+     0.35079608309220495,
+     0.3615286362404133,
+     0.3443673791018708
+    ],
+    "dlib_fold_risks": [
+     0.33516459027839735,
+     0.3752953562248868,
+     0.35122473101419627,
+     0.35975173434758295,
+     0.3453282943438042
+    ],
+    "paired_se": 0.00047344513272239765,
+    "margin_route_minus_dlib": 4.363822917541338e-05,
+    "dlib_wins": false,
+    "judge_note": "per-fold risks recomputed once per configuration with cvrisk on the shared folds; not charged to either arm's search budget"
+   }
+  },
+  "bike_future": {
+   "task": "bike_future",
+   "seed": 0,
+   "n_dev": 4000,
+   "kind": "regression",
+   "categorical": [
+    "season",
+    "holiday",
+    "workingday",
+    "weathersit",
+    "weekday"
+   ],
+   "route": {
+    "formula": "y ~ brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(temp, df=4.0) + bbs(hum, df=4.0)",
+    "family": "Gaussian()",
+    "mstop": 9994,
+    "nu": 0.3,
+    "risk": 0.2833879242569311,
+    "fits_total": 106,
+    "seconds": 48.5,
+    "probe_log": [
+     {
+      "fits": 5,
+      "chosen": 4069,
+      "risk_at_chosen": 0.2831634283954939
+     },
+     {
+      "fits": 5,
+      "chosen": 4069,
+      "risk_at_chosen": 0.2831634283954937
+     },
+     {
+      "fits": 5,
+      "chosen": 9995,
+      "risk_at_chosen": 0.28680822453118726
+     },
+     {
+      "fits": 5,
+      "chosen": 8286,
+      "risk_at_chosen": 0.28294897758624976
+     },
+     {
+      "fits": 5,
+      "chosen": 7474,
+      "risk_at_chosen": 0.28320239161029115
+     },
+     {
+      "fits": 5,
+      "chosen": 9994,
+      "risk_at_chosen": 0.2833879242569311
+     }
+    ],
+    "anytime": [
+     {
+      "fits": 5,
+      "best_risk": 0.2831634283954939
+     },
+     {
+      "fits": 10,
+      "best_risk": 0.2831634283954937
+     },
+     {
+      "fits": 15,
+      "best_risk": 0.2831634283954937
+     },
+     {
+      "fits": 20,
+      "best_risk": 0.28294897758624976
+     },
+     {
+      "fits": 25,
+      "best_risk": 0.28294897758624976
+     },
+     {
+      "fits": 30,
+      "best_risk": 0.28294897758624976
+     }
+    ],
+    "grid_largest": 10000,
+    "evidence_chosen_matches": true
+   },
+   "dlib": {
+    "nu": 0.9900200504243722,
+    "mstop": 9915,
+    "risk": 0.28281037427221883,
+    "max_calls": 21,
+    "evaluations": 21,
+    "fits_spent": 105,
+    "seconds": 12.6,
+    "evaluations_log": [
+     {
+      "nu": 0.51,
+      "mstop": 5001,
+      "risk": 0.2834073433551613,
+      "fits_after": 5
+     },
+     {
+      "nu": 0.24860721732219948,
+      "mstop": 7627,
+      "risk": 0.2834085611138296,
+      "fits_after": 10
+     },
+     {
+      "nu": 0.16346515216969157,
+      "mstop": 2819,
+      "risk": 0.2866949756715457,
+      "fits_after": 15
+     },
+     {
+      "nu": 0.9958638887489094,
+      "mstop": 9915,
+      "risk": 0.2828110693142463,
+      "fits_after": 20
+     },
+     {
+      "nu": 1.0,
+      "mstop": 9915,
+      "risk": 0.2828138326409958,
+      "fits_after": 25
+     },
+     {
+      "nu": 0.9981902014897808,
+      "mstop": 386,
+      "risk": 0.2884347681560441,
+      "fits_after": 30
+     },
+     {
+      "nu": 0.826912216710157,
+      "mstop": 9915,
+      "risk": 0.28295536451853653,
+      "fits_after": 35
+     },
+     {
+      "nu": 0.5110719692760433,
+      "mstop": 9985,
+      "risk": 0.2832471926714143,
+      "fits_after": 40
+     },
+     {
+      "nu": 0.9599465880485292,
+      "mstop": 9915,
+      "risk": 0.282841124839602,
+      "fits_after": 45
+     },
+     {
+      "nu": 0.3644723138105785,
+      "mstop": 9791,
+      "risk": 0.2833628361666361,
+      "fits_after": 50
+     },
+     {
+      "nu": 0.9890410975781176,
+      "mstop": 9915,
+      "risk": 0.28281089942130067,
+      "fits_after": 55
+     },
+     {
+      "nu": 0.6492794765217904,
+      "mstop": 9951,
+      "risk": 0.2831224697623441,
+      "fits_after": 60
+     },
+     {
+      "nu": 0.9922403610916849,
+      "mstop": 9915,
+      "risk": 0.28281157291918846,
+      "fits_after": 65
+     },
+     {
+      "nu": 0.024170564744314275,
+      "mstop": 9974,
+      "risk": 0.2943937590649259,
+      "fits_after": 70
+     },
+     {
+      "nu": 0.9668569151451372,
+      "mstop": 9915,
+      "risk": 0.2828310111058153,
+      "fits_after": 75
+     },
+     {
+      "nu": 0.973920634408362,
+      "mstop": 5946,
+      "risk": 0.28317620409781197,
+      "fits_after": 80
+     },
+     {
+      "nu": 0.9779490063616274,
+      "mstop": 9915,
+      "risk": 0.28282240070827547,
+      "fits_after": 85
+     },
+     {
+      "nu": 0.4988773019515474,
+      "mstop": 132,
+      "risk": 0.3189661500345335,
+      "fits_after": 90
+     },
+     {
+      "nu": 0.9834950519698725,
+      "mstop": 9915,
+      "risk": 0.28281795711300933,
+      "fits_after": 95
+     },
+     {
+      "nu": 0.7443143427036445,
+      "mstop": 7290,
+      "risk": 0.28321260046833163,
+      "fits_after": 100
+     },
+     {
+      "nu": 0.9900200504243722,
+      "mstop": 9915,
+      "risk": 0.28281037427221883,
+      "fits_after": 105
+     }
+    ],
+    "anytime": [
+     {
+      "fits": 5,
+      "best_risk": 0.2834073433551613
+     },
+     {
+      "fits": 10,
+      "best_risk": 0.2834073433551613
+     },
+     {
+      "fits": 15,
+      "best_risk": 0.2834073433551613
+     },
+     {
+      "fits": 20,
+      "best_risk": 0.2828110693142463
+     },
+     {
+      "fits": 25,
+      "best_risk": 0.2828110693142463
+     },
+     {
+      "fits": 30,
+      "best_risk": 0.2828110693142463
+     },
+     {
+      "fits": 35,
+      "best_risk": 0.2828110693142463
+     },
+     {
+      "fits": 40,
+      "best_risk": 0.2828110693142463
+     },
+     {
+      "fits": 45,
+      "best_risk": 0.2828110693142463
+     },
+     {
+      "fits": 50,
+      "best_risk": 0.2828110693142463
+     },
+     {
+      "fits": 55,
+      "best_risk": 0.28281089942130067
+     },
+     {
+      "fits": 60,
+      "best_risk": 0.28281089942130067
+     },
+     {
+      "fits": 65,
+      "best_risk": 0.28281089942130067
+     },
+     {
+      "fits": 70,
+      "best_risk": 0.28281089942130067
+     },
+     {
+      "fits": 75,
+      "best_risk": 0.28281089942130067
+     },
+     {
+      "fits": 80,
+      "best_risk": 0.28281089942130067
+     },
+     {
+      "fits": 85,
+      "best_risk": 0.28281089942130067
+     },
+     {
+      "fits": 90,
+      "best_risk": 0.28281089942130067
+     },
+     {
+      "fits": 95,
+      "best_risk": 0.28281089942130067
+     },
+     {
+      "fits": 100,
+      "best_risk": 0.28281089942130067
+     },
+     {
+      "fits": 105,
+      "best_risk": 0.28281037427221883
+     }
+    ]
+   },
+   "comparison": {
+    "route_fold_risks": [
+     0.2929892539782383,
+     0.2793220891871433,
+     0.25512226517410524,
+     0.32007294281978416,
+     0.2694330701253843
+    ],
+    "dlib_fold_risks": [
+     0.2924987449860191,
+     0.27883455832116066,
+     0.2550425111388494,
+     0.3198050994484251,
+     0.26787095746663975
+    ],
+    "paired_se": 0.00025775591446740954,
+    "margin_route_minus_dlib": 0.0005775499847122667,
+    "dlib_wins": true,
+    "judge_note": "per-fold risks recomputed once per configuration with cvrisk on the shared folds; not charged to either arm's search budget"
+   }
+  },
+  "concrete": {
+   "task": "concrete",
+   "seed": 0,
+   "n_dev": 659,
+   "kind": "regression",
+   "categorical": [],
+   "route": {
+    "formula": "y ~ bbs(cement, df=4.0) + btree(blast_furnace_slag) + bbs(fly_ash, df=4.0) + btree(water) + bbs(superplasticizer, df=4.0) + bbs(coarse_aggregate, df=4.0) + bbs(fine_aggregate, df=4.0) + bbs(age, df=4.0)",
+    "family": "Gaussian()",
+    "mstop": 9941,
+    "nu": 0.3,
+    "risk": 29.903495567631758,
+    "fits_total": 78,
+    "seconds": 34.4,
+    "probe_log": [
+     {
+      "fits": 5,
+      "chosen": 9999,
+      "risk_at_chosen": 32.80512043495444
+     },
+     {
+      "fits": 5,
+      "chosen": 9941,
+      "risk_at_chosen": 29.903495567631758
+     },
+     {
+      "fits": 5,
+      "chosen": 10000,
+      "risk_at_chosen": 31.54950297455283
+     },
+     {
+      "fits": 5,
+      "chosen": 9987,
+      "risk_at_chosen": 30.73841446346386
+     }
+    ],
+    "anytime": [
+     {
+      "fits": 5,
+      "best_risk": 32.80512043495444
+     },
+     {
+      "fits": 10,
+      "best_risk": 29.903495567631758
+     },
+     {
+      "fits": 15,
+      "best_risk": 29.903495567631758
+     },
+     {
+      "fits": 20,
+      "best_risk": 29.903495567631758
+     }
+    ],
+    "grid_largest": 10000,
+    "evidence_chosen_matches": true
+   },
+   "dlib": {
+    "nu": 0.6092323757507371,
+    "mstop": 9868,
+    "risk": 28.845142814861692,
+    "max_calls": 15,
+    "evaluations": 15,
+    "fits_spent": 75,
+    "seconds": 39.1,
+    "evaluations_log": [
+     {
+      "nu": 0.51,
+      "mstop": 5001,
+      "risk": 29.945692766062376,
+      "fits_after": 5
+     },
+     {
+      "nu": 0.24860721732219948,
+      "mstop": 7627,
+      "risk": 30.582896586944408,
+      "fits_after": 10
+     },
+     {
+      "nu": 0.16346515216969157,
+      "mstop": 2819,
+      "risk": 33.301828260864,
+      "fits_after": 15
+     },
+     {
+      "nu": 0.9958638887489094,
+      "mstop": 9915,
+      "risk": 29.51899526817177,
+      "fits_after": 20
+     },
+     {
+      "nu": 0.9633386678369052,
+      "mstop": 9915,
+      "risk": 29.465539174270056,
+      "fits_after": 25
+     },
+     {
+      "nu": 0.9927881671272908,
+      "mstop": 5599,
+      "risk": 29.21671535303495,
+      "fits_after": 30
+     },
+     {
+      "nu": 1.0,
+      "mstop": 5599,
+      "risk": 29.269151759134285,
+      "fits_after": 35
+     },
+     {
+      "nu": 0.9988898513756174,
+      "mstop": 296,
+      "risk": 34.944131283676974,
+      "fits_after": 40
+     },
+     {
+      "nu": 0.7935238072854568,
+      "mstop": 5599,
+      "risk": 29.375954842956553,
+      "fits_after": 45
+     },
+     {
+      "nu": 0.7987788716806161,
+      "mstop": 7843,
+      "risk": 29.04986183145541,
+      "fits_after": 50
+     },
+     {
+      "nu": 0.7111367454425032,
+      "mstop": 7843,
+      "risk": 29.211920575597922,
+      "fits_after": 55
+     },
+     {
+      "nu": 0.6092323757507371,
+      "mstop": 9868,
+      "risk": 28.845142814861692,
+      "fits_after": 60
+     },
+     {
+      "nu": 0.24193243840247336,
+      "mstop": 9868,
+      "risk": 30.223151933977203,
+      "fits_after": 65
+     },
+     {
+      "nu": 0.9862354538637538,
+      "mstop": 7202,
+      "risk": 29.24071577284895,
+      "fits_after": 70
+     },
+     {
+      "nu": 0.6714627241754888,
+      "mstop": 9868,
+      "risk": 29.20415086115936,
+      "fits_after": 75
+     }
+    ],
+    "anytime": [
+     {
+      "fits": 5,
+      "best_risk": 29.945692766062376
+     },
+     {
+      "fits": 10,
+      "best_risk": 29.945692766062376
+     },
+     {
+      "fits": 15,
+      "best_risk": 29.945692766062376
+     },
+     {
+      "fits": 20,
+      "best_risk": 29.51899526817177
+     },
+     {
+      "fits": 25,
+      "best_risk": 29.465539174270056
+     },
+     {
+      "fits": 30,
+      "best_risk": 29.21671535303495
+     },
+     {
+      "fits": 35,
+      "best_risk": 29.21671535303495
+     },
+     {
+      "fits": 40,
+      "best_risk": 29.21671535303495
+     },
+     {
+      "fits": 45,
+      "best_risk": 29.21671535303495
+     },
+     {
+      "fits": 50,
+      "best_risk": 29.04986183145541
+     },
+     {
+      "fits": 55,
+      "best_risk": 29.04986183145541
+     },
+     {
+      "fits": 60,
+      "best_risk": 28.845142814861692
+     },
+     {
+      "fits": 65,
+      "best_risk": 28.845142814861692
+     },
+     {
+      "fits": 70,
+      "best_risk": 28.845142814861692
+     },
+     {
+      "fits": 75,
+      "best_risk": 28.845142814861692
+     }
+    ]
+   },
+   "comparison": {
+    "route_fold_risks": [
+     26.266023490386026,
+     26.15944831293975,
+     41.0130464165218,
+     27.103039093076728,
+     28.97592052523447
+    ],
+    "dlib_fold_risks": [
+     26.42658321576119,
+     26.248425042999934,
+     39.38413015675825,
+     25.47988850706255,
+     26.68668715172651
+    ],
+    "paired_se": 0.4980822714174701,
+    "margin_route_minus_dlib": 1.058352752770066,
+    "dlib_wins": true,
+    "judge_note": "per-fold risks recomputed once per configuration with cvrisk on the shared folds; not charged to either arm's search budget"
+   }
+  },
+  "joint_boundary": {
+   "task": "joint_boundary",
+   "seed": 0,
+   "n_dev": 3200,
+   "kind": "regression",
+   "categorical": [],
+   "route": {
+    "formula": "y ~ bols(x0) + bols(x1) + bols(x2) + bols(x3) + bols(x4) + bols(x5) + bols(x6) + bols(x7) + bols(x8) + bols(x9) + bols(x10) + bols(x11)",
+    "family": "Gaussian()",
+    "mstop": 9,
+    "nu": 0.3,
+    "risk": 9.353730226340783,
+    "fits_total": 36,
+    "seconds": 7.3,
+    "probe_log": [
+     {
+      "fits": 5,
+      "chosen": 4,
+      "risk_at_chosen": 9.367939283950967
+     }
+    ],
+    "anytime": [
+     {
+      "fits": 5,
+      "best_risk": 9.367939283950967
+     }
+    ],
+    "grid_largest": 200,
+    "evidence_chosen_matches": true
+   },
+   "dlib": {
+    "nu": 0.16346515216969157,
+    "mstop": 57,
+    "risk": 9.365270404696176,
+    "max_calls": 7,
+    "evaluations": 7,
+    "fits_spent": 35,
+    "seconds": 0.2,
+    "evaluations_log": [
+     {
+      "nu": 0.51,
+      "mstop": 101,
+      "risk": 9.39186553718074,
+      "fits_after": 5
+     },
+     {
+      "nu": 0.24860721732219948,
+      "mstop": 153,
+      "risk": 9.390340733511994,
+      "fits_after": 10
+     },
+     {
+      "nu": 0.16346515216969157,
+      "mstop": 57,
+      "risk": 9.365270404696176,
+      "fits_after": 15
+     },
+     {
+      "nu": 0.0256096889232005,
+      "mstop": 2,
+      "risk": 9.637729580563791,
+      "fits_after": 20
+     },
+     {
+      "nu": 0.32767945419438105,
+      "mstop": 57,
+      "risk": 9.381914942720053,
+      "fits_after": 25
+     },
+     {
+      "nu": 0.995408447522724,
+      "mstop": 196,
+      "risk": 9.391995777654241,
+      "fits_after": 30
+     },
+     {
+      "nu": 0.02,
+      "mstop": 57,
+      "risk": 9.379848581119075,
+      "fits_after": 35
+     }
+    ],
+    "anytime": [
+     {
+      "fits": 5,
+      "best_risk": 9.39186553718074
+     },
+     {
+      "fits": 10,
+      "best_risk": 9.390340733511994
+     },
+     {
+      "fits": 15,
+      "best_risk": 9.365270404696176
+     },
+     {
+      "fits": 20,
+      "best_risk": 9.365270404696176
+     },
+     {
+      "fits": 25,
+      "best_risk": 9.365270404696176
+     },
+     {
+      "fits": 30,
+      "best_risk": 9.365270404696176
+     },
+     {
+      "fits": 35,
+      "best_risk": 9.365270404696176
+     }
+    ]
+   },
+   "comparison": {
+    "route_fold_risks": [
+     9.300962051163868,
+     9.252975311185748,
+     9.558666782820696,
+     9.408336234961977,
+     9.247710751571622
+    ],
+    "dlib_fold_risks": [
+     9.295617154412279,
+     9.26698118970976,
+     9.54409914699661,
+     9.448632840922345,
+     9.271021691439888
+    ],
+    "paired_se": 0.009844506983880036,
+    "margin_route_minus_dlib": -0.011540178355392783,
+    "dlib_wins": false,
+    "judge_note": "per-fold risks recomputed once per configuration with cvrisk on the shared folds; not charged to either arm's search budget"
+   }
+  },
+  "smooth_sparse": {
+   "task": "smooth_sparse",
+   "seed": 0,
+   "n_dev": 3200,
+   "kind": "regression",
+   "categorical": [],
+   "route": {
+    "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+    "family": "Gaussian()",
+    "mstop": 145,
+    "nu": 0.3,
+    "risk": 0.25047802126225155,
+    "fits_total": 45,
+    "seconds": 7.0,
+    "probe_log": [
+     {
+      "fits": 5,
+      "chosen": 59,
+      "risk_at_chosen": 0.25209772271781683
+     },
+     {
+      "fits": 5,
+      "chosen": 145,
+      "risk_at_chosen": 0.25047802126225155
+     }
+    ],
+    "anytime": [
+     {
+      "fits": 5,
+      "best_risk": 0.25209772271781683
+     },
+     {
+      "fits": 10,
+      "best_risk": 0.25047802126225155
+     }
+    ],
+    "grid_largest": 200,
+    "evidence_chosen_matches": true
+   },
+   "dlib": {
+    "nu": 0.44494886449151616,
+    "mstop": 101,
+    "risk": 0.25048881315304683,
+    "max_calls": 9,
+    "evaluations": 9,
+    "fits_spent": 45,
+    "seconds": 0.4,
+    "evaluations_log": [
+     {
+      "nu": 0.51,
+      "mstop": 101,
+      "risk": 0.2505077823677676,
+      "fits_after": 5
+     },
+     {
+      "nu": 0.24860721732219948,
+      "mstop": 153,
+      "risk": 0.25053056591375694,
+      "fits_after": 10
+     },
+     {
+      "nu": 0.16346515216969157,
+      "mstop": 57,
+      "risk": 0.26204280037978744,
+      "fits_after": 15
+     },
+     {
+      "nu": 0.9958638887489094,
+      "mstop": 198,
+      "risk": 0.25124303088596667,
+      "fits_after": 20
+     },
+     {
+      "nu": 0.37941537454282936,
+      "mstop": 101,
+      "risk": 0.25051746976394684,
+      "fits_after": 25
+     },
+     {
+      "nu": 0.9830258882225784,
+      "mstop": 4,
+      "risk": 0.28627851217198685,
+      "fits_after": 30
+     },
+     {
+      "nu": 0.44494886449151616,
+      "mstop": 101,
+      "risk": 0.25048881315304683,
+      "fits_after": 35
+     },
+     {
+      "nu": 0.5691265458837771,
+      "mstop": 198,
+      "risk": 0.25089931981482255,
+      "fits_after": 40
+     },
+     {
+      "nu": 0.45135302567490954,
+      "mstop": 101,
+      "risk": 0.2504896067502065,
+      "fits_after": 45
+     }
+    ],
+    "anytime": [
+     {
+      "fits": 5,
+      "best_risk": 0.2505077823677676
+     },
+     {
+      "fits": 10,
+      "best_risk": 0.2505077823677676
+     },
+     {
+      "fits": 15,
+      "best_risk": 0.2505077823677676
+     },
+     {
+      "fits": 20,
+      "best_risk": 0.2505077823677676
+     },
+     {
+      "fits": 25,
+      "best_risk": 0.2505077823677676
+     },
+     {
+      "fits": 30,
+      "best_risk": 0.2505077823677676
+     },
+     {
+      "fits": 35,
+      "best_risk": 0.25048881315304683
+     },
+     {
+      "fits": 40,
+      "best_risk": 0.25048881315304683
+     },
+     {
+      "fits": 45,
+      "best_risk": 0.25048881315304683
+     }
+    ]
+   },
+   "comparison": {
+    "route_fold_risks": [
+     0.23855886046273045,
+     0.24798291567864061,
+     0.24604298705919186,
+     0.26079239179045033,
+     0.25901295132024454
+    ],
+    "dlib_fold_risks": [
+     0.23862657650159078,
+     0.24801553268866697,
+     0.246071585482292,
+     0.26078277827485935,
+     0.258947592817825
+    ],
+    "paired_se": 2.2637391691258933e-05,
+    "margin_route_minus_dlib": -1.0791890795280867e-05,
+    "dlib_wins": false,
+    "judge_note": "per-fold risks recomputed once per configuration with cvrisk on the shared folds; not charged to either arm's search budget"
+   }
+  },
+  "housing_iid": {
+   "task": "housing_iid",
+   "seed": 0,
+   "n_dev": 4000,
+   "kind": "regression",
+   "categorical": [],
+   "route": {
+    "formula": "y ~ bbs(age, df=4.0) + bbs(income, df=4.0) + bbs(log(rooms), df=4.0) + bbs(log(bedrooms), df=4.0) + bbs(log(occupancy), df=4.0) + btree(longitude, latitude, maxdepth=3)",
+    "family": "Gaussian()",
+    "mstop": 195,
+    "nu": 0.3,
+    "risk": 0.06083592696210969,
+    "fits_total": 132,
+    "seconds": 188.3,
+    "probe_log": [
+     {
+      "fits": 5,
+      "chosen": 10000,
+      "risk_at_chosen": 0.0760815915591446
+     },
+     {
+      "fits": 5,
+      "chosen": 9339,
+      "risk_at_chosen": 0.07582517977336779
+     },
+     {
+      "fits": 5,
+      "chosen": 1877,
+      "risk_at_chosen": 0.06932956986791428
+     },
+     {
+      "fits": 5,
+      "chosen": 1329,
+      "risk_at_chosen": 0.07049413876131741
+     },
+     {
+      "fits": 5,
+      "chosen": 1684,
+      "risk_at_chosen": 0.06945361239505886
+     },
+     {
+      "fits": 5,
+      "chosen": 1506,
+      "risk_at_chosen": 0.07013311390390028
+     },
+     {
+      "fits": 5,
+      "chosen": 195,
+      "risk_at_chosen": 0.06083592696210969
+     },
+     {
+      "fits": 5,
+      "chosen": 195,
+      "risk_at_chosen": 0.06083592696210969
+     },
+     {
+      "fits": 5,
+      "chosen": 704,
+      "risk_at_chosen": 0.06502362629272346
+     },
+     {
+      "fits": 5,
+      "chosen": 413,
+      "risk_at_chosen": 0.06381003313128177
+     }
+    ],
+    "anytime": [
+     {
+      "fits": 5,
+      "best_risk": 0.0760815915591446
+     },
+     {
+      "fits": 10,
+      "best_risk": 0.07582517977336779
+     },
+     {
+      "fits": 15,
+      "best_risk": 0.06932956986791428
+     },
+     {
+      "fits": 20,
+      "best_risk": 0.06932956986791428
+     },
+     {
+      "fits": 25,
+      "best_risk": 0.06932956986791428
+     },
+     {
+      "fits": 30,
+      "best_risk": 0.06932956986791428
+     },
+     {
+      "fits": 35,
+      "best_risk": 0.06083592696210969
+     },
+     {
+      "fits": 40,
+      "best_risk": 0.06083592696210969
+     },
+     {
+      "fits": 45,
+      "best_risk": 0.06083592696210969
+     },
+     {
+      "fits": 50,
+      "best_risk": 0.06083592696210969
+     }
+    ],
+    "grid_largest": 1684,
+    "evidence_chosen_matches": true
+   },
+   "dlib": {
+    "nu": 0.25836926540290817,
+    "mstop": 475,
+    "risk": 0.05905294285045866,
+    "max_calls": 26,
+    "evaluations": 26,
+    "fits_spent": 130,
+    "seconds": 51.7,
+    "evaluations_log": [
+     {
+      "nu": 0.51,
+      "mstop": 843,
+      "risk": 0.06350696150831572,
+      "fits_after": 5
+     },
+     {
+      "nu": 0.24860721732219948,
+      "mstop": 1285,
+      "risk": 0.06035172451493914,
+      "fits_after": 10
+     },
+     {
+      "nu": 0.16346515216969157,
+      "mstop": 475,
+      "risk": 0.05950791613290424,
+      "fits_after": 15
+     },
+     {
+      "nu": 0.9958638887489094,
+      "mstop": 1670,
+      "risk": 0.08261948029962302,
+      "fits_after": 20
+     },
+     {
+      "nu": 0.02,
+      "mstop": 475,
+      "risk": 0.07077349305582818,
+      "fits_after": 25
+     },
+     {
+      "nu": 0.3592511073198846,
+      "mstop": 570,
+      "risk": 0.06060271750415439,
+      "fits_after": 30
+     },
+     {
+      "nu": 0.2500819222445762,
+      "mstop": 475,
+      "risk": 0.0592801398683689,
+      "fits_after": 35
+     },
+     {
+      "nu": 0.6318842265408808,
+      "mstop": 240,
+      "risk": 0.061629848773384135,
+      "fits_after": 40
+     },
+     {
+      "nu": 0.21075960860731785,
+      "mstop": 475,
+      "risk": 0.05953429292738962,
+      "fits_after": 45
+     },
+     {
+      "nu": 0.299667177495525,
+      "mstop": 57,
+      "risk": 0.06513102338903962,
+      "fits_after": 50
+     },
+     {
+      "nu": 0.2912329354244253,
+      "mstop": 475,
+      "risk": 0.05939708045977784,
+      "fits_after": 55
+     },
+     {
+      "nu": 0.3795288431038352,
+      "mstop": 1674,
+      "risk": 0.06406913593083412,
+      "fits_after": 60
+     },
+     {
+      "nu": 0.25836926540290817,
+      "mstop": 475,
+      "risk": 0.05905294285045866,
+      "fits_after": 65
+     },
+     {
+      "nu": 0.5880303510281241,
+      "mstop": 1663,
+      "risk": 0.07036145350786735,
+      "fits_after": 70
+     },
+     {
+      "nu": 0.26911413186330846,
+      "mstop": 475,
+      "risk": 0.05951743077986922,
+      "fits_after": 75
+     },
+     {
+      "nu": 0.14451247443398454,
+      "mstop": 1678,
+      "risk": 0.0590722329012476,
+      "fits_after": 80
+     },
+     {
+      "nu": 0.25791853759354383,
+      "mstop": 475,
+      "risk": 0.059187946733707905,
+      "fits_after": 85
+     },
+     {
+      "nu": 0.47212980913779673,
+      "mstop": 31,
+      "risk": 0.06662386393307748,
+      "fits_after": 90
+     },
+     {
+      "nu": 0.26865701869787045,
+      "mstop": 475,
+      "risk": 0.059198290008056306,
+      "fits_after": 95
+     },
+     {
+      "nu": 0.7522086879784995,
+      "mstop": 12,
+      "risk": 0.07217972079692256,
+      "fits_after": 100
+     },
+     {
+      "nu": 0.2635131420503893,
+      "mstop": 475,
+      "risk": 0.05942590276809787,
+      "fits_after": 105
+     },
+     {
+      "nu": 0.02281113491740691,
+      "mstop": 1533,
+      "risk": 0.06156847092364748,
+      "fits_after": 110
+     },
+     {
+      "nu": 0.26039603206437506,
+      "mstop": 475,
+      "risk": 0.05937449068407678,
+      "fits_after": 115
+     },
+     {
+      "nu": 0.3427500150191637,
+      "mstop": 1019,
+      "risk": 0.060835220453091164,
+      "fits_after": 120
+     },
+     {
+      "nu": 0.2589537119394189,
+      "mstop": 475,
+      "risk": 0.05919618965417376,
+      "fits_after": 125
+     },
+     {
+      "nu": 0.13134194686089729,
+      "mstop": 1293,
+      "risk": 0.059115820262546546,
+      "fits_after": 130
+     }
+    ],
+    "anytime": [
+     {
+      "fits": 5,
+      "best_risk": 0.06350696150831572
+     },
+     {
+      "fits": 10,
+      "best_risk": 0.06035172451493914
+     },
+     {
+      "fits": 15,
+      "best_risk": 0.05950791613290424
+     },
+     {
+      "fits": 20,
+      "best_risk": 0.05950791613290424
+     },
+     {
+      "fits": 25,
+      "best_risk": 0.05950791613290424
+     },
+     {
+      "fits": 30,
+      "best_risk": 0.05950791613290424
+     },
+     {
+      "fits": 35,
+      "best_risk": 0.0592801398683689
+     },
+     {
+      "fits": 40,
+      "best_risk": 0.0592801398683689
+     },
+     {
+      "fits": 45,
+      "best_risk": 0.0592801398683689
+     },
+     {
+      "fits": 50,
+      "best_risk": 0.0592801398683689
+     },
+     {
+      "fits": 55,
+      "best_risk": 0.0592801398683689
+     },
+     {
+      "fits": 60,
+      "best_risk": 0.0592801398683689
+     },
+     {
+      "fits": 65,
+      "best_risk": 0.05905294285045866
+     },
+     {
+      "fits": 70,
+      "best_risk": 0.05905294285045866
+     },
+     {
+      "fits": 75,
+      "best_risk": 0.05905294285045866
+     },
+     {
+      "fits": 80,
+      "best_risk": 0.05905294285045866
+     },
+     {
+      "fits": 85,
+      "best_risk": 0.05905294285045866
+     },
+     {
+      "fits": 90,
+      "best_risk": 0.05905294285045866
+     },
+     {
+      "fits": 95,
+      "best_risk": 0.05905294285045866
+     },
+     {
+      "fits": 100,
+      "best_risk": 0.05905294285045866
+     },
+     {
+      "fits": 105,
+      "best_risk": 0.05905294285045866
+     },
+     {
+      "fits": 110,
+      "best_risk": 0.05905294285045866
+     },
+     {
+      "fits": 115,
+      "best_risk": 0.05905294285045866
+     },
+     {
+      "fits": 120,
+      "best_risk": 0.05905294285045866
+     },
+     {
+      "fits": 125,
+      "best_risk": 0.05905294285045866
+     },
+     {
+      "fits": 130,
+      "best_risk": 0.05905294285045866
+     }
+    ]
+   },
+   "comparison": {
+    "route_fold_risks": [
+     0.056793865312781765,
+     0.06964225964879622,
+     0.05816065470517837,
+     0.062221317016988215,
+     0.053543458475832584
+    ],
+    "dlib_fold_risks": [
+     0.05690779214797387,
+     0.06589521104691619,
+     0.05884754743949627,
+     0.05955215553912048,
+     0.05406200807878648
+    ],
+    "paired_se": 0.00091441055921044,
+    "margin_route_minus_dlib": 0.00178298411165103,
+    "dlib_wins": true,
+    "judge_note": "per-fold risks recomputed once per configuration with cvrisk on the shared folds; not charged to either arm's search budget"
+   }
+  }
+ }
+}

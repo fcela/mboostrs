@@ -1,0 +1,1723 @@
+{
+  "design": {
+    "n_train": 1500,
+    "n_test": 4000,
+    "seeds": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "size": 1.5,
+    "variance": "mu + mu**2 / 1.5",
+    "nu": 0.1,
+    "folds": 5,
+    "mstop": {
+      "glm": 500,
+      "gam": 1400
+    },
+    "linear": "log mu = 0.30 + 0.55 x1 - 0.35 x2",
+    "smooth": "log mu = 0.15 + sin(1.5 x1) + 0.35 x2",
+    "spline": "bs(x1, df=8, lower_bound=-6, upper_bound=6) + x2 + noise"
+  },
+  "results": [
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "generating NB",
+      "own_nll": 1.6254838093984072,
+      "nll_at_true_size": 1.6254838093984072,
+      "mae": 0.0,
+      "size": 1.5,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:f872a4fdf3959413c390c8158ae1da19ff05388415631813cf3eae5782f19c64",
+        "measured_at": "2026-10-24T05:10:23.134708+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:a69b50369713bf24ec06e518ba8f334e6db43e9a5b609f6715d5f493c4947138",
+        "output_digest": "sha256:ed9f00d1a9a39dadda2bf70878ddbd97ba4d230a133ec65aefacab7a49262f98",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "statsmodels Poisson",
+      "own_nll": 1.8138830676483066,
+      "nll_at_true_size": 1.6258849504271102,
+      "mae": 0.041101501387990555,
+      "size": null,
+      "seconds": 0.00137945800088346,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:f3c6c20e963c2d98a063bffed7c0783ccc820011561c5521a88b03bbd6b2ecaf",
+        "measured_at": "2026-10-24T05:10:23.137755+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:a69b50369713bf24ec06e518ba8f334e6db43e9a5b609f6715d5f493c4947138",
+        "output_digest": "sha256:bd3a38e99610a8a237fedbbfe7514de6faaf68a86e1d81e5d32de364c0d65e3e",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "statsmodels NB",
+      "own_nll": 1.6261304638323302,
+      "nll_at_true_size": 1.6256234668310972,
+      "mae": 0.030467505343996868,
+      "size": 1.6227274771154623,
+      "seconds": 0.005128499818965793,
+      "converged": true,
+      "alpha": 0.6162464209810424,
+      "_identity": {
+        "fingerprint": "sha256:38ba0f96e3e9cd040a63f9f798a7d0f66bf58070d695f0910856cf76da70c629",
+        "measured_at": "2026-10-24T05:10:23.144028+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:a69b50369713bf24ec06e518ba8f334e6db43e9a5b609f6715d5f493c4947138",
+        "output_digest": "sha256:056c6d752619e378ae69976373135495f1f1713e69642f1ee02eb1263e7ccac8",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "statsmodels NB spline",
+      "own_nll": 1.628951940175919,
+      "nll_at_true_size": 1.6282439681640513,
+      "mae": 0.10121513668109618,
+      "size": 1.6372056934815327,
+      "seconds": 0.021327458089217544,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:0719740b2af4383e8d4871672b1abe3d4d40121e42483c5c909eff65983c04b4",
+        "measured_at": "2026-10-24T05:10:23.169231+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:a69b50369713bf24ec06e518ba8f334e6db43e9a5b609f6715d5f493c4947138",
+        "output_digest": "sha256:96884144b3375830ce57ca37fa7b6bda90de0ab3c5ad74225df52ed93113e586",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "sklearn PoissonRegressor",
+      "own_nll": 1.813883250281528,
+      "nll_at_true_size": 1.6258850766146233,
+      "mae": 0.04110468458372935,
+      "size": null,
+      "seconds": 0.0026765409857034683,
+      "_identity": {
+        "fingerprint": "sha256:d188aeec0207f42741200f9bdaa96d760f63e310911cc207d7b06a23ba89e716",
+        "measured_at": "2026-10-24T05:10:23.172402+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:a69b50369713bf24ec06e518ba8f334e6db43e9a5b609f6715d5f493c4947138",
+        "output_digest": "sha256:b9313bb57c2a4f2b2d0f8df7ba2e5c62f4051f03d566ea6a8810f25152e6785b",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "mboostrs glmboost Poisson",
+      "own_nll": 1.81364076992563,
+      "nll_at_true_size": 1.625820753757851,
+      "mae": 0.03982096679176648,
+      "size": null,
+      "seconds": 0.05342837516218424,
+      "mstop": 108,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:88a5f0dfaa06a01dfdb96ca8ca2951180fa4bf7c921abf7ec333c3c2e36ec136",
+        "measured_at": "2026-10-24T05:10:23.226425+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:a69b50369713bf24ec06e518ba8f334e6db43e9a5b609f6715d5f493c4947138",
+        "output_digest": "sha256:e91651c8cac5395cabe6a36074f00ab28660ae1c5397fc8fa46d18f3533e8497",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "mboostrs glmboost NBinomial",
+      "own_nll": 1.6260886401086203,
+      "nll_at_true_size": 1.6255919502895873,
+      "mae": 0.03755716970547819,
+      "size": 1.621684120426296,
+      "seconds": 0.7023304169997573,
+      "mstop": 168,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:7fb8240845e9a36b6090b9417ffd89e9ab25e5344a53021a98f5374d573bab0a",
+        "measured_at": "2026-10-24T05:10:23.929445+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:a69b50369713bf24ec06e518ba8f334e6db43e9a5b609f6715d5f493c4947138",
+        "output_digest": "sha256:f12ef8153a7ce4c13eb8c51b1c21f294a1f7838b0ae3bd07faf25e9793f7b0c9",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "mboostrs gamboost Poisson",
+      "own_nll": 1.8138659648582975,
+      "nll_at_true_size": 1.6259184818774794,
+      "mae": 0.05185912818880273,
+      "size": null,
+      "seconds": 0.2839902089908719,
+      "mstop": 65,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:b4a19dc7f692d580304e88330ce234a2cfd1ee2e0f70000a04ac43408768a239",
+        "measured_at": "2026-10-24T05:10:24.214194+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:a69b50369713bf24ec06e518ba8f334e6db43e9a5b609f6715d5f493c4947138",
+        "output_digest": "sha256:eaf57acfefd68c8fd51c4bb2567c64ab430cc517b7473071a1d018b2e878d663",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "mboostrs gamboost NBinomial",
+      "own_nll": 1.6264268141123193,
+      "nll_at_true_size": 1.6258811520711105,
+      "mae": 0.0602728978257272,
+      "size": 1.626682433862266,
+      "seconds": 2.124863625038415,
+      "mstop": 120,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:b5bb593de8c09bec4c2058d17156573d18600dfdf0beb2724355b009c776ff21",
+        "measured_at": "2026-10-24T05:10:26.339932+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:a69b50369713bf24ec06e518ba8f334e6db43e9a5b609f6715d5f493c4947138",
+        "output_digest": "sha256:c732d9eafbf8c8a37ed5219f42a64d84b3491fb7a71a5320651a91278d96eb8b",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "generating NB",
+      "own_nll": 1.6254838093984072,
+      "nll_at_true_size": 1.6254838093984072,
+      "mae": 0.0,
+      "size": 1.5,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:ce39784936314f2d38e454c9c6c5dc59944acd0b46abfc8ad9cb86ab28795643",
+        "measured_at": "2026-10-24T05:10:26.343687+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5a982cc66d66b93eeeb57e4fa3b73b75bfc7eb82112f616bf25cfc8cf9418231",
+        "output_digest": "sha256:b4b4fdc8bacf237b7dc807d8d671f129a07b1b316bf2d0ec71e438fa8576040e",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "statsmodels Poisson",
+      "own_nll": 1.814941322655495,
+      "nll_at_true_size": 1.626542573543794,
+      "mae": 0.0656268743263178,
+      "size": null,
+      "seconds": 0.0012048750650137663,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:409fadcc5d4079fee35332e8214d81365d20df321fe4f792d0b7c4b4bf49df6c",
+        "measured_at": "2026-10-24T05:10:26.346445+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5a982cc66d66b93eeeb57e4fa3b73b75bfc7eb82112f616bf25cfc8cf9418231",
+        "output_digest": "sha256:e64b2f061dde1b6a4388d30caf1f4199b237445aa73be5e7768c42bcae3b643b",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "statsmodels NB",
+      "own_nll": 1.62690749020169,
+      "nll_at_true_size": 1.6262156690046101,
+      "mae": 0.05106180920037677,
+      "size": 1.2956966639448724,
+      "seconds": 0.004665625048801303,
+      "converged": true,
+      "alpha": 0.7717855790068984,
+      "_identity": {
+        "fingerprint": "sha256:39feb9425dc87fa6f0f131ce1b4f54029a87e686b10c80c4d6da07eaa8097c85",
+        "measured_at": "2026-10-24T05:10:26.352402+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5a982cc66d66b93eeeb57e4fa3b73b75bfc7eb82112f616bf25cfc8cf9418231",
+        "output_digest": "sha256:83ac152e80a20253d11484a73697fae17a861c3912924e09361da4e578b5915f",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "statsmodels NB spline",
+      "own_nll": 1.6280990867810128,
+      "nll_at_true_size": 1.6276282110416498,
+      "mae": 0.10570911750837064,
+      "size": 1.307049611459162,
+      "seconds": 0.022206957917660475,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:923921e1c2d7db0a086310f1d1b6d7e80b09603e89ed4b913e8d0760812992f5",
+        "measured_at": "2026-10-24T05:10:26.378629+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5a982cc66d66b93eeeb57e4fa3b73b75bfc7eb82112f616bf25cfc8cf9418231",
+        "output_digest": "sha256:076041923a5ea2738ba5d100fb6d763655e80eb3f30d829e16a22e5178eb9a7d",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "sklearn PoissonRegressor",
+      "own_nll": 1.8149423029127034,
+      "nll_at_true_size": 1.626543140942038,
+      "mae": 0.06562887227028691,
+      "size": null,
+      "seconds": 0.0009642499499022961,
+      "_identity": {
+        "fingerprint": "sha256:c07f9a1ec4636d95f641764db635bdc25dfa811299b3870c33a073a7e587ac85",
+        "measured_at": "2026-10-24T05:10:26.380104+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5a982cc66d66b93eeeb57e4fa3b73b75bfc7eb82112f616bf25cfc8cf9418231",
+        "output_digest": "sha256:dfd3d0a783c1947819cf496f55b15da1c65d9dbdfd97cf5e88a3336f927dcd9b",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "mboostrs glmboost Poisson",
+      "own_nll": 1.8159703050416647,
+      "nll_at_true_size": 1.6272140078943067,
+      "mae": 0.08579398236931289,
+      "size": null,
+      "seconds": 0.054659957997500896,
+      "mstop": 78,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:f3047cafb91cfad0cb457e9d9c33bf6d10041e6e7363a91d29286fb4f57c6ebb",
+        "measured_at": "2026-10-24T05:10:26.435406+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5a982cc66d66b93eeeb57e4fa3b73b75bfc7eb82112f616bf25cfc8cf9418231",
+        "output_digest": "sha256:854d1d60643fc46d720461124b17584b36b71fd9d2c0cbfda92cbb89e9159589",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "mboostrs glmboost NBinomial",
+      "own_nll": 1.6275136935075456,
+      "nll_at_true_size": 1.6268489058965365,
+      "mae": 0.0755491626615692,
+      "size": 1.2951977671101615,
+      "seconds": 0.7328627919778228,
+      "mstop": 175,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:74f9f5d2caafcb33c51a58e1f0482737f7a6012c9c9970aa4f2518def605e81d",
+        "measured_at": "2026-10-24T05:10:27.168937+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5a982cc66d66b93eeeb57e4fa3b73b75bfc7eb82112f616bf25cfc8cf9418231",
+        "output_digest": "sha256:01aae897ed0ca39182788418433386540c84cba3d1a98aea3ed936acd67ddc63",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "mboostrs gamboost Poisson",
+      "own_nll": 1.8182148392133999,
+      "nll_at_true_size": 1.6284489506745754,
+      "mae": 0.11631671028968975,
+      "size": null,
+      "seconds": 0.2903300831094384,
+      "mstop": 44,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:334b56c61d3950c1387e103a21222ca3ec9216027698b6c0bdc9510e84554d6d",
+        "measured_at": "2026-10-24T05:10:27.460096+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5a982cc66d66b93eeeb57e4fa3b73b75bfc7eb82112f616bf25cfc8cf9418231",
+        "output_digest": "sha256:67b7512d2d490b35a92543cdd2cc91223685176385e23fc37982e64f0b2e6d1d",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "mboostrs gamboost NBinomial",
+      "own_nll": 1.6275903008178008,
+      "nll_at_true_size": 1.6269947590112606,
+      "mae": 0.08710970864643473,
+      "size": 1.300326266209118,
+      "seconds": 2.1456945419777185,
+      "mstop": 124,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:800b5149e96ee92ce2fc119985d790a2c8990f0334f9de96d1dcc49d96395d3d",
+        "measured_at": "2026-10-24T05:10:29.606676+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5a982cc66d66b93eeeb57e4fa3b73b75bfc7eb82112f616bf25cfc8cf9418231",
+        "output_digest": "sha256:34748e64ba17a3ac75ba0a4befb3cd105991c1e3198708c4c70addbbea534e22",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "generating NB",
+      "own_nll": 1.6254838093984072,
+      "nll_at_true_size": 1.6254838093984072,
+      "mae": 0.0,
+      "size": 1.5,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:209219c194a6ddd2923b4e09826677bf8be3584cfa17353cfe54f2982124ac57",
+        "measured_at": "2026-10-24T05:10:29.608820+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8983102c95cd12ff5f1248ca102f4507e7ac4cf243edde1f8afa1f6461f6faaf",
+        "output_digest": "sha256:ee3fcb5ba3a263f410e44061006e6f45de236480557667ec44daacb234dd3720",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "statsmodels Poisson",
+      "own_nll": 1.8164649192210733,
+      "nll_at_true_size": 1.6273821718370252,
+      "mae": 0.0753327424595682,
+      "size": null,
+      "seconds": 0.0009704160038381815,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:d0dcd39c09d42c63330ba63e9872b8172712d01eefa152b88bcb0331c052ba1d",
+        "measured_at": "2026-10-24T05:10:29.611039+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8983102c95cd12ff5f1248ca102f4507e7ac4cf243edde1f8afa1f6461f6faaf",
+        "output_digest": "sha256:3fb5f3e740ba36e4f277959c70d45112147dd38bdd7bd73f7c057d303b3f409e",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "statsmodels NB",
+      "own_nll": 1.6278278603793865,
+      "nll_at_true_size": 1.6278901302445397,
+      "mae": 0.08383458227367939,
+      "size": 1.4322774127120903,
+      "seconds": 0.004274416947737336,
+      "converged": true,
+      "alpha": 0.6981887664530358,
+      "_identity": {
+        "fingerprint": "sha256:2f63faec667d9623fa1a10b6b18585ccd8f9be86f453451e50bef27377241c43",
+        "measured_at": "2026-10-24T05:10:29.616566+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8983102c95cd12ff5f1248ca102f4507e7ac4cf243edde1f8afa1f6461f6faaf",
+        "output_digest": "sha256:9bb9d61a700f00673edb22cc99ccbd802267625de9fc0b53103bb3d887c00068",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "statsmodels NB spline",
+      "own_nll": 1.630898017978997,
+      "nll_at_true_size": 1.6310162887506412,
+      "mae": 0.31107572384203347,
+      "size": 1.4646526923400038,
+      "seconds": 0.01647420902736485,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:968530c2177deb533344651850fe475bba499ea617ab0bb003983e9271d09d8c",
+        "measured_at": "2026-10-24T05:10:29.636930+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8983102c95cd12ff5f1248ca102f4507e7ac4cf243edde1f8afa1f6461f6faaf",
+        "output_digest": "sha256:08c57ba7bff2b21cd838d0db507bfbabe730ab1d4e3564bca29a7a900b0c1c3b",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "sklearn PoissonRegressor",
+      "own_nll": 1.8164583761283213,
+      "nll_at_true_size": 1.6273789009968456,
+      "mae": 0.07524249144502763,
+      "size": null,
+      "seconds": 0.0008416671771556139,
+      "_identity": {
+        "fingerprint": "sha256:e89fa1aab8227c7ee3c27396d7aae64fcd92041936100b7b87b706426e5d042b",
+        "measured_at": "2026-10-24T05:10:29.638266+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8983102c95cd12ff5f1248ca102f4507e7ac4cf243edde1f8afa1f6461f6faaf",
+        "output_digest": "sha256:e9e07fb8e5aa907f126ddae7b01612b6cbc120199baab5bef8983d3b35b7dada",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "mboostrs glmboost Poisson",
+      "own_nll": 1.816702299887159,
+      "nll_at_true_size": 1.627607570909614,
+      "mae": 0.0810897709444021,
+      "size": null,
+      "seconds": 0.05166954197920859,
+      "mstop": 111,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:216977de2809b047e822c39407428f213e96dffa04239fe8972b8eb1ba9e0fab",
+        "measured_at": "2026-10-24T05:10:29.690457+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8983102c95cd12ff5f1248ca102f4507e7ac4cf243edde1f8afa1f6461f6faaf",
+        "output_digest": "sha256:2a26f7250ab2fd9384b001eee4fb303ee87d54c237166c54206ccc765627e96d",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "mboostrs glmboost NBinomial",
+      "own_nll": 1.627711209558672,
+      "nll_at_true_size": 1.627767564629494,
+      "mae": 0.08128855251046595,
+      "size": 1.432931393424461,
+      "seconds": 0.7108932919800282,
+      "mstop": 227,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:a7663ffa4f9507771221c9ec11a793fc21b6833d34ff99195cb6f0e0a0116f30",
+        "measured_at": "2026-10-24T05:10:30.402031+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8983102c95cd12ff5f1248ca102f4507e7ac4cf243edde1f8afa1f6461f6faaf",
+        "output_digest": "sha256:347dc5805632647db488f0e1a62eb5f15b812a2ffcff3777904a339a75eba87d",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "mboostrs gamboost Poisson",
+      "own_nll": 1.821217596812483,
+      "nll_at_true_size": 1.628076675702186,
+      "mae": 0.12268535461703504,
+      "size": null,
+      "seconds": 0.2796403339598328,
+      "mstop": 177,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:a9095dedf3f5ae3f99c57b4ae95db1b70b80e58fc44f23d967ffd72215d2745c",
+        "measured_at": "2026-10-24T05:10:30.682387+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8983102c95cd12ff5f1248ca102f4507e7ac4cf243edde1f8afa1f6461f6faaf",
+        "output_digest": "sha256:2c023d6aae2c75507344a5ae97535669564e9a563b52e5c8547854f75ebc9cc0",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "mboostrs gamboost NBinomial",
+      "own_nll": 1.627651441231634,
+      "nll_at_true_size": 1.627704989954575,
+      "mae": 0.07463315931254703,
+      "size": 1.4428303891148975,
+      "seconds": 2.123383916914463,
+      "mstop": 123,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:a44965ed3ebb093b24152479e7cfaf0e069ed80fb03ede8d52aecc6aead3e4dc",
+        "measured_at": "2026-10-24T05:10:32.806644+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8983102c95cd12ff5f1248ca102f4507e7ac4cf243edde1f8afa1f6461f6faaf",
+        "output_digest": "sha256:c9b11923e271ff14e64490f58ecd3cfe4ca253988a3764e45cc105f141ccdc81",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "generating NB",
+      "own_nll": 1.6254838093984072,
+      "nll_at_true_size": 1.6254838093984072,
+      "mae": 0.0,
+      "size": 1.5,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:925ddcf1e808b2bdcf780c503e9c1fed30a0cb00d2a9148de5841c53919148b7",
+        "measured_at": "2026-10-24T05:10:32.808789+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:0ac6f9409cca1840e68077e70ba246c3534b15fc47a5c66a3f391ee2b9ec3e5d",
+        "output_digest": "sha256:b269fe8275861a0ac72c6161b9bd27622aecfe1355c26d320aee636581ca2de8",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "statsmodels Poisson",
+      "own_nll": 1.819556828911073,
+      "nll_at_true_size": 1.628600021722751,
+      "mae": 0.12806836463229365,
+      "size": null,
+      "seconds": 0.0009354578796774149,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:fc8b0a679bc89c379b61e01ee2ac6bda5c0d5f2d88114da23e5a88ee919bf8ad",
+        "measured_at": "2026-10-24T05:10:32.810813+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:0ac6f9409cca1840e68077e70ba246c3534b15fc47a5c66a3f391ee2b9ec3e5d",
+        "output_digest": "sha256:12b21ca88d54295f17ef034428192a64873c400ead410558a4c2879ed612ddde",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "statsmodels NB",
+      "own_nll": 1.6288004049722162,
+      "nll_at_true_size": 1.6277691630768218,
+      "mae": 0.10286444224681748,
+      "size": 1.6810205116779355,
+      "seconds": 0.004087875131517649,
+      "converged": true,
+      "alpha": 0.5948767388934685,
+      "_identity": {
+        "fingerprint": "sha256:0f6124e9eded365443f02c682a331109b2ba283acafe541d59806b1e9695590c",
+        "measured_at": "2026-10-24T05:10:32.816019+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:0ac6f9409cca1840e68077e70ba246c3534b15fc47a5c66a3f391ee2b9ec3e5d",
+        "output_digest": "sha256:07d08bd5007d14029ffa0d35aa4c240ba9d4a4958fb7c7d217fc103fa338c8fa",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "statsmodels NB spline",
+      "own_nll": 1.6294177059438033,
+      "nll_at_true_size": 1.6282796506751092,
+      "mae": 0.11878423048555682,
+      "size": 1.6866703452941962,
+      "seconds": 0.021826458862051368,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:1a07cf8e22b92d3dff36bb4405acd49354d358b3b33e2a51646cb15553a99991",
+        "measured_at": "2026-10-24T05:10:32.841906+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:0ac6f9409cca1840e68077e70ba246c3534b15fc47a5c66a3f391ee2b9ec3e5d",
+        "output_digest": "sha256:8a3f0c51d4030b9fe506285bfb12222d509fe54b1ac446c71cab1acf782cd933",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "sklearn PoissonRegressor",
+      "own_nll": 1.8195570158513756,
+      "nll_at_true_size": 1.6286001870074656,
+      "mae": 0.1280626738881873,
+      "size": null,
+      "seconds": 0.0009513329714536667,
+      "_identity": {
+        "fingerprint": "sha256:c994d0a9df730587cab8a70556c950047190db1441a92d41180decdf2b7c4bda",
+        "measured_at": "2026-10-24T05:10:32.843401+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:0ac6f9409cca1840e68077e70ba246c3534b15fc47a5c66a3f391ee2b9ec3e5d",
+        "output_digest": "sha256:9036e51247243aba29c5c30a241d1349f283de978259a36a67d618bd85bf242a",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "mboostrs glmboost Poisson",
+      "own_nll": 1.8195188014202976,
+      "nll_at_true_size": 1.6285815227423155,
+      "mae": 0.1282073947084331,
+      "size": null,
+      "seconds": 0.05214504199102521,
+      "mstop": 156,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:b9b8633f9bd49c19256d1a8ff2ea9d3ac29097cadb48d6addfcf72712f61fa22",
+        "measured_at": "2026-10-24T05:10:32.896052+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:0ac6f9409cca1840e68077e70ba246c3534b15fc47a5c66a3f391ee2b9ec3e5d",
+        "output_digest": "sha256:0205e30bdbe915e0223d9232cdfbd7a8cd5f93813470e3d8a1838bdd56f90d30",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "mboostrs glmboost NBinomial",
+      "own_nll": 1.62878094901543,
+      "nll_at_true_size": 1.627749820394192,
+      "mae": 0.10269264579577686,
+      "size": 1.6811326341883588,
+      "seconds": 0.7151749588083476,
+      "mstop": 423,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:4021c2a140bb31a96517f12e331b86e22d984f5785462d3de871aee7c6dc4b2c",
+        "measured_at": "2026-10-24T05:10:33.611880+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:0ac6f9409cca1840e68077e70ba246c3534b15fc47a5c66a3f391ee2b9ec3e5d",
+        "output_digest": "sha256:c51432ab0f85f690f3a7b09b750620d5d9f90324b7e00366a7e2e02d224b730e",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "mboostrs gamboost Poisson",
+      "own_nll": 1.8212291150609061,
+      "nll_at_true_size": 1.6286217289537843,
+      "mae": 0.12535062802592944,
+      "size": null,
+      "seconds": 0.280335291987285,
+      "mstop": 55,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:baaf7f450cd9f5cc0fb0d1d5dd55f56682304b11a683c89c1372727afd03bff1",
+        "measured_at": "2026-10-24T05:10:33.892913+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:0ac6f9409cca1840e68077e70ba246c3534b15fc47a5c66a3f391ee2b9ec3e5d",
+        "output_digest": "sha256:5d356b5fd68bf85a4f573677abb31381909e048ba5731560209c5325286b7485",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "mboostrs gamboost NBinomial",
+      "own_nll": 1.6285840299097167,
+      "nll_at_true_size": 1.6275000932638741,
+      "mae": 0.10574693019731735,
+      "size": 1.6863443291644498,
+      "seconds": 2.17586737498641,
+      "mstop": 133,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:690a6247582ebe7e5138ac1aa0e39beba506b1dcbd75ac8efdcf0ec00bcd9610",
+        "measured_at": "2026-10-24T05:10:36.069619+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:0ac6f9409cca1840e68077e70ba246c3534b15fc47a5c66a3f391ee2b9ec3e5d",
+        "output_digest": "sha256:0cbe63314d7eb240c45a61bd8ace481d6b381cfafa33f19933b15cc186b68dc5",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "generating NB",
+      "own_nll": 1.549322762738121,
+      "nll_at_true_size": 1.549322762738121,
+      "mae": 0.0,
+      "size": 1.5,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:07be7d62556fcd3c8a4db4ecad04ad1bdae275bfafc2114a7d65e823dac4c548",
+        "measured_at": "2026-10-24T05:10:36.071929+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:d66783bba53e1d2f69b5aeea0ec4b67dee9a5c1306c8d5033aae2e9233c4ebfc",
+        "output_digest": "sha256:773e70c60fc03194aedef625c239e449e534d806120e36a1c5c1a3502d6cab61",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "statsmodels Poisson",
+      "own_nll": 1.8995860134167515,
+      "nll_at_true_size": 1.6309016125603344,
+      "mae": 0.5673740074639488,
+      "size": null,
+      "seconds": 0.0009378339163959026,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:153b97ce4f005f49383a5066799d84f31652a2408ec28487792c6e54688ee543",
+        "measured_at": "2026-10-24T05:10:36.073972+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:d66783bba53e1d2f69b5aeea0ec4b67dee9a5c1306c8d5033aae2e9233c4ebfc",
+        "output_digest": "sha256:796a27df575d50edb04894171a04ab9be5fd90e9974e757e6566760013184569",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "statsmodels NB",
+      "own_nll": 1.622964780022005,
+      "nll_at_true_size": 1.6317151130791563,
+      "mae": 0.5618783746336052,
+      "size": 1.0984582755711416,
+      "seconds": 0.004145457874983549,
+      "converged": true,
+      "alpha": 0.9103668498287307,
+      "_identity": {
+        "fingerprint": "sha256:4050e9ea4703eae90d8b80bd0cacb94d573d71eac9adcff4f57dedf02b298a74",
+        "measured_at": "2026-10-24T05:10:36.079237+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:d66783bba53e1d2f69b5aeea0ec4b67dee9a5c1306c8d5033aae2e9233c4ebfc",
+        "output_digest": "sha256:2daa22f44f44ea94c8be11f66ab778a6ed87a060bbff0dcc44949fabdf26a7b8",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "statsmodels NB spline",
+      "own_nll": 1.5567137257051256,
+      "nll_at_true_size": 1.5542932202096518,
+      "mae": 0.11368128062512371,
+      "size": 1.7707995574908044,
+      "seconds": 0.016637624939903617,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:e5c033cf07c2070b9835fe41c9edd89e5737fba7e7fbf7d51ae7ff2ac78e86f6",
+        "measured_at": "2026-10-24T05:10:36.099938+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:d66783bba53e1d2f69b5aeea0ec4b67dee9a5c1306c8d5033aae2e9233c4ebfc",
+        "output_digest": "sha256:d3749fc7e9e1019465d06622630488e22b1623dd4e1de4dca4d463edf307d377",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "sklearn PoissonRegressor",
+      "own_nll": 1.8995833749100763,
+      "nll_at_true_size": 1.6309010620324473,
+      "mae": 0.5673792308539226,
+      "size": null,
+      "seconds": 0.0008350410498678684,
+      "_identity": {
+        "fingerprint": "sha256:5d5397a6967ba631b20fe92044f16ff554b569060b37788c6f344a0351bd2c63",
+        "measured_at": "2026-10-24T05:10:36.101284+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:d66783bba53e1d2f69b5aeea0ec4b67dee9a5c1306c8d5033aae2e9233c4ebfc",
+        "output_digest": "sha256:dd066bd6235e6fecc503d6f86aa10b9ce5e3ba5b480a46fddf5732583d35c522",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "mboostrs glmboost Poisson",
+      "own_nll": 1.898946876836171,
+      "nll_at_true_size": 1.6307892175149397,
+      "mae": 0.5708316219048463,
+      "size": null,
+      "seconds": 0.04968758416362107,
+      "mstop": 99,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:d035f4b2d3542697de9a68e0502b5b38b893886619469a533de1b2c8d19635dc",
+        "measured_at": "2026-10-24T05:10:36.151469+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:d66783bba53e1d2f69b5aeea0ec4b67dee9a5c1306c8d5033aae2e9233c4ebfc",
+        "output_digest": "sha256:fc76e10733cd57791381077de507c1b632d2bccf1a4e645134c487c8e1d40b2d",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "mboostrs glmboost NBinomial",
+      "own_nll": 1.6226360846729868,
+      "nll_at_true_size": 1.631365564037293,
+      "mae": 0.565448703259734,
+      "size": 1.0967266540315905,
+      "seconds": 0.755396582884714,
+      "mstop": 245,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:57fc83570ae272a9c0287ccf990924ff7e5892c2ef7d7744fc259d552c946c57",
+        "measured_at": "2026-10-24T05:10:36.907546+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:d66783bba53e1d2f69b5aeea0ec4b67dee9a5c1306c8d5033aae2e9233c4ebfc",
+        "output_digest": "sha256:ca62e0098a3d78cbb212e760063f4cc023ce1bb7094bd19b444d07b2283c5458",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "mboostrs gamboost Poisson",
+      "own_nll": 1.7332624278364093,
+      "nll_at_true_size": 1.5520824571138208,
+      "mae": 0.08874357452496291,
+      "size": null,
+      "seconds": 0.27882508281618357,
+      "mstop": 976,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:84d576f01f7c08df6850c44d5fd4a97c77b68f9d626f3fb4ddad3c79f82dcc72",
+        "measured_at": "2026-10-24T05:10:37.187026+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:d66783bba53e1d2f69b5aeea0ec4b67dee9a5c1306c8d5033aae2e9233c4ebfc",
+        "output_digest": "sha256:52896fcbd6a745edefba3a55dc333b5fa24656f7a68e7e239d1e96cdd820f740",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "mboostrs gamboost NBinomial",
+      "own_nll": 1.554566494644501,
+      "nll_at_true_size": 1.5523859414192906,
+      "mae": 0.09337505966694608,
+      "size": 1.7618456481545435,
+      "seconds": 2.1503404160030186,
+      "mstop": 1400,
+      "at_boundary": true,
+      "_identity": {
+        "fingerprint": "sha256:d22cf35509e65804a38ce5793baf5161294e85e00a289cb4239e8d5624c09226",
+        "measured_at": "2026-10-24T05:10:39.338151+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:d66783bba53e1d2f69b5aeea0ec4b67dee9a5c1306c8d5033aae2e9233c4ebfc",
+        "output_digest": "sha256:72d8629fc9846227249727e39cdf84984e2fce3bda0744313253f3560e912388",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "generating NB",
+      "own_nll": 1.549322762738121,
+      "nll_at_true_size": 1.549322762738121,
+      "mae": 0.0,
+      "size": 1.5,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:29d75d1ab227064250dc92988d117dad87bfa41477c8ebf0e95f6de7c3173dff",
+        "measured_at": "2026-10-24T05:10:39.340566+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:47b4d81a512b13b796d29e2bcf9790e4695dd334916b9037a74274a2ddcfff69",
+        "output_digest": "sha256:8d9867bade0ef84076658fd6c2c21783bdfd6372b0e4b32ebd94527406ee87c3",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "statsmodels Poisson",
+      "own_nll": 1.8949814923294703,
+      "nll_at_true_size": 1.630290924697713,
+      "mae": 0.5952449574354719,
+      "size": null,
+      "seconds": 0.0009552501142024994,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:1e66eca2599b11f72e0ca25318284722050bb0fb08aee682b1ef570f301f6114",
+        "measured_at": "2026-10-24T05:10:39.342622+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:47b4d81a512b13b796d29e2bcf9790e4695dd334916b9037a74274a2ddcfff69",
+        "output_digest": "sha256:3a13249ddde648039ec04746ecbb8f28b200bede3ba6dd5f079a68dd4f3a5e88",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "statsmodels NB",
+      "own_nll": 1.620444160239593,
+      "nll_at_true_size": 1.6293542352511217,
+      "mae": 0.5823579669371906,
+      "size": 1.0118743762948585,
+      "seconds": 0.00431366590783,
+      "converged": true,
+      "alpha": 0.9882649698687513,
+      "_identity": {
+        "fingerprint": "sha256:80335bd78210d0d5aea70490870a36159a455dd7b8d46ec57250eaffc29265ff",
+        "measured_at": "2026-10-24T05:10:39.348034+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:47b4d81a512b13b796d29e2bcf9790e4695dd334916b9037a74274a2ddcfff69",
+        "output_digest": "sha256:f039e57bc6f5300e79a55a1662290ccaf6808c5e722349ac9e7aa147968eee6c",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "statsmodels NB spline",
+      "own_nll": 1.5500548960776528,
+      "nll_at_true_size": 1.5499526273569695,
+      "mae": 0.07464823655029856,
+      "size": 1.5250039703083134,
+      "seconds": 0.027111999923363328,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:c3577685ee5f2528af7ee5cec00a9c39dd333bac8e03364e5a72998f11020435",
+        "measured_at": "2026-10-24T05:10:39.378900+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:47b4d81a512b13b796d29e2bcf9790e4695dd334916b9037a74274a2ddcfff69",
+        "output_digest": "sha256:a7c999d722e579c644c971e58e55ad472f81d1fa8c5aadbbd1cc61d3cf6cfcc9",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "sklearn PoissonRegressor",
+      "own_nll": 1.8949802954709778,
+      "nll_at_true_size": 1.6302895364959382,
+      "mae": 0.5952212756042886,
+      "size": null,
+      "seconds": 0.0007875829469412565,
+      "_identity": {
+        "fingerprint": "sha256:fdfa35ff951330ef8de5110c3174b31249aa70a911320d394c56ab4adc804fe4",
+        "measured_at": "2026-10-24T05:10:39.380151+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:47b4d81a512b13b796d29e2bcf9790e4695dd334916b9037a74274a2ddcfff69",
+        "output_digest": "sha256:cf04168ae588fe64303a46dcb1fc94cb5931ecd057437b1dd76147e2ee195fb1",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "mboostrs glmboost Poisson",
+      "own_nll": 1.8995198877274073,
+      "nll_at_true_size": 1.633184697029408,
+      "mae": 0.6124306817285978,
+      "size": null,
+      "seconds": 0.04918266599997878,
+      "mstop": 50,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:92dc373ca7ba621200041e7c8aa0c0c1bc1cfb0b2196b7b2e6c1dca384874521",
+        "measured_at": "2026-10-24T05:10:39.429832+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:47b4d81a512b13b796d29e2bcf9790e4695dd334916b9037a74274a2ddcfff69",
+        "output_digest": "sha256:715da758fcc682208401ca4f79eb9d44c9b4209b5e130e1077619d1941528bb2",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "mboostrs glmboost NBinomial",
+      "own_nll": 1.621463928118903,
+      "nll_at_true_size": 1.6305917776506844,
+      "mae": 0.5945566547980209,
+      "size": 1.0102091230256498,
+      "seconds": 0.7304247908759862,
+      "mstop": 163,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:aac69cc6fb816f62995dea0f0791dc63ccfcfb3d90b068d151f7693e381dffd9",
+        "measured_at": "2026-10-24T05:10:40.160944+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:47b4d81a512b13b796d29e2bcf9790e4695dd334916b9037a74274a2ddcfff69",
+        "output_digest": "sha256:3126bc5a2d316ba57580c772cb728db2147a12a0e60f2d814179185d73ee9655",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "mboostrs gamboost Poisson",
+      "own_nll": 1.7309113481742,
+      "nll_at_true_size": 1.5511014467503823,
+      "mae": 0.0916207498212886,
+      "size": null,
+      "seconds": 0.27907558297738433,
+      "mstop": 485,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:88c939d257d6f7d76bff670da8bd6d26664399022c1174638557d2fecdd65c3c",
+        "measured_at": "2026-10-24T05:10:40.440829+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:47b4d81a512b13b796d29e2bcf9790e4695dd334916b9037a74274a2ddcfff69",
+        "output_digest": "sha256:5ea1db59f5bbc292f380c58219c0c7871d895e8d3bada8eb57789ca783cff016",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "mboostrs gamboost NBinomial",
+      "own_nll": 1.5504923885803081,
+      "nll_at_true_size": 1.5503639967463687,
+      "mae": 0.0816516418295098,
+      "size": 1.5299458339884995,
+      "seconds": 2.1181108749005944,
+      "mstop": 972,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:ee37cabfa05fcae1f6f43bd522c7aaf5d54c02af59e755da84585a95a144a6c0",
+        "measured_at": "2026-10-24T05:10:42.559748+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:47b4d81a512b13b796d29e2bcf9790e4695dd334916b9037a74274a2ddcfff69",
+        "output_digest": "sha256:3b52f87e720a864ab10a22e2a71ed271e8f5f2b8869f51a85413a2ceee422d10",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "generating NB",
+      "own_nll": 1.549322762738121,
+      "nll_at_true_size": 1.549322762738121,
+      "mae": 0.0,
+      "size": 1.5,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:b09be2a35a17707e623e2b39522c17cd8ec3ffe7cd4411854446e8cfaf559229",
+        "measured_at": "2026-10-24T05:10:42.562139+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8913a9c6f846f9467b026df7789561287d6ccf5c5060aa0106d450fc7cb954d9",
+        "output_digest": "sha256:7e6a51cb4a640d5dcaebd484cde78c59ebddaed2c603192fee2f0f27052eac0b",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "statsmodels Poisson",
+      "own_nll": 1.9009407183844829,
+      "nll_at_true_size": 1.6316742066168464,
+      "mae": 0.5711763610248792,
+      "size": null,
+      "seconds": 0.0011828329879790545,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:5441d36a53fecb4a8b148ccb8c8bfe9860fc09912fafcf5f2a659b475ec0c1bb",
+        "measured_at": "2026-10-24T05:10:42.564416+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8913a9c6f846f9467b026df7789561287d6ccf5c5060aa0106d450fc7cb954d9",
+        "output_digest": "sha256:ed04309e4c618e3ad9956a63103362955a38b5b4852fab1c1ddf813609a0e8bf",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "statsmodels NB",
+      "own_nll": 1.6211504527799003,
+      "nll_at_true_size": 1.630066021448175,
+      "mae": 0.5555731461964996,
+      "size": 1.0326383361670897,
+      "seconds": 0.00470937485806644,
+      "converged": true,
+      "alpha": 0.9683932553886818,
+      "_identity": {
+        "fingerprint": "sha256:f0eaa345bb8cbdfbb6d53a76f8dccc1659df8102e3d852905440cf4f1967c67d",
+        "measured_at": "2026-10-24T05:10:42.570316+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8913a9c6f846f9467b026df7789561287d6ccf5c5060aa0106d450fc7cb954d9",
+        "output_digest": "sha256:a33589037db1758b2424cb6ec8fbc47ce27890e50ad9cb8e114c517707014e46",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "statsmodels NB spline",
+      "own_nll": 1.555687648234009,
+      "nll_at_true_size": 1.5555864352830766,
+      "mae": 0.1593232508308579,
+      "size": 1.5167290587829025,
+      "seconds": 0.013342667138203979,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:bbca707f7f2ca89a386eabe93750ea6f0f5fa20867fed5d439d6ab4fd0f53e84",
+        "measured_at": "2026-10-24T05:10:42.587811+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8913a9c6f846f9467b026df7789561287d6ccf5c5060aa0106d450fc7cb954d9",
+        "output_digest": "sha256:18c26d201ba6d7bf6270efbcb406a2dbb8cdc136881fc43acb7dedbb494eab35",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "sklearn PoissonRegressor",
+      "own_nll": 1.900942276183789,
+      "nll_at_true_size": 1.6316744270209476,
+      "mae": 0.5711724245088512,
+      "size": null,
+      "seconds": 0.0008997081313282251,
+      "_identity": {
+        "fingerprint": "sha256:f141bb7326204d915a0facb0d6f72c9d76574a999ba328f238a7ebba4955ca02",
+        "measured_at": "2026-10-24T05:10:42.589200+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8913a9c6f846f9467b026df7789561287d6ccf5c5060aa0106d450fc7cb954d9",
+        "output_digest": "sha256:e8e6bdfe03c21249adbac963de1d129f0bf48f859683e6826b51dc09ded87044",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "mboostrs glmboost Poisson",
+      "own_nll": 1.8993078921577682,
+      "nll_at_true_size": 1.631660472168962,
+      "mae": 0.5799095911162406,
+      "size": null,
+      "seconds": 0.05122716701589525,
+      "mstop": 62,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:def649a812937c15a0c0d1d1b4f0b3124560289990646f54922dd3bfe9ee8733",
+        "measured_at": "2026-10-24T05:10:42.640923+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8913a9c6f846f9467b026df7789561287d6ccf5c5060aa0106d450fc7cb954d9",
+        "output_digest": "sha256:41de90c4f48074b50bb0866967aff1affadfd2e595008112a614d674cd3de8fd",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "mboostrs glmboost NBinomial",
+      "own_nll": 1.6211191086830823,
+      "nll_at_true_size": 1.6300527407431555,
+      "mae": 0.5654762592058775,
+      "size": 1.0259722388300565,
+      "seconds": 0.7517205839976668,
+      "mstop": 150,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:fc1094a3c53a704d079d7562c32ea38d066d2005b4c26c8cad21fb929956f033",
+        "measured_at": "2026-10-24T05:10:43.393315+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8913a9c6f846f9467b026df7789561287d6ccf5c5060aa0106d450fc7cb954d9",
+        "output_digest": "sha256:4105f0a64331b0642fb294943dce7e25752a5d60ae41939ebcd76c07becb3752",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "mboostrs gamboost Poisson",
+      "own_nll": 1.7436373914682184,
+      "nll_at_true_size": 1.555218247028312,
+      "mae": 0.13965572632573062,
+      "size": null,
+      "seconds": 0.2845431671012193,
+      "mstop": 87,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:b06979618238b14e5c6811bfb4ceba99c0be84004cb318848316f064e8f84d3d",
+        "measured_at": "2026-10-24T05:10:43.678615+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8913a9c6f846f9467b026df7789561287d6ccf5c5060aa0106d450fc7cb954d9",
+        "output_digest": "sha256:79b9d93f587fa96d2fc5dfa6b54666034ef09344f226048c35178e6e500feb9e",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "mboostrs gamboost NBinomial",
+      "own_nll": 1.5542393759347979,
+      "nll_at_true_size": 1.5542538320699228,
+      "mae": 0.12081735731164234,
+      "size": 1.4972518142764997,
+      "seconds": 2.1844385000877082,
+      "mstop": 194,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:db4a12e3e9989e098b2870b6fb1e98a6fabec1e9fadd4243c4d047c7d9f8479e",
+        "measured_at": "2026-10-24T05:10:45.863916+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:8913a9c6f846f9467b026df7789561287d6ccf5c5060aa0106d450fc7cb954d9",
+        "output_digest": "sha256:46e7543c6deb8ae22b84803ea97ffb859cd449059433e063beb33091f73100d7",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "generating NB",
+      "own_nll": 1.549322762738121,
+      "nll_at_true_size": 1.549322762738121,
+      "mae": 0.0,
+      "size": 1.5,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:8c8a2f1a6c2d5924b21e7a9d64f7cf9564e5a71722408e161a17196d8ac06be8",
+        "measured_at": "2026-10-24T05:10:45.866189+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f7cf838447201f5ae0ab8959d062eb911d459fce54f317e3c56b6ead13597230",
+        "output_digest": "sha256:cf022c9847ee4f05a0a99ca7e2b19c3c098e0d4e2b60190a97398633b4ab49de",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "statsmodels Poisson",
+      "own_nll": 1.8934882545206473,
+      "nll_at_true_size": 1.629333960793056,
+      "mae": 0.5865788714427047,
+      "size": null,
+      "seconds": 0.001016290858387947,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:55fca939e74a05f9584248a19c78f930cc42bd98a52a6edd4da9dba900989e8d",
+        "measured_at": "2026-10-24T05:10:45.868459+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f7cf838447201f5ae0ab8959d062eb911d459fce54f317e3c56b6ead13597230",
+        "output_digest": "sha256:08a0a293e7cb894fa747b3568aa5c0376352148e526881e8b9656acf028b23eb",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "statsmodels NB",
+      "own_nll": 1.6207180944436628,
+      "nll_at_true_size": 1.6288928859886114,
+      "mae": 0.5664843539212397,
+      "size": 0.9135971197402929,
+      "seconds": 0.004134666873142123,
+      "converged": true,
+      "alpha": 1.0945743790044662,
+      "_identity": {
+        "fingerprint": "sha256:6aeb8bf4f73b36206cef3bc5020ca7a729af7cde88445356877d983d18b5e725",
+        "measured_at": "2026-10-24T05:10:45.873786+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f7cf838447201f5ae0ab8959d062eb911d459fce54f317e3c56b6ead13597230",
+        "output_digest": "sha256:81a8e50865d0b90b1d067815b3ba0efe7e8c15d60f58f234ab32907f8b329711",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "statsmodels NB spline",
+      "own_nll": 1.5500331108187857,
+      "nll_at_true_size": 1.549567875338515,
+      "mae": 0.07159648143869149,
+      "size": 1.2641209945590077,
+      "seconds": 0.0222525829449296,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:5e7bcacedd0924e78877eb3590dbd026dfd0f0c3814f173d36ee59cc57c768b0",
+        "measured_at": "2026-10-24T05:10:45.899932+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f7cf838447201f5ae0ab8959d062eb911d459fce54f317e3c56b6ead13597230",
+        "output_digest": "sha256:b368ecaac28321f9ce798a7d6c0a697cba301e989973b54eb132de6632ba8fe0",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "sklearn PoissonRegressor",
+      "own_nll": 1.8934892953047233,
+      "nll_at_true_size": 1.6293342875368946,
+      "mae": 0.5865740510103068,
+      "size": null,
+      "seconds": 0.0008807920385152102,
+      "_identity": {
+        "fingerprint": "sha256:5079659fa9e05c4542e33ef60003a970e65a85e93dbd283f542882bfa4156720",
+        "measured_at": "2026-10-24T05:10:45.901316+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f7cf838447201f5ae0ab8959d062eb911d459fce54f317e3c56b6ead13597230",
+        "output_digest": "sha256:b7bec7caed69298455b12664ccf4bcfd643386af8f617c5df7bdf6bb178f24c7",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "mboostrs glmboost Poisson",
+      "own_nll": 1.894593233007537,
+      "nll_at_true_size": 1.630229046828308,
+      "mae": 0.5938157607117762,
+      "size": null,
+      "seconds": 0.04982895799912512,
+      "mstop": 70,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:6957b644a676b2415edc27ac77c987d223414b52ee731075c28c99d47f19d28a",
+        "measured_at": "2026-10-24T05:10:45.951677+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f7cf838447201f5ae0ab8959d062eb911d459fce54f317e3c56b6ead13597230",
+        "output_digest": "sha256:1fe928eabdf98f98d86ac594ddfc57bfa97d5c015b7281a2f4e14cc4d1de3f9b",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "mboostrs glmboost NBinomial",
+      "own_nll": 1.620840904127186,
+      "nll_at_true_size": 1.6290596595031102,
+      "mae": 0.5719348625248413,
+      "size": 0.9129103405063753,
+      "seconds": 0.7281376668252051,
+      "mstop": 224,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:91e0e113f0e09ce0814f15cd58723315ca2042624d1f59dcc71056741e9d9c11",
+        "measured_at": "2026-10-24T05:10:46.680489+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f7cf838447201f5ae0ab8959d062eb911d459fce54f317e3c56b6ead13597230",
+        "output_digest": "sha256:6d20727f8db775bf99444125ee4862090cadec88c69eaff507ba91a04de1be1d",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "mboostrs gamboost Poisson",
+      "own_nll": 1.729523859388346,
+      "nll_at_true_size": 1.5502258815530732,
+      "mae": 0.048485930535547325,
+      "size": null,
+      "seconds": 0.27554008294828236,
+      "mstop": 95,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:87adb1fa495b17ddbccf21d8df50dcc19a77741318bf0870df10d8556c2b82e4",
+        "measured_at": "2026-10-24T05:10:46.956739+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f7cf838447201f5ae0ab8959d062eb911d459fce54f317e3c56b6ead13597230",
+        "output_digest": "sha256:f4e04a8ad4bfce3ed6b947e25bc40d82669a2722534b5e2158cd3a426258b212",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "mboostrs gamboost NBinomial",
+      "own_nll": 1.5503665536232498,
+      "nll_at_true_size": 1.549853356333545,
+      "mae": 0.04409766656289861,
+      "size": 1.2553897792644222,
+      "seconds": 2.216566374991089,
+      "mstop": 289,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:4c98332d7bbdb75ceac059bee41c1a7758a79a2c62f41ceb2b8080f8f5a74a25",
+        "measured_at": "2026-10-24T05:10:49.174262+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f7cf838447201f5ae0ab8959d062eb911d459fce54f317e3c56b6ead13597230",
+        "output_digest": "sha256:0504f5c110c15b2d4af6d3fdf7421732e5facbe82465ef288edcd3854a5655cf",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    }
+  ],
+  "recovery": {
+    "statsmodels_nb": {
+      "Intercept": 0.2864174017430839,
+      "x1": 0.5588792601614555,
+      "x2": -0.337049493156874,
+      "noise": 0.009289589472224484
+    },
+    "statsmodels_alpha": 0.6162464209810424,
+    "statsmodels_size": 1.6227274771154623,
+    "glmboost_off2int": {
+      "(Intercept)": 0.303567436776356,
+      "x1": 0.5445653913139991,
+      "x2": -0.3239551353264143
+    },
+    "glmboost_raw_intercept": -0.20083761918671192,
+    "glmboost_size": 1.621684120426296,
+    "glmboost_loglik": -2435.5546944685693,
+    "statsmodels_llf": -2435.262039639086,
+    "glmboost_insample_nll_sum": 2435.554694468575,
+    "train_var_over_mean": 3.0372367149758457
+  },
+  "usability": {
+    "probes": [
+      {
+        "label": "autospec without a budget",
+        "ok": true,
+        "detail": "family=Poisson(), formula='y ~ bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(noise, df=4.0)', defaulted=('family', 'shapes', 'interactions', 'mstop')"
+      },
+      {
+        "label": "autospec with a family-probe budget",
+        "ok": true,
+        "detail": "family=NBinomial(), measured=('family', 'mstop', 'interactions'), dispersion=2.0900223365910717, sentence='held-out Pearson dispersion 2.09: the counts are more spread than a Poisson mean allows, so NBinomial carries the extra variance; boosted, NBinomial predicts as well as Gaussian within sampling noise (held-out squared error 3.9 against 3.91, standard error of the difference 0.13)'"
+      },
+      {
+        "label": "predict default is the log mean",
+        "ok": true,
+        "detail": "type='link' matches log(type='response') to 1.11e-16. The default type is 'link'."
+      },
+      {
+        "label": "NBinomial nuisance is the size",
+        "ok": true,
+        "detail": "nuisance() = 1.4961. Variance is mu + mu**2 / nuisance(). A statsmodels NB2 alpha is the reciprocal."
+      },
+      {
+        "label": "glmboost Poisson nuisance()",
+        "ok": true,
+        "detail": "returned None."
+      },
+      {
+        "label": "NBinomial rejects a negative count",
+        "ok": false,
+        "error": "MboostrsValueError",
+        "detail": "family 'NBinomial': y must be >= 0, got -1"
+      },
+      {
+        "label": "cvrisk after glmboost.continue_to",
+        "ok": true,
+        "detail": "cvrisk after glmboost.continue_to returned"
+      },
+      {
+        "label": "cvrisk after gamboost.continue_to",
+        "ok": true,
+        "detail": "cvrisk after gamboost.continue_to returned"
+      }
+    ]
+  },
+  "provenance": {
+    "commit": "f54f1531831e3f14a2db0bd238cf36238683d5ed",
+    "working_tree": {
+      "dirty": false,
+      "status_digest": null,
+      "commit_source": "working directory"
+    },
+    "native_build": {
+      "package_version": "0.1.3",
+      "source_digest": "sha256:a771766f1a4820a76b9d908fbc12ed53123e648afcb8583181708b5273ca6b49",
+      "git_revision": "e9c670d73f2aff2d153b2c02b4cf8a71aa2c46e2",
+      "git_dirty": false,
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+      "target": "aarch64-apple-darwin",
+      "profile": "release",
+      "target_features": "aes,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+      "crate_features": "",
+      "abi_version": 1,
+      "build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+    },
+    "platform": {
+      "system": "Darwin",
+      "release": "25.3.0",
+      "machine": "arm64",
+      "cpu": "arm",
+      "python": "3.12.11"
+    },
+    "versions": {
+      "mboostrs": "0.1.3",
+      "numpy": "2.4.6",
+      "rpy2": "3.6.7",
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "R": "4.5.1",
+      "mboost": "2.9.11",
+      "scipy": "1.16.3",
+      "statsmodels": "0.15.0",
+      "scikit-learn": "1.9.0",
+      "polars": "1.41.0",
+      "patsy": "1.0.3"
+    },
+    "compiler_flags": {
+      "RUSTFLAGS": null,
+      "CARGO_PROFILE": "release"
+    },
+    "threads": {
+      "logical_cpus": 10,
+      "r_mclapply_default_cores": "2",
+      "RAYON_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+    },
+    "created_at": "2026-10-24T05:10:22.288869+00:00",
+    "runner": "benches/bench_negbin.py",
+    "runner_sha256": "3ee37f67b5b3462e89fce9db9ab18c951e514086a206f04b9956a60960ecd71c",
+    "protocol": {
+      "kind": "seeded predictive-method comparison",
+      "design": {
+        "n_train": 1500,
+        "n_test": 4000,
+        "seeds": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "size": 1.5,
+        "variance": "mu + mu**2 / 1.5",
+        "nu": 0.1,
+        "folds": 5,
+        "mstop": {
+          "glm": 500,
+          "gam": 1400
+        },
+        "linear": "log mu = 0.30 + 0.55 x1 - 0.35 x2",
+        "smooth": "log mu = 0.15 + sin(1.5 x1) + 0.35 x2",
+        "spline": "bs(x1, df=8, lower_bound=-6, upper_bound=6) + x2 + noise"
+      },
+      "timing": "runner perf_counter regions; method-specific fit/tuning/prediction work",
+      "order": "sequential task, seed, method order in the recorded runner",
+      "timing_claim": "descriptive elapsed times; no paired equal-work speedup or timing interval",
+      "warmup": "no dedicated warmup; imports and provenance collection excluded from timers"
+    },
+    "repeats": {
+      "training_seeds": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "test": "one independently generated test sample per task, shared across methods and seeds"
+    },
+    "uncertainty": {
+      "scope": "descriptive timing spread across training seeds, not repeated identical-input trials",
+      "groups": [
+        {
+          "task": "linear",
+          "method": "generating NB",
+          "n": 4,
+          "seconds_sd": 0.0,
+          "seconds_se": 0.0
+        },
+        {
+          "task": "linear",
+          "method": "statsmodels Poisson",
+          "n": 4,
+          "seconds_sd": 0.00020890775596767427,
+          "seconds_se": 0.00010445387798383713
+        },
+        {
+          "task": "linear",
+          "method": "statsmodels NB",
+          "n": 4,
+          "seconds_sd": 0.00046081874042884296,
+          "seconds_se": 0.00023040937021442148
+        },
+        {
+          "task": "linear",
+          "method": "statsmodels NB spline",
+          "n": 4,
+          "seconds_sd": 0.002680676466853422,
+          "seconds_se": 0.001340338233426711
+        },
+        {
+          "task": "linear",
+          "method": "sklearn PoissonRegressor",
+          "n": 4,
+          "seconds_sd": 0.0008804480463546781,
+          "seconds_se": 0.00044022402317733903
+        },
+        {
+          "task": "linear",
+          "method": "mboostrs glmboost Poisson",
+          "n": 4,
+          "seconds_sd": 0.0013463136465086312,
+          "seconds_se": 0.0006731568232543156
+        },
+        {
+          "task": "linear",
+          "method": "mboostrs glmboost NBinomial",
+          "n": 4,
+          "seconds_sd": 0.012859438969146972,
+          "seconds_se": 0.006429719484573486
+        },
+        {
+          "task": "linear",
+          "method": "mboostrs gamboost Poisson",
+          "n": 4,
+          "seconds_sd": 0.004891518067404422,
+          "seconds_se": 0.002445759033702211
+        },
+        {
+          "task": "linear",
+          "method": "mboostrs gamboost NBinomial",
+          "n": 4,
+          "seconds_sd": 0.02449519741890782,
+          "seconds_se": 0.01224759870945391
+        },
+        {
+          "task": "smooth",
+          "method": "generating NB",
+          "n": 4,
+          "seconds_sd": 0.0,
+          "seconds_se": 0.0
+        },
+        {
+          "task": "smooth",
+          "method": "statsmodels Poisson",
+          "n": 4,
+          "seconds_sd": 0.00011170630338273879,
+          "seconds_se": 5.5853151691369395e-05
+        },
+        {
+          "task": "smooth",
+          "method": "statsmodels NB",
+          "n": 4,
+          "seconds_sd": 0.0002685343316809957,
+          "seconds_se": 0.00013426716584049786
+        },
+        {
+          "task": "smooth",
+          "method": "statsmodels NB spline",
+          "n": 4,
+          "seconds_sd": 0.0060875014716562665,
+          "seconds_se": 0.0030437507358281332
+        },
+        {
+          "task": "smooth",
+          "method": "sklearn PoissonRegressor",
+          "n": 4,
+          "seconds_sd": 5.012074272308694e-05,
+          "seconds_se": 2.506037136154347e-05
+        },
+        {
+          "task": "smooth",
+          "method": "mboostrs glmboost Poisson",
+          "n": 4,
+          "seconds_sd": 0.0008754955967516839,
+          "seconds_se": 0.00043774779837584194
+        },
+        {
+          "task": "smooth",
+          "method": "mboostrs glmboost NBinomial",
+          "n": 4,
+          "seconds_sd": 0.014127536917171014,
+          "seconds_se": 0.007063768458585507
+        },
+        {
+          "task": "smooth",
+          "method": "mboostrs gamboost Poisson",
+          "n": 4,
+          "seconds_sd": 0.0037305073741773775,
+          "seconds_se": 0.0018652536870886888
+        },
+        {
+          "task": "smooth",
+          "method": "mboostrs gamboost NBinomial",
+          "n": 4,
+          "seconds_sd": 0.04253659209888977,
+          "seconds_se": 0.021268296049444885
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "library": "mboostrs 0.1.3",
+  "effect_queries": {
+    "ATE": {
+      "estimate": 3796.393377820484,
+      "lower90": 128.94353130508034,
+      "upper90": 7463.8432243358875
+    },
+    "ATT": {
+      "estimate": 2903.3070040213834,
+      "lower90": 1520.3018928453068,
+      "upper90": 4286.31211519746
+    },
+    "CATE_educ_lt12": {
+      "estimate": 2211.608967393039,
+      "lower90": -644.2922651913168,
+      "upper90": 5067.510199977395
+    },
+    "CATE_educ_ge16": {
+      "estimate": 5453.499657190655,
+      "lower90": -707.1581176913623,
+      "upper90": 11614.157432072672
+    },
+    "CATE_prior_q1": {
+      "estimate": 1832.3757084711729,
+      "lower90": 305.25064190006265,
+      "upper90": 3359.500775042283
+    },
+    "CATE_prior_q4": {
+      "estimate": 3765.6234633274626,
+      "lower90": -9250.531244711841,
+      "upper90": 16781.77817136677
+    },
+    "CATE_age_lt25": {
+      "estimate": 3789.742342351254,
+      "lower90": 1345.1221973290099,
+      "upper90": 6234.362487373499
+    },
+    "EMP_ATE": {
+      "estimate": 0.04956206915647801,
+      "lower90": -0.0038965659531154107,
+      "upper90": 0.10302070426607143
+    }
+  },
+  "roles": {
+    "age": "outcome_only",
+    "education": "outcome_only",
+    "experience": "outcome_only",
+    "ethnicity": "irrelevant",
+    "smsa": "irrelevant",
+    "region": "treatment_only",
+    "parttime": "irrelevant",
+    "prior_earnings": "confounder",
+    "months_unemployed": "irrelevant",
+    "distance_km": "treatment_only",
+    "caseworker_note_len": "irrelevant",
+    "enrolled": "treatment",
+    "certificate": "mediator",
+    "responded": "post_treatment_selection",
+    "hours_post": "mediator",
+    "earnings_post": "outcome"
+  },
+  "adjustment_set": [
+    "age",
+    "education",
+    "experience",
+    "region",
+    "prior_earnings",
+    "distance_km"
+  ],
+  "effect_modifiers": [],
+  "channels": {
+    "employment": false,
+    "earnings_if_employed": true
+  },
+  "limited_overlap": [
+    {
+      "description": "Applicants who did not answer the follow-up survey: their earnings are not observed, and the estimates assume non-response depends only on the covariates and enrolment.",
+      "variable": "responded"
+    }
+  ],
+  "warnings": [
+    "36 fold predictions in this call asked 4 learner(s) to predict outside the range they were fitted on. bbs(distance_km), covariate distance_km: 1 above 92.4 (worst 0.26 training ranges out); bbs(prior_earnings), covariate prior_earnings: 1 above 159460 (worst 0.13 training ranges out); bbs(months_une",
+    "1 learner(s) are asked to predict outside the range they were fitted on. bbs(distance_km), covariate distance_km: 3 above 80.1 (worst 0.46 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.46 training ranges out that",
+    "1 learner(s) are asked to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 1 above 159460 (worst 0.13 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.13 training ranges ",
+    "1 learner(s) are asked to predict outside the range they were fitted on. bbs(experience), covariate experience: 1 above 57 (worst 0.068 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.068 training ranges out that i",
+    "3 learner(s) are asked to predict outside the range they were fitted on. bbs(education), covariate education: 13 below 4 (worst 0.29 training ranges out); bbs(experience), covariate experience: 1 below -1 and 5 above 53 (worst 0.15 training ranges out); bbs(prior_earnings), covariate prior_earnings:",
+    "68 of 4000 new applicants have an estimated propensity outside (0.02, 0.98); their effects are extrapolations (flags in cate_overlap_flags.parquet).",
+    "The arm-specific aipw estimate is 6,725 dollars (90% interval -1,266 to 14,715). The reported ATE is the pooled augmented score; the arm-specific outcome models extrapolate in the high-prior stratum.",
+    "Intervals for the ATE, ATT, subgroups and the employment effect are normal intervals of the mean of the augmented scores over the chosen rows. They describe the sampled applicants and do not add variance for the nuisance models.",
+    "Earnings for non-respondents are missing. The estimates assume response is missing at random given the covariates and enrolment."
+  ]
+}

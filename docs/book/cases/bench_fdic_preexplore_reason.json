@@ -1,0 +1,2430 @@
+{
+  "dataset": {
+    "source": "mb.datasets.fdic_bank_yearend()",
+    "response": "deposit_rate",
+    "response_definition": "100 * EDEP / DEPI (percent paid on interest-bearing deposits)",
+    "predictors": [
+      "year",
+      "log_assets",
+      "loan_ratio",
+      "brokered_share",
+      "deposit_funding",
+      "ib_share",
+      "offices"
+    ],
+    "panel_rows": 43906,
+    "sample_rows": 6300,
+    "train_rows": 5174,
+    "test_rows": 1126,
+    "n_train_banks": 3129,
+    "n_test_banks": 687,
+    "years": [
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "split": "hold out ~18% of CERT banks entirely for final_evaluate; training uses ordinary 4-fold CV on remaining bank-years (CERT dropped after the split)"
+  },
+  "library_map": {
+    "tree_probe": "session.run('pre_scan', engine='native') \u2014 boosted tree ensemble (permutation importance, PD shapes, H-statistic pairs)",
+    "neural_probe": "session.run('pre_scan', engine='neural') \u2014 native neural nomination probe",
+    "dual_probe": "session.run('pre_scan', engine='dual') \u2014 tree + neural agreement",
+    "mars_like_shapes": "session.run('term_report', shapes=True) and pre_scan partial curve/linear/step diagnostics (bbs vs bols vs btree)",
+    "interaction_screen": "session.run('interaction_screen') after a retained fit",
+    "pair_candidates": "session.run('pair_candidates') \u2014 residual / surrogate nominations",
+    "tree_candidate": "session.run('tree_candidate') \u2014 multiway tree over accepted columns"
+  },
+  "probes": {
+    "native": {
+      "status": "screening_only",
+      "seconds": 0.27903379092458636,
+      "summary": {
+        "engine": "native",
+        "priority": [
+          "year",
+          "ib_share",
+          "loan_ratio",
+          "log_assets",
+          "brokered_share",
+          "offices",
+          "deposit_funding"
+        ],
+        "pair_sources": [],
+        "interpretation": "screening proposal, not adoption"
+      },
+      "report": {
+        "engine": "native",
+        "fits": 1,
+        "training_r2": 0.9039537849478376,
+        "priority": [
+          "year",
+          "ib_share",
+          "loan_ratio",
+          "log_assets",
+          "brokered_share",
+          "offices",
+          "deposit_funding"
+        ],
+        "columns": [
+          {
+            "column": "year",
+            "importance_fraction": 1.1795779049211654,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.6848168754814643,
+            "partial_curve_r2": 1.0,
+            "partial_step_share": 0.7102383173450469
+          },
+          {
+            "column": "log_assets",
+            "importance_fraction": 0.08168366943180586,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.8383939541586363,
+            "partial_curve_r2": 0.9049024609369969,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "loan_ratio",
+            "importance_fraction": 0.0824177342976139,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.8772558581339464,
+            "partial_curve_r2": 0.9694534211361678,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "brokered_share",
+            "importance_fraction": 0.06279054727642946,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.8452877821699314,
+            "partial_curve_r2": 0.9618923886054823,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "deposit_funding",
+            "importance_fraction": 0.04919884132989896,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.24049723024430103,
+            "partial_curve_r2": 0.45822897902019044,
+            "partial_step_share": 0.5219111587882515
+          },
+          {
+            "column": "ib_share",
+            "importance_fraction": 0.09711702713213874,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.0017811539525085511,
+            "partial_curve_r2": 0.09538144531686399,
+            "partial_step_share": 6.76335161636565
+          },
+          {
+            "column": "offices",
+            "importance_fraction": 0.05247364906125718,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.3260472327945561,
+            "partial_curve_r2": 0.9847775568075582,
+            "partial_step_share": 0.6255748372984976
+          }
+        ],
+        "pairs": [
+          {
+            "left": "year",
+            "right": "log_assets",
+            "h2": 0.014958044382090748,
+            "variance": 0.008995064527604459
+          },
+          {
+            "left": "year",
+            "right": "brokered_share",
+            "h2": 0.012732856365036044,
+            "variance": 0.007066006480731823
+          },
+          {
+            "left": "year",
+            "right": "loan_ratio",
+            "h2": 0.007324644077332668,
+            "variance": 0.004284609927917016
+          },
+          {
+            "left": "ib_share",
+            "right": "offices",
+            "h2": 0.11835154302696746,
+            "variance": 0.0030189176742598323
+          },
+          {
+            "left": "ib_share",
+            "right": "loan_ratio",
+            "h2": 0.05818900968627317,
+            "variance": 0.003017035410404726
+          },
+          {
+            "left": "log_assets",
+            "right": "offices",
+            "h2": 0.20031664968709778,
+            "variance": 0.0019213059888486504
+          },
+          {
+            "left": "year",
+            "right": "ib_share",
+            "h2": 0.002596648359269284,
+            "variance": 0.0015299152951353172
+          },
+          {
+            "left": "ib_share",
+            "right": "deposit_funding",
+            "h2": 0.06267248925831208,
+            "variance": 0.001358280530429492
+          },
+          {
+            "left": "loan_ratio",
+            "right": "deposit_funding",
+            "h2": 0.0481078425852041,
+            "variance": 0.0013208515626360134
+          },
+          {
+            "left": "ib_share",
+            "right": "log_assets",
+            "h2": 0.031527820522784425,
+            "variance": 0.0012142784650045091
+          }
+        ],
+        "pair_sources": [],
+        "neural_failure": null
+      }
+    },
+    "neural": {
+      "status": "screening_only",
+      "seconds": 0.28672783297952265,
+      "summary": {
+        "engine": "neural",
+        "priority": [
+          "year",
+          "log_assets",
+          "offices",
+          "loan_ratio",
+          "ib_share",
+          "brokered_share",
+          "deposit_funding"
+        ],
+        "pair_sources": [],
+        "interpretation": "screening proposal, not adoption"
+      },
+      "report": {
+        "engine": "neural",
+        "fits": 1,
+        "training_r2": 0.8134681548036091,
+        "priority": [
+          "year",
+          "log_assets",
+          "offices",
+          "loan_ratio",
+          "ib_share",
+          "brokered_share",
+          "deposit_funding"
+        ],
+        "columns": [
+          {
+            "column": "year",
+            "importance_fraction": 1.1813470203255791,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.6475475541043044,
+            "partial_curve_r2": 1.0,
+            "partial_step_share": 0.7111312245322053
+          },
+          {
+            "column": "log_assets",
+            "importance_fraction": 0.1963261730202056,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.9996707128494071,
+            "partial_curve_r2": 0.9929051890732806,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "loan_ratio",
+            "importance_fraction": 0.10696009439888932,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.933009700133149,
+            "partial_curve_r2": 0.9941730306487745,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "brokered_share",
+            "importance_fraction": 0.043950282066070545,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.8995551549841515,
+            "partial_curve_r2": 0.9631098435283655,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "deposit_funding",
+            "importance_fraction": 0.028930712731501107,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.5672498698819186,
+            "partial_curve_r2": 0.6496832049428874,
+            "partial_step_share": 2.409264894597803
+          },
+          {
+            "column": "ib_share",
+            "importance_fraction": 0.0652006524512575,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.8936268134063159,
+            "partial_curve_r2": 0.9265395136777504,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "offices",
+            "importance_fraction": 0.12755820460280431,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.8629909895920976,
+            "partial_curve_r2": 0.9515099451931968,
+            "partial_step_share": 0.28528941786146084
+          }
+        ],
+        "pairs": [
+          {
+            "left": "year",
+            "right": "log_assets",
+            "h2": 0.023115732826748798,
+            "variance": 0.013582939652280863
+          },
+          {
+            "left": "log_assets",
+            "right": "offices",
+            "h2": 1.0,
+            "variance": 0.013047722640822258
+          },
+          {
+            "left": "year",
+            "right": "offices",
+            "h2": 0.012966644399568255,
+            "variance": 0.007586151496807783
+          },
+          {
+            "left": "year",
+            "right": "ib_share",
+            "h2": 0.011778041860043853,
+            "variance": 0.0066497671519203235
+          },
+          {
+            "left": "year",
+            "right": "brokered_share",
+            "h2": 0.006790801929913905,
+            "variance": 0.003689552410194207
+          },
+          {
+            "left": "year",
+            "right": "loan_ratio",
+            "h2": 0.006121028172467478,
+            "variance": 0.0036637351395778926
+          },
+          {
+            "left": "loan_ratio",
+            "right": "ib_share",
+            "h2": 0.04733945493449825,
+            "variance": 0.001637561674004092
+          },
+          {
+            "left": "loan_ratio",
+            "right": "deposit_funding",
+            "h2": 0.0607516131120437,
+            "variance": 0.0013404047464662728
+          },
+          {
+            "left": "log_assets",
+            "right": "deposit_funding",
+            "h2": 0.03265487578229447,
+            "variance": 0.00125219502050974
+          },
+          {
+            "left": "log_assets",
+            "right": "ib_share",
+            "h2": 0.021713142548474236,
+            "variance": 0.0010252668436252007
+          }
+        ],
+        "pair_sources": [],
+        "neural_failure": null
+      }
+    },
+    "dual": {
+      "status": "screening_only",
+      "seconds": 0.5608160000992939,
+      "summary": {
+        "engine": "dual",
+        "priority": [
+          "year",
+          "log_assets",
+          "offices",
+          "loan_ratio",
+          "ib_share",
+          "brokered_share",
+          "deposit_funding"
+        ],
+        "pair_sources": [
+          {
+            "indices": [
+              0,
+              1
+            ],
+            "neural": [
+              0,
+              1,
+              0.023115732826748798,
+              0.013582939652280863
+            ],
+            "sources": [],
+            "tree": [
+              0,
+              1,
+              0.014958044382090748,
+              0.008995064527604459
+            ],
+            "columns": [
+              "year",
+              "log_assets"
+            ]
+          },
+          {
+            "indices": [
+              0,
+              2
+            ],
+            "neural": [
+              0,
+              2,
+              0.006121028172467478,
+              0.0036637351395778926
+            ],
+            "sources": [],
+            "tree": [
+              0,
+              2,
+              0.007324644077332668,
+              0.004284609927917016
+            ],
+            "columns": [
+              "year",
+              "loan_ratio"
+            ]
+          },
+          {
+            "indices": [
+              0,
+              3
+            ],
+            "neural": [
+              0,
+              3,
+              0.006790801929913905,
+              0.003689552410194207
+            ],
+            "sources": [],
+            "tree": [
+              0,
+              3,
+              0.012732856365036044,
+              0.007066006480731823
+            ],
+            "columns": [
+              "year",
+              "brokered_share"
+            ]
+          },
+          {
+            "indices": [
+              0,
+              4
+            ],
+            "neural": [
+              0,
+              4,
+              0.001420815518856544,
+              0.0007450966324694872
+            ],
+            "sources": [],
+            "tree": [
+              0,
+              4,
+              0.0011331361134950496,
+              0.0005904653822509701
+            ],
+            "columns": [
+              "year",
+              "deposit_funding"
+            ]
+          },
+          {
+            "indices": [
+              0,
+              5
+            ],
+            "neural": [
+              0,
+              5,
+              0.011778041860043853,
+              0.0066497671519203235
+            ],
+            "sources": [],
+            "tree": [
+              0,
+              5,
+              0.002596648359269284,
+              0.0015299152951353172
+            ],
+            "columns": [
+              "year",
+              "ib_share"
+            ]
+          },
+          {
+            "indices": [
+              0,
+              6
+            ],
+            "neural": [
+              0,
+              6,
+              0.012966644399568255,
+              0.007586151496807783
+            ],
+            "sources": [],
+            "tree": [
+              0,
+              6,
+              0.0021587916419021484,
+              0.0011686790360682057
+            ],
+            "columns": [
+              "year",
+              "offices"
+            ]
+          },
+          {
+            "indices": [
+              1,
+              2
+            ],
+            "neural": [
+              1,
+              2,
+              0.011009859691635957,
+              0.0008323618950403468
+            ],
+            "sources": [],
+            "tree": [
+              2,
+              1,
+              0.00939122346722782,
+              0.00040065763533297607
+            ],
+            "columns": [
+              "log_assets",
+              "loan_ratio"
+            ]
+          },
+          {
+            "indices": [
+              1,
+              3
+            ],
+            "neural": [
+              1,
+              3,
+              0.011492019791057129,
+              0.000815297074508468
+            ],
+            "sources": [],
+            "tree": [
+              1,
+              3,
+              0.0156485802659827,
+              0.00046441157571449053
+            ],
+            "columns": [
+              "log_assets",
+              "brokered_share"
+            ]
+          }
+        ],
+        "interpretation": "screening proposal, not adoption"
+      },
+      "report": {
+        "engine": "dual",
+        "fits": 2,
+        "training_r2": 0.9039537849478376,
+        "priority": [
+          "year",
+          "log_assets",
+          "offices",
+          "loan_ratio",
+          "ib_share",
+          "brokered_share",
+          "deposit_funding"
+        ],
+        "columns": [
+          {
+            "column": "year",
+            "importance_fraction": 1.1795779049211654,
+            "neural_importance_fraction": 1.1813470203255791,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.6848168754814643,
+            "partial_curve_r2": 1.0,
+            "partial_step_share": 0.7102383173450469
+          },
+          {
+            "column": "log_assets",
+            "importance_fraction": 0.08168366943180586,
+            "neural_importance_fraction": 0.1963261730202056,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.8383939541586363,
+            "partial_curve_r2": 0.9049024609369969,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "loan_ratio",
+            "importance_fraction": 0.0824177342976139,
+            "neural_importance_fraction": 0.10696009439888932,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.8772558581339464,
+            "partial_curve_r2": 0.9694534211361678,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "brokered_share",
+            "importance_fraction": 0.06279054727642946,
+            "neural_importance_fraction": 0.043950282066070545,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.8452877821699314,
+            "partial_curve_r2": 0.9618923886054823,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "deposit_funding",
+            "importance_fraction": 0.04919884132989896,
+            "neural_importance_fraction": 0.028930712731501107,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.24049723024430103,
+            "partial_curve_r2": 0.45822897902019044,
+            "partial_step_share": 0.5219111587882515
+          },
+          {
+            "column": "ib_share",
+            "importance_fraction": 0.09711702713213874,
+            "neural_importance_fraction": 0.0652006524512575,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.0017811539525085511,
+            "partial_curve_r2": 0.09538144531686399,
+            "partial_step_share": 6.76335161636565
+          },
+          {
+            "column": "offices",
+            "importance_fraction": 0.05247364906125718,
+            "neural_importance_fraction": 0.12755820460280431,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.3260472327945561,
+            "partial_curve_r2": 0.9847775568075582,
+            "partial_step_share": 0.6255748372984976
+          }
+        ],
+        "pairs": [
+          {
+            "left": "year",
+            "right": "log_assets",
+            "h2": 0.023115732826748798,
+            "variance": 0.013582939652280863
+          },
+          {
+            "left": "log_assets",
+            "right": "offices",
+            "h2": 1.0,
+            "variance": 0.013047722640822258
+          },
+          {
+            "left": "year",
+            "right": "offices",
+            "h2": 0.012966644399568255,
+            "variance": 0.007586151496807783
+          },
+          {
+            "left": "year",
+            "right": "brokered_share",
+            "h2": 0.012732856365036044,
+            "variance": 0.007066006480731823
+          },
+          {
+            "left": "year",
+            "right": "ib_share",
+            "h2": 0.011778041860043853,
+            "variance": 0.0066497671519203235
+          },
+          {
+            "left": "year",
+            "right": "loan_ratio",
+            "h2": 0.007324644077332668,
+            "variance": 0.004284609927917016
+          },
+          {
+            "left": "ib_share",
+            "right": "offices",
+            "h2": 0.11835154302696746,
+            "variance": 0.0030189176742598323
+          },
+          {
+            "left": "ib_share",
+            "right": "loan_ratio",
+            "h2": 0.05818900968627317,
+            "variance": 0.003017035410404726
+          },
+          {
+            "left": "ib_share",
+            "right": "deposit_funding",
+            "h2": 0.06267248925831208,
+            "variance": 0.001358280530429492
+          },
+          {
+            "left": "loan_ratio",
+            "right": "deposit_funding",
+            "h2": 0.0607516131120437,
+            "variance": 0.0013404047464662728
+          }
+        ],
+        "pair_sources": [
+          {
+            "columns": [
+              "year",
+              "log_assets"
+            ],
+            "sources": [],
+            "tree": [
+              0,
+              1,
+              0.014958044382090748,
+              0.008995064527604459
+            ],
+            "neural": [
+              0,
+              1,
+              0.023115732826748798,
+              0.013582939652280863
+            ]
+          },
+          {
+            "columns": [
+              "year",
+              "loan_ratio"
+            ],
+            "sources": [],
+            "tree": [
+              0,
+              2,
+              0.007324644077332668,
+              0.004284609927917016
+            ],
+            "neural": [
+              0,
+              2,
+              0.006121028172467478,
+              0.0036637351395778926
+            ]
+          },
+          {
+            "columns": [
+              "year",
+              "brokered_share"
+            ],
+            "sources": [],
+            "tree": [
+              0,
+              3,
+              0.012732856365036044,
+              0.007066006480731823
+            ],
+            "neural": [
+              0,
+              3,
+              0.006790801929913905,
+              0.003689552410194207
+            ]
+          },
+          {
+            "columns": [
+              "year",
+              "deposit_funding"
+            ],
+            "sources": [],
+            "tree": [
+              0,
+              4,
+              0.0011331361134950496,
+              0.0005904653822509701
+            ],
+            "neural": [
+              0,
+              4,
+              0.001420815518856544,
+              0.0007450966324694872
+            ]
+          },
+          {
+            "columns": [
+              "year",
+              "ib_share"
+            ],
+            "sources": [],
+            "tree": [
+              0,
+              5,
+              0.002596648359269284,
+              0.0015299152951353172
+            ],
+            "neural": [
+              0,
+              5,
+              0.011778041860043853,
+              0.0066497671519203235
+            ]
+          },
+          {
+            "columns": [
+              "year",
+              "offices"
+            ],
+            "sources": [],
+            "tree": [
+              0,
+              6,
+              0.0021587916419021484,
+              0.0011686790360682057
+            ],
+            "neural": [
+              0,
+              6,
+              0.012966644399568255,
+              0.007586151496807783
+            ]
+          },
+          {
+            "columns": [
+              "log_assets",
+              "loan_ratio"
+            ],
+            "sources": [],
+            "tree": [
+              2,
+              1,
+              0.00939122346722782,
+              0.00040065763533297607
+            ],
+            "neural": [
+              1,
+              2,
+              0.011009859691635957,
+              0.0008323618950403468
+            ]
+          },
+          {
+            "columns": [
+              "log_assets",
+              "brokered_share"
+            ],
+            "sources": [],
+            "tree": [
+              1,
+              3,
+              0.0156485802659827,
+              0.00046441157571449053
+            ],
+            "neural": [
+              1,
+              3,
+              0.011492019791057129,
+              0.000815297074508468
+            ]
+          },
+          {
+            "columns": [
+              "log_assets",
+              "deposit_funding"
+            ],
+            "sources": [
+              "tree"
+            ],
+            "tree": [
+              1,
+              4,
+              0.05733099474732126,
+              0.0007014249878673068
+            ],
+            "neural": [
+              1,
+              4,
+              0.03265487578229447,
+              0.00125219502050974
+            ]
+          },
+          {
+            "columns": [
+              "log_assets",
+              "ib_share"
+            ],
+            "sources": [],
+            "tree": [
+              5,
+              1,
+              0.031527820522784425,
+              0.0012142784650045091
+            ],
+            "neural": [
+              1,
+              5,
+              0.021713142548474236,
+              0.0010252668436252007
+            ]
+          }
+        ],
+        "neural_failure": null
+      }
+    }
+  },
+  "reasoning": {
+    "symptoms_vs_causes": [
+      {
+        "finding": "year dominates every engine's priority list",
+        "reading": "This is the macro rate environment (ZIRP \u2192 hiking \u2192 pause), not a bank choice. Treat year as a locked environment control; bank characteristics explain cross-sectional gaps around it.",
+        "would_count_against": "If dropping year barely changes OOF risk once bank structure terms are present, the year signal was proxying composition drift."
+      },
+      {
+        "finding": "brokered_share and offices rank after size",
+        "reading": "Brokered deposits are wholesale/hot money \u2014 higher share should raise the average rate paid (monotonic). More domestic offices proxy a retail franchise that can fund cheaper sticky deposits (monotonic down). Size (log_assets) mixes wholesale access, pricing power, and business-model mix \u2014 expect local bumps if regional competition or TBTF funding channels are missing.",
+        "would_count_against": "A flat or U-shaped brokered effect after year is controlled, or offices raising rates once size is held fixed."
+      },
+      {
+        "finding": "top dual pairs involve year\u00d7structure and size\u00d7franchise",
+        "reading": "Passthrough of the Fed cycle differs by franchise: large/wholesale banks reprice faster; branch-heavy community banks lag. That is an interaction hypothesis, not yet a measured claim.",
+        "would_count_against": "Pair candidates that look strong on residual screens fail the two-SE compare rule against an additive year + structure model."
+      }
+    ],
+    "priority": [
+      "year",
+      "log_assets",
+      "offices",
+      "loan_ratio",
+      "ib_share",
+      "brokered_share",
+      "deposit_funding"
+    ],
+    "shape_hints": {
+      "year": {
+        "reason": "ambiguous",
+        "shapes": [
+          "bols",
+          "bbs",
+          "btree"
+        ],
+        "partial_linear_r2": 0.6848168754814643,
+        "partial_curve_r2": 1.0,
+        "partial_step_share": 0.7102383173450469
+      },
+      "log_assets": {
+        "reason": "ambiguous",
+        "shapes": [
+          "bols",
+          "bbs",
+          "btree"
+        ],
+        "partial_linear_r2": 0.8383939541586363,
+        "partial_curve_r2": 0.9049024609369969,
+        "partial_step_share": 0.0
+      },
+      "loan_ratio": {
+        "reason": "ambiguous",
+        "shapes": [
+          "bols",
+          "bbs",
+          "btree"
+        ],
+        "partial_linear_r2": 0.8772558581339464,
+        "partial_curve_r2": 0.9694534211361678,
+        "partial_step_share": 0.0
+      },
+      "brokered_share": {
+        "reason": "ambiguous",
+        "shapes": [
+          "bols",
+          "bbs",
+          "btree"
+        ],
+        "partial_linear_r2": 0.8452877821699314,
+        "partial_curve_r2": 0.9618923886054823,
+        "partial_step_share": 0.0
+      },
+      "deposit_funding": {
+        "reason": "ambiguous",
+        "shapes": [
+          "bols",
+          "bbs",
+          "btree"
+        ],
+        "partial_linear_r2": 0.24049723024430103,
+        "partial_curve_r2": 0.45822897902019044,
+        "partial_step_share": 0.5219111587882515
+      },
+      "ib_share": {
+        "reason": "ambiguous",
+        "shapes": [
+          "bols",
+          "bbs",
+          "btree"
+        ],
+        "partial_linear_r2": 0.0017811539525085511,
+        "partial_curve_r2": 0.09538144531686399,
+        "partial_step_share": 6.76335161636565
+      },
+      "offices": {
+        "reason": "ambiguous",
+        "shapes": [
+          "bols",
+          "bbs",
+          "btree"
+        ],
+        "partial_linear_r2": 0.3260472327945561,
+        "partial_curve_r2": 0.9847775568075582,
+        "partial_step_share": 0.6255748372984976
+      }
+    },
+    "top_pairs": [
+      {
+        "left": "year",
+        "right": "log_assets",
+        "h2": 0.023115732826748798,
+        "variance": 0.013582939652280863
+      },
+      {
+        "left": "log_assets",
+        "right": "offices",
+        "h2": 1.0,
+        "variance": 0.013047722640822258
+      },
+      {
+        "left": "year",
+        "right": "offices",
+        "h2": 0.012966644399568255,
+        "variance": 0.007586151496807783
+      },
+      {
+        "left": "year",
+        "right": "brokered_share",
+        "h2": 0.012732856365036044,
+        "variance": 0.007066006480731823
+      },
+      {
+        "left": "year",
+        "right": "ib_share",
+        "h2": 0.011778041860043853,
+        "variance": 0.0066497671519203235
+      }
+    ],
+    "spec_strategy": "Start additive with bbs(year) locked as environment, bols for expected monotonic bank traits, bbs for ambiguous size; measure smooths and one nominated interaction against that baseline."
+  },
+  "search": {
+    "shape_compare": {
+      "baseline": "bbs(year, df=4) + bols(brokered_share) + bols(offices) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+      "family": "Gaussian",
+      "score": "mse",
+      "fold_id": "0dbb0fe48eb48ef5149c22d09626c799ce866f9d3668a8e3a64daaa2a58de847",
+      "two_se_candidates": [
+        {
+          "candidate": "smooth_offices",
+          "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+          "change": -0.002011720773269915,
+          "change_se": 0.0003391905840811944
+        }
+      ],
+      "also_cleared": [],
+      "soft_removal_candidates": [],
+      "rows": [
+        {
+          "specification": "current",
+          "rhs": "bbs(year, df=4) + bols(brokered_share) + bols(offices) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+          "out-of-fold risk": 0.24561302820295738,
+          "change": 0.0,
+          "change se": 0.0
+        },
+        {
+          "specification": "linear_size",
+          "rhs": "bbs(year, df=4) + bols(brokered_share) + bols(offices) + bols(log_assets) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+          "out-of-fold risk": 0.24573208796402485,
+          "change": 0.00011905976106746374,
+          "change se": 0.00013780679762105514
+        },
+        {
+          "specification": "smooth_offices",
+          "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+          "out-of-fold risk": 0.24360130742968747,
+          "change": -0.002011720773269915,
+          "change se": 0.0003391905840811944
+        }
+      ],
+      "rule": "two paired SE; explicit caller adoption; descriptive heuristic"
+    },
+    "interaction_screen": {
+      "top_pairs": [
+        {
+          "left": "year",
+          "right": "brokered_share",
+          "removed": 0.010078523766152925,
+          "thresholded_sibling_suggested": true,
+          "threshold_column": "year",
+          "sibling_term": "btree(year, by=brokered_share, maxdepth=1)",
+          "next_action": "transform_candidates"
+        },
+        {
+          "left": "year",
+          "right": "log_assets",
+          "removed": 0.007343453534491284,
+          "thresholded_sibling_suggested": true,
+          "threshold_column": "year",
+          "sibling_term": "btree(year, by=log_assets, maxdepth=1)",
+          "next_action": "transform_candidates"
+        },
+        {
+          "left": "year",
+          "right": "loan_ratio",
+          "removed": 0.007122200592402567,
+          "thresholded_sibling_suggested": true,
+          "threshold_column": "year",
+          "sibling_term": "btree(year, by=loan_ratio, maxdepth=1)",
+          "next_action": "transform_candidates"
+        },
+        {
+          "left": "brokered_share",
+          "right": "ib_share",
+          "removed": 0.003346304594226468,
+          "thresholded_sibling_suggested": false,
+          "threshold_column": null,
+          "sibling_term": null,
+          "next_action": null
+        },
+        {
+          "left": "year",
+          "right": "ib_share",
+          "removed": 0.0029275213645024445,
+          "thresholded_sibling_suggested": true,
+          "threshold_column": "year",
+          "sibling_term": "btree(year, by=ib_share, maxdepth=1)",
+          "next_action": "transform_candidates"
+        },
+        {
+          "left": "brokered_share",
+          "right": "offices",
+          "removed": 0.00274649231884197,
+          "thresholded_sibling_suggested": false,
+          "threshold_column": null,
+          "sibling_term": null,
+          "next_action": null
+        }
+      ],
+      "interpretation": "removed is residual-screen MSE, not a paired two-SE comparison; compare before adoption"
+    },
+    "pair_candidates": {
+      "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+      "leads": [
+        {
+          "term": "bbs(year, df=2.5, knots=5) %X% bbs(brokered_share, df=2.5, knots=5)",
+          "source": "residual",
+          "kind": "tensor"
+        },
+        {
+          "term": "bbs(year, df=2.5, knots=5) %X% bbs(loan_ratio, df=2.5, knots=5)",
+          "source": "residual",
+          "kind": "tensor"
+        },
+        {
+          "term": "bbs(brokered_share, df=2.5, knots=5) %X% bbs(offices, df=2.5, knots=5)",
+          "source": "residual",
+          "kind": "tensor"
+        },
+        {
+          "term": "bbs(loan_ratio, df=2.5, knots=5) %X% bbs(offices, df=2.5, knots=5)",
+          "source": "residual",
+          "kind": "tensor"
+        },
+        {
+          "term": "bbs(log_assets, df=2.5, knots=5) %X% bbs(brokered_share, df=2.5, knots=5)",
+          "source": "residual",
+          "kind": "tensor"
+        },
+        {
+          "term": "bbs(log_assets, df=2.5, knots=5) %X% bbs(offices, df=2.5, knots=5)",
+          "source": "tree+neural",
+          "kind": "tensor"
+        }
+      ],
+      "fits_reported": 0,
+      "interpretation": "nomination, not adoption"
+    },
+    "tree_candidate": {
+      "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+      "term": "btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse)",
+      "interpretation": "nomination, not adoption"
+    },
+    "interaction_compare": {
+      "baseline": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+      "family": "Gaussian",
+      "score": "mse",
+      "fold_id": "0dbb0fe48eb48ef5149c22d09626c799ce866f9d3668a8e3a64daaa2a58de847",
+      "two_se_candidates": [
+        {
+          "candidate": "tree",
+          "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse)",
+          "change": -0.023042120596143828,
+          "change_se": 0.0065127809628704155
+        },
+        {
+          "candidate": "pair_2",
+          "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(loan_ratio, df=2.5, knots=5)",
+          "change": -0.006928401292065983,
+          "change_se": 0.0011169921634880907
+        },
+        {
+          "candidate": "year_by_size",
+          "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(log_assets, df=2.5, knots=5)",
+          "change": -0.005499824425213934,
+          "change_se": 0.0006307357033017581
+        },
+        {
+          "candidate": "pair_1",
+          "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(brokered_share, df=2.5, knots=5)",
+          "change": -0.004784390488594387,
+          "change_se": 0.0014662892443814742
+        }
+      ],
+      "also_cleared": [
+        {
+          "candidate": "pair_2",
+          "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(loan_ratio, df=2.5, knots=5)",
+          "change": -0.006928401292065983,
+          "change_se": 0.0011169921634880907
+        },
+        {
+          "candidate": "year_by_size",
+          "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(log_assets, df=2.5, knots=5)",
+          "change": -0.005499824425213934,
+          "change_se": 0.0006307357033017581
+        },
+        {
+          "candidate": "pair_1",
+          "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(brokered_share, df=2.5, knots=5)",
+          "change": -0.004784390488594387,
+          "change_se": 0.0014662892443814742
+        }
+      ],
+      "soft_removal_candidates": [],
+      "rows": [
+        {
+          "specification": "current",
+          "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+          "out-of-fold risk": 0.24360130742968747,
+          "change": 0.0,
+          "change se": 0.0
+        },
+        {
+          "specification": "pair_1",
+          "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(brokered_share, df=2.5, knots=5)",
+          "out-of-fold risk": 0.23881691694109308,
+          "change": -0.004784390488594387,
+          "change se": 0.0014662892443814742
+        },
+        {
+          "specification": "pair_2",
+          "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(loan_ratio, df=2.5, knots=5)",
+          "out-of-fold risk": 0.23667290613762149,
+          "change": -0.006928401292065983,
+          "change se": 0.0011169921634880907
+        },
+        {
+          "specification": "pair_3",
+          "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(brokered_share, df=2.5, knots=5) %X% bbs(offices, df=2.5, knots=5)",
+          "out-of-fold risk": 0.24347509054092117,
+          "change": -0.0001262168887662951,
+          "change se": 0.003243044863650284
+        },
+        {
+          "specification": "tree",
+          "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse)",
+          "out-of-fold risk": 0.22055918683354364,
+          "change": -0.023042120596143828,
+          "change se": 0.0065127809628704155
+        },
+        {
+          "specification": "year_by_size",
+          "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(log_assets, df=2.5, knots=5)",
+          "out-of-fold risk": 0.23810148300447354,
+          "change": -0.005499824425213934,
+          "change se": 0.0006307357033017581
+        }
+      ],
+      "rule": "two paired SE; explicit caller adoption; descriptive heuristic"
+    },
+    "term_report": {
+      "baseline": 0.22055918683354364,
+      "terms": [
+        {
+          "term": "btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse)",
+          "variable": "year",
+          "without it": 0.24360130742968747,
+          "earns": 0.023042120596143828,
+          "se": 0.0065127809628704155,
+          "measurable": true
+        },
+        {
+          "term": "bbs(year, df=4)",
+          "variable": "year",
+          "without it": 0.22055918683354364,
+          "earns": 0.0,
+          "se": 0.0,
+          "measurable": true
+        },
+        {
+          "term": "bols(brokered_share)",
+          "variable": "brokered_share",
+          "without it": 0.22055918683354364,
+          "earns": 0.0,
+          "se": 0.0,
+          "measurable": true
+        },
+        {
+          "term": "bbs(offices, df=4)",
+          "variable": "offices",
+          "without it": 0.22055918683354364,
+          "earns": 0.0,
+          "se": 0.0,
+          "measurable": true
+        },
+        {
+          "term": "bbs(log_assets, df=4)",
+          "variable": "log_assets",
+          "without it": 0.22055918683354364,
+          "earns": 0.0,
+          "se": 0.0,
+          "measurable": true
+        },
+        {
+          "term": "bols(loan_ratio)",
+          "variable": "loan_ratio",
+          "without it": 0.22055918683354364,
+          "earns": 0.0,
+          "se": 0.0,
+          "measurable": true
+        },
+        {
+          "term": "bols(ib_share)",
+          "variable": "ib_share",
+          "without it": 0.22055918683354364,
+          "earns": 0.0,
+          "se": 0.0,
+          "measurable": true
+        },
+        {
+          "term": "bols(deposit_funding)",
+          "variable": "deposit_funding",
+          "without it": 0.22055918683354364,
+          "earns": 0.0,
+          "se": 0.0,
+          "measurable": true
+        }
+      ]
+    },
+    "tune": {
+      "mstop": 22,
+      "summary": {
+        "mstop": 22,
+        "score": "mse",
+        "fits_reported": 5
+      }
+    },
+    "budget_before_effects": {
+      "budget": {
+        "seconds": null,
+        "fits": 250,
+        "memory_mb": null
+      },
+      "fit_charges": 174,
+      "elapsed_seconds": 9.256254584062845,
+      "peak_memory_mb": 185.75,
+      "memory_scope": "absolute process-lifetime high-water RSS, MiB",
+      "limits": "fit admission is hard; time and memory checked between native calls",
+      "failed_fit_accounting": "failed native batches retain their full reserved charge; actual completed folds unknown",
+      "stopped": null,
+      "blocked_request": null,
+      "operation_count": 174,
+      "recent_operations": [
+        {
+          "operation": "fit_gamboost_specs",
+          "fit_charges": 1,
+          "status": "returned",
+          "cumulative_fit_charges": 167,
+          "seconds": 0.011287708068266511,
+          "peak_memory_mb": 185.046875
+        },
+        {
+          "operation": "fit_gamboost_specs",
+          "fit_charges": 1,
+          "status": "returned",
+          "cumulative_fit_charges": 168,
+          "seconds": 0.011468750075437129,
+          "peak_memory_mb": 185.109375
+        },
+        {
+          "operation": "fit_gamboost_specs",
+          "fit_charges": 1,
+          "status": "returned",
+          "cumulative_fit_charges": 169,
+          "seconds": 0.01127591694239527,
+          "peak_memory_mb": 185.125
+        },
+        {
+          "operation": "fit_gamboost_specs",
+          "fit_charges": 1,
+          "status": "returned",
+          "cumulative_fit_charges": 170,
+          "seconds": 0.06550687493290752,
+          "peak_memory_mb": 185.265625
+        },
+        {
+          "operation": "fit_gamboost_specs",
+          "fit_charges": 1,
+          "status": "returned",
+          "cumulative_fit_charges": 171,
+          "seconds": 0.06519649992696941,
+          "peak_memory_mb": 185.34375
+        },
+        {
+          "operation": "fit_gamboost_specs",
+          "fit_charges": 1,
+          "status": "returned",
+          "cumulative_fit_charges": 172,
+          "seconds": 0.06421929190400988,
+          "peak_memory_mb": 185.453125
+        },
+        {
+          "operation": "fit_gamboost_specs",
+          "fit_charges": 1,
+          "status": "returned",
+          "cumulative_fit_charges": 173,
+          "seconds": 0.06521437503397465,
+          "peak_memory_mb": 185.453125
+        },
+        {
+          "operation": "fit_gamboost_specs",
+          "fit_charges": 1,
+          "status": "returned",
+          "cumulative_fit_charges": 174,
+          "seconds": 0.08652912499383092,
+          "peak_memory_mb": 185.75
+        }
+      ]
+    },
+    "available_before_effects": [
+      "adopt",
+      "autospec",
+      "classify",
+      "column_screen",
+      "compare",
+      "evaluate",
+      "fit",
+      "freeze",
+      "hypothesis",
+      "interaction_screen",
+      "lock",
+      "pair_candidates",
+      "partial_effects",
+      "pre_scan",
+      "response_probe",
+      "set_family",
+      "set_spec",
+      "structure_candidates",
+      "term_report",
+      "transform_candidates",
+      "tree_candidate",
+      "tune"
+    ],
+    "partial_effects": {
+      "which": [
+        "year",
+        "brokered_share",
+        "offices",
+        "log_assets"
+      ],
+      "interpretation": "fitted effect, not a causal contrast"
+    },
+    "final_evaluate": {
+      "score": 0.2511906834371538,
+      "score_name": "mse",
+      "n_test": 1126,
+      "task": "one-time untouched-test evaluation"
+    },
+    "final_spec": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse)",
+    "final_mstop": 22,
+    "adopted": [
+      "smooth_offices",
+      "tree"
+    ],
+    "evidence": [
+      {
+        "action": "classify",
+        "status": "screening_only",
+        "evidence_id": "8ee9608acbea2f92ff1959255c774d58daaabb53d23688b6b7a4ceb85bf11263",
+        "state_id": "e1aa3f82e623d506794582a81ef4f3406d0a07b6dc7b3d83884740167f98ad14",
+        "fit_charges": 0,
+        "seconds": 0.0067182499915361404,
+        "summary": {
+          "columns": [
+            {
+              "name": "year",
+              "kind": "categorical",
+              "suggested": null
+            },
+            {
+              "name": "log_assets",
+              "kind": "continuous",
+              "suggested": null
+            },
+            {
+              "name": "loan_ratio",
+              "kind": "continuous",
+              "suggested": null
+            },
+            {
+              "name": "brokered_share",
+              "kind": "continuous",
+              "suggested": null
+            },
+            {
+              "name": "deposit_funding",
+              "kind": "continuous",
+              "suggested": null
+            },
+            {
+              "name": "ib_share",
+              "kind": "continuous",
+              "suggested": null
+            },
+            {
+              "name": "offices",
+              "kind": "continuous",
+              "suggested": null
+            }
+          ]
+        }
+      },
+      {
+        "action": "column_screen",
+        "status": "screening_only",
+        "evidence_id": "c9ed12cb63fd4efee4cd33bbbd2c2e2b6fc2cb4420411b6fa417513bad756272",
+        "state_id": "e0e02ef90d5d22068a4a01bf79cd312f0399057aa25b96a63c1116c6a5689d13",
+        "fit_charges": 0,
+        "seconds": 0.001913249958306551,
+        "summary": {
+          "rows": [
+            {
+              "column": "year",
+              "kind": "numeric",
+              "distinct": 9,
+              "integer_like": true,
+              "skewness": -0.0016655837442397733,
+              "pearson": 0.6242717562426905,
+              "spearman": 0.5529298458603534,
+              "linear_r2": 0.3897152256423332,
+              "curve_r2": 0.6211296736593442,
+              "step_r2": 0.5962753838895735,
+              "curvature": 0.23141444801701105,
+              "step_share": 0.8925983663390639,
+              "hint": "step"
+            },
+            {
+              "column": "brokered_share",
+              "kind": "numeric",
+              "distinct": 2181,
+              "integer_like": false,
+              "skewness": 5.562305419628852,
+              "pearson": 0.2880048206433698,
+              "spearman": 0.2972635248859523,
+              "linear_r2": 0.0829467767138196,
+              "curve_r2": 0.09766241242548523,
+              "step_r2": 0.07611992281531742,
+              "curvature": 0.014715635711665634,
+              "step_share": 0.0,
+              "hint": "curve"
+            },
+            {
+              "column": "loan_ratio",
+              "kind": "numeric",
+              "distinct": 5151,
+              "integer_like": false,
+              "skewness": -0.8664982308680031,
+              "pearson": 0.23396153244530293,
+              "spearman": 0.32677115455143385,
+              "linear_r2": 0.05473799866415454,
+              "curve_r2": 0.07616614817085599,
+              "step_r2": 0.061797185331934165,
+              "curvature": 0.021428149506701445,
+              "step_share": 0.3294351976390651,
+              "hint": "curve"
+            },
+            {
+              "column": "ib_share",
+              "kind": "numeric",
+              "distinct": 5130,
+              "integer_like": false,
+              "skewness": -0.9662861054166302,
+              "pearson": 0.20416475641029516,
+              "spearman": 0.2709089078086438,
+              "linear_r2": 0.04168324776007516,
+              "curve_r2": 0.0552130060102386,
+              "step_r2": 0.04626153293819183,
+              "curvature": 0.013529758250163434,
+              "step_share": 0.33838632542169517,
+              "hint": "curve"
+            },
+            {
+              "column": "log_assets",
+              "kind": "numeric",
+              "distinct": 5160,
+              "integer_like": false,
+              "skewness": 1.0551081032886858,
+              "pearson": 0.15649138807735213,
+              "spearman": 0.1281227273966609,
+              "linear_r2": 0.02448955454237643,
+              "curve_r2": 0.028654716292096483,
+              "step_r2": 0.024826201981625787,
+              "curvature": 0.004165161749720054,
+              "step_share": 0.08082457764623056,
+              "hint": "curve"
+            },
+            {
+              "column": "deposit_funding",
+              "kind": "numeric",
+              "distinct": 5174,
+              "integer_like": false,
+              "skewness": -4.181110940478234,
+              "pearson": -0.15957010667503502,
+              "spearman": -0.17602800736701638,
+              "linear_r2": 0.025462618944282055,
+              "curve_r2": 0.02215114181618827,
+              "step_r2": 0.017030706590809522,
+              "curvature": 0.0,
+              "step_share": 0.0,
+              "hint": "line"
+            },
+            {
+              "column": "offices",
+              "kind": "numeric",
+              "distinct": 130,
+              "integer_like": true,
+              "skewness": 5.680434041656144,
+              "pearson": -0.009488622517901125,
+              "spearman": -0.006838294306058767,
+              "linear_r2": 9.003395728722029e-05,
+              "curve_r2": 0.0,
+              "step_r2": 0.00045334900536200487,
+              "curvature": 0.0,
+              "step_share": 0.0,
+              "hint": "none"
+            }
+          ],
+          "total_columns": 7
+        }
+      },
+      {
+        "action": "hypothesis",
+        "status": "screening_only",
+        "evidence_id": "9e078e9c9ba9c59eb603f7880ec19ad410dacb024f330d6a3f30bae2e482dd08",
+        "state_id": "b52dd54ad2d2290c2393f41bcb280950377c2cc65cd9d676b741c8f243603465",
+        "fit_charges": 0,
+        "seconds": 1.7292099073529243e-05,
+        "summary": {
+          "statement": "After controlling for the calendar rate environment, banks with a higher brokered-deposit share pay a higher average rate on interest-bearing deposits.",
+          "variable": "brokered_share",
+          "role": "funding_mix",
+          "would_count_against": "A non-positive partial effect of brokered_share once year and size are in the model, or no OOF gain from including it.",
+          "status": "analyst-stated; not established by data"
+        }
+      },
+      {
+        "action": "hypothesis",
+        "status": "screening_only",
+        "evidence_id": "d0a296074bd7af126e50e1a2665023da2522bb703764f43eae14d3cfc1b11a12",
+        "state_id": "74e351028345bf1dcb3ae1f2a6e9abf25667c6f1b526b6a3312a25bec7b22153",
+        "fit_charges": 0,
+        "seconds": 1.1165975593030453e-05,
+        "summary": {
+          "statement": "Branch intensity (domestic offices) marks a retail franchise that can raise deposits without matching wholesale rates, so more offices associate with a lower deposit rate paid after size is held fixed.",
+          "variable": "offices",
+          "role": "franchise",
+          "would_count_against": "Offices raise rates once size is controlled, or the offices term fails the two-SE adopt rule.",
+          "status": "analyst-stated; not established by data"
+        }
+      },
+      {
+        "action": "hypothesis",
+        "status": "screening_only",
+        "evidence_id": "d75354be7a848393e4779028a63fd525a7646915d67ab4f445b08523a5ab34da",
+        "state_id": "cb59765378696e30d09cb6d36b19b326119e42526717bef47ea48e9e709d59e4",
+        "fit_charges": 0,
+        "seconds": 9.790994226932526e-06,
+        "summary": {
+          "statement": "Fed-cycle passthrough differs by bank size and franchise: year interacts with log_assets / offices rather than shifting all banks equally.",
+          "variable": "year",
+          "role": "environment_interaction",
+          "would_count_against": "Nominated year\u00d7structure pairs do not clear a two-SE improvement over additive year + structure terms.",
+          "status": "analyst-stated; not established by data"
+        }
+      },
+      {
+        "action": "set_spec",
+        "status": "unmeasured",
+        "evidence_id": "93dbb710ed7595bf74563a264034ca11c47b0a019894c35f7fea7f801fb966a9",
+        "state_id": "02af27d6579169391d6b7c01201b7f727fb0e1052d8a6adda762017bf52af576",
+        "fit_charges": 0,
+        "seconds": 0.00023716699797660112,
+        "summary": {
+          "spec": "bbs(year, df=4) + bols(brokered_share) + bols(offices) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+          "status": "unmeasured"
+        }
+      },
+      {
+        "action": "lock",
+        "status": "unmeasured",
+        "evidence_id": "28948d0c4535182d6b785c92c50a27698e11b8c957a5ba72c7e79b57cf9f1272",
+        "state_id": "483125314844fb80955cc48cab38c27af920df9464ffbeac5c6766a0f6029c36",
+        "fit_charges": 0,
+        "seconds": 2.0459061488509178e-05,
+        "summary": {
+          "locked_columns": [
+            "year"
+          ]
+        }
+      },
+      {
+        "action": "compare",
+        "status": "measured",
+        "evidence_id": "9e685f72f50dcb3fb8e8dc4428d5292d006fccdb6f3eabf087a7224c880e450d",
+        "state_id": "ca203491001a3eefb386cb39f8e2bab5282a900901bdb861f7fd50f25afdf4e4",
+        "fit_charges": 12,
+        "seconds": 0.08021183405071497,
+        "summary": {
+          "baseline": "bbs(year, df=4) + bols(brokered_share) + bols(offices) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+          "family": "Gaussian",
+          "score": "mse",
+          "fold_id": "0dbb0fe48eb48ef5149c22d09626c799ce866f9d3668a8e3a64daaa2a58de847",
+          "two_se_candidates": [
+            {
+              "candidate": "smooth_offices",
+              "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+              "change": -0.002011720773269915,
+              "change_se": 0.0003391905840811944
+            }
+          ],
+          "also_cleared": [],
+          "soft_removal_candidates": [],
+          "rows": [
+            {
+              "specification": "current",
+              "rhs": "bbs(year, df=4) + bols(brokered_share) + bols(offices) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+              "out-of-fold risk": 0.24561302820295738,
+              "change": 0.0,
+              "change se": 0.0
+            },
+            {
+              "specification": "linear_size",
+              "rhs": "bbs(year, df=4) + bols(brokered_share) + bols(offices) + bols(log_assets) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+              "out-of-fold risk": 0.24573208796402485,
+              "change": 0.00011905976106746374,
+              "change se": 0.00013780679762105514
+            },
+            {
+              "specification": "smooth_offices",
+              "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+              "out-of-fold risk": 0.24360130742968747,
+              "change": -0.002011720773269915,
+              "change se": 0.0003391905840811944
+            }
+          ],
+          "rule": "two paired SE; explicit caller adoption; descriptive heuristic"
+        }
+      },
+      {
+        "action": "adopt",
+        "status": "unmeasured",
+        "evidence_id": "c82a3f559bde673ea2ec91c9addc205d8f29f9299f0e6ad3f04332ad4c524bc7",
+        "state_id": "df14bc82feb9b965eb38c6e0734f1fa1ae31b2eaee06ceb9d44de944c0ba1a90",
+        "fit_charges": 0,
+        "seconds": 3.645801916718483e-05,
+        "summary": {
+          "spec": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+          "comparison_id": "9e685f72f50dcb3fb8e8dc4428d5292d006fccdb6f3eabf087a7224c880e450d",
+          "candidate": "smooth_offices",
+          "change": -0.002011720773269915,
+          "change_se": 0.0003391905840811944,
+          "simplification_se": 0.0
+        }
+      },
+      {
+        "action": "fit",
+        "status": "unmeasured",
+        "evidence_id": "e692ddf5853528f768f0ba31a3d0571aefc58f22df9e24f7be53d9bd21fd9b62",
+        "state_id": "5defeade862ddea5298f9a8939b364896d6861e72b4e30aede1d78a58ddc1bdf",
+        "fit_charges": 1,
+        "seconds": 0.00655508297495544,
+        "summary": {
+          "spec": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+          "mstop": 120
+        }
+      },
+      {
+        "action": "interaction_screen",
+        "status": "screening_only",
+        "evidence_id": "d516bef0797f64912833c286e95ad1ef89d97c8c415584aa6335614a9d9fbc5d",
+        "state_id": "0174bf5e7d694096eea3169106744a581fc01ab3e075be0653ad80e3373de78d",
+        "fit_charges": 0,
+        "seconds": 0.0052448330679908395,
+        "summary": {
+          "top_pairs": [
+            {
+              "left": "year",
+              "right": "brokered_share",
+              "removed": 0.010078523766152925,
+              "thresholded_sibling_suggested": true,
+              "threshold_column": "year",
+              "sibling_term": "btree(year, by=brokered_share, maxdepth=1)",
+              "next_action": "transform_candidates"
+            },
+            {
+              "left": "year",
+              "right": "log_assets",
+              "removed": 0.007343453534491284,
+              "thresholded_sibling_suggested": true,
+              "threshold_column": "year",
+              "sibling_term": "btree(year, by=log_assets, maxdepth=1)",
+              "next_action": "transform_candidates"
+            },
+            {
+              "left": "year",
+              "right": "loan_ratio",
+              "removed": 0.007122200592402567,
+              "thresholded_sibling_suggested": true,
+              "threshold_column": "year",
+              "sibling_term": "btree(year, by=loan_ratio, maxdepth=1)",
+              "next_action": "transform_candidates"
+            },
+            {
+              "left": "brokered_share",
+              "right": "ib_share",
+              "removed": 0.003346304594226468,
+              "thresholded_sibling_suggested": false,
+              "threshold_column": null,
+              "sibling_term": null,
+              "next_action": null
+            },
+            {
+              "left": "year",
+              "right": "ib_share",
+              "removed": 0.0029275213645024445,
+              "thresholded_sibling_suggested": true,
+              "threshold_column": "year",
+              "sibling_term": "btree(year, by=ib_share, maxdepth=1)",
+              "next_action": "transform_candidates"
+            },
+            {
+              "left": "brokered_share",
+              "right": "offices",
+              "removed": 0.00274649231884197,
+              "thresholded_sibling_suggested": false,
+              "threshold_column": null,
+              "sibling_term": null,
+              "next_action": null
+            }
+          ],
+          "interpretation": "removed is residual-screen MSE, not a paired two-SE comparison; compare before adoption"
+        }
+      },
+      {
+        "action": "pair_candidates",
+        "status": "screening_only",
+        "evidence_id": "a05b3a3a7174ad69657757a45ed9bb7e749cf5a6b59c9c970ec00a3a53953918",
+        "state_id": "359705a9f4d94f26f85291bbf044582e6c4027fe24290d7ab8b31ce34997daf2",
+        "fit_charges": 0,
+        "seconds": 0.053022374981082976,
+        "summary": {
+          "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+          "leads": [
+            {
+              "term": "bbs(year, df=2.5, knots=5) %X% bbs(brokered_share, df=2.5, knots=5)",
+              "source": "residual",
+              "kind": "tensor"
+            },
+            {
+              "term": "bbs(year, df=2.5, knots=5) %X% bbs(loan_ratio, df=2.5, knots=5)",
+              "source": "residual",
+              "kind": "tensor"
+            },
+            {
+              "term": "bbs(brokered_share, df=2.5, knots=5) %X% bbs(offices, df=2.5, knots=5)",
+              "source": "residual",
+              "kind": "tensor"
+            },
+            {
+              "term": "bbs(loan_ratio, df=2.5, knots=5) %X% bbs(offices, df=2.5, knots=5)",
+              "source": "residual",
+              "kind": "tensor"
+            },
+            {
+              "term": "bbs(log_assets, df=2.5, knots=5) %X% bbs(brokered_share, df=2.5, knots=5)",
+              "source": "residual",
+              "kind": "tensor"
+            },
+            {
+              "term": "bbs(log_assets, df=2.5, knots=5) %X% bbs(offices, df=2.5, knots=5)",
+              "source": "tree+neural",
+              "kind": "tensor"
+            }
+          ],
+          "fits_reported": 0,
+          "interpretation": "nomination, not adoption"
+        }
+      },
+      {
+        "action": "tree_candidate",
+        "status": "screening_only",
+        "evidence_id": "596c4d68f2cf251357a93678cfaf43a7ffc535c15342ebbe4046ff34df52235c",
+        "state_id": "1994cfd6c34bc779a747840e24cdc33dd10edd2f773ece0265aeb804d89b3fb7",
+        "fit_charges": 0,
+        "seconds": 0.00011266698129475117,
+        "summary": {
+          "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+          "term": "btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse)",
+          "interpretation": "nomination, not adoption"
+        }
+      },
+      {
+        "action": "compare",
+        "status": "measured",
+        "evidence_id": "9f142b14d4d6eb082c86b57a5583d6486308a6b2a6ae008c47d3e8709aedd35b",
+        "state_id": "48f0253cb0651169174e0dcc69ac7258b8cec76a2f1cf0ab563be3f752cb25d1",
+        "fit_charges": 24,
+        "seconds": 0.5986077500274405,
+        "summary": {
+          "baseline": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+          "family": "Gaussian",
+          "score": "mse",
+          "fold_id": "0dbb0fe48eb48ef5149c22d09626c799ce866f9d3668a8e3a64daaa2a58de847",
+          "two_se_candidates": [
+            {
+              "candidate": "tree",
+              "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse)",
+              "change": -0.023042120596143828,
+              "change_se": 0.0065127809628704155
+            },
+            {
+              "candidate": "pair_2",
+              "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(loan_ratio, df=2.5, knots=5)",
+              "change": -0.006928401292065983,
+              "change_se": 0.0011169921634880907
+            },
+            {
+              "candidate": "year_by_size",
+              "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(log_assets, df=2.5, knots=5)",
+              "change": -0.005499824425213934,
+              "change_se": 0.0006307357033017581
+            },
+            {
+              "candidate": "pair_1",
+              "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(brokered_share, df=2.5, knots=5)",
+              "change": -0.004784390488594387,
+              "change_se": 0.0014662892443814742
+            }
+          ],
+          "also_cleared": [
+            {
+              "candidate": "pair_2",
+              "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(loan_ratio, df=2.5, knots=5)",
+              "change": -0.006928401292065983,
+              "change_se": 0.0011169921634880907
+            },
+            {
+              "candidate": "year_by_size",
+              "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(log_assets, df=2.5, knots=5)",
+              "change": -0.005499824425213934,
+              "change_se": 0.0006307357033017581
+            },
+            {
+              "candidate": "pair_1",
+              "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(brokered_share, df=2.5, knots=5)",
+              "change": -0.004784390488594387,
+              "change_se": 0.0014662892443814742
+            }
+          ],
+          "soft_removal_candidates": [],
+          "rows": [
+            {
+              "specification": "current",
+              "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
+              "out-of-fold risk": 0.24360130742968747,
+              "change": 0.0,
+              "change se": 0.0
+            },
+            {
+              "specification": "pair_1",
+              "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(brokered_share, df=2.5, knots=5)",
+              "out-of-fold risk": 0.23881691694109308,
+              "change": -0.004784390488594387,
+              "change se": 0.0014662892443814742
+            },
+            {
+              "specification": "pair_2",
+              "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(loan_ratio, df=2.5, knots=5)",
+              "out-of-fold risk": 0.23667290613762149,
+              "change": -0.006928401292065983,
+              "change se": 0.0011169921634880907
+            },
+            {
+              "specification": "pair_3",
+              "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(brokered_share, df=2.5, knots=5) %X% bbs(offices, df=2.5, knots=5)",
+              "out-of-fold risk": 0.24347509054092117,
+              "change": -0.0001262168887662951,
+              "change se": 0.003243044863650284
+            },
+            {
+              "specification": "tree",
+              "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse)",
+              "out-of-fold risk": 0.22055918683354364,
+              "change": -0.023042120596143828,
+              "change se": 0.0065127809628704155
+            },
+            {
+              "specification": "year_by_size",
+              "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(log_assets, df=2.5, knots=5)",
+              "out-of-fold risk": 0.23810148300447354,
+              "change": -0.005499824425213934,
+              "change se": 0.0006307357033017581
+            }
+          ],
+          "rule": "two paired SE; explicit caller adoption; descriptive heuristic"
+        }
+      },
+      {
+        "action": "adopt",
+        "status": "unmeasured",
+        "evidence_id": "fff66276626006a3459808c4bb395e3e958ee62882612f38524dd64f954089e3",
+        "state_id": "51b29720ef8f763a769eb2e20c7addf9f71de6ab73d7c3d54c7d2e860c5fff51",
+        "fit_charges": 0,
+        "seconds": 4.1082967072725296e-05,
+        "summary": {
+          "spec": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse)",
+          "comparison_id": "9f142b14d4d6eb082c86b57a5583d6486308a6b2a6ae008c47d3e8709aedd35b",
+          "candidate": "tree",
+          "change": -0.023042120596143828,
+          "change_se": 0.0065127809628704155,
+          "simplification_se": 0.0
+        }
+      },
+      {
+        "action": "term_report",
+        "status": "measured",
+        "evidence_id": "08d8d9010a64e5a7bedcf442c8871f46efa926ff36b20c09f005751339b91b02",
+        "state_id": "42e4f96bfb2d8a2d9e2ed992b897daa87814cf926b7c3cc9f7f03d46e4f08790",
+        "fit_charges": 132,
+        "seconds": 8.128258750075474,
+        "summary": {
+          "baseline": 0.22055918683354364,
+          "terms": [
+            {
+              "term": "btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse)",
+              "variable": "year",
+              "without it": 0.24360130742968747,
+              "earns": 0.023042120596143828,
+              "se": 0.0065127809628704155,
+              "measurable": true
+            },
+            {
+              "term": "bbs(year, df=4)",
+              "variable": "year",
+              "without it": 0.22055918683354364,
+              "earns": 0.0,
+              "se": 0.0,
+              "measurable": true
+            },
+            {
+              "term": "bols(brokered_share)",
+              "variable": "brokered_share",
+              "without it": 0.22055918683354364,
+              "earns": 0.0,
+              "se": 0.0,
+              "measurable": true
+            },
+            {
+              "term": "bbs(offices, df=4)",
+              "variable": "offices",
+              "without it": 0.22055918683354364,
+              "earns": 0.0,
+              "se": 0.0,
+              "measurable": true
+            },
+            {
+              "term": "bbs(log_assets, df=4)",
+              "variable": "log_assets",
+              "without it": 0.22055918683354364,
+              "earns": 0.0,
+              "se": 0.0,
+              "measurable": true
+            },
+            {
+              "term": "bols(loan_ratio)",
+              "variable": "loan_ratio",
+              "without it": 0.22055918683354364,
+              "earns": 0.0,
+              "se": 0.0,
+              "measurable": true
+            },
+            {
+              "term": "bols(ib_share)",
+              "variable": "ib_share",
+              "without it": 0.22055918683354364,
+              "earns": 0.0,
+              "se": 0.0,
+              "measurable": true
+            },
+            {
+              "term": "bols(deposit_funding)",
+              "variable": "deposit_funding",
+              "without it": 0.22055918683354364,
+              "earns": 0.0,
+              "se": 0.0,
+              "measurable": true
+            }
+          ],
+          "proxy_notes": [],
+          "fits_reported": 132
+        }
+      },
+      {
+        "action": "tune",
+        "status": "measured",
+        "evidence_id": "237bb57702d9124f9fe61d95753cb35349311275ecf731b999066ef14266aea3",
+        "state_id": "20a22f1b0952a57d8670a1062277c620967660fcdd430e9ede756f17a27c5974",
+        "fit_charges": 5,
+        "seconds": 0.3659641669364646,
+        "summary": {
+          "mstop": 22,
+          "score": "mse",
+          "fits_reported": 5
+        }
+      },
+      {
+        "action": "partial_effects",
+        "status": "measured",
+        "evidence_id": "def18247fb19fbc2062bf0b371663b1f9d12d0b9b7cd9d84b6de4c69ba3d0b2e",
+        "state_id": "762b2ab694cb238b08e9b46b65fbe670326196e6c0eb5215e21f384dc7089a1b",
+        "fit_charges": 0,
+        "seconds": 2.6417081244289875e-05,
+        "summary": {
+          "which": [
+            "year",
+            "brokered_share",
+            "offices",
+            "log_assets"
+          ],
+          "scale": "component link scale",
+          "interpretation": "fitted effect, not a causal contrast"
+        }
+      },
+      {
+        "action": "freeze",
+        "status": "unmeasured",
+        "evidence_id": "2f3aa2697f1b8b268085e7ddcd88ec79b11a9f27cb9387233b7afc0b63087e61",
+        "state_id": "c20a052255c8dfc6725665a6bdc07c346ca6ba6f31b471efadb13a8d43a6dc48",
+        "fit_charges": 0,
+        "seconds": 1.0499963536858559e-05,
+        "summary": {
+          "spec": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse)",
+          "mstop": 22,
+          "test_status": "not_evaluated"
+        }
+      },
+      {
+        "action": "final_evaluate",
+        "status": "measured",
+        "evidence_id": "ea6ec51f5a28f44ef918d361fdfe4caab230d588e9b509b6a9acb37195d1a725",
+        "state_id": "48b991a0bca26f954e57587ed779bedda6f205f5238e94de9327ce3ac0321791",
+        "fit_charges": 0,
+        "seconds": 0.000794542022049427,
+        "summary": {
+          "score": 0.2511906834371538,
+          "score_name": "mse",
+          "n_test": 1126,
+          "task": "one-time untouched-test evaluation"
+        }
+      }
+    ]
+  },
+  "elapsed_seconds": 10.412892917054705,
+  "budget": {
+    "budget": {
+      "seconds": null,
+      "fits": 250,
+      "memory_mb": null
+    },
+    "fit_charges": 174,
+    "elapsed_seconds": 9.2589962920174,
+    "peak_memory_mb": 185.859375,
+    "memory_scope": "absolute process-lifetime high-water RSS, MiB",
+    "limits": "fit admission is hard; time and memory checked between native calls",
+    "failed_fit_accounting": "failed native batches retain their full reserved charge; actual completed folds unknown",
+    "stopped": null,
+    "blocked_request": null,
+    "operation_count": 174,
+    "recent_operations": [
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 167,
+        "seconds": 0.011287708068266511,
+        "peak_memory_mb": 185.046875
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 168,
+        "seconds": 0.011468750075437129,
+        "peak_memory_mb": 185.109375
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 169,
+        "seconds": 0.01127591694239527,
+        "peak_memory_mb": 185.125
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 170,
+        "seconds": 0.06550687493290752,
+        "peak_memory_mb": 185.265625
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 171,
+        "seconds": 0.06519649992696941,
+        "peak_memory_mb": 185.34375
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 172,
+        "seconds": 0.06421929190400988,
+        "peak_memory_mb": 185.453125
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 173,
+        "seconds": 0.06521437503397465,
+        "peak_memory_mb": 185.453125
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 174,
+        "seconds": 0.08652912499383092,
+        "peak_memory_mb": 185.75
+      }
+    ]
+  },
+  "provenance": {
+    "created_at": "2026-09-30T22:27:31+00:00",
+    "commit": {
+      "sha": "3fa45b45fc8f9dd71c5c6b046c2ebd95a3de165c",
+      "dirty": true,
+      "status_digest": "sha256:cb016775b655ffa15836a8e903a75c4d71cbbf1ae0c6a0dce8beab0b603812c9",
+      "commit_source": "working directory"
+    },
+    "platform": {
+      "system": "Darwin",
+      "release": "25.3.0",
+      "machine": "arm64",
+      "cpu": "arm",
+      "python": "3.12.11"
+    },
+    "versions": {
+      "mboostrs": "0.1.3",
+      "numpy": "2.4.6",
+      "rpy2": "3.6.7",
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "R": "4.5.1",
+      "mboost": "2.9.11"
+    },
+    "threads": {
+      "logical_cpus": 10,
+      "r_mclapply_default_cores": "2",
+      "RAYON_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": null,
+      "OPENBLAS_NUM_THREADS": null,
+      "MKL_NUM_THREADS": null,
+      "per_fit": 1
+    },
+    "protocol": {
+      "kind": "teaching-case transcript, one deterministic run",
+      "dataset": "mb.datasets.fdic_bank_yearend()",
+      "response": "deposit_rate",
+      "response_definition": "100 * EDEP / DEPI (percent on interest-bearing deposits)",
+      "predictors": [
+        "year",
+        "log_assets",
+        "loan_ratio",
+        "brokered_share",
+        "deposit_funding",
+        "ib_share",
+        "offices"
+      ],
+      "search": "pre_scan native/neural/dual, Gaussian baseline, interaction_screen / pair_candidates / tree_candidate, two-SE compare/adopt, tune, freeze, final_evaluate",
+      "holdout": "banks never seen in training"
+    },
+    "repeats": {
+      "runs": 1
+    },
+    "uncertainty": "none; a single deterministic run at fixed seeds"
+  }
+}

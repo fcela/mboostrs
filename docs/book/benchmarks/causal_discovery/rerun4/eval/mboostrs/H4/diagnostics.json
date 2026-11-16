@@ -1,0 +1,603 @@
+{
+  "seed": 1,
+  "role_evidence": {
+    "age": {
+      "p_treatment": 0.00011445086093510903,
+      "p_outcome_among_respondents": 3.451003519425582e-05
+    },
+    "education": {
+      "p_treatment": 0.290588480286479,
+      "p_outcome_among_respondents": 4.907684902511946e-47
+    },
+    "experience": {
+      "p_treatment": null,
+      "p_outcome_among_respondents": null,
+      "note": "exact linear combination of the other pre-treatment columns"
+    },
+    "ethnicity": {
+      "p_treatment": 0.0019391630586963835,
+      "p_outcome_among_respondents": 0.11682089863586553
+    },
+    "smsa": {
+      "p_treatment": 0.7640017109989041,
+      "p_outcome_among_respondents": 0.006077379337201469
+    },
+    "region": {
+      "p_treatment": 1.185221345464113e-05,
+      "p_outcome_among_respondents": 0.01770275088553813
+    },
+    "parttime": {
+      "p_treatment": 0.07803628771245313,
+      "p_outcome_among_respondents": 6.970379489791277e-07
+    },
+    "prior_earnings": {
+      "p_treatment": 1.518659141291877e-261,
+      "p_outcome_among_respondents": 1.84e-321
+    },
+    "months_unemployed": {
+      "p_treatment": 1.2928790458015095e-16,
+      "p_outcome_among_respondents": 2.8141049419398046e-06
+    },
+    "distance_km": {
+      "p_treatment": 5.294799115246768e-41,
+      "p_outcome_among_respondents": 0.17974295315895422
+    },
+    "caseworker_note_len": {
+      "p_treatment": 0.3833717541793885,
+      "p_outcome_among_respondents": 0.574047270302062
+    }
+  },
+  "exactly_dependent": [
+    "experience"
+  ],
+  "ate_config": {
+    "propensity_formula": "bbs(age, df=4) + bbs(education, df=4) + bols(ethnicity) + bols(smsa) + bols(region) + bols(parttime) + bbs(prior_earnings, df=4) + bbs(months_unemployed, df=4) + btree(age, maxdepth=1) + btree(education, maxdepth=1) + btree(prior_earnings, maxdepth=1) + btree(months_unemployed, maxdepth=1)",
+    "outcome_model": "two_part",
+    "propensity_learner": {
+      "requested": "auto",
+      "chosen": "smooth+trees",
+      "candidates": [
+        "smooth",
+        "smooth+trees"
+      ],
+      "out_of_fold_deviance": {
+        "smooth": 0.9564246972168213,
+        "smooth+trees": 0.9328213375777461
+      },
+      "terms": {
+        "smooth": "bbs(age, df=4) + bbs(education, df=4) + bols(ethnicity) + bols(smsa) + bols(region) + bols(parttime) + bbs(prior_earnings, df=4) + bbs(months_unemployed, df=4)",
+        "smooth+trees": "bbs(age, df=4) + bbs(education, df=4) + bols(ethnicity) + bols(smsa) + bols(region) + bols(parttime) + bbs(prior_earnings, df=4) + bbs(months_unemployed, df=4) + btree(age, maxdepth=1) + btree(education, maxdepth=1) + btree(prior_earnings, maxdepth=1) + btree(months_unemployed, maxdepth=1)"
+      }
+    }
+  },
+  "ate_describe": "ATE=5092.1, 90% interval [3531.76, 6652.44], n=12000; propensity range [0.00232, 0.957].\nTarget: ATE over every row; 26.1% of rows have a cross-fitted propensity below 0.05 or above 0.95, where the outcome model is extrapolated and the estimate is sensitive to it. aipw(target='overlap') estimates the overlap-weighted effect instead.\nOutcome model: two-part (positive-outcome probability times the mean of the log outcome), chosen by outcome_model='auto' because the sparse-arm check flagged propensity bin(s) [0, 1], and the outcome is zero or positive with zeros, so the two-part model is used.\nPropensity: formula 'smooth+trees', chosen by propensity_learner='auto' on out-of-fold binomial deviance (0.932821 against 'smooth' 0.956425).\nAssumptions: consistency: each observed outcome equals the potential outcome under the observed treatment; conditional exchangeability: potential outcomes are independent of treatment given the baseline covariates; positivity: both treatment levels have positive probability across the target covariate support; no interference: one unit's treatment does not change another unit's outcome",
+  "att_describe": "ATT=3585.99, 90% interval [3129.97, 4042.02], n=12000; propensity range [0.00232, 0.957].\nTarget: ATT over every treated row; 26.1% of rows have a cross-fitted propensity below 0.05 or above 0.95, where the outcome model is extrapolated and the estimate is sensitive to it. aipw(target='overlap') estimates the overlap-weighted effect instead.\nOutcome model: separate, chosen by outcome_model='auto' because the sparse-arm check flagged no propensity bin.\nPropensity: formula 'smooth+trees', chosen by propensity_learner='auto' on out-of-fold binomial deviance (0.932821 against 'smooth' 0.956425).\nAssumptions: consistency: each observed outcome equals the potential outcome under the observed treatment; conditional exchangeability: potential outcomes are independent of treatment given the baseline covariates; positivity: both treatment levels have positive probability across the target covariate support; no interference: one unit's treatment does not change another unit's outcome",
+  "emp_describe": "ATE=0.0892154, 90% interval [0.0727398, 0.105691], n=12000; propensity range [0.00232, 0.957].\nTarget: ATE over every row; 26.1% of rows have a cross-fitted propensity below 0.05 or above 0.95, where the outcome model is extrapolated and the estimate is sensitive to it. aipw(target='overlap') estimates the overlap-weighted effect instead.\nOutcome model: pooled with treatment interactions, chosen by outcome_model='auto' because the sparse-arm check flagged propensity bin(s) [0, 1].\nPropensity: formula 'smooth+trees', chosen by propensity_learner='auto' on out-of-fold binomial deviance (0.932821 against 'smooth' 0.956425).\nAssumptions: consistency: each observed outcome equals the potential outcome under the observed treatment; conditional exchangeability: potential outcomes are independent of treatment given the baseline covariates; positivity: both treatment levels have positive probability across the target covariate support; no interference: one unit's treatment does not change another unit's outcome",
+  "channel_log_earnings": {
+    "effect": 0.12721177475091494,
+    "sd": 0.010535378794652737,
+    "lower": 0.10656281174990857,
+    "upper": 0.1478607377519213,
+    "n": 7063,
+    "formula": "log_earnings ~ bbs(age, df=4) + bbs(education, df=4) + bols(ethnicity) + bols(smsa) + bols(region) + bols(parttime) + bbs(prior_earnings, df=4) + bbs(months_unemployed, df=4) + bols(enrolled, intercept=FALSE)"
+  },
+  "blp_table": [
+    {
+      "covariate": "age",
+      "kind": "numeric",
+      "method": "blp",
+      "blp_slope": 966.8579586475771,
+      "blp_se": 1394.4407398094133,
+      "blp_lower": -1766.1956699542607,
+      "blp_upper": 3699.911587249415,
+      "blp_levels": [],
+      "blp_p": 0.48807982136379247,
+      "blp_p_adjusted": 1.0,
+      "gates_contrast": 2708.510014291914,
+      "gates_se": 3140.336330957075,
+      "gates_lower": -3446.436093726606,
+      "gates_upper": 8863.456122310434,
+      "gates_p": 0.38841770027408085,
+      "gates_p_adjusted": 1.0,
+      "gates_top": "group 4 of 4",
+      "gates_bottom": "group 1 of 4",
+      "gates_means": [
+        3621.711717704877,
+        5716.31490766858,
+        3063.5674502602888,
+        6330.221731996791
+      ],
+      "gates_counts": [
+        2353,
+        2427,
+        2730,
+        2590
+      ],
+      "estimate": 966.8579586475771,
+      "direction": "increases",
+      "p_value": 0.48807982136379247,
+      "adjusted_p": 1.0,
+      "decision": false
+    },
+    {
+      "covariate": "education",
+      "kind": "numeric",
+      "method": "blp",
+      "blp_slope": 323.8313881662381,
+      "blp_se": 368.59280224572257,
+      "blp_lower": -398.5972291960722,
+      "blp_upper": 1046.2600055285484,
+      "blp_levels": [],
+      "blp_p": 0.37963916234836026,
+      "blp_p_adjusted": 1.0,
+      "gates_contrast": 416.3651037112122,
+      "gates_se": 1083.4247545108547,
+      "gates_lower": -1707.1083950892116,
+      "gates_upper": 2539.838602511636,
+      "gates_p": 0.7007527080188165,
+      "gates_p_adjusted": 1.0,
+      "gates_top": "group 4 of 4",
+      "gates_bottom": "group 1 of 4",
+      "gates_means": [
+        3843.4411702494253,
+        NaN,
+        5278.384036389014,
+        4259.806273960638
+      ],
+      "gates_counts": [
+        1867,
+        0,
+        4818,
+        3415
+      ],
+      "estimate": 323.8313881662381,
+      "direction": "increases",
+      "p_value": 0.37963916234836026,
+      "adjusted_p": 1.0,
+      "decision": false
+    },
+    {
+      "covariate": "ethnicity",
+      "kind": "categorical",
+      "method": "blp",
+      "blp_slope": null,
+      "blp_se": null,
+      "blp_lower": null,
+      "blp_upper": null,
+      "blp_levels": [
+        {
+          "level": "cauc",
+          "coefficient": -552.9832587276105,
+          "se": 1475.7488481714731
+        }
+      ],
+      "blp_p": 0.7078734287397844,
+      "blp_p_adjusted": 1.0,
+      "gates_contrast": 552.9832587275596,
+      "gates_se": 1476.113160434183,
+      "gates_lower": -2340.145372829033,
+      "gates_upper": 3446.111890284152,
+      "gates_p": 0.7079422165585438,
+      "gates_p_adjusted": 1.0,
+      "gates_top": "afam",
+      "gates_bottom": "cauc",
+      "gates_means": [
+        5172.604188893408,
+        4619.620930165848
+      ],
+      "gates_counts": [
+        897,
+        9203
+      ],
+      "estimate": null,
+      "direction": "differs by level",
+      "p_value": 0.7078734287397844,
+      "adjusted_p": 1.0,
+      "decision": false
+    },
+    {
+      "covariate": "smsa",
+      "kind": "categorical",
+      "method": "blp",
+      "blp_slope": null,
+      "blp_se": null,
+      "blp_lower": null,
+      "blp_upper": null,
+      "blp_levels": [
+        {
+          "level": "yes",
+          "coefficient": 2869.0160565173574,
+          "se": 1325.2091787119145
+        }
+      ],
+      "blp_p": 0.03039125764028633,
+      "blp_p_adjusted": 0.24313006112229063,
+      "gates_contrast": 2869.0160565173987,
+      "gates_se": 1325.2087488230143,
+      "gates_lower": 271.65463682690506,
+      "gates_upper": 5466.377476207892,
+      "gates_p": 0.03039120385219749,
+      "gates_p_adjusted": 0.24312963081757993,
+      "gates_top": "yes",
+      "gates_bottom": "no",
+      "gates_means": [
+        2516.4022492595373,
+        5385.418305776936
+      ],
+      "gates_counts": [
+        2523,
+        7577
+      ],
+      "estimate": null,
+      "direction": "differs by level",
+      "p_value": 0.03039125764028633,
+      "adjusted_p": 0.24313006112229063,
+      "decision": false
+    },
+    {
+      "covariate": "region",
+      "kind": "categorical",
+      "method": "blp",
+      "blp_slope": null,
+      "blp_se": null,
+      "blp_lower": null,
+      "blp_upper": null,
+      "blp_levels": [
+        {
+          "level": "northeast",
+          "coefficient": -1488.622982784158,
+          "se": 1232.4162744224075
+        },
+        {
+          "level": "south",
+          "coefficient": 1127.92145625581,
+          "se": 2633.507954657503
+        },
+        {
+          "level": "west",
+          "coefficient": -1096.0721201727602,
+          "se": 1498.0968676936195
+        }
+      ],
+      "blp_p": 0.5312039130284703,
+      "blp_p_adjusted": 1.0,
+      "gates_contrast": 2616.5444390399675,
+      "gates_se": 2538.316549774144,
+      "gates_lower": -2358.464579879324,
+      "gates_upper": 7591.553457959259,
+      "gates_p": 0.5312000765137144,
+      "gates_p_adjusted": 1.0,
+      "gates_top": "south",
+      "gates_bottom": "northeast",
+      "gates_means": [
+        4857.9387836704755,
+        3369.315800886425,
+        5985.860239926393,
+        3761.866663497822
+      ],
+      "gates_counts": [
+        2460,
+        2215,
+        3297,
+        2128
+      ],
+      "estimate": null,
+      "direction": "differs by level",
+      "p_value": 0.5312039130284703,
+      "adjusted_p": 1.0,
+      "decision": false
+    },
+    {
+      "covariate": "parttime",
+      "kind": "categorical",
+      "method": "blp",
+      "blp_slope": null,
+      "blp_se": null,
+      "blp_lower": null,
+      "blp_upper": null,
+      "blp_levels": [
+        {
+          "level": "yes",
+          "coefficient": -1908.1116053937385,
+          "se": 1098.8729564844912
+        }
+      ],
+      "blp_p": 0.08248853300625225,
+      "blp_p_adjusted": 0.5774197310437658,
+      "gates_contrast": 1908.1116053937362,
+      "gates_se": 1098.9150086576315,
+      "gates_lower": -245.72223364574256,
+      "gates_upper": 4061.945444433215,
+      "gates_p": 0.0825002741047873,
+      "gates_p_adjusted": 0.5775019187335111,
+      "gates_top": "no",
+      "gates_bottom": "yes",
+      "gates_means": [
+        4873.523797821836,
+        2965.4121924280994
+      ],
+      "gates_counts": [
+        9016,
+        1084
+      ],
+      "estimate": null,
+      "direction": "differs by level",
+      "p_value": 0.08248853300625225,
+      "adjusted_p": 0.5774197310437658,
+      "decision": false
+    },
+    {
+      "covariate": "prior_earnings",
+      "kind": "numeric",
+      "method": "blp",
+      "blp_slope": 38135.08043708828,
+      "blp_se": 28271.14168920379,
+      "blp_lower": -17275.339075579992,
+      "blp_upper": 93545.49994975656,
+      "blp_levels": [],
+      "blp_p": 0.17736752683515244,
+      "blp_p_adjusted": 1.0,
+      "gates_contrast": 5521.366276911324,
+      "gates_se": 3375.2103537676344,
+      "gates_lower": -1093.9244567199312,
+      "gates_upper": 12136.65701054258,
+      "gates_p": 0.1018692219335921,
+      "gates_p_adjusted": 0.6112153316015526,
+      "gates_top": "group 4 of 4",
+      "gates_bottom": "group 1 of 4",
+      "gates_means": [
+        2979.8553288265293,
+        3905.3794501473203,
+        3281.9055580562567,
+        8501.221605737854
+      ],
+      "gates_counts": [
+        2524,
+        2526,
+        2522,
+        2528
+      ],
+      "estimate": 38135.08043708828,
+      "direction": "increases",
+      "p_value": 0.17736752683515244,
+      "adjusted_p": 1.0,
+      "decision": false
+    },
+    {
+      "covariate": "months_unemployed",
+      "kind": "numeric",
+      "method": "blp",
+      "blp_slope": -1488.262592849892,
+      "blp_se": 1076.8348101249062,
+      "blp_lower": -3598.820037993735,
+      "blp_upper": 622.294852293951,
+      "blp_levels": [],
+      "blp_p": 0.16694977922102827,
+      "blp_p_adjusted": 1.0,
+      "gates_contrast": -11890.73201110879,
+      "gates_se": 9889.41974781942,
+      "gates_lower": -31273.63854483403,
+      "gates_upper": 7492.174522616449,
+      "gates_p": 0.22922058339950696,
+      "gates_p_adjusted": 1.0,
+      "gates_top": "group 4 of 4",
+      "gates_bottom": "group 1 of 4",
+      "gates_means": [
+        15362.684493787883,
+        3852.645404862263,
+        4088.5629802341236,
+        3471.952482679094
+      ],
+      "gates_counts": [
+        791,
+        4003,
+        1878,
+        3428
+      ],
+      "estimate": -1488.262592849892,
+      "direction": "decreases",
+      "p_value": 0.16694977922102827,
+      "adjusted_p": 1.0,
+      "decision": false
+    }
+  ],
+  "share_outside_overlap_test": 0.0,
+  "n_test_outside_overlap": 0,
+  "tau_modifiers": [],
+  "outside_overlap_point_rule": "cate set to the lowest inside-overlap model estimate",
+  "ranking": {
+    "chosen_positions": [],
+    "gain": NaN,
+    "gain_interval": null,
+    "shortfall": 0
+  },
+  "sensitivity_grid": [
+    {
+      "outcome_effect": 1000.0,
+      "imbalance": 0.1,
+      "assumed_bias": 100.0,
+      "adjusted_estimate": 4992.095706586169,
+      "changes_sign": false,
+      "lower": 3431.755114038344,
+      "upper": 6552.436299133995,
+      "interval_includes_zero": false
+    },
+    {
+      "outcome_effect": 1000.0,
+      "imbalance": 0.25,
+      "assumed_bias": 250.0,
+      "adjusted_estimate": 4842.095706586169,
+      "changes_sign": false,
+      "lower": 3281.755114038344,
+      "upper": 6402.436299133995,
+      "interval_includes_zero": false
+    },
+    {
+      "outcome_effect": 1000.0,
+      "imbalance": 0.5,
+      "assumed_bias": 500.0,
+      "adjusted_estimate": 4592.095706586169,
+      "changes_sign": false,
+      "lower": 3031.755114038344,
+      "upper": 6152.436299133995,
+      "interval_includes_zero": false
+    },
+    {
+      "outcome_effect": 2000.0,
+      "imbalance": 0.1,
+      "assumed_bias": 200.0,
+      "adjusted_estimate": 4892.095706586169,
+      "changes_sign": false,
+      "lower": 3331.755114038344,
+      "upper": 6452.436299133995,
+      "interval_includes_zero": false
+    },
+    {
+      "outcome_effect": 2000.0,
+      "imbalance": 0.25,
+      "assumed_bias": 500.0,
+      "adjusted_estimate": 4592.095706586169,
+      "changes_sign": false,
+      "lower": 3031.755114038344,
+      "upper": 6152.436299133995,
+      "interval_includes_zero": false
+    },
+    {
+      "outcome_effect": 2000.0,
+      "imbalance": 0.5,
+      "assumed_bias": 1000.0,
+      "adjusted_estimate": 4092.0957065861694,
+      "changes_sign": false,
+      "lower": 2531.755114038344,
+      "upper": 5652.436299133995,
+      "interval_includes_zero": false
+    },
+    {
+      "outcome_effect": 4000.0,
+      "imbalance": 0.1,
+      "assumed_bias": 400.0,
+      "adjusted_estimate": 4692.095706586169,
+      "changes_sign": false,
+      "lower": 3131.755114038344,
+      "upper": 6252.436299133995,
+      "interval_includes_zero": false
+    },
+    {
+      "outcome_effect": 4000.0,
+      "imbalance": 0.25,
+      "assumed_bias": 1000.0,
+      "adjusted_estimate": 4092.0957065861694,
+      "changes_sign": false,
+      "lower": 2531.755114038344,
+      "upper": 5652.436299133995,
+      "interval_includes_zero": false
+    },
+    {
+      "outcome_effect": 4000.0,
+      "imbalance": 0.5,
+      "assumed_bias": 2000.0,
+      "adjusted_estimate": 3092.0957065861694,
+      "changes_sign": false,
+      "lower": 1531.755114038344,
+      "upper": 4652.436299133995,
+      "interval_includes_zero": false
+    },
+    {
+      "outcome_effect": 8000.0,
+      "imbalance": 0.1,
+      "assumed_bias": 800.0,
+      "adjusted_estimate": 4292.095706586169,
+      "changes_sign": false,
+      "lower": 2731.755114038344,
+      "upper": 5852.436299133995,
+      "interval_includes_zero": false
+    },
+    {
+      "outcome_effect": 8000.0,
+      "imbalance": 0.25,
+      "assumed_bias": 2000.0,
+      "adjusted_estimate": 3092.0957065861694,
+      "changes_sign": false,
+      "lower": 1531.755114038344,
+      "upper": 4652.436299133995,
+      "interval_includes_zero": false
+    },
+    {
+      "outcome_effect": 8000.0,
+      "imbalance": 0.5,
+      "assumed_bias": 4000.0,
+      "adjusted_estimate": 1092.0957065861694,
+      "changes_sign": false,
+      "lower": -468.2448859616561,
+      "upper": 2652.436299133995,
+      "interval_includes_zero": true
+    }
+  ],
+  "sensitivity_outcome_effects_dollars_per_sd": [
+    1000.0,
+    2000.0,
+    4000.0,
+    8000.0
+  ],
+  "sensitivity_imbalances_sd": [
+    0.1,
+    0.25,
+    0.5
+  ],
+  "prior_earnings_quartiles": [
+    15920.0,
+    40810.0
+  ],
+  "mstop_selected_by_tuned_pass": 258,
+  "tuned_pass_ate": 9270.417896644127,
+  "tuned_pass_nuisance_mstop": {
+    "propensity": {
+      "first_grid": 200,
+      "max_mstop": 1600,
+      "mstop_by_fold": [
+        385,
+        430,
+        468,
+        349,
+        381
+      ],
+      "at_max_mstop": false
+    },
+    "response": {
+      "first_grid": 200,
+      "max_mstop": 1600,
+      "mstop_by_fold": [
+        110,
+        114,
+        86,
+        140,
+        220
+      ],
+      "at_max_mstop": false
+    },
+    "employment": {
+      "first_grid": 200,
+      "max_mstop": 1600,
+      "mstop_by_fold": [
+        145,
+        133,
+        127,
+        127,
+        125
+      ],
+      "at_max_mstop": false
+    },
+    "log_outcome": {
+      "first_grid": 200,
+      "max_mstop": 1600,
+      "mstop_by_fold": [
+        1424,
+        302,
+        301,
+        295,
+        332
+      ],
+      "at_max_mstop": false
+    }
+  }
+}

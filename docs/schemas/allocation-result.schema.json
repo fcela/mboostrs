@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "mboostrs allocation probe result",
+  "type": "object",
+  "required": ["schema_version", "kind", "n", "mstop", "packed_scalar", "gaussian_gram"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "kind": {"const": "mboostrs-allocation-result"},
+    "n": {"type": "integer", "minimum": 1},
+    "mstop": {"type": "integer", "minimum": 1},
+    "packed_scalar": {"$ref": "#/$defs/measurement"},
+    "gaussian_gram": {"$ref": "#/$defs/measurement"}
+  },
+  "$defs": {
+    "measurement": {
+      "type": "object",
+      "required": ["learners", "allocations"],
+      "properties": {
+        "learners": {"type": "integer", "minimum": 1},
+        "allocations": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}

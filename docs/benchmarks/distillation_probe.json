@@ -1,0 +1,1467 @@
+{
+  "protocol": {
+    "teacher": "catboost tuned, read from the fitted trees",
+    "importance": "FeatureImportance (tree-native, no permutation)",
+    "interaction": "Interaction (tree-native, no permutation)",
+    "budgets": [
+      3,
+      5,
+      8
+    ],
+    "variants": {
+      "pair": "joint tree restricted to the teacher's top interaction pair",
+      "kept": "joint tree over every retained input, the hybrid's structure"
+    },
+    "tree_depth": 3,
+    "specification_uses_test_rows": false
+  },
+  "records": [
+    {
+      "task": "housing_iid",
+      "seed": 0,
+      "budget": 3,
+      "status": "ok",
+      "kept_inputs": [
+        "income",
+        "latitude",
+        "longitude"
+      ],
+      "interaction_pair": [
+        "longitude",
+        "latitude"
+      ],
+      "test_loss_by_variant": {
+        "pair": 0.06057046713794331,
+        "kept": 0.06098174061533132
+      },
+      "catboost_test_loss": 0.05312084078408445,
+      "hybrid_test_loss": 0.05554171833919069,
+      "teacher_dev_loss": 0.008622502749289652,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 930,
+          "terms": 4,
+          "seconds": 0.3934103329956997
+        },
+        "kept": {
+          "mstop": 1108,
+          "terms": 4,
+          "seconds": 0.4451885000162292
+        }
+      },
+      "top_importance": {
+        "income": 26.259978853722657,
+        "latitude": 23.180940206823962,
+        "longitude": 20.912792708442677,
+        "occupancy": 11.205008166294698,
+        "rooms": 6.420880944338601,
+        "age": 5.179945796609691,
+        "population": 3.983617653223645,
+        "bedrooms": 2.856835670544073
+      }
+    },
+    {
+      "task": "housing_iid",
+      "seed": 0,
+      "budget": 5,
+      "status": "ok",
+      "kept_inputs": [
+        "income",
+        "latitude",
+        "longitude",
+        "occupancy",
+        "rooms"
+      ],
+      "interaction_pair": [
+        "longitude",
+        "latitude"
+      ],
+      "test_loss_by_variant": {
+        "pair": 0.05764007462224617,
+        "kept": 0.058832956232615696
+      },
+      "catboost_test_loss": 0.05312084078408445,
+      "hybrid_test_loss": 0.05554171833919069,
+      "teacher_dev_loss": 0.008622502749289652,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 1144,
+          "terms": 6,
+          "seconds": 0.5387093749886844
+        },
+        "kept": {
+          "mstop": 1165,
+          "terms": 6,
+          "seconds": 0.7530413329950534
+        }
+      },
+      "top_importance": {
+        "income": 26.259978853722657,
+        "latitude": 23.180940206823962,
+        "longitude": 20.912792708442677,
+        "occupancy": 11.205008166294698,
+        "rooms": 6.420880944338601,
+        "age": 5.179945796609691,
+        "population": 3.983617653223645,
+        "bedrooms": 2.856835670544073
+      }
+    },
+    {
+      "task": "housing_iid",
+      "seed": 0,
+      "budget": 8,
+      "status": "ok",
+      "kept_inputs": [
+        "age",
+        "bedrooms",
+        "income",
+        "latitude",
+        "longitude",
+        "occupancy",
+        "population",
+        "rooms"
+      ],
+      "interaction_pair": [
+        "longitude",
+        "latitude"
+      ],
+      "test_loss_by_variant": {
+        "pair": 0.05791549583601074,
+        "kept": 0.05835970301742086
+      },
+      "catboost_test_loss": 0.05312084078408445,
+      "hybrid_test_loss": 0.05554171833919069,
+      "teacher_dev_loss": 0.008622502749289652,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 1118,
+          "terms": 9,
+          "seconds": 0.7171152500086464
+        },
+        "kept": {
+          "mstop": 598,
+          "terms": 9,
+          "seconds": 1.0930179579881951
+        }
+      },
+      "top_importance": {
+        "income": 26.259978853722657,
+        "latitude": 23.180940206823962,
+        "longitude": 20.912792708442677,
+        "occupancy": 11.205008166294698,
+        "rooms": 6.420880944338601,
+        "age": 5.179945796609691,
+        "population": 3.983617653223645,
+        "bedrooms": 2.856835670544073
+      }
+    },
+    {
+      "task": "housing_spatial",
+      "seed": 0,
+      "budget": 3,
+      "status": "ok",
+      "kept_inputs": [
+        "income",
+        "latitude",
+        "longitude"
+      ],
+      "interaction_pair": [
+        "longitude",
+        "latitude"
+      ],
+      "test_loss_by_variant": {
+        "pair": 0.11754683208698935,
+        "kept": 0.12101020906084385
+      },
+      "catboost_test_loss": 0.07928216596470934,
+      "hybrid_test_loss": 0.07946442269057828,
+      "teacher_dev_loss": 0.043158246349163196,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 68,
+          "terms": 4,
+          "seconds": 0.38161412498448044
+        },
+        "kept": {
+          "mstop": 79,
+          "terms": 4,
+          "seconds": 0.42482466599904
+        }
+      },
+      "top_importance": {
+        "income": 36.29863474340443,
+        "latitude": 23.073346112426275,
+        "longitude": 19.49058573654442,
+        "occupancy": 10.603870750938214,
+        "age": 4.038190256804686,
+        "rooms": 3.324002877618779,
+        "population": 1.7952236046201215,
+        "bedrooms": 1.3761459176431028
+      }
+    },
+    {
+      "task": "housing_spatial",
+      "seed": 0,
+      "budget": 5,
+      "status": "ok",
+      "kept_inputs": [
+        "age",
+        "income",
+        "latitude",
+        "longitude",
+        "occupancy"
+      ],
+      "interaction_pair": [
+        "longitude",
+        "latitude"
+      ],
+      "test_loss_by_variant": {
+        "pair": 0.12036557707757148,
+        "kept": 0.09634759288891244
+      },
+      "catboost_test_loss": 0.07928216596470934,
+      "hybrid_test_loss": 0.07946442269057828,
+      "teacher_dev_loss": 0.043158246349163196,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 50,
+          "terms": 6,
+          "seconds": 0.5554170419927686
+        },
+        "kept": {
+          "mstop": 60,
+          "terms": 6,
+          "seconds": 0.6539004579826724
+        }
+      },
+      "top_importance": {
+        "income": 36.29863474340443,
+        "latitude": 23.073346112426275,
+        "longitude": 19.49058573654442,
+        "occupancy": 10.603870750938214,
+        "age": 4.038190256804686,
+        "rooms": 3.324002877618779,
+        "population": 1.7952236046201215,
+        "bedrooms": 1.3761459176431028
+      }
+    },
+    {
+      "task": "housing_spatial",
+      "seed": 0,
+      "budget": 8,
+      "status": "ok",
+      "kept_inputs": [
+        "age",
+        "bedrooms",
+        "income",
+        "latitude",
+        "longitude",
+        "occupancy",
+        "population",
+        "rooms"
+      ],
+      "interaction_pair": [
+        "longitude",
+        "latitude"
+      ],
+      "test_loss_by_variant": {
+        "pair": 0.12036557707757148,
+        "kept": 0.08066907981311641
+      },
+      "catboost_test_loss": 0.07928216596470934,
+      "hybrid_test_loss": 0.07946442269057828,
+      "teacher_dev_loss": 0.043158246349163196,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 50,
+          "terms": 9,
+          "seconds": 0.7426667499821633
+        },
+        "kept": {
+          "mstop": 300,
+          "terms": 9,
+          "seconds": 1.1924418329726905
+        }
+      },
+      "top_importance": {
+        "income": 36.29863474340443,
+        "latitude": 23.073346112426275,
+        "longitude": 19.49058573654442,
+        "occupancy": 10.603870750938214,
+        "age": 4.038190256804686,
+        "rooms": 3.324002877618779,
+        "population": 1.7952236046201215,
+        "bedrooms": 1.3761459176431028
+      }
+    },
+    {
+      "task": "bike_iid",
+      "seed": 0,
+      "budget": 3,
+      "status": "ok",
+      "kept_inputs": [
+        "hr",
+        "temp",
+        "workingday"
+      ],
+      "interaction_pair": [
+        "hr",
+        "temp"
+      ],
+      "test_loss_by_variant": {
+        "pair": 0.47364660090688493,
+        "kept": 0.253201238769393
+      },
+      "catboost_test_loss": 0.09927861534750294,
+      "hybrid_test_loss": 0.11915227925802242,
+      "teacher_dev_loss": 0.06450050200278713,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 83,
+          "terms": 4,
+          "seconds": 0.2972880419983994
+        },
+        "kept": {
+          "mstop": 255,
+          "terms": 4,
+          "seconds": 0.4106781250156928
+        }
+      },
+      "top_importance": {
+        "hr": 70.38928063902958,
+        "workingday": 11.42193925097574,
+        "temp": 4.9870846501389625,
+        "yr": 3.2231286784588287,
+        "season": 2.4719323931651536,
+        "weathersit": 2.0046479473493646,
+        "hum": 1.8241304834016003,
+        "mnth": 1.7422594166308059,
+        "weekday": 1.0865765821283795,
+        "windspeed": 0.6029296158195379,
+        "holiday": 0.24609034290206167
+      }
+    },
+    {
+      "task": "bike_iid",
+      "seed": 0,
+      "budget": 5,
+      "status": "ok",
+      "kept_inputs": [
+        "hr",
+        "season",
+        "temp",
+        "workingday",
+        "yr"
+      ],
+      "interaction_pair": [
+        "hr",
+        "temp"
+      ],
+      "test_loss_by_variant": {
+        "pair": 0.39849763339208616,
+        "kept": 0.16927961493177504
+      },
+      "catboost_test_loss": 0.09927861534750294,
+      "hybrid_test_loss": 0.11915227925802242,
+      "teacher_dev_loss": 0.06450050200278713,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 205,
+          "terms": 6,
+          "seconds": 0.29945749999023974
+        },
+        "kept": {
+          "mstop": 320,
+          "terms": 6,
+          "seconds": 0.5985558340034913
+        }
+      },
+      "top_importance": {
+        "hr": 70.38928063902958,
+        "workingday": 11.42193925097574,
+        "temp": 4.9870846501389625,
+        "yr": 3.2231286784588287,
+        "season": 2.4719323931651536,
+        "weathersit": 2.0046479473493646,
+        "hum": 1.8241304834016003,
+        "mnth": 1.7422594166308059,
+        "weekday": 1.0865765821283795,
+        "windspeed": 0.6029296158195379,
+        "holiday": 0.24609034290206167
+      }
+    },
+    {
+      "task": "bike_iid",
+      "seed": 0,
+      "budget": 8,
+      "status": "ok",
+      "kept_inputs": [
+        "hr",
+        "hum",
+        "mnth",
+        "season",
+        "temp",
+        "weathersit",
+        "workingday",
+        "yr"
+      ],
+      "interaction_pair": [
+        "hr",
+        "temp"
+      ],
+      "test_loss_by_variant": {
+        "pair": 0.3623902791016966,
+        "kept": 0.12453425171986514
+      },
+      "catboost_test_loss": 0.09927861534750294,
+      "hybrid_test_loss": 0.11915227925802242,
+      "teacher_dev_loss": 0.06450050200278713,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 292,
+          "terms": 9,
+          "seconds": 0.4442440420098137
+        },
+        "kept": {
+          "mstop": 558,
+          "terms": 9,
+          "seconds": 0.8803884999942966
+        }
+      },
+      "top_importance": {
+        "hr": 70.38928063902958,
+        "workingday": 11.42193925097574,
+        "temp": 4.9870846501389625,
+        "yr": 3.2231286784588287,
+        "season": 2.4719323931651536,
+        "weathersit": 2.0046479473493646,
+        "hum": 1.8241304834016003,
+        "mnth": 1.7422594166308059,
+        "weekday": 1.0865765821283795,
+        "windspeed": 0.6029296158195379,
+        "holiday": 0.24609034290206167
+      }
+    },
+    {
+      "task": "bike_future",
+      "seed": 0,
+      "budget": 3,
+      "status": "ok",
+      "kept_inputs": [
+        "hr",
+        "hum",
+        "workingday"
+      ],
+      "interaction_pair": [
+        "hr",
+        "hum"
+      ],
+      "test_loss_by_variant": {
+        "pair": 0.48649751402745217,
+        "kept": 0.27035793702833394
+      },
+      "catboost_test_loss": 0.20352835402418792,
+      "hybrid_test_loss": 0.19183920643652147,
+      "teacher_dev_loss": 0.08087345737586478,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 158,
+          "terms": 4,
+          "seconds": 0.2929785829910543
+        },
+        "kept": {
+          "mstop": 321,
+          "terms": 4,
+          "seconds": 0.39499674999387935
+        }
+      },
+      "top_importance": {
+        "hr": 83.29258119113665,
+        "workingday": 11.20928329687225,
+        "hum": 2.341098168009012,
+        "temp": 1.54251185510543,
+        "weathersit": 0.9497955663296506,
+        "mnth": 0.2109278096341092,
+        "windspeed": 0.20168870194309446,
+        "weekday": 0.15431777670100474,
+        "season": 0.09070606271867007,
+        "holiday": 0.0070895715501140604,
+        "yr": 0.0
+      }
+    },
+    {
+      "task": "bike_future",
+      "seed": 0,
+      "budget": 5,
+      "status": "ok",
+      "kept_inputs": [
+        "hr",
+        "hum",
+        "temp",
+        "weathersit",
+        "workingday"
+      ],
+      "interaction_pair": [
+        "hr",
+        "temp"
+      ],
+      "test_loss_by_variant": {
+        "pair": 0.45645826257808686,
+        "kept": 0.214316128456095
+      },
+      "catboost_test_loss": 0.20352835402418792,
+      "hybrid_test_loss": 0.19183920643652147,
+      "teacher_dev_loss": 0.08087345737586478,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 69,
+          "terms": 6,
+          "seconds": 0.3711500409990549
+        },
+        "kept": {
+          "mstop": 191,
+          "terms": 6,
+          "seconds": 0.5765915419906378
+        }
+      },
+      "top_importance": {
+        "hr": 83.29258119113665,
+        "workingday": 11.20928329687225,
+        "hum": 2.341098168009012,
+        "temp": 1.54251185510543,
+        "weathersit": 0.9497955663296506,
+        "mnth": 0.2109278096341092,
+        "windspeed": 0.20168870194309446,
+        "weekday": 0.15431777670100474,
+        "season": 0.09070606271867007,
+        "holiday": 0.0070895715501140604,
+        "yr": 0.0
+      }
+    },
+    {
+      "task": "bike_future",
+      "seed": 0,
+      "budget": 8,
+      "status": "ok",
+      "kept_inputs": [
+        "hr",
+        "hum",
+        "mnth",
+        "temp",
+        "weathersit",
+        "weekday",
+        "windspeed",
+        "workingday"
+      ],
+      "interaction_pair": [
+        "hr",
+        "temp"
+      ],
+      "test_loss_by_variant": {
+        "pair": 0.4482739417435266,
+        "kept": 0.1973944859662807
+      },
+      "catboost_test_loss": 0.20352835402418792,
+      "hybrid_test_loss": 0.19183920643652147,
+      "teacher_dev_loss": 0.08087345737586478,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 103,
+          "terms": 9,
+          "seconds": 0.5416237919998821
+        },
+        "kept": {
+          "mstop": 144,
+          "terms": 9,
+          "seconds": 0.8628667909943033
+        }
+      },
+      "top_importance": {
+        "hr": 83.29258119113665,
+        "workingday": 11.20928329687225,
+        "hum": 2.341098168009012,
+        "temp": 1.54251185510543,
+        "weathersit": 0.9497955663296506,
+        "mnth": 0.2109278096341092,
+        "windspeed": 0.20168870194309446,
+        "weekday": 0.15431777670100474,
+        "season": 0.09070606271867007,
+        "holiday": 0.0070895715501140604,
+        "yr": 0.0
+      }
+    },
+    {
+      "task": "diamonds",
+      "seed": 0,
+      "budget": 3,
+      "status": "ok",
+      "kept_inputs": [
+        "carat",
+        "x",
+        "z"
+      ],
+      "interaction_pair": [
+        "carat",
+        "x"
+      ],
+      "test_loss_by_variant": {
+        "pair": 0.0645651386022013,
+        "kept": 0.06360552035772614
+      },
+      "catboost_test_loss": 0.010918204665463612,
+      "hybrid_test_loss": 0.01174100352982163,
+      "teacher_dev_loss": 0.006316331367754545,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 36,
+          "terms": 4,
+          "seconds": 0.4686056250066031
+        },
+        "kept": {
+          "mstop": 44,
+          "terms": 4,
+          "seconds": 0.48161908399197273
+        }
+      },
+      "top_importance": {
+        "carat": 32.41447880853077,
+        "x": 30.32524582913728,
+        "z": 15.743345637126243,
+        "clarity": 12.498457174503365,
+        "color": 6.035904250436222,
+        "cut": 1.363128878135381,
+        "depth": 1.0686687879408863,
+        "table": 0.550770634189836
+      }
+    },
+    {
+      "task": "diamonds",
+      "seed": 0,
+      "budget": 5,
+      "status": "ok",
+      "kept_inputs": [
+        "carat",
+        "clarity",
+        "color",
+        "x",
+        "z"
+      ],
+      "interaction_pair": [
+        "carat",
+        "clarity"
+      ],
+      "test_loss_by_variant": {
+        "pair": 0.015629661501385304,
+        "kept": 0.01317364245575153
+      },
+      "catboost_test_loss": 0.010918204665463612,
+      "hybrid_test_loss": 0.01174100352982163,
+      "teacher_dev_loss": 0.006316331367754545,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 310,
+          "terms": 6,
+          "seconds": 0.5006896670092829
+        },
+        "kept": {
+          "mstop": 197,
+          "terms": 6,
+          "seconds": 0.6526163340022322
+        }
+      },
+      "top_importance": {
+        "carat": 32.41447880853077,
+        "x": 30.32524582913728,
+        "z": 15.743345637126243,
+        "clarity": 12.498457174503365,
+        "color": 6.035904250436222,
+        "cut": 1.363128878135381,
+        "depth": 1.0686687879408863,
+        "table": 0.550770634189836
+      }
+    },
+    {
+      "task": "diamonds",
+      "seed": 0,
+      "budget": 8,
+      "status": "ok",
+      "kept_inputs": [
+        "carat",
+        "clarity",
+        "color",
+        "cut",
+        "depth",
+        "table",
+        "x",
+        "z"
+      ],
+      "interaction_pair": [
+        "carat",
+        "clarity"
+      ],
+      "test_loss_by_variant": {
+        "pair": 0.013940033604025098,
+        "kept": 0.010927589893743843
+      },
+      "catboost_test_loss": 0.010918204665463612,
+      "hybrid_test_loss": 0.01174100352982163,
+      "teacher_dev_loss": 0.006316331367754545,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 477,
+          "terms": 9,
+          "seconds": 0.6121156660083216
+        },
+        "kept": {
+          "mstop": 1191,
+          "terms": 9,
+          "seconds": 0.9228292079933453
+        }
+      },
+      "top_importance": {
+        "carat": 32.41447880853077,
+        "x": 30.32524582913728,
+        "z": 15.743345637126243,
+        "clarity": 12.498457174503365,
+        "color": 6.035904250436222,
+        "cut": 1.363128878135381,
+        "depth": 1.0686687879408863,
+        "table": 0.550770634189836
+      }
+    },
+    {
+      "task": "protein",
+      "seed": 0,
+      "budget": 3,
+      "status": "ok",
+      "kept_inputs": [
+        "F3",
+        "F4",
+        "F8"
+      ],
+      "interaction_pair": [
+        "F4",
+        "F8"
+      ],
+      "test_loss_by_variant": {
+        "pair": 28.25553210989959,
+        "kept": 26.735382017316546
+      },
+      "catboost_test_loss": 17.553142079893416,
+      "hybrid_test_loss": 18.89363631178019,
+      "teacher_dev_loss": 5.402693100087534,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 235,
+          "terms": 4,
+          "seconds": 0.404533791996073
+        },
+        "kept": {
+          "mstop": 172,
+          "terms": 4,
+          "seconds": 0.4380704999784939
+        }
+      },
+      "top_importance": {
+        "F4": 19.466907760788473,
+        "F8": 16.594934758358526,
+        "F3": 14.772808149562142,
+        "F6": 10.45830104748758,
+        "F7": 9.803868447322635,
+        "F9": 8.409223632990871,
+        "F5": 7.31578634846327,
+        "F1": 6.945667139030145,
+        "F2": 6.232502715996358
+      }
+    },
+    {
+      "task": "protein",
+      "seed": 0,
+      "budget": 5,
+      "status": "ok",
+      "kept_inputs": [
+        "F3",
+        "F4",
+        "F6",
+        "F7",
+        "F8"
+      ],
+      "interaction_pair": [
+        "F4",
+        "F8"
+      ],
+      "test_loss_by_variant": {
+        "pair": 28.23668429907057,
+        "kept": 23.449694834294192
+      },
+      "catboost_test_loss": 17.553142079893416,
+      "hybrid_test_loss": 18.89363631178019,
+      "teacher_dev_loss": 5.402693100087534,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 234,
+          "terms": 6,
+          "seconds": 0.5593954999931157
+        },
+        "kept": {
+          "mstop": 325,
+          "terms": 6,
+          "seconds": 0.6598832500167191
+        }
+      },
+      "top_importance": {
+        "F4": 19.466907760788473,
+        "F8": 16.594934758358526,
+        "F3": 14.772808149562142,
+        "F6": 10.45830104748758,
+        "F7": 9.803868447322635,
+        "F9": 8.409223632990871,
+        "F5": 7.31578634846327,
+        "F1": 6.945667139030145,
+        "F2": 6.232502715996358
+      }
+    },
+    {
+      "task": "protein",
+      "seed": 0,
+      "budget": 8,
+      "status": "ok",
+      "kept_inputs": [
+        "F1",
+        "F3",
+        "F4",
+        "F5",
+        "F6",
+        "F7",
+        "F8",
+        "F9"
+      ],
+      "interaction_pair": [
+        "F4",
+        "F8"
+      ],
+      "test_loss_by_variant": {
+        "pair": 26.8919766279743,
+        "kept": 21.215517123714562
+      },
+      "catboost_test_loss": 17.553142079893416,
+      "hybrid_test_loss": 18.89363631178019,
+      "teacher_dev_loss": 5.402693100087534,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 259,
+          "terms": 9,
+          "seconds": 0.6859816249925643
+        },
+        "kept": {
+          "mstop": 209,
+          "terms": 9,
+          "seconds": 0.9840685829985887
+        }
+      },
+      "top_importance": {
+        "F4": 19.466907760788473,
+        "F8": 16.594934758358526,
+        "F3": 14.772808149562142,
+        "F6": 10.45830104748758,
+        "F7": 9.803868447322635,
+        "F9": 8.409223632990871,
+        "F5": 7.31578634846327,
+        "F1": 6.945667139030145,
+        "F2": 6.232502715996358
+      }
+    },
+    {
+      "task": "superconductivity",
+      "seed": 0,
+      "budget": 3,
+      "status": "ok",
+      "kept_inputs": [
+        "range_ThermalConductivity",
+        "wtd_gmean_Valence",
+        "wtd_mean_Valence"
+      ],
+      "interaction_pair": [
+        "range_ThermalConductivity",
+        "wtd_gmean_Valence"
+      ],
+      "test_loss_by_variant": {
+        "pair": 376.7245873587379,
+        "kept": 340.8148241178501
+      },
+      "catboost_test_loss": 129.09725169836503,
+      "hybrid_test_loss": 140.21383893573466,
+      "teacher_dev_loss": 26.64247416118876,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 143,
+          "terms": 4,
+          "seconds": 0.3419248330174014
+        },
+        "kept": {
+          "mstop": 200,
+          "terms": 4,
+          "seconds": 0.39141179202124476
+        }
+      },
+      "top_importance": {
+        "range_ThermalConductivity": 8.399714873322214,
+        "wtd_mean_Valence": 4.80302434849723,
+        "wtd_gmean_Valence": 4.606285153549471,
+        "std_atomic_mass": 4.389772427589135,
+        "wtd_mean_ThermalConductivity": 3.462643496835488,
+        "wtd_std_ThermalConductivity": 3.2568512621466805,
+        "wtd_std_ElectronAffinity": 2.7486286629986303,
+        "wtd_entropy_atomic_mass": 2.554824816095167,
+        "wtd_entropy_ThermalConductivity": 2.533183608295285,
+        "range_atomic_radius": 2.5196311247761956,
+        "wtd_gmean_ThermalConductivity": 2.17361269645724,
+        "wtd_entropy_Valence": 2.1420582647623148
+      }
+    },
+    {
+      "task": "superconductivity",
+      "seed": 0,
+      "budget": 5,
+      "status": "ok",
+      "kept_inputs": [
+        "range_ThermalConductivity",
+        "std_atomic_mass",
+        "wtd_gmean_Valence",
+        "wtd_mean_ThermalConductivity",
+        "wtd_mean_Valence"
+      ],
+      "interaction_pair": [
+        "wtd_mean_ThermalConductivity",
+        "wtd_mean_Valence"
+      ],
+      "test_loss_by_variant": {
+        "pair": 287.74565816189653,
+        "kept": 216.50182640979318
+      },
+      "catboost_test_loss": 129.09725169836503,
+      "hybrid_test_loss": 140.21383893573466,
+      "teacher_dev_loss": 26.64247416118876,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 448,
+          "terms": 6,
+          "seconds": 0.5186760000069626
+        },
+        "kept": {
+          "mstop": 383,
+          "terms": 6,
+          "seconds": 0.6704882089979947
+        }
+      },
+      "top_importance": {
+        "range_ThermalConductivity": 8.399714873322214,
+        "wtd_mean_Valence": 4.80302434849723,
+        "wtd_gmean_Valence": 4.606285153549471,
+        "std_atomic_mass": 4.389772427589135,
+        "wtd_mean_ThermalConductivity": 3.462643496835488,
+        "wtd_std_ThermalConductivity": 3.2568512621466805,
+        "wtd_std_ElectronAffinity": 2.7486286629986303,
+        "wtd_entropy_atomic_mass": 2.554824816095167,
+        "wtd_entropy_ThermalConductivity": 2.533183608295285,
+        "range_atomic_radius": 2.5196311247761956,
+        "wtd_gmean_ThermalConductivity": 2.17361269645724,
+        "wtd_entropy_Valence": 2.1420582647623148
+      }
+    },
+    {
+      "task": "superconductivity",
+      "seed": 0,
+      "budget": 8,
+      "status": "ok",
+      "kept_inputs": [
+        "range_ThermalConductivity",
+        "std_atomic_mass",
+        "wtd_entropy_atomic_mass",
+        "wtd_gmean_Valence",
+        "wtd_mean_ThermalConductivity",
+        "wtd_mean_Valence",
+        "wtd_std_ElectronAffinity",
+        "wtd_std_ThermalConductivity"
+      ],
+      "interaction_pair": [
+        "wtd_entropy_atomic_mass",
+        "wtd_std_ThermalConductivity"
+      ],
+      "test_loss_by_variant": {
+        "pair": 321.53656454240576,
+        "kept": 178.30909913869428
+      },
+      "catboost_test_loss": 129.09725169836503,
+      "hybrid_test_loss": 140.21383893573466,
+      "teacher_dev_loss": 26.64247416118876,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 722,
+          "terms": 9,
+          "seconds": 0.697867207985837
+        },
+        "kept": {
+          "mstop": 895,
+          "terms": 9,
+          "seconds": 1.0834754999959841
+        }
+      },
+      "top_importance": {
+        "range_ThermalConductivity": 8.399714873322214,
+        "wtd_mean_Valence": 4.80302434849723,
+        "wtd_gmean_Valence": 4.606285153549471,
+        "std_atomic_mass": 4.389772427589135,
+        "wtd_mean_ThermalConductivity": 3.462643496835488,
+        "wtd_std_ThermalConductivity": 3.2568512621466805,
+        "wtd_std_ElectronAffinity": 2.7486286629986303,
+        "wtd_entropy_atomic_mass": 2.554824816095167,
+        "wtd_entropy_ThermalConductivity": 2.533183608295285,
+        "range_atomic_radius": 2.5196311247761956,
+        "wtd_gmean_ThermalConductivity": 2.17361269645724,
+        "wtd_entropy_Valence": 2.1420582647623148
+      }
+    },
+    {
+      "task": "concrete",
+      "seed": 0,
+      "budget": 3,
+      "status": "ok",
+      "kept_inputs": [
+        "age",
+        "cement",
+        "water"
+      ],
+      "interaction_pair": [
+        "cement",
+        "age"
+      ],
+      "test_loss_by_variant": {
+        "pair": 58.62783228684723,
+        "kept": 38.05198518787446
+      },
+      "catboost_test_loss": 16.896562492479028,
+      "hybrid_test_loss": 20.527585866392506,
+      "teacher_dev_loss": 1.0404418288984945,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 811,
+          "terms": 4,
+          "seconds": 0.07532895801705308
+        },
+        "kept": {
+          "mstop": 332,
+          "terms": 4,
+          "seconds": 0.07664225000189617
+        }
+      },
+      "top_importance": {
+        "age": 32.937043389564515,
+        "cement": 23.931456272784626,
+        "water": 12.947790187893622,
+        "blast_furnace_slag": 9.177392076504612,
+        "superplasticizer": 8.777701234039675,
+        "fine_aggregate": 5.718648646831765,
+        "coarse_aggregate": 3.880560897599046,
+        "fly_ash": 2.629407294782141
+      }
+    },
+    {
+      "task": "concrete",
+      "seed": 0,
+      "budget": 5,
+      "status": "ok",
+      "kept_inputs": [
+        "age",
+        "blast_furnace_slag",
+        "cement",
+        "superplasticizer",
+        "water"
+      ],
+      "interaction_pair": [
+        "cement",
+        "age"
+      ],
+      "test_loss_by_variant": {
+        "pair": 32.16367647381253,
+        "kept": 21.45791141593558
+      },
+      "catboost_test_loss": 16.896562492479028,
+      "hybrid_test_loss": 20.527585866392506,
+      "teacher_dev_loss": 1.0404418288984945,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 904,
+          "terms": 6,
+          "seconds": 0.10510491699096747
+        },
+        "kept": {
+          "mstop": 1101,
+          "terms": 6,
+          "seconds": 0.1172530000039842
+        }
+      },
+      "top_importance": {
+        "age": 32.937043389564515,
+        "cement": 23.931456272784626,
+        "water": 12.947790187893622,
+        "blast_furnace_slag": 9.177392076504612,
+        "superplasticizer": 8.777701234039675,
+        "fine_aggregate": 5.718648646831765,
+        "coarse_aggregate": 3.880560897599046,
+        "fly_ash": 2.629407294782141
+      }
+    },
+    {
+      "task": "concrete",
+      "seed": 0,
+      "budget": 8,
+      "status": "ok",
+      "kept_inputs": [
+        "age",
+        "blast_furnace_slag",
+        "cement",
+        "coarse_aggregate",
+        "fine_aggregate",
+        "fly_ash",
+        "superplasticizer",
+        "water"
+      ],
+      "interaction_pair": [
+        "cement",
+        "age"
+      ],
+      "test_loss_by_variant": {
+        "pair": 33.98151308496418,
+        "kept": 20.195544908407992
+      },
+      "catboost_test_loss": 16.896562492479028,
+      "hybrid_test_loss": 20.527585866392506,
+      "teacher_dev_loss": 1.0404418288984945,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 1200,
+          "terms": 9,
+          "seconds": 0.13964491701335646
+        },
+        "kept": {
+          "mstop": 1187,
+          "terms": 9,
+          "seconds": 0.18518645799485967
+        }
+      },
+      "top_importance": {
+        "age": 32.937043389564515,
+        "cement": 23.931456272784626,
+        "water": 12.947790187893622,
+        "blast_furnace_slag": 9.177392076504612,
+        "superplasticizer": 8.777701234039675,
+        "fine_aggregate": 5.718648646831765,
+        "coarse_aggregate": 3.880560897599046,
+        "fly_ash": 2.629407294782141
+      }
+    },
+    {
+      "task": "credit",
+      "seed": 0,
+      "budget": 3,
+      "status": "ok",
+      "kept_inputs": [
+        "checking_status",
+        "credit_amount",
+        "credit_history"
+      ],
+      "interaction_pair": [
+        "checking_status",
+        "credit_amount"
+      ],
+      "test_loss_by_variant": {
+        "pair": 0.5464919610492713,
+        "kept": 0.5413494002538307
+      },
+      "catboost_test_loss": 0.5094447390259552,
+      "hybrid_test_loss": 0.5007173815074428,
+      "teacher_dev_loss": 0.2691417377277562,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 56,
+          "terms": 4,
+          "seconds": 0.07336091599427164
+        },
+        "kept": {
+          "mstop": 24,
+          "terms": 4,
+          "seconds": 0.0877301250002347
+        }
+      },
+      "top_importance": {
+        "checking_status": 16.68264978556039,
+        "credit_history": 8.850423970467176,
+        "credit_amount": 8.354117895657662,
+        "duration": 8.02011898439989,
+        "other_payment_plans": 7.663670952441809,
+        "savings_status": 6.465971459547704,
+        "property_magnitude": 6.293664876956034,
+        "purpose": 4.866448845692091,
+        "personal_status": 4.6048370618076735,
+        "employment": 4.35522973899926,
+        "residence_since": 4.339547190532145,
+        "age": 4.0001612504234485
+      }
+    },
+    {
+      "task": "credit",
+      "seed": 0,
+      "budget": 5,
+      "status": "ok",
+      "kept_inputs": [
+        "checking_status",
+        "credit_amount",
+        "credit_history",
+        "duration",
+        "other_payment_plans"
+      ],
+      "interaction_pair": [
+        "credit_history",
+        "other_payment_plans"
+      ],
+      "test_loss_by_variant": {
+        "pair": 0.5505175498388467,
+        "kept": 0.5329026025188128
+      },
+      "catboost_test_loss": 0.5094447390259552,
+      "hybrid_test_loss": 0.5007173815074428,
+      "teacher_dev_loss": 0.2691417377277562,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 410,
+          "terms": 6,
+          "seconds": 0.11609591700835153
+        },
+        "kept": {
+          "mstop": 43,
+          "terms": 6,
+          "seconds": 0.1206603340106085
+        }
+      },
+      "top_importance": {
+        "checking_status": 16.68264978556039,
+        "credit_history": 8.850423970467176,
+        "credit_amount": 8.354117895657662,
+        "duration": 8.02011898439989,
+        "other_payment_plans": 7.663670952441809,
+        "savings_status": 6.465971459547704,
+        "property_magnitude": 6.293664876956034,
+        "purpose": 4.866448845692091,
+        "personal_status": 4.6048370618076735,
+        "employment": 4.35522973899926,
+        "residence_since": 4.339547190532145,
+        "age": 4.0001612504234485
+      }
+    },
+    {
+      "task": "credit",
+      "seed": 0,
+      "budget": 8,
+      "status": "ok",
+      "kept_inputs": [
+        "checking_status",
+        "credit_amount",
+        "credit_history",
+        "duration",
+        "other_payment_plans",
+        "property_magnitude",
+        "purpose",
+        "savings_status"
+      ],
+      "interaction_pair": [
+        "credit_history",
+        "other_payment_plans"
+      ],
+      "test_loss_by_variant": {
+        "pair": 0.514318727313219,
+        "kept": 0.5191168026590934
+      },
+      "catboost_test_loss": 0.5094447390259552,
+      "hybrid_test_loss": 0.5007173815074428,
+      "teacher_dev_loss": 0.2691417377277562,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 203,
+          "terms": 9,
+          "seconds": 0.12297804100671783
+        },
+        "kept": {
+          "mstop": 48,
+          "terms": 9,
+          "seconds": 0.1728880839946214
+        }
+      },
+      "top_importance": {
+        "checking_status": 16.68264978556039,
+        "credit_history": 8.850423970467176,
+        "credit_amount": 8.354117895657662,
+        "duration": 8.02011898439989,
+        "other_payment_plans": 7.663670952441809,
+        "savings_status": 6.465971459547704,
+        "property_magnitude": 6.293664876956034,
+        "purpose": 4.866448845692091,
+        "personal_status": 4.6048370618076735,
+        "employment": 4.35522973899926,
+        "residence_since": 4.339547190532145,
+        "age": 4.0001612504234485
+      }
+    },
+    {
+      "task": "cancer",
+      "seed": 0,
+      "budget": 3,
+      "status": "ok",
+      "kept_inputs": [
+        "x20",
+        "x23",
+        "x27"
+      ],
+      "interaction_pair": [
+        "x23",
+        "x27"
+      ],
+      "test_loss_by_variant": {
+        "pair": 0.17446041062864998,
+        "kept": 0.17471771426405744
+      },
+      "catboost_test_loss": 0.12477032310032038,
+      "hybrid_test_loss": 0.09756006778035073,
+      "teacher_dev_loss": 0.004013320751254792,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 29,
+          "terms": 4,
+          "seconds": 0.055982999998377636
+        },
+        "kept": {
+          "mstop": 32,
+          "terms": 4,
+          "seconds": 0.062060500000370666
+        }
+      },
+      "top_importance": {
+        "x27": 9.190941426934456,
+        "x20": 8.111271061245741,
+        "x23": 7.727277858545884,
+        "x21": 6.781271542752657,
+        "x1": 6.646551981236272,
+        "x26": 5.826937401183565,
+        "x7": 5.266889262272843,
+        "x22": 4.742628400807052,
+        "x13": 4.6263340611251245,
+        "x28": 4.5882809232318005,
+        "x4": 3.430632846808558,
+        "x15": 2.8880300781601393
+      }
+    },
+    {
+      "task": "cancer",
+      "seed": 0,
+      "budget": 5,
+      "status": "ok",
+      "kept_inputs": [
+        "x1",
+        "x20",
+        "x21",
+        "x23",
+        "x27"
+      ],
+      "interaction_pair": [
+        "x23",
+        "x27"
+      ],
+      "test_loss_by_variant": {
+        "pair": 0.17446041062864998,
+        "kept": 0.1306933078763498
+      },
+      "catboost_test_loss": 0.12477032310032038,
+      "hybrid_test_loss": 0.09756006778035073,
+      "teacher_dev_loss": 0.004013320751254792,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 29,
+          "terms": 6,
+          "seconds": 0.0940861249982845
+        },
+        "kept": {
+          "mstop": 79,
+          "terms": 6,
+          "seconds": 0.0858134999871254
+        }
+      },
+      "top_importance": {
+        "x27": 9.190941426934456,
+        "x20": 8.111271061245741,
+        "x23": 7.727277858545884,
+        "x21": 6.781271542752657,
+        "x1": 6.646551981236272,
+        "x26": 5.826937401183565,
+        "x7": 5.266889262272843,
+        "x22": 4.742628400807052,
+        "x13": 4.6263340611251245,
+        "x28": 4.5882809232318005,
+        "x4": 3.430632846808558,
+        "x15": 2.8880300781601393
+      }
+    },
+    {
+      "task": "cancer",
+      "seed": 0,
+      "budget": 8,
+      "status": "ok",
+      "kept_inputs": [
+        "x1",
+        "x20",
+        "x21",
+        "x22",
+        "x23",
+        "x26",
+        "x27",
+        "x7"
+      ],
+      "interaction_pair": [
+        "x23",
+        "x27"
+      ],
+      "test_loss_by_variant": {
+        "pair": 0.17446041062864998,
+        "kept": 0.09763288151525336
+      },
+      "catboost_test_loss": 0.12477032310032038,
+      "hybrid_test_loss": 0.09756006778035073,
+      "teacher_dev_loss": 0.004013320751254792,
+      "fit_by_variant": {
+        "pair": {
+          "mstop": 29,
+          "terms": 9,
+          "seconds": 0.08208116699825041
+        },
+        "kept": {
+          "mstop": 336,
+          "terms": 9,
+          "seconds": 0.12080654199235141
+        }
+      },
+      "top_importance": {
+        "x27": 9.190941426934456,
+        "x20": 8.111271061245741,
+        "x23": 7.727277858545884,
+        "x21": 6.781271542752657,
+        "x1": 6.646551981236272,
+        "x26": 5.826937401183565,
+        "x7": 5.266889262272843,
+        "x22": 4.742628400807052,
+        "x13": 4.6263340611251245,
+        "x28": 4.5882809232318005,
+        "x4": 3.430632846808558,
+        "x15": 2.8880300781601393
+      }
+    }
+  ]
+}

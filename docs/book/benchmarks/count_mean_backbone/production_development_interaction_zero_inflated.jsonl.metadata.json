@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-19T06:50:57+00:00",
+  "commit": "03926dad5178c937fae324b86f23f2fe41af7067",
+  "working_tree": {
+    "dirty": true,
+    "status_digest": "sha256:8ee4dfde842e28b15ab643a880f1de2415a866429b7616364b85f7caf1d972e6",
+    "commit_source": "working directory"
+  },
+  "platform": {
+    "system": "Darwin",
+    "release": "25.3.0",
+    "machine": "arm64",
+    "cpu": "arm",
+    "python": "3.12.11"
+  },
+  "versions": {
+    "mboostrs": "0.1.3",
+    "numpy": "2.4.6",
+    "rpy2": "3.6.7",
+    "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+    "R": "4.5.1",
+    "mboost": "2.9.11",
+    "scipy": "1.16.3",
+    "pandas": "2.3.3",
+    "ngboost": "0.5.11",
+    "mssm": "1.2.5",
+    "scikit-learn": "1.9.0",
+    "catboost": "1.2.10",
+    "lightgbm": "4.7.0"
+  },
+  "threads": {
+    "logical_cpus": 10,
+    "r_mclapply_default_cores": "2",
+    "RAYON_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "build_info": {
+    "package_version": "0.1.3",
+    "source_digest": "sha256:80f94922a012c263bfa64283b8c0f5f3b36b69109332892622c312c581334e5d",
+    "git_revision": "2d52cebb30b4c1f92eb7ffe266bb9867d9ec8512",
+    "git_dirty": true,
+    "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+    "target": "aarch64-apple-darwin",
+    "profile": "release",
+    "target_features": "aes,bf16,bti,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,i8mm,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+    "crate_features": "",
+    "abi_version": 1,
+    "build_id": "sha256:0997b3111043f6b9670b52678e13ab7f3bf69ce079bb90e7283c94c1e85e62df"
+  },
+  "scripts": {
+    "/private/tmp/mboostrs-count-forms/benches/study_count_mean_backbone.py": "e677928a2f02bb737960d49629444618e4db64359c6ecf0b8a9c060740386ece",
+    "/private/tmp/mboostrs-count-forms/benches/prototype_count_mean_backbone.py": "27a5bbff690e699ff4547b4b2b5d4128be934cec77a761abfa5e8a886fd6dea3",
+    "/private/tmp/mboostrs-count-forms/benches/study_poisson_tuning_consistency.py": "7cb3f625fba4fb6a43b0c9452f9c67498ece2648b4a0fe77cf038059cb409c6a",
+    "/private/tmp/mboostrs-count-forms/benches/study_discovery_calibration.py": "9d07a42ac6c6f2e538b600c8038547e1803aed32936aa1ff4ae85796dcbda883",
+    "/private/tmp/mboostrs-count-forms/benches/observe_calibration_scores.py": "18f4b399d818de34b5668fc4e3e1bf2daa72e7bac87f6218649748a4c5696540",
+    "/private/tmp/mboostrs-count-forms/benches/study_evidence.py": "dffb2875189b6ccc346fdae546ca3d1b95f69e761dfe8f6b0db8aabc048f9a5c",
+    "/private/tmp/mboostrs-count-forms/benches/evidence_float_codec.py": "8af5976cd3fd05dcefd6df56fd5f4754f1aa6c5c9337df56453b3e476d27b9ae"
+  },
+  "thread_environment": {
+    "RAYON_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "protocol": {
+    "id": "count-mean-backbone/1",
+    "phase": "development",
+    "sha256": "0c4ab5e6f0582d2857c105bc257ae4d70ee0f6441f4eb3483dc2b08f8a803c27"
+  },
+  "repeats": {
+    "seeds": [
+      6607100,
+      6607101,
+      6607102,
+      6607103,
+      6607104,
+      6607105,
+      6607106,
+      6607107,
+      6607108,
+      6607109
+    ],
+    "panel": "interaction_zero_inflated",
+    "test_seed_offset": 100000
+  },
+  "uncertainty": {
+    "unit": "one independent training and test draw; pair methods within a draw",
+    "summary": "mean and Monte Carlo standard error across draws",
+    "timing": "elapsed whole-workflow costs, not controlled implementation speed ratios"
+  },
+  "memory": {
+    "status": "not measured"
+  },
+  "loaded_sources": {
+    "discover.py": "f48f04f1940ac2793cfc2fcf52bef9af5dcb52d7aefc99487fefddadb66e98ce",
+    "explore.py": "590a5d9ccee4d88ccaabc38c90107980987c3e6bd6cdc3250c44b3612fa1b4be",
+    "conformal.py": "4da522ecff7da9ac326774bfe50f3617dd526f7c2c161fdbafcfd006a5f29b46",
+    "gamboost.py": "1970cc85f089d21977b4b6b7e87db2d778ad23a67e07746e85532670bddf1241",
+    "families.py": "d9443de1b068c8ad5baf429f3a56da04d0692b3f62dac2c02e7eb6c180753b2b"
+  },
+  "records": 110,
+  "compressed_sha256": "364e2fd1a6ef9c9149db6c016e0efb610696661b03bb4f9c33d0260ebe410f82",
+  "uncompressed_sha256": "84bc4d3f53ab54a5160d141555f5fe5f24982c0b809d8e4711111c0f26713a69"
+}

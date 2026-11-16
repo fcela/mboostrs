@@ -1,0 +1,36 @@
+Package: mboostrs
+Type: Package
+Title: Component-Wise Gradient Boosting with a Rust Core
+Version: 0.2.0
+Date: 2026-11-07
+Description: Component-wise gradient boosting matching R's mboost semantics,
+    implemented with a Rust core and R interface. Supports Gaussian, Binomial, Poisson,
+    CoxPH, Weibull, and other families with linear (bols) and smooth
+    (bbs) base-learners, as well as GAMLSS (generalized additive models
+    for location, scale, and shape) via glmboostLSS and gamboostLSS.
+Authors@R: person(given = "mboostrs contributors", email = "mboostrs@noreply.github.com", role = c("aut", "cre"))
+Author: mboostrs contributors [aut, cre]
+Maintainer: mboostrs contributors <mboostrs@noreply.github.com>
+License: MIT + file LICENSE
+URL: https://github.com/fcela/mboostrs
+BugReports: https://github.com/fcela/mboostrs/issues
+SystemRequirements: Cargo (Rust toolchain), R (>= 4.0)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+NeedsCompilation: yes
+RoxygenNote: 7.3.3
+Imports:
+    stats
+Suggests:
+    partykit,
+    mboost,
+    gamboostLSS,
+    survival,
+    stabs,
+    TH.data,
+    jsonlite,
+    curl,
+    gamlss.dist,
+    mgcv,
+    BayesX,
+    foreign

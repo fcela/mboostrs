@@ -1,0 +1,21 @@
+#@validates smoke.r.brad.replay
+suppressMessages(library(mboostrs))
+set.seed(9)
+d <- data.frame(x=runif(120),z=runif(120)); d$y <- sin(4*d$x)*cos(3*d$z)
+w <- rep(1:4,length.out=nrow(d))
+new <- data.frame(x=runif(29),z=runif(29))
+for (center in c(FALSE,TRUE)) {
+  formula <- if (center) y~brad(x,z,knots=20,df=4,center=TRUE) else y~brad(x,z,knots=20,df=4)
+  model <- gamboost(formula,d,weights=w,weight_policy="raw",control=boost_control(100))
+  stopifnot(max(abs(predict(model,d)-fitted(model))) < 1e-10)
+  prediction <- predict(model,new)
+  stopifnot(length(prediction)==nrow(new),all(is.finite(prediction)))
+  path <- tempfile(fileext=".rds");saveRDS(model,path)
+  stopifnot(max(abs(predict(readRDS(path),new)-prediction)) < 1e-12)
+  unlink(path)
+  stopifnot(max(abs(predict(model[30],new)-predict(model,new,mstop=30))) < 1e-12)
+  stopifnot(length(predict(model,new[FALSE,]))==0)
+  cv <- cvrisk(model,b=3)
+  stopifnot(all(is.finite(cv$risk_matrix)))
+}
+cat("Radial new-location replay: PASS\n")

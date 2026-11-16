@@ -1,0 +1,72 @@
+{
+  "seed": 1,
+  "mstops": {
+    "propensity": 420,
+    "response": 200,
+    "e_r": 337,
+    "m": 511,
+    "tau": 1,
+    "m_emp": 86,
+    "tau_emp": 11
+  },
+  "second_stage": "1",
+  "second_stage_mstop": 0,
+  "clip": [
+    0.01,
+    0.99
+  ],
+  "treatment_refit_p": {
+    "age": 1.538276724852979e-08,
+    "education": 0.00011684543365270139,
+    "ethnicity": 8.675613117110105e-06,
+    "region": 5.138379423652316e-05,
+    "parttime": 0.31723164927336034,
+    "prior_earnings": 1.8512968935624485e-14,
+    "months_unemployed": 9.912187684722474e-09,
+    "distance_km": 2.4424906541753444e-15,
+    "caseworker_note_len": 0.4252903825890691
+  },
+  "outcome_refit_p": {
+    "age": 1.3489835233304603e-06,
+    "education": 0.0,
+    "smsa": 0.010873832169339626,
+    "parttime": 0.004314825508357989,
+    "prior_earnings": 0.0,
+    "months_unemployed": 0.0020756133301904067,
+    "distance_km": 0.667447781205476
+  },
+  "earnings_if_employed_p": 1.0,
+  "share_propensity_below_0.02_train": 0.2205,
+  "share_propensity_below_0.02_test": 0.14875,
+  "decisions": [
+    "training rows 12000; enrolled 3752; responded 10100; test rows 4000",
+    "age: p(treatment)=1.54e-08, p(outcome)=1.35e-06 -> confounder",
+    "education: p(treatment)=0.000117, p(outcome)=0 -> confounder",
+    "experience: equals age - education - 6; its components are confounders",
+    "ethnicity: p(treatment)=8.68e-06, p(outcome)=nan -> treatment_only",
+    "smsa: p(treatment)=nan, p(outcome)=0.0109 -> irrelevant",
+    "region: p(treatment)=5.14e-05, p(outcome)=nan -> treatment_only",
+    "parttime: p(treatment)=0.317, p(outcome)=0.00431 -> outcome_only",
+    "prior_earnings: p(treatment)=1.85e-14, p(outcome)=0 -> confounder",
+    "months_unemployed: p(treatment)=9.91e-09, p(outcome)=0.00208 -> confounder",
+    "distance_km: p(treatment)=2.44e-15, p(outcome)=0.667 -> treatment_only",
+    "caseworker_note_len: p(treatment)=0.425, p(outcome)=nan -> irrelevant",
+    "ethnicity: treatment-only; associated with a confounder given the other covariates (min p=2.81e-24) -> treatment_only",
+    "region: treatment-only; associated with a confounder given the other covariates (min p=3.58e-10) -> treatment_only",
+    "distance_km: treatment-only and independent of every confounder given the other covariates (min p=0.357, 4 tests) -> instrument",
+    "adjustment set: ['age', 'education', 'parttime', 'prior_earnings', 'months_unemployed']",
+    "nuisance specifications: {'propensity': 'bbs(age, df=4) + bbs(education, df=4) + bols(parttime) + bbs(lprior, df=4) + bbs(months_unemployed, df=4) + btree(lprior)', 'response': 'bbs(age, df=4) + bbs(education, df=4) + bols(ethnicity) + bols(smsa) + bols(region) + bols(parttime) + bbs(lprior, df=4) + bbs(months_unemployed, df=4) + bbs(distance_km, df=4) + bbs(caseworker_note_len, df=4) + bols(enrolled)', 'm': 'bbs(age, df=4) + bbs(education, df=4) + bols(parttime) + bbs(lprior, df=4) + bbs(months_unemployed, df=4)', 'tau': 'bbs(age, df=4) + bbs(education, df=4) + bols(parttime) + bbs(lprior, df=4) + bbs(months_unemployed, df=4)', 'm_emp': 'bbs(age, df=4) + bbs(education, df=4) + bols(parttime) + bbs(lprior, df=4) + bbs(months_unemployed, df=4)', 'tau_emp': 'bbs(age, df=4) + bbs(education, df=4) + bols(parttime) + bbs(lprior, df=4) + bbs(months_unemployed, df=4)'}",
+    "nuisance mstop: {'propensity': 420, 'response': 200, 'e_r': 337, 'm': 511, 'tau': 1, 'm_emp': 86, 'tau_emp': 11}",
+    "cross-fitted propensity: min 0.001946, max 0.9531, share below 0.02 0.221",
+    "CATE_educ_lt12: 1820 applicants, estimate 305",
+    "CATE_educ_ge16: 3030 applicants, estimate 2,725",
+    "CATE_prior_q1: 3000 applicants, estimate 44",
+    "CATE_prior_q4: 3002 applicants, estimate 1,521",
+    "CATE_age_lt25: 1981 applicants, estimate -446",
+    "test propensity: share below 0.02 0.149",
+    "limited overlap above 40,000: 3165 applicants, 29 enrolled",
+    "second-stage score winsorized to [-94,886, 84,938]",
+    "second stage adopted: 1",
+    "earnings among employed respondents: enrolment term p=1"
+  ]
+}

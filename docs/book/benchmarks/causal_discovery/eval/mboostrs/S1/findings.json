@@ -1,0 +1,94 @@
+{
+  "library": "mboostrs 0.1.3",
+  "effect_queries": {
+    "ATE": {
+      "estimate": 9366.825628253971,
+      "lower90": 3341.257286388747,
+      "upper90": 15392.393970119196
+    },
+    "ATT": {
+      "estimate": 3388.8117434748065,
+      "lower90": 2094.80002003379,
+      "upper90": 4682.823466915823
+    },
+    "EMP_ATE": {
+      "estimate": 0.05062339300750128,
+      "lower90": -0.023515517269360006,
+      "upper90": 0.12476230328436257
+    },
+    "CATE_educ_lt12": {
+      "estimate": 5696.164895589322,
+      "lower90": 2536.9389424943665,
+      "upper90": 8855.390848684277
+    },
+    "CATE_educ_ge16": {
+      "estimate": 13288.381418334391,
+      "lower90": 10051.79264502441,
+      "upper90": 16524.97019164437
+    },
+    "CATE_prior_q1": {
+      "estimate": 2788.6864291377647,
+      "lower90": 1302.186201883533,
+      "upper90": 4275.186656391997
+    },
+    "CATE_prior_q4": {
+      "estimate": 25105.22870916509,
+      "lower90": 1784.274684868,
+      "upper90": 48426.18273346218
+    },
+    "CATE_age_lt25": {
+      "estimate": 4529.0355799527515,
+      "lower90": 240.8405563623237,
+      "upper90": 8817.23060354318
+    }
+  },
+  "roles": {
+    "age": "irrelevant",
+    "education": "outcome_only",
+    "experience": "confounder",
+    "ethnicity": "irrelevant",
+    "smsa": "irrelevant",
+    "region": "irrelevant",
+    "parttime": "irrelevant",
+    "prior_earnings": "confounder",
+    "months_unemployed": "irrelevant",
+    "distance_km": "instrument",
+    "caseworker_note_len": "irrelevant",
+    "enrolled": "treatment",
+    "certificate": "mediator",
+    "responded": "post_treatment_selection",
+    "hours_post": "mediator",
+    "earnings_post": "outcome"
+  },
+  "adjustment_set": [
+    "education",
+    "prior_earnings"
+  ],
+  "effect_modifiers": [
+    {
+      "variable": "prior_earnings",
+      "direction": "larger_when_higher",
+      "evidence": "REML refit test of bbs(lprior, df=4): p=2e-12 at the main winsorization level, largest 9.8e-12 across levels [0.005, 0.01, 0.02, 0.05]; centred effect -4,512 dollars at the 10th percentile of prior_earnings and 9,800 at the 90th"
+    }
+  ],
+  "channels": {
+    "employment": false,
+    "earnings_if_employed": true
+  },
+  "limited_overlap": [
+    {
+      "description": "applicants with prior earnings of at least 39,000 dollars: 410 of 1500 program-year applicants, 5 of them enrolled (1.2%). Their effects are extrapolated from enrolled applicants with lower prior earnings.",
+      "variable": "prior_earnings"
+    },
+    {
+      "description": "340 of 4000 test applicants (8.5%) have a training-model enrolment probability below 0.02; 100% of them have prior earnings at or above 39,000 dollars. No training applicant with a comparable profile was enrolled often enough to measure their effect.",
+      "variable": "prior_earnings"
+    }
+  ],
+  "warnings": [
+    "8.5% of test applicants have a propensity below 0.02",
+    "earnings are missing for 14.5% of training applicants; the estimates assume response is unrelated to earnings given enrolment and covariates",
+    "effects above the prior-earnings limit rest on very few enrolled applicants",
+    "13 test applicants have prior earnings outside the training range"
+  ]
+}

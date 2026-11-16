@@ -1,0 +1,109 @@
+{
+  "library": "mboostrs 0.1.3",
+  "effect_queries": {
+    "ATE": {
+      "estimate": 5092.095706586169,
+      "lower90": 3531.755114038344,
+      "upper90": 6652.436299133995
+    },
+    "ATT": {
+      "estimate": 3585.9944184276546,
+      "lower90": 3129.96915767215,
+      "upper90": 4042.0196791831595
+    },
+    "EMP_ATE": {
+      "estimate": 0.08921543995118425,
+      "lower90": 0.07273983436192666,
+      "upper90": 0.10569104554044184
+    },
+    "CATE_educ_lt12": {
+      "estimate": 4842.156191059042,
+      "lower90": 3145.586364565619,
+      "upper90": 6538.726017552464
+    },
+    "CATE_educ_ge16": {
+      "estimate": 4392.679870851615,
+      "lower90": 770.3086432740402,
+      "upper90": 8015.0510984291905
+    },
+    "CATE_prior_q1": {
+      "estimate": 3329.143881357376,
+      "lower90": 2848.5615096715696,
+      "upper90": 3809.726253043182
+    },
+    "CATE_prior_q4": {
+      "estimate": 10611.689012900744,
+      "lower90": 4657.428218075498,
+      "upper90": 16565.949807725992
+    },
+    "CATE_age_lt25": {
+      "estimate": 3559.348000867251,
+      "lower90": 2333.930924344928,
+      "upper90": 4784.765077389574
+    }
+  },
+  "roles": {
+    "age": "confounder",
+    "education": "outcome_only",
+    "experience": "confounder",
+    "ethnicity": "treatment_only",
+    "smsa": "outcome_only",
+    "region": "confounder",
+    "parttime": "outcome_only",
+    "prior_earnings": "confounder",
+    "months_unemployed": "confounder",
+    "distance_km": "instrument",
+    "caseworker_note_len": "irrelevant",
+    "enrolled": "treatment",
+    "certificate": "mediator",
+    "responded": "post_treatment_selection",
+    "hours_post": "mediator",
+    "earnings_post": "outcome"
+  },
+  "adjustment_set": [
+    "age",
+    "education",
+    "ethnicity",
+    "smsa",
+    "region",
+    "parttime",
+    "prior_earnings",
+    "months_unemployed"
+  ],
+  "effect_modifiers": [],
+  "channels": {
+    "employment": true,
+    "earnings_if_employed": true
+  },
+  "limited_overlap": [
+    {
+      "description": "applicants whose cross-fitted probability of enrolment is outside 0.02 to 0.98 (15.8% of training applicants); most have prior earnings above about 49720 dollars, where the program almost never enrolled anyone, so their effects rest on the model",
+      "variable": "prior_earnings"
+    }
+  ],
+  "warnings": [
+    "experience is an exact linear combination of the other pre-treatment columns; it is listed as a confounder and left out of the model matrix.",
+    "10 fold predictions in this call asked 3 learner(s) to predict outside the range they were fitted on. bbs(distance_km), covariate distance_km: 1 above 126.8 (worst 1.4 training ranges out); bbs(prior_earnings), covariate prior_earnings: 2 below 2470 and 1 above 328610 (worst 1.2 training ranges out); bbs(months_unemployed), covariate months_unemployed: 1 above 22 (worst 0.27 training ranges out). ",
+    "10 fold predictions in this call asked 3 learner(s) to predict outside the range they were fitted on. bbs(distance_km), covariate distance_km: 1 above 126.8 (worst 1.4 training ranges out); bbs(prior_earnings), covariate prior_earnings: 2 above 323060 (worst 1.2 training ranges out); bbs(months_unemployed), covariate months_unemployed: 2 above 18 (worst 0.56 training ranges out). A spline basis co",
+    "4 fold predictions in this call asked 3 learner(s) to predict outside the range they were fitted on. bbs(distance_km), covariate distance_km: 1 above 126.8 (worst 1.4 training ranges out); bbs(prior_earnings), covariate prior_earnings: 2 below 2470 and 1 above 328610 (worst 1.2 training ranges out); bbs(months_unemployed), covariate months_unemployed: 1 above 22 (worst 0.27 training ranges out). A",
+    "4 fold predictions in this call asked 3 learner(s) to predict outside the range they were fitted on. bbs(distance_km), covariate distance_km: 1 above 126.8 (worst 1.4 training ranges out); bbs(prior_earnings), covariate prior_earnings: 2 above 323060 (worst 1.2 training ranges out); bbs(months_unemployed), covariate months_unemployed: 2 above 18 (worst 0.56 training ranges out). A spline basis con",
+    "8 fold predictions in this call asked 3 learner(s) to predict outside the range they were fitted on. bbs(distance_km), covariate distance_km: 1 above 126.8 (worst 1.4 training ranges out); bbs(prior_earnings), covariate prior_earnings: 2 below 2470 and 1 above 328610 (worst 1.2 training ranges out); bbs(months_unemployed), covariate months_unemployed: 1 above 22 (worst 0.27 training ranges out). A",
+    "8 fold predictions in this call asked 3 learner(s) to predict outside the range they were fitted on. bbs(distance_km), covariate distance_km: 1 above 126.8 (worst 1.4 training ranges out); bbs(prior_earnings), covariate prior_earnings: 2 above 323060 (worst 1.2 training ranges out); bbs(months_unemployed), covariate months_unemployed: 2 above 18 (worst 0.56 training ranges out). A spline basis con",
+    "10 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(distance_km), covariate distance_km: 1 above 126.8 (worst 1.4 training ranges out); bbs(months_unemployed), covariate months_unemployed: 1 above 22 (worst 0.27 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 1.",
+    "5 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(distance_km), covariate distance_km: 1 above 126.8 (worst 1.4 training ranges out); bbs(months_unemployed), covariate months_unemployed: 2 above 18 (worst 0.56 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 1.4",
+    "5 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(distance_km), covariate distance_km: 1 above 126.8 (worst 1.4 training ranges out); bbs(prior_earnings), covariate prior_earnings: 2 below 2470 and 1 above 328610 (worst 1.2 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not const",
+    "10 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(distance_km), covariate distance_km: 1 above 126.8 (worst 1.4 training ranges out); bbs(prior_earnings), covariate prior_earnings: 2 above 323060 (worst 1.2 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 1.4 t",
+    "10 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 2 below 2470 and 1 above 328610 (worst 1.2 training ranges out); bbs(months_unemployed), covariate months_unemployed: 1 above 22 (worst 0.27 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit doe",
+    "10 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 2 above 323060 (worst 1.2 training ranges out); bbs(months_unemployed), covariate months_unemployed: 2 above 18 (worst 0.56 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -",
+    "2 learner(s) are asked to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 1 above 328610 (worst 1.2 training ranges out); bbs(months_unemployed), covariate months_unemployed: 1 above 22 (worst 0.27 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 1.2 training ranges out ",
+    "2 learner(s) are asked to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 3 below 2610 and 1 above 328610 (worst 1.2 training ranges out); bbs(months_unemployed), covariate months_unemployed: 1 above 22 (worst 0.27 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 1.2 tra",
+    "1 learner(s) are asked to predict outside the range they were fitted on. bbs(months_unemployed), covariate months_unemployed: 5 above 14 (worst 0.57 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.57 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hol",
+    "aipw, propensity model: 1 fold prediction in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 1 above 328610 (worst 1.2 training ranges out); bbs(months_unemployed), covariate months_unemployed: 1 above 22 (worst 0.27 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fi",
+    "aipw, response (observation) model: 1 fold prediction in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 1 above 328610 (worst 1.2 training ranges out); bbs(months_unemployed), covariate months_unemployed: 1 above 22 (worst 0.27 training ranges out). A spline basis continues by its edge slope outside its boundary knots, ",
+    "aipw, response (observation) model: the tuned step count lies on a flat cross-validated curve in 1 of 5 fold fit(s): for example mstop=140 has risk 0.437441, within 1.0% of the intercept-only risk 0.441838 (relative gap 1.00%). This response (observation) model is close to a constant. Pass aipw(flat_tolerance=None) to turn this check off, or a different tolerance.",
+    "aipw, control-arm outcome model: 3 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 3 below 2680 and 1 above 328610 (worst 1.2 training ranges out); bbs(months_unemployed), covariate months_unemployed: 2 above 17 (worst 0.65 training ranges out); bbs(months_unemployed), covariate months_unemployed: 2 a",
+    "aipw, treated-arm outcome model: 5 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 77 above 76720 (worst 8.7 training ranges out); bbs(prior_earnings), covariate prior_earnings: 2 below 2470 and 37 above 104920 (worst 2.2 training ranges out); bbs(prior_earnings), covariate prior_earnings: 30 above 10",
+    "aipw, pooled outcome model: 2 fold predictions in this call asked 4 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 1 above 328610 (worst 1.2 training ranges out); bbs(prior_earnings), by=enrolled, covariate prior_earnings: 1 above 328610 (worst 1.2 training ranges out); bbs(months_unemployed), covariate months_unemployed: 1 above 22 (wor",
+    "aipw: 2 propensity bin(s) hold more than 5% of all rows but fewer than 20 rows of an arm. The outcome model of that arm is fitted from too few rows there and extrapolates, so the estimate and its interval are unreliable for those rows. The fitted model is outcome_model='pooled' with outcome_interactions=True (one model with the treatment times each baseline term), chosen by outcome_model='auto' be"
+  ]
+}

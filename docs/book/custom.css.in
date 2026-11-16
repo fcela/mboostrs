@@ -1,0 +1,157 @@
+/* DM Sans (sans) + CommitMono (code) — SIL OFL 1.1.
+ *
+ * SOURCE FILE. Edit this, then run `python3 docs/book/generate_custom_css.py`
+ * to produce `custom.css`, which is what MyST loads. Do not edit custom.css.
+ *
+ * The four font placeholders are replaced with base64 data URIs of the woff2
+ * files in `python/mboostrs/fonts/`, in the order listed in FONT_ORDER in the
+ * generator. The fonts are inlined rather than referenced with a relative URL
+ * because MyST content-hashes `custom.css` to `_build/html/build/custom-<hash>.css`
+ * and does not stage assets referenced from inside a stylesheet — a
+ * `url(fonts/DMSans-400.woff2)` resolves to a path nothing writes, and an
+ * absolute `/fonts/...` breaks under the BASE_URL used for the gh-pages deploy.
+ * Inlining costs the browser cache; it is what makes the fonts resolve at all.
+ *
+ * Keeping the payloads out of this file is what makes it reviewable: a rule
+ * change and a font swap are now distinguishable in a diff. */
+
+@font-face {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url({{FONT}});
+}
+
+@font-face {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url({{FONT}});
+}
+
+@font-face {
+  font-family: "CommitMono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url({{FONT}});
+}
+
+@font-face {
+  font-family: "CommitMono";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url({{FONT}});
+}
+
+/* DM Sans for body text */
+body, .content, .article, p, li, h1, h2, h3, h4, h5, h6,
+.sidebar, .toc, .nav, .caption, .admonition, .admonition-title,
+table, th, td, input, button, select, textarea {
+  font-family: "DM Sans", -apple-system, BlinkMacSystemFont,
+               "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+               "Helvetica Neue", Arial, sans-serif;
+}
+
+/* CommitMono for code */
+code, pre, kbd, samp, tt, .code, .highlight, .literal {
+  font-family: "CommitMono", "SF Mono", "Fira Code", "Fira Mono",
+               "Roboto Mono", Menlo, Monaco, "Courier New", monospace;
+}
+
+/* ── Chart-theme colours, so prose and figures agree ──────────────────────
+ *
+ * These are the values `mboostrs.plot.theme()` and `mboostrs.plot.PALETTE`
+ * use. The book's own styling was fonts plus one `display: none`, with
+ * everything else inherited from the vendored MyST theme — so a figure and the
+ * paragraph around it were designed by two systems that shared only the
+ * typefaces. Taking link colour, admonition accents, table rules, and the
+ * code-block background from the chart theme makes a figure sit inside prose
+ * that agrees with it.
+ *
+ * `generate_custom_css.py` does not derive these automatically: MyST loads a
+ * static stylesheet and there is no build step that could import Python here.
+ * If `plot.py`'s theme changes, update these to match — that is the same
+ * requirement AGENTS.md gotcha 33 records for the font family names. */
+:root {
+  --mboostrs-accent: #4e79a7;        /* PALETTE[0] */
+  --mboostrs-accent-warm: #f28e2b;   /* PALETTE[1] */
+  --mboostrs-accent-alert: #e15759;  /* PALETTE[2] */
+  --mboostrs-ink: #161616;           /* theme title colour */
+  --mboostrs-ink-muted: #525252;     /* theme axis label colour */
+  --mboostrs-ink-mid: #393939;       /* theme axis title colour */
+  --mboostrs-rule: #e8e8e8;          /* theme grid colour */
+  --mboostrs-rule-strong: #c6c6c6;   /* theme tick/domain colour */
+  --mboostrs-code-bg: #f7f7f7;
+  --mboostrs-code-ink: #161616;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --mboostrs-code-bg: #1c1917;     /* stone-900, the theme's page colour */
+    --mboostrs-code-ink: #e7e5e4;    /* stone-200, its body colour */
+  }
+}
+
+/* The theme's toggle wins over the system preference in both directions. */
+.dark {
+  --mboostrs-code-bg: #1c1917;
+  --mboostrs-code-ink: #e7e5e4;
+}
+html:not(.dark) {
+  --mboostrs-code-bg: #f7f7f7;
+  --mboostrs-code-ink: #161616;
+}
+
+a, a:visited {
+  color: var(--mboostrs-accent);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--mboostrs-ink);
+}
+
+table th, table td {
+  border-color: var(--mboostrs-rule);
+}
+table th {
+  border-bottom-color: var(--mboostrs-rule-strong);
+  color: var(--mboostrs-ink-mid);
+}
+
+/* The code background is set per theme rather than once. A fixed light value
+ * put near-white behind light text when the reader switched the book to dark
+ * mode, which the HTML build has no way to detect. The book theme is Tailwind
+ * and marks dark mode with a `dark` class on an ancestor, so both the class
+ * and the media query are honoured: the class covers the theme's own toggle,
+ * the media query covers a reader whose system is dark before the toggle
+ * runs. */
+code, pre, .highlight {
+  background-color: var(--mboostrs-code-bg);
+  color: var(--mboostrs-code-ink);
+}
+
+.admonition {
+  border-left-color: var(--mboostrs-accent);
+}
+.admonition.warning, .admonition.caution, .admonition.attention {
+  border-left-color: var(--mboostrs-accent-warm);
+}
+.admonition.danger, .admonition.error {
+  border-left-color: var(--mboostrs-accent-alert);
+}
+.admonition-title {
+  color: var(--mboostrs-ink-mid);
+}
+
+blockquote {
+  border-left-color: var(--mboostrs-rule-strong);
+  color: var(--mboostrs-ink-muted);
+}
+
+.myst-made-with-myst {
+  display: none;
+}

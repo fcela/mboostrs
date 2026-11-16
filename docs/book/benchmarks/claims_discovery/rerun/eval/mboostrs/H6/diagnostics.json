@@ -1,0 +1,478 @@
+{
+  "library_warnings": [
+    "ExtrapolationWarning: 4 fold predictions in this call asked 3 learner(s) to predict outside the range they were fitted on. bbs(l_total_rooms), covariate l_total_rooms: 1 below 1.79176 (worst 0.13 training ranges out); bbs(l_population), covariate l_population: 1 above 9.69923 (worst 0.091 training ranges out); bbs(l_ave_bedrooms), covariate l_ave_bedrooms: 1 below -0.81093 and 1 above 3.24401 (worst 0.07 training ranges out); bbs(l_population), covariate l_population: 1 below 1.60944 (worst 0.058 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.13 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse.",
+    "ExtrapolationWarning: 4 fold predictions in this call asked 3 learner(s) to predict outside the range they were fitted on. bbs(l_total_rooms) [sigma], covariate l_total_rooms: 1 below 1.79176 (worst 0.13 training ranges out); bbs(l_population) [sigma], covariate l_population: 1 above 9.69923 (worst 0.091 training ranges out); bbs(l_ave_bedrooms) [sigma], covariate l_ave_bedrooms: 1 below -0.81093 and 1 above 3.24401 (worst 0.07 training ranges out); bbs(l_population) [sigma], covariate l_population: 1 below 1.60944 (worst 0.058 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.13 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse.",
+    "ExtrapolationWarning: 3 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(l_total_rooms) [sigma], covariate l_total_rooms: 1 below 1.79176 (worst 0.13 training ranges out); bbs(l_population) [sigma], covariate l_population: 1 above 9.69923 (worst 0.091 training ranges out); bbs(l_population) [sigma], covariate l_population: 1 below 1.60944 (worst 0.058 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.13 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse.",
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(l_ave_occup) [mu], covariate l_ave_occup: 1 above 6.39645 (worst 0.11 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.11 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse.",
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(l_households) [sigma], covariate l_households: 1 below 0.693147 and 1 above 8.58635 (worst 0.088 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.088 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse."
+  ],
+  "mean_shapes": [
+    {
+      "variables": [
+        "l_median_income"
+      ],
+      "shape": "decreasing",
+      "range": 0.9209717712314257,
+      "first": 0.5373881617264652,
+      "last": -0.3835836095049605
+    },
+    {
+      "variables": [
+        "housing_median_age"
+      ],
+      "shape": "increasing",
+      "range": 0.3987671936966891,
+      "first": 0.017376127248051133,
+      "last": 0.38539985368136576
+    },
+    {
+      "variables": [
+        "roof_class"
+      ],
+      "shape": "categorical"
+    },
+    {
+      "variables": [
+        "l_ave_occup"
+      ],
+      "shape": "increasing",
+      "range": 0.37707936925375657,
+      "first": -0.14818664329447273,
+      "last": 0.22889272595928384
+    },
+    {
+      "variables": [
+        "longitude",
+        "latitude"
+      ],
+      "shape": "spatial"
+    }
+  ],
+  "spread_shapes": [
+    {
+      "variable": "l_households",
+      "shape": "decreasing",
+      "range": 1.1952061912834955
+    }
+  ],
+  "queries": {
+    "Q1": {
+      "estimate": -0.47193661506264706,
+      "lower90": -0.49346461239306194,
+      "upper90": -0.4582147447418153
+    },
+    "Q2": {
+      "estimate": 0.39172183353974,
+      "lower90": 0.3731410358925026,
+      "upper90": 0.42749087248531364
+    },
+    "Q3": {
+      "estimate": 0.24281772401514154,
+      "lower90": 0.22495372973898659,
+      "upper90": 0.2580708348947267
+    },
+    "Q4": {
+      "estimate": 0.3873921982627637,
+      "lower90": 0.3567836157606731,
+      "upper90": 0.395982172324769
+    },
+    "Q5": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0,
+      "note": "ave_rooms not in the adopted mean model"
+    },
+    "Q6": {
+      "estimate": 0.33203628752255293,
+      "lower90": 0.29365987809571087,
+      "upper90": 0.36338513061013167
+    },
+    "Q7": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0,
+      "note": "households not in the adopted mean model"
+    },
+    "Q8": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0,
+      "note": "median_house_value not in the adopted mean model"
+    }
+  },
+  "holdout": {
+    "holdout_overall_coverage": 0.8944875107665805,
+    "holdout_mean_width": 1.402256233745348,
+    "holdout_subgroup_coverage": {
+      "households_quartile_1": {
+        "coverage": 0.8898450946643718,
+        "n": 581
+      },
+      "households_quartile_2": {
+        "coverage": 0.8946459412780656,
+        "n": 579
+      },
+      "households_quartile_3": {
+        "coverage": 0.8896551724137931,
+        "n": 580
+      },
+      "households_quartile_4": {
+        "coverage": 0.9037800687285223,
+        "n": 582
+      },
+      "roof_A": {
+        "coverage": 0.8684719535783365,
+        "n": 517
+      },
+      "roof_B": {
+        "coverage": 0.9003690036900369,
+        "n": 813
+      },
+      "roof_C": {
+        "coverage": 0.9055944055944056,
+        "n": 572
+      },
+      "roof_D": {
+        "coverage": 0.9,
+        "n": 420
+      },
+      "income_tercile_1": {
+        "coverage": 0.8824289405684754,
+        "n": 774
+      },
+      "income_tercile_2": {
+        "coverage": 0.890038809831824,
+        "n": 773
+      },
+      "income_tercile_3": {
+        "coverage": 0.9109677419354839,
+        "n": 775
+      }
+    }
+  },
+  "forward_mean": [
+    {
+      "round": 1,
+      "best": "l_median_income",
+      "change": -0.07290779379188228,
+      "change_se": 0.002074544157375587,
+      "adopted": true,
+      "all": {
+        "longitude": [
+          -0.0035326887152079545,
+          0.0005896764200972836
+        ],
+        "latitude": [
+          -0.007410695910427645,
+          0.0003610155218628522
+        ],
+        "housing_median_age": [
+          -0.059696639144798,
+          0.001653020501489224
+        ],
+        "l_total_rooms": [
+          -0.02439643437595257,
+          0.0013851717739081437
+        ],
+        "l_total_bedrooms": [
+          -0.008256693429910422,
+          0.0008619344872723187
+        ],
+        "l_population": [
+          -0.002108080563190562,
+          0.0003369625719583722
+        ],
+        "l_households": [
+          -0.008834648897277864,
+          0.0009064533535539967
+        ],
+        "l_median_income": [
+          -0.07290779379188228,
+          0.002074544157375587
+        ],
+        "l_median_house_value": [
+          -0.030072535724137206,
+          0.001362553561093392
+        ],
+        "l_ave_rooms": [
+          -0.03238010370084882,
+          0.0012263493118650345
+        ],
+        "l_ave_bedrooms": [
+          -0.0005618737745098912,
+          0.0006195628116491025
+        ],
+        "l_ave_occup": [
+          -0.014822935250215719,
+          0.0006884410632016325
+        ],
+        "roof_class": [
+          -0.05153812977131983,
+          0.0021654686718012212
+        ],
+        "spatial(longitude, latitude)": [
+          -0.015888728071840164,
+          0.00027327681076824267
+        ]
+      }
+    },
+    {
+      "round": 2,
+      "best": "housing_median_age",
+      "change": -0.04564510493208862,
+      "change_se": 0.0011085198375547479,
+      "adopted": true,
+      "all": {
+        "longitude": [
+          -0.007754341177323543,
+          0.0004598520027798361
+        ],
+        "latitude": [
+          -0.009949602654535372,
+          0.001082829076113576
+        ],
+        "housing_median_age": [
+          -0.04564510493208862,
+          0.0011085198375547479
+        ],
+        "l_total_rooms": [
+          -0.006819928580735879,
+          0.0007316765878312127
+        ],
+        "l_total_bedrooms": [
+          -0.0068669954500694685,
+          0.0008274746966470686
+        ],
+        "l_population": [
+          -0.0014173427403161853,
+          0.00037237231263396775
+        ],
+        "l_households": [
+          -0.005983806713475093,
+          0.0008608343878289955
+        ],
+        "l_median_house_value": [
+          -0.0007102713797971227,
+          0.0002770346018995123
+        ],
+        "l_ave_rooms": [
+          -0.0008633927840458466,
+          0.00025939079355885493
+        ],
+        "l_ave_bedrooms": [
+          -0.0021354936592917206,
+          0.0007194416250816638
+        ],
+        "l_ave_occup": [
+          -0.007293549885798001,
+          0.0003945388312592381
+        ],
+        "roof_class": [
+          -0.0420862720270046,
+          0.0015054259313093117
+        ],
+        "spatial(longitude, latitude)": [
+          -0.015308341982978035,
+          0.0007795112615496732
+        ]
+      }
+    },
+    {
+      "round": 3,
+      "best": "roof_class",
+      "change": -0.013675134515784032,
+      "change_se": 0.0007313654997925018,
+      "adopted": true,
+      "all": {
+        "longitude": [
+          -0.00257318930416206,
+          0.0005420114771561471
+        ],
+        "latitude": [
+          -0.002721322735041498,
+          0.0004693017663499551
+        ],
+        "l_total_rooms": [
+          -0.0002936226588385882,
+          0.00021212445024384498
+        ],
+        "l_total_bedrooms": [
+          -0.0003046150530590097,
+          0.00022144070208065535
+        ],
+        "l_population": [
+          -0.00018048976643397774,
+          0.00019133851598666322
+        ],
+        "l_households": [
+          -0.00019975932884419567,
+          0.0001889736362765118
+        ],
+        "l_median_house_value": [
+          -0.00293452001687039,
+          0.0007621995928864359
+        ],
+        "l_ave_rooms": [
+          -0.0003405263738258113,
+          0.00015027660476604236
+        ],
+        "l_ave_bedrooms": [
+          -4.113919400983157e-05,
+          0.0002799062944065855
+        ],
+        "l_ave_occup": [
+          -0.0075898766972753995,
+          0.0006129764337996857
+        ],
+        "roof_class": [
+          -0.013675134515784032,
+          0.0007313654997925018
+        ],
+        "spatial(longitude, latitude)": [
+          -0.006510215761860894,
+          0.0004035044185759149
+        ]
+      }
+    },
+    {
+      "round": 4,
+      "best": "l_ave_occup",
+      "change": -0.00842247435943319,
+      "change_se": 0.0005347225149141383,
+      "adopted": true,
+      "all": {
+        "longitude": [
+          -0.003388824466290158,
+          0.0006491901142981446
+        ],
+        "latitude": [
+          -0.0031928443601543788,
+          0.000600889322451751
+        ],
+        "l_total_rooms": [
+          -0.00033419172583970536,
+          0.00022637069358517613
+        ],
+        "l_total_bedrooms": [
+          -0.00023906469235823735,
+          0.0002497725544847844
+        ],
+        "l_population": [
+          -0.0003327883816351407,
+          0.00021171707969574896
+        ],
+        "l_households": [
+          -0.00015650274990500201,
+          0.00018941481861252442
+        ],
+        "l_median_house_value": [
+          -0.0030758748532081215,
+          0.0007942091325036623
+        ],
+        "l_ave_rooms": [
+          -0.00022896549436848823,
+          0.0001353272530547614
+        ],
+        "l_ave_bedrooms": [
+          6.297181828596177e-06,
+          0.0003002736525879595
+        ],
+        "l_ave_occup": [
+          -0.00842247435943319,
+          0.0005347225149141383
+        ],
+        "spatial(longitude, latitude)": [
+          -0.0071052186510702775,
+          0.0005400447341785251
+        ]
+      }
+    },
+    {
+      "round": 5,
+      "best": "spatial(longitude, latitude)",
+      "change": -0.005559499150464553,
+      "change_se": 0.0004092178991564827,
+      "adopted": true,
+      "all": {
+        "longitude": [
+          -0.0022433854636208783,
+          0.000468826047377616
+        ],
+        "latitude": [
+          -0.0024439700212519067,
+          0.0003918018562588918
+        ],
+        "l_total_rooms": [
+          4.5750513382958324e-05,
+          0.0001504676336298936
+        ],
+        "l_total_bedrooms": [
+          0.00014656396051371257,
+          0.0001394517293625145
+        ],
+        "l_population": [
+          0.0002498727882102869,
+          0.00021225635575100198
+        ],
+        "l_households": [
+          0.00011369304863048657,
+          8.963360315459632e-05
+        ],
+        "l_median_house_value": [
+          -0.0007282583467396186,
+          0.0003267084073426688
+        ],
+        "l_ave_rooms": [
+          -0.00015038068258299564,
+          0.00013482298772715017
+        ],
+        "l_ave_bedrooms": [
+          0.00023213272436925503,
+          7.965669711632561e-05
+        ],
+        "spatial(longitude, latitude)": [
+          -0.005559499150464553,
+          0.0004092178991564827
+        ]
+      }
+    },
+    {
+      "round": 6,
+      "best": "l_median_house_value",
+      "change": -0.00013167868520125303,
+      "change_se": 0.00025258820852878315,
+      "adopted": false,
+      "all": {
+        "l_total_rooms": [
+          -1.239836658636917e-05,
+          6.307713255329913e-05
+        ],
+        "l_total_bedrooms": [
+          6.746991713363348e-05,
+          6.303073614052608e-05
+        ],
+        "l_population": [
+          7.622084946506957e-05,
+          3.956769446287449e-05
+        ],
+        "l_households": [
+          6.530421157763255e-05,
+          2.9464470535765846e-05
+        ],
+        "l_median_house_value": [
+          -0.00013167868520125303,
+          0.00025258820852878315
+        ],
+        "l_ave_rooms": [
+          0.00011284033245489988,
+          6.431874139620483e-05
+        ],
+        "l_ave_bedrooms": [
+          0.0002538606896304585,
+          8.414444040695671e-05
+        ]
+      }
+    }
+  ],
+  "elapsed_s": 430.2
+}

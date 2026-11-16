@@ -1,0 +1,141 @@
+{
+ "schema_version": 1,
+ "font_family": "DM Sans",
+ "diagrams": {
+  "0d31b5cf4345": {
+   "source": "flowchart TD\n    R1[\"Round 1: fit h₁ to equally-weighted data<br/>upweight misclassified ○\"] --> R2[\"Round 2: fit h₂ to reweighted data<br/>upweight newly-misclassified ●\"]\n    R2 --> R3[\"Round 3: fit h₃ to reweighted data\"]\n    R3 --> FINAL[\"Final ensemble:<br/>F = α₁h₁ + α₂h₂ + α₃h₃<br/>(weighted vote)\"]\n",
+   "caption": "AdaBoost refits a weak classifier after increasing the weights of previously misclassified observations, then combines the classifiers by weighted voting.",
+   "alt": "Three AdaBoost rounds reweight misclassified observations before fitting the next weak classifier, followed by a weighted ensemble vote."
+  },
+  "0e5222fb5c6c": {
+   "source": "flowchart TD\n    A[Fit model] --> B[Did risk flatten?]\n    B --> C[Did validation risk choose a reasonable mstop?]\n    C --> D[Are residuals structured?]\n    D --> E[Do intervals or probabilities calibrate?]\n    E --> F[Interpret or revise model]\n",
+   "caption": "Diagnosis checks training-risk stabilization, validation-based stopping, residual structure, and predictive calibration before interpretation.",
+   "alt": "Diagnostic workflow from model fit through risk, stopping iteration, residual, and calibration checks to interpretation or model revision."
+  },
+  "1415e9049cb4": {
+   "source": "flowchart TD\n    X[\"covariates x\"] --> LP[\"linear predictor<br/>η = x<sup>T</sup>β\"]\n    LP --> LINK[\"link function<br/>g(μ) = η\"]\n    LINK --> MEAN[\"mean<br/>μ = g⁻¹(η)\"]\n    MEAN --> DIST[\"distribution<br/>ExpFam(μ, φ)\"]\n    DIST --> Y[\"response y\"]\n",
+   "caption": "A generalized linear model maps covariates to a linear predictor, transforms it to a conditional mean through the inverse link, and specifies a response distribution.",
+   "alt": "Generalized linear model pipeline from covariates through the linear predictor and link to the conditional mean and response distribution."
+  },
+  "15fd1522d4b3": {
+   "source": "flowchart TD\n    CYC[\"Cycle t\"]\n    subgraph UPD[\" \"]\n        direction LR\n        MU[\"Update μ<br/>penalized IRLS for η_μ<br/>(σ, ν held)\"] --> SIG[\"Update σ<br/>penalized IRLS for η_σ<br/>(μ updated, ν held)\"] --> NU[\"Update ν<br/>penalized IRLS for η_ν<br/>(μ, σ updated)\"]\n    end\n    CHK{\"deviance change < ε ?\"}\n    STOP[\"converged — stop\"]\n    CYC --> UPD --> CHK\n    CHK -- no --> CYC\n    CHK -- yes --> STOP\n",
+   "caption": "GAMLSS backfitting updates distribution parameters sequentially with the latest values of the other parameters and stops when deviance stabilizes.",
+   "alt": "Cyclic GAMLSS updates for location, scale, and shape followed by a global-deviance convergence check."
+  },
+  "232bbeb3595e": {
+   "source": "flowchart TD\n    U[\"u<br/>(pseudo-residual)\"] --> S[\"scan all splits<br/>(j, s) across columns\"]\n    S --> BEST[\"best stump<br/>var j*, split s*\"]\n    BEST --> ENC[\"β = [j*, s*, μ_L, μ_R]<br/>4 numbers\"]\n    ENC --> PRED[\"predict: μ_L if x[j*] ≤ s* else μ_R\"]\n",
+   "caption": "A tree base learner scans candidate splits, stores the winning split and node means, and replays that compact representation during prediction.",
+   "alt": "Tree base-learner pipeline from pseudo-residuals through split search and compact coefficient encoding to prediction."
+  },
+  "247f281a84cc": {
+   "source": "flowchart TD\n    A[\"1. Current fit:<br/>f⁽ᵐ⁻¹⁾(xᵢ) — additive predictor so far\"]\n    A --> B[\"2. Residuals:<br/>uᵢ = yᵢ − f⁽ᵐ⁻¹⁾(xᵢ) = negative gradient\"]\n    B --> C[\"3. Fit ALL base learners to u:<br/>ĝ₁ = linear fit on x₁<br/>ĝ₂ = spline fit on x₂<br/>...\"]\n    C --> D[\"4. Select best:<br/>j* = argminⱼ Σᵢ(uᵢ − ĝⱼ)²\"]\n    D --> E[\"5. Update:<br/>f⁽ᵐ⁾ = f⁽ᵐ⁻¹⁾ + ν · ĝⱼ*\"]\n    E -->|repeat| A\n",
+   "caption": "An L2Boosting iteration computes residuals, fits every candidate learner, selects the minimum-SSE fit, and adds a shrunken update.",
+   "alt": "Five-step L2Boosting cycle from the current fit through residual calculation, fitting all learners, minimum-SSE selection, and a shrunken update."
+  },
+  "2d1dde2fcdb5": {
+   "source": "flowchart TD\n    A[\"Start at β⁰\"] -->|\"pick best coordinate\"| B[\"Update β₁\"]\n    B -->|\"pick best coordinate\"| C[\"Update β₂\"]\n    C -->|\"pick best coordinate\"| D[\"Update β₁\"]\n    D -->|\"...\"| E[\"Converge at β*\"]\n    style A fill:#e8e8e8\n    style E fill:#d4edda\n",
+   "caption": "Greedy coordinate descent repeatedly evaluates candidate coordinates and updates the direction that most reduces the objective.",
+   "alt": "Path from an initial coefficient vector to the optimum through successive updates of the best coordinate."
+  },
+  "320b566771c2": {
+   "source": "flowchart LR\n    A[fit] --> B[cvrisk]\n    B --> C[optimal mstop]\n    C --> D[with_mstop]\n    D --> E[coef / selected]\n    D --> F[predict]\n    D --> G[diagnostics]\n",
+   "caption": "Cross-validation selects the stopping iteration; the truncated path then supplies coefficients, predictions, and diagnostics.",
+   "alt": "Quickstart workflow from fitting and cross-validation through optimal stopping and path truncation to model summaries and diagnostics."
+  },
+  "351c07eaa8d0": {
+   "source": "flowchart LR\n    A[\"Fitted model\"] --> B[\"mstop\"]\n    A --> C[\"risk_\"]\n    A --> D[\"selected\"]\n    A --> E[\"coef\"]\n    A --> F[\"predict\"]\n    A --> G[\"diagnostics\"]\n    B --> H[\"with_mstop(k) or model[:k]\"]\n    D --> I[\"which base learner won each step\"]\n    E --> J[\"aggregated coefficients or per-step paths\"]\n    F --> K[\"link, response, class, partial contribution\"]\n    G --> L[\"residuals, calibration, intervals, PIT, Q-stats\"]\n",
+   "caption": "The fitted-model interface exposes stopping, risk, selected learners, coefficients, predictions, and diagnostics from one stored boosting path.",
+   "alt": "Methods and attributes of a fitted model, including path truncation, learner selection, coefficient aggregation, prediction types, and diagnostics."
+  },
+  "353bc6995d70": {
+   "source": "flowchart TD\n    subgraph PREP[\"prepare_* (once, before the loop)\"]\n        P1[\"allocate f, u (length n)\"]\n        P2[\"allocate rhs_buf, beta_buf, pred_buf (max p_j)\"]\n        P3[\"factorise Gram per learner\"]\n        P1 --> P2 --> P3\n    end\n    subgraph LOOP[\"hot loop — m = 1 .. mstop\"]\n        L1[\"ngradient_and_risk writes into u\"]\n        L2[\"learner[j].fit_step_ref(u, ..., rhs_buf, beta_buf, pred_buf)<br/>borrows the same 3 buffers per learner\"]\n        L3[\"select j* ; f += nu * pred_buf\"]\n        L1 --> L2 --> L3\n    end\n    PREP -.->|\"zero alloc\"| LOOP\n    style LOOP fill:#d4edda\n",
+   "caption": "Learner preparation allocates and factorizes once; each boosting iteration reuses the same buffers for gradient computation, learner fitting, and the selected update.",
+   "alt": "Two-stage engine design: one-time allocation and Gram factorization followed by an allocation-free boosting loop that reuses scratch buffers."
+  },
+  "3c2d995fa6eb": {
+   "source": "sequenceDiagram\n    participant U as User\n    participant F as Front end\n    participant B as Binding\n    participant C as Core\n    participant L as Learner\n\n    U->>F: gamboost(formula, data)\n    F->>F: parse formula\n    F->>F: one record per learner\n    F->>B: fit specs\n    B->>C: fit_with(family)\n    C->>L: prepare(weights)\n    L-->>C: learner + recipe\n    loop m = 1 .. mstop\n        C->>C: negative gradient\n        C->>L: fit_step\n        L-->>C: beta, pred, sse\n        C->>C: select, update f\n    end\n    C-->>B: path\n    B-->>F: path + store\n    F-->>U: fitted model\n",
+   "caption": "Python and R front ends prepare learners, call the shared Rust engine, and reconstruct a fitted model from the returned boosting path.",
+   "alt": "Sequence from user code through the front end and language binding to learner preparation and the iterative Rust boosting engine, followed by reconstruction of the fitted model."
+  },
+  "3f44fb1b8530": {
+   "source": "flowchart LR\n    subgraph S1[\" \"]\n        direction TB\n        A[Applied question] --> B[Choose family]\n        B --> C[Choose base learners]\n        C --> D[Fit long path]\n    end\n    subgraph S2[\" \"]\n        direction TB\n        E[Tune or slice mstop] --> F[Diagnose]\n        F --> G[Interpret]\n        G --> H[Report limitations]\n    end\n    D --> E\n",
+   "caption": "An applied analysis proceeds from the scientific question through family and learner choices, path fitting, tuning, diagnosis, interpretation, and limitations.",
+   "alt": "End-to-end case-study workflow from the applied question to a fitted and tuned model, diagnostics, interpretation, and reporting limitations."
+  },
+  "409a1c730568": {
+   "source": "flowchart TD\n    subgraph MU[\"Parameter μ (η₁)\"]\n        direction TB\n        MBL[\"base learners: bols(x₁), bbs(x₂)\"]\n        MUG[\"u_μ = −∂R/∂η_μ\"]\n        MUP[\"fit & select → update η_μ += ν·ĝ\"]\n        MBL --> MUG --> MUP\n    end\n    subgraph SIG[\"Parameter σ (η₂)\"]\n        direction TB\n        SBL[\"base learners: bbs(x₂), bols(x₃)\"]\n        SUG[\"u_σ = −∂R/∂η_σ\"]\n        SUP[\"fit & select → update η_σ += ν·ĝ\"]\n        SBL --> SUG --> SUP\n    end\n    JOINT[\"Joint risk:<br/>R(η₁,...,η_K) = −Σ log d(y | θ)\"]\n    JOINT --> MU\n    JOINT --> SIG\n",
+   "caption": "Distributional boosting maintains separate additive predictors and learner-selection paths for each distribution parameter while optimizing a joint risk.",
+   "alt": "A joint negative log-likelihood supplies parameter-specific gradients to separate location and scale learner sets and predictors."
+  },
+  "59cc9af5f0a8": {
+   "source": "flowchart TD\n    A[\"Forward stagewise<br/>(small steps, no re-fit)\"] --> D[\"Lasso path<br/>(ℓ₁-regularized)\"]\n    B[\"L2Boosting<br/>(ν → 0 limit)\"] --> D\n    C[\"Least angle regression (LARS)<br/>(infinitesimal angle steps)\"] --> D\n",
+   "caption": "For orthogonal designs and infinitesimal step sizes, forward stagewise regression, L2Boosting, and LARS trace the lasso coefficient path.",
+   "alt": "Forward stagewise regression, infinitesimal-step L2Boosting, and least angle regression converge to the same lasso path under orthogonality."
+  },
+  "5ca15c1707cb": {
+   "source": "flowchart LR\n    MB[\"Model-based boosting<br/>specified additive effects<br/>shrinkage and early stopping\"]\n    LASSO[\"Lasso / elastic net<br/>fixed design columns<br/>global ℓ₁ / ℓ₂ penalty\"]\n    RF[\"Random forest<br/>randomized trees<br/>regularization by averaging\"]\n    GB[\"Tree gradient boosting<br/>sequential fitted trees<br/>depth, shrinkage, early stopping\"]\n",
+   "caption": "Model-based boosting, penalized regression, random forests, and tree boosting differ in their candidate components and regularization mechanisms.",
+   "alt": "Comparison of model-based boosting with lasso or elastic net, random forests, and tree gradient boosting."
+  },
+  "60155561883b": {
+   "source": "flowchart LR\n    A[Formula term or learners list] --> B[Name and position]\n    C[Programmatic learner] --> D[Matrix payload]\n    B --> E[gamboost learners=...]\n    D --> E\n    E --> F[Rust learner setup]\n",
+   "caption": "Formula terms and programmatic learner specifications are normalized before the Rust core prepares their design and penalty structures.",
+   "alt": "Formula and programmatic learner inputs converge at the gamboost learner interface and then enter Rust learner setup."
+  },
+  "932dc08737ca": {
+   "source": "flowchart TD\n    Y[\"Y | X ~ D( θ₁(X), θ₂(X), ..., θ_K(X) )<br/>all parameters modelled\"]\n    T1[\"g₁(θ₁) = η₁<br/>f₁(x)'s\"]\n    T2[\"g₂(θ₂) = η₂<br/>f₂(x)'s\"]\n    TK[\"g_K(θ_K) = η_K<br/>f_K(x)'s\"]\n    Y --> T1\n    Y --> T2\n    Y --> TK\n    subgraph EX [\"Examples\"]\n        GL[\"GaussianLSS (K=2)<br/>μ = f₁(x₁) + f₂(x₂)<br/>σ = f₃(x₁) + f₄(x₃)\"]\n        ST[\"StudentTLSS (K=3)<br/>μ, σ, ν all modelled<br/>(tail heaviness varies with X)\"]\n    end\n",
+   "caption": "GAMLSS assigns a separate additive predictor and link function to every modeled distribution parameter.",
+   "alt": "A response distribution whose location, scale, and shape parameters each have their own covariate-dependent additive predictor."
+  },
+  "a0db614dc3de": {
+   "source": "flowchart TD\n    ETA[\"η_k<br/>(predictor scale)\"]\n    THETA[\"θ_k = g_k⁻¹(η_k)<br/>(parameter scale)\"]\n    SK[\"score on predictor scale<br/>s_k = (∂log d/∂θ_k) / g'_k(θ_k)\"]\n    D[\"score in natural parameterisation<br/>∂log d/∂θ_k\"]\n    ETA -->|\"∂θ_k/∂η_k = 1 / g'_k(θ_k)\"| THETA\n    THETA --- D\n    D --- SK\n    SK -.->|\"rescaled by link derivative\"| ETA\n",
+   "caption": "The chain rule converts a likelihood score on the distribution-parameter scale to the additive-predictor scale through the inverse-link derivative.",
+   "alt": "Relationship among predictor scale, parameter scale, the natural-parameter likelihood score, and the score rescaled by the link derivative."
+  },
+  "a148e917bcbf": {
+   "source": "flowchart TD\n    A[\"p candidate predictors<br/>x₀, x₁, ..., x₁₉\"] --> B[\"iteration 1:<br/>pick best column<br/>update its coefficient<br/>by ν·cor(y, xⱼ)\"]\n    B --> C[\"iteration 2:<br/>recompute residuals<br/>pick best column\"]\n    C --> D[\"... continued ...\"]\n    D --> E[\"sparse final model<br/>3 of 20 coefficients ≠ 0\"]\n",
+   "caption": "`glmboost` repeatedly recomputes residuals, selects one predictor, and adds a shrunken coefficient update, producing a sparse stopped model.",
+   "alt": "Component-wise linear boosting selects one of many predictors at each iteration and accumulates small coefficient updates in a sparse model."
+  },
+  "a553f980afdf": {
+   "source": "flowchart LR\n    A[Boosting path] --> B[Selection path]\n    A --> C[Coefficient path]\n    A --> D[Risk / AIC path]\n    A --> E[Residuals]\n    B --> F[Variable importance]\n    C --> G[Coefficient summaries]\n    D --> H[mstop choice]\n    E --> I[Diagnostics]\n",
+   "caption": "A fitted boosting path supports selection, coefficient, risk, and residual summaries that feed interpretation, stopping, and diagnostic procedures.",
+   "alt": "Branches from the boosting path to selection, coefficients, risk or AIC, and residuals, then to importance, summaries, stopping, and diagnostics."
+  },
+  "b079d6fea545": {
+   "source": "flowchart TD\n    Y[\"Y | X ~ ExpFam( μ(X), φ )\"]\n    MU[\"μ(X) — modelled<br/>g(μ(X)) = η(X) = f₁(x₁) + f₂(x₂) + ...\"]\n    PHI[\"φ (dispersion) — CONSTANT<br/>not modelled\"]\n    SHAPE[\"shape, skewness<br/>not in the model at all\"]\n    Y --> MU\n    Y -.-> PHI\n    PHI -.-> SHAPE\n",
+   "caption": "A conventional GLM or GAM relates covariates to the conditional mean while treating dispersion as fixed or as determined by that mean.",
+   "alt": "Conditional response distribution with a modeled mean predictor, constant dispersion, and no separate model for shape or skewness."
+  },
+  "b29e70643adb": {
+   "source": "flowchart TD\n    OLS[\"OLS projection<br/>hat matrix, degrees of freedom\"] --> PLS[\"penalized least squares<br/>ridge / difference penalty, λ ↔ df\"]\n    PLS --> SPL[\"P-splines / GAMs<br/>base learners (bbs, bols, bmono)\"]\n    OLS --> GD[\"gradient descent<br/>in parameter space\"]\n    GD --> BOOST[\"boosting = gradient descent<br/>in function space, component-wise\"]\n    SPL --> BOOST\n    BOOST --> GAMLSS[\"GAMLSS = multi-parameter<br/>boosting\"]\n",
+   "caption": "Component-wise boosting connects projection and penalized smoothing with gradient descent in function space; distributional boosting extends the construction to multiple parameters.",
+   "alt": "Conceptual progression from ordinary least squares and gradient descent through penalized smooth base learners and component-wise boosting to GAMLSS."
+  },
+  "b7813ef0114a": {
+   "source": "flowchart TD\n    LOSS[\"1. THE LOSS (family) ρ(y, f)<br/>Gaussian→mean, Binomial→prob,<br/>Quantile→τ-quantile, Poisson→rate,<br/>CoxPH→log-hazard, GAMLSS→dist. param\"]\n    LEARN[\"2. THE BASE LEARNERS g₁,...,gⱼ<br/>bols(linear), bbs(spline),<br/>bmono(monotone), bspatial(surface),<br/>brandom(group), btree(tree)\"]\n    REG[\"3. THE REGULARIZATION (m_stop, ν)<br/>m_stop chosen by cross-validation<br/>ν=0.1 fixed; smaller ν → finer path\"]\n    LOSS -->|\"determines negative gradient u\"| LEARN\n    LEARN -->|\"each fit by penalized LS to u\"| REG\n",
+   "caption": "Model-based boosting separates the loss, candidate base learners, and path regularization.",
+   "alt": "The family determines the negative gradient, structured base learners fit it by penalized least squares, and shrinkage plus early stopping regularize the path."
+  },
+  "c80670d12baf": {
+   "source": "flowchart LR\n    U[\"negative gradient u\"] --> L1[\"Fit ĝ₁ (bols on x₁)\"] --> SSE1[\"SSE₁\"]\n    U --> L2[\"Fit ĝ₂ (bbs on x₂)\"] --> SSE2[\"SSE₂ ⬅ WINNER\"]\n    U --> L3[\"Fit ĝ₃ (bmono on x₃)\"] --> SSE3[\"SSE₃\"]\n    U --> LJ[\"Fit ĝⱼ (...)\"] --> SSEJ[\"SSEⱼ\"]\n    SSE2 --> UPD[\"j* = argmin SSE<br/>Update: f ← f + ν · ĝ₂\"]\n",
+   "caption": "Component-wise selection fits every candidate effect to the pseudo-residual and updates only the learner with minimum fitting error.",
+   "alt": "Parallel candidate learner fits to the negative gradient produce SSE values; only the minimum-SSE learner contributes the next update."
+  },
+  "cdbb14f4883b": {
+   "source": "flowchart TD\n    S0[\"Step 0: ŷ = ȳ<br/>(just the mean)\"] --> S1[\"Step 1: ŷ += ν·β̂₁·x₃<br/>(x₃ best explains residual)\"]\n    S1 --> S2[\"Step 2: ŷ += ν·β̂₂·x₇<br/>(x₇ best explains new residual)\"]\n    S2 --> S3[\"Step 3: ŷ += ν·β̂₃·x₃<br/>(x₃ again — coefficient accumulates)\"]\n    S3 --> SN[\"...\"]\n",
+   "caption": "Forward stagewise regression builds the predictor through small updates to one selected component at a time.",
+   "alt": "Successive forward-stagewise updates start from the response mean and repeatedly add a shrunken coefficient for the predictor that best explains the current residual."
+  },
+  "e7ad66e0ea65": {
+   "source": "flowchart LR\n    Y[\"y — response vector\"] --> HY[\"Hy = fitted values\\n(closest point in C(X))\"]\n    Y --> RES[\"(I−H)y = residual\\n(orthogonal to C(X))\"]\n    HY -.->|\"the part X explains\"| FIT[\"fitted model\"]\n    RES -.->|\"the part X cannot explain\"| NOISE[\"noise / unmodelled structure\"]\n",
+   "caption": "The hat matrix decomposes the response into its projection onto the design space and an orthogonal residual.",
+   "alt": "Projection of the response vector into fitted values in the column space of the design matrix and a residual orthogonal to that space."
+  },
+  "f2229555ec5d": {
+   "source": "flowchart TD\n    A[\"Phase 1 (small m): capturing SIGNAL<br/>selected: x₃, x₇, x₁ (all in S)<br/>risk decreases fast\"] -->|CV picks m_stop here| B[\"Phase 2 (large m): fitting NOISE<br/>selected: x₂, x₅, x₉ (NOT in S)<br/>training risk ↓ slowly, test risk ↑\"]\n",
+   "caption": "Early stopping truncates a stylized boosting path after the principal signal has been learned but before later noise-fitting updates dominate.",
+   "alt": "Two phases of a boosting path: early iterations select strong signal variables, whereas later iterations increasingly select noise variables."
+  }
+ }
+}

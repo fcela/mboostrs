@@ -1,0 +1,80 @@
+{
+  "library": "mboostrs 0.1.3",
+  "mean_effects": [
+    {
+      "variable": "housing_median_age",
+      "shape": "u_shaped",
+      "evidence": "average fitted mean moves by +0.501 from the 2nd to the 98th percentile of housing_median_age (range 0.581; main term). removing its term changes the joint score by +0.0264 (SE 0.0131)"
+    },
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "average fitted mean moves by -0.919 from the 2nd to the 98th percentile of median_income (range 0.919; main term). removing its term changes the joint score by +0.1087 (SE 0.0099)"
+    },
+    {
+      "variable": "ave_occup",
+      "shape": "increasing",
+      "evidence": "average fitted mean moves by +0.375 from the 2nd to the 98th percentile of ave_occup (range 0.375; main term). removing its term changes the joint score by +0.0175 (SE 0.0070)"
+    },
+    {
+      "variable": "housing_median_age_missing",
+      "shape": "categorical",
+      "evidence": "missing-value indicator: average mean is +0.152 when the value is missing. removing its term changes the joint score by +0.0044 (SE 0.0019)"
+    }
+  ],
+  "interactions": [],
+  "variance_drivers": [],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.43982862140398965,
+      "lower90": -0.5097683662949587,
+      "upper90": -0.3727336080475186
+    },
+    "Q2": {
+      "estimate": 0.545809511753628,
+      "lower90": 0.44839703020636096,
+      "upper90": 0.6463223967867965
+    },
+    "Q3": {
+      "estimate": 0.27074924614683615,
+      "lower90": 0.19275469599671463,
+      "upper90": 0.35091774184138635
+    },
+    "Q4": {
+      "estimate": 0.3604688881515304,
+      "lower90": 0.0,
+      "upper90": 0.4517575590522169
+    },
+    "Q5": {
+      "estimate": 0.18370697982331372,
+      "lower90": 0.0,
+      "upper90": 0.2715080395724499
+    },
+    "Q6": {
+      "estimate": 0.012150888668794768,
+      "lower90": -0.07409270012792062,
+      "upper90": 0.10121634772708564
+    },
+    "Q7": {
+      "estimate": 0.03359593686792239,
+      "lower90": -0.04961763792502144,
+      "upper90": 0.12188161912313954
+    },
+    "Q8": {
+      "estimate": -0.009078659386950938,
+      "lower90": -0.08667268091455785,
+      "upper90": 0.062325480355378125
+    }
+  },
+  "warnings": [
+    "Q4: covariate not selected by the rule in the mean model; the contrast is from a refit with it added (final model plus bols(roof_class) (not selected))",
+    "Q5: covariate not selected by the rule in the mean model; the contrast is from a refit with it added (final model plus bbs(ave_rooms__log, df=4) (not selected))",
+    "Q6: covariate not selected by the rule in the mean model; the contrast is from a refit with it added (final model plus bbs(latitude, df=4), bbs(longitude, df=4) (not selected))",
+    "Q7: covariate not selected by the rule in the mean model; the contrast is from a refit with it added (final model plus bbs(households__log, df=4) (not selected))",
+    "Q8: covariate not selected by the rule in the mean model; the contrast is from a refit with it added (final model plus bbs(median_house_value__log, df=4) (not selected))",
+    "1 fold prediction in this call asked 1 learner(s) to predict outside the range they were fitted on. bbs(ave_occup) [mu], covariate ave_occup: 1 above 6.01562 (worst 0.12 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.12 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to acc",
+    "1 fold prediction in this call asked 1 learner(s) to predict outside the range they were fitted on. bbs(median_income__log) [mu], covariate median_income__log: 1 below -0.347008 and 1 above 2.39247 (worst 0.067 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.067 training ranges out that is an assumption, not an e",
+    "1 fold prediction in this call asked 1 learner(s) to predict outside the range they were fitted on. bbs(median_income__log) [mu], covariate median_income__log: 2 below -0.263575 and 2 above 2.34909 (worst 0.087 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.087 training ranges out that is an assumption, not an e",
+    "1 fold prediction in this call asked 1 learner(s) to predict outside the range they were fitted on. bbs(ave_occup) [mu], covariate ave_occup: 2 below 1.47785 and 2 above 5.89273 (worst 0.15 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.15 training ranges out that is an assumption, not an estimate. Pass extrapol"
+  ]
+}

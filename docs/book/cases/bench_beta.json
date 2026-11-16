@@ -1,0 +1,1337 @@
+{
+  "design": {
+    "n_train": 1500,
+    "n_test": 4000,
+    "seeds": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "nu": 0.1,
+    "folds": 5,
+    "mstop": {
+      "glm": 600,
+      "gam": 1200
+    },
+    "linear_mean": "logit mu = 0.15 + 0.50 x1 - 0.35 x2",
+    "linear_phi": "log phi = 1.80 + 0.65 x3",
+    "smooth_mean": "logit mu = 0.10 + sin(1.4 x1) + 0.25 x2",
+    "smooth_phi": "log phi = 1.60 + 0.55 sin(2 x3)",
+    "variance": "mu * (1 - mu) / (1 + phi)",
+    "phi": "precision, not a variance",
+    "links": "logit mu, log phi"
+  },
+  "results": [
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "generating Beta",
+      "own_nll": -0.4009364560172559,
+      "nll_at_true_phi": -0.4009364560172559,
+      "mae": 0.0,
+      "mae_log_phi": 0.0,
+      "phi_mean": 7.494544222871755,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:4bc7411ffbc6a68ed5c9ba578a407fd03649659da0c78badf23cff68b7111521",
+        "measured_at": "2026-10-24T13:56:17.817533+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e226fe1af5a0b8860601e2c5195190ac763b4ad05adf4e8e6a737904f7d3855d",
+        "output_digest": "sha256:5528101b13b31f7a09752ffffa5fbc3525bc09d322223f1978e4c908d8dffeaf",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "statsmodels BetaModel constant precision",
+      "own_nll": -0.26592007854670674,
+      "nll_at_true_phi": -0.4000790174689306,
+      "mae": 0.006241890968641674,
+      "mae_log_phi": 0.5665425333981026,
+      "phi_mean": 4.5733787092025295,
+      "seconds": 0.004334542201831937,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:91e18f06909c7ff3a6769479d05869f15273084ba09c4b603751306f8220ebb3",
+        "measured_at": "2026-10-24T13:56:17.818386+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e226fe1af5a0b8860601e2c5195190ac763b4ad05adf4e8e6a737904f7d3855d",
+        "output_digest": "sha256:43f4890246ca771cc1c388422525ac2b455651492b45e0fbabb91b201267affa",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "statsmodels BetaModel",
+      "own_nll": -0.39917937682447985,
+      "nll_at_true_phi": -0.40153185314411965,
+      "mae": 0.004639355672677327,
+      "mae_log_phi": 0.08162733976097081,
+      "phi_mean": 7.423809545425106,
+      "seconds": 0.0058080831076949835,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:eff1a074ba56bf5a47259527917a909fdb4df2e4732347e6d68f0c77a37903c6",
+        "measured_at": "2026-10-24T13:56:17.819295+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e226fe1af5a0b8860601e2c5195190ac763b4ad05adf4e8e6a737904f7d3855d",
+        "output_digest": "sha256:e8e361668524697ea2a253d88561ceb716ded9aa890a2bf34a74a283eedf4d40",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "statsmodels BetaModel spline",
+      "own_nll": -0.3898893782791121,
+      "nll_at_true_phi": -0.39910114008178926,
+      "mae": 0.012599782710994918,
+      "mae_log_phi": 0.10881168930251246,
+      "phi_mean": 8.569605833587278,
+      "seconds": 0.06650687498040497,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:2cfbeaff2264609725a7841bb34e1d1cba9565a51259503357c808a888973a13",
+        "measured_at": "2026-10-24T13:56:17.820095+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e226fe1af5a0b8860601e2c5195190ac763b4ad05adf4e8e6a737904f7d3855d",
+        "output_digest": "sha256:09dd33a668247641d79eaaef26aae8e9fee03d4a490001e0462fb0a6ff7d86d9",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "mboostrs glmboostLSS BetaLSS",
+      "own_nll": -0.39941246011985526,
+      "nll_at_true_phi": -0.4012329900068476,
+      "mae": 0.003557301263390129,
+      "mae_log_phi": 0.07603128551652295,
+      "phi_mean": 7.149641483999696,
+      "seconds": 2.6546193750109524,
+      "mstop": 253,
+      "at_boundary": false,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:afd536cff129d4e0acb93c6fab62e4f175acd0a03409e3ab43ef30fa9ddf332b",
+        "measured_at": "2026-10-24T13:56:17.820856+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e226fe1af5a0b8860601e2c5195190ac763b4ad05adf4e8e6a737904f7d3855d",
+        "output_digest": "sha256:b10f47f1134534bd67721d54daf99f9ee6f44da6435cc73a23b5ac8dec2d1cba",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "mboostrs gamboostLSS BetaLSS",
+      "own_nll": -0.40018007506978465,
+      "nll_at_true_phi": -0.40128746036271207,
+      "mae": 0.006698795243920218,
+      "mae_log_phi": 0.06828870891844141,
+      "phi_mean": 7.226573282997346,
+      "seconds": 12.669039124855772,
+      "mstop": 168,
+      "at_boundary": false,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:30c35b4c8664254bbfdd4cf7b9db58c11b012dc4d49a083a86f546647b3256e1",
+        "measured_at": "2026-10-24T13:56:17.821625+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e226fe1af5a0b8860601e2c5195190ac763b4ad05adf4e8e6a737904f7d3855d",
+        "output_digest": "sha256:c3639a2b3156c617a194ff7737812d720682738547451c19411bcdaf31db4052",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "generating Beta",
+      "own_nll": -0.4009364560172559,
+      "nll_at_true_phi": -0.4009364560172559,
+      "mae": 0.0,
+      "mae_log_phi": 0.0,
+      "phi_mean": 7.494544222871755,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:86e91850dc7aa693347758f334a984c207a25a212c6fc6ceb5c6266474d4d0ac",
+        "measured_at": "2026-10-24T13:56:33.912319+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f53f1154199a46bb967cec1cd9d94482575cade383f368f6ed15cfe1dbea75ee",
+        "output_digest": "sha256:96449393fabe520834bea2f36439e49bc3c77b6ea62d999ba5e54b66733bb1b3",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "statsmodels BetaModel constant precision",
+      "own_nll": -0.26193473573596043,
+      "nll_at_true_phi": -0.3968342343265724,
+      "mae": 0.011063803201878724,
+      "mae_log_phi": 0.5846965966200385,
+      "phi_mean": 4.35819155222523,
+      "seconds": 0.004083249950781465,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:c5522747bf9f7202a1f59a663d3218c247271eb7f9d73f5edcb34f019d5b19f1",
+        "measured_at": "2026-10-24T13:56:33.913141+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f53f1154199a46bb967cec1cd9d94482575cade383f368f6ed15cfe1dbea75ee",
+        "output_digest": "sha256:0b84cfa260d8c04d4a7e7c0b11be7c5d6b38b07d95935e3965f62b5e65a61de7",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "statsmodels BetaModel",
+      "own_nll": -0.3979966543719084,
+      "nll_at_true_phi": -0.3989740499747785,
+      "mae": 0.007591306609195966,
+      "mae_log_phi": 0.05443686920696109,
+      "phi_mean": 7.605371317054563,
+      "seconds": 0.005911584012210369,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:80d2e96e259937936ac694c80055415d5a40e34a2c2b907aada3b8227e10b304",
+        "measured_at": "2026-10-24T13:56:33.913974+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f53f1154199a46bb967cec1cd9d94482575cade383f368f6ed15cfe1dbea75ee",
+        "output_digest": "sha256:6ee8e1685107ee3b7806c2723c5bbde37662879423e8faa64b136af42ffb3c57",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "statsmodels BetaModel spline",
+      "own_nll": NaN,
+      "nll_at_true_phi": 20.29603502455155,
+      "mae": 0.4546223134044552,
+      "mae_log_phi": Infinity,
+      "phi_mean": Infinity,
+      "seconds": 0.025722250109538436,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": false,
+      "_identity": {
+        "fingerprint": "sha256:b6700a3abf1ea073880235d39833363e5c53bcfc37478b3ff7ad91e69199aa61",
+        "measured_at": "2026-10-24T13:56:33.914856+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f53f1154199a46bb967cec1cd9d94482575cade383f368f6ed15cfe1dbea75ee",
+        "output_digest": "sha256:9884faf30eecd860fbb70fdb54511e7936f1f143b51722712e71f70994f18d40",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "mboostrs glmboostLSS BetaLSS",
+      "own_nll": -0.39879607947463075,
+      "nll_at_true_phi": -0.39960697755968694,
+      "mae": 0.006683283061080541,
+      "mae_log_phi": 0.0606517986992924,
+      "phi_mean": 7.164433626378722,
+      "seconds": 2.6711426249239594,
+      "mstop": 215,
+      "at_boundary": false,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:b8315f3f7587df67b6aa711210e2350c1662f5083980e0f21215a686699fcb50",
+        "measured_at": "2026-10-24T13:56:33.915638+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f53f1154199a46bb967cec1cd9d94482575cade383f368f6ed15cfe1dbea75ee",
+        "output_digest": "sha256:0bed6e17d251c30b579052a3d61103bcc9f5646405e9e034ccefaa261760aac2",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "mboostrs gamboostLSS BetaLSS",
+      "own_nll": -0.3976003441696502,
+      "nll_at_true_phi": -0.3995954898422574,
+      "mae": 0.007442077381691363,
+      "mae_log_phi": 0.07975492003744779,
+      "phi_mean": 6.874518174130422,
+      "seconds": 13.144558208994567,
+      "mstop": 124,
+      "at_boundary": false,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:0869b5bc10b490ea374a7b6727a3fac4e38519d062892f0fa40aeaeced99dc93",
+        "measured_at": "2026-10-24T13:56:33.916412+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f53f1154199a46bb967cec1cd9d94482575cade383f368f6ed15cfe1dbea75ee",
+        "output_digest": "sha256:6aed3ab41b256084c2b39dc14063b4d656c009727a41d7db754cf344c1126b2c",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "generating Beta",
+      "own_nll": -0.4009364560172559,
+      "nll_at_true_phi": -0.4009364560172559,
+      "mae": 0.0,
+      "mae_log_phi": 0.0,
+      "phi_mean": 7.494544222871755,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:1b91f1cf2d10c00bd3b2d54b2066a3d990a5fab88ede5a39b3687dda95d98e53",
+        "measured_at": "2026-10-24T13:56:49.901684+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:63768f9f6ac44bb06a8054035cadda7cdcd72802f524466050ce70c791f67e8a",
+        "output_digest": "sha256:25c3dafd60cfcc61dd1c937275993183fa74726dd158bd99d6b92cf08d631184",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "statsmodels BetaModel constant precision",
+      "own_nll": -0.2662019051164593,
+      "nll_at_true_phi": -0.3998388751458184,
+      "mae": 0.006839508378151129,
+      "mae_log_phi": 0.5569103775297628,
+      "phi_mean": 4.707878241613278,
+      "seconds": 0.004464042140170932,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:65c3d1f6c7c22d14159edcb9432deef134fef7c199e44ced02cc44cf79996ee8",
+        "measured_at": "2026-10-24T13:56:49.902534+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:63768f9f6ac44bb06a8054035cadda7cdcd72802f524466050ce70c791f67e8a",
+        "output_digest": "sha256:7c08770af64cf071b63a2a47286149d9999bbb11115e33e7cce55ca432b0808d",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "statsmodels BetaModel",
+      "own_nll": -0.3998001341098899,
+      "nll_at_true_phi": -0.40126933766371975,
+      "mae": 0.003481951224898233,
+      "mae_log_phi": 0.05405339854654209,
+      "phi_mean": 7.489079458312411,
+      "seconds": 0.006930249975994229,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:89eab994cf565f59f653596c3b64cc91c1c5d2abe995c705d2aa8f90f558f0d9",
+        "measured_at": "2026-10-24T13:56:49.903426+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:63768f9f6ac44bb06a8054035cadda7cdcd72802f524466050ce70c791f67e8a",
+        "output_digest": "sha256:a4b407423c4c47e8d6f24d868b06d8818d92743b033dfa4d90caa52663eb7860",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "statsmodels BetaModel spline",
+      "own_nll": 9.112647449599182,
+      "nll_at_true_phi": 11.622904755672831,
+      "mae": 0.4335480580638746,
+      "mae_log_phi": 1.7691246125278717,
+      "phi_mean": 1.0425158949256452,
+      "seconds": 0.005700291832908988,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": false,
+      "_identity": {
+        "fingerprint": "sha256:4e9106b057f87373d43b9559aa7196cc3393d7967c2a2380321e4d67724f5f74",
+        "measured_at": "2026-10-24T13:56:49.904120+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:63768f9f6ac44bb06a8054035cadda7cdcd72802f524466050ce70c791f67e8a",
+        "output_digest": "sha256:3c380b5e70f2726763c6b033bcaaf64206efacf0b54e4e8be8489c442942cfbf",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "mboostrs glmboostLSS BetaLSS",
+      "own_nll": -0.40029617118579913,
+      "nll_at_true_phi": -0.40086679932465363,
+      "mae": 0.00533242295204005,
+      "mae_log_phi": 0.047229067224552515,
+      "phi_mean": 7.0844092009018205,
+      "seconds": 2.7368757082149386,
+      "mstop": 209,
+      "at_boundary": false,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:c0f410528829c6ade0aa53139c9366bd87d12e2966e6b762d76961f66d3d85c2",
+        "measured_at": "2026-10-24T13:56:49.904892+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:63768f9f6ac44bb06a8054035cadda7cdcd72802f524466050ce70c791f67e8a",
+        "output_digest": "sha256:0fba684230e122f399f3a9ec3c4197b93208b53b2e2b44e2c5c8c17a409818ba",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "mboostrs gamboostLSS BetaLSS",
+      "own_nll": -0.3968250528153637,
+      "nll_at_true_phi": -0.39776026648683477,
+      "mae": 0.00944625294823117,
+      "mae_log_phi": 0.06858274725487883,
+      "phi_mean": 7.338881270770937,
+      "seconds": 13.212302542058751,
+      "mstop": 172,
+      "at_boundary": false,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:fc04e2ce6327fb4e4babab0bd86dca21e5154bcc151d0cae3ad25e2587a71a27",
+        "measured_at": "2026-10-24T13:56:49.905682+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:63768f9f6ac44bb06a8054035cadda7cdcd72802f524466050ce70c791f67e8a",
+        "output_digest": "sha256:7736b9cd473a9ded9c601f891fac01e3e8aa4dd26ce52b55a7a18abd51cd4fdc",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "generating Beta",
+      "own_nll": -0.4009364560172559,
+      "nll_at_true_phi": -0.4009364560172559,
+      "mae": 0.0,
+      "mae_log_phi": 0.0,
+      "phi_mean": 7.494544222871755,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:51451e68dec9149f3036f8e2316b457b88636e62ece713998bd625b4dd9ef81f",
+        "measured_at": "2026-10-24T13:57:07.345402+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cc2657fa73533bf13ed3e3412ce1c754155612771f9c1cc3b19cb117c37ab861",
+        "output_digest": "sha256:f358266563aad2c3498329ab902c780eb7803b8a69516d8a0fed4d9c5bcc3aa6",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "statsmodels BetaModel constant precision",
+      "own_nll": -0.26515360138511407,
+      "nll_at_true_phi": -0.3994990222748239,
+      "mae": 0.008281286959951473,
+      "mae_log_phi": 0.5710328765945293,
+      "phi_mean": 4.5164640819283175,
+      "seconds": 0.004356250166893005,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:0ac29a3d1825504e17b3a1ca7c8a729fdae9d5db628f3f045f51803db6c09ed2",
+        "measured_at": "2026-10-24T13:57:07.346313+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cc2657fa73533bf13ed3e3412ce1c754155612771f9c1cc3b19cb117c37ab861",
+        "output_digest": "sha256:d826c46fac8c73353a2f4ef6b43dd3c51f549bdb926f825be3c47012d6b9a4e1",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "statsmodels BetaModel",
+      "own_nll": -0.39949179392229656,
+      "nll_at_true_phi": -0.40144798265770354,
+      "mae": 0.005147171010475434,
+      "mae_log_phi": 0.06496038380222968,
+      "phi_mean": 7.777318466366228,
+      "seconds": 0.006281791953369975,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:66014ddaea6d942c4961edf30a8552e046c60483cd56ffc227dbcae01ee3cc7a",
+        "measured_at": "2026-10-24T13:57:07.347453+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cc2657fa73533bf13ed3e3412ce1c754155612771f9c1cc3b19cb117c37ab861",
+        "output_digest": "sha256:d2dac7e75784a1273d3bb35a9134d70fa148d3c2d741fc91fa0a7e30e6ef5487",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "statsmodels BetaModel spline",
+      "own_nll": 1.2787449092161001e+141,
+      "nll_at_true_phi": 3.764050480443867,
+      "mae": 0.3519243029475789,
+      "mae_log_phi": 2.106079573972478,
+      "phi_mean": 8.867915001964099e+140,
+      "seconds": 0.008312041172757745,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": false,
+      "_identity": {
+        "fingerprint": "sha256:48a31c2734ad044b99cd0abfe89e0392f98feb4e2e276f27542af6b9a6c155bc",
+        "measured_at": "2026-10-24T13:57:07.348342+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cc2657fa73533bf13ed3e3412ce1c754155612771f9c1cc3b19cb117c37ab861",
+        "output_digest": "sha256:965926bce27ba29e4bda37744facd76e931a12b1f0da983d9288e8eeba76ac6b",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "mboostrs glmboostLSS BetaLSS",
+      "own_nll": -0.40075766445780014,
+      "nll_at_true_phi": -0.40156871251977466,
+      "mae": 0.005093787365894762,
+      "mae_log_phi": 0.04281195374777437,
+      "phi_mean": 7.475738377834266,
+      "seconds": 2.867295084055513,
+      "mstop": 273,
+      "at_boundary": false,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:0dd2d112b71dc1ece353a9dd6533d368d2a67dbcbe8abb35972b1c80b09ff6c9",
+        "measured_at": "2026-10-24T13:57:07.349185+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cc2657fa73533bf13ed3e3412ce1c754155612771f9c1cc3b19cb117c37ab861",
+        "output_digest": "sha256:05346b12e62db249a65623601f0f2397105534a0874a747a80d2456b6fc52089",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "mboostrs gamboostLSS BetaLSS",
+      "own_nll": -0.39710635000980277,
+      "nll_at_true_phi": -0.3990656856978892,
+      "mae": 0.007343045422492903,
+      "mae_log_phi": 0.05679771990454299,
+      "phi_mean": 7.325985872160749,
+      "seconds": 14.534267750103027,
+      "mstop": 161,
+      "at_boundary": false,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:3fe5aad0c18754cc024108ff96bafe5720661edf874d4ab81dbeab0a9ba7ebd5",
+        "measured_at": "2026-10-24T13:57:07.350012+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cc2657fa73533bf13ed3e3412ce1c754155612771f9c1cc3b19cb117c37ab861",
+        "output_digest": "sha256:4ba78518f10b8d345e6ebade809c3436948c9e2e54b55a4e629a1978e7e35016",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "generating Beta",
+      "own_nll": -0.34405122350663137,
+      "nll_at_true_phi": -0.34405122350663137,
+      "mae": 0.0,
+      "mae_log_phi": 0.0,
+      "phi_mean": 5.333060258513022,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:6286180b82017cb0671e320a90542c17d834ec56fce6a6998816a6103a10fa12",
+        "measured_at": "2026-10-24T13:57:23.977473+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:ae61efde1a004d75cdd9c86545eb6aa04309cb3bf2dae386c8c3da99cca8960d",
+        "output_digest": "sha256:26c2dbd42701680b525f5db58b5744e74f528530eb4922a8894e761365f64843",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "statsmodels BetaModel constant precision",
+      "own_nll": -0.1807562834159669,
+      "nll_at_true_phi": -0.19660826448911575,
+      "mae": 0.074847430509975,
+      "mae_log_phi": 0.41250804261279633,
+      "phi_mean": 3.573964907526639,
+      "seconds": 0.005143750226125121,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:019d4d993379005dd879975c0162da3f8c58be95e36f13bc469cab1f04ac146d",
+        "measured_at": "2026-10-24T13:57:23.978455+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:ae61efde1a004d75cdd9c86545eb6aa04309cb3bf2dae386c8c3da99cca8960d",
+        "output_digest": "sha256:120ca1fe9bb1c26ee29117407452b74092ec2a280433da90cc89132606ab9688",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "statsmodels BetaModel",
+      "own_nll": -0.1814471892191193,
+      "nll_at_true_phi": -0.19717631925571885,
+      "mae": 0.07426620440622099,
+      "mae_log_phi": 0.38830070859631943,
+      "phi_mean": 3.6588411598923103,
+      "seconds": 0.033346249954774976,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:62c034b4d83acfca53e30919a3bbb3301f7508e831330c7ee1e3d55572b2c9dd",
+        "measured_at": "2026-10-24T13:57:23.979344+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:ae61efde1a004d75cdd9c86545eb6aa04309cb3bf2dae386c8c3da99cca8960d",
+        "output_digest": "sha256:27a6eb1f4cde0f65946712245b0b49d9d0cde55193812b299e154d4ffbe960ad",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "statsmodels BetaModel spline",
+      "own_nll": -0.3351988519410562,
+      "nll_at_true_phi": -0.34079452174696123,
+      "mae": 0.012394656451263752,
+      "mae_log_phi": 0.06199189152051766,
+      "phi_mean": 5.447777347739102,
+      "seconds": 0.0671598338522017,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:4ddc0c2bc89783d9a2eb7ab07faca9e791bb306e3fa2f9c1e8b7316b1549fe28",
+        "measured_at": "2026-10-24T13:57:23.980232+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:ae61efde1a004d75cdd9c86545eb6aa04309cb3bf2dae386c8c3da99cca8960d",
+        "output_digest": "sha256:22aa3a85de0a11a06c4b3243820e65c8e9d5a1f4767b999a01c45f18f89f70e5",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "mboostrs glmboostLSS BetaLSS",
+      "own_nll": -0.1827992544077381,
+      "nll_at_true_phi": -0.19606987437268888,
+      "mae": 0.07608164772499902,
+      "mae_log_phi": 0.4027506035992848,
+      "phi_mean": 3.534332831685189,
+      "seconds": 3.0640893750824034,
+      "mstop": 205,
+      "at_boundary": false,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:8b7f68c079f0fbc3c9bf50b7f80e744dcfe17b49c88d2098651bbcfc53955174",
+        "measured_at": "2026-10-24T13:57:23.981030+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:ae61efde1a004d75cdd9c86545eb6aa04309cb3bf2dae386c8c3da99cca8960d",
+        "output_digest": "sha256:bb64c81e1deacddf61af2cdcd1ab3fed23440d0ac7deee6d7335ee8d3394cd07",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "mboostrs gamboostLSS BetaLSS",
+      "own_nll": -0.34187704292527465,
+      "nll_at_true_phi": -0.3423411821649596,
+      "mae": 0.009622663831267324,
+      "mae_log_phi": 0.06335226705663222,
+      "phi_mean": 5.383914353639386,
+      "seconds": 13.436391999945045,
+      "mstop": 478,
+      "at_boundary": false,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:abaf8eff73ca5d7d12aef8624afae27ea98dfc62705cbdadda17ae0a1b6c553b",
+        "measured_at": "2026-10-24T13:57:23.981865+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:ae61efde1a004d75cdd9c86545eb6aa04309cb3bf2dae386c8c3da99cca8960d",
+        "output_digest": "sha256:300386823052a8804f8e6fd2f6819be64c13cdc96a5961028bb1e4ec558137fe",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "generating Beta",
+      "own_nll": -0.34405122350663137,
+      "nll_at_true_phi": -0.34405122350663137,
+      "mae": 0.0,
+      "mae_log_phi": 0.0,
+      "phi_mean": 5.333060258513022,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:53fcf17aff7200a9296921808f44cfdded2665b8e02372b412bfaa3041ed5a44",
+        "measured_at": "2026-10-24T13:57:40.844254+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e43bc3d08e2df5fbeb81cb0b1088224e6c25c13411df9140dcc46c34f513c5dd",
+        "output_digest": "sha256:82035c33ccb29455a4d7ab7aa47aae672f818e5bbe15371cebc5bf4f3a9cd027",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "statsmodels BetaModel constant precision",
+      "own_nll": -0.18184957545162914,
+      "nll_at_true_phi": -0.198958932719791,
+      "mae": 0.07615070713916887,
+      "mae_log_phi": 0.42598143635931046,
+      "phi_mean": 3.463868222489466,
+      "seconds": 0.0054642921313643456,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:9e2e16c9c6a7bab9c1600ae20a9176346baaf6f378c345e3aad335e55d3ebad2",
+        "measured_at": "2026-10-24T13:57:40.845089+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e43bc3d08e2df5fbeb81cb0b1088224e6c25c13411df9140dcc46c34f513c5dd",
+        "output_digest": "sha256:22774d613cc3d9040649cd9e3aac32cbd60cf0e2e3acf0a6d0a64c27ec0e8834",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "statsmodels BetaModel",
+      "own_nll": -0.18218123002095657,
+      "nll_at_true_phi": -0.19930436855932954,
+      "mae": 0.07529145584652705,
+      "mae_log_phi": 0.40867821039369584,
+      "phi_mean": 3.5934808017234263,
+      "seconds": 0.008514165878295898,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:1e142385ffff82d9cf919ffa1db8773579f075fcb6bb7042d626d9d937ec571a",
+        "measured_at": "2026-10-24T13:57:40.845880+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e43bc3d08e2df5fbeb81cb0b1088224e6c25c13411df9140dcc46c34f513c5dd",
+        "output_digest": "sha256:36adaf0986e85bab5ecfa5268d4f3628d937d9068ca9d7bfdbb4f47fecc98e34",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "statsmodels BetaModel spline",
+      "own_nll": -0.31855671661584417,
+      "nll_at_true_phi": -0.3368366862207121,
+      "mae": 0.01203637254430106,
+      "mae_log_phi": 0.08742962991464881,
+      "phi_mean": 5.69662669491268,
+      "seconds": 0.08755695796571672,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:c8bfc433e69af398c2d797728142d9b7164cde70235387423094667f78507a01",
+        "measured_at": "2026-10-24T13:57:40.846690+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e43bc3d08e2df5fbeb81cb0b1088224e6c25c13411df9140dcc46c34f513c5dd",
+        "output_digest": "sha256:4e8c5995bafd9ee64923307efa7aa86aa72b1dddb99d46fc67a8ff7d2dd51e98",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "mboostrs glmboostLSS BetaLSS",
+      "own_nll": -0.18270454349008253,
+      "nll_at_true_phi": -0.19889210920848416,
+      "mae": 0.07586013663119008,
+      "mae_log_phi": 0.4120585278186834,
+      "phi_mean": 3.552493230295101,
+      "seconds": 3.2150972080416977,
+      "mstop": 339,
+      "at_boundary": false,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:85d451ba1ec88b58b189abf3fc22fb77b379c828347621dbbb1e36c96aca04f3",
+        "measured_at": "2026-10-24T13:57:40.847405+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e43bc3d08e2df5fbeb81cb0b1088224e6c25c13411df9140dcc46c34f513c5dd",
+        "output_digest": "sha256:b72b66e4589e2d640ac62c2f298cd3b13ca24c1ac7161e54c653f98cffd3a507",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "mboostrs gamboostLSS BetaLSS",
+      "own_nll": -0.33906825467317847,
+      "nll_at_true_phi": -0.33877987324137976,
+      "mae": 0.00950722486088902,
+      "mae_log_phi": 0.056233141886633246,
+      "phi_mean": 5.461728825731052,
+      "seconds": 13.522764916997403,
+      "mstop": 532,
+      "at_boundary": false,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:65ed998ef70e8dcec70a5f55c6de6ee87434be38fe80bbf3bd41912da985122d",
+        "measured_at": "2026-10-24T13:57:40.848159+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e43bc3d08e2df5fbeb81cb0b1088224e6c25c13411df9140dcc46c34f513c5dd",
+        "output_digest": "sha256:e586f451086ca1bfac02ebfa50360e47355028068b7d8f9a9767dc256041c593",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "generating Beta",
+      "own_nll": -0.34405122350663137,
+      "nll_at_true_phi": -0.34405122350663137,
+      "mae": 0.0,
+      "mae_log_phi": 0.0,
+      "phi_mean": 5.333060258513022,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:d9fed1aadc5c3e5c25bb5637146d684a87030b8aaa8a30909065e2654a5b86c9",
+        "measured_at": "2026-10-24T13:58:06.285253+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:2de49ec557d4b62c0e4a315d86da4d8e91ff61fd8c961109516009b873fc9e85",
+        "output_digest": "sha256:86264e1c344d9e61157ed5c19478af427f970438876ce9c2be1016794a24026f",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "statsmodels BetaModel constant precision",
+      "own_nll": -0.18008714184634955,
+      "nll_at_true_phi": -0.19311543852203755,
+      "mae": 0.0818674544919802,
+      "mae_log_phi": 0.4040498527276127,
+      "phi_mean": 3.6507192906756867,
+      "seconds": 0.004753916058689356,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:9df6c1308469f00c6fbe898c8b941d21f58cf05e3ebac6d363a25166ad036f35",
+        "measured_at": "2026-10-24T13:58:06.286185+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:2de49ec557d4b62c0e4a315d86da4d8e91ff61fd8c961109516009b873fc9e85",
+        "output_digest": "sha256:95e38bae09ab81bd8f5b890c6574e95d9751db0531613ca65cd37e467fa613b2",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "statsmodels BetaModel",
+      "own_nll": 3937.831352712799,
+      "nll_at_true_phi": 12.745628194705,
+      "mae": 0.46299397216098553,
+      "mae_log_phi": 16.54555427252929,
+      "phi_mean": 187615.12510604036,
+      "seconds": 0.02441316586919129,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": false,
+      "_identity": {
+        "fingerprint": "sha256:ba898446a7d15c4b382a1e728575ac5dbd3d64320133465ca4e162ecd16c2471",
+        "measured_at": "2026-10-24T13:58:06.288581+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:2de49ec557d4b62c0e4a315d86da4d8e91ff61fd8c961109516009b873fc9e85",
+        "output_digest": "sha256:c3d87ad557b28da3ba019fbd84000eda0ac66bef1cb2719fc41251c15f318fcf",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "statsmodels BetaModel spline",
+      "own_nll": -0.33812521570450926,
+      "nll_at_true_phi": -0.3404265399931842,
+      "mae": 0.010682348715011442,
+      "mae_log_phi": 0.06855024406564578,
+      "phi_mean": 5.440436235063127,
+      "seconds": 0.09663024987094104,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:da0be6556d1c2b2a38de72c50b7acdeb64a8ee63c6455eda328b6de65ecc6dd4",
+        "measured_at": "2026-10-24T13:58:06.289445+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:2de49ec557d4b62c0e4a315d86da4d8e91ff61fd8c961109516009b873fc9e85",
+        "output_digest": "sha256:e3ef494d183c5c2ccd107a571d5c69ca9a30168f9a504405c930041faf98a0f3",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "mboostrs glmboostLSS BetaLSS",
+      "own_nll": -0.18311290132975894,
+      "nll_at_true_phi": -0.19078965274370974,
+      "mae": 0.0841014925644773,
+      "mae_log_phi": 0.40516681560925316,
+      "phi_mean": 3.531858581174692,
+      "seconds": 6.553100124932826,
+      "mstop": 142,
+      "at_boundary": false,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:6ff3cb9235542553889404aaa42015d62cfed5a42809aef4a451efe706ae06fd",
+        "measured_at": "2026-10-24T13:58:06.290168+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:2de49ec557d4b62c0e4a315d86da4d8e91ff61fd8c961109516009b873fc9e85",
+        "output_digest": "sha256:1f6d8f6fe99aab831565dc44a781569a17c984ed1a6b3bd99a94795b01380a79",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "mboostrs gamboostLSS BetaLSS",
+      "own_nll": -0.3410827962752075,
+      "nll_at_true_phi": -0.34266390433021493,
+      "mae": 0.008611188513152651,
+      "mae_log_phi": 0.09097172103288659,
+      "phi_mean": 5.178218420600404,
+      "seconds": 18.735879749991,
+      "mstop": 237,
+      "at_boundary": false,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:52d2a20144bc551be625e5e6eba716e00a29f085e844d0ef363b45a15ded952d",
+        "measured_at": "2026-10-24T13:58:06.290925+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:2de49ec557d4b62c0e4a315d86da4d8e91ff61fd8c961109516009b873fc9e85",
+        "output_digest": "sha256:809b6a579842fda1327803c6011453d8b9c35f668dad4380ce097e73ca72a032",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "generating Beta",
+      "own_nll": -0.34405122350663137,
+      "nll_at_true_phi": -0.34405122350663137,
+      "mae": 0.0,
+      "mae_log_phi": 0.0,
+      "phi_mean": 5.333060258513022,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:df14115da06fc7cbb0e4dd0db336d0521b68726fc7d3001d5d56ad8264cd4305",
+        "measured_at": "2026-10-24T13:58:24.507294+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f3114a438299d866cbc041617f35d44100a428abbf01114a849680b772778d67",
+        "output_digest": "sha256:24792ba2cc06334da8c457ffdd34a07d317079fc51871dc0970134cac2cfbdec",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "statsmodels BetaModel constant precision",
+      "own_nll": -0.1803967780758823,
+      "nll_at_true_phi": -0.196680508020985,
+      "mae": 0.07517085553309483,
+      "mae_log_phi": 0.41508123196490276,
+      "phi_mean": 3.5518969532137414,
+      "seconds": 0.004697582917287946,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:002d4b632c9d7f155be0aba0ea88c7cc20974b8038f382e5488e183508c05cc8",
+        "measured_at": "2026-10-24T13:58:24.508430+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f3114a438299d866cbc041617f35d44100a428abbf01114a849680b772778d67",
+        "output_digest": "sha256:0a28457ae06bbd6f9fa88cf4504685f8716e86611d50f96c8d0e8f8ac97c840b",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "statsmodels BetaModel",
+      "own_nll": -0.18114982205415833,
+      "nll_at_true_phi": -0.19632637384888524,
+      "mae": 0.0741603434201947,
+      "mae_log_phi": 0.38675306763396056,
+      "phi_mean": 3.6820928383229066,
+      "seconds": 0.007760041859000921,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:20f010a12f3d117cbe8d0fcb7dff117af9993608e39a42dd434f57f2a51bf58c",
+        "measured_at": "2026-10-24T13:58:24.509639+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f3114a438299d866cbc041617f35d44100a428abbf01114a849680b772778d67",
+        "output_digest": "sha256:2eb7f2d777599b5dd7e49c58ddd18b814a4510456fa753e0ded4d823d97c89a9",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "statsmodels BetaModel spline",
+      "own_nll": -0.33053510423399185,
+      "nll_at_true_phi": -0.3307335083670843,
+      "mae": 0.021438723132164435,
+      "mae_log_phi": 0.07067391583073743,
+      "phi_mean": 5.443646267438807,
+      "seconds": 0.07058591581881046,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:6e595de2aee2483b1bb5cc7083047e1d553644331e7ceaa8525cd7ab2c59abb3",
+        "measured_at": "2026-10-24T13:58:24.510959+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f3114a438299d866cbc041617f35d44100a428abbf01114a849680b772778d67",
+        "output_digest": "sha256:87281662010d2959a49bcde4052edb65682c450a58de4e05c96d2d113dcd80c0",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "mboostrs glmboostLSS BetaLSS",
+      "own_nll": -0.18324986779660474,
+      "nll_at_true_phi": -0.19439756966161834,
+      "mae": 0.0773665878999418,
+      "mae_log_phi": 0.41248909383082943,
+      "phi_mean": 3.470822766968606,
+      "seconds": 3.289718624902889,
+      "mstop": 161,
+      "at_boundary": false,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:68c9071ce470c6bf39669d01812f48c6faca37a4141fd80215f7c8e239ff0866",
+        "measured_at": "2026-10-24T13:58:24.511938+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f3114a438299d866cbc041617f35d44100a428abbf01114a849680b772778d67",
+        "output_digest": "sha256:7f97d709022a6c970ca0935570221402745d5455d8db6e30d726a4f402499c58",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "mboostrs gamboostLSS BetaLSS",
+      "own_nll": -0.33306280554656686,
+      "nll_at_true_phi": -0.3357262320297119,
+      "mae": 0.01805000478171103,
+      "mae_log_phi": 0.09938634604805344,
+      "phi_mean": 5.273072219945385,
+      "seconds": 14.8197802498471,
+      "mstop": 366,
+      "at_boundary": false,
+      "converged": null,
+      "_identity": {
+        "fingerprint": "sha256:b27e5d69053eb1b7f28721443a898f06e876a1d095e8bbfd58be1d97fea31f85",
+        "measured_at": "2026-10-24T13:58:24.512880+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f3114a438299d866cbc041617f35d44100a428abbf01114a849680b772778d67",
+        "output_digest": "sha256:3b85ae1cde99ef66e9bbf21899fbb58b69413375c654f159e38bb0f8a30b4d50",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    }
+  ],
+  "recovery": {
+    "train_phi_mean": 7.692101062861805,
+    "statsmodels_mean_params": {
+      "Intercept": 0.13582639190222834,
+      "x1": 0.4911127168582385,
+      "x2": -0.3625542141092513,
+      "x3": 0.01412491371790127,
+      "noise": 0.0023572175418278547
+    },
+    "statsmodels_precision_params": {
+      "Intercept": 1.7634994279810003,
+      "x1": -0.00014515776344636473,
+      "x2": 0.020919280278223977,
+      "x3": 0.6841144473301445,
+      "noise": -0.0861750442410162
+    },
+    "statsmodels_llf": 612.7965728347666,
+    "lss_loglik": 611.9924936536263,
+    "lss_scipy_loglik": 611.9924936536264,
+    "lss_allocation": {
+      "mu": 67,
+      "phi": 186
+    },
+    "lss_mstop": 253,
+    "constant_precision": {
+      "precision": 1.5202522554176963
+    }
+  },
+  "usability": {
+    "probes": [
+      {
+        "label": "predict default is logit mu and log phi",
+        "ok": true,
+        "detail": "type='link' is logit mu and log phi. The logistic of the mu link matches type='response' to 0.00e+00, and exp of the phi link matches to 0.00e+00. The default type is 'link'."
+      },
+      {
+        "label": "BetaLSS logLik is the beta density",
+        "ok": true,
+        "detail": "logLik() = 542.453665 matches the beta density at the fitted mu and phi to 7.96e-13."
+      },
+      {
+        "label": "BetaLSS rejects 0",
+        "ok": false,
+        "error": "MboostrsValueError",
+        "detail": "family 'BetaLSS': y must be in the open interval (0, 1); bad value at index 0"
+      },
+      {
+        "label": "BetaLSS rejects 1",
+        "ok": false,
+        "error": "MboostrsValueError",
+        "detail": "family 'BetaLSS': y must be in the open interval (0, 1); bad value at index 0"
+      },
+      {
+        "label": "glmboost(family=BetaLSS())",
+        "ok": false,
+        "error": "TypeError",
+        "detail": "BetaLSS is a distributional family (parameters: mu, phi). glmboost() fits one predictor. Use glmboostLSS() or gamboostLSS(), for example mb.gamboostLSS(formula, data, family=mb.BetaLSS())."
+      },
+      {
+        "label": "autospec without a budget",
+        "ok": true,
+        "detail": "family=Gaussian(), defaulted=('family', 'shapes', 'interactions', 'mstop'). response 'y' lies in (0, 1). GammaReg's support continues past 1, so autospec starts from Gaussian. A proportion is a BetaLSS mean and precision; give autospec a budget and the family probe scores BetaLSS against Gaussian on held-out log score, or pass family=BetaLSS() to glmboostLSS or gamboostLSS."
+      },
+      {
+        "label": "autospec with a family-probe budget",
+        "ok": true,
+        "detail": "family=BetaLSS(stabilization='L2'), measured=('family',). log score -0.400 against -0.225 nats/row"
+      }
+    ]
+  },
+  "provenance": {
+    "commit": "727e84bf14ec352e634e5b57bf022408da92a806",
+    "working_tree": {
+      "dirty": false,
+      "status_digest": null,
+      "commit_source": "working directory"
+    },
+    "native_build": {
+      "package_version": "0.1.3",
+      "source_digest": "sha256:a771766f1a4820a76b9d908fbc12ed53123e648afcb8583181708b5273ca6b49",
+      "git_revision": "e9c670d73f2aff2d153b2c02b4cf8a71aa2c46e2",
+      "git_dirty": false,
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+      "target": "aarch64-apple-darwin",
+      "profile": "release",
+      "target_features": "aes,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+      "crate_features": "",
+      "abi_version": 1,
+      "build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+    },
+    "platform": {
+      "system": "Darwin",
+      "release": "25.3.0",
+      "machine": "arm64",
+      "cpu": "arm",
+      "python": "3.12.11"
+    },
+    "versions": {
+      "mboostrs": "0.1.3",
+      "numpy": "2.4.6",
+      "rpy2": "3.6.7",
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "R": "4.5.1",
+      "mboost": "2.9.11",
+      "scipy": "1.16.3",
+      "statsmodels": "0.15.0",
+      "scikit-learn": "1.9.0",
+      "polars": "1.41.0",
+      "patsy": "1.0.3"
+    },
+    "compiler_flags": {
+      "RUSTFLAGS": null,
+      "CARGO_PROFILE": "release"
+    },
+    "threads": {
+      "logical_cpus": 10,
+      "r_mclapply_default_cores": "2",
+      "RAYON_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+    },
+    "created_at": "2026-10-24T13:56:01.665040+00:00",
+    "runner": "benches/bench_beta.py",
+    "runner_sha256": "4a1ea2d71388d973f97a75d8720e5b8e2d59c0a6b688e341061de6c007ed7889",
+    "protocol": {
+      "kind": "seeded predictive-method comparison",
+      "design": {
+        "n_train": 1500,
+        "n_test": 4000,
+        "seeds": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "nu": 0.1,
+        "folds": 5,
+        "mstop": {
+          "glm": 600,
+          "gam": 1200
+        },
+        "linear_mean": "logit mu = 0.15 + 0.50 x1 - 0.35 x2",
+        "linear_phi": "log phi = 1.80 + 0.65 x3",
+        "smooth_mean": "logit mu = 0.10 + sin(1.4 x1) + 0.25 x2",
+        "smooth_phi": "log phi = 1.60 + 0.55 sin(2 x3)",
+        "variance": "mu * (1 - mu) / (1 + phi)",
+        "phi": "precision, not a variance",
+        "links": "logit mu, log phi"
+      },
+      "timing": "runner perf_counter regions; method-specific fit/tuning/prediction work",
+      "order": "sequential task, seed, method order in the recorded runner",
+      "timing_claim": "descriptive elapsed times; no paired equal-work speedup or timing interval",
+      "warmup": "no dedicated warmup; imports and provenance collection excluded from timers"
+    },
+    "repeats": {
+      "training_seeds": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "test": "one independently generated test sample per task, shared across methods and seeds"
+    },
+    "uncertainty": {
+      "scope": "descriptive timing spread across training seeds, not repeated identical-input trials",
+      "groups": [
+        {
+          "task": "linear",
+          "method": "generating Beta",
+          "n": 4,
+          "seconds_sd": 0.0,
+          "seconds_se": 0.0
+        },
+        {
+          "task": "linear",
+          "method": "statsmodels BetaModel constant precision",
+          "n": 4,
+          "seconds_sd": 0.00016112629213731452,
+          "seconds_se": 8.056314606865726e-05
+        },
+        {
+          "task": "linear",
+          "method": "statsmodels BetaModel",
+          "n": 4,
+          "seconds_sd": 0.0005074119842059529,
+          "seconds_se": 0.00025370599210297644
+        },
+        {
+          "task": "linear",
+          "method": "statsmodels BetaModel spline",
+          "n": 4,
+          "seconds_sd": 0.028074722148963435,
+          "seconds_se": 0.014037361074481718
+        },
+        {
+          "task": "linear",
+          "method": "mboostrs glmboostLSS BetaLSS",
+          "n": 4,
+          "seconds_sd": 0.09664191568810404,
+          "seconds_se": 0.04832095784405202
+        },
+        {
+          "task": "linear",
+          "method": "mboostrs gamboostLSS BetaLSS",
+          "n": 4,
+          "seconds_sd": 0.8001981670646113,
+          "seconds_se": 0.40009908353230567
+        },
+        {
+          "task": "smooth",
+          "method": "generating Beta",
+          "n": 4,
+          "seconds_sd": 0.0,
+          "seconds_se": 0.0
+        },
+        {
+          "task": "smooth",
+          "method": "statsmodels BetaModel constant precision",
+          "n": 4,
+          "seconds_sd": 0.0003593319803223615,
+          "seconds_se": 0.00017966599016118074
+        },
+        {
+          "task": "smooth",
+          "method": "statsmodels BetaModel",
+          "n": 4,
+          "seconds_sd": 0.012522512655970966,
+          "seconds_se": 0.006261256327985483
+        },
+        {
+          "task": "smooth",
+          "method": "statsmodels BetaModel spline",
+          "n": 4,
+          "seconds_sd": 0.013978955504108286,
+          "seconds_se": 0.006989477752054143
+        },
+        {
+          "task": "smooth",
+          "method": "mboostrs glmboostLSS BetaLSS",
+          "n": 4,
+          "seconds_sd": 1.6843494931359286,
+          "seconds_se": 0.8421747465679643
+        },
+        {
+          "task": "smooth",
+          "method": "mboostrs gamboostLSS BetaLSS",
+          "n": 4,
+          "seconds_sd": 2.4866383612269716,
+          "seconds_se": 1.2433191806134858
+        }
+      ]
+    }
+  }
+}

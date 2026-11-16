@@ -1,0 +1,30 @@
+config_id,stage,settings,validation_metric,validation_value,kept,note
+T01,propensity,"logit of enrolment; spec=lin (all pre-treatment columns, experience dropped)",5-fold log loss,0.457046,no,CV in run.py
+T02,propensity,"logit of enrolment; spec=quad (adds prior^2, education^2, age^2)",5-fold log loss,0.456614,yes,selected by CV in run.py
+T03,propensity,logit of enrolment; spec=cubic (adds prior^3),5-fold log loss,not computed,no,"statsmodels Logit raised LinAlgError: Singular matrix (quasi-separation above 40,000 dollars)"
+T04,outcome Y,OLS by arm on responders; spec=lin,5-fold MSE (dollars^2),332883952.58,no,CV in run.py
+T05,outcome Y,OLS by arm on responders; spec=quad,5-fold MSE (dollars^2),328991820.68,no,CV in run.py
+T06,outcome Y,OLS by arm on responders; spec=logpe,5-fold MSE (dollars^2),332319846.92,no,CV in run.py
+T07,outcome Y,OLS by arm on responders; spec=pe_int (quad plus prior x covariates),5-fold MSE (dollars^2),319809597.11,yes,selected by CV in run.py
+T08,outcome Y,OLS by arm on responders; spec=cubic (exploration only),5-fold RMSE (dollars),18398.5,no,exploration; not in run.py grid
+T09,outcome E,OLS by arm on responders; spec=lin,5-fold MSE,0.1929,no,CV in run.py
+T10,outcome E,OLS by arm on responders; spec=quad,5-fold MSE,0.1912,no,CV in run.py
+T11,outcome E,OLS by arm on responders; spec=logpe,5-fold MSE,0.1907,yes,selected by CV in run.py
+T12,outcome E,OLS by arm on responders; spec=pe_int,5-fold MSE,0.1924,no,CV in run.py
+T13,outcome E,OLS by arm on responders; spec=cubic (exploration only),5-fold MSE,0.1919,no,exploration; not in run.py grid
+T14,"effect ATE, Y","AIPW pseudo-outcome, propensity quad, outcome lin, trimming 0.02",point ATE (dollars),4443,no,"rejected: pseudo-outcome sd 40,000 to 135,000 in the tails; estimate moves with the outcome spec"
+T15,"effect ATE, Y","AIPW pseudo-outcome, propensity quad, outcome quad, trimming 0.02",point ATE (dollars),8101,no,"rejected: outcome extrapolation above 40,000 dominates the ATE"
+T16,"effect ATE, Y","AIPW pseudo-outcome, propensity quad, outcome pe_int, trimming 0.02",point ATE (dollars),9338,no,rejected: same extrapolation problem
+T17,"effect ATE, Y","AIPW pseudo-outcome, propensity quad, outcome logpe, trimming 0.02",point ATE (dollars),5269,no,rejected: unstable across outcome specs
+T18,"effect, Y tau on overlap rows","DR pseudo-outcome regressed on modifiers, overlap rows, outcome pe_int","prior-earnings slope (dollars per 1,000)",190,no,rejected: slope changes with the overlap definition; pseudo-outcomes too noisy
+T19,"effect ATE, Y","regression adjustment, full sample, IPW by response, basis lin",point ATE (dollars),4419,no,rejected: education slope of the effect -538 (sign unstable across samples)
+T20,"effect ATE, Y","regression adjustment, full sample, IPW by response, basis quad",point ATE (dollars),4345,no,rejected: education slope -303; basis-dependent
+T21,"effect ATE, Y","regression adjustment, overlap rows only, basis lin",point ATE (dollars),4625,no,rejected: education slope +2; disagrees with T19 and T20
+T22,"R-learner effect, Y, no prior cap","outcome spec pe_int, modifiers alpha 0.05",point ATE (dollars),5275,no,"rejected in favour of the capped version (T26); tau linear in prior earnings extrapolates above 40,000"
+T23,"R-learner effect, Y, no prior cap","outcome spec logpe, modifiers alpha 0.05",point ATE (dollars),4118,no,rejected: same reason as T22
+T24,"R-learner effect, E, no prior cap","outcome spec logpe, modifiers alpha 0.05",point ATE (probability),0.0424,no,"rejected: tau turns negative above 40,000 by extrapolation"
+T25,"R-learner effect, Y, BH-selected modifiers","outcome spec pe_int, cap 39,790 dollars, modifiers ldist and smsa only",point ATE (dollars); ATT,4130,no,"ATT 3,986; not used for estimates; used to check which modifiers survive Benjamini-Hochberg at q = 0.10"
+T26,"R-learner effect, Y, final","outcome spec pe_int, prior capped at 99th percentile of enrolled (39,790), modifiers alpha 0.05",point ATE (dollars); ATT,4670,yes,"final ATE; ATT 3,515; claims use the BH step on top"
+T27,"R-learner effect, E, final","outcome spec logpe, prior capped, modifiers alpha 0.05",point ATE (probability),0.0738,yes,final EMP_ATE; statsmodels TreatmentEffect IPW on responders gives 0.079 as a cross-check
+T28,"overlap trimming, Y","AIPW pseudo-outcome, trimming 0.01 instead of 0.02 (exploration)",point ATE (dollars),7990,no,rejected with T14-T17
+T29,"overlap trimming, Y","AIPW pseudo-outcome, trimming 0.05 (exploration)",point ATE (dollars),8135,no,rejected with T14-T17

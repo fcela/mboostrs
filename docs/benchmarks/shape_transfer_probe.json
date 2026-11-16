@@ -1,0 +1,1193 @@
+{
+  "protocol": {
+    "teachers": "catboost tuned (jagged by construction) and a ReLU network (smooth by construction)",
+    "shape_source": "partial dependence curves and surfaces on the development rows",
+    "df_rule": "smallest spline df reproducing the curve to 2% relative residual, else df cap 20",
+    "interaction_rule": "residual share of surface variation >= 10%",
+    "variance_floor": 0.005,
+    "pair_grid": 25,
+    "grid_points": 41,
+    "specification_uses_validation_or_test_rows": false
+  },
+  "records": [
+    {
+      "task": "housing_iid",
+      "seed": 0,
+      "status": "ok",
+      "kind": "regression",
+      "catboost_test_loss": 0.05312084078408445,
+      "hybrid_test_loss": 0.05554171833919069,
+      "net_test_loss": 0.07412015608879463,
+      "teachers": {
+        "catboost": {
+          "read_seconds": 13.18616166600259,
+          "inputs": [
+            {
+              "name": "longitude",
+              "variance_share": 0.4243718913529484,
+              "smooth_df": 6,
+              "smooth": true,
+              "read": true,
+              "rel_residual": {
+                "1": 1.0,
+                "2": 0.047596875891300315,
+                "3": 0.040363605673526974,
+                "4": 0.03876862146158493,
+                "5": 0.028220745314063298,
+                "6": 0.013438227196801355,
+                "8": 0.0035473155699152982,
+                "10": 0.002929553275488343,
+                "14": 0.0019309232627641602,
+                "20": 0.0007879538331311235,
+                "30": 0.0005450810100128859
+              }
+            },
+            {
+              "name": "latitude",
+              "variance_share": 0.2763357664830113,
+              "smooth_df": 8,
+              "smooth": true,
+              "read": true,
+              "rel_residual": {
+                "1": 1.0,
+                "2": 0.1927484048549597,
+                "3": 0.065228583349634,
+                "4": 0.04763661436279171,
+                "5": 0.047635125797079104,
+                "6": 0.02287496331187942,
+                "8": 0.00367028558233808,
+                "10": 0.003246288269184824,
+                "14": 0.002538494446652143,
+                "20": 0.002362797491460773,
+                "30": 8.856316650455046e-05
+              }
+            },
+            {
+              "name": "age",
+              "variance_share": 0.00046061564667429966,
+              "smooth_df": 20,
+              "smooth": true,
+              "read": true,
+              "rel_residual": {
+                "1": 1.0,
+                "2": 0.9961544201038256,
+                "3": 0.878701452792281,
+                "4": 0.6203654756132744,
+                "5": 0.16971522162225236,
+                "6": 0.1700399233686763,
+                "8": 0.0834622496650994,
+                "10": 0.07874199922058449,
+                "14": 0.034118267053253354,
+                "20": 0.01882802916700655,
+                "30": 0.004276367324257265
+              }
+            },
+            {
+              "name": "income",
+              "variance_share": 0.2857746644904129,
+              "smooth_df": 3,
+              "smooth": true,
+              "read": true,
+              "rel_residual": {
+                "1": 1.0,
+                "2": 0.17613828915676655,
+                "3": 0.007749994568553143,
+                "4": 0.007749969169952802,
+                "5": 0.001932383043632806,
+                "6": 0.0018811960956009986,
+                "8": 0.0012791953955234392,
+                "10": 0.0006981365080480327,
+                "14": 0.0006868258825685465,
+                "20": 0.0003271928292637461,
+                "30": 0.00012135202129200712
+              }
+            },
+            {
+              "name": "rooms",
+              "variance_share": 0.006708051754038099,
+              "smooth_df": 20,
+              "smooth": true,
+              "read": true,
+              "rel_residual": {
+                "1": 1.0,
+                "2": 0.8263855234183723,
+                "3": 0.6042726344769959,
+                "4": 0.39986661008915364,
+                "5": 0.27276532821798205,
+                "6": 0.19083087082058384,
+                "8": 0.1572488387789354,
+                "10": 0.1610711328553918,
+                "14": 0.09827920151485907,
+                "20": 0.007749650036016985,
+                "30": 0.00021734174545288493
+              }
+            },
+            {
+              "name": "bedrooms",
+              "variance_share": 8.280467304170363e-05,
+              "smooth_df": 20,
+              "smooth": true,
+              "read": true,
+              "rel_residual": {
+                "1": 1.0,
+                "2": 0.8382614015439322,
+                "3": 0.6208057629365038,
+                "4": 0.40290517693006583,
+                "5": 0.25168196200134185,
+                "6": 0.13402996493965935,
+                "8": 0.043275982199849065,
+                "10": 0.03746571600408271,
+                "14": 0.033078271725639166,
+                "20": 0.003020361009558292,
+                "30": 2.7458063462246248e-05
+              }
+            },
+            {
+              "name": "population",
+              "variance_share": 0.0004660637634788726,
+              "smooth_df": 30,
+              "smooth": true,
+              "read": true,
+              "rel_residual": {
+                "1": 1.0,
+                "2": 0.9395744563205147,
+                "3": 0.6244956630198085,
+                "4": 0.4420546746584503,
+                "5": 0.4395633903117654,
+                "6": 0.2587005975920991,
+                "8": 0.11278441078726113,
+                "10": 0.07331227906950492,
+                "14": 0.0616388611743958,
+                "20": 0.02975156649937087,
+                "30": 0.006529526654597143
+              }
+            },
+            {
+              "name": "occupancy",
+              "variance_share": 0.005800141836394568,
+              "smooth_df": 14,
+              "smooth": true,
+              "read": true,
+              "rel_residual": {
+                "1": 1.0,
+                "2": 0.9082853169318439,
+                "3": 0.7715751818479102,
+                "4": 0.6104116624049601,
+                "5": 0.4757851760242152,
+                "6": 0.33968134979583586,
+                "8": 0.15062137418899252,
+                "10": 0.058890513889613236,
+                "14": 0.01551491798085028,
+                "20": 0.018738490918252495,
+                "30": 0.0002474902429679674
+              }
+            }
+          ],
+          "pairs": [
+            {
+              "left": "longitude",
+              "right": "latitude",
+              "interaction_fraction": 0.5278568377845798
+            },
+            {
+              "left": "rooms",
+              "right": "occupancy",
+              "interaction_fraction": 0.4264586200439664
+            },
+            {
+              "left": "latitude",
+              "right": "occupancy",
+              "interaction_fraction": 0.3403172370684451
+            },
+            {
+              "left": "longitude",
+              "right": "income",
+              "interaction_fraction": 0.2604277285354553
+            },
+            {
+              "left": "longitude",
+              "right": "rooms",
+              "interaction_fraction": 0.25062806139713
+            },
+            {
+              "left": "latitude",
+              "right": "income",
+              "interaction_fraction": 0.19080095015026083
+            },
+            {
+              "left": "latitude",
+              "right": "rooms",
+              "interaction_fraction": 0.17472253061779014
+            },
+            {
+              "left": "longitude",
+              "right": "occupancy",
+              "interaction_fraction": 0.16351442873161878
+            },
+            {
+              "left": "income",
+              "right": "rooms",
+              "interaction_fraction": 0.14742390347660814
+            },
+            {
+              "left": "income",
+              "right": "occupancy",
+              "interaction_fraction": 0.1158515001482463
+            },
+            {
+              "left": "income",
+              "right": "population",
+              "interaction_fraction": 0.07893780674610183
+            },
+            {
+              "left": "latitude",
+              "right": "population",
+              "interaction_fraction": 0.058214496455024564
+            }
+          ],
+          "smooth_inputs": 8,
+          "read_inputs": 8,
+          "total_inputs": 8,
+          "variants": {
+            "curved": {
+              "formula": "y ~ bbs(longitude, df=6) + bbs(latitude, df=8) + bbs(income, df=4) + bbs(rooms, df=20) + bbs(occupancy, df=14) + bbs(longitude, df=4) %X% bbs(latitude, df=4) + bbs(rooms, df=4) %X% bbs(occupancy, df=4) + bbs(latitude, df=4) %X% bbs(occupancy, df=4)",
+              "decisions": [
+                {
+                  "input": "longitude",
+                  "decision": "bbs",
+                  "df": 6,
+                  "smooth": true,
+                  "variance_share": 0.4243718913529484
+                },
+                {
+                  "input": "latitude",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.2763357664830113
+                },
+                {
+                  "input": "age",
+                  "decision": "dropped",
+                  "variance_share": 0.00046061564667429966
+                },
+                {
+                  "input": "income",
+                  "decision": "bbs",
+                  "df": 4,
+                  "smooth": true,
+                  "variance_share": 0.2857746644904129
+                },
+                {
+                  "input": "rooms",
+                  "decision": "bbs",
+                  "df": 20,
+                  "smooth": true,
+                  "variance_share": 0.006708051754038099
+                },
+                {
+                  "input": "bedrooms",
+                  "decision": "dropped",
+                  "variance_share": 8.280467304170363e-05
+                },
+                {
+                  "input": "population",
+                  "decision": "dropped",
+                  "variance_share": 0.0004660637634788726
+                },
+                {
+                  "input": "occupancy",
+                  "decision": "bbs",
+                  "df": 14,
+                  "smooth": true,
+                  "variance_share": 0.005800141836394568
+                },
+                {
+                  "input": "longitude*latitude",
+                  "decision": "tensor",
+                  "interaction_fraction": 0.5278568377845798
+                },
+                {
+                  "input": "rooms*occupancy",
+                  "decision": "tensor",
+                  "interaction_fraction": 0.4264586200439664
+                },
+                {
+                  "input": "latitude*occupancy",
+                  "decision": "tensor",
+                  "interaction_fraction": 0.3403172370684451
+                }
+              ],
+              "terms": 11,
+              "nu": 0.1,
+              "test_loss": 0.07233480168156407,
+              "mstop": 1200,
+              "fit_seconds": 5.416282750025857
+            },
+            "curved_tree": {
+              "formula": "y ~ bbs(longitude, df=6) + bbs(latitude, df=8) + bbs(income, df=4) + bbs(rooms, df=20) + bbs(occupancy, df=14) + btree(income, latitude, longitude, occupancy, rooms, maxdepth=3, selection=sse)",
+              "decisions": [
+                {
+                  "input": "longitude",
+                  "decision": "bbs",
+                  "df": 6,
+                  "smooth": true,
+                  "variance_share": 0.4243718913529484
+                },
+                {
+                  "input": "latitude",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.2763357664830113
+                },
+                {
+                  "input": "age",
+                  "decision": "dropped",
+                  "variance_share": 0.00046061564667429966
+                },
+                {
+                  "input": "income",
+                  "decision": "bbs",
+                  "df": 4,
+                  "smooth": true,
+                  "variance_share": 0.2857746644904129
+                },
+                {
+                  "input": "rooms",
+                  "decision": "bbs",
+                  "df": 20,
+                  "smooth": true,
+                  "variance_share": 0.006708051754038099
+                },
+                {
+                  "input": "bedrooms",
+                  "decision": "dropped",
+                  "variance_share": 8.280467304170363e-05
+                },
+                {
+                  "input": "population",
+                  "decision": "dropped",
+                  "variance_share": 0.0004660637634788726
+                },
+                {
+                  "input": "occupancy",
+                  "decision": "bbs",
+                  "df": 14,
+                  "smooth": true,
+                  "variance_share": 0.005800141836394568
+                },
+                {
+                  "input": "all retained",
+                  "decision": "tree",
+                  "maxdepth": 3
+                }
+              ],
+              "terms": 9,
+              "nu": 0.05,
+              "test_loss": 0.06073384857373784,
+              "mstop": 855,
+              "fit_seconds": 0.9111355419736356
+            },
+            "flat_tree": {
+              "formula": "y ~ bbs(longitude, df=8) + bbs(latitude, df=8) + bbs(age, df=8) + bbs(income, df=8) + bbs(rooms, df=8) + bbs(bedrooms, df=8) + bbs(population, df=8) + bbs(occupancy, df=8) + btree(age, bedrooms, income, latitude, longitude, occupancy, population, rooms, maxdepth=3, selection=sse)",
+              "decisions": [
+                {
+                  "input": "longitude",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.4243718913529484
+                },
+                {
+                  "input": "latitude",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.2763357664830113
+                },
+                {
+                  "input": "age",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.00046061564667429966
+                },
+                {
+                  "input": "income",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.2857746644904129
+                },
+                {
+                  "input": "rooms",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.006708051754038099
+                },
+                {
+                  "input": "bedrooms",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 8.280467304170363e-05
+                },
+                {
+                  "input": "population",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.0004660637634788726
+                },
+                {
+                  "input": "occupancy",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.005800141836394568
+                },
+                {
+                  "input": "all retained",
+                  "decision": "tree",
+                  "maxdepth": 3
+                }
+              ],
+              "terms": 9,
+              "nu": 0.05,
+              "test_loss": 0.05950913825311782,
+              "mstop": 1190,
+              "fit_seconds": 1.2360142919933423
+            },
+            "smooth": {
+              "formula": "y ~ bbs(longitude, df=6) + bbs(latitude, df=8) + bbs(income, df=4) + bbs(rooms, df=20) + bbs(occupancy, df=14)",
+              "decisions": [
+                {
+                  "input": "longitude",
+                  "decision": "bbs",
+                  "df": 6,
+                  "smooth": true,
+                  "variance_share": 0.4243718913529484
+                },
+                {
+                  "input": "latitude",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.2763357664830113
+                },
+                {
+                  "input": "age",
+                  "decision": "dropped",
+                  "variance_share": 0.00046061564667429966
+                },
+                {
+                  "input": "income",
+                  "decision": "bbs",
+                  "df": 4,
+                  "smooth": true,
+                  "variance_share": 0.2857746644904129
+                },
+                {
+                  "input": "rooms",
+                  "decision": "bbs",
+                  "df": 20,
+                  "smooth": true,
+                  "variance_share": 0.006708051754038099
+                },
+                {
+                  "input": "bedrooms",
+                  "decision": "dropped",
+                  "variance_share": 8.280467304170363e-05
+                },
+                {
+                  "input": "population",
+                  "decision": "dropped",
+                  "variance_share": 0.0004660637634788726
+                },
+                {
+                  "input": "occupancy",
+                  "decision": "bbs",
+                  "df": 14,
+                  "smooth": true,
+                  "variance_share": 0.005800141836394568
+                }
+              ],
+              "terms": 8,
+              "nu": 0.1,
+              "test_loss": 0.08270022975738743,
+              "mstop": 1194,
+              "fit_seconds": 0.3845592080033384
+            },
+            "curved_keep": {
+              "formula": "y ~ bbs(longitude, df=6) + bbs(latitude, df=8) + bbs(age, df=20) + bbs(income, df=4) + bbs(rooms, df=20) + bbs(bedrooms, df=20) + bbs(population, df=20) + bbs(occupancy, df=14) + bbs(longitude, df=4) %X% bbs(latitude, df=4) + bbs(rooms, df=4) %X% bbs(occupancy, df=4) + bbs(latitude, df=4) %X% bbs(occupancy, df=4)",
+              "decisions": [
+                {
+                  "input": "longitude",
+                  "decision": "bbs",
+                  "df": 6,
+                  "smooth": true,
+                  "variance_share": 0.4243718913529484
+                },
+                {
+                  "input": "latitude",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.2763357664830113
+                },
+                {
+                  "input": "age",
+                  "decision": "bbs",
+                  "df": 20,
+                  "smooth": true,
+                  "variance_share": 0.00046061564667429966
+                },
+                {
+                  "input": "income",
+                  "decision": "bbs",
+                  "df": 4,
+                  "smooth": true,
+                  "variance_share": 0.2857746644904129
+                },
+                {
+                  "input": "rooms",
+                  "decision": "bbs",
+                  "df": 20,
+                  "smooth": true,
+                  "variance_share": 0.006708051754038099
+                },
+                {
+                  "input": "bedrooms",
+                  "decision": "bbs",
+                  "df": 20,
+                  "smooth": true,
+                  "variance_share": 8.280467304170363e-05
+                },
+                {
+                  "input": "population",
+                  "decision": "bbs",
+                  "df": 20,
+                  "smooth": true,
+                  "variance_share": 0.0004660637634788726
+                },
+                {
+                  "input": "occupancy",
+                  "decision": "bbs",
+                  "df": 14,
+                  "smooth": true,
+                  "variance_share": 0.005800141836394568
+                },
+                {
+                  "input": "longitude*latitude",
+                  "decision": "tensor",
+                  "interaction_fraction": 0.5278568377845798
+                },
+                {
+                  "input": "rooms*occupancy",
+                  "decision": "tensor",
+                  "interaction_fraction": 0.4264586200439664
+                },
+                {
+                  "input": "latitude*occupancy",
+                  "decision": "tensor",
+                  "interaction_fraction": 0.3403172370684451
+                }
+              ],
+              "terms": 11,
+              "nu": 0.1,
+              "test_loss": 0.0807677093473791,
+              "mstop": 240,
+              "fit_seconds": 5.595303458045237
+            }
+          }
+        },
+        "neural": {
+          "read_seconds": 37.82861329102889,
+          "inputs": [
+            {
+              "name": "longitude",
+              "variance_share": 0.008732927836257292,
+              "smooth_df": 6,
+              "smooth": true,
+              "read": true,
+              "rel_residual": {
+                "1": 1.0,
+                "2": 0.19433975915013837,
+                "3": 0.06297465659008009,
+                "4": 0.06063339020541812,
+                "5": 0.036295338931970476,
+                "6": 0.017612933013108508,
+                "8": 0.0014219694159981807,
+                "10": 0.0013382791507889967,
+                "14": 0.00034527047229476597,
+                "20": 5.6443747187208415e-05,
+                "30": 9.42623286366363e-06
+              }
+            },
+            {
+              "name": "latitude",
+              "variance_share": 0.007755831268296684,
+              "smooth_df": 8,
+              "smooth": true,
+              "read": true,
+              "rel_residual": {
+                "1": 1.0,
+                "2": 0.09357466791218298,
+                "3": 0.07584771788200093,
+                "4": 0.044970320612022406,
+                "5": 0.04488859624412043,
+                "6": 0.021265800116933072,
+                "8": 0.012886403876563896,
+                "10": 0.003368103437196635,
+                "14": 0.0006516025043089109,
+                "20": 6.936783612551055e-05,
+                "30": 2.1579691564691113e-06
+              }
+            },
+            {
+              "name": "age",
+              "variance_share": 4.349232684538097e-05,
+              "smooth_df": 5,
+              "smooth": true,
+              "read": true,
+              "rel_residual": {
+                "1": 1.0,
+                "2": 0.8045019166216387,
+                "3": 0.741675488735625,
+                "4": 0.40932776527620973,
+                "5": 0.016636971321822524,
+                "6": 0.013543963169265026,
+                "8": 0.0001169068233985022,
+                "10": 6.001691189208472e-05,
+                "14": 7.910181852754592e-07,
+                "20": 1.6766404879177046e-08,
+                "30": 3.6972086132162684e-10
+              }
+            },
+            {
+              "name": "income",
+              "variance_share": 0.021452330637968822,
+              "smooth_df": 3,
+              "smooth": true,
+              "read": true,
+              "rel_residual": {
+                "1": 1.0,
+                "2": 0.05614293090795625,
+                "3": 0.010266443974260705,
+                "4": 0.0027060210276748965,
+                "5": 0.002268197969633912,
+                "6": 0.0007976631833659518,
+                "8": 0.0002994573001478868,
+                "10": 3.160433507444841e-05,
+                "14": 3.0827903331137934e-05,
+                "20": 5.672274506863576e-07,
+                "30": 4.886239751270126e-08
+              }
+            },
+            {
+              "name": "rooms",
+              "variance_share": 0.9128866848902583,
+              "smooth_df": 2,
+              "smooth": true,
+              "read": true,
+              "rel_residual": {
+                "1": 1.0,
+                "2": 0.000991889550746148,
+                "3": 0.000458819328523193,
+                "4": 0.0003530913872961626,
+                "5": 0.00035130983781350955,
+                "6": 0.00034835011775230106,
+                "8": 0.00034796138013781384,
+                "10": 0.0003035297889753537,
+                "14": 8.12538706455069e-05,
+                "20": 4.150218048225366e-06,
+                "30": 6.63301030127698e-08
+              }
+            },
+            {
+              "name": "bedrooms",
+              "variance_share": 0.04744212774358952,
+              "smooth_df": 3,
+              "smooth": true,
+              "read": true,
+              "rel_residual": {
+                "1": 1.0,
+                "2": 0.03144289418247088,
+                "3": 0.016632295891550547,
+                "4": 0.004638607266800088,
+                "5": 0.0008642551616305604,
+                "6": 0.0002534682781124814,
+                "8": 0.00013267778486937852,
+                "10": 0.00011815778613905771,
+                "14": 3.088949056635138e-05,
+                "20": 3.51376332256895e-05,
+                "30": 1.526098657519309e-06
+              }
+            },
+            {
+              "name": "population",
+              "variance_share": 0.0006966721182621707,
+              "smooth_df": 8,
+              "smooth": true,
+              "read": true,
+              "rel_residual": {
+                "1": 1.0,
+                "2": 0.061156304007547395,
+                "3": 0.04191935978725512,
+                "4": 0.030101582152673972,
+                "5": 0.030101522366984046,
+                "6": 0.02241677159551221,
+                "8": 0.0028438798056577346,
+                "10": 0.0003385528409118071,
+                "14": 9.364004787822652e-05,
+                "20": 1.9798396362427633e-05,
+                "30": 1.1988546806794178e-07
+              }
+            },
+            {
+              "name": "occupancy",
+              "variance_share": 0.000989933178521956,
+              "smooth_df": 14,
+              "smooth": true,
+              "read": true,
+              "rel_residual": {
+                "1": 1.0,
+                "2": 0.8421992927474875,
+                "3": 0.7000344434918315,
+                "4": 0.6739338560421381,
+                "5": 0.6267404741969347,
+                "6": 0.3612771127077526,
+                "8": 0.04059962057475672,
+                "10": 0.030924264871159412,
+                "14": 0.01576811108359131,
+                "20": 0.01107030301533983,
+                "30": 3.213201421327269e-05
+              }
+            }
+          ],
+          "pairs": [
+            {
+              "left": "latitude",
+              "right": "occupancy",
+              "interaction_fraction": 1.6721814820291672
+            },
+            {
+              "left": "longitude",
+              "right": "occupancy",
+              "interaction_fraction": 1.6203859785272896
+            },
+            {
+              "left": "bedrooms",
+              "right": "occupancy",
+              "interaction_fraction": 1.4234788186844747
+            },
+            {
+              "left": "rooms",
+              "right": "bedrooms",
+              "interaction_fraction": 1.2791927817818147
+            },
+            {
+              "left": "population",
+              "right": "occupancy",
+              "interaction_fraction": 1.2538787609730668
+            },
+            {
+              "left": "age",
+              "right": "population",
+              "interaction_fraction": 0.6811454450827521
+            },
+            {
+              "left": "income",
+              "right": "occupancy",
+              "interaction_fraction": 0.655557283146337
+            },
+            {
+              "left": "latitude",
+              "right": "bedrooms",
+              "interaction_fraction": 0.6364662839701305
+            },
+            {
+              "left": "income",
+              "right": "bedrooms",
+              "interaction_fraction": 0.6183833023509837
+            },
+            {
+              "left": "longitude",
+              "right": "latitude",
+              "interaction_fraction": 0.5372260776993573
+            },
+            {
+              "left": "longitude",
+              "right": "age",
+              "interaction_fraction": 0.5361453530827374
+            },
+            {
+              "left": "latitude",
+              "right": "age",
+              "interaction_fraction": 0.5035196206388267
+            }
+          ],
+          "smooth_inputs": 8,
+          "read_inputs": 8,
+          "total_inputs": 8,
+          "variants": {
+            "curved": {
+              "formula": "y ~ bbs(longitude, df=6) + bbs(latitude, df=8) + bbs(income, df=4) + bbs(rooms, df=4) + bbs(bedrooms, df=4) + bbs(rooms, df=4) %X% bbs(bedrooms, df=4) + bbs(latitude, df=4) %X% bbs(bedrooms, df=4) + bbs(income, df=4) %X% bbs(bedrooms, df=4)",
+              "decisions": [
+                {
+                  "input": "longitude",
+                  "decision": "bbs",
+                  "df": 6,
+                  "smooth": true,
+                  "variance_share": 0.008732927836257292
+                },
+                {
+                  "input": "latitude",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.007755831268296684
+                },
+                {
+                  "input": "age",
+                  "decision": "dropped",
+                  "variance_share": 4.349232684538097e-05
+                },
+                {
+                  "input": "income",
+                  "decision": "bbs",
+                  "df": 4,
+                  "smooth": true,
+                  "variance_share": 0.021452330637968822
+                },
+                {
+                  "input": "rooms",
+                  "decision": "bbs",
+                  "df": 4,
+                  "smooth": true,
+                  "variance_share": 0.9128866848902583
+                },
+                {
+                  "input": "bedrooms",
+                  "decision": "bbs",
+                  "df": 4,
+                  "smooth": true,
+                  "variance_share": 0.04744212774358952
+                },
+                {
+                  "input": "population",
+                  "decision": "dropped",
+                  "variance_share": 0.0006966721182621707
+                },
+                {
+                  "input": "occupancy",
+                  "decision": "dropped",
+                  "variance_share": 0.000989933178521956
+                },
+                {
+                  "input": "rooms*bedrooms",
+                  "decision": "tensor",
+                  "interaction_fraction": 1.2791927817818147
+                },
+                {
+                  "input": "latitude*bedrooms",
+                  "decision": "tensor",
+                  "interaction_fraction": 0.6364662839701305
+                },
+                {
+                  "input": "income*bedrooms",
+                  "decision": "tensor",
+                  "interaction_fraction": 0.6183833023509837
+                }
+              ],
+              "terms": 11,
+              "nu": 0.1,
+              "test_loss": 0.09353671657099145,
+              "mstop": 1197,
+              "fit_seconds": 5.033789665962104
+            },
+            "curved_tree": {
+              "formula": "y ~ bbs(longitude, df=6) + bbs(latitude, df=8) + bbs(income, df=4) + bbs(rooms, df=4) + bbs(bedrooms, df=4) + btree(bedrooms, income, latitude, longitude, rooms, maxdepth=3, selection=sse)",
+              "decisions": [
+                {
+                  "input": "longitude",
+                  "decision": "bbs",
+                  "df": 6,
+                  "smooth": true,
+                  "variance_share": 0.008732927836257292
+                },
+                {
+                  "input": "latitude",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.007755831268296684
+                },
+                {
+                  "input": "age",
+                  "decision": "dropped",
+                  "variance_share": 4.349232684538097e-05
+                },
+                {
+                  "input": "income",
+                  "decision": "bbs",
+                  "df": 4,
+                  "smooth": true,
+                  "variance_share": 0.021452330637968822
+                },
+                {
+                  "input": "rooms",
+                  "decision": "bbs",
+                  "df": 4,
+                  "smooth": true,
+                  "variance_share": 0.9128866848902583
+                },
+                {
+                  "input": "bedrooms",
+                  "decision": "bbs",
+                  "df": 4,
+                  "smooth": true,
+                  "variance_share": 0.04744212774358952
+                },
+                {
+                  "input": "population",
+                  "decision": "dropped",
+                  "variance_share": 0.0006966721182621707
+                },
+                {
+                  "input": "occupancy",
+                  "decision": "dropped",
+                  "variance_share": 0.000989933178521956
+                },
+                {
+                  "input": "all retained",
+                  "decision": "tree",
+                  "maxdepth": 3
+                }
+              ],
+              "terms": 9,
+              "nu": 0.05,
+              "test_loss": 0.06591578227926893,
+              "mstop": 869,
+              "fit_seconds": 0.753879958007019
+            },
+            "flat_tree": {
+              "formula": "y ~ bbs(longitude, df=8) + bbs(latitude, df=8) + bbs(age, df=8) + bbs(income, df=8) + bbs(rooms, df=8) + bbs(bedrooms, df=8) + bbs(population, df=8) + bbs(occupancy, df=8) + btree(age, bedrooms, income, latitude, longitude, occupancy, population, rooms, maxdepth=3, selection=sse)",
+              "decisions": [
+                {
+                  "input": "longitude",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.008732927836257292
+                },
+                {
+                  "input": "latitude",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.007755831268296684
+                },
+                {
+                  "input": "age",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 4.349232684538097e-05
+                },
+                {
+                  "input": "income",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.021452330637968822
+                },
+                {
+                  "input": "rooms",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.9128866848902583
+                },
+                {
+                  "input": "bedrooms",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.04744212774358952
+                },
+                {
+                  "input": "population",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.0006966721182621707
+                },
+                {
+                  "input": "occupancy",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.000989933178521956
+                },
+                {
+                  "input": "all retained",
+                  "decision": "tree",
+                  "maxdepth": 3
+                }
+              ],
+              "terms": 9,
+              "nu": 0.05,
+              "test_loss": 0.05950913825311782,
+              "mstop": 1190,
+              "fit_seconds": 1.2231213750201277
+            },
+            "smooth": {
+              "formula": "y ~ bbs(longitude, df=6) + bbs(latitude, df=8) + bbs(income, df=4) + bbs(rooms, df=4) + bbs(bedrooms, df=4)",
+              "decisions": [
+                {
+                  "input": "longitude",
+                  "decision": "bbs",
+                  "df": 6,
+                  "smooth": true,
+                  "variance_share": 0.008732927836257292
+                },
+                {
+                  "input": "latitude",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.007755831268296684
+                },
+                {
+                  "input": "age",
+                  "decision": "dropped",
+                  "variance_share": 4.349232684538097e-05
+                },
+                {
+                  "input": "income",
+                  "decision": "bbs",
+                  "df": 4,
+                  "smooth": true,
+                  "variance_share": 0.021452330637968822
+                },
+                {
+                  "input": "rooms",
+                  "decision": "bbs",
+                  "df": 4,
+                  "smooth": true,
+                  "variance_share": 0.9128866848902583
+                },
+                {
+                  "input": "bedrooms",
+                  "decision": "bbs",
+                  "df": 4,
+                  "smooth": true,
+                  "variance_share": 0.04744212774358952
+                },
+                {
+                  "input": "population",
+                  "decision": "dropped",
+                  "variance_share": 0.0006966721182621707
+                },
+                {
+                  "input": "occupancy",
+                  "decision": "dropped",
+                  "variance_share": 0.000989933178521956
+                }
+              ],
+              "terms": 8,
+              "nu": 0.1,
+              "test_loss": 0.09727979699096766,
+              "mstop": 1199,
+              "fit_seconds": 0.36610254197148606
+            },
+            "curved_keep": {
+              "formula": "y ~ bbs(longitude, df=6) + bbs(latitude, df=8) + bbs(age, df=5) + bbs(income, df=4) + bbs(rooms, df=4) + bbs(bedrooms, df=4) + bbs(population, df=8) + bbs(occupancy, df=14) + bbs(latitude, df=4) %X% bbs(occupancy, df=4) + bbs(longitude, df=4) %X% bbs(occupancy, df=4) + bbs(bedrooms, df=4) %X% bbs(occupancy, df=4)",
+              "decisions": [
+                {
+                  "input": "longitude",
+                  "decision": "bbs",
+                  "df": 6,
+                  "smooth": true,
+                  "variance_share": 0.008732927836257292
+                },
+                {
+                  "input": "latitude",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.007755831268296684
+                },
+                {
+                  "input": "age",
+                  "decision": "bbs",
+                  "df": 5,
+                  "smooth": true,
+                  "variance_share": 4.349232684538097e-05
+                },
+                {
+                  "input": "income",
+                  "decision": "bbs",
+                  "df": 4,
+                  "smooth": true,
+                  "variance_share": 0.021452330637968822
+                },
+                {
+                  "input": "rooms",
+                  "decision": "bbs",
+                  "df": 4,
+                  "smooth": true,
+                  "variance_share": 0.9128866848902583
+                },
+                {
+                  "input": "bedrooms",
+                  "decision": "bbs",
+                  "df": 4,
+                  "smooth": true,
+                  "variance_share": 0.04744212774358952
+                },
+                {
+                  "input": "population",
+                  "decision": "bbs",
+                  "df": 8,
+                  "smooth": true,
+                  "variance_share": 0.0006966721182621707
+                },
+                {
+                  "input": "occupancy",
+                  "decision": "bbs",
+                  "df": 14,
+                  "smooth": true,
+                  "variance_share": 0.000989933178521956
+                },
+                {
+                  "input": "latitude*occupancy",
+                  "decision": "tensor",
+                  "interaction_fraction": 1.6721814820291672
+                },
+                {
+                  "input": "longitude*occupancy",
+                  "decision": "tensor",
+                  "interaction_fraction": 1.6203859785272896
+                },
+                {
+                  "input": "bedrooms*occupancy",
+                  "decision": "tensor",
+                  "interaction_fraction": 1.4234788186844747
+                }
+              ],
+              "terms": 11,
+              "nu": 0.1,
+              "test_loss": 0.08034467211560119,
+              "mstop": 1198,
+              "fit_seconds": 4.8542586250114255
+            }
+          }
+        }
+      }
+    }
+  ]
+}

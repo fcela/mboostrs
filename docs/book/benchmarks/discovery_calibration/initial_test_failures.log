@@ -1,0 +1,726 @@
+EFEE.EEE...E...........EEEEE..................F......................... [ 37%]
+........................................................................ [ 74%]
+.................................................                        [100%]
+==================================== ERRORS ====================================
+____________ ERROR at setup of test_planted_structure_is_recovered _____________
+
+    @pytest.fixture(scope="module")
+    def planted():
+        df = _planted()
+        new = _planted(seed=9, n=12).drop("y")
+>       return mb.discover(df, "y", newdata=new, seed=0)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_discover.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+python/mboostrs/discover.py:669: in discover
+    analysis.predict(new_frame, calibration_frame)
+python/mboostrs/discover.py:1625: in predict
+    interval = conformal_interval(model, new_frame, level=self.level,
+python/mboostrs/conformal.py:1232: in conformal_interval
+    interval = _held_out_distributional(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+model = LSSModel(family=GaussianLSS, params=['mu', 'sigma'], mstop=54)
+newdata = shape: (12, 5)
+┌───────────┬───────────┬─────┬───────────┬───────────┐
+│ x         ┆ z         ┆ g   ┆ n1        ┆ n2 ...68098 │
+│ -1.739383 ┆ 1.944954  ┆ 0.0 ┆ 1.052489  ┆ -0.957908 │
+└───────────┴───────────┴─────┴───────────┴───────────┘
+level = 0.9, mstop = None
+calibration = shape: (150, 6)
+┌───────────┬───────────┬─────┬───────────┬───────────┬───────────┐
+│ x         ┆ z         ┆ g   ┆ n1...559461  ┆ 1.0 ┆ -1.489808 ┆ -0.431386 ┆ 3.253025  │
+└───────────┴───────────┴─────┴───────────┴───────────┴───────────┘
+extrapolation = 'clip'
+
+    def _held_out_distributional(model, newdata, level, mstop, calibration, extrapolation):
+        """Calibrate an already selected LSS fit without refitting or splitting it."""
+        family = model._family
+        if (getattr(family, "_survival", False) or getattr(family, "_multivariate", False)
+                or getattr(family, "_known_variance", False)):
+            raise NotImplementedError("held-out distributional calibration needs a single observed response")
+        budget = model.stopping_budget
+>       limit = (budget.total if budget.scheme == "noncyclic" else
+                                 ^^^^^^^^^^^^^
+                 min((count for count in budget.per_parameter.values() if count), default=0))
+E       AttributeError: 'function' object has no attribute 'scheme'
+
+python/mboostrs/conformal.py:730: AttributeError
+________ ERROR at setup of test_predictions_have_intervals_for_newdata _________
+
+    @pytest.fixture(scope="module")
+    def planted():
+        df = _planted()
+        new = _planted(seed=9, n=12).drop("y")
+>       return mb.discover(df, "y", newdata=new, seed=0)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_discover.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+python/mboostrs/discover.py:669: in discover
+    analysis.predict(new_frame, calibration_frame)
+python/mboostrs/discover.py:1625: in predict
+    interval = conformal_interval(model, new_frame, level=self.level,
+python/mboostrs/conformal.py:1232: in conformal_interval
+    interval = _held_out_distributional(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+model = LSSModel(family=GaussianLSS, params=['mu', 'sigma'], mstop=54)
+newdata = shape: (12, 5)
+┌───────────┬───────────┬─────┬───────────┬───────────┐
+│ x         ┆ z         ┆ g   ┆ n1        ┆ n2 ...68098 │
+│ -1.739383 ┆ 1.944954  ┆ 0.0 ┆ 1.052489  ┆ -0.957908 │
+└───────────┴───────────┴─────┴───────────┴───────────┘
+level = 0.9, mstop = None
+calibration = shape: (150, 6)
+┌───────────┬───────────┬─────┬───────────┬───────────┬───────────┐
+│ x         ┆ z         ┆ g   ┆ n1...559461  ┆ 1.0 ┆ -1.489808 ┆ -0.431386 ┆ 3.253025  │
+└───────────┴───────────┴─────┴───────────┴───────────┴───────────┘
+extrapolation = 'clip'
+
+    def _held_out_distributional(model, newdata, level, mstop, calibration, extrapolation):
+        """Calibrate an already selected LSS fit without refitting or splitting it."""
+        family = model._family
+        if (getattr(family, "_survival", False) or getattr(family, "_multivariate", False)
+                or getattr(family, "_known_variance", False)):
+            raise NotImplementedError("held-out distributional calibration needs a single observed response")
+        budget = model.stopping_budget
+>       limit = (budget.total if budget.scheme == "noncyclic" else
+                                 ^^^^^^^^^^^^^
+                 min((count for count in budget.per_parameter.values() if count), default=0))
+E       AttributeError: 'function' object has no attribute 'scheme'
+
+python/mboostrs/conformal.py:730: AttributeError
+_____________ ERROR at setup of test_to_dict_is_json_serializable ______________
+
+    @pytest.fixture(scope="module")
+    def planted():
+        df = _planted()
+        new = _planted(seed=9, n=12).drop("y")
+>       return mb.discover(df, "y", newdata=new, seed=0)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_discover.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+python/mboostrs/discover.py:669: in discover
+    analysis.predict(new_frame, calibration_frame)
+python/mboostrs/discover.py:1625: in predict
+    interval = conformal_interval(model, new_frame, level=self.level,
+python/mboostrs/conformal.py:1232: in conformal_interval
+    interval = _held_out_distributional(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+model = LSSModel(family=GaussianLSS, params=['mu', 'sigma'], mstop=54)
+newdata = shape: (12, 5)
+┌───────────┬───────────┬─────┬───────────┬───────────┐
+│ x         ┆ z         ┆ g   ┆ n1        ┆ n2 ...68098 │
+│ -1.739383 ┆ 1.944954  ┆ 0.0 ┆ 1.052489  ┆ -0.957908 │
+└───────────┴───────────┴─────┴───────────┴───────────┘
+level = 0.9, mstop = None
+calibration = shape: (150, 6)
+┌───────────┬───────────┬─────┬───────────┬───────────┬───────────┐
+│ x         ┆ z         ┆ g   ┆ n1...559461  ┆ 1.0 ┆ -1.489808 ┆ -0.431386 ┆ 3.253025  │
+└───────────┴───────────┴─────┴───────────┴───────────┴───────────┘
+extrapolation = 'clip'
+
+    def _held_out_distributional(model, newdata, level, mstop, calibration, extrapolation):
+        """Calibrate an already selected LSS fit without refitting or splitting it."""
+        family = model._family
+        if (getattr(family, "_survival", False) or getattr(family, "_multivariate", False)
+                or getattr(family, "_known_variance", False)):
+            raise NotImplementedError("held-out distributional calibration needs a single observed response")
+        budget = model.stopping_budget
+>       limit = (budget.total if budget.scheme == "noncyclic" else
+                                 ^^^^^^^^^^^^^
+                 min((count for count in budget.per_parameter.values() if count), default=0))
+E       AttributeError: 'function' object has no attribute 'scheme'
+
+python/mboostrs/conformal.py:730: AttributeError
+_________ ERROR at setup of test_include_arrays_adds_the_training_fit __________
+
+    @pytest.fixture(scope="module")
+    def planted():
+        df = _planted()
+        new = _planted(seed=9, n=12).drop("y")
+>       return mb.discover(df, "y", newdata=new, seed=0)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_discover.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+python/mboostrs/discover.py:669: in discover
+    analysis.predict(new_frame, calibration_frame)
+python/mboostrs/discover.py:1625: in predict
+    interval = conformal_interval(model, new_frame, level=self.level,
+python/mboostrs/conformal.py:1232: in conformal_interval
+    interval = _held_out_distributional(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+model = LSSModel(family=GaussianLSS, params=['mu', 'sigma'], mstop=54)
+newdata = shape: (12, 5)
+┌───────────┬───────────┬─────┬───────────┬───────────┐
+│ x         ┆ z         ┆ g   ┆ n1        ┆ n2 ...68098 │
+│ -1.739383 ┆ 1.944954  ┆ 0.0 ┆ 1.052489  ┆ -0.957908 │
+└───────────┴───────────┴─────┴───────────┴───────────┘
+level = 0.9, mstop = None
+calibration = shape: (150, 6)
+┌───────────┬───────────┬─────┬───────────┬───────────┬───────────┐
+│ x         ┆ z         ┆ g   ┆ n1...559461  ┆ 1.0 ┆ -1.489808 ┆ -0.431386 ┆ 3.253025  │
+└───────────┴───────────┴─────┴───────────┴───────────┴───────────┘
+extrapolation = 'clip'
+
+    def _held_out_distributional(model, newdata, level, mstop, calibration, extrapolation):
+        """Calibrate an already selected LSS fit without refitting or splitting it."""
+        family = model._family
+        if (getattr(family, "_survival", False) or getattr(family, "_multivariate", False)
+                or getattr(family, "_known_variance", False)):
+            raise NotImplementedError("held-out distributional calibration needs a single observed response")
+        budget = model.stopping_budget
+>       limit = (budget.total if budget.scheme == "noncyclic" else
+                                 ^^^^^^^^^^^^^
+                 min((count for count in budget.per_parameter.values() if count), default=0))
+E       AttributeError: 'function' object has no attribute 'scheme'
+
+python/mboostrs/conformal.py:730: AttributeError
+________ ERROR at setup of test_contrast_interval_brackets_the_estimate ________
+
+    @pytest.fixture(scope="module")
+    def planted():
+        df = _planted()
+        new = _planted(seed=9, n=12).drop("y")
+>       return mb.discover(df, "y", newdata=new, seed=0)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_discover.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+python/mboostrs/discover.py:669: in discover
+    analysis.predict(new_frame, calibration_frame)
+python/mboostrs/discover.py:1625: in predict
+    interval = conformal_interval(model, new_frame, level=self.level,
+python/mboostrs/conformal.py:1232: in conformal_interval
+    interval = _held_out_distributional(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+model = LSSModel(family=GaussianLSS, params=['mu', 'sigma'], mstop=54)
+newdata = shape: (12, 5)
+┌───────────┬───────────┬─────┬───────────┬───────────┐
+│ x         ┆ z         ┆ g   ┆ n1        ┆ n2 ...68098 │
+│ -1.739383 ┆ 1.944954  ┆ 0.0 ┆ 1.052489  ┆ -0.957908 │
+└───────────┴───────────┴─────┴───────────┴───────────┘
+level = 0.9, mstop = None
+calibration = shape: (150, 6)
+┌───────────┬───────────┬─────┬───────────┬───────────┬───────────┐
+│ x         ┆ z         ┆ g   ┆ n1...559461  ┆ 1.0 ┆ -1.489808 ┆ -0.431386 ┆ 3.253025  │
+└───────────┴───────────┴─────┴───────────┴───────────┴───────────┘
+extrapolation = 'clip'
+
+    def _held_out_distributional(model, newdata, level, mstop, calibration, extrapolation):
+        """Calibrate an already selected LSS fit without refitting or splitting it."""
+        family = model._family
+        if (getattr(family, "_survival", False) or getattr(family, "_multivariate", False)
+                or getattr(family, "_known_variance", False)):
+            raise NotImplementedError("held-out distributional calibration needs a single observed response")
+        budget = model.stopping_budget
+>       limit = (budget.total if budget.scheme == "noncyclic" else
+                                 ^^^^^^^^^^^^^
+                 min((count for count in budget.per_parameter.values() if count), default=0))
+E       AttributeError: 'function' object has no attribute 'scheme'
+
+python/mboostrs/conformal.py:730: AttributeError
+______ ERROR at setup of test_contrast_of_an_unselected_variable_is_zero _______
+
+    @pytest.fixture(scope="module")
+    def planted():
+        df = _planted()
+        new = _planted(seed=9, n=12).drop("y")
+>       return mb.discover(df, "y", newdata=new, seed=0)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_discover.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+python/mboostrs/discover.py:669: in discover
+    analysis.predict(new_frame, calibration_frame)
+python/mboostrs/discover.py:1625: in predict
+    interval = conformal_interval(model, new_frame, level=self.level,
+python/mboostrs/conformal.py:1232: in conformal_interval
+    interval = _held_out_distributional(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+model = LSSModel(family=GaussianLSS, params=['mu', 'sigma'], mstop=54)
+newdata = shape: (12, 5)
+┌───────────┬───────────┬─────┬───────────┬───────────┐
+│ x         ┆ z         ┆ g   ┆ n1        ┆ n2 ...68098 │
+│ -1.739383 ┆ 1.944954  ┆ 0.0 ┆ 1.052489  ┆ -0.957908 │
+└───────────┴───────────┴─────┴───────────┴───────────┘
+level = 0.9, mstop = None
+calibration = shape: (150, 6)
+┌───────────┬───────────┬─────┬───────────┬───────────┬───────────┐
+│ x         ┆ z         ┆ g   ┆ n1...559461  ┆ 1.0 ┆ -1.489808 ┆ -0.431386 ┆ 3.253025  │
+└───────────┴───────────┴─────┴───────────┴───────────┴───────────┘
+extrapolation = 'clip'
+
+    def _held_out_distributional(model, newdata, level, mstop, calibration, extrapolation):
+        """Calibrate an already selected LSS fit without refitting or splitting it."""
+        family = model._family
+        if (getattr(family, "_survival", False) or getattr(family, "_multivariate", False)
+                or getattr(family, "_known_variance", False)):
+            raise NotImplementedError("held-out distributional calibration needs a single observed response")
+        budget = model.stopping_budget
+>       limit = (budget.total if budget.scheme == "noncyclic" else
+                                 ^^^^^^^^^^^^^
+                 min((count for count in budget.per_parameter.values() if count), default=0))
+E       AttributeError: 'function' object has no attribute 'scheme'
+
+python/mboostrs/conformal.py:730: AttributeError
+____________ ERROR at setup of test_warnings_are_recorded_once_each ____________
+
+    @pytest.fixture(scope="module")
+    def planted():
+        df = _planted()
+        new = _planted(seed=9, n=12).drop("y")
+>       return mb.discover(df, "y", newdata=new, seed=0)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_discover.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+python/mboostrs/discover.py:669: in discover
+    analysis.predict(new_frame, calibration_frame)
+python/mboostrs/discover.py:1625: in predict
+    interval = conformal_interval(model, new_frame, level=self.level,
+python/mboostrs/conformal.py:1232: in conformal_interval
+    interval = _held_out_distributional(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+model = LSSModel(family=GaussianLSS, params=['mu', 'sigma'], mstop=54)
+newdata = shape: (12, 5)
+┌───────────┬───────────┬─────┬───────────┬───────────┐
+│ x         ┆ z         ┆ g   ┆ n1        ┆ n2 ...68098 │
+│ -1.739383 ┆ 1.944954  ┆ 0.0 ┆ 1.052489  ┆ -0.957908 │
+└───────────┴───────────┴─────┴───────────┴───────────┘
+level = 0.9, mstop = None
+calibration = shape: (150, 6)
+┌───────────┬───────────┬─────┬───────────┬───────────┬───────────┐
+│ x         ┆ z         ┆ g   ┆ n1...559461  ┆ 1.0 ┆ -1.489808 ┆ -0.431386 ┆ 3.253025  │
+└───────────┴───────────┴─────┴───────────┴───────────┴───────────┘
+extrapolation = 'clip'
+
+    def _held_out_distributional(model, newdata, level, mstop, calibration, extrapolation):
+        """Calibrate an already selected LSS fit without refitting or splitting it."""
+        family = model._family
+        if (getattr(family, "_survival", False) or getattr(family, "_multivariate", False)
+                or getattr(family, "_known_variance", False)):
+            raise NotImplementedError("held-out distributional calibration needs a single observed response")
+        budget = model.stopping_budget
+>       limit = (budget.total if budget.scheme == "noncyclic" else
+                                 ^^^^^^^^^^^^^
+                 min((count for count in budget.per_parameter.values() if count), default=0))
+E       AttributeError: 'function' object has no attribute 'scheme'
+
+python/mboostrs/conformal.py:730: AttributeError
+___ ERROR at setup of test_spread_result_predictions_carry_the_fitted_scale ____
+
+    @pytest.fixture(scope="module")
+    def spread():
+        frame = _hetero()
+        new = _hetero(seed=9, n=24).drop("y")
+>       result = mb.discover(frame, "y", newdata=new, seed=0)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_discover_sigma_589.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+python/mboostrs/discover.py:669: in discover
+    analysis.predict(new_frame, calibration_frame)
+python/mboostrs/discover.py:1625: in predict
+    interval = conformal_interval(model, new_frame, level=self.level,
+python/mboostrs/conformal.py:1232: in conformal_interval
+    interval = _held_out_distributional(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+model = LSSModel(family=GaussianLSS, params=['mu', 'sigma'], mstop=28)
+newdata = shape: (24, 2)
+┌───────────┬────────────┐
+│ x         ┆ h          │
+│ ---       ┆ ---        │
+│ f64       ┆ f64     ...6.266446  │
+│ 1.130364  ┆ 118.898937 │
+│ 1.950963  ┆ 70.123691  │
+│ 1.944954  ┆ 973.241522 │
+└───────────┴────────────┘
+level = 0.9, mstop = None
+calibration = shape: (200, 3)
+┌───────────┬─────────────┬───────────┐
+│ x         ┆ h           ┆ y         │
+│ ---       ┆ ---     ...│ 1.651896  ┆ 102.303441  ┆ 1.745587  │
+│ 1.291229  ┆ 139.468989  ┆ 0.749674  │
+└───────────┴─────────────┴───────────┘
+extrapolation = 'clip'
+
+    def _held_out_distributional(model, newdata, level, mstop, calibration, extrapolation):
+        """Calibrate an already selected LSS fit without refitting or splitting it."""
+        family = model._family
+        if (getattr(family, "_survival", False) or getattr(family, "_multivariate", False)
+                or getattr(family, "_known_variance", False)):
+            raise NotImplementedError("held-out distributional calibration needs a single observed response")
+        budget = model.stopping_budget
+>       limit = (budget.total if budget.scheme == "noncyclic" else
+                                 ^^^^^^^^^^^^^
+                 min((count for count in budget.per_parameter.values() if count), default=0))
+E       AttributeError: 'function' object has no attribute 'scheme'
+
+python/mboostrs/conformal.py:730: AttributeError
+_______ ERROR at setup of test_sigma_is_the_final_model_own_fitted_scale _______
+
+    @pytest.fixture(scope="module")
+    def spread():
+        frame = _hetero()
+        new = _hetero(seed=9, n=24).drop("y")
+>       result = mb.discover(frame, "y", newdata=new, seed=0)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_discover_sigma_589.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+python/mboostrs/discover.py:669: in discover
+    analysis.predict(new_frame, calibration_frame)
+python/mboostrs/discover.py:1625: in predict
+    interval = conformal_interval(model, new_frame, level=self.level,
+python/mboostrs/conformal.py:1232: in conformal_interval
+    interval = _held_out_distributional(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+model = LSSModel(family=GaussianLSS, params=['mu', 'sigma'], mstop=28)
+newdata = shape: (24, 2)
+┌───────────┬────────────┐
+│ x         ┆ h          │
+│ ---       ┆ ---        │
+│ f64       ┆ f64     ...6.266446  │
+│ 1.130364  ┆ 118.898937 │
+│ 1.950963  ┆ 70.123691  │
+│ 1.944954  ┆ 973.241522 │
+└───────────┴────────────┘
+level = 0.9, mstop = None
+calibration = shape: (200, 3)
+┌───────────┬─────────────┬───────────┐
+│ x         ┆ h           ┆ y         │
+│ ---       ┆ ---     ...│ 1.651896  ┆ 102.303441  ┆ 1.745587  │
+│ 1.291229  ┆ 139.468989  ┆ 0.749674  │
+└───────────┴─────────────┴───────────┘
+extrapolation = 'clip'
+
+    def _held_out_distributional(model, newdata, level, mstop, calibration, extrapolation):
+        """Calibrate an already selected LSS fit without refitting or splitting it."""
+        family = model._family
+        if (getattr(family, "_survival", False) or getattr(family, "_multivariate", False)
+                or getattr(family, "_known_variance", False)):
+            raise NotImplementedError("held-out distributional calibration needs a single observed response")
+        budget = model.stopping_budget
+>       limit = (budget.total if budget.scheme == "noncyclic" else
+                                 ^^^^^^^^^^^^^
+                 min((count for count in budget.per_parameter.values() if count), default=0))
+E       AttributeError: 'function' object has no attribute 'scheme'
+
+python/mboostrs/conformal.py:730: AttributeError
+_ ERROR at setup of test_sigma_is_not_the_scale_rebuilt_from_the_interval_band _
+
+    @pytest.fixture(scope="module")
+    def spread():
+        frame = _hetero()
+        new = _hetero(seed=9, n=24).drop("y")
+>       result = mb.discover(frame, "y", newdata=new, seed=0)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_discover_sigma_589.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+python/mboostrs/discover.py:669: in discover
+    analysis.predict(new_frame, calibration_frame)
+python/mboostrs/discover.py:1625: in predict
+    interval = conformal_interval(model, new_frame, level=self.level,
+python/mboostrs/conformal.py:1232: in conformal_interval
+    interval = _held_out_distributional(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+model = LSSModel(family=GaussianLSS, params=['mu', 'sigma'], mstop=28)
+newdata = shape: (24, 2)
+┌───────────┬────────────┐
+│ x         ┆ h          │
+│ ---       ┆ ---        │
+│ f64       ┆ f64     ...6.266446  │
+│ 1.130364  ┆ 118.898937 │
+│ 1.950963  ┆ 70.123691  │
+│ 1.944954  ┆ 973.241522 │
+└───────────┴────────────┘
+level = 0.9, mstop = None
+calibration = shape: (200, 3)
+┌───────────┬─────────────┬───────────┐
+│ x         ┆ h           ┆ y         │
+│ ---       ┆ ---     ...│ 1.651896  ┆ 102.303441  ┆ 1.745587  │
+│ 1.291229  ┆ 139.468989  ┆ 0.749674  │
+└───────────┴─────────────┴───────────┘
+extrapolation = 'clip'
+
+    def _held_out_distributional(model, newdata, level, mstop, calibration, extrapolation):
+        """Calibrate an already selected LSS fit without refitting or splitting it."""
+        family = model._family
+        if (getattr(family, "_survival", False) or getattr(family, "_multivariate", False)
+                or getattr(family, "_known_variance", False)):
+            raise NotImplementedError("held-out distributional calibration needs a single observed response")
+        budget = model.stopping_budget
+>       limit = (budget.total if budget.scheme == "noncyclic" else
+                                 ^^^^^^^^^^^^^
+                 min((count for count in budget.per_parameter.values() if count), default=0))
+E       AttributeError: 'function' object has no attribute 'scheme'
+
+python/mboostrs/conformal.py:730: AttributeError
+________ ERROR at setup of test_sigma_tracks_the_true_scale_of_each_row ________
+
+    @pytest.fixture(scope="module")
+    def spread():
+        frame = _hetero()
+        new = _hetero(seed=9, n=24).drop("y")
+>       result = mb.discover(frame, "y", newdata=new, seed=0)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_discover_sigma_589.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+python/mboostrs/discover.py:669: in discover
+    analysis.predict(new_frame, calibration_frame)
+python/mboostrs/discover.py:1625: in predict
+    interval = conformal_interval(model, new_frame, level=self.level,
+python/mboostrs/conformal.py:1232: in conformal_interval
+    interval = _held_out_distributional(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+model = LSSModel(family=GaussianLSS, params=['mu', 'sigma'], mstop=28)
+newdata = shape: (24, 2)
+┌───────────┬────────────┐
+│ x         ┆ h          │
+│ ---       ┆ ---        │
+│ f64       ┆ f64     ...6.266446  │
+│ 1.130364  ┆ 118.898937 │
+│ 1.950963  ┆ 70.123691  │
+│ 1.944954  ┆ 973.241522 │
+└───────────┴────────────┘
+level = 0.9, mstop = None
+calibration = shape: (200, 3)
+┌───────────┬─────────────┬───────────┐
+│ x         ┆ h           ┆ y         │
+│ ---       ┆ ---     ...│ 1.651896  ┆ 102.303441  ┆ 1.745587  │
+│ 1.291229  ┆ 139.468989  ┆ 0.749674  │
+└───────────┴─────────────┴───────────┘
+extrapolation = 'clip'
+
+    def _held_out_distributional(model, newdata, level, mstop, calibration, extrapolation):
+        """Calibrate an already selected LSS fit without refitting or splitting it."""
+        family = model._family
+        if (getattr(family, "_survival", False) or getattr(family, "_multivariate", False)
+                or getattr(family, "_known_variance", False)):
+            raise NotImplementedError("held-out distributional calibration needs a single observed response")
+        budget = model.stopping_budget
+>       limit = (budget.total if budget.scheme == "noncyclic" else
+                                 ^^^^^^^^^^^^^
+                 min((count for count in budget.per_parameter.values() if count), default=0))
+E       AttributeError: 'function' object has no attribute 'scheme'
+
+python/mboostrs/conformal.py:730: AttributeError
+___________ ERROR at setup of test_to_dict_carries_the_fitted_scale ____________
+
+    @pytest.fixture(scope="module")
+    def spread():
+        frame = _hetero()
+        new = _hetero(seed=9, n=24).drop("y")
+>       result = mb.discover(frame, "y", newdata=new, seed=0)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_discover_sigma_589.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+python/mboostrs/discover.py:669: in discover
+    analysis.predict(new_frame, calibration_frame)
+python/mboostrs/discover.py:1625: in predict
+    interval = conformal_interval(model, new_frame, level=self.level,
+python/mboostrs/conformal.py:1232: in conformal_interval
+    interval = _held_out_distributional(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+model = LSSModel(family=GaussianLSS, params=['mu', 'sigma'], mstop=28)
+newdata = shape: (24, 2)
+┌───────────┬────────────┐
+│ x         ┆ h          │
+│ ---       ┆ ---        │
+│ f64       ┆ f64     ...6.266446  │
+│ 1.130364  ┆ 118.898937 │
+│ 1.950963  ┆ 70.123691  │
+│ 1.944954  ┆ 973.241522 │
+└───────────┴────────────┘
+level = 0.9, mstop = None
+calibration = shape: (200, 3)
+┌───────────┬─────────────┬───────────┐
+│ x         ┆ h           ┆ y         │
+│ ---       ┆ ---     ...│ 1.651896  ┆ 102.303441  ┆ 1.745587  │
+│ 1.291229  ┆ 139.468989  ┆ 0.749674  │
+└───────────┴─────────────┴───────────┘
+extrapolation = 'clip'
+
+    def _held_out_distributional(model, newdata, level, mstop, calibration, extrapolation):
+        """Calibrate an already selected LSS fit without refitting or splitting it."""
+        family = model._family
+        if (getattr(family, "_survival", False) or getattr(family, "_multivariate", False)
+                or getattr(family, "_known_variance", False)):
+            raise NotImplementedError("held-out distributional calibration needs a single observed response")
+        budget = model.stopping_budget
+>       limit = (budget.total if budget.scheme == "noncyclic" else
+                                 ^^^^^^^^^^^^^
+                 min((count for count in budget.per_parameter.values() if count), default=0))
+E       AttributeError: 'function' object has no attribute 'scheme'
+
+python/mboostrs/conformal.py:730: AttributeError
+=================================== FAILURES ===================================
+____________________ test_permuted_response_returns_nothing ____________________
+
+permuted = DiscoveryResult(formula='bbs(z, df=4.0)', spread_formula=None, mean_effects=1, interactions=0, spread_drivers=0, mstop=149, decisions=23)
+
+    def test_permuted_response_returns_nothing(permuted):
+>       assert permuted.mean_effects == []
+E       AssertionError: assert [{'change': 0...0239519, ...}] == []
+E         
+E         Left contains one more item: {'change': 0.1447557351612172, 'change se': 0.03347896039123998, 'direction': 'increasing', 'range': 1.557122010239519, ...}
+E         Use -v to get more diff
+
+tests/test_discover.py:56: AssertionError
+_______________ test_discovery_adopts_a_validated_u_shaped_scale _______________
+
+    def test_discovery_adopts_a_validated_u_shaped_scale():
+        data = _draw()
+        new = pl.DataFrame({'x1': [-.9, 0., .9], 'x2': [0., 0., 0.]})
+>       result = mb.discover(data, 'y', newdata=new, seed=0)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_nonmonotone_spread_562.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+python/mboostrs/discover.py:669: in discover
+    analysis.predict(new_frame, calibration_frame)
+python/mboostrs/discover.py:1625: in predict
+    interval = conformal_interval(model, new_frame, level=self.level,
+python/mboostrs/conformal.py:1232: in conformal_interval
+    interval = _held_out_distributional(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+model = LSSModel(family=GaussianLSS, params=['mu', 'sigma'], mstop=381)
+newdata = shape: (3, 2)
+┌──────┬─────┐
+│ x1   ┆ x2  │
+│ ---  ┆ --- │
+│ f64  ┆ f64 │
+╞══════╪═════╡
+│ -0.9 ┆ 0.0 │
+│ 0.0  ┆ 0.0 │
+│ 0.9  ┆ 0.0 │
+└──────┴─────┘
+level = 0.9, mstop = None
+calibration = shape: (500, 3)
+┌───────────┬───────────┬───────────┐
+│ x1        ┆ x2        ┆ y         │
+│ ---       ┆ ---       ┆ ...518 │
+│ -0.670273 ┆ -0.836837 ┆ -0.197739 │
+│ -0.239984 ┆ -0.356889 ┆ -1.45376  │
+└───────────┴───────────┴───────────┘
+extrapolation = 'clip'
+
+    def _held_out_distributional(model, newdata, level, mstop, calibration, extrapolation):
+        """Calibrate an already selected LSS fit without refitting or splitting it."""
+        family = model._family
+        if (getattr(family, "_survival", False) or getattr(family, "_multivariate", False)
+                or getattr(family, "_known_variance", False)):
+            raise NotImplementedError("held-out distributional calibration needs a single observed response")
+        budget = model.stopping_budget
+>       limit = (budget.total if budget.scheme == "noncyclic" else
+                                 ^^^^^^^^^^^^^
+                 min((count for count in budget.per_parameter.values() if count), default=0))
+E       AttributeError: 'function' object has no attribute 'scheme'
+
+python/mboostrs/conformal.py:730: AttributeError
+=============================== warnings summary ===============================
+tests/test_conformal.py::test_marginal_coverage_on_fresh_data[heterosc-split]
+  /private/tmp/mboostrs-honest-discovery/python/mboostrs/conformal.py:1257: UserWarning: split-conformal coverage is uneven across covariate values, against a nominal 0.9: x (highest third: coverage 0.75 over 67 rows). The band has one width, so it does not follow noise that changes with a covariate. Use method='cqr' for that case.
+    result = _split_conformal(model, newdata, level, seed,
+
+tests/test_conformal.py::test_marginal_coverage_on_fresh_data[heterosc-cv+]
+  /private/tmp/mboostrs-honest-discovery/python/mboostrs/conformal.py:1260: UserWarning: CV+ coverage is uneven across covariate values, against a nominal 0.9: x (highest third: coverage 0.77 over 134 rows). The band has one width, so it does not follow noise that changes with a covariate. Use method='cqr' for that case.
+    result = _cv_plus(model, newdata, level, seed, n_folds, mstop, extrapolation)
+
+tests/test_conformal.py::test_marginal_coverage_on_fresh_data[heterosc-cv+]
+  /private/tmp/mboostrs-honest-discovery/python/mboostrs/conformal.py:1260: UserWarning: CV+ coverage is uneven across covariate values, against a nominal 0.9: x (highest third: coverage 0.78 over 134 rows). The band has one width, so it does not follow noise that changes with a covariate. Use method='cqr' for that case.
+    result = _cv_plus(model, newdata, level, seed, n_folds, mstop, extrapolation)
+
+tests/test_conformal.py::test_marginal_coverage_on_fresh_data[heterosc-cv+]
+  /private/tmp/mboostrs-honest-discovery/python/mboostrs/conformal.py:1260: UserWarning: CV+ coverage is uneven across covariate values, against a nominal 0.9: x (highest third: coverage 0.76 over 134 rows). The band has one width, so it does not follow noise that changes with a covariate. Use method='cqr' for that case.
+    result = _cv_plus(model, newdata, level, seed, n_folds, mstop, extrapolation)
+
+tests/test_conformal.py::test_marginal_coverage_on_fresh_data[heterosc-cv+]
+  /private/tmp/mboostrs-honest-discovery/python/mboostrs/conformal.py:1260: UserWarning: CV+ coverage is uneven across covariate values, against a nominal 0.9: x (highest third: coverage 0.75 over 134 rows). The band has one width, so it does not follow noise that changes with a covariate. Use method='cqr' for that case.
+    result = _cv_plus(model, newdata, level, seed, n_folds, mstop, extrapolation)
+
+tests/test_conformal.py::test_cqr_width_adapts_to_heteroscedasticity_and_split_does_not
+  /private/tmp/mboostrs-honest-discovery/python/mboostrs/conformal.py:1257: UserWarning: split-conformal coverage is uneven across covariate values, against a nominal 0.9: x (highest third: coverage 0.76 over 250 rows). The band has one width, so it does not follow noise that changes with a covariate. Use method='cqr' for that case.
+    result = _split_conformal(model, newdata, level, seed,
+
+tests/test_conformal.py::test_cqr_conditional_coverage_beats_split_in_the_noisy_region
+tests/test_conformal.py::test_cqr_conditional_coverage_beats_split_in_the_noisy_region
+  /private/tmp/mboostrs-honest-discovery/python/mboostrs/conformal.py:1257: UserWarning: split-conformal coverage is uneven across covariate values, against a nominal 0.9: x (highest third: coverage 0.75 over 134 rows). The band has one width, so it does not follow noise that changes with a covariate. Use method='cqr' for that case.
+    result = _split_conformal(model, newdata, level, seed,
+
+tests/test_conformal.py::test_cqr_conditional_coverage_beats_split_in_the_noisy_region
+  /private/tmp/mboostrs-honest-discovery/python/mboostrs/conformal.py:1257: UserWarning: split-conformal coverage is uneven across covariate values, against a nominal 0.9: x (highest third: coverage 0.73 over 134 rows). The band has one width, so it does not follow noise that changes with a covariate. Use method='cqr' for that case.
+    result = _split_conformal(model, newdata, level, seed,
+
+tests/test_conformal.py::test_cqr_conditional_coverage_beats_split_in_the_noisy_region
+  /private/tmp/mboostrs-honest-discovery/python/mboostrs/conformal.py:1257: UserWarning: split-conformal coverage is uneven across covariate values, against a nominal 0.9: x (highest third: coverage 0.75 over 134 rows); |x - median| (highest third: coverage 0.79 over 134 rows). The band has one width, so it does not follow noise that changes with a covariate. Use method='cqr' for that case.
+    result = _split_conformal(model, newdata, level, seed,
+
+tests/test_conformal.py::test_cqr_conditional_coverage_beats_split_in_the_noisy_region
+  /private/tmp/mboostrs-honest-discovery/python/mboostrs/conformal.py:1257: UserWarning: split-conformal coverage is uneven across covariate values, against a nominal 0.9: x (highest third: coverage 0.78 over 134 rows). The band has one width, so it does not follow noise that changes with a covariate. Use method='cqr' for that case.
+    result = _split_conformal(model, newdata, level, seed,
+
+tests/test_conformal_boundaries.py::test_a_distributional_fit_is_refused_by_name
+  /Users/fcela/.local/share/uv/python/cpython-3.12.11-macos-aarch64-none/lib/python3.12/contextlib.py:144: ExtrapolationWarning: 4 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(x) [mu], covariate x: 2 below -1.40152 and 1 above 1.96026 (worst 0.27 training ranges out); bbs(x) [sigma], covariate x: 2 below -1.40152 and 1 above 1.96026 (worst 0.27 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.27 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics.
+    next(self.gen)
+
+tests/test_conformal_boundaries.py::test_a_plain_fit_is_not_blocked_by_any_of_this
+  /Users/fcela/.local/share/uv/python/cpython-3.12.11-macos-aarch64-none/lib/python3.12/contextlib.py:144: ExtrapolationWarning: 2 fold predictions in this call asked 1 learner(s) to predict outside the range they were fitted on. bbs(x), covariate x: 2 below -1.40152 and 2 above 1.82201 (worst 0.29 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.29 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics.
+    next(self.gen)
+
+tests/test_conformal_core.py::test_newdata_and_gam_intervals_match_the_python_numerics[split]
+tests/test_conformal_core.py::test_newdata_and_gam_intervals_match_the_python_numerics[cv+]
+  /Users/fcela/.local/share/uv/python/cpython-3.12.11-macos-aarch64-none/lib/python3.12/contextlib.py:144: ExtrapolationWarning: 2 fold predictions in this call asked 1 learner(s) to predict outside the range they were fitted on. bbs(x2), covariate x2: 1 below -2.16103 (worst 0.15 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.15 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics.
+    next(self.gen)
+
+tests/test_conformal_core.py::test_inverted_cqr_bands_match_the_python_numerics
+  /private/tmp/mboostrs-honest-discovery/python/mboostrs/_workflow.py:191: RuntimeWarning: the training risk rose on 7 of 30 boosting steps (largest rise 0.0804 of the risk before it); the final risk is 10.375% above its minimum at step 17: the step nu=0.1 is too large for this loss's curvature, so the path does not consistently descend. Use a smaller nu, or step='line_search', which chooses each step's length on the loss.
+    return function(*args, **kwargs)
+
+tests/test_conformal_core.py::test_widen_band_and_midpoint_match_the_oracle[0]
+tests/test_conformal_core.py::test_widen_band_and_midpoint_match_the_oracle[1]
+tests/test_conformal_core.py::test_widen_band_and_midpoint_match_the_oracle[2]
+tests/test_conformal_core.py::test_widen_band_and_midpoint_match_the_oracle[3]
+  /private/tmp/mboostrs-honest-discovery/tests/test_conformal_core.py:89: RuntimeWarning: invalid value encountered in add
+    return 0.5 * (np.asarray(lower) + np.asarray(upper))
+
+tests/test_conformal_guarantee_contract.py::test_held_out_calibration_covers_new_rows_at_the_nominal_level
+  /Users/fcela/.local/share/uv/python/cpython-3.12.11-macos-aarch64-none/lib/python3.12/contextlib.py:144: ExtrapolationWarning: 2 fold predictions in this call asked 1 learner(s) to predict outside the range they were fitted on. bbs(x), covariate x: 9 above 1.78954 (worst 0.051 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.051 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics.
+    next(self.gen)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_discover.py::test_permuted_response_returns_nothing - Asser...
+FAILED tests/test_nonmonotone_spread_562.py::test_discovery_adopts_a_validated_u_shaped_scale
+ERROR tests/test_discover.py::test_planted_structure_is_recovered - Attribute...
+ERROR tests/test_discover.py::test_predictions_have_intervals_for_newdata - A...
+ERROR tests/test_discover.py::test_to_dict_is_json_serializable - AttributeEr...
+ERROR tests/test_discover.py::test_include_arrays_adds_the_training_fit - Att...
+ERROR tests/test_discover.py::test_contrast_interval_brackets_the_estimate - ...
+ERROR tests/test_discover.py::test_contrast_of_an_unselected_variable_is_zero
+ERROR tests/test_discover.py::test_warnings_are_recorded_once_each - Attribut...
+ERROR tests/test_discover_sigma_589.py::test_spread_result_predictions_carry_the_fitted_scale
+ERROR tests/test_discover_sigma_589.py::test_sigma_is_the_final_model_own_fitted_scale
+ERROR tests/test_discover_sigma_589.py::test_sigma_is_not_the_scale_rebuilt_from_the_interval_band
+ERROR tests/test_discover_sigma_589.py::test_sigma_tracks_the_true_scale_of_each_row
+ERROR tests/test_discover_sigma_589.py::test_to_dict_carries_the_fitted_scale
+2 failed, 179 passed, 21 warnings, 12 errors in 5.51s

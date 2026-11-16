@@ -1,0 +1,58 @@
+{
+  "library": "lightgbm 4.7.0",
+  "mean_effects": [],
+  "interactions": [],
+  "variance_drivers": [],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.0037725395468833148,
+      "lower90": -0.006916816195406001,
+      "upper90": 0.00633865178318293
+    },
+    "Q2": {
+      "estimate": -0.0012685636601169668,
+      "lower90": -0.007692545724867994,
+      "upper90": 0.00022564568713569628
+    },
+    "Q3": {
+      "estimate": 0.0007356081013313732,
+      "lower90": -0.004205316861702312,
+      "upper90": 0.006587496802607935
+    },
+    "Q4": {
+      "estimate": 0.005596151229503238,
+      "lower90": -2.38625077272871e-06,
+      "upper90": 0.005451545706927822
+    },
+    "Q5": {
+      "estimate": 0.0051030392435875704,
+      "lower90": -0.0038185650386382162,
+      "upper90": 0.009307289149593575
+    },
+    "Q6": {
+      "estimate": -0.0024420477623499958,
+      "lower90": -0.007229363426603635,
+      "upper90": 0.0011161059432099843
+    },
+    "Q7": {
+      "estimate": 0.0017289775190354288,
+      "lower90": -0.0073933736770227425,
+      "upper90": 0.0052275125036997765
+    },
+    "Q8": {
+      "estimate": -0.001008931016549804,
+      "lower90": -0.004350115632016817,
+      "upper90": 0.0033209625789969123
+    }
+  },
+  "warnings": [
+    "No covariate group passed the association test; mean_effects is empty.",
+    "Missing values in training data (handled by LightGBM native missing direction): {'housing_median_age': 1264, 'total_bedrooms': 154, 'ave_bedrooms': 154}.",
+    "Test covariates differ from training (standardized mean difference > 0.2): {'median_income': 0.539, 'median_house_value': 0.333}. Test rows are described as a later book of business.",
+    "Highly correlated covariate pairs (|r| >= 0.9): [('longitude', 'latitude', -0.923), ('total_rooms', 'total_bedrooms', 0.924), ('total_rooms', 'households', 0.918), ('total_bedrooms', 'households', 0.972), ('population', 'households', 0.901)]. Clusters of such covariates are tested as one group; a single member's effect is not separately identified.",
+    "Association and interaction p-values come from paired cross-validation differences. The folds overlap, so the p-values are approximate and somewhat optimistic; Bonferroni is applied over the tests in each family.",
+    "Effect-query intervals are percentile intervals of a bootstrap of the full training fit with the tuned settings held fixed; they reflect model estimation uncertainty, not noise in y.",
+    "Effect queries contrast two covariate settings for every training row, with the other columns at observed values, and average the contrast over rows.",
+    "No spread driver was found either."
+  ]
+}

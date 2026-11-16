@@ -1,0 +1,103 @@
+{
+  "library": "mboostrs 0.1.3",
+  "effect_queries": {
+    "ATE": {
+      "estimate": -896.0840707078324,
+      "lower90": -6231.923522527832,
+      "upper90": 4439.755381112167
+    },
+    "ATT": {
+      "estimate": 3046.9122317107435,
+      "lower90": 2538.545243562545,
+      "upper90": 3555.2792198589423
+    },
+    "CATE_educ_lt12": {
+      "estimate": 4344.469085804986,
+      "lower90": 3034.2762950724655,
+      "upper90": 5654.661876537507
+    },
+    "CATE_educ_ge16": {
+      "estimate": -12756.370499877306,
+      "lower90": -33430.758457618824,
+      "upper90": 7918.017457864207
+    },
+    "CATE_prior_q1": {
+      "estimate": 3085.1834367297956,
+      "lower90": 2571.826182643667,
+      "upper90": 3598.5406908159243
+    },
+    "CATE_prior_q4": {
+      "estimate": -13590.12280532836,
+      "lower90": -34739.311835745895,
+      "upper90": 7559.066225089176
+    },
+    "CATE_age_lt25": {
+      "estimate": 2844.5154490190257,
+      "lower90": 1852.8250979099796,
+      "upper90": 3836.205800128072
+    },
+    "EMP_ATE": {
+      "estimate": 0.050270660400745786,
+      "lower90": 0.02164218860866714,
+      "upper90": 0.07889913219282443
+    }
+  },
+  "roles": {
+    "age": "confounder",
+    "education": "confounder",
+    "experience": "confounder",
+    "ethnicity": "treatment_only",
+    "smsa": "outcome_only",
+    "region": "irrelevant",
+    "parttime": "outcome_only",
+    "prior_earnings": "confounder",
+    "months_unemployed": "confounder",
+    "distance_km": "confounder",
+    "caseworker_note_len": "irrelevant",
+    "enrolled": "treatment",
+    "certificate": "mediator",
+    "responded": "post_treatment_selection",
+    "hours_post": "mediator",
+    "earnings_post": "outcome"
+  },
+  "adjustment_set": [
+    "age",
+    "education",
+    "experience",
+    "ethnicity",
+    "smsa",
+    "parttime",
+    "prior_earnings",
+    "months_unemployed",
+    "distance_km"
+  ],
+  "effect_modifiers": [],
+  "channels": {
+    "employment": true,
+    "earnings_if_employed": true
+  },
+  "limited_overlap": [
+    {
+      "description": "Applicants with prior earnings from 70,980 to 941,070 dollars: 600 training rows, 99% of them with estimated enrolment propensity outside 0.02-0.98. Enrolment was rare there, so the effects for these applicants rest on few enrolled rows and on model extrapolation. 7.7% of all training rows are outside the bounds.",
+      "variable": "prior_earnings"
+    },
+    {
+      "description": "Applicants who did not answer the follow-up survey: their earnings are not observed, and the estimates assume non-response depends only on the covariates and enrolment.",
+      "variable": "responded"
+    }
+  ],
+  "warnings": [
+    "10 fold predictions in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 1 above 555380 (worst 0.7 training ranges out); bbs(distance_km), covariate distance_km: 1 above 158.8 (worst 0.12 training ranges out). A spline basis",
+    "optimal mstop 793 is within 5% of the search cap 800; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "1 learner(s) are asked to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 1 above 555380 (worst 0.7 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.7 training ranges ou",
+    "the cross-validated risk is still falling at mstop=800, the largest iteration evaluated, so the reported optimal_mstop=800 is where the path stopped rather than where the risk turns. Refit with a larger mstop and cross-validate again on the same folds: `model.continue_to(1600)` then `cvrisk(folds=..",
+    "1 learner(s) are asked to predict outside the range they were fitted on. bbs(distance_km), covariate distance_km: 1 above 158.8 (worst 0.12 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.12 training ranges out tha",
+    "1 learner(s) are asked to predict outside the range they were fitted on. bbs(months_unemployed), covariate months_unemployed: 2 above 15 (worst 0.067 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.067 training ran",
+    "1 learner(s) are asked to predict outside the range they were fitted on. bbs(experience), covariate experience: 2 above 57 (worst 0.068 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.068 training ranges out that i",
+    "boosting has undone much of the penalty of 1 learner(s): bbs(prior_earnings): 6.7 of 13 df after 553 selections (one step: 3.45). Each selection fits a shrunken step, and the steps add up to the unpenalized fit on the learner's basis, so a penalty's df= no longer sets the term's flexibility. The pre",
+    "104 of 4000 new applicants have an estimated propensity outside (0.02, 0.98); their effects are extrapolations (flags in cate_overlap_flags.parquet).",
+    "The arm-specific aipw estimate is -609 dollars (90% interval -5,450 to 4,232). The reported ATE is the pooled augmented score; the arm-specific outcome models extrapolate in the high-prior stratum.",
+    "Intervals for the ATE, ATT, subgroups and the employment effect are normal intervals of the mean of the augmented scores over the chosen rows. They describe the sampled applicants and do not add variance for the nuisance models.",
+    "Earnings for non-respondents are missing. The estimates assume response is missing at random given the covariates and enrolment."
+  ]
+}

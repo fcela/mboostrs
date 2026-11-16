@@ -1,0 +1,1655 @@
+{
+  "design": {
+    "n_train": 1500,
+    "n_test": 4000,
+    "seeds": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "nu": 0.1,
+    "folds": 5,
+    "mstop": {
+      "glm": 400,
+      "gam": 1000
+    },
+    "linear_mean": "log mu = 0.20 + 0.45 x1 - 0.30 x2",
+    "linear_shape": "log shape = 1.15 + 0.85 x3",
+    "smooth_mean": "log mu = 0.10 + sin(1.6 x1) + 0.25 x2",
+    "smooth_shape": "log shape = 0.90 + 0.70 sin(2 x3)",
+    "variance": "mu**2 / shape",
+    "sigma": "GammaLSS sigma is the shape, not the coefficient of variation",
+    "statsmodels_scale": "dispersion phi = 1/shape"
+  },
+  "results": [
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "generating Gamma",
+      "own_nll": 0.8524549769240064,
+      "nll_at_true_shape": 0.8524549769240064,
+      "mae": 0.0,
+      "mae_log_shape": 0.0,
+      "shape_mean": 4.53442384799042,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:4cea2f50b7e7aa6c5561161b0cb257a08016e1c52be142733c16efd1f15137a6",
+        "measured_at": "2026-10-24T13:58:40.355544+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:1b6020352224b3ecc0de05c756a45e35649bd47736550586e7fb7222cca14f36",
+        "output_digest": "sha256:1170b73b86be9dfc676314f01bf35788e354d0fc768f397736e9ae87a28fd01a",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "statsmodels Gamma GLM",
+      "own_nll": 1.058184364394253,
+      "nll_at_true_shape": 0.8558665284411691,
+      "mae": 0.04241724381427306,
+      "mae_log_shape": 0.7044784122076049,
+      "shape_mean": 2.480191611502565,
+      "seconds": 0.004361875122413039,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:38fc8aa4e071ea727b6abbea9687765859fa788cb062567a341c35e7770fd05e",
+        "measured_at": "2026-10-24T13:58:40.356047+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:1b6020352224b3ecc0de05c756a45e35649bd47736550586e7fb7222cca14f36",
+        "output_digest": "sha256:63b349a4795b763fe67e3e15877dc7325d1a9d36cac2c740e4fe9f0362a28c70",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "statsmodels Gamma GLM spline",
+      "own_nll": 1.9176193283114038,
+      "nll_at_true_shape": 0.9089935293411001,
+      "mae": 0.09131910385636716,
+      "mae_log_shape": 0.7119534415922683,
+      "shape_mean": 2.4071783750649764,
+      "seconds": 0.0111906249076128,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:db85e58855cf5f51b48da376a30df75ba56d80c5f5f08bda54b079221bf1fa3b",
+        "measured_at": "2026-10-24T13:58:40.356516+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:1b6020352224b3ecc0de05c756a45e35649bd47736550586e7fb7222cca14f36",
+        "output_digest": "sha256:75da77b50a0070087cd1529244eb9a163df41a4323ba9b28e4906ba45ed0bb71",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "sklearn GammaRegressor",
+      "own_nll": 1.0539933200859324,
+      "nll_at_true_shape": 0.8558594498844548,
+      "mae": 0.042377577147916595,
+      "mae_log_shape": 0.7469432556905415,
+      "shape_mean": 2.153795544263377,
+      "seconds": 0.007835374912247062,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:b28c7bd3fa58f7f7971271167e0ed2570dc36083d05f5d4ab578db5e99cc6641",
+        "measured_at": "2026-10-24T13:58:40.356937+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:1b6020352224b3ecc0de05c756a45e35649bd47736550586e7fb7222cca14f36",
+        "output_digest": "sha256:20c4747c24cdcf40b65a87aa01e55dcdd6fd4064f22f9456fbfe841d729a4904",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "mboostrs glmboost GammaReg",
+      "own_nll": 1.054042447547186,
+      "nll_at_true_shape": 0.856417254601502,
+      "mae": 0.04304422464979061,
+      "mae_log_shape": 0.7470656876050584,
+      "shape_mean": 2.1530760770101045,
+      "seconds": 0.06278820801526308,
+      "mstop": 51,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:0f7c64c00ba97aee640df4d43fbab43cb90369d933b33038fb53ed1e217b2d14",
+        "measured_at": "2026-10-24T13:58:40.357270+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:1b6020352224b3ecc0de05c756a45e35649bd47736550586e7fb7222cca14f36",
+        "output_digest": "sha256:bb471d56d288c9b4274a9cff1268a1c36f39606c84594b5988eae0ef1281fce6",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "mboostrs gamboost GammaReg",
+      "own_nll": 1.0537085897969123,
+      "nll_at_true_shape": 0.856934358994024,
+      "mae": 0.08595991303171656,
+      "mae_log_shape": 0.7410579667762864,
+      "shape_mean": 2.189387468239015,
+      "seconds": 0.2909528340678662,
+      "mstop": 234,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:8e03a57769318152628c5a29373d506b86b15ee5011d1d38fd3b4a0fe3b9aae2",
+        "measured_at": "2026-10-24T13:58:40.357572+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:1b6020352224b3ecc0de05c756a45e35649bd47736550586e7fb7222cca14f36",
+        "output_digest": "sha256:c5879810494c19b245cb505eede65cfda23f00d1b4935fbaccc5b38cbdd6f627",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "mboostrs glmboostLSS GammaLSS",
+      "own_nll": 0.8562991324967567,
+      "nll_at_true_shape": 0.8558507369547553,
+      "mae": 0.04744069861578616,
+      "mae_log_shape": 0.028813705752655426,
+      "shape_mean": 4.438112881359504,
+      "seconds": 1.394217791967094,
+      "mstop": 238,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:beb590e4f841f633486b286f3a1f38a35a9cb1b1dffece6897670ab27c8fae9a",
+        "measured_at": "2026-10-24T13:58:40.357957+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:1b6020352224b3ecc0de05c756a45e35649bd47736550586e7fb7222cca14f36",
+        "output_digest": "sha256:b2e147ad620eeaab212dff4f4ca06f98b7a9df30acf5cdb8ee90eec4219cfe01",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "mboostrs gamboostLSS GammaLSS",
+      "own_nll": 0.8569678583980854,
+      "nll_at_true_shape": 0.8558133715477377,
+      "mae": 0.04036339862642467,
+      "mae_log_shape": 0.04673777035968492,
+      "shape_mean": 4.3375076218375135,
+      "seconds": 10.310531875118613,
+      "mstop": 128,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:4374394eb90a37666a5b765de2538f59f9e41cb7eae21c583b1dd47211183bc7",
+        "measured_at": "2026-10-24T13:58:40.358518+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:1b6020352224b3ecc0de05c756a45e35649bd47736550586e7fb7222cca14f36",
+        "output_digest": "sha256:35c913794ff4f1e25a518ab21caa226c02ad7bb322409e160ee3cd630760f2a2",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "generating Gamma",
+      "own_nll": 0.8524549769240064,
+      "nll_at_true_shape": 0.8524549769240064,
+      "mae": 0.0,
+      "mae_log_shape": 0.0,
+      "shape_mean": 4.53442384799042,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:c6a52b5fb1fdd94d7ee5a763c5b9e83630237188947493df9e14bc428d0a29c3",
+        "measured_at": "2026-10-24T13:58:52.921544+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:732f34374c7c33d75b4bd6ba46ecfe815ea6e7b7c7d9610a7fd20b125eb905d2",
+        "output_digest": "sha256:0d9c4073cb763cd81985388be1f28333dc180064db80d927e1f83756104d1500",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "statsmodels Gamma GLM",
+      "own_nll": 1.0524585365281054,
+      "nll_at_true_shape": 0.8530235195335187,
+      "mae": 0.036899573553681765,
+      "mae_log_shape": 0.7385577189992,
+      "shape_mean": 2.2051830803657335,
+      "seconds": 0.0029809169936925173,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:b5563da3e320197d5d61f642c39658dd5362def7cfb549008ef4c4a3e1c990f0",
+        "measured_at": "2026-10-24T13:58:52.922044+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:732f34374c7c33d75b4bd6ba46ecfe815ea6e7b7c7d9610a7fd20b125eb905d2",
+        "output_digest": "sha256:cf0635f291761840e6d1d9dfc4c2193fcf02b942e5a9e738651f7de24f950f97",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "statsmodels Gamma GLM spline",
+      "own_nll": 1.0609817420464147,
+      "nll_at_true_shape": 0.8602692904225205,
+      "mae": 0.07794280583974163,
+      "mae_log_shape": 0.7266105668869173,
+      "shape_mean": 2.28739241550115,
+      "seconds": 0.009366082958877087,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:50921096131a726cf52b2433552399423fbabf66d0e903ef3227bd74129610ec",
+        "measured_at": "2026-10-24T13:58:52.922513+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:732f34374c7c33d75b4bd6ba46ecfe815ea6e7b7c7d9610a7fd20b125eb905d2",
+        "output_digest": "sha256:7633eb89f861f0bf0de0edd882df22b07156c25982e7558114e9b28b53b90342",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "sklearn GammaRegressor",
+      "own_nll": 1.0531811297353653,
+      "nll_at_true_shape": 0.8530289817340986,
+      "mae": 0.03699068580605375,
+      "mae_log_shape": 0.7572844369730759,
+      "shape_mean": 2.095185106225447,
+      "seconds": 0.0010588329751044512,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:5e480bce5e0129d46acd2da77b1d854ca5cee8fdc3aba61da35396d4764fa9f8",
+        "measured_at": "2026-10-24T13:58:52.922817+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:732f34374c7c33d75b4bd6ba46ecfe815ea6e7b7c7d9610a7fd20b125eb905d2",
+        "output_digest": "sha256:3e630ee4c8061821c20f3fbb607e61d6a2d178f25bd65e72b38915b3abc9b0ad",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "mboostrs glmboost GammaReg",
+      "own_nll": 1.0527864642196811,
+      "nll_at_true_shape": 0.8522289370664881,
+      "mae": 0.030613789557615546,
+      "mae_log_shape": 0.7573750467390419,
+      "shape_mean": 2.0946946100771457,
+      "seconds": 0.05771191697567701,
+      "mstop": 66,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:adbbde375ed41ac1d9e712baf5a55e7c50f45460ff29446c8842e019b7e7f230",
+        "measured_at": "2026-10-24T13:58:52.923084+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:732f34374c7c33d75b4bd6ba46ecfe815ea6e7b7c7d9610a7fd20b125eb905d2",
+        "output_digest": "sha256:a8bb040cc2ab415e72149cff75105f30d27d66f8a3bc631b5c232e5b126ead3a",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "mboostrs gamboost GammaReg",
+      "own_nll": 1.0532710472279754,
+      "nll_at_true_shape": 0.8526247226562814,
+      "mae": 0.03196846057216035,
+      "mae_log_shape": 0.7572408922689194,
+      "shape_mean": 2.0954208736103634,
+      "seconds": 0.3261557500809431,
+      "mstop": 36,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:d2d235b21d565ffa065aa2d07413b16cdb4d9be4b608b70df5f0bafa6ef444fa",
+        "measured_at": "2026-10-24T13:58:52.923343+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:732f34374c7c33d75b4bd6ba46ecfe815ea6e7b7c7d9610a7fd20b125eb905d2",
+        "output_digest": "sha256:2d814b860925d39f0f3a2e834316e7437f85c5de634b1845fbc048edf118b989",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "mboostrs glmboostLSS GammaLSS",
+      "own_nll": 0.8548156504597136,
+      "nll_at_true_shape": 0.8522964473352044,
+      "mae": 0.02020145167013061,
+      "mae_log_shape": 0.08749144670724641,
+      "shape_mean": 3.9663687688986218,
+      "seconds": 1.5032202498987317,
+      "mstop": 198,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:f0081dbe48485b5e614a0048fcdd4b8fdd325d73a412ad12f3fa55a656ddc619",
+        "measured_at": "2026-10-24T13:58:52.923718+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:732f34374c7c33d75b4bd6ba46ecfe815ea6e7b7c7d9610a7fd20b125eb905d2",
+        "output_digest": "sha256:2907774bf24c40ee8f2f87dd45368715256168d0a3c1df6dc5d02a6f82b5efc1",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "mboostrs gamboostLSS GammaLSS",
+      "own_nll": 0.8572691622833064,
+      "nll_at_true_shape": 0.8532722518060436,
+      "mae": 0.032451396786713424,
+      "mae_log_shape": 0.08170702658881412,
+      "shape_mean": 3.8052787065135356,
+      "seconds": 10.260575916152447,
+      "mstop": 107,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:5257f3ba3750d5635caeb0150b436b4ab2f3d6dd495fda94dff3cab5b553df9b",
+        "measured_at": "2026-10-24T13:58:52.924073+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:732f34374c7c33d75b4bd6ba46ecfe815ea6e7b7c7d9610a7fd20b125eb905d2",
+        "output_digest": "sha256:b8a7fc0186425315129aa52f5088b4b9a1dcdf870b4a7a1e83cd4d7ea374f54c",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "generating Gamma",
+      "own_nll": 0.8524549769240064,
+      "nll_at_true_shape": 0.8524549769240064,
+      "mae": 0.0,
+      "mae_log_shape": 0.0,
+      "shape_mean": 4.53442384799042,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:ad767140856ce485b5279659cfdb6942f7bf29395016079561a9338051987326",
+        "measured_at": "2026-10-24T13:59:10.931537+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:feb2fda9fbdb428bac8c905e4203a40dad32a37eb317ea3f78956432ad16ef5d",
+        "output_digest": "sha256:3e6b45e11cd6572a9d12620ebaf9b13fd5d0136f33fe1f7b08869d15074cae51",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "statsmodels Gamma GLM",
+      "own_nll": 1.0639286318605918,
+      "nll_at_true_shape": 0.8608271793502145,
+      "mae": 0.07768047805622293,
+      "mae_log_shape": 0.7857526710999568,
+      "shape_mean": 1.9563373548463632,
+      "seconds": 0.003343624994158745,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:dd1b901f6bc97cc3b53e2c6c7c759a04572482c78d673e2831d0c9fc0b06ae74",
+        "measured_at": "2026-10-24T13:59:10.932021+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:feb2fda9fbdb428bac8c905e4203a40dad32a37eb317ea3f78956432ad16ef5d",
+        "output_digest": "sha256:48cf30864d778997b94cc98f5d49643326da30190228f68f8aeacfa9b38335c9",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "statsmodels Gamma GLM spline",
+      "own_nll": 1.1261963041515997,
+      "nll_at_true_shape": 0.8671765741960387,
+      "mae": 0.10551060050414213,
+      "mae_log_shape": 0.7539311925113893,
+      "shape_mean": 2.113647098446658,
+      "seconds": 0.008100540842860937,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:bc4b765de026893e14283f058489d90c3b06ad349c26be181886b9fe8367eb25",
+        "measured_at": "2026-10-24T13:59:10.932409+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:feb2fda9fbdb428bac8c905e4203a40dad32a37eb317ea3f78956432ad16ef5d",
+        "output_digest": "sha256:3ec80a942801d54e06bb8e1abfe4669b5954061ed339d132ef18c9845b85b4f3",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "sklearn GammaRegressor",
+      "own_nll": 1.0609248045541204,
+      "nll_at_true_shape": 0.86080823144594,
+      "mae": 0.07767139599486589,
+      "mae_log_shape": 0.7483983605245258,
+      "shape_mean": 2.1452823317411918,
+      "seconds": 0.0009919160511344671,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:ed4b8e1ef38d2b51833c97fb35d3348436e5c2274b54ca153fe4f4aaac59337f",
+        "measured_at": "2026-10-24T13:59:10.932706+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:feb2fda9fbdb428bac8c905e4203a40dad32a37eb317ea3f78956432ad16ef5d",
+        "output_digest": "sha256:cf44159c51f0c214fa6ad979f4fd3dfa584bf50f338624e329cb3692de5d0a04",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "mboostrs glmboost GammaReg",
+      "own_nll": 1.06037250017541,
+      "nll_at_true_shape": 0.8594162072877046,
+      "mae": 0.07380000448968206,
+      "mae_log_shape": 0.7484863645874721,
+      "shape_mean": 2.1447700630312894,
+      "seconds": 0.054918749956414104,
+      "mstop": 74,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:26f7cbed939b4f440412daefe66fc845613b9a834193f10a5ffedeaad93e7eff",
+        "measured_at": "2026-10-24T13:59:10.932988+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:feb2fda9fbdb428bac8c905e4203a40dad32a37eb317ea3f78956432ad16ef5d",
+        "output_digest": "sha256:585ce1e83be41ec407924a6e087ed06e74bd551c411946be140af9912f3192d5",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "mboostrs gamboost GammaReg",
+      "own_nll": 1.0652355434959353,
+      "nll_at_true_shape": 0.8583230256344456,
+      "mae": 0.0755119289641343,
+      "mae_log_shape": 0.7460829286583862,
+      "shape_mean": 2.1588710717580306,
+      "seconds": 0.2909433750901371,
+      "mstop": 68,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:76a867ccd22847613782a76b933dfaa0ade4258d5b8ea3e30ecedecd69202288",
+        "measured_at": "2026-10-24T13:59:10.933257+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:feb2fda9fbdb428bac8c905e4203a40dad32a37eb317ea3f78956432ad16ef5d",
+        "output_digest": "sha256:7219cf1386078509aacae7f19a05f05fb8b4953eea9538c5955bd8e05f5f1239",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "mboostrs glmboostLSS GammaLSS",
+      "own_nll": 0.8577527108202385,
+      "nll_at_true_shape": 0.8573532515315201,
+      "mae": 0.053765174842245474,
+      "mae_log_shape": 0.03220103095708117,
+      "shape_mean": 4.373154102612711,
+      "seconds": 1.5074434999842197,
+      "mstop": 232,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:2c50321fe410157c0e6b7ba1dd21c7b3dccd2303ef67fafad7b6024d5d84e504",
+        "measured_at": "2026-10-24T13:59:10.933617+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:feb2fda9fbdb428bac8c905e4203a40dad32a37eb317ea3f78956432ad16ef5d",
+        "output_digest": "sha256:8a728d9b4c89b667e231725cc248e0ec95f31eaa0fcbe81f90e97bb3b0030bab",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "mboostrs gamboostLSS GammaLSS",
+      "own_nll": 0.8587917359735159,
+      "nll_at_true_shape": 0.8574967080269601,
+      "mae": 0.04448059817861144,
+      "mae_log_shape": 0.06652941788901064,
+      "shape_mean": 4.028270360913599,
+      "seconds": 16.130905374884605,
+      "mstop": 108,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:83cefea4f1a2d218bc403d19e85bfcfb7a65271bb80febc6d88aa9bf772072e1",
+        "measured_at": "2026-10-24T13:59:10.933980+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:feb2fda9fbdb428bac8c905e4203a40dad32a37eb317ea3f78956432ad16ef5d",
+        "output_digest": "sha256:3cde46bfb5d85dc9cfd5dbb1002c86981a168cfdffce53bd2f5b2d10d0314cb3",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "generating Gamma",
+      "own_nll": 0.8524549769240064,
+      "nll_at_true_shape": 0.8524549769240064,
+      "mae": 0.0,
+      "mae_log_shape": 0.0,
+      "shape_mean": 4.53442384799042,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:4cc108f134df1f858d54cd14d6bdd262b8b5f92c650901f1fde63f3445cd7cd6",
+        "measured_at": "2026-10-24T13:59:26.150355+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e724b9049856a8b933190430540c77501ef24ddf31cdde8a6e7f3de328806201",
+        "output_digest": "sha256:d79c72ee5b398a4009fcf71d9ac807f5caf924f576d35c555c96b5aa8b13152c",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "statsmodels Gamma GLM",
+      "own_nll": 1.0556232352970327,
+      "nll_at_true_shape": 0.8531650722671607,
+      "mae": 0.03674351969546733,
+      "mae_log_shape": 0.7840251931021467,
+      "shape_mean": 1.9640650731714582,
+      "seconds": 0.00328362500295043,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:beae67ee23d32f9fe581eae5d148db5a8721cb24c4936109b3b9c4d7d80d63af",
+        "measured_at": "2026-10-24T13:59:26.150734+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e724b9049856a8b933190430540c77501ef24ddf31cdde8a6e7f3de328806201",
+        "output_digest": "sha256:8938fdad294d22149a4c858927582960a6afe9a7c1efc4688ca7ffedc5cf9faa",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "statsmodels Gamma GLM spline",
+      "own_nll": 1.0664384585577662,
+      "nll_at_true_shape": 0.8603149090209733,
+      "mae": 0.06975521781672964,
+      "mae_log_shape": 0.7812249591343691,
+      "shape_mean": 1.9767689739266916,
+      "seconds": 0.011029667221009731,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:00fad61bdd23f7623cc206f7b5ec2ac1c981a3982e5d2c5af38aa8012bf8502a",
+        "measured_at": "2026-10-24T13:59:26.151072+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e724b9049856a8b933190430540c77501ef24ddf31cdde8a6e7f3de328806201",
+        "output_digest": "sha256:c67e09fc4b539750f8561a581a930af6558cb34b268db0ff530fcfed9543df4c",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "sklearn GammaRegressor",
+      "own_nll": 1.0555487869666502,
+      "nll_at_true_shape": 0.8531647927733731,
+      "mae": 0.03675457753257358,
+      "mae_log_shape": 0.7835092034613217,
+      "shape_mean": 1.9663900764958537,
+      "seconds": 0.0010219591204077005,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:a1353eefca76f59f8e6d2370c7713974076e79dda530dc27534585eda58ca553",
+        "measured_at": "2026-10-24T13:59:26.151368+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e724b9049856a8b933190430540c77501ef24ddf31cdde8a6e7f3de328806201",
+        "output_digest": "sha256:9122286500c0c063225b5c2b8714de9abc9ecc8d904d780ca6251aae0743851c",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "mboostrs glmboost GammaReg",
+      "own_nll": 1.055519196455557,
+      "nll_at_true_shape": 0.8522484731451696,
+      "mae": 0.026428560740311458,
+      "mae_log_shape": 0.7836661689398764,
+      "shape_mean": 1.9656814662952296,
+      "seconds": 0.0711337081156671,
+      "mstop": 67,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:5c8146c88e7bd7254e7b584a9dd9a3bf59634270efbb75ad2718fa8911d4ad9c",
+        "measured_at": "2026-10-24T13:59:26.151753+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e724b9049856a8b933190430540c77501ef24ddf31cdde8a6e7f3de328806201",
+        "output_digest": "sha256:7cdd7f077de58c6301c4f928ba817e03bd04e7f067763ba705ebd51f6bfca44d",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "mboostrs gamboost GammaReg",
+      "own_nll": 1.0525863455226059,
+      "nll_at_true_shape": 0.8525881962978464,
+      "mae": 0.04125957948103414,
+      "mae_log_shape": 0.781631002357396,
+      "shape_mean": 1.9749161392359826,
+      "seconds": 0.3588238749653101,
+      "mstop": 50,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:f1682614dc376a118eb787b5a8165ac1d0f595898097d629d25b66ab6cd296bb",
+        "measured_at": "2026-10-24T13:59:26.152023+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e724b9049856a8b933190430540c77501ef24ddf31cdde8a6e7f3de328806201",
+        "output_digest": "sha256:dfc9bc4a60f1adb3b5dc4b0e42f65db6b852b28f65713b70cc343ec4dec5a23a",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "mboostrs glmboostLSS GammaLSS",
+      "own_nll": 0.8544518005987062,
+      "nll_at_true_shape": 0.8526541569859778,
+      "mae": 0.015102262894217929,
+      "mae_log_shape": 0.0692617352907296,
+      "shape_mean": 4.174826920940999,
+      "seconds": 1.6403035840485245,
+      "mstop": 201,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:5af5e4bd07f825519249807302e9c2befffcd85fc04b47bca24f82d5321cebba",
+        "measured_at": "2026-10-24T13:59:26.152401+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e724b9049856a8b933190430540c77501ef24ddf31cdde8a6e7f3de328806201",
+        "output_digest": "sha256:e0f7500f4cfa9f4773523461cab66b337d859364cf2ccd5bf35decb19ae1e284",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "mboostrs gamboostLSS GammaLSS",
+      "own_nll": 0.8543983404877231,
+      "nll_at_true_shape": 0.8524468845773616,
+      "mae": 0.031106740826714642,
+      "mae_log_shape": 0.06169524663716204,
+      "shape_mean": 4.075572712643891,
+      "seconds": 13.11861954187043,
+      "mstop": 120,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:5157d9862e48c0212aa7e0f751b69fc981be0bcb59c80ba96c4f429c9bff7063",
+        "measured_at": "2026-10-24T13:59:26.152761+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e724b9049856a8b933190430540c77501ef24ddf31cdde8a6e7f3de328806201",
+        "output_digest": "sha256:4f1d90c18033a7bf9606cc1d25b2af5a974b72e3b840881e82a4d69ca416cd8e",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "generating Gamma",
+      "own_nll": 0.917733188012865,
+      "nll_at_true_shape": 0.917733188012865,
+      "mae": 0.0,
+      "mae_log_shape": 0.0,
+      "shape_mean": 2.7694264086091733,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:4b8cc6be0945801e2d5090cd705d8c6753fd13aa4a6d8cb2b949adf0a74a890a",
+        "measured_at": "2026-10-24T13:59:47.328051+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cfb100b7ee905935c7a43c1e14482781a8a5176198503afb63652cc7cf8d4469",
+        "output_digest": "sha256:23c64a10ee0f4465a624f9094dcfc2a838fa2813b72ed0e50ccdf0407227d96b",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "statsmodels Gamma GLM",
+      "own_nll": 1.2914850965676086,
+      "nll_at_true_shape": 1.3274613974947336,
+      "mae": 0.5983657445485151,
+      "mae_log_shape": 0.9933510128254126,
+      "shape_mean": 0.9103162162748195,
+      "seconds": 0.009440042078495026,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:1000c77541f29de5e5dba672beedb97341ea423e18881ae26bd7f9eb604125e3",
+        "measured_at": "2026-10-24T13:59:47.328601+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cfb100b7ee905935c7a43c1e14482781a8a5176198503afb63652cc7cf8d4469",
+        "output_digest": "sha256:d5bdf31478f05538bcb4c673596727d8618d539d19469b560d54e0ac381ebc89",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "statsmodels Gamma GLM spline",
+      "own_nll": 0.9852982994637138,
+      "nll_at_true_shape": 0.9226204763456671,
+      "mae": 0.051158773329876145,
+      "mae_log_shape": 0.44623774305115976,
+      "shape_mean": 2.3819824109450374,
+      "seconds": 0.00874283304437995,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:db755fb54ce37ef266625cc28f9725dfd0f9b6719f19b138e25089e01866e903",
+        "measured_at": "2026-10-24T13:59:47.329889+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cfb100b7ee905935c7a43c1e14482781a8a5176198503afb63652cc7cf8d4469",
+        "output_digest": "sha256:fabdb64dd5fd487029f5ba97d8ca513cd283f2486345e5ef3dffd236eb3f8a00",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "sklearn GammaRegressor",
+      "own_nll": 1.2398985618783662,
+      "nll_at_true_shape": 1.3274569011987518,
+      "mae": 0.598354695830846,
+      "mae_log_shape": 0.6160901605996971,
+      "shape_mean": 1.3613705691691418,
+      "seconds": 0.0016987500712275505,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:30d077d12d58b0c625fc83a94d1f8fff897f975f2dc9c6b4ecc68a6b308cc38c",
+        "measured_at": "2026-10-24T13:59:47.330485+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cfb100b7ee905935c7a43c1e14482781a8a5176198503afb63652cc7cf8d4469",
+        "output_digest": "sha256:952611e50700c6f3d8f14e27f9d3f27cae2b4a6ee5ace1dd20fc13e3eca3fd89",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "mboostrs glmboost GammaReg",
+      "own_nll": 1.2410207184243505,
+      "nll_at_true_shape": 1.330195453138853,
+      "mae": 0.6018580982460269,
+      "mae_log_shape": 0.6164108683846562,
+      "shape_mean": 1.360696064862562,
+      "seconds": 0.07434320799075067,
+      "mstop": 66,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:2ab9bee13b73c570f6d3b5ed5f2a5c6667f3ac5e40d4ead73bb9507c807d5125",
+        "measured_at": "2026-10-24T13:59:47.331063+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cfb100b7ee905935c7a43c1e14482781a8a5176198503afb63652cc7cf8d4469",
+        "output_digest": "sha256:b1902d5e75b61ea84027b32ace6df04854c77b54876d5a05110951416966488f",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "mboostrs gamboost GammaReg",
+      "own_nll": 0.9835477830925381,
+      "nll_at_true_shape": 0.9225823431053893,
+      "mae": 0.04621408625669838,
+      "mae_log_shape": 0.45068568938066667,
+      "shape_mean": 2.2001117691680148,
+      "seconds": 0.4125361670739949,
+      "mstop": 249,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:b4b4df358111adc863c91ac5c28a9bc5942be8b51c5927e153ab6a35c23cd671",
+        "measured_at": "2026-10-24T13:59:47.331585+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cfb100b7ee905935c7a43c1e14482781a8a5176198503afb63652cc7cf8d4469",
+        "output_digest": "sha256:7dae63a3e68ec194af30f08969ff10249f496ff9813bb61c5a1ff36de0fea9ba",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "mboostrs glmboostLSS GammaLSS",
+      "own_nll": 1.2309664506941775,
+      "nll_at_true_shape": 1.3258766323660511,
+      "mae": 0.5846383225262899,
+      "mae_log_shape": 0.623655347461638,
+      "shape_mean": 1.3910639483297025,
+      "seconds": 2.342759042046964,
+      "mstop": 170,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:7e713f3fdbdd5329473173996efef80e6861b9b6ccd860ad10b2815323c5f63a",
+        "measured_at": "2026-10-24T13:59:47.332211+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cfb100b7ee905935c7a43c1e14482781a8a5176198503afb63652cc7cf8d4469",
+        "output_digest": "sha256:b68a38761d468718f725b371ba770e40f0f8b9fd46520f4dec31a6ad39151249",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "mboostrs gamboostLSS GammaLSS",
+      "own_nll": 0.9283105379180004,
+      "nll_at_true_shape": 0.9215063114415752,
+      "mae": 0.04544079353678552,
+      "mae_log_shape": 0.10980335890658849,
+      "shape_mean": 2.832519496363564,
+      "seconds": 18.298496667062864,
+      "mstop": 834,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:1ce728bd3f60cce3380495322b51f08f7da805f8d7413ef95b920f34b8340100",
+        "measured_at": "2026-10-24T13:59:47.332850+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cfb100b7ee905935c7a43c1e14482781a8a5176198503afb63652cc7cf8d4469",
+        "output_digest": "sha256:dcd3a7a51cf59f85fbe556d3126306e38038ba1063e815d28d794eab8c4436b8",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "generating Gamma",
+      "own_nll": 0.917733188012865,
+      "nll_at_true_shape": 0.917733188012865,
+      "mae": 0.0,
+      "mae_log_shape": 0.0,
+      "shape_mean": 2.7694264086091733,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:a7ffe2a9e2f3af6774dfddda2d74afc62c38f864fb0af4e8c71b9ffee3ae1eaf",
+        "measured_at": "2026-10-24T14:00:13.208540+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:6fd59d7c0b0d3eccc89436c8af8ebdb450e5277e267841175441cdcb16509bc1",
+        "output_digest": "sha256:facd2d7bd784675fa488a9865787c4525e2ce97720763fafabd397ea234bc918",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "statsmodels Gamma GLM",
+      "own_nll": 1.2569294033661553,
+      "nll_at_true_shape": 1.3240110745163807,
+      "mae": 0.5902283992982227,
+      "mae_log_shape": 0.8081665931476227,
+      "shape_mean": 1.0955112729767493,
+      "seconds": 0.007847458822652698,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:48b95ae3fb19ff367550710c5a0931c42805cd80f3667364c2070b31ab953b3d",
+        "measured_at": "2026-10-24T14:00:13.209300+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:6fd59d7c0b0d3eccc89436c8af8ebdb450e5277e267841175441cdcb16509bc1",
+        "output_digest": "sha256:817fce5c84399b0e25f7f97b06e3d29e095be66f39e1e382b0b9025b0fd7f189",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "statsmodels Gamma GLM spline",
+      "own_nll": 0.9844235491991323,
+      "nll_at_true_shape": 0.921741528252951,
+      "mae": 0.05793870897982049,
+      "mae_log_shape": 0.4487704282076486,
+      "shape_mean": 2.2532113956005073,
+      "seconds": 0.014512874884530902,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:92047ad889fa717ab7241009c2bcd88dcbc8b7cf0cb2c2d88c2cea939850878e",
+        "measured_at": "2026-10-24T14:00:13.209872+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:6fd59d7c0b0d3eccc89436c8af8ebdb450e5277e267841175441cdcb16509bc1",
+        "output_digest": "sha256:6e2e9304fe3c287c2b31cc42f425b51a80033fd3db922cf27bf2056b44ff2077",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "sklearn GammaRegressor",
+      "own_nll": 1.2389625935955926,
+      "nll_at_true_shape": 1.3240058674150037,
+      "mae": 0.5902045292258142,
+      "mae_log_shape": 0.6152099476556273,
+      "shape_mean": 1.3632333648693873,
+      "seconds": 0.0016078338958323002,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:a06c6cd2033f15dcaf02e89352ee1506f573c4fa183b4b920839b8a29e869825",
+        "measured_at": "2026-10-24T14:00:13.210395+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:6fd59d7c0b0d3eccc89436c8af8ebdb450e5277e267841175441cdcb16509bc1",
+        "output_digest": "sha256:590e60ad82b6b1e481f11addfa95f9b001c11fae66c095a3c73f0048a9a78516",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "mboostrs glmboost GammaReg",
+      "own_nll": 1.2393505891005625,
+      "nll_at_true_shape": 1.3255770483837215,
+      "mae": 0.5967299893592422,
+      "mae_log_shape": 0.6159127001018333,
+      "shape_mean": 1.361745065099632,
+      "seconds": 0.10313499998301268,
+      "mstop": 58,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:4c38e5bec5287245768dfdd4bc1f78c3659ec0f570be1f735c4a313bcf93d989",
+        "measured_at": "2026-10-24T14:00:13.210994+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:6fd59d7c0b0d3eccc89436c8af8ebdb450e5277e267841175441cdcb16509bc1",
+        "output_digest": "sha256:0320b455fcb2dd242dbb7ac9cb33333e05407111618c6cf66fef9439a5f41fc0",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "mboostrs gamboost GammaReg",
+      "own_nll": 0.9844398515650206,
+      "nll_at_true_shape": 0.921233986868914,
+      "mae": 0.05573764636473076,
+      "mae_log_shape": 0.45725468315576556,
+      "shape_mean": 2.080195523273238,
+      "seconds": 0.5915380828082561,
+      "mstop": 998,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:5e2bb325633b7f34832c4d40a7d25eae7e42f4eb13fc6f38885c3bba4c7cb1a5",
+        "measured_at": "2026-10-24T14:00:13.211554+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:6fd59d7c0b0d3eccc89436c8af8ebdb450e5277e267841175441cdcb16509bc1",
+        "output_digest": "sha256:4d58192f15d490b1a9359a672acd1f6eb72ad0de6ce4788f36194c7c71de4074",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "mboostrs glmboostLSS GammaLSS",
+      "own_nll": 1.234018409869454,
+      "nll_at_true_shape": 1.323112786488911,
+      "mae": 0.5854262618221358,
+      "mae_log_shape": 0.6176371555350764,
+      "shape_mean": 1.3825365185596492,
+      "seconds": 3.3532461668364704,
+      "mstop": 230,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:f72f74f4948710b9d5a824011255a90a73d4f05861a28abea969204134a5d75e",
+        "measured_at": "2026-10-24T14:00:13.212202+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:6fd59d7c0b0d3eccc89436c8af8ebdb450e5277e267841175441cdcb16509bc1",
+        "output_digest": "sha256:c5107137dd697d83da557f861f25b0172369ecf557c37703ae0fbbd2222a9a93",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "mboostrs gamboostLSS GammaLSS",
+      "own_nll": 0.9249673060061143,
+      "nll_at_true_shape": 0.920051028367133,
+      "mae": 0.039790973725422965,
+      "mae_log_shape": 0.09658533372678482,
+      "shape_mean": 2.7007815225604257,
+      "seconds": 21.778534416109324,
+      "mstop": 1000,
+      "at_boundary": true,
+      "_identity": {
+        "fingerprint": "sha256:b9ac94462d9afb815ca9dde76395d0169c9522cede07d5a2f9a8f39a3736b014",
+        "measured_at": "2026-10-24T14:00:13.212845+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:6fd59d7c0b0d3eccc89436c8af8ebdb450e5277e267841175441cdcb16509bc1",
+        "output_digest": "sha256:75c1fd75bf608ef07071a8e4497d86e89a780f0335cfdca54931369fc57e9535",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "generating Gamma",
+      "own_nll": 0.917733188012865,
+      "nll_at_true_shape": 0.917733188012865,
+      "mae": 0.0,
+      "mae_log_shape": 0.0,
+      "shape_mean": 2.7694264086091733,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:567aa865391b7108a3e411452973e836e31cfc5fbb59f25dd9ebcd0cac864ea4",
+        "measured_at": "2026-10-24T14:00:40.268174+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:743273a7aec1dabd96269ef796952920c930516ad7607d95b75877b66dd33b92",
+        "output_digest": "sha256:224347fccaa920bb27430ea6d956568498f7cccebe3a980c94e98802f835b7c9",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "statsmodels Gamma GLM",
+      "own_nll": 1.2697092107106729,
+      "nll_at_true_shape": 1.325882408564592,
+      "mae": 0.5972155062611738,
+      "mae_log_shape": 0.8858786807373524,
+      "shape_mean": 1.0136007426073241,
+      "seconds": 0.00874283304437995,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:9c31e8ec7853481c6acac0ac733c3a2668ef7d83953ab2f4aa5a18ab2d74eef0",
+        "measured_at": "2026-10-24T14:00:40.268848+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:743273a7aec1dabd96269ef796952920c930516ad7607d95b75877b66dd33b92",
+        "output_digest": "sha256:7d3ee02db789bd66d95166c9c352bd335bf846de8a47781f01385cd1bc9a492c",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "statsmodels Gamma GLM spline",
+      "own_nll": 0.9877045423119448,
+      "nll_at_true_shape": 0.9275334224628357,
+      "mae": 0.078554664711503,
+      "mae_log_shape": 0.4503616630130201,
+      "shape_mean": 2.208167848580492,
+      "seconds": 0.017666333122178912,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:a173892d8f4f5ee675aefe5dc6b4e9b7495099265bc86a270136658bc6194abd",
+        "measured_at": "2026-10-24T14:00:40.269559+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:743273a7aec1dabd96269ef796952920c930516ad7607d95b75877b66dd33b92",
+        "output_digest": "sha256:3541b77921c9d19b9d670dd1292f98fd069ca7775070ce4a19fa02d1dfd71529",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "sklearn GammaRegressor",
+      "own_nll": 1.2392399998234747,
+      "nll_at_true_shape": 1.3258810782328134,
+      "mae": 0.5972144048693204,
+      "mae_log_shape": 0.5918919688400405,
+      "shape_mean": 1.416014863293621,
+      "seconds": 0.00333070894703269,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:cd35d5dc2a45256edcc3bfb1697ea66c9a16993b35cf0e1cb97645c5b2eb0042",
+        "measured_at": "2026-10-24T14:00:40.269929+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:743273a7aec1dabd96269ef796952920c930516ad7607d95b75877b66dd33b92",
+        "output_digest": "sha256:9ffdf0da3ae45b25765983097a55910fc08d1d88d0aaab512e9bb604fb16f848",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "mboostrs glmboost GammaReg",
+      "own_nll": 1.239271788106459,
+      "nll_at_true_shape": 1.326222576293645,
+      "mae": 0.599574420758667,
+      "mae_log_shape": 0.5920569213180841,
+      "shape_mean": 1.4156155449303436,
+      "seconds": 0.13896750006824732,
+      "mstop": 88,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:611ab39ba1580f64a96d98e05cecd0671133fb0531b03fcd26b2c8d4d05d5045",
+        "measured_at": "2026-10-24T14:00:40.270258+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:743273a7aec1dabd96269ef796952920c930516ad7607d95b75877b66dd33b92",
+        "output_digest": "sha256:81ebc504ac3064b16dedb8fcf57d68ddddf11dde821fa548973d40970cdfd01b",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "mboostrs gamboost GammaReg",
+      "own_nll": 0.988699270789288,
+      "nll_at_true_shape": 0.9292936394590711,
+      "mae": 0.08103524800270466,
+      "mae_log_shape": 0.4557166471816656,
+      "shape_mean": 2.103629896930495,
+      "seconds": 0.5925304999109358,
+      "mstop": 70,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:537528a454e6e278de5e4638bb87fc3c70ed9a06534e736ad6714da4b0c92424",
+        "measured_at": "2026-10-24T14:00:40.270593+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:743273a7aec1dabd96269ef796952920c930516ad7607d95b75877b66dd33b92",
+        "output_digest": "sha256:cd6dbbb82fdf0245538c813bd48e71d12e17d147b7d63df934a2f203c1edc476",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "mboostrs glmboostLSS GammaLSS",
+      "own_nll": 1.2314132687512225,
+      "nll_at_true_shape": 1.325045793976286,
+      "mae": 0.5968185192478432,
+      "mae_log_shape": 0.5982545379909172,
+      "shape_mean": 1.4020162992422365,
+      "seconds": 2.5824481658637524,
+      "mstop": 153,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:967a90b5ebf2f63261445cf7fbd95ea921fa44cdf8927d15081a418ae6f42255",
+        "measured_at": "2026-10-24T14:00:40.271006+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:743273a7aec1dabd96269ef796952920c930516ad7607d95b75877b66dd33b92",
+        "output_digest": "sha256:56754c63f57ae484500198ece9d94c9dab32309fde7df606b0bc31ef00f27780",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "mboostrs gamboostLSS GammaLSS",
+      "own_nll": 0.9299682445426156,
+      "nll_at_true_shape": 0.9256257367118538,
+      "mae": 0.07043538518674035,
+      "mae_log_shape": 0.09332359085474967,
+      "shape_mean": 2.6715973885890567,
+      "seconds": 23.69479237496853,
+      "mstop": 247,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:ca97ef6831c3b2337d36a08a909e56ee65ed5ec2a50138290329680d2e292399",
+        "measured_at": "2026-10-24T14:00:40.271444+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:743273a7aec1dabd96269ef796952920c930516ad7607d95b75877b66dd33b92",
+        "output_digest": "sha256:66b4d2c3ddf1374d6b7948e4e90a6bb82b7df6b92e8f761f76d498ca32b5e07d",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "generating Gamma",
+      "own_nll": 0.917733188012865,
+      "nll_at_true_shape": 0.917733188012865,
+      "mae": 0.0,
+      "mae_log_shape": 0.0,
+      "shape_mean": 2.7694264086091733,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:8218740a74c37a6657d7e4815aa6c737a0fc776aedd201a99291837dba2d8f7e",
+        "measured_at": "2026-10-24T14:01:11.049843+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:9425ed4e98fe753933253bfd65810d5d37cbf2ab70e2f3ef3fb476c8591d380a",
+        "output_digest": "sha256:248a4b6c7fe18355e37188ff6a7440de7b45223c84302d8f6cadc23d4ead36a0",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "statsmodels Gamma GLM",
+      "own_nll": 1.3283833997086016,
+      "nll_at_true_shape": 1.3252236660066037,
+      "mae": 0.5967518585186893,
+      "mae_log_shape": 1.1405973246053156,
+      "shape_mean": 0.7856769617283229,
+      "seconds": 0.008748541120439768,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:c95957cf7372659a39d9b16abdb4c7380e04041562018516434d0f5de33171f8",
+        "measured_at": "2026-10-24T14:01:11.050388+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:9425ed4e98fe753933253bfd65810d5d37cbf2ab70e2f3ef3fb476c8591d380a",
+        "output_digest": "sha256:bf6431f63e444477c65437da74d1970ac7b750d08fb744e3bf73add7dfd60cd6",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "statsmodels Gamma GLM spline",
+      "own_nll": 0.9885210924171343,
+      "nll_at_true_shape": 0.9252045747733796,
+      "mae": 0.06812222209475353,
+      "mae_log_shape": 0.46050659561106727,
+      "shape_mean": 2.0368480698616103,
+      "seconds": 0.026038500014692545,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:185f4c823011c4fd2b9f813cb844dc5a399b3f994a2fc7080a198d2276462534",
+        "measured_at": "2026-10-24T14:01:11.051520+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:9425ed4e98fe753933253bfd65810d5d37cbf2ab70e2f3ef3fb476c8591d380a",
+        "output_digest": "sha256:ce8fdbb732b328958a359a37f54149a7fede5260c6a11ef3e0d2fadddec8c368",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "sklearn GammaRegressor",
+      "own_nll": 1.2397058759041888,
+      "nll_at_true_shape": 1.3252247290734835,
+      "mae": 0.5967473790660215,
+      "mae_log_shape": 0.6370163880424143,
+      "shape_mean": 1.3197837857556658,
+      "seconds": 0.0029342910274863243,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:ab8258fc50b19ecdf6c5ff918dad92f8767cd7e5d85cbee98910873d5bb389f1",
+        "measured_at": "2026-10-24T14:01:11.051897+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:9425ed4e98fe753933253bfd65810d5d37cbf2ab70e2f3ef3fb476c8591d380a",
+        "output_digest": "sha256:7154795aabb2e6b31c59186f475a9ef3fc93288b705095adfbf4e4cf37181ccd",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "mboostrs glmboost GammaReg",
+      "own_nll": 1.241840725844258,
+      "nll_at_true_shape": 1.3298582484034938,
+      "mae": 0.6034988225330165,
+      "mae_log_shape": 0.6381685783931148,
+      "shape_mean": 1.3176253664537418,
+      "seconds": 0.09865758311934769,
+      "mstop": 55,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:c9406d62ac6d4981f0f86ef446023e2f48fcc0fd7e8b9c0b57a5f3befdd1ce8d",
+        "measured_at": "2026-10-24T14:01:11.052245+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:9425ed4e98fe753933253bfd65810d5d37cbf2ab70e2f3ef3fb476c8591d380a",
+        "output_digest": "sha256:0cb5e83d5de1fae254036973a80a43118c133f313114ccee4acdf315c851ebc3",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "mboostrs gamboost GammaReg",
+      "own_nll": 0.9858864412136302,
+      "nll_at_true_shape": 0.923718553590981,
+      "mae": 0.048078688825780605,
+      "mae_log_shape": 0.4572562304809395,
+      "shape_mean": 2.080172695463034,
+      "seconds": 0.5910642500966787,
+      "mstop": 73,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:3b667acd10aebf4243c1c45e792e9d77433d861158ec2fe0cb7bcbc504b7607f",
+        "measured_at": "2026-10-24T14:01:11.052571+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:9425ed4e98fe753933253bfd65810d5d37cbf2ab70e2f3ef3fb476c8591d380a",
+        "output_digest": "sha256:66fb5f78d3d2ef40a00d10fce46ed93d326999fe82e2777d5d7c8e000a5ae461",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "mboostrs glmboostLSS GammaLSS",
+      "own_nll": 1.2318974444934327,
+      "nll_at_true_shape": 1.325128611696271,
+      "mae": 0.5863513878563833,
+      "mae_log_shape": 0.6505933269047072,
+      "shape_mean": 1.3417523271676308,
+      "seconds": 3.728658832842484,
+      "mstop": 167,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:c269c98cf6192c52d0bc5de570fdfbd670c443512f733d34c511d44df01c4091",
+        "measured_at": "2026-10-24T14:01:11.053007+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:9425ed4e98fe753933253bfd65810d5d37cbf2ab70e2f3ef3fb476c8591d380a",
+        "output_digest": "sha256:92cef5dabf7eb50f121cdf8e57105037948526c855910eaa818c3c3fbddcef43",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "mboostrs gamboostLSS GammaLSS",
+      "own_nll": 0.9265005040677153,
+      "nll_at_true_shape": 0.9243238244060678,
+      "mae": 0.06180931750158998,
+      "mae_log_shape": 0.05554621240573803,
+      "shape_mean": 2.8009172790963195,
+      "seconds": 26.297526125097647,
+      "mstop": 998,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:42738f8aa4375c469101d6710ecefe57d6a4104187ad1aa53db0dd7eb538e9c7",
+        "measured_at": "2026-10-24T14:01:11.053425+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:9425ed4e98fe753933253bfd65810d5d37cbf2ab70e2f3ef3fb476c8591d380a",
+        "output_digest": "sha256:0f08bec01c27a78bfd94a1e628a0fe00893e3b8e121e627d58d2d3e3d8492700",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    }
+  ],
+  "recovery": {
+    "train_shape_mean": 4.713563000653951,
+    "train_cv": 0.9115838216808189,
+    "statsmodels_scale": 0.40319465454291004,
+    "statsmodels_shape": 2.480191611502565,
+    "statsmodels_params": {
+      "Intercept": 0.21515694713359024,
+      "x1": 0.4344416492779378,
+      "x2": -0.3282865166311257,
+      "x3": -0.0023913037255107,
+      "noise": 0.0004183473509831387
+    },
+    "glmboost_shape": 2.1530760770101045,
+    "glmboost_loglik": -1631.9247576841308,
+    "glmboost_negative_risk": -1667.806921552822,
+    "glmboost_scipy_loglik": -1631.924757684128,
+    "glmboost_coef": {
+      "(Intercept)": 0.22360401925734408,
+      "x1": 0.4272324067231892,
+      "x2": -0.32095538379744565
+    },
+    "lss_loglik": -1307.5480936326421,
+    "lss_scipy_loglik": -1307.5480936326414,
+    "lss_allocation": {
+      "mu": 53,
+      "sigma": 185
+    },
+    "sklearn_shape": 2.153795544263377,
+    "sklearn_intercept": 0.2150942240897752,
+    "sklearn_coef": {
+      "x1": 0.4344757194152501,
+      "x2": -0.3282910789273064,
+      "x3": -0.002415552022211184,
+      "noise": 0.0004240806737689842
+    }
+  },
+  "usability": {
+    "probes": [
+      {
+        "label": "predict default is the log mean and the log shape",
+        "ok": true,
+        "detail": "type='link' is log mu and log shape; exp(link) matches type='response' to 0.00e+00. The default type is 'link'."
+      },
+      {
+        "label": "GammaReg logLik is the density; negative_risk drops log y",
+        "ok": true,
+        "detail": "logLik() = -1631.643753 matches the gamma density at nuisance() shape 2.1538 to 0.00e+00. negative_risk() is -1667.525917. The risk omits log(y); sum(log y) = -35.8822, and logLik() = negative_risk() - sum(log y)."
+      },
+      {
+        "label": "glmboost(family=GammaLSS())",
+        "ok": false,
+        "error": "TypeError",
+        "detail": "GammaLSS is a distributional family (parameters: mu, sigma). glmboost() fits one predictor. Use glmboostLSS() or gamboostLSS(), for example mb.gamboostLSS(formula, data, family=mb.GammaLSS())."
+      },
+      {
+        "label": "GammaReg rejects a non-positive response",
+        "ok": false,
+        "error": "MboostrsValueError",
+        "detail": "family 'GammaReg': y must be > 0, got -1"
+      },
+      {
+        "label": "autospec without a budget",
+        "ok": true,
+        "detail": "family=GammaReg(), formula='y ~ bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(noise, df=4.0)', defaulted=('family', 'shapes', 'interactions', 'mstop')"
+      },
+      {
+        "label": "autospec with a family-probe budget",
+        "ok": true,
+        "detail": "family=GammaLSS(stabilization='L2'), measured=('family',). log score 0.883 against 2.268 nats/row"
+      }
+    ]
+  },
+  "provenance": {
+    "commit": "727e84bf14ec352e634e5b57bf022408da92a806",
+    "working_tree": {
+      "dirty": false,
+      "status_digest": null,
+      "commit_source": "working directory"
+    },
+    "native_build": {
+      "package_version": "0.1.3",
+      "source_digest": "sha256:a771766f1a4820a76b9d908fbc12ed53123e648afcb8583181708b5273ca6b49",
+      "git_revision": "e9c670d73f2aff2d153b2c02b4cf8a71aa2c46e2",
+      "git_dirty": false,
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+      "target": "aarch64-apple-darwin",
+      "profile": "release",
+      "target_features": "aes,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+      "crate_features": "",
+      "abi_version": 1,
+      "build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+    },
+    "platform": {
+      "system": "Darwin",
+      "release": "25.3.0",
+      "machine": "arm64",
+      "cpu": "arm",
+      "python": "3.12.11"
+    },
+    "versions": {
+      "mboostrs": "0.1.3",
+      "numpy": "2.4.6",
+      "rpy2": "3.6.7",
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "R": "4.5.1",
+      "mboost": "2.9.11",
+      "scipy": "1.16.3",
+      "statsmodels": "0.15.0",
+      "scikit-learn": "1.9.0",
+      "polars": "1.41.0",
+      "patsy": "1.0.3"
+    },
+    "compiler_flags": {
+      "RUSTFLAGS": null,
+      "CARGO_PROFILE": "release"
+    },
+    "threads": {
+      "logical_cpus": 10,
+      "r_mclapply_default_cores": "2",
+      "RAYON_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+    },
+    "created_at": "2026-10-24T13:58:27.264936+00:00",
+    "runner": "benches/bench_gamma_lss.py",
+    "runner_sha256": "20b4ce52d871e492e6a9199734ea074f3978a852300705e949a5fb36060061d9",
+    "protocol": {
+      "kind": "seeded predictive-method comparison",
+      "design": {
+        "n_train": 1500,
+        "n_test": 4000,
+        "seeds": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "nu": 0.1,
+        "folds": 5,
+        "mstop": {
+          "glm": 400,
+          "gam": 1000
+        },
+        "linear_mean": "log mu = 0.20 + 0.45 x1 - 0.30 x2",
+        "linear_shape": "log shape = 1.15 + 0.85 x3",
+        "smooth_mean": "log mu = 0.10 + sin(1.6 x1) + 0.25 x2",
+        "smooth_shape": "log shape = 0.90 + 0.70 sin(2 x3)",
+        "variance": "mu**2 / shape",
+        "sigma": "GammaLSS sigma is the shape, not the coefficient of variation",
+        "statsmodels_scale": "dispersion phi = 1/shape"
+      },
+      "timing": "runner perf_counter regions; method-specific fit/tuning/prediction work",
+      "order": "sequential task, seed, method order in the recorded runner",
+      "timing_claim": "descriptive elapsed times; no paired equal-work speedup or timing interval",
+      "warmup": "no dedicated warmup; imports and provenance collection excluded from timers"
+    },
+    "repeats": {
+      "training_seeds": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "test": "one independently generated test sample per task, shared across methods and seeds"
+    },
+    "uncertainty": {
+      "scope": "descriptive timing spread across training seeds, not repeated identical-input trials",
+      "groups": [
+        {
+          "task": "linear",
+          "method": "generating Gamma",
+          "n": 4,
+          "seconds_sd": 0.0,
+          "seconds_se": 0.0
+        },
+        {
+          "task": "linear",
+          "method": "statsmodels Gamma GLM",
+          "n": 4,
+          "seconds_sd": 0.0006009222931257695,
+          "seconds_se": 0.00030046114656288474
+        },
+        {
+          "task": "linear",
+          "method": "statsmodels Gamma GLM spline",
+          "n": 4,
+          "seconds_sd": 0.001467775272609294,
+          "seconds_se": 0.000733887636304647
+        },
+        {
+          "task": "linear",
+          "method": "sklearn GammaRegressor",
+          "n": 4,
+          "seconds_sd": 0.003405679382834456,
+          "seconds_se": 0.001702839691417228
+        },
+        {
+          "task": "linear",
+          "method": "mboostrs glmboost GammaReg",
+          "n": 4,
+          "seconds_sd": 0.007119314107258674,
+          "seconds_se": 0.003559657053629337
+        },
+        {
+          "task": "linear",
+          "method": "mboostrs gamboost GammaReg",
+          "n": 4,
+          "seconds_sd": 0.03260956349633187,
+          "seconds_se": 0.016304781748165936
+        },
+        {
+          "task": "linear",
+          "method": "mboostrs glmboostLSS GammaLSS",
+          "n": 4,
+          "seconds_sd": 0.10071465142335938,
+          "seconds_se": 0.05035732571167969
+        },
+        {
+          "task": "linear",
+          "method": "mboostrs gamboostLSS GammaLSS",
+          "n": 4,
+          "seconds_sd": 2.790872726094859,
+          "seconds_se": 1.3954363630474296
+        },
+        {
+          "task": "smooth",
+          "method": "generating Gamma",
+          "n": 4,
+          "seconds_sd": 0.0,
+          "seconds_se": 0.0
+        },
+        {
+          "task": "smooth",
+          "method": "statsmodels Gamma GLM",
+          "n": 4,
+          "seconds_sd": 0.0006528318010460007,
+          "seconds_se": 0.00032641590052300034
+        },
+        {
+          "task": "smooth",
+          "method": "statsmodels Gamma GLM spline",
+          "n": 4,
+          "seconds_sd": 0.007216531047978418,
+          "seconds_se": 0.003608265523989209
+        },
+        {
+          "task": "smooth",
+          "method": "sklearn GammaRegressor",
+          "n": 4,
+          "seconds_sd": 0.0008700120262081897,
+          "seconds_se": 0.00043500601310409484
+        },
+        {
+          "task": "smooth",
+          "method": "mboostrs glmboost GammaReg",
+          "n": 4,
+          "seconds_sd": 0.026654205389103194,
+          "seconds_se": 0.013327102694551597
+        },
+        {
+          "task": "smooth",
+          "method": "mboostrs gamboost GammaReg",
+          "n": 4,
+          "seconds_sd": 0.08958947176583092,
+          "seconds_se": 0.04479473588291546
+        },
+        {
+          "task": "smooth",
+          "method": "mboostrs glmboostLSS GammaLSS",
+          "n": 4,
+          "seconds_sd": 0.6485956917811998,
+          "seconds_se": 0.3242978458905999
+        },
+        {
+          "task": "smooth",
+          "method": "mboostrs gamboostLSS GammaLSS",
+          "n": 4,
+          "seconds_sd": 3.3675250058130644,
+          "seconds_se": 1.6837625029065322
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "library": "mboostrs 0.1.3",
+  "mean_effects": [
+    {
+      "variable": "latitude",
+      "shape": "nonmonotone",
+      "evidence": "Moving latitude from its 5th to its 95th percentile (32.85 to 38.99) changes the expected y by +0.073 (90% interval -0.015 to +0.174). Dropping it from the location model raises out-of-fold NLL by 0.0031 (SE 0.0051). The curve depends on ave_occup: see the interaction entry for the curves at low and high values."
+    },
+    {
+      "variable": "housing_median_age",
+      "shape": "threshold_increase",
+      "evidence": "Moving housing_median_age from its 5th to its 95th percentile (10 to 52) changes the expected y by +0.563 (90% interval +0.454 to +0.667). Dropping it from the location model raises out-of-fold NLL by 0.0607 (SE 0.0221)."
+    },
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "Moving median_income from its 5th to its 95th percentile (1.512 to 6.751) changes the expected y by -0.808 (90% interval -0.896 to -0.727). Dropping it from the location model raises out-of-fold NLL by 0.0357 (SE 0.0124)."
+    },
+    {
+      "variable": "ave_occup",
+      "shape": "increasing",
+      "evidence": "Moving ave_occup from its 5th to its 95th percentile (1.875 to 4.334) changes the expected y by +0.017 (90% interval -0.008 to +0.047). Dropping it from the location model raises out-of-fold NLL by -0.0082 (SE 0.0094)."
+    }
+  ],
+  "interactions": [
+    {
+      "variables": [
+        "latitude",
+        "ave_occup"
+      ],
+      "evidence": "The effect of latitude depends on ave_occup (varying-coefficient term). Out-of-fold NLL improves by 0.0152 (SE 0.0053) against the additive model. At the 10th percentile of ave_occup (2.036) the 5th-to-95th percentile change in latitude is +0.053 (90% interval -0.011 to +0.126), shape nonmonotone; at the 90th percentile of ave_occup (3.875) the 5th-to-95th percentile change in latitude is +0.100 (90% interval -0.021 to +0.241), shape nonmonotone."
+    }
+  ],
+  "variance_drivers": [
+    {
+      "variable": "households",
+      "direction": "decreases_spread",
+      "evidence": "Standard deviation of y at the 95th percentile of households (1094) is 0.429 times its value at the 5th percentile (133.8); 90% interval of the log ratio -0.972 to -0.723. Scale formula: bols(log_households)."
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.472641,
+      "lower90": -0.524617,
+      "upper90": -0.425592
+    },
+    "Q2": {
+      "estimate": 0.587733,
+      "lower90": 0.486182,
+      "upper90": 0.687173
+    },
+    "Q3": {
+      "estimate": -0.0,
+      "lower90": -0.0,
+      "upper90": 0.0
+    },
+    "Q4": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q5": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q6": {
+      "estimate": 0.056849,
+      "lower90": 0.011102,
+      "upper90": 0.110556
+    },
+    "Q7": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q8": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    }
+  },
+  "warnings": [
+    "total_bedrooms equals ave_bedrooms times households on every observed row, so it is left out as a duplicate of that product.",
+    "total_rooms equals ave_rooms times households on every observed row, so it is left out as a duplicate of that product.",
+    "population equals ave_occup times households on every observed row, so it is left out as a duplicate of that product.",
+    "housing_median_age is missing for 8.5% of training rows and 7.0% of test rows. Those values are filled from the other covariates (imputation RMSE on observed training rows 9.92; sd of housing_median_age 12.4). An indicator miss_housing_median_age is offered to the model.",
+    "ave_bedrooms is missing for 0.9% of training rows and 1.0% of test rows. Those values are filled from the other covariates (imputation RMSE on observed training rows 0.0969; sd of ave_bedrooms 0.314). An indicator miss_ave_bedrooms is offered to the model.",
+    "The test rows differ from the training rows in covariate distribution (two-sample Kolmogorov-Smirnov p < 0.001 for: median_income (training median 3.242, test median 4.039); median_house_value (training median 1.732e+05, test median 2.054e+05); ave_rooms (training median 5.077, test median 5.484)). The intervals assume the relation between covariates and y is the same for the test rows; coverage on the test rows is not measured.",
+    "Effect intervals and prediction calibration come from a REML refit of the selected terms and treat the selected terms as fixed. They do not include the uncertainty of the term selection, so the stated intervals are narrower than the uncertainty of the selection.",
+    "Associations describe how the data move together. They are not causal effects."
+  ]
+}

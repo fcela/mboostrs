@@ -1,0 +1,46 @@
+{
+  "treatment": "enrolled",
+  "outcome": "earnings_post",
+  "roles": {
+    "prior_earnings": "confounder",
+    "education": "confounder",
+    "months_unemployed": "confounder",
+    "experience": "confounder",
+    "age": "confounder",
+    "region": "confounder",
+    "smsa": "confounder",
+    "ethnicity": "treatment_only",
+    "distance_km": "instrument",
+    "parttime": "outcome_only",
+    "certificate": "mediator",
+    "hours_post": "mediator",
+    "responded": "post_treatment_selection",
+    "caseworker_note_len": "irrelevant",
+    "enrolled": "treatment",
+    "earnings_post": "outcome"
+  },
+  "effect_modifiers": {
+    "prior_earnings": "larger_when_higher",
+    "education": "larger_when_higher",
+    "months_unemployed": "larger_when_lower",
+    "parttime": "larger_when_no"
+  },
+  "effect_modifiers_neutral": [
+    "age",
+    "experience",
+    "smsa",
+    "distance_km",
+    "ethnicity",
+    "region"
+  ],
+  "effect_modifiers_none": [
+    "caseworker_note_len"
+  ],
+  "never_adjust": [
+    "certificate",
+    "hours_post",
+    "responded"
+  ],
+  "overlap_thin": "prior_earnings above 40,000 dollars (enrolment probability below 0.03)",
+  "employment_effect": "concentrated where prior_earnings is below about 15,000 dollars"
+}

@@ -1,0 +1,1123 @@
+{
+ "schema_version": 1,
+ "created_at": "2026-10-06T01:12:56+00:00",
+ "commit": "530798688281566750b84ffe4719849abce42719",
+ "working_tree": {
+  "dirty": true,
+  "status_digest": "sha256:a8f0ce70c9748ad17c6d93a1452d8f69cb04fc3d42674e860e6e69e44fc259cc",
+  "commit_source": "working directory"
+ },
+ "platform": {
+  "system": "Darwin",
+  "release": "25.3.0",
+  "machine": "arm64",
+  "cpu": "arm",
+  "python": "3.12.11"
+ },
+ "versions": {
+  "mboostrs": "0.1.3",
+  "numpy": "2.4.6",
+  "rpy2": "3.6.7",
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "R": "4.5.1",
+  "mboost": "2.9.11",
+  "scipy": "1.16.3",
+  "pandas": "2.3.3",
+  "ngboost": "0.5.11",
+  "mssm": "1.2.5",
+  "scikit-learn": "1.9.0"
+ },
+ "threads": {
+  "logical_cpus": 10,
+  "r_mclapply_default_cores": "2",
+  "RAYON_NUM_THREADS": "1",
+  "OMP_NUM_THREADS": "1",
+  "OPENBLAS_NUM_THREADS": "1",
+  "MKL_NUM_THREADS": "1"
+ },
+ "build_info": {
+  "package_version": "0.1.3",
+  "source_digest": "sha256:43c91f7e37301d1b2d471e20fdadd3bc5d56cbf72a400a1f813960bd6f2b5a47",
+  "git_revision": "7b6ee810e0dc83da72a82ba516b40b0ed40a0ad5",
+  "git_dirty": false,
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+  "target": "aarch64-apple-darwin",
+  "profile": "release",
+  "target_features": "aes,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+  "crate_features": "",
+  "abi_version": 1,
+  "build_id": "sha256:f39ee7b9bd1b7c019eb60e5470c8fc19ce89b6814aa78bcfe7e1f27a84cd0485"
+ },
+ "scripts": {
+  "/Users/fcela/src/public_github/mboostrs/benches/probe_joint_surface.py": "4694dee6a0fafc8a5cab026ff975261707cda10f52425e59a3d237679d214cea"
+ },
+ "thread_environment": {
+  "RAYON_NUM_THREADS": "1",
+  "OMP_NUM_THREADS": "1",
+  "OPENBLAS_NUM_THREADS": "1"
+ },
+ "protocol": {
+  "document": "docs/benchmarks/competitive_shootout_protocol.md",
+  "question": "does the fitted model reproduce the joint threshold surface",
+  "task": "joint_boundary",
+  "seed": 0,
+  "grid_points": 25,
+  "background_rows": 256,
+  "specs": [
+   [
+    "linear"
+   ],
+   [
+    "mboost_additive"
+   ],
+   [
+    "mboost_hybrid"
+   ],
+   [
+    "mboost_auto"
+   ],
+   [
+    "ebm"
+   ],
+   [
+    "catboost"
+   ],
+   [
+    "lightgbm"
+   ],
+   [
+    "xgboost"
+   ]
+  ],
+  "timeout_seconds": 600
+ },
+ "repeats": {
+  "note": "exploratory diagnostic, one draw, not a reported study outcome"
+ },
+ "uncertainty": {
+  "unit": "one independent training and test draw; pair methods within a draw",
+  "summary": "mean and Monte Carlo standard error across draws",
+  "timing": "elapsed whole-workflow costs, not controlled implementation speed ratios"
+ },
+ "memory": {
+  "status": "not measured"
+ },
+ "results": [
+  {
+   "task": "joint_boundary",
+   "seed": 0,
+   "method": "linear",
+   "tier": "tuned",
+   "grid": [
+    [
+     -0.9065196334495582,
+     -0.8264452984624665,
+     -0.7480043577444149,
+     -0.6754498350500622,
+     -0.6015923592783129,
+     -0.5262501509991405,
+     -0.43824080026392725,
+     -0.3617140723036959,
+     -0.29618956530161245,
+     -0.23121257830603847,
+     -0.16330823404458794,
+     -0.08360070573650631,
+     -0.017451196057662342,
+     0.058203955828129164,
+     0.13900481641515144,
+     0.21285767569557604,
+     0.29636827299840196,
+     0.37539834658268645,
+     0.43970005582033833,
+     0.5165694970960607,
+     0.5784553964754412,
+     0.6508463239207649,
+     0.7304601378918282,
+     0.8165759750774961,
+     0.89154474446476
+    ],
+    [
+     -0.9061870333924937,
+     -0.8365343178665784,
+     -0.7736008667586294,
+     -0.6923813357140526,
+     -0.6178391555748397,
+     -0.5443422576246448,
+     -0.4676825233152769,
+     -0.39899726362968985,
+     -0.31138676346744165,
+     -0.22491848690826538,
+     -0.15280351483324028,
+     -0.0902859411253737,
+     -0.013616322108886936,
+     0.06304444251261326,
+     0.13936509811788644,
+     0.20816483916824488,
+     0.27778091658889364,
+     0.36189282325007327,
+     0.4393796597533693,
+     0.5120455488178626,
+     0.5945906904444639,
+     0.6642211622481398,
+     0.738666479375525,
+     0.8284321709347122,
+     0.8997650497612572
+    ]
+   ],
+   "surface_nrmse": 0.9995389987147216,
+   "marginal_nrmse_from_surface": 0.8021465077827079,
+   "truth_surface_range": [
+    -2.9967942320353105,
+    3.0032057679646895
+   ],
+   "predicted_surface_range": [
+    -0.12027961163778979,
+    0.06289036908818181
+   ],
+   "background_rows": 256,
+   "exploratory": true,
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "87f4f99f447befbc3ba83f84292319766acdd3602b49e68229aad940e9ecca99",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "benchmark_contract",
+      "probe_joint_surface",
+      "shootout_data",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "92e03a59cbddd94e703a5420506ba8e16518f33ea6a7ec20f62e6a29d02134fa",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "cc70291303a7a8cba9d48e465077b7fa1ab42ec652062514cc4e81f344a6092b"
+     }
+    },
+    "measured_at": "2026-10-06T01:12:56+00:00",
+    "wall_seconds": 1.3896698951721191
+   }
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 0,
+   "method": "mboost_additive",
+   "tier": "tuned",
+   "grid": [
+    [
+     -0.9065196334495582,
+     -0.8264452984624665,
+     -0.7480043577444149,
+     -0.6754498350500622,
+     -0.6015923592783129,
+     -0.5262501509991405,
+     -0.43824080026392725,
+     -0.3617140723036959,
+     -0.29618956530161245,
+     -0.23121257830603847,
+     -0.16330823404458794,
+     -0.08360070573650631,
+     -0.017451196057662342,
+     0.058203955828129164,
+     0.13900481641515144,
+     0.21285767569557604,
+     0.29636827299840196,
+     0.37539834658268645,
+     0.43970005582033833,
+     0.5165694970960607,
+     0.5784553964754412,
+     0.6508463239207649,
+     0.7304601378918282,
+     0.8165759750774961,
+     0.89154474446476
+    ],
+    [
+     -0.9061870333924937,
+     -0.8365343178665784,
+     -0.7736008667586294,
+     -0.6923813357140526,
+     -0.6178391555748397,
+     -0.5443422576246448,
+     -0.4676825233152769,
+     -0.39899726362968985,
+     -0.31138676346744165,
+     -0.22491848690826538,
+     -0.15280351483324028,
+     -0.0902859411253737,
+     -0.013616322108886936,
+     0.06304444251261326,
+     0.13936509811788644,
+     0.20816483916824488,
+     0.27778091658889364,
+     0.36189282325007327,
+     0.4393796597533693,
+     0.5120455488178626,
+     0.5945906904444639,
+     0.6642211622481398,
+     0.738666479375525,
+     0.8284321709347122,
+     0.8997650497612572
+    ]
+   ],
+   "surface_nrmse": 1.0001056726321325,
+   "marginal_nrmse_from_surface": 1.0641001483822317,
+   "truth_surface_range": [
+    -2.9967942320353105,
+    3.0032057679646895
+   ],
+   "predicted_surface_range": [
+    -0.03560848439707781,
+    -0.03560848439707781
+   ],
+   "background_rows": 256,
+   "exploratory": true,
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "ca51d8cccb49ff2d030fd9dbae84509752169ffd71346d3f2491cae82ea2bee4",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "benchmark_contract",
+      "probe_joint_surface",
+      "shootout_data",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "92e03a59cbddd94e703a5420506ba8e16518f33ea6a7ec20f62e6a29d02134fa",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "cc70291303a7a8cba9d48e465077b7fa1ab42ec652062514cc4e81f344a6092b"
+     }
+    },
+    "measured_at": "2026-10-06T01:12:58+00:00",
+    "wall_seconds": 3.999054193496704
+   }
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 0,
+   "method": "mboost_hybrid",
+   "tier": "tuned",
+   "grid": [
+    [
+     -0.9065196334495582,
+     -0.8264452984624665,
+     -0.7480043577444149,
+     -0.6754498350500622,
+     -0.6015923592783129,
+     -0.5262501509991405,
+     -0.43824080026392725,
+     -0.3617140723036959,
+     -0.29618956530161245,
+     -0.23121257830603847,
+     -0.16330823404458794,
+     -0.08360070573650631,
+     -0.017451196057662342,
+     0.058203955828129164,
+     0.13900481641515144,
+     0.21285767569557604,
+     0.29636827299840196,
+     0.37539834658268645,
+     0.43970005582033833,
+     0.5165694970960607,
+     0.5784553964754412,
+     0.6508463239207649,
+     0.7304601378918282,
+     0.8165759750774961,
+     0.89154474446476
+    ],
+    [
+     -0.9061870333924937,
+     -0.8365343178665784,
+     -0.7736008667586294,
+     -0.6923813357140526,
+     -0.6178391555748397,
+     -0.5443422576246448,
+     -0.4676825233152769,
+     -0.39899726362968985,
+     -0.31138676346744165,
+     -0.22491848690826538,
+     -0.15280351483324028,
+     -0.0902859411253737,
+     -0.013616322108886936,
+     0.06304444251261326,
+     0.13936509811788644,
+     0.20816483916824488,
+     0.27778091658889364,
+     0.36189282325007327,
+     0.4393796597533693,
+     0.5120455488178626,
+     0.5945906904444639,
+     0.6642211622481398,
+     0.738666479375525,
+     0.8284321709347122,
+     0.8997650497612572
+    ]
+   ],
+   "surface_nrmse": 0.14490480273356227,
+   "marginal_nrmse_from_surface": 0.5312156147468666,
+   "truth_surface_range": [
+    -2.9967942320353105,
+    3.0032057679646895
+   ],
+   "predicted_surface_range": [
+    -3.108469882588565,
+    2.92562464048054
+   ],
+   "background_rows": 256,
+   "exploratory": true,
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "31be545076a8a7a6bc4760850a4f514c8fd176f694946c7d905463fe91db632d",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "benchmark_contract",
+      "probe_joint_surface",
+      "shootout_data",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "92e03a59cbddd94e703a5420506ba8e16518f33ea6a7ec20f62e6a29d02134fa",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "cc70291303a7a8cba9d48e465077b7fa1ab42ec652062514cc4e81f344a6092b"
+     }
+    },
+    "measured_at": "2026-10-06T01:13:02+00:00",
+    "wall_seconds": 9.414359092712402
+   }
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 0,
+   "method": "mboost_auto",
+   "tier": "tuned",
+   "grid": [
+    [
+     -0.9065196334495582,
+     -0.8264452984624665,
+     -0.7480043577444149,
+     -0.6754498350500622,
+     -0.6015923592783129,
+     -0.5262501509991405,
+     -0.43824080026392725,
+     -0.3617140723036959,
+     -0.29618956530161245,
+     -0.23121257830603847,
+     -0.16330823404458794,
+     -0.08360070573650631,
+     -0.017451196057662342,
+     0.058203955828129164,
+     0.13900481641515144,
+     0.21285767569557604,
+     0.29636827299840196,
+     0.37539834658268645,
+     0.43970005582033833,
+     0.5165694970960607,
+     0.5784553964754412,
+     0.6508463239207649,
+     0.7304601378918282,
+     0.8165759750774961,
+     0.89154474446476
+    ],
+    [
+     -0.9061870333924937,
+     -0.8365343178665784,
+     -0.7736008667586294,
+     -0.6923813357140526,
+     -0.6178391555748397,
+     -0.5443422576246448,
+     -0.4676825233152769,
+     -0.39899726362968985,
+     -0.31138676346744165,
+     -0.22491848690826538,
+     -0.15280351483324028,
+     -0.0902859411253737,
+     -0.013616322108886936,
+     0.06304444251261326,
+     0.13936509811788644,
+     0.20816483916824488,
+     0.27778091658889364,
+     0.36189282325007327,
+     0.4393796597533693,
+     0.5120455488178626,
+     0.5945906904444639,
+     0.6642211622481398,
+     0.738666479375525,
+     0.8284321709347122,
+     0.8997650497612572
+    ]
+   ],
+   "surface_nrmse": 0.409808995494422,
+   "marginal_nrmse_from_surface": 0.7620823429035029,
+   "truth_surface_range": [
+    -2.9967942320353105,
+    3.0032057679646895
+   ],
+   "predicted_surface_range": [
+    -4.129209009577905,
+    4.416980724912017
+   ],
+   "background_rows": 256,
+   "exploratory": true,
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "a202211fb7d08393098040854755e939086eb4e824960ef0a4a6dbb1a9936522",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "benchmark_contract",
+      "probe_joint_surface",
+      "shootout_data",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "92e03a59cbddd94e703a5420506ba8e16518f33ea6a7ec20f62e6a29d02134fa",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "cc70291303a7a8cba9d48e465077b7fa1ab42ec652062514cc4e81f344a6092b"
+     }
+    },
+    "measured_at": "2026-10-06T01:13:11+00:00",
+    "wall_seconds": 8.43335771560669
+   }
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 0,
+   "method": "ebm",
+   "tier": "tuned",
+   "grid": [
+    [
+     -0.9065196334495582,
+     -0.8264452984624665,
+     -0.7480043577444149,
+     -0.6754498350500622,
+     -0.6015923592783129,
+     -0.5262501509991405,
+     -0.43824080026392725,
+     -0.3617140723036959,
+     -0.29618956530161245,
+     -0.23121257830603847,
+     -0.16330823404458794,
+     -0.08360070573650631,
+     -0.017451196057662342,
+     0.058203955828129164,
+     0.13900481641515144,
+     0.21285767569557604,
+     0.29636827299840196,
+     0.37539834658268645,
+     0.43970005582033833,
+     0.5165694970960607,
+     0.5784553964754412,
+     0.6508463239207649,
+     0.7304601378918282,
+     0.8165759750774961,
+     0.89154474446476
+    ],
+    [
+     -0.9061870333924937,
+     -0.8365343178665784,
+     -0.7736008667586294,
+     -0.6923813357140526,
+     -0.6178391555748397,
+     -0.5443422576246448,
+     -0.4676825233152769,
+     -0.39899726362968985,
+     -0.31138676346744165,
+     -0.22491848690826538,
+     -0.15280351483324028,
+     -0.0902859411253737,
+     -0.013616322108886936,
+     0.06304444251261326,
+     0.13936509811788644,
+     0.20816483916824488,
+     0.27778091658889364,
+     0.36189282325007327,
+     0.4393796597533693,
+     0.5120455488178626,
+     0.5945906904444639,
+     0.6642211622481398,
+     0.738666479375525,
+     0.8284321709347122,
+     0.8997650497612572
+    ]
+   ],
+   "surface_nrmse": 0.09531954890710563,
+   "marginal_nrmse_from_surface": 0.5607106651130322,
+   "truth_surface_range": [
+    -2.9967942320353105,
+    3.0032057679646895
+   ],
+   "predicted_surface_range": [
+    -3.2308603632204127,
+    3.1982432659145066
+   ],
+   "background_rows": 256,
+   "exploratory": true,
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "8d369dabec2b01bc2366e38258c7429c3e4902b6d0507a43e6e0eff64aa804ab",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "benchmark_contract",
+      "probe_joint_surface",
+      "shootout_data",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "92e03a59cbddd94e703a5420506ba8e16518f33ea6a7ec20f62e6a29d02134fa",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "cc70291303a7a8cba9d48e465077b7fa1ab42ec652062514cc4e81f344a6092b"
+     }
+    },
+    "measured_at": "2026-10-06T01:13:20+00:00",
+    "wall_seconds": 224.9558572769165
+   }
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 0,
+   "method": "catboost",
+   "tier": "tuned",
+   "grid": [
+    [
+     -0.9065196334495582,
+     -0.8264452984624665,
+     -0.7480043577444149,
+     -0.6754498350500622,
+     -0.6015923592783129,
+     -0.5262501509991405,
+     -0.43824080026392725,
+     -0.3617140723036959,
+     -0.29618956530161245,
+     -0.23121257830603847,
+     -0.16330823404458794,
+     -0.08360070573650631,
+     -0.017451196057662342,
+     0.058203955828129164,
+     0.13900481641515144,
+     0.21285767569557604,
+     0.29636827299840196,
+     0.37539834658268645,
+     0.43970005582033833,
+     0.5165694970960607,
+     0.5784553964754412,
+     0.6508463239207649,
+     0.7304601378918282,
+     0.8165759750774961,
+     0.89154474446476
+    ],
+    [
+     -0.9061870333924937,
+     -0.8365343178665784,
+     -0.7736008667586294,
+     -0.6923813357140526,
+     -0.6178391555748397,
+     -0.5443422576246448,
+     -0.4676825233152769,
+     -0.39899726362968985,
+     -0.31138676346744165,
+     -0.22491848690826538,
+     -0.15280351483324028,
+     -0.0902859411253737,
+     -0.013616322108886936,
+     0.06304444251261326,
+     0.13936509811788644,
+     0.20816483916824488,
+     0.27778091658889364,
+     0.36189282325007327,
+     0.4393796597533693,
+     0.5120455488178626,
+     0.5945906904444639,
+     0.6642211622481398,
+     0.738666479375525,
+     0.8284321709347122,
+     0.8997650497612572
+    ]
+   ],
+   "surface_nrmse": 0.08040241145795013,
+   "marginal_nrmse_from_surface": 1.336376791133617,
+   "truth_surface_range": [
+    -2.9967942320353105,
+    3.0032057679646895
+   ],
+   "predicted_surface_range": [
+    -3.0473806827321988,
+    3.339880418857178
+   ],
+   "background_rows": 256,
+   "exploratory": true,
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "d9a6d200f8047abca33081c2440aaa9241e63ed1e45f3065c5a184e615fe00ac",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "benchmark_contract",
+      "probe_joint_surface",
+      "shootout_data",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "92e03a59cbddd94e703a5420506ba8e16518f33ea6a7ec20f62e6a29d02134fa",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "cc70291303a7a8cba9d48e465077b7fa1ab42ec652062514cc4e81f344a6092b"
+     }
+    },
+    "measured_at": "2026-10-06T01:17:05+00:00",
+    "wall_seconds": 6.459158897399902
+   }
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 0,
+   "method": "lightgbm",
+   "tier": "tuned",
+   "grid": [
+    [
+     -0.9065196334495582,
+     -0.8264452984624665,
+     -0.7480043577444149,
+     -0.6754498350500622,
+     -0.6015923592783129,
+     -0.5262501509991405,
+     -0.43824080026392725,
+     -0.3617140723036959,
+     -0.29618956530161245,
+     -0.23121257830603847,
+     -0.16330823404458794,
+     -0.08360070573650631,
+     -0.017451196057662342,
+     0.058203955828129164,
+     0.13900481641515144,
+     0.21285767569557604,
+     0.29636827299840196,
+     0.37539834658268645,
+     0.43970005582033833,
+     0.5165694970960607,
+     0.5784553964754412,
+     0.6508463239207649,
+     0.7304601378918282,
+     0.8165759750774961,
+     0.89154474446476
+    ],
+    [
+     -0.9061870333924937,
+     -0.8365343178665784,
+     -0.7736008667586294,
+     -0.6923813357140526,
+     -0.6178391555748397,
+     -0.5443422576246448,
+     -0.4676825233152769,
+     -0.39899726362968985,
+     -0.31138676346744165,
+     -0.22491848690826538,
+     -0.15280351483324028,
+     -0.0902859411253737,
+     -0.013616322108886936,
+     0.06304444251261326,
+     0.13936509811788644,
+     0.20816483916824488,
+     0.27778091658889364,
+     0.36189282325007327,
+     0.4393796597533693,
+     0.5120455488178626,
+     0.5945906904444639,
+     0.6642211622481398,
+     0.738666479375525,
+     0.8284321709347122,
+     0.8997650497612572
+    ]
+   ],
+   "surface_nrmse": 0.06348232686775705,
+   "marginal_nrmse_from_surface": 0.9697828191453456,
+   "truth_surface_range": [
+    -2.9967942320353105,
+    3.0032057679646895
+   ],
+   "predicted_surface_range": [
+    -3.222130942745858,
+    3.102611416702374
+   ],
+   "background_rows": 256,
+   "exploratory": true,
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "11c6fb1bcabf6d58d7bb145c0a5c6562670d0ac3e1165c0d33f96148352257c2",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "benchmark_contract",
+      "probe_joint_surface",
+      "shootout_data",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "92e03a59cbddd94e703a5420506ba8e16518f33ea6a7ec20f62e6a29d02134fa",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "cc70291303a7a8cba9d48e465077b7fa1ab42ec652062514cc4e81f344a6092b"
+     }
+    },
+    "measured_at": "2026-10-06T01:17:11+00:00",
+    "wall_seconds": 3.4018239974975586
+   }
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 0,
+   "method": "xgboost",
+   "tier": "tuned",
+   "grid": [
+    [
+     -0.9065196334495582,
+     -0.8264452984624665,
+     -0.7480043577444149,
+     -0.6754498350500622,
+     -0.6015923592783129,
+     -0.5262501509991405,
+     -0.43824080026392725,
+     -0.3617140723036959,
+     -0.29618956530161245,
+     -0.23121257830603847,
+     -0.16330823404458794,
+     -0.08360070573650631,
+     -0.017451196057662342,
+     0.058203955828129164,
+     0.13900481641515144,
+     0.21285767569557604,
+     0.29636827299840196,
+     0.37539834658268645,
+     0.43970005582033833,
+     0.5165694970960607,
+     0.5784553964754412,
+     0.6508463239207649,
+     0.7304601378918282,
+     0.8165759750774961,
+     0.89154474446476
+    ],
+    [
+     -0.9061870333924937,
+     -0.8365343178665784,
+     -0.7736008667586294,
+     -0.6923813357140526,
+     -0.6178391555748397,
+     -0.5443422576246448,
+     -0.4676825233152769,
+     -0.39899726362968985,
+     -0.31138676346744165,
+     -0.22491848690826538,
+     -0.15280351483324028,
+     -0.0902859411253737,
+     -0.013616322108886936,
+     0.06304444251261326,
+     0.13936509811788644,
+     0.20816483916824488,
+     0.27778091658889364,
+     0.36189282325007327,
+     0.4393796597533693,
+     0.5120455488178626,
+     0.5945906904444639,
+     0.6642211622481398,
+     0.738666479375525,
+     0.8284321709347122,
+     0.8997650497612572
+    ]
+   ],
+   "surface_nrmse": 0.16437447288663654,
+   "marginal_nrmse_from_surface": 0.6835517725818031,
+   "truth_surface_range": [
+    -2.9967942320353105,
+    3.0032057679646895
+   ],
+   "predicted_surface_range": [
+    -3.5177249908447266,
+    3.086334228515625
+   ],
+   "background_rows": 256,
+   "exploratory": true,
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "6fd3904451d503082280f81b24efe5f1adab4ca4d49c7456d708e9f1ef8eb753",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "benchmark_contract",
+      "probe_joint_surface",
+      "shootout_data",
+      "shootout_models",
+      "study_evidence"
+     ],
+     "runner_hash": "92e03a59cbddd94e703a5420506ba8e16518f33ea6a7ec20f62e6a29d02134fa",
+     "environment": {
+      "python": "3.12.11",
+      "executable": "/Users/fcela/src/public_github/mboostrs/.venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.4.6",
+       "polars": "1.41.0",
+       "pandas": "2.3.3",
+       "scipy": "1.16.3",
+       "scikit-learn": "1.9.0",
+       "lightgbm": "4.7.0",
+       "xgboost": "3.4.0",
+       "catboost": "1.2.10",
+       "interpret": "0.7.8",
+       "shap": "0.52.0",
+       "aplr": "10.23.0",
+       "pygam": "0.12.0",
+       "ngboost": "0.5.11",
+       "statsmodels": "0.15.0",
+       "econml": "0.17.0",
+       "doubleml": "0.11.4"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     },
+     "mboostrs": {
+      "package": "/Users/fcela/src/public_github/mboostrs/python/mboostrs",
+      "extension": "/Users/fcela/src/public_github/mboostrs/python/mboostrs/_rust.cpython-312-darwin.so",
+      "hash": "cc70291303a7a8cba9d48e465077b7fa1ab42ec652062514cc4e81f344a6092b"
+     }
+    },
+    "measured_at": "2026-10-06T01:17:15+00:00",
+    "wall_seconds": 5.109103202819824
+   }
+  }
+ ]
+}

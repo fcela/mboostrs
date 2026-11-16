@@ -1,0 +1,82 @@
+name: Deploy documentation book
+
+on:
+  push:
+    branches: [main]
+
+env:
+  BASE_URL: /${{ github.event.repository.name }}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    # GitHub Pages is not available for private repositories on the free plan,
+    # so configure-pages fails with "Get Pages site failed ... Not Found" and
+    # takes this workflow red on every push to main. The repository is planned
+    # to go public; this condition makes the job start working on its own at
+    # that point, with no edit needed here.
+    #
+    # No validation is lost by skipping it: ci.yml's `documentation` job already
+    # runs check_docs.py, executes the example notebooks, and builds both the
+    # HTML and the PDF. This job only adds the Pages upload and deploy.
+    if: github.event.repository.private == false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: docs/book
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 20
+
+      - name: Install MyST
+        run: npm install -g mystmd
+
+      - name: "Install system packages (PDF: rsvg-convert, TeX Live, pygmentize)"
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y librsvg2-bin texlive texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra python3-pygments
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt maturin
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Install mboostrs (from source, to execute tutorial cells)
+        working-directory: .
+        run: |
+          maturin build --release --out dist
+          python -m pip install dist/*.whl
+
+      - name: Build validated HTML and PDF
+        run: bash build-html.sh
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: docs/book/_build/html
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

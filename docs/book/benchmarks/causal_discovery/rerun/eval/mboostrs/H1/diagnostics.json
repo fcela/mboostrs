@@ -1,0 +1,655 @@
+{
+  "role_tests": {
+    "treatment_change_and_se": {
+      "age_education_experience": [
+        0.0006221388480559531,
+        0.00043998571757164555
+      ],
+      "ethnicity": [
+        0.0005617065527413478,
+        0.00022984992340664318
+      ],
+      "smsa": [
+        0.0,
+        0.0
+      ],
+      "region": [
+        0.0001460795210370125,
+        0.00012082291528465925
+      ],
+      "parttime": [
+        -6.083830471570462e-06,
+        6.083830471537154e-06
+      ],
+      "prior_earnings": [
+        0.053811213269673475,
+        0.0015390829191420936
+      ],
+      "months_unemployed": [
+        0.0023460718467696595,
+        0.0002731838388340437
+      ],
+      "distance_km": [
+        0.0066505940654500995,
+        0.0007834569996031025
+      ],
+      "caseworker_note_len": [
+        -0.00019482368309775566,
+        9.315430058210305e-05
+      ]
+    },
+    "earnings_change_and_se": {
+      "age_education_experience": [
+        16.7527634317903,
+        5.579991970690653
+      ],
+      "ethnicity": [
+        -0.0021565531920941794,
+        0.0021565531920145985
+      ],
+      "smsa": [
+        0.4604526543902807,
+        0.2987941232777898
+      ],
+      "region": [
+        0.2844832822358967,
+        0.32128148929691314
+      ],
+      "parttime": [
+        -0.17047799972124267,
+        0.1757881169852354
+      ],
+      "prior_earnings": [
+        145.78845014972467,
+        11.55418706550787
+      ],
+      "months_unemployed": [
+        1.5248596597969026,
+        1.1024194915291303
+      ],
+      "distance_km": [
+        -0.160012606077089,
+        0.11976313922160245
+      ],
+      "caseworker_note_len": [
+        0.24038262313933956,
+        0.4157504523401705
+      ]
+    },
+    "employment_change_and_se": {
+      "age_education_experience": [
+        0.004901366875494112,
+        0.0002871751681907103
+      ],
+      "ethnicity": [
+        -4.429742287384575e-05,
+        4.435933780355699e-05
+      ],
+      "smsa": [
+        -1.8226475610866322e-05,
+        1.6207294231244372e-05
+      ],
+      "region": [
+        6.44261730342599e-06,
+        2.2894334650712724e-05
+      ],
+      "parttime": [
+        -2.6240239015623557e-05,
+        2.0649438712577007e-05
+      ],
+      "prior_earnings": [
+        0.002359822531367961,
+        0.0004087770310581547
+      ],
+      "months_unemployed": [
+        0.0008733535834621886,
+        0.00042392735748453237
+      ],
+      "distance_km": [
+        -3.986602315009247e-05,
+        1.576277431314912e-05
+      ],
+      "caseworker_note_len": [
+        -2.8789537438261847e-05,
+        8.804353343581215e-05
+      ]
+    },
+    "evidence": {
+      "age_education_experience": {
+        "treatment_z": 1.41,
+        "outcome_z": 17.07
+      },
+      "ethnicity": {
+        "treatment_z": 2.44,
+        "outcome_z": 0.0
+      },
+      "smsa": {
+        "treatment_z": 0.0,
+        "outcome_z": 1.54
+      },
+      "region": {
+        "treatment_z": 1.21,
+        "outcome_z": 0.89
+      },
+      "parttime": {
+        "treatment_z": -1.0,
+        "outcome_z": 0.0
+      },
+      "prior_earnings": {
+        "treatment_z": 34.96,
+        "outcome_z": 12.62
+      },
+      "months_unemployed": {
+        "treatment_z": 8.59,
+        "outcome_z": 2.06
+      },
+      "distance_km": {
+        "treatment_z": 8.49,
+        "outcome_z": 0.0
+      },
+      "caseworker_note_len": {
+        "treatment_z": -2.09,
+        "outcome_z": 0.58
+      }
+    }
+  },
+  "baseline_stops": {
+    "earnings": [
+      43,
+      50,
+      45,
+      73,
+      39
+    ],
+    "employment": [
+      69,
+      76,
+      67,
+      67,
+      76
+    ]
+  },
+  "inside_overlap_rows": 11047,
+  "att_score_mean_over_treated": [
+    10744.21262723281,
+    6855.1203477214585
+  ],
+  "subgroup_sizes": {
+    "CATE_educ_lt12": 1874,
+    "CATE_educ_ge16": 3014,
+    "CATE_prior_q1": 3000,
+    "CATE_prior_q4": 3000,
+    "CATE_age_lt25": 1984
+  },
+  "subgroup_thresholds": {
+    "prior_q1": 15797.5,
+    "prior_q4": 41172.5
+  },
+  "ate_standard_error": 753.144071092797,
+  "sensitivity_arm_specific_aipw": {
+    "estimate": 6159.710838909845,
+    "interval90": [
+      5123.904847113688,
+      7195.516830706001
+    ],
+    "outcome_models": "smooth, fitted separately in each arm"
+  },
+  "propensity_range_clipped": [
+    0.01,
+    0.9846838298607634
+  ],
+  "response_propensity_range_clipped": [
+    0.6322639799394671,
+    0.99
+  ],
+  "overlap": {
+    "bounds": [
+      0.02,
+      0.98
+    ],
+    "n": 12000,
+    "n_below": 952,
+    "n_above": 1,
+    "regions": [
+      {
+        "covariate": "age",
+        "kind": "numeric",
+        "region": null,
+        "rows_in_region": 0,
+        "share_outside_in_region": null,
+        "share_outside_elsewhere": 0.07941666666666666
+      },
+      {
+        "covariate": "education",
+        "kind": "numeric",
+        "region": null,
+        "rows_in_region": 0,
+        "share_outside_in_region": null,
+        "share_outside_elsewhere": 0.07941666666666666
+      },
+      {
+        "covariate": "experience",
+        "kind": "numeric",
+        "region": null,
+        "rows_in_region": 0,
+        "share_outside_in_region": null,
+        "share_outside_elsewhere": 0.07941666666666666
+      },
+      {
+        "covariate": "afam",
+        "kind": "numeric",
+        "region": null,
+        "rows_in_region": 0,
+        "share_outside_in_region": null,
+        "share_outside_elsewhere": 0.07941666666666666
+      },
+      {
+        "covariate": "prior_earnings",
+        "kind": "numeric",
+        "region": [
+          57020.0,
+          1062290.0
+        ],
+        "rows_in_region": 1201,
+        "share_outside_in_region": 0.787676935886761,
+        "share_outside_elsewhere": 0.0006482081674229096
+      },
+      {
+        "covariate": "months_unemployed",
+        "kind": "numeric",
+        "region": null,
+        "rows_in_region": 0,
+        "share_outside_in_region": null,
+        "share_outside_elsewhere": 0.07941666666666666
+      }
+    ],
+    "estimand": "ate",
+    "estimate": 6159.710838909845,
+    "standard_error": 629.7253292476195,
+    "estimate_inside": 4493.054925431159,
+    "standard_error_inside": 548.0236553245569,
+    "n_inside": 11047,
+    "n_outside": 953,
+    "share_outside": 0.07941666666666666
+  },
+  "test_outside_overlap_count": 103,
+  "test_propensity_range": [
+    0.0012359536731368994,
+    0.9107541976741848
+  ],
+  "covariate_shift": {
+    "prior_earnings": {
+      "train_mean": 31449.205,
+      "test_mean": 25778.7275
+    },
+    "months_unemployed": {
+      "train_mean": 2.7629166666666665,
+      "test_mean": 3.1685
+    },
+    "age": {
+      "train_mean": 37.191916666666664,
+      "test_mean": 35.71475
+    },
+    "education": {
+      "train_mean": 13.069,
+      "test_mean": 12.868
+    },
+    "prior_earnings_above_40k": {
+      "train_share": 0.26566666666666666,
+      "test_share": 0.1795
+    }
+  },
+  "cate_model": {
+    "terms": [
+      "prior_earnings"
+    ],
+    "name": "prior_earnings",
+    "mstop": 167,
+    "winsor_bounds": [
+      -231964.10458330007,
+      341108.1047343219
+    ],
+    "candidates": [
+      {
+        "set": "prior_earnings",
+        "change": 0.0,
+        "change_se": 0.0
+      },
+      {
+        "set": "prior_earnings+months_unemployed",
+        "change": 31814.429841041565,
+        "change_se": 382472.2481929013
+      },
+      {
+        "set": "all_adjustment",
+        "change": 1818514.9211466312,
+        "change_se": 922563.009654197
+      }
+    ]
+  },
+  "cate_term_tests": {
+    "bbs(prior_earnings, df=4)": {
+      "edf": 2.423447385354219,
+      "ref_df": 2.6988457965059323,
+      "statistic": 15.920355845364012,
+      "p_value": 4.411372267476565e-09
+    }
+  },
+  "cate_mean_train": 3583.105606455111,
+  "modifier_threshold_bonferroni": 0.0016666666666666668,
+  "modifier_candidates": {
+    "prior_earnings": {
+      "p_value": 4.411372267476565e-09,
+      "direction": "larger_when_higher",
+      "decile_low": 3192.275317033302,
+      "decile_high": 3195.490741030335
+    }
+  },
+  "cate_fit_range": {
+    "prior_earnings": [
+      2170.0,
+      1062290.0
+    ]
+  },
+  "ranking": {
+    "top_k": 800,
+    "expected_total_gain_top20": 3067911.4895704603,
+    "mean_cate_top20": 3834.8893619630753,
+    "mean_cate_all_test": 3400.827007526258,
+    "top20_outside_overlap": 1,
+    "top20_prior_earnings_above_40k": 1,
+    "cate_interval_width_median": 1732.1046348996415
+  },
+  "ranking_inside_overlap": {
+    "k": 800,
+    "expected_total_gain": 3058488.297252715,
+    "mean_cate": 3823.1103715658937,
+    "overlap_with_top20": 799
+  },
+  "channels": {
+    "employment_probability_ate": 0.07149247695319173,
+    "employment_probability_interval90": [
+      0.05347637241427508,
+      0.08950858149210839
+    ],
+    "point": {
+      "employment_part": 1465.1343134588974,
+      "earnings_part": 3016.1208491918073,
+      "earnings_if_employed_difference": 4246.054912799679,
+      "decomposition_total": 4481.255162650705
+    },
+    "interval90": {
+      "employment_part": [
+        1441.6879766012974,
+        1485.003588463915
+      ],
+      "earnings_part": [
+        2127.55971810303,
+        3832.424803324378
+      ],
+      "earnings_if_employed_difference": [
+        3149.0100639902957,
+        5248.512797031972
+      ]
+    },
+    "bootstrap_draws": 60,
+    "employed_model_mstop": {
+      "0": 38,
+      "1": 49
+    },
+    "employment_model_mstop": {
+      "0": 36,
+      "1": 115
+    },
+    "rows": "overlap rows only (propensity within the overlap bounds)",
+    "note": "Employment and employed-earnings models are fitted per arm on the overlap rows and averaged over them. The bootstrap refits the employed-earnings models; the employment probabilities are held fixed. The earnings contrast conditions on employment.",
+    "claim_intervals95": {
+      "employment_probability": [
+        0.05002496430726373,
+        0.09295998959911973
+      ],
+      "earnings_if_employed_difference": [
+        3050.4761840345964,
+        5428.975884022552
+      ]
+    }
+  },
+  "benchmark_shifts": {
+    "omitted_covariate": [
+      "prior_earnings",
+      "months_unemployed",
+      "education",
+      "age"
+    ],
+    "full_estimate": [
+      6159.710838909845,
+      6159.710838909845,
+      6159.710838909845,
+      6159.710838909845
+    ],
+    "omitted_estimate": [
+      -5444.420254329594,
+      6023.171726606541,
+      6361.6283917024,
+      6073.042457017146
+    ],
+    "estimate_shift": [
+      -11604.131093239439,
+      -136.53911230330414,
+      201.9175527925554,
+      -86.66838189269856
+    ],
+    "absolute_shift": [
+      11604.131093239439,
+      136.53911230330414,
+      201.9175527925554,
+      86.66838189269856
+    ],
+    "shift_in_full_standard_errors": [
+      18.427289731387766,
+      0.21682328145580193,
+      0.3206438480627762,
+      0.13762886431175927
+    ],
+    "omitted_propensity_min": [
+      0.04750718975170235,
+      4.603944322213893e-05,
+      1.1528160243831986e-05,
+      1.3539695855707725e-05
+    ],
+    "omitted_propensity_max": [
+      0.9943662252617711,
+      0.8857618186745888,
+      0.9830269403608825,
+      0.9837156973851072
+    ],
+    "benchmark": [
+      "leave_one_measured_covariate_out",
+      "leave_one_measured_covariate_out",
+      "leave_one_measured_covariate_out",
+      "leave_one_measured_covariate_out"
+    ]
+  },
+  "sensitivity_grid": {
+    "outcome_effect": [
+      2000.0,
+      2000.0,
+      2000.0,
+      2000.0,
+      5000.0,
+      5000.0,
+      5000.0,
+      5000.0,
+      10000.0,
+      10000.0,
+      10000.0,
+      10000.0,
+      20000.0,
+      20000.0,
+      20000.0,
+      20000.0
+    ],
+    "imbalance": [
+      0.05,
+      0.1,
+      0.2,
+      0.5,
+      0.05,
+      0.1,
+      0.2,
+      0.5,
+      0.05,
+      0.1,
+      0.2,
+      0.5,
+      0.05,
+      0.1,
+      0.2,
+      0.5
+    ],
+    "assumed_bias": [
+      100.0,
+      200.0,
+      400.0,
+      1000.0,
+      250.0,
+      500.0,
+      1000.0,
+      2500.0,
+      500.0,
+      1000.0,
+      2000.0,
+      5000.0,
+      1000.0,
+      2000.0,
+      4000.0,
+      10000.0
+    ],
+    "adjusted_estimate": [
+      6059.710838909845,
+      5959.710838909845,
+      5759.710838909845,
+      5159.710838909845,
+      5909.710838909845,
+      5659.710838909845,
+      5159.710838909845,
+      3659.710838909845,
+      5659.710838909845,
+      5159.710838909845,
+      4159.710838909845,
+      1159.7108389098448,
+      5159.710838909845,
+      4159.710838909845,
+      2159.710838909845,
+      -3840.289161090155
+    ],
+    "changes_sign": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true
+    ],
+    "lower": [
+      5023.904847113688,
+      4923.904847113688,
+      4723.904847113688,
+      4123.904847113688,
+      4873.904847113688,
+      4623.904847113688,
+      4123.904847113688,
+      2623.9048471136884,
+      4623.904847113688,
+      4123.904847113688,
+      3123.9048471136884,
+      123.90484711368845,
+      4123.904847113688,
+      3123.9048471136884,
+      1123.9048471136884,
+      -4876.095152886312
+    ],
+    "upper": [
+      7095.516830706001,
+      6995.516830706001,
+      6795.516830706001,
+      6195.516830706001,
+      6945.516830706001,
+      6695.516830706001,
+      6195.516830706001,
+      4695.516830706001,
+      6695.516830706001,
+      6195.516830706001,
+      5195.516830706001,
+      2195.516830706001,
+      6195.516830706001,
+      5195.516830706001,
+      3195.516830706001,
+      -2804.483169293999
+    ],
+    "interval_includes_zero": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "aipw_nuisance_stops": [
+    {
+      "propensity": 795,
+      "response": 165,
+      "mu0": 49,
+      "mu1": 75
+    },
+    {
+      "propensity": 800,
+      "response": 110,
+      "mu0": 28,
+      "mu1": 150
+    },
+    {
+      "propensity": 800,
+      "response": 140,
+      "mu0": 36,
+      "mu1": 650
+    },
+    {
+      "propensity": 798,
+      "response": 212,
+      "mu0": 53,
+      "mu1": 427
+    },
+    {
+      "propensity": 800,
+      "response": 154,
+      "mu0": 46,
+      "mu1": 86
+    }
+  ],
+  "seconds": 37.4,
+  "seed": 1,
+  "train_rows": 12000,
+  "test_rows": 4000
+}

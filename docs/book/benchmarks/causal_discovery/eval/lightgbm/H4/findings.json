@@ -1,0 +1,102 @@
+{
+  "library": "lightgbm 4.7.0",
+  "effect_queries": {
+    "ATE": {
+      "estimate": 3624.6389386679716,
+      "lower90": 1817.1086353500873,
+      "upper90": 5432.1692419858555
+    },
+    "ATT": {
+      "estimate": 3576.3593170881677,
+      "lower90": 3088.61182071357,
+      "upper90": 4064.1068134627653
+    },
+    "CATE_educ_lt12": {
+      "estimate": 4607.552833105366,
+      "lower90": 2875.6821217101933,
+      "upper90": 6339.423544500538
+    },
+    "CATE_educ_ge16": {
+      "estimate": 4323.387017155691,
+      "lower90": 1215.9032146260724,
+      "upper90": 7430.8708196853095
+    },
+    "CATE_prior_q1": {
+      "estimate": 3296.966334829512,
+      "lower90": 2773.1960643560788,
+      "upper90": 3820.7366053029455
+    },
+    "CATE_prior_q4": {
+      "estimate": 4986.027814866671,
+      "lower90": -1718.9015207792,
+      "upper90": 11690.957150512542
+    },
+    "CATE_age_lt25": {
+      "estimate": 2498.6822712105704,
+      "lower90": 819.7478321385895,
+      "upper90": 4177.616710282551
+    },
+    "EMP_ATE": {
+      "estimate": 0.07582924369038392,
+      "lower90": 0.05678997819660272,
+      "upper90": 0.09486850918416512
+    }
+  },
+  "roles": {
+    "age": "outcome_only",
+    "education": "outcome_only",
+    "experience": "outcome_only",
+    "ethnicity": "irrelevant",
+    "smsa": "irrelevant",
+    "region": "irrelevant",
+    "parttime": "irrelevant",
+    "prior_earnings": "confounder",
+    "months_unemployed": "confounder",
+    "distance_km": "instrument",
+    "caseworker_note_len": "irrelevant",
+    "enrolled": "treatment",
+    "certificate": "mediator",
+    "responded": "post_treatment_selection",
+    "hours_post": "mediator",
+    "earnings_post": "outcome"
+  },
+  "adjustment_set": [
+    "age",
+    "education",
+    "experience",
+    "prior_earnings",
+    "months_unemployed"
+  ],
+  "effect_modifiers": [
+    {
+      "variable": "age",
+      "direction": "nonmonotone",
+      "evidence": "median split: effect difference (above minus at or below median) -3754 dollars, 95% bootstrap interval -7038 to -470; quartile means of the pseudo-outcome 4037, 6879, 3503, 79"
+    },
+    {
+      "variable": "experience",
+      "direction": "nonmonotone",
+      "evidence": "median split: effect difference (above minus at or below median) -3587 dollars, 95% bootstrap interval -6967 to -207; quartile means of the pseudo-outcome 4745, 6701, 1802, 1250"
+    }
+  ],
+  "channels": {
+    "employment": true,
+    "earnings_if_employed": true
+  },
+  "limited_overlap": [
+    {
+      "description": "applicants with prior_earnings of about 36680 or more have a cross-fitted enrolment probability below 0.05 (3131 of 12000 program-year applicants, enrolled share 0.010); the effect for them rests on few enrolled cases. 714 of 4000 new applicants fall in this region.",
+      "variable": "prior_earnings"
+    }
+  ],
+  "warnings": [
+    "Response to the follow-up survey is modelled as missing at random given the covariates and enrolment. This cannot be checked with these data; if response depends on unmeasured earnings, the earnings effects are biased.",
+    "Enrolled share is 0.619 in the bottom quartile of prior_earnings and 0.010 in the top quartile; the adjusted effects depend on the no-unmeasured-confounding assumption. See sensitivity.json for a bias table.",
+    "Channel decomposition uses employment and earnings-among-employed models; the wage part is conditional on employment and is not a randomized comparison.",
+    "Intervals are normal approximations: estimate plus or minus 1.645 times the standard deviation over 24 bootstrap replicates of the full pipeline.",
+    "Effect-modifier claims are based on 95% bootstrap intervals of median-split contrasts, with no adjustment for the number of contrasts tested.",
+    "Covariate roles were assigned by a LightGBM drop-one screen with z threshold 2.0; instrument status is a rule (enrolment z at least 4.0), not a test of the exclusion restriction.",
+    "Instrumental-variable check with distance_km: beta 6688 dollars per unit of enrolment, first-stage partial correlation -0.151; this estimate applies to applicants whose enrolment responds to distance.",
+    "The bootstrap stopped after 24 of 30 replicates to stay within the time budget."
+  ]
+}

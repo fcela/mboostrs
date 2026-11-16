@@ -1,0 +1,53 @@
+{
+ "additive_nonlinear": {
+  "catboost_importance": {
+   "draws": 10,
+   "tpr": 0.55,
+   "fdr": 0.0
+  },
+  "lightgbm_importance": {
+   "draws": 10,
+   "tpr": 0.85,
+   "fdr": 0.0
+  },
+  "mboostrs_discover": {
+   "draws": 10,
+   "tpr": 1.0,
+   "fdr": 0.25925925925925924
+  }
+ },
+ "interaction": {
+  "catboost_importance": {
+   "draws": 10,
+   "tpr": 1.0,
+   "fdr": 0.0
+  },
+  "lightgbm_importance": {
+   "draws": 10,
+   "tpr": 1.0,
+   "fdr": 0.0
+  },
+  "mboostrs_discover": {
+   "draws": 10,
+   "tpr": 1.0,
+   "fdr": 0.0
+  }
+ },
+ "pure_noise": {
+  "catboost_importance": {
+   "draws": 10,
+   "any_selection_rate": 0.2,
+   "fdr": 1.0
+  },
+  "lightgbm_importance": {
+   "draws": 10,
+   "any_selection_rate": 0.5,
+   "fdr": 1.0
+  },
+  "mboostrs_discover": {
+   "draws": 10,
+   "any_selection_rate": 0.0,
+   "fdr": null
+  }
+ }
+}

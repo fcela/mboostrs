@@ -1,0 +1,55 @@
+{
+  "library": "xgboost 3.4.0",
+  "mean_effects": [],
+  "interactions": [],
+  "variance_drivers": [],
+  "effect_queries": {
+    "Q1": {
+      "estimate": 0.00048793264431878924,
+      "lower90": -0.002688326162751764,
+      "upper90": 0.002552956424187865
+    },
+    "Q2": {
+      "estimate": -0.0008999683777801692,
+      "lower90": -0.010342795145697891,
+      "upper90": 0.0006923511624336207
+    },
+    "Q3": {
+      "estimate": 0.0014737657038494945,
+      "lower90": -0.0032261020387522876,
+      "upper90": 0.005846117204055188
+    },
+    "Q4": {
+      "estimate": 0.004891497548669577,
+      "lower90": -0.00034817762207239855,
+      "upper90": 0.007068275404162705
+    },
+    "Q5": {
+      "estimate": 0.003300725482404232,
+      "lower90": -0.000669639217085205,
+      "upper90": 0.013377318484708661
+    },
+    "Q6": {
+      "estimate": -0.0019250762416049838,
+      "lower90": -0.008334302483126521,
+      "upper90": 0.0007565715946839168
+    },
+    "Q7": {
+      "estimate": 0.0,
+      "lower90": -0.002380483935121447,
+      "upper90": 0.005456250719726085
+    },
+    "Q8": {
+      "estimate": -0.0006043009925633669,
+      "lower90": -0.006110606133006512,
+      "upper90": 0.0009787135059013952
+    }
+  },
+  "warnings": [
+    "Missing values (train): housing_median_age=1264, total_bedrooms=154, ave_bedrooms=154; XGBoost routes them with learned default directions.",
+    "Train-vs-test adversarial AUC = 0.597; calibration weights from the density ratio.",
+    "Placebo noise column: mean MSE increase -0.00000 (p=0.55).",
+    "Prediction intervals are weighted split-conformal (OOF residual scores scaled by a spread model).",
+    "Effect-query intervals are bootstrap percentile intervals of the average contrast over training rows; they reflect model refit variability and do not include the sampling noise of y."
+  ]
+}

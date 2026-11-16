@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/private/tmp/mboostrs-binomial-cancer/benches/audit_binomial_prediction_scale.py", line 120, in <module>
+    run()
+  File "/private/tmp/mboostrs-binomial-cancer/benches/audit_binomial_prediction_scale.py", line 79, in run
+    beta = np.array([np.asarray(coefficient[f"x{i}"]).ravel()[1] for i in range(30)])
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: index 1 is out of bounds for axis 0 with size 1

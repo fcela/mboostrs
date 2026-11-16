@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-19T03:50:45+00:00",
+  "commit": "a8a8fad452279f0fcf8ced7085b5d1e3b43c8898",
+  "working_tree": {
+    "dirty": false,
+    "status_digest": null,
+    "commit_source": "working directory"
+  },
+  "platform": {
+    "system": "Darwin",
+    "release": "25.3.0",
+    "machine": "arm64",
+    "cpu": "arm",
+    "python": "3.12.11"
+  },
+  "versions": {
+    "mboostrs": "0.1.3",
+    "numpy": "2.4.6",
+    "rpy2": "3.6.7",
+    "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+    "R": "4.5.1",
+    "mboost": "2.9.11",
+    "scipy": "1.16.3",
+    "pandas": "2.3.3",
+    "ngboost": "0.5.11",
+    "mssm": "1.2.5",
+    "scikit-learn": "1.9.0"
+  },
+  "threads": {
+    "logical_cpus": 10,
+    "r_mclapply_default_cores": "2",
+    "RAYON_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "build_info": {
+    "package_version": "0.1.3",
+    "source_digest": "sha256:2ca05527393e6153cce73642f587ed8cb0068173aa1bf4b749701ebc075e4e24",
+    "git_revision": "2936a7b2f9147c1939257f11df2911f402269de3",
+    "git_dirty": false,
+    "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+    "target": "aarch64-apple-darwin",
+    "profile": "release",
+    "target_features": "aes,bf16,bti,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,i8mm,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+    "crate_features": "",
+    "abi_version": 1,
+    "build_id": "sha256:3a278e5f5a56a24e81dd72e65b84b90d51778298a46ff1f97f414ad2a807cc2e"
+  },
+  "scripts": {
+    "/private/tmp/mboostrs-conditional-scale/benches/prototype_conditional_scale_v2.py": "f9a27418d84d6d4035693a62a100f80cb6ea2be9694b75b573a5b3ca00b8d8bc"
+  },
+  "thread_environment": {
+    "RAYON_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "protocol": {
+    "id": "conditional-scale-comparison/2",
+    "phase": "prototype development",
+    "sha256": "704317010e0a7094b8b36a23855fc46362058d2de0f84b87cfe734fa541fe4d5"
+  },
+  "repeats": {
+    "seeds": [
+      6293100,
+      6293101,
+      6293102,
+      6293103,
+      6293104,
+      6293105,
+      6293106,
+      6293107,
+      6293108,
+      6293109
+    ],
+    "panel": "shifted_varying",
+    "test_seed_offset": 100000
+  },
+  "uncertainty": {
+    "unit": "one independent training and test draw; pair methods within a draw",
+    "summary": "mean and Monte Carlo standard error across draws",
+    "timing": "elapsed whole-workflow costs, not controlled implementation speed ratios"
+  },
+  "memory": {
+    "status": "not measured"
+  },
+  "records": 10,
+  "compressed_sha256": "798cbaf464e472d30b0f3d7378b27f09412e50fd3fc081aaaa6d3556d710a052",
+  "uncompressed_sha256": "6908e66893d66ef7e833fe9e039e5d9584696ffa785724de08c917972ed170d6"
+}

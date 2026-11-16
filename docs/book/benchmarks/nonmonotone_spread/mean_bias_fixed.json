@@ -1,0 +1,158 @@
+{
+ "schema_version": 1,
+ "created_at": "2026-10-17T21:33:09+00:00",
+ "commit": "008002f3e0981d94edd22d3b83aafe4f2223d7b1",
+ "working_tree": {
+  "dirty": true,
+  "status_digest": "sha256:267a2f82dee416031d0680693043357a876901ea38ad066098440a865ef87a8e",
+  "commit_source": "working directory"
+ },
+ "platform": {
+  "system": "Darwin",
+  "release": "25.3.0",
+  "machine": "arm64",
+  "cpu": "arm",
+  "python": "3.12.11"
+ },
+ "versions": {
+  "mboostrs": "0.1.3",
+  "numpy": "2.4.6",
+  "rpy2": "3.6.7",
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "R": "4.5.1",
+  "mboost": "2.9.11",
+  "scipy": "1.16.3",
+  "pandas": "2.3.3",
+  "ngboost": "0.5.11",
+  "mssm": "1.2.5",
+  "scikit-learn": "1.9.0"
+ },
+ "threads": {
+  "logical_cpus": 10,
+  "r_mclapply_default_cores": "2",
+  "RAYON_NUM_THREADS": null,
+  "OMP_NUM_THREADS": null,
+  "OPENBLAS_NUM_THREADS": null,
+  "MKL_NUM_THREADS": null
+ },
+ "build_info": {
+  "package_version": "0.1.3",
+  "source_digest": "sha256:545abff7a0e12ca3fcef54e2b4eed955c157ff4b26cca1ab727cc0c4550b20ef",
+  "git_revision": "e314bbfd736db08de00a1640c1e2f0d033035917",
+  "git_dirty": true,
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+  "target": "aarch64-apple-darwin",
+  "profile": "release",
+  "target_features": "aes,bf16,bti,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,i8mm,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+  "crate_features": "",
+  "abi_version": 1,
+  "build_id": "sha256:f040b322af1e6fbbefc1acad06598d728a6061410bee019605042c3a5b0216a6"
+ },
+ "scripts": {
+  "/private/tmp/mboostrs-spread-screen/benches/probe_spread_mean_bias.py": "a185bfb48929bfcca0de5a3c959e052d70bf632d5d7275f644459430a86463d4"
+ },
+ "thread_environment": {
+  "RAYON_NUM_THREADS": null,
+  "OMP_NUM_THREADS": null,
+  "OPENBLAS_NUM_THREADS": null
+ },
+ "protocol": {
+  "id": "spread-mean-bias/development-probe",
+  "independent_confirmation": false,
+  "source": "existing test_discover_mean_recovery.py"
+ },
+ "repeats": {},
+ "uncertainty": {
+  "unit": "one independent training and test draw; pair methods within a draw",
+  "summary": "mean and Monte Carlo standard error across draws",
+  "timing": "elapsed whole-workflow costs, not controlled implementation speed ratios"
+ },
+ "memory": {
+  "status": "not measured"
+ },
+ "results": [
+  {
+   "true_noise_sd": 0.5,
+   "mean_formula": "bbs(x1, df=2.5, knots=5) + bbs(x2, df=2.5, knots=5) + btree(x1, x2, maxdepth=3, selection=sse) + bbs(x3, df=4.0)",
+   "spread_formula": "bbs(x1, df=4)",
+   "test_mse": 0.5150235649324139,
+   "spread_log": [
+    {
+     "stage": "spread",
+     "candidate": null,
+     "score": null,
+     "change": null,
+     "se": null,
+     "adopted": false,
+     "reason": "tested the spread against 5 column(s) (x1, x2, x3, n0, n1); 2 nominated at |t| >= 2 or positive held-out curve gain: x1, x2",
+     "estimated_seconds": null,
+     "nomination_scores": {
+      "x1": {
+       "slope": -0.11565910186555178,
+       "se": 0.1346697933589389,
+       "t": -0.8588347763873267,
+       "transform": null,
+       "spread_ratio": 0.9120611216486216,
+       "curve_removed": 0.024012546287879567
+      },
+      "x2": {
+       "slope": 0.1574646054866877,
+       "se": 0.13422925205321248,
+       "t": 1.1731020107618868,
+       "transform": null,
+       "spread_ratio": 1.13350940939394,
+       "curve_removed": 0.022740187944644497
+      },
+      "x3": {
+       "slope": -0.1299902037737044,
+       "se": 0.13377794081470626,
+       "t": -0.9716863855286262,
+       "transform": null,
+       "spread_ratio": 0.901129452283605,
+       "curve_removed": -0.14291577854294585
+      },
+      "n0": {
+       "slope": 0.03844455579215288,
+       "se": 0.13613346140424118,
+       "t": 0.2824034252533533,
+       "transform": null,
+       "spread_ratio": 1.0314008328549613,
+       "curve_removed": -0.08100007263961703
+      },
+      "n1": {
+       "slope": 0.15815618104446375,
+       "se": 0.13568333676495606,
+       "t": 1.1656271493266512,
+       "transform": null,
+       "spread_ratio": 1.1327213958897764,
+       "curve_removed": -0.12275145422202378
+      }
+     }
+    },
+    {
+     "stage": "spread",
+     "candidate": "sigma: bbs(x1, df=4)",
+     "score": 1.4947748285303575,
+     "change": -0.452394892377187,
+     "se": 0.20143397909269803,
+     "adopted": true,
+     "reason": "adopted: beats the constant scale by more than 2 change se, the best of the nominated log-scale terms",
+     "estimated_seconds": null
+    },
+    {
+     "stage": "spread",
+     "candidate": "sigma: bbs(x2, df=4)",
+     "score": 1.8096257531237043,
+     "change": -0.13754396778384015,
+     "se": 0.2604660487612678,
+     "adopted": false,
+     "reason": "rejected: a weaker log-scale term than the best nominated one",
+     "estimated_seconds": null
+    }
+   ],
+   "input_digest": "sha256:666773dc94b906b15895f6f85e0845272388c2c03fbc9a208fd08700130be2be",
+   "mean_prediction_digest": "sha256:2bb74c7cda5d3a5636230d125c7dbca0acc01cac96a7647ab83e4ac181a2eb70",
+   "warnings": []
+  }
+ ]
+}

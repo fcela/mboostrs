@@ -1,0 +1,1103 @@
+{
+ "study": "issue-900-nu-search",
+ "meta": {
+  "mboostrs_version": "0.2.0",
+  "python": "3.12.3",
+  "autospec_budget": 200,
+  "seed": 0,
+  "n_folds": 5,
+  "reference": "docs/benchmarks/2026-11-14-dlib-tuning-results.json"
+ },
+ "summary_rows": [
+  {
+   "panel": "cancer",
+   "shipped_fits": 52,
+   "nu_route_fits": 77,
+   "nu_search_fits": 25,
+   "shipped": {
+    "nu": 0.3,
+    "mstop": 625,
+    "risk": 0.09072105141944221
+   },
+   "nu_route": {
+    "nu": 1.0,
+    "mstop": 170,
+    "risk": 0.08909237099599585
+   },
+   "dlib": {
+    "nu": 0.4433364468140377,
+    "mstop": 479,
+    "risk": 0.09047873340417
+   },
+   "improvement_over_shipped": 0.0016286804234463687,
+   "se_vs_shipped": 0.002264063592573859,
+   "distance_to_dlib": -0.0013863624081741494,
+   "se_vs_dlib": 0.0022807860640537683,
+   "formula_matches_shipped": true
+  },
+  {
+   "panel": "bike_iid",
+   "shipped_fits": 136,
+   "nu_route_fits": 161,
+   "nu_search_fits": 25,
+   "shipped": {
+    "nu": 0.3,
+    "mstop": 9993,
+    "risk": 0.35339657947094893
+   },
+   "nu_route": {
+    "nu": 0.3,
+    "mstop": 9993,
+    "risk": 0.35339657947094893
+   },
+   "dlib": {
+    "nu": 0.5319212738526274,
+    "mstop": 9844,
+    "risk": 0.3533529412417735
+   },
+   "improvement_over_shipped": 0.0,
+   "se_vs_shipped": 0.0,
+   "distance_to_dlib": 4.363822917541338e-05,
+   "se_vs_dlib": 0.00047344513272239765,
+   "formula_matches_shipped": true
+  },
+  {
+   "panel": "bike_future",
+   "shipped_fits": 106,
+   "nu_route_fits": 131,
+   "nu_search_fits": 25,
+   "shipped": {
+    "nu": 0.3,
+    "mstop": 9994,
+    "risk": 0.2833879242569311
+   },
+   "nu_route": {
+    "nu": 1.0,
+    "mstop": 9999,
+    "risk": 0.28280697672021404
+   },
+   "dlib": {
+    "nu": 0.9900200504243722,
+    "mstop": 9915,
+    "risk": 0.28281037427221883
+   },
+   "improvement_over_shipped": 0.000580947536717058,
+   "se_vs_shipped": 0.000264817256607682,
+   "distance_to_dlib": -3.3975520047913044e-06,
+   "se_vs_dlib": 1.2329938014453866e-05,
+   "formula_matches_shipped": true
+  },
+  {
+   "panel": "concrete",
+   "shipped_fits": 78,
+   "nu_route_fits": 103,
+   "nu_search_fits": 25,
+   "shipped": {
+    "nu": 0.3,
+    "mstop": 9941,
+    "risk": 29.903495567631758
+   },
+   "nu_route": {
+    "nu": 0.5,
+    "mstop": 9987,
+    "risk": 28.973949360627074
+   },
+   "dlib": {
+    "nu": 0.6092323757507371,
+    "mstop": 9868,
+    "risk": 28.845142814861692
+   },
+   "improvement_over_shipped": 0.9295462070046838,
+   "se_vs_shipped": 0.4117088768720597,
+   "distance_to_dlib": 0.1288065457653822,
+   "se_vs_dlib": 0.1383635981746788,
+   "formula_matches_shipped": true
+  },
+  {
+   "panel": "joint_boundary",
+   "shipped_fits": 36,
+   "nu_route_fits": 61,
+   "nu_search_fits": 25,
+   "shipped": {
+    "nu": 0.3,
+    "mstop": 9,
+    "risk": 9.353730226340783
+   },
+   "nu_route": {
+    "nu": 1.0,
+    "mstop": 1,
+    "risk": 9.348480148581928
+   },
+   "dlib": {
+    "nu": 0.16346515216969157,
+    "mstop": 57,
+    "risk": 9.365270404696176
+   },
+   "improvement_over_shipped": 0.005250077758855554,
+   "se_vs_shipped": 0.009457624625207304,
+   "distance_to_dlib": -0.016790256114248336,
+   "se_vs_dlib": 0.01462443201864972,
+   "formula_matches_shipped": true
+  },
+  {
+   "panel": "smooth_sparse",
+   "shipped_fits": 45,
+   "nu_route_fits": 70,
+   "nu_search_fits": 25,
+   "shipped": {
+    "nu": 0.3,
+    "mstop": 145,
+    "risk": 0.25047802126225155
+   },
+   "nu_route": {
+    "nu": 0.3,
+    "mstop": 145,
+    "risk": 0.25047802126225155
+   },
+   "dlib": {
+    "nu": 0.44494886449151616,
+    "mstop": 101,
+    "risk": 0.25048881315304683
+   },
+   "improvement_over_shipped": 0.0,
+   "se_vs_shipped": 0.0,
+   "distance_to_dlib": -1.0791890795280867e-05,
+   "se_vs_dlib": 2.2637391691258933e-05,
+   "formula_matches_shipped": true
+  },
+  {
+   "panel": "housing_iid",
+   "shipped_fits": 132,
+   "nu_route_fits": 152,
+   "nu_search_fits": 20,
+   "shipped": {
+    "nu": 0.3,
+    "mstop": 195,
+    "risk": 0.06083592696210969
+   },
+   "nu_route": {
+    "nu": 0.1,
+    "mstop": 1679,
+    "risk": 0.058622614168816645
+   },
+   "dlib": {
+    "nu": 0.25836926540290817,
+    "mstop": 475,
+    "risk": 0.05905294285045866
+   },
+   "improvement_over_shipped": 0.0022133127932930444,
+   "se_vs_shipped": 0.0008234465049299936,
+   "distance_to_dlib": -0.0004303286816420143,
+   "se_vs_dlib": 0.00031752080280511536,
+   "formula_matches_shipped": true
+  }
+ ],
+ "bars": {
+  "bar_a_recovery": {
+   "pass": true,
+   "panels": {
+    "bike_future": {
+     "improves_on_shipped": true,
+     "within_one_se_of_dlib": true
+    },
+    "concrete": {
+     "improves_on_shipped": true,
+     "within_one_se_of_dlib": true
+    },
+    "housing_iid": {
+     "improves_on_shipped": true,
+     "within_one_se_of_dlib": true
+    }
+   }
+  },
+  "bar_b_do_no_harm": {
+   "pass": true,
+   "panels": {
+    "cancer": {
+     "worse_by": -0.0016286804234463687,
+     "se_vs_shipped": 0.002264063592573859,
+     "within_one_se": true
+    },
+    "bike_iid": {
+     "worse_by": -0.0,
+     "se_vs_shipped": 0.0,
+     "within_one_se": true
+    },
+    "joint_boundary": {
+     "worse_by": -0.005250077758855554,
+     "se_vs_shipped": 0.009457624625207304,
+     "within_one_se": true
+    },
+    "smooth_sparse": {
+     "worse_by": -0.0,
+     "se_vs_shipped": 0.0,
+     "within_one_se": true
+    }
+   }
+  },
+  "bar_c_budget": {
+   "cancer": {
+    "nu_route_fits": 77,
+    "shipped_fits": 52,
+    "autospec_budget": 200,
+    "within_given_budget": true
+   },
+   "bike_iid": {
+    "nu_route_fits": 161,
+    "shipped_fits": 136,
+    "autospec_budget": 200,
+    "within_given_budget": true
+   },
+   "bike_future": {
+    "nu_route_fits": 131,
+    "shipped_fits": 106,
+    "autospec_budget": 200,
+    "within_given_budget": true
+   },
+   "concrete": {
+    "nu_route_fits": 103,
+    "shipped_fits": 78,
+    "autospec_budget": 200,
+    "within_given_budget": true
+   },
+   "joint_boundary": {
+    "nu_route_fits": 61,
+    "shipped_fits": 36,
+    "autospec_budget": 200,
+    "within_given_budget": true
+   },
+   "smooth_sparse": {
+    "nu_route_fits": 70,
+    "shipped_fits": 45,
+    "autospec_budget": 200,
+    "within_given_budget": true
+   },
+   "housing_iid": {
+    "nu_route_fits": 152,
+    "shipped_fits": 132,
+    "autospec_budget": 200,
+    "within_given_budget": true
+   }
+  }
+ },
+ "panels": {
+  "cancer": {
+   "task": "cancer",
+   "seed": 0,
+   "n_dev": 364,
+   "kind": "binary",
+   "nu_route": {
+    "formula": "y ~ bbs(x1, df=4.0) + btree(x3) + bbs(x4, df=4.0) + bbs(x7, df=4.0) + bbs(log(x10), df=4.0) + btree(x11) + bbs(x20, df=4.0) + bbs(x21, df=4.0) + bbs(x22, df=4.0) + bbs(x24, df=4.0) + bbs(x26, df=4.0) + bbs(x27, df=4.0) + bbs(x28, df=4.0)",
+    "family": "Binomial()",
+    "mstop": 170,
+    "nu": 1.0,
+    "risk": 0.08909237099599585,
+    "fits_total": 77,
+    "seconds": 17.6,
+    "formula_matches_shipped": true,
+    "nu_search": {
+     "grid": [
+      0.3,
+      0.1,
+      0.2,
+      0.5,
+      0.7,
+      1.0
+     ],
+     "fits": 25,
+     "incumbent_nu": 0.3,
+     "chosen_nu": 1.0,
+     "adopted": true,
+     "candidates": [
+      {
+       "nu": 0.3,
+       "mstop": 625,
+       "risk": 0.09072105141944221,
+       "fits": 0,
+       "incumbent": true
+      },
+      {
+       "nu": 0.1,
+       "mstop": 955,
+       "risk": 0.09283500513239856,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 0.2,
+       "mstop": 827,
+       "risk": 0.09085898436883377,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 0.5,
+       "mstop": 412,
+       "risk": 0.09042989324063837,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 0.7,
+       "mstop": 211,
+       "risk": 0.08925835624153373,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 1.0,
+       "mstop": 170,
+       "risk": 0.08909237099599585,
+       "fits": 5,
+       "incumbent": false
+      }
+     ]
+    }
+   },
+   "recorded": {
+    "shipped": {
+     "nu": 0.3,
+     "mstop": 625,
+     "risk": 0.09072105141944221,
+     "fits_total": 52,
+     "formula": "y ~ bbs(x1, df=4.0) + btree(x3) + bbs(x4, df=4.0) + bbs(x7, df=4.0) + bbs(log(x10), df=4.0) + btree(x11) + bbs(x20, df=4.0) + bbs(x21, df=4.0) + bbs(x22, df=4.0) + bbs(x24, df=4.0) + bbs(x26, df=4.0) + bbs(x27, df=4.0) + bbs(x28, df=4.0)"
+    },
+    "dlib": {
+     "nu": 0.4433364468140377,
+     "mstop": 479,
+     "risk": 0.09047873340417,
+     "evaluations": 10,
+     "fits_spent": 50
+    }
+   },
+   "comparison": {
+    "nu_fold_risks": [
+     0.04386705671759385,
+     0.0696301782730319,
+     0.21448465366902408,
+     0.06543597922086362,
+     0.052043987099465776
+    ],
+    "shipped_fold_risks": [
+     0.04410646817385603,
+     0.07304352043039004,
+     0.2193918729423353,
+     0.05890682010270257,
+     0.05815657544792713
+    ],
+    "dlib_fold_risks": [
+     0.04317044986701704,
+     0.07137006034873469,
+     0.22262909924556787,
+     0.05976596042138116,
+     0.05545809713814924
+    ],
+    "improvement_over_shipped": 0.0016286804234463687,
+    "se_vs_shipped": 0.002264063592573859,
+    "distance_to_dlib": -0.0013863624081741494,
+    "se_vs_dlib": 0.0022807860640537683,
+    "judge_note": "per-fold risks at the nu route's configuration recomputed once with cvrisk on the shared folds; shipped and dlib per-fold risks are the #898 record's; judge fits are not charged to any arm"
+   }
+  },
+  "bike_iid": {
+   "task": "bike_iid",
+   "seed": 0,
+   "n_dev": 4000,
+   "kind": "regression",
+   "nu_route": {
+    "formula": "y ~ brandom(season, df=4.0) + bols(holiday) + bols(workingday) + brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(mnth, df=4.0) + bols(yr) + bbs(temp, df=4.0) + bbs(hum, df=4.0) + bbs(windspeed, df=4.0)",
+    "family": "Gaussian()",
+    "mstop": 9993,
+    "nu": 0.3,
+    "risk": 0.35339657947094893,
+    "fits_total": 161,
+    "seconds": 101.3,
+    "formula_matches_shipped": true,
+    "nu_search": {
+     "grid": [
+      0.3,
+      0.1,
+      0.2,
+      0.5,
+      0.7,
+      1.0
+     ],
+     "fits": 25,
+     "incumbent_nu": 0.3,
+     "chosen_nu": 0.3,
+     "adopted": false,
+     "candidates": [
+      {
+       "nu": 0.3,
+       "mstop": 9993,
+       "risk": 0.35339657947094893,
+       "fits": 0,
+       "incumbent": true
+      },
+      {
+       "nu": 0.1,
+       "mstop": 10000,
+       "risk": 0.35424188684555374,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 0.2,
+       "mstop": 9974,
+       "risk": 0.35352588285437025,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 0.5,
+       "mstop": 8911,
+       "risk": 0.35337554446581365,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 0.7,
+       "mstop": 7820,
+       "risk": 0.35335725268520285,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 1.0,
+       "mstop": 7018,
+       "risk": 0.3533491118593747,
+       "fits": 5,
+       "incumbent": false
+      }
+     ]
+    }
+   },
+   "recorded": {
+    "shipped": {
+     "nu": 0.3,
+     "mstop": 9993,
+     "risk": 0.35339657947094893,
+     "fits_total": 136,
+     "formula": "y ~ brandom(season, df=4.0) + bols(holiday) + bols(workingday) + brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(mnth, df=4.0) + bols(yr) + bbs(temp, df=4.0) + bbs(hum, df=4.0) + bbs(windspeed, df=4.0)"
+    },
+    "dlib": {
+     "nu": 0.5319212738526274,
+     "mstop": 9844,
+     "risk": 0.3533529412417735,
+     "evaluations": 27,
+     "fits_spent": 135
+    }
+   },
+   "comparison": {
+    "nu_fold_risks": [
+     0.3347531033357062,
+     0.37553769558454925,
+     0.35079608309220495,
+     0.3615286362404133,
+     0.3443673791018708
+    ],
+    "shipped_fold_risks": [
+     0.3347531033357062,
+     0.37553769558454925,
+     0.35079608309220495,
+     0.3615286362404133,
+     0.3443673791018708
+    ],
+    "dlib_fold_risks": [
+     0.33516459027839735,
+     0.3752953562248868,
+     0.35122473101419627,
+     0.35975173434758295,
+     0.3453282943438042
+    ],
+    "improvement_over_shipped": 0.0,
+    "se_vs_shipped": 0.0,
+    "distance_to_dlib": 4.363822917541338e-05,
+    "se_vs_dlib": 0.00047344513272239765,
+    "judge_note": "per-fold risks at the nu route's configuration recomputed once with cvrisk on the shared folds; shipped and dlib per-fold risks are the #898 record's; judge fits are not charged to any arm"
+   }
+  },
+  "bike_future": {
+   "task": "bike_future",
+   "seed": 0,
+   "n_dev": 4000,
+   "kind": "regression",
+   "nu_route": {
+    "formula": "y ~ brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(temp, df=4.0) + bbs(hum, df=4.0)",
+    "family": "Gaussian()",
+    "mstop": 9999,
+    "nu": 1.0,
+    "risk": 0.28280697672021404,
+    "fits_total": 131,
+    "seconds": 51.8,
+    "formula_matches_shipped": true,
+    "nu_search": {
+     "grid": [
+      0.3,
+      0.1,
+      0.2,
+      0.5,
+      0.7,
+      1.0
+     ],
+     "fits": 25,
+     "incumbent_nu": 0.3,
+     "chosen_nu": 1.0,
+     "adopted": true,
+     "candidates": [
+      {
+       "nu": 0.3,
+       "mstop": 9994,
+       "risk": 0.2833879242569311,
+       "fits": 0,
+       "incumbent": true
+      },
+      {
+       "nu": 0.1,
+       "mstop": 9998,
+       "risk": 0.28364451042411937,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 0.2,
+       "mstop": 9995,
+       "risk": 0.28340622064661847,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 0.5,
+       "mstop": 9999,
+       "risk": 0.2832564848658864,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 0.7,
+       "mstop": 9999,
+       "risk": 0.28306475706988216,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 1.0,
+       "mstop": 9999,
+       "risk": 0.28280697672021404,
+       "fits": 5,
+       "incumbent": false
+      }
+     ]
+    }
+   },
+   "recorded": {
+    "shipped": {
+     "nu": 0.3,
+     "mstop": 9994,
+     "risk": 0.2833879242569311,
+     "fits_total": 106,
+     "formula": "y ~ brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(temp, df=4.0) + bbs(hum, df=4.0)"
+    },
+    "dlib": {
+     "nu": 0.9900200504243722,
+     "mstop": 9915,
+     "risk": 0.28281037427221883,
+     "evaluations": 21,
+     "fits_spent": 105
+    }
+   },
+   "comparison": {
+    "nu_fold_risks": [
+     0.29247613248970594,
+     0.2788704056213465,
+     0.2550553943727127,
+     0.31979371703851506,
+     0.26783923407878996
+    ],
+    "shipped_fold_risks": [
+     0.2929892539782383,
+     0.2793220891871433,
+     0.25512226517410524,
+     0.32007294281978416,
+     0.2694330701253843
+    ],
+    "dlib_fold_risks": [
+     0.2924987449860191,
+     0.27883455832116066,
+     0.2550425111388494,
+     0.3198050994484251,
+     0.26787095746663975
+    ],
+    "improvement_over_shipped": 0.000580947536717058,
+    "se_vs_shipped": 0.000264817256607682,
+    "distance_to_dlib": -3.3975520047913044e-06,
+    "se_vs_dlib": 1.2329938014453866e-05,
+    "judge_note": "per-fold risks at the nu route's configuration recomputed once with cvrisk on the shared folds; shipped and dlib per-fold risks are the #898 record's; judge fits are not charged to any arm"
+   }
+  },
+  "concrete": {
+   "task": "concrete",
+   "seed": 0,
+   "n_dev": 659,
+   "kind": "regression",
+   "nu_route": {
+    "formula": "y ~ bbs(cement, df=4.0) + btree(blast_furnace_slag) + bbs(fly_ash, df=4.0) + btree(water) + bbs(superplasticizer, df=4.0) + bbs(coarse_aggregate, df=4.0) + bbs(fine_aggregate, df=4.0) + bbs(age, df=4.0)",
+    "family": "Gaussian()",
+    "mstop": 9987,
+    "nu": 0.5,
+    "risk": 28.973949360627074,
+    "fits_total": 103,
+    "seconds": 53.0,
+    "formula_matches_shipped": true,
+    "nu_search": {
+     "grid": [
+      0.3,
+      0.1,
+      0.2,
+      0.5,
+      0.7,
+      1.0
+     ],
+     "fits": 25,
+     "incumbent_nu": 0.3,
+     "chosen_nu": 0.5,
+     "adopted": true,
+     "candidates": [
+      {
+       "nu": 0.3,
+       "mstop": 9941,
+       "risk": 29.903495567631758,
+       "fits": 0,
+       "incumbent": true
+      },
+      {
+       "nu": 0.1,
+       "mstop": 10000,
+       "risk": 31.572982649028596,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 0.2,
+       "mstop": 9998,
+       "risk": 30.539740499376325,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 0.5,
+       "mstop": 9987,
+       "risk": 28.973949360627074,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 0.7,
+       "mstop": 9879,
+       "risk": 29.094579330192836,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 1.0,
+       "mstop": 6215,
+       "risk": 29.198737038030828,
+       "fits": 5,
+       "incumbent": false
+      }
+     ]
+    }
+   },
+   "recorded": {
+    "shipped": {
+     "nu": 0.3,
+     "mstop": 9941,
+     "risk": 29.903495567631758,
+     "fits_total": 78,
+     "formula": "y ~ bbs(cement, df=4.0) + btree(blast_furnace_slag) + bbs(fly_ash, df=4.0) + btree(water) + bbs(superplasticizer, df=4.0) + bbs(coarse_aggregate, df=4.0) + bbs(fine_aggregate, df=4.0) + bbs(age, df=4.0)"
+    },
+    "dlib": {
+     "nu": 0.6092323757507371,
+     "mstop": 9868,
+     "risk": 28.845142814861692,
+     "evaluations": 15,
+     "fits_spent": 75
+    }
+   },
+   "comparison": {
+    "nu_fold_risks": [
+     26.02009554662228,
+     26.448749039169133,
+     39.55358295187782,
+     25.81463759913078,
+     27.032681666335357
+    ],
+    "shipped_fold_risks": [
+     26.266023490386026,
+     26.15944831293975,
+     41.0130464165218,
+     27.103039093076728,
+     28.97592052523447
+    ],
+    "dlib_fold_risks": [
+     26.42658321576119,
+     26.248425042999934,
+     39.38413015675825,
+     25.47988850706255,
+     26.68668715172651
+    ],
+    "improvement_over_shipped": 0.9295462070046838,
+    "se_vs_shipped": 0.4117088768720597,
+    "distance_to_dlib": 0.1288065457653822,
+    "se_vs_dlib": 0.1383635981746788,
+    "judge_note": "per-fold risks at the nu route's configuration recomputed once with cvrisk on the shared folds; shipped and dlib per-fold risks are the #898 record's; judge fits are not charged to any arm"
+   }
+  },
+  "joint_boundary": {
+   "task": "joint_boundary",
+   "seed": 0,
+   "n_dev": 3200,
+   "kind": "regression",
+   "nu_route": {
+    "formula": "y ~ bols(x0) + bols(x1) + bols(x2) + bols(x3) + bols(x4) + bols(x5) + bols(x6) + bols(x7) + bols(x8) + bols(x9) + bols(x10) + bols(x11)",
+    "family": "Gaussian()",
+    "mstop": 1,
+    "nu": 1.0,
+    "risk": 9.348480148581928,
+    "fits_total": 61,
+    "seconds": 6.9,
+    "formula_matches_shipped": true,
+    "nu_search": {
+     "grid": [
+      0.3,
+      0.1,
+      0.2,
+      0.5,
+      0.7,
+      1.0
+     ],
+     "fits": 25,
+     "incumbent_nu": 0.3,
+     "chosen_nu": 1.0,
+     "adopted": true,
+     "candidates": [
+      {
+       "nu": 0.3,
+       "mstop": 9,
+       "risk": 9.353730226340783,
+       "fits": 0,
+       "incumbent": true
+      },
+      {
+       "nu": 0.1,
+       "mstop": 35,
+       "risk": 9.354391594685438,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 0.2,
+       "mstop": 13,
+       "risk": 9.353630927818868,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 0.5,
+       "mstop": 5,
+       "risk": 9.352949520169318,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 0.7,
+       "mstop": 4,
+       "risk": 9.353962217210348,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 1.0,
+       "mstop": 1,
+       "risk": 9.348480148581928,
+       "fits": 5,
+       "incumbent": false
+      }
+     ]
+    }
+   },
+   "recorded": {
+    "shipped": {
+     "nu": 0.3,
+     "mstop": 9,
+     "risk": 9.353730226340783,
+     "fits_total": 36,
+     "formula": "y ~ bols(x0) + bols(x1) + bols(x2) + bols(x3) + bols(x4) + bols(x5) + bols(x6) + bols(x7) + bols(x8) + bols(x9) + bols(x10) + bols(x11)"
+    },
+    "dlib": {
+     "nu": 0.16346515216969157,
+     "mstop": 57,
+     "risk": 9.365270404696176,
+     "evaluations": 7,
+     "fits_spent": 35
+    }
+   },
+   "comparison": {
+    "nu_fold_risks": [
+     9.289608495409842,
+     9.275785066436386,
+     9.559464292342515,
+     9.405449437274601,
+     9.212093451446295
+    ],
+    "shipped_fold_risks": [
+     9.300962051163868,
+     9.252975311185748,
+     9.558666782820696,
+     9.408336234961977,
+     9.247710751571622
+    ],
+    "dlib_fold_risks": [
+     9.295617154412279,
+     9.26698118970976,
+     9.54409914699661,
+     9.448632840922345,
+     9.271021691439888
+    ],
+    "improvement_over_shipped": 0.005250077758855554,
+    "se_vs_shipped": 0.009457624625207304,
+    "distance_to_dlib": -0.016790256114248336,
+    "se_vs_dlib": 0.01462443201864972,
+    "judge_note": "per-fold risks at the nu route's configuration recomputed once with cvrisk on the shared folds; shipped and dlib per-fold risks are the #898 record's; judge fits are not charged to any arm"
+   }
+  },
+  "smooth_sparse": {
+   "task": "smooth_sparse",
+   "seed": 0,
+   "n_dev": 3200,
+   "kind": "regression",
+   "nu_route": {
+    "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+    "family": "Gaussian()",
+    "mstop": 145,
+    "nu": 0.3,
+    "risk": 0.25047802126225155,
+    "fits_total": 70,
+    "seconds": 7.0,
+    "formula_matches_shipped": true,
+    "nu_search": {
+     "grid": [
+      0.3,
+      0.1,
+      0.2,
+      0.5,
+      0.7,
+      1.0
+     ],
+     "fits": 25,
+     "incumbent_nu": 0.3,
+     "chosen_nu": 0.3,
+     "adopted": false,
+     "candidates": [
+      {
+       "nu": 0.3,
+       "mstop": 145,
+       "risk": 0.25047802126225155,
+       "fits": 0,
+       "incumbent": true
+      },
+      {
+       "nu": 0.1,
+       "mstop": 200,
+       "risk": 0.25120207982162734,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 0.2,
+       "mstop": 197,
+       "risk": 0.2505163527811876,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 0.5,
+       "mstop": 89,
+       "risk": 0.25048221902918766,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 0.7,
+       "mstop": 59,
+       "risk": 0.2504603417671685,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 1.0,
+       "mstop": 38,
+       "risk": 0.2504887125661955,
+       "fits": 5,
+       "incumbent": false
+      }
+     ]
+    }
+   },
+   "recorded": {
+    "shipped": {
+     "nu": 0.3,
+     "mstop": 145,
+     "risk": 0.25047802126225155,
+     "fits_total": 45,
+     "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0)"
+    },
+    "dlib": {
+     "nu": 0.44494886449151616,
+     "mstop": 101,
+     "risk": 0.25048881315304683,
+     "evaluations": 9,
+     "fits_spent": 45
+    }
+   },
+   "comparison": {
+    "nu_fold_risks": [
+     0.23855886046273045,
+     0.24798291567864061,
+     0.24604298705919186,
+     0.26079239179045033,
+     0.25901295132024454
+    ],
+    "shipped_fold_risks": [
+     0.23855886046273045,
+     0.24798291567864061,
+     0.24604298705919186,
+     0.26079239179045033,
+     0.25901295132024454
+    ],
+    "dlib_fold_risks": [
+     0.23862657650159078,
+     0.24801553268866697,
+     0.246071585482292,
+     0.26078277827485935,
+     0.258947592817825
+    ],
+    "improvement_over_shipped": 0.0,
+    "se_vs_shipped": 0.0,
+    "distance_to_dlib": -1.0791890795280867e-05,
+    "se_vs_dlib": 2.2637391691258933e-05,
+    "judge_note": "per-fold risks at the nu route's configuration recomputed once with cvrisk on the shared folds; shipped and dlib per-fold risks are the #898 record's; judge fits are not charged to any arm"
+   }
+  },
+  "housing_iid": {
+   "task": "housing_iid",
+   "seed": 0,
+   "n_dev": 4000,
+   "kind": "regression",
+   "nu_route": {
+    "formula": "y ~ bbs(age, df=4.0) + bbs(income, df=4.0) + bbs(log(rooms), df=4.0) + bbs(log(bedrooms), df=4.0) + bbs(log(occupancy), df=4.0) + btree(longitude, latitude, maxdepth=3)",
+    "family": "Gaussian()",
+    "mstop": 1679,
+    "nu": 0.1,
+    "risk": 0.058622614168816645,
+    "fits_total": 152,
+    "seconds": 210.8,
+    "formula_matches_shipped": true,
+    "nu_search": {
+     "grid": [
+      0.5,
+      0.1,
+      0.2,
+      0.7,
+      1.0
+     ],
+     "fits": 20,
+     "incumbent_nu": 0.5,
+     "chosen_nu": 0.1,
+     "adopted": true,
+     "candidates": [
+      {
+       "nu": 0.5,
+       "mstop": 195,
+       "risk": 0.06083592696210969,
+       "fits": 0,
+       "incumbent": true
+      },
+      {
+       "nu": 0.1,
+       "mstop": 1679,
+       "risk": 0.058622614168816645,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 0.2,
+       "mstop": 812,
+       "risk": 0.05892734811722482,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 0.7,
+       "mstop": 178,
+       "risk": 0.0634212225128029,
+       "fits": 5,
+       "incumbent": false
+      },
+      {
+       "nu": 1.0,
+       "mstop": 32,
+       "risk": 0.06890380697733678,
+       "fits": 5,
+       "incumbent": false
+      }
+     ]
+    }
+   },
+   "recorded": {
+    "shipped": {
+     "nu": 0.3,
+     "mstop": 195,
+     "risk": 0.06083592696210969,
+     "fits_total": 132,
+     "formula": "y ~ bbs(age, df=4.0) + bbs(income, df=4.0) + bbs(log(rooms), df=4.0) + bbs(log(bedrooms), df=4.0) + bbs(log(occupancy), df=4.0) + btree(longitude, latitude, maxdepth=3)"
+    },
+    "dlib": {
+     "nu": 0.25836926540290817,
+     "mstop": 475,
+     "risk": 0.05905294285045866,
+     "evaluations": 26,
+     "fits_spent": 130
+    }
+   },
+   "comparison": {
+    "nu_fold_risks": [
+     0.056474166443564566,
+     0.06519409040705755,
+     0.058271930129955234,
+     0.06028911747751795,
+     0.052883766385987935
+    ],
+    "shipped_fold_risks": [
+     0.056793865312781765,
+     0.06964225964879622,
+     0.05816065470517837,
+     0.062221317016988215,
+     0.053543458475832584
+    ],
+    "dlib_fold_risks": [
+     0.05690779214797387,
+     0.06589521104691619,
+     0.05884754743949627,
+     0.05955215553912048,
+     0.05406200807878648
+    ],
+    "improvement_over_shipped": 0.0022133127932930444,
+    "se_vs_shipped": 0.0008234465049299936,
+    "distance_to_dlib": -0.0004303286816420143,
+    "se_vs_dlib": 0.00031752080280511536,
+    "judge_note": "per-fold risks at the nu route's configuration recomputed once with cvrisk on the shared folds; shipped and dlib per-fold risks are the #898 record's; judge fits are not charged to any arm"
+   }
+  }
+ }
+}

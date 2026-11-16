@@ -1,0 +1,95 @@
+{
+  "library": "mboostrs 0.1.3",
+  "effect_queries": {
+    "ATE": {
+      "estimate": 5932.374332630749,
+      "lower90": -2272.2324822874716,
+      "upper90": 14136.98114754897
+    },
+    "ATT": {
+      "estimate": 3787.3181693499055,
+      "lower90": 2422.077385138297,
+      "upper90": 5152.5589535615145
+    },
+    "CATE_educ_lt12": {
+      "estimate": 2956.209188458217,
+      "lower90": -62.35888152364896,
+      "upper90": 5974.777258440083
+    },
+    "CATE_educ_ge16": {
+      "estimate": 3625.0567685766696,
+      "lower90": 304.9384641985225,
+      "upper90": 6945.175072954817
+    },
+    "CATE_prior_q1": {
+      "estimate": 2669.095771947731,
+      "lower90": 1157.2843499349804,
+      "upper90": 4180.907193960482
+    },
+    "CATE_prior_q4": {
+      "estimate": 11946.22621117305,
+      "lower90": -20432.726608416117,
+      "upper90": 44325.179030762214
+    },
+    "CATE_age_lt25": {
+      "estimate": 4054.0917498377853,
+      "lower90": 480.1554960551134,
+      "upper90": 7628.028003620457
+    },
+    "EMP_ATE": {
+      "estimate": 0.021367009300800453,
+      "lower90": -0.08558574696462004,
+      "upper90": 0.12831976556622093
+    }
+  },
+  "roles": {
+    "age": "irrelevant",
+    "education": "irrelevant",
+    "experience": "irrelevant",
+    "ethnicity": "irrelevant",
+    "smsa": "irrelevant",
+    "region": "irrelevant",
+    "parttime": "irrelevant",
+    "prior_earnings": "confounder",
+    "months_unemployed": "outcome_only",
+    "distance_km": "treatment_only",
+    "caseworker_note_len": "irrelevant",
+    "enrolled": "treatment",
+    "certificate": "mediator",
+    "responded": "post_treatment_selection",
+    "hours_post": "mediator",
+    "earnings_post": "outcome"
+  },
+  "adjustment_set": [
+    "prior_earnings",
+    "months_unemployed",
+    "distance_km"
+  ],
+  "effect_modifiers": [],
+  "channels": {
+    "employment": false,
+    "earnings_if_employed": true
+  },
+  "limited_overlap": [
+    {
+      "description": "Applicants with prior earnings from 50,210 to 144,380 dollars: 225 training rows, 89% of them with estimated enrolment propensity outside 0.02-0.98. Enrolment was rare there, so the effects for these applicants rest on few enrolled rows and on model extrapolation. 14.7% of all training rows are outside the bounds.",
+      "variable": "prior_earnings"
+    },
+    {
+      "description": "Applicants who did not answer the follow-up survey: their earnings are not observed, and the estimates assume non-response depends only on the covariates and enrolment.",
+      "variable": "responded"
+    }
+  ],
+  "warnings": [
+    "19 fold predictions in this call asked 4 learner(s) to predict outside the range they were fitted on. bbs(education), covariate education: 2 below 3 (worst 0.2 training ranges out); bbs(experience), covariate experience: 1 above 54 (worst 0.13 training ranges out); bbs(months_unemployed), covariate ",
+    "1 learner(s) are asked to predict outside the range they were fitted on. bbs(months_unemployed), covariate months_unemployed: 2 above 10 (worst 0.2 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.2 training ranges ",
+    "2 learner(s) are asked to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 58 above 49880 (worst 1.8 training ranges out); bbs(distance_km), covariate distance_km: 5 above 50.8 (worst 0.87 training ranges out). A spline basis continues by its edge slope o",
+    "optimal mstop 798 is within 5% of the search cap 800; the search range was exhausted \u2014 consider increasing mstop and re-running cvrisk.",
+    "2 learner(s) are asked to predict outside the range they were fitted on. bbs(distance_km), covariate distance_km: 2 above 94.9 (worst 0.1 training ranges out); bbs(prior_earnings), covariate prior_earnings: 1 above 135800 (worst 0.064 training ranges out). A spline basis continues by its edge slope ",
+    "the cross-validated risk is still falling at mstop=200, the largest iteration evaluated, so the reported optimal_mstop=200 is where the path stopped rather than where the risk turns. Refit with a larger mstop and cross-validate again on the same folds: `model.continue_to(400)` then `cvrisk(folds=...",
+    "249 of 4000 new applicants have an estimated propensity outside (0.02, 0.98); their effects are extrapolations (flags in cate_overlap_flags.parquet).",
+    "The arm-specific aipw estimate is 8,694 dollars (90% interval -334 to 17,722). The reported ATE is the pooled augmented score; the arm-specific outcome models extrapolate in the high-prior stratum.",
+    "Intervals for the ATE, ATT, subgroups and the employment effect are normal intervals of the mean of the augmented scores over the chosen rows. They describe the sampled applicants and do not add variance for the nuisance models.",
+    "Earnings for non-respondents are missing. The estimates assume response is missing at random given the covariates and enrolment."
+  ]
+}

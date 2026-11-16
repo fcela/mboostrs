@@ -1,0 +1,24 @@
+{
+  "source": "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies",
+  "prices": "Yahoo Finance adjusted closes (auto_adjust)",
+  "retrieved": "2026-08-24",
+  "price_start": "2017-12-01",
+  "panel_start": "2019-01-02",
+  "panel_end": "2026-08-21",
+  "rows": 937120,
+  "tickers": 499,
+  "trading_days": 1920,
+  "tickers_by_ai_score": {
+    "0.0": 422,
+    "0.5": 25,
+    "1.0": 52
+  },
+  "regime_break": "2022-11-30 (ChatGPT release)",
+  "covariates": {
+    "ret": "log adjusted-close difference, daily total return",
+    "mkt": "equal-weighted mean of same-day constituent returns",
+    "vol60": "annualised std of the 60 daily returns ending at t, inclusive of day t: shift by one day before using it to explain day t",
+    "mom121": "log return from t-252 to t-21, closed before day t",
+    "beta252": "252-day market-model beta vs the equal-weighted index, window ending at t inclusive of day t: shift by one day before using it to explain day t"
+  }
+}

@@ -1,0 +1,28 @@
+stage,config,features,pairs,cv_rmse,kept,notes
+tuning,"{""max_leaves"": 2, ""min_samples_leaf"": 4}",all,,0.46774092303739706,False,5-fold out-of-fold RMSE
+tuning,"{""max_leaves"": 2, ""min_samples_leaf"": 20}",all,,0.46671496407794605,False,5-fold out-of-fold RMSE
+tuning,"{""max_leaves"": 3, ""min_samples_leaf"": 4}",all,,0.46659505166511017,False,5-fold out-of-fold RMSE
+tuning,"{""max_leaves"": 3, ""min_samples_leaf"": 20}",all,,0.46632327787305067,False,5-fold out-of-fold RMSE
+tuning,"{""max_leaves"": 2, ""min_samples_leaf"": 50}",all,,0.46613795726351637,True,5-fold out-of-fold RMSE
+drop_one,"{""max_leaves"": 2, ""min_samples_leaf"": 50}",all minus longitude,,0.46969058740699954,False,rel_gain=0.0153 z=9.38
+drop_one,"{""max_leaves"": 2, ""min_samples_leaf"": 50}",all minus latitude,,0.46821360588754846,False,rel_gain=0.0089 z=6.23
+drop_one,"{""max_leaves"": 2, ""min_samples_leaf"": 50}",all minus housing_median_age,,0.48118268720707696,False,rel_gain=0.0656 z=14.75
+drop_one,"{""max_leaves"": 2, ""min_samples_leaf"": 50}",all minus total_rooms,,0.46623461880332656,False,rel_gain=0.0004 z=0.49
+drop_one,"{""max_leaves"": 2, ""min_samples_leaf"": 50}",all minus total_bedrooms,,0.46611464939981606,False,rel_gain=-0.0001 z=-0.14
+drop_one,"{""max_leaves"": 2, ""min_samples_leaf"": 50}",all minus population,,0.4659735022897428,False,rel_gain=-0.0007 z=-1.14
+drop_one,"{""max_leaves"": 2, ""min_samples_leaf"": 50}",all minus households,,0.4657736345675174,False,rel_gain=-0.0016 z=-2.51
+drop_one,"{""max_leaves"": 2, ""min_samples_leaf"": 50}",all minus median_income,,0.47935128080219586,False,rel_gain=0.0575 z=11.34
+drop_one,"{""max_leaves"": 2, ""min_samples_leaf"": 50}",all minus median_house_value,,0.4657498793986986,False,rel_gain=-0.0017 z=-1.78
+drop_one,"{""max_leaves"": 2, ""min_samples_leaf"": 50}",all minus ave_rooms,,0.4661149131078829,False,rel_gain=-0.0001 z=-0.17
+drop_one,"{""max_leaves"": 2, ""min_samples_leaf"": 50}",all minus ave_bedrooms,,0.4656994818805644,False,rel_gain=-0.0019 z=-3.00
+drop_one,"{""max_leaves"": 2, ""min_samples_leaf"": 50}",all minus ave_occup,,0.4672093807344771,False,rel_gain=0.0046 z=2.32
+drop_one,"{""max_leaves"": 2, ""min_samples_leaf"": 50}",all minus roof_class,,0.48270013254248134,False,rel_gain=0.0723 z=15.59
+feature_set,"{""max_leaves"": 2, ""min_samples_leaf"": 50}",flagged only,,0.47166331634779757,False,all covariates cv_rmse=0.46614
+feature_set,"{""max_leaves"": 2, ""min_samples_leaf"": 50}",all,,0.46613795726351637,True,reference
+interaction_candidate,"{""max_leaves"": 2, ""min_samples_leaf"": 50}","longitude,latitude,housing_median_age,total_rooms,total_bedrooms,population,households,median_income,median_house_value,ave_rooms,ave_bedrooms,ave_occup,roof_class",population & median_house_value,0.4661395218442178,False,rel_gain=-0.0000 z=-0.01
+interaction_candidate,"{""max_leaves"": 2, ""min_samples_leaf"": 50}","longitude,latitude,housing_median_age,total_rooms,total_bedrooms,population,households,median_income,median_house_value,ave_rooms,ave_bedrooms,ave_occup,roof_class",housing_median_age & median_income,0.46515865006799717,True,rel_gain=0.0042 z=4.33
+interaction_candidate,"{""max_leaves"": 2, ""min_samples_leaf"": 50}","longitude,latitude,housing_median_age,total_rooms,total_bedrooms,population,households,median_income,median_house_value,ave_rooms,ave_bedrooms,ave_occup,roof_class",housing_median_age & population,0.4660228175855394,False,rel_gain=0.0005 z=0.47
+interaction_candidate,"{""max_leaves"": 2, ""min_samples_leaf"": 50}","longitude,latitude,housing_median_age,total_rooms,total_bedrooms,population,households,median_income,median_house_value,ave_rooms,ave_bedrooms,ave_occup,roof_class",median_house_value & ave_bedrooms,0.46612033708206074,False,rel_gain=0.0001 z=0.36
+interaction_candidate,"{""max_leaves"": 2, ""min_samples_leaf"": 50}","longitude,latitude,housing_median_age,total_rooms,total_bedrooms,population,households,median_income,median_house_value,ave_rooms,ave_bedrooms,ave_occup,roof_class",population & ave_occup,0.4661508160792158,False,rel_gain=-0.0001 z=-0.05
+interaction_candidate,"{""max_leaves"": 2, ""min_samples_leaf"": 50}","longitude,latitude,housing_median_age,total_rooms,total_bedrooms,population,households,median_income,median_house_value,ave_rooms,ave_bedrooms,ave_occup,roof_class",households & median_house_value,0.46619079588523454,False,rel_gain=-0.0002 z=-0.78
+spread_model,"{""max_leaves"": 2, ""min_samples_leaf"": 20}",all,,2.2713105112065564,True,"EBM on log(residual^2 + 1e-6), out-of-fold"

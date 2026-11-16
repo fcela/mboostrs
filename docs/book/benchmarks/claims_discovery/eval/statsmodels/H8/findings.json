@@ -1,0 +1,110 @@
+{
+  "library": "statsmodels 0.15.0",
+  "mean_effects": [
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "drop-one F=665.7 on 4 df, p<1e-300, Holm-adjusted p<1e-300 over 8 terms; average fitted y +0.898 at 1.046 (1st pct) to -0.143 at 8.768 (99th pct)"
+    },
+    {
+      "variable": "housing_median_age",
+      "shape": "u_shaped",
+      "evidence": "drop-one F=251.8 on 4 df, p=6.2e-210, Holm-adjusted p=3.7e-209 over 8 terms; average fitted y +0.233 at 4 (1st pct) to +0.605 at 52 (99th pct)"
+    },
+    {
+      "variable": "population",
+      "shape": "increasing",
+      "evidence": "drop-one F=5.8 on 4 df, p=0.00011, Holm-adjusted p=0.00011 over 8 terms; average fitted y -0.211 at 88 (1st pct) to +0.723 at 5635 (99th pct)"
+    },
+    {
+      "variable": "households",
+      "shape": "decreasing",
+      "evidence": "drop-one F=6.4 on 4 df, p=3.6e-05, Holm-adjusted p=7.3e-05 over 8 terms; average fitted y +0.761 at 32 (1st pct) to -0.091 at 1920 (99th pct)"
+    },
+    {
+      "variable": "ave_occup",
+      "shape": "increasing",
+      "evidence": "drop-one F=7.5 on 4 df, p=4.7e-06, Holm-adjusted p=1.4e-05 over 8 terms; average fitted y +0.265 at 1.528 (1st pct) to +0.362 at 5.394 (99th pct)"
+    },
+    {
+      "variable": "ave_bedrooms",
+      "shape": "nonmonotone",
+      "evidence": "drop-one F=7.7 on 4 df, p=3.2e-06, Holm-adjusted p=1.3e-05 over 8 terms; average fitted y +0.391 at 0.8745 (1st pct) to +0.286 at 2.128 (99th pct)"
+    },
+    {
+      "variable": "roof_class",
+      "shape": "categorical",
+      "evidence": "drop-one F=343.1 on 3 df, p=1e-215, Holm-adjusted p=7.2e-215 over 8 terms; average fitted y by level: A +0.202, B +0.212, C +0.380, D +0.590"
+    },
+    {
+      "variable": "longitude",
+      "shape": "spatial",
+      "evidence": "joint longitude-latitude spline surface, drop-one F=25.5 on 16 df, p=1e-75, Holm-adjusted p=5.1e-75 over 8 terms; the two coordinates are not separable in the fit"
+    },
+    {
+      "variable": "latitude",
+      "shape": "spatial",
+      "evidence": "joint longitude-latitude spline surface, drop-one F=25.5 on 16 df, p=1e-75, Holm-adjusted p=5.1e-75 over 8 terms; the two coordinates are not separable in the fit"
+    }
+  ],
+  "interactions": [],
+  "variance_drivers": [
+    {
+      "variable": "households",
+      "direction": "decreases_spread",
+      "evidence": "drop-one F=176.7 on 4 df, p=2.6e-148, Holm-adjusted p=2.6e-148 over 1 terms; sigma 0.961 at 32 (1st pct) to 0.253 at 1920 (99th pct)"
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.438752,
+      "lower90": -0.461583,
+      "upper90": -0.414666
+    },
+    "Q2": {
+      "estimate": 0.402457,
+      "lower90": 0.379488,
+      "upper90": 0.429052
+    },
+    "Q3": {
+      "estimate": 0.087846,
+      "lower90": -0.006634,
+      "upper90": 0.173685
+    },
+    "Q4": {
+      "estimate": 0.38845,
+      "lower90": 0.359444,
+      "upper90": 0.41427
+    },
+    "Q5": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q6": {
+      "estimate": 0.28139,
+      "lower90": 0.250736,
+      "upper90": 0.315445
+    },
+    "Q7": {
+      "estimate": -0.353083,
+      "lower90": -0.539383,
+      "upper90": -0.189821
+    },
+    "Q8": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    }
+  },
+  "warnings": [
+    "Missing values were imputed by linear regression on the other covariates (training rows only), and a missing indicator is kept in every model. Missing counts: train {'housing_median_age': 1224, 'ave_bedrooms': 159}, test {'housing_median_age': 369, 'ave_bedrooms': 58}.",
+    "Covariate shift between train and test: median_income: standardized mean difference test minus train = +0.44; ave_rooms: standardized mean difference test minus train = +0.15; median_house_value: standardized mean difference test minus train = +0.31",
+    "Rows with housing_median_age missing have fitted y +0.082 (90% CI +0.057 to +0.107) relative to the imputed-value prediction; the imputation does not remove that difference.",
+    "Rows with ave_bedrooms missing have fitted y +0.016 (90% CI -0.046 to +0.078) relative to the imputed-value prediction; the imputation does not remove that difference.",
+    "Effect-query intervals are bootstrap intervals for the selected terms. They do not include uncertainty from variable selection or from tuning.",
+    "Prediction intervals use standardized training residual quantiles. Coverage of the 90% interval on the training rows is 0.900.",
+    "row_id is not used as a covariate. Its correlation with y in the training file is -0.12; it is treated as an identifier, not as a covariate.",
+    "Interactions are screened for pairs of main effects only; no three-way terms are searched."
+  ]
+}

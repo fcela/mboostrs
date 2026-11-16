@@ -1,0 +1,102 @@
+dataset,library,call,n_rows,seconds
+main,mboostrs,tune_mstop(folds=5),2000,0.1578
+main,mboostrs,gamboost,2000,0.0117
+main,mboostrs,"stabsel(q=5,PFER=1,B=50)",2000,0.3663
+main,mboostrs,screen_interactions,2000,0.0025
+main,mboostrs,"gamboost(main + bols(x6, by=x7))",2000,0.012
+main,mboostrs,gam_refit(pair x6:x7),2000,0.0345
+main,mboostrs,"gamboost(main + bols(x13, by=x5))",2000,0.0122
+main,mboostrs,gam_refit(pair x13:x5),2000,0.0245
+main,mboostrs,"gamboost(main + bols(x5, by=x8))",2000,0.0121
+main,mboostrs,gam_refit(pair x5:x8),2000,0.0176
+main,mboostrs,"gamboost(main + bols(x4, by=x5))",2000,0.0124
+main,mboostrs,gam_refit(pair x4:x5),2000,0.011
+main,mboostrs,"gamboost(main + tensor x6,x7)",2000,0.2117
+main,mboostrs,"gam_refit(tensor x6,x7)",2000,0.7229
+main,mboostrs,"tune_mstop(final, folds=5)",2000,2.3481
+main,mboostrs,gamboost(final),2000,0.0666
+main,mboostrs,"stabsel(final,q=5,PFER=1,B=50)",2000,0.3299
+main,mboostrs,gam_refit(final selected terms),2000,0.0336
+main,mboostrs,heteroscedasticity,2000,0.0045
+main,mboostrs,"gamboostLSS(mu=final, sigma=drivers)",2000,0.8051
+main,mboostrs,conformal_interval(distributional),2000,0.4435
+small,mboostrs,tune_mstop(folds=5),200,0.0181
+small,mboostrs,gamboost,200,0.0042
+small,mboostrs,"stabsel(q=5,PFER=1,B=50)",200,0.1048
+small,mboostrs,screen_interactions,200,0.0008
+small,mboostrs,"gamboost(main + bols(x6, by=x7))",200,0.0041
+small,mboostrs,gam_refit(pair x6:x7),200,0.0109
+small,mboostrs,"gamboost(main + bols(x8, by=x9))",200,0.0043
+small,mboostrs,gam_refit(pair x8:x9),200,0.0226
+small,mboostrs,"gamboost(main + bols(x14, by=x20))",200,0.0041
+small,mboostrs,gam_refit(pair x14:x20),200,0.0144
+small,mboostrs,"gamboost(main + bols(x11, by=x8))",200,0.0041
+small,mboostrs,gam_refit(pair x11:x8),200,0.0105
+small,mboostrs,"gamboost(main + tensor x6,x7)",200,0.1121
+small,mboostrs,"gam_refit(tensor x6,x7)",200,0.8528
+small,mboostrs,"tune_mstop(final, folds=5)",200,0.0268
+small,mboostrs,gamboost(final),200,0.0059
+small,mboostrs,"stabsel(final,q=5,PFER=1,B=50)",200,0.1166
+small,mboostrs,gam_refit(final selected terms),200,0.0109
+small,mboostrs,heteroscedasticity,200,0.0013
+small,mboostrs,conformal_interval(cv+),200,0.0754
+messy,mboostrs,tune_mstop(folds=5),2000,0.1198
+messy,mboostrs,gamboost,2000,0.0167
+messy,mboostrs,"stabsel(q=5,PFER=1,B=50)",2000,0.869
+messy,mboostrs,screen_interactions,2000,0.0028
+messy,mboostrs,"gamboost(main + bols(x6, by=x7))",2000,0.0177
+messy,mboostrs,gam_refit(pair x6:x7),2000,0.0233
+messy,mboostrs,"gamboost(main + bols(x2, by=x5))",2000,0.0172
+messy,mboostrs,gam_refit(pair x2:x5),2000,0.0135
+messy,mboostrs,"gamboost(main + bols(x5, by=x8))",2000,0.0174
+messy,mboostrs,gam_refit(pair x5:x8),2000,0.0176
+messy,mboostrs,"gamboost(main + bols(x3, by=x5))",2000,0.0168
+messy,mboostrs,gam_refit(pair x3:x5),2000,0.018
+messy,mboostrs,"gamboost(main + tensor x6,x7)",2000,0.214
+messy,mboostrs,"gam_refit(tensor x6,x7)",2000,0.887
+messy,mboostrs,"tune_mstop(final, folds=5)",2000,0.2003
+messy,mboostrs,gamboost(final),2000,0.0181
+messy,mboostrs,"stabsel(final,q=5,PFER=1,B=50)",2000,0.8386
+messy,mboostrs,gam_refit(final selected terms),2000,0.0231
+messy,mboostrs,"gamboost(final, x1 observed rows, others median-filled)",1681,0.0102
+messy,mboostrs,heteroscedasticity(x1),1681,0.0003
+messy,mboostrs,"gamboost(final, x2 observed rows, others median-filled)",1703,0.0102
+messy,mboostrs,heteroscedasticity(x2),1703,0.0003
+messy,mboostrs,"gamboost(final, x3 observed rows, others median-filled)",1705,0.01
+messy,mboostrs,heteroscedasticity(x3),1705,0.0002
+messy,mboostrs,"gamboost(final, x4 observed rows, others median-filled)",1690,0.0099
+messy,mboostrs,heteroscedasticity(x4),1690,0.0003
+messy,mboostrs,"gamboost(final, x5 observed rows, others median-filled)",1694,0.0098
+messy,mboostrs,heteroscedasticity(x5),1694,0.0002
+messy,mboostrs,"gamboost(final, x6 observed rows, others median-filled)",1700,0.0102
+messy,mboostrs,heteroscedasticity(x6),1700,0.0003
+messy,mboostrs,"gamboost(final, x7 observed rows, others median-filled)",1698,0.0102
+messy,mboostrs,heteroscedasticity(x7),1698,0.0002
+messy,mboostrs,"gamboost(final, x8 observed rows, others median-filled)",1694,0.0103
+messy,mboostrs,heteroscedasticity(x8),1694,0.0002
+messy,mboostrs,"gamboost(final, x9 observed rows, others median-filled)",1705,0.01
+messy,mboostrs,heteroscedasticity(x9),1705,0.0002
+messy,mboostrs,"gamboost(final, x10 observed rows, others median-filled)",1696,0.01
+messy,mboostrs,heteroscedasticity(x10),1696,0.0003
+messy,mboostrs,"gamboost(final, x11 observed rows, others median-filled)",1708,0.0101
+messy,mboostrs,heteroscedasticity(x11),1708,0.0002
+messy,mboostrs,"gamboost(final, x12 observed rows, others median-filled)",1708,0.01
+messy,mboostrs,heteroscedasticity(x12),1708,0.0002
+messy,mboostrs,"gamboost(final, x13 observed rows, others median-filled)",1689,0.0098
+messy,mboostrs,heteroscedasticity(x13),1689,0.0002
+messy,mboostrs,"gamboost(final, x14 observed rows, others median-filled)",1715,0.0104
+messy,mboostrs,heteroscedasticity(x14),1715,0.0002
+messy,mboostrs,"gamboost(final, x15 observed rows, others median-filled)",1703,0.0102
+messy,mboostrs,heteroscedasticity(x15),1703,0.0002
+messy,mboostrs,"gamboost(final, x16 observed rows, others median-filled)",1674,0.0103
+messy,mboostrs,heteroscedasticity(x16),1674,0.0002
+messy,mboostrs,"gamboost(final, x17 observed rows, others median-filled)",1695,0.01
+messy,mboostrs,heteroscedasticity(x17),1695,0.0002
+messy,mboostrs,"gamboost(final, x18 observed rows, others median-filled)",1672,0.0101
+messy,mboostrs,heteroscedasticity(x18),1672,0.0002
+messy,mboostrs,"gamboost(final, x19 observed rows, others median-filled)",1657,0.0099
+messy,mboostrs,heteroscedasticity(x19),1657,0.0002
+messy,mboostrs,"gamboost(final, x20 observed rows, others median-filled)",1656,0.0099
+messy,mboostrs,heteroscedasticity(x20),1656,0.0002
+messy,mboostrs,"gamboostLSS(mu=final, sigma=drivers)",2000,0.05
+messy,mboostrs,conformal_interval(distributional),2000,0.0338

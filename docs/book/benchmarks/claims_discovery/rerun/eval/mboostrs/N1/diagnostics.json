@@ -1,0 +1,177 @@
+{
+  "library_warnings": [
+    "ExtrapolationWarning: 4 fold predictions in this call asked 3 learner(s) to predict outside the range they were fitted on. bbs(l_total_rooms), covariate l_total_rooms: 1 below 1.79176 (worst 0.13 training ranges out); bbs(l_population), covariate l_population: 1 above 9.69923 (worst 0.091 training ranges out); bbs(l_ave_bedrooms), covariate l_ave_bedrooms: 1 below -0.81093 and 1 above 3.24401 (worst 0.07 training ranges out); bbs(l_population), covariate l_population: 1 below 1.60944 (worst 0.058 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.13 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse.",
+    "UserWarning: candidate 'mu: bols(housing_median_age_isna, intercept=False) + bols(total_bedrooms_isna, intercept=False) + bols(ave_bedrooms_isna, intercept=False); sigma: bbs(l_ave_occup, df=4)' could not be scored: fold_scores must be finite when no fold failed",
+    "ExtrapolationWarning: 4 fold predictions in this call asked 3 learner(s) to predict outside the range they were fitted on. bbs(l_total_rooms) [sigma], covariate l_total_rooms: 1 below 1.79176 (worst 0.13 training ranges out); bbs(l_population) [sigma], covariate l_population: 1 above 9.69923 (worst 0.091 training ranges out); bbs(l_ave_bedrooms) [sigma], covariate l_ave_bedrooms: 1 below -0.81093 and 1 above 3.24401 (worst 0.07 training ranges out); bbs(l_population) [sigma], covariate l_population: 1 below 1.60944 (worst 0.058 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.13 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse."
+  ],
+  "mean_shapes": [],
+  "spread_shapes": [],
+  "queries": {
+    "Q1": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0,
+      "note": "median_income not in the adopted mean model"
+    },
+    "Q2": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0,
+      "note": "housing_median_age not in the adopted mean model"
+    },
+    "Q3": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0,
+      "note": "ave_occup not in the adopted mean model"
+    },
+    "Q4": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0,
+      "note": "roof_class not in the adopted mean model"
+    },
+    "Q5": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0,
+      "note": "ave_rooms not in the adopted mean model"
+    },
+    "Q6": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0,
+      "note": "latitude/longitude not in the adopted mean model"
+    },
+    "Q7": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0,
+      "note": "households not in the adopted mean model"
+    },
+    "Q8": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0,
+      "note": "median_house_value not in the adopted mean model"
+    }
+  },
+  "holdout": {
+    "holdout_overall_coverage": 0.897071490094746,
+    "holdout_mean_width": 1.3865034042823368,
+    "holdout_subgroup_coverage": {
+      "households_quartile_1": {
+        "coverage": 0.8984509466437177,
+        "n": 581
+      },
+      "households_quartile_2": {
+        "coverage": 0.8963730569948186,
+        "n": 579
+      },
+      "households_quartile_3": {
+        "coverage": 0.9120689655172414,
+        "n": 580
+      },
+      "households_quartile_4": {
+        "coverage": 0.8814432989690721,
+        "n": 582
+      },
+      "roof_A": {
+        "coverage": 0.9013539651837524,
+        "n": 517
+      },
+      "roof_B": {
+        "coverage": 0.897908979089791,
+        "n": 813
+      },
+      "roof_C": {
+        "coverage": 0.8968531468531469,
+        "n": 572
+      },
+      "roof_D": {
+        "coverage": 0.8904761904761904,
+        "n": 420
+      },
+      "income_tercile_1": {
+        "coverage": 0.8901808785529716,
+        "n": 774
+      },
+      "income_tercile_2": {
+        "coverage": 0.9003880983182406,
+        "n": 773
+      },
+      "income_tercile_3": {
+        "coverage": 0.9006451612903226,
+        "n": 775
+      }
+    }
+  },
+  "forward_mean": [
+    {
+      "round": 1,
+      "best": "longitude",
+      "change": -3.7220968369250373e-05,
+      "change_se": 3.0882226896886764e-05,
+      "adopted": false,
+      "all": {
+        "longitude": [
+          -3.7220968369250373e-05,
+          3.0882226896886764e-05
+        ],
+        "latitude": [
+          0.00017395077494528066,
+          4.818149971633433e-05
+        ],
+        "housing_median_age": [
+          0.0002121933749734406,
+          5.4673841329225305e-05
+        ],
+        "l_total_rooms": [
+          0.00013997734847942533,
+          7.466173261192949e-05
+        ],
+        "l_total_bedrooms": [
+          0.0001885847210303937,
+          6.30050186036926e-05
+        ],
+        "l_population": [
+          0.00018018360141855427,
+          0.00014338689953222563
+        ],
+        "l_households": [
+          0.0001943346006919866,
+          6.736943405258946e-05
+        ],
+        "l_median_income": [
+          6.315086787439528e-05,
+          6.300341321311073e-05
+        ],
+        "l_median_house_value": [
+          0.00013910775304931677,
+          7.612288339856411e-05
+        ],
+        "l_ave_rooms": [
+          0.00012963453290457116,
+          0.00013201982168513544
+        ],
+        "l_ave_bedrooms": [
+          -9.575834899772095e-06,
+          0.0001048150790150167
+        ],
+        "l_ave_occup": [
+          6.426960450175989e-05,
+          2.8934822735886724e-05
+        ],
+        "roof_class": [
+          7.379567410278898e-05,
+          0.00010224411579307518
+        ],
+        "spatial(longitude, latitude)": [
+          0.00022032603625180003,
+          4.41737076854288e-05
+        ]
+      }
+    }
+  ],
+  "elapsed_s": 16.5
+}

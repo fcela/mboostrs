@@ -1,0 +1,98 @@
+{
+  "library": "lightgbm 4.7.0",
+  "mean_effects": [
+    {
+      "variable": "housing_median_age",
+      "shape": "increasing",
+      "evidence": "drop-test (group housing_median_age): mean MSE increase 0.01537 (6.24% of MSE), p=0.00067; partial value from 5 to 52: 0.170 -> 0.525, range 0.356"
+    },
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "drop-test (group median_income): mean MSE increase 0.01769 (7.18% of MSE), p=1.8e-06; partial value from 1.19 to 7.89: 0.787 -> 0.060, range 0.727"
+    },
+    {
+      "variable": "roof_class",
+      "shape": "categorical",
+      "evidence": "drop-test (group roof_class): mean MSE increase 0.007442 (3.02% of MSE), p=0.00047; partial mean by level: A=0.262, B=0.262, C=0.341, D=0.520"
+    }
+  ],
+  "interactions": [],
+  "variance_drivers": [
+    {
+      "variable": "housing_median_age",
+      "direction": "decreases_spread",
+      "evidence": "drop-test (group housing_median_age) on log|residual|: mean increase 0.006893 (0.50% of MSE), p=0.0011; partial log|residual| from -1.503 to -1.606 (shape decreasing)"
+    },
+    {
+      "variable": "population",
+      "direction": "decreases_spread",
+      "evidence": "drop-test (group population) on log|residual|: mean increase 0.01054 (0.77% of MSE), p=0.0035; partial log|residual| from -1.289 to -1.765 (shape decreasing)"
+    },
+    {
+      "variable": "households",
+      "direction": "decreases_spread",
+      "evidence": "drop-test (cluster cluster:households+population+total_bedrooms+total_rooms) on log|residual|: mean increase 0.03778, p=0.00018; shared size index of households+population+total_bedrooms+total_rooms: partial log|residual| from -1.243 to -1.793 (shape decreasing); members are collinear, so the direction is for the cluster"
+    },
+    {
+      "variable": "total_bedrooms",
+      "direction": "decreases_spread",
+      "evidence": "drop-test (cluster cluster:households+population+total_bedrooms+total_rooms) on log|residual|: mean increase 0.03778, p=0.00018; shared size index of households+population+total_bedrooms+total_rooms: partial log|residual| from -1.243 to -1.793 (shape decreasing); members are collinear, so the direction is for the cluster"
+    },
+    {
+      "variable": "total_rooms",
+      "direction": "decreases_spread",
+      "evidence": "drop-test (cluster cluster:households+population+total_bedrooms+total_rooms) on log|residual|: mean increase 0.03778, p=0.00018; shared size index of households+population+total_bedrooms+total_rooms: partial log|residual| from -1.243 to -1.793 (shape decreasing); members are collinear, so the direction is for the cluster"
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.4033120693491592,
+      "lower90": -0.49066553585832956,
+      "upper90": -0.27834643455509855
+    },
+    "Q2": {
+      "estimate": 0.35274297805669264,
+      "lower90": 0.2806731522393208,
+      "upper90": 0.44154991149058126
+    },
+    "Q3": {
+      "estimate": 0.10537500911362216,
+      "lower90": 0.009016803558048953,
+      "upper90": 0.22263904148817565
+    },
+    "Q4": {
+      "estimate": 0.25779361567224873,
+      "lower90": 0.13948630949829924,
+      "upper90": 0.3173214286377061
+    },
+    "Q5": {
+      "estimate": 0.010989205714577777,
+      "lower90": -0.03791605359234186,
+      "upper90": 0.062128441709408073
+    },
+    "Q6": {
+      "estimate": 0.06899334895728973,
+      "lower90": -0.0020700975864991213,
+      "upper90": 0.11016428391556754
+    },
+    "Q7": {
+      "estimate": 0.004179386079533741,
+      "lower90": -0.009980807120928076,
+      "upper90": 0.00559468337015066
+    },
+    "Q8": {
+      "estimate": -0.06285942362508253,
+      "lower90": -0.13156771868473238,
+      "upper90": 0.005466377266667595
+    }
+  },
+  "warnings": [
+    "Missing values in training data (handled by LightGBM native missing direction): {'housing_median_age': 55, 'total_bedrooms': 7, 'ave_bedrooms': 7}.",
+    "Test covariates differ from training (standardized mean difference > 0.2): {'median_income': 0.551, 'median_house_value': 0.276, 'ave_occup': 0.381}. Test rows are described as a later book of business.",
+    "Highly correlated covariate pairs (|r| >= 0.9): [('longitude', 'latitude', -0.927), ('total_rooms', 'total_bedrooms', 0.914), ('total_bedrooms', 'households', 0.961), ('population', 'households', 0.921)]. Clusters of such covariates are tested as one group; a single member's effect is not separately identified.",
+    "Association and interaction p-values come from paired cross-validation differences. The folds overlap, so the p-values are approximate and somewhat optimistic; Bonferroni is applied over the tests in each family.",
+    "Effect-query intervals are percentile intervals of a bootstrap of the full training fit with the tuned settings held fixed; they reflect model estimation uncertainty, not noise in y.",
+    "Effect queries contrast two covariate settings for every training row, with the other columns at observed values, and average the contrast over rows."
+  ]
+}

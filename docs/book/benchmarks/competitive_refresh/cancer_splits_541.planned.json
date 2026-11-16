@@ -1,0 +1,135 @@
+{
+ "schema_version": 1,
+ "created_at": "2026-11-15T22:03:41+00:00",
+ "commit": "2180d123c8245d533100494acb087e7e9cc81850",
+ "working_tree": {
+  "dirty": false,
+  "status_digest": null,
+  "commit_source": "working directory"
+ },
+ "platform": {
+  "system": "Darwin",
+  "release": "25.3.0",
+  "machine": "arm64",
+  "cpu": "arm",
+  "python": "3.12.11"
+ },
+ "versions": {
+  "mboostrs": "0.2.0",
+  "numpy": "2.4.6",
+  "rpy2": "3.6.7",
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "R": "4.5.1",
+  "mboost": "2.9.11",
+  "scipy": "1.16.3",
+  "pandas": "2.3.3",
+  "ngboost": "0.5.11",
+  "mssm": "1.2.5",
+  "scikit-learn": "1.9.0",
+  "catboost": "1.2.10",
+  "lightgbm": "4.7.0"
+ },
+ "threads": {
+  "logical_cpus": 10,
+  "r_mclapply_default_cores": "2",
+  "RAYON_NUM_THREADS": "1",
+  "OMP_NUM_THREADS": "1",
+  "OPENBLAS_NUM_THREADS": "1",
+  "MKL_NUM_THREADS": "1"
+ },
+ "build_info": {
+  "package_version": "0.2.0",
+  "source_digest": "sha256:194d3d76c565161ed62ebd91737ff3ba686b6b3dd67f50f202e464b7d68189f3",
+  "git_revision": "be538363bca9d390c61179c4c5606efcab65a503",
+  "git_dirty": false,
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+  "target": "aarch64-apple-darwin",
+  "profile": "release",
+  "target_features": "aes,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+  "crate_features": "",
+  "abi_version": 1,
+  "build_id": "sha256:44f9b1024473e0ba03ce8a464c4b80d428e04491aca1c7bfc4da95a384c0bffb"
+ },
+ "scripts": {
+  "/private/tmp/mboostrs-541-splits/benches/bench_cancer_splits_541.py": "c5d0c2ee9879ce660bb8e0535a8b68e18c56a150297d2bd613c9f16878d39afa",
+  "benches/shootout_models.py": "d76d6750f38797dbeed1344b4428f5f8e6d4b899ec2d453316ed02b6363da442",
+  "benches/shootout_data.py": "9b4a80f5e6a1fada2870f94d4cf5721dcce0ceae75c04c65d53b635f800f6d01",
+  "benches/shootout_metrics.py": "c3b8cf22436514e7d4e53d9cf26dc8488be92efe5dd08496c1dec1242f48e5b4",
+  "benches/_jobs.py": "60913a8b4d63f421f8411cd30673eb1a7843ae3215241124e32ec6c46dcc5309"
+ },
+ "thread_environment": {
+  "RAYON_NUM_THREADS": "1",
+  "OMP_NUM_THREADS": "1",
+  "OPENBLAS_NUM_THREADS": "1"
+ },
+ "protocol": {
+  "id": "cancer-split-sensitivity/1",
+  "issue": 541,
+  "task": "cancer",
+  "seeds": [
+   201,
+   202,
+   203,
+   204,
+   205,
+   206,
+   207,
+   208,
+   209,
+   210,
+   211,
+   212,
+   213,
+   214,
+   215,
+   216,
+   217,
+   218,
+   219,
+   220
+  ],
+  "methods": [
+   "autospec",
+   "linear_small",
+   "linear_tuned"
+  ],
+  "autospec": {
+   "budget": 32,
+   "nu": 0.1,
+   "mstop": 200,
+   "interactions": "adopt",
+   "residual_tree": "auto"
+  },
+  "partitions": "unchanged shootout_data.payload; supplied single holdout",
+  "primary": "paired outer raw log loss against small and tuned logistic references",
+  "secondary": [
+   "brier",
+   "auc",
+   "calibrated_loss"
+  ],
+  "uncertainty": "descriptive split spread on a fixed panel; splits overlap; no IID SE",
+  "target_excess_pct": 5,
+  "workers": 1,
+  "timeout_seconds": 240,
+  "decision": "no procedure adoption or issue closure from additional splits alone",
+  "diagnostics": [
+   "chosen holdout loss versus test loss",
+   "top-five loss share",
+   "per-observation paired losses",
+   "class prevalence by partition"
+  ],
+  "input_sha256": "082c998ae951a02e04c7dc1dd61f9445b10efa78772d51b5fd18ab15ca20c0d6"
+ },
+ "repeats": {
+  "overlapping_random_splits": 20
+ },
+ "uncertainty": {
+  "unit": "random partition of the same 569 cancer observations",
+  "summary": "descriptive means, quantiles and split SD; no IID SE",
+  "timing": "descriptive uncontrolled runtime"
+ },
+ "memory": {
+  "status": "not measured"
+ },
+ "results": []
+}

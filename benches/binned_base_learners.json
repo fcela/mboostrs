@@ -1,0 +1,52 @@
+{
+ "date": "2026-08-21",
+ "hardware": "Apple M4, 10 cores, 24 GB",
+ "build": "cargo bench release; portable target (no target-cpu=native)",
+ "configuration": {
+  "n": 100000,
+  "mstop": 25,
+  "scalar_learners": 50,
+  "bbs_learners": 10,
+  "bbs_basis_columns": 24
+ },
+ "criterion_median_ms": {
+  "scalar": {
+   "exact": 26.488,
+   "K100": 29.350,
+   "K400": 30.273
+  },
+  "bbs": {
+   "exact": 83.397,
+   "K100": 13.833,
+   "K400": 14.517
+  }
+ },
+ "retained_learner_bytes": {
+  "scalar": {
+   "exact": 120000000,
+   "K100": 20080000,
+   "K400": 20320000
+  },
+  "bbs": {
+   "exact": 720042240,
+   "K100": 4234240,
+   "K400": 4810240
+  }
+ },
+ "selection_sequence_gate": {
+  "n": 10000,
+  "learners": 40,
+  "bins": 200,
+  "mstop": 100,
+  "family": "Binomial",
+  "sequence_identical": true,
+  "first_divergence": null,
+  "max_abs_fitted_difference": 0.043448555322938405,
+  "exact_wall_seconds": 0.1745920181274414,
+  "binned_wall_seconds": 0.03796505928039551
+ },
+ "interpretation": {
+  "scalar": "Binning cuts retained learner data about 6x but is 11-14% slower than the packed exact GEMM route at this shape.",
+  "bbs": "Binning cuts retained learner data 150-170x and fits 5.7-6.0x faster. The observation-length u32 index dominates compact storage."
+ }
+}

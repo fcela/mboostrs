@@ -1,0 +1,41 @@
+FF...F...........................                                        [100%]
+=================================== FAILURES ===================================
+_____________________ test_planted_structure_is_recovered ______________________
+
+planted = DiscoveryResult(formula='bbs(x, df=4.0) + bbs(z, df=4.0) + bbs(z, by=g) + bbs(n2, df=4.0)', spread_formula='bbs(x, df=4)', mean_effects=3, interactions=1, spread_drivers=1, mstop=54, decisions=28)
+
+    def test_planted_structure_is_recovered(planted):
+        variables = {v for e in planted.mean_effects for v in e["variables"]}
+        assert {"x", "z"} <= variables
+>       assert not variables & {"n1", "n2"}
+E       AssertionError: assert not ({'n2', 'x', 'z'} & {'n1', 'n2'})
+
+tests/test_discover.py:48: AssertionError
+____________________ test_permuted_response_returns_nothing ____________________
+
+permuted = DiscoveryResult(formula='bbs(z, df=4.0)', spread_formula=None, mean_effects=1, interactions=0, spread_drivers=0, mstop=149, decisions=23)
+
+    def test_permuted_response_returns_nothing(permuted):
+>       assert permuted.mean_effects == []
+E       AssertionError: assert [{'change': 0...0239519, ...}] == []
+E         
+E         Left contains one more item: {'change': 0.1447557351612172, 'change se': 0.03347896039123998, 'direction': 'increasing', 'range': 1.557122010239519, ...}
+E         Use -v to get more diff
+
+tests/test_discover.py:56: AssertionError
+__________________ test_include_arrays_adds_the_training_fit ___________________
+
+planted = DiscoveryResult(formula='bbs(x, df=4.0) + bbs(z, df=4.0) + bbs(z, by=g) + bbs(n2, df=4.0)', spread_formula='bbs(x, df=4)', mean_effects=3, interactions=1, spread_drivers=1, mstop=54, decisions=28)
+
+    def test_include_arrays_adds_the_training_fit(planted):
+        record = json.loads(json.dumps(planted.to_dict(include_arrays=True)))
+>       assert len(record["fitted"]) == 300
+E       assert 150 == 300
+E        +  where 150 = len([-0.619008235436604, 1.163339070120359, 0.4493376130960314, -1.5085190915049018, 1.0084722210809736, -0.8168735628100414, ...])
+
+tests/test_discover.py:98: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_discover.py::test_planted_structure_is_recovered - Assertio...
+FAILED tests/test_discover.py::test_permuted_response_returns_nothing - Asser...
+FAILED tests/test_discover.py::test_include_arrays_adds_the_training_fit - as...
+3 failed, 30 passed in 2.27s

@@ -1,0 +1,477 @@
+{
+ "schema_version": 1,
+ "created_at": "2026-10-17T21:09:51+00:00",
+ "commit": "e8f5311086dc5e9612a2c81a7b8eba14d0a4fba6",
+ "working_tree": {
+  "dirty": true,
+  "status_digest": "sha256:a72a8de7d0753245d55ad8e1362a277a1795e360b0025ae8c35b19c083862209",
+  "commit_source": "working directory"
+ },
+ "platform": {
+  "system": "Darwin",
+  "release": "25.3.0",
+  "machine": "arm64",
+  "cpu": "arm",
+  "python": "3.12.11"
+ },
+ "versions": {
+  "mboostrs": "0.1.3",
+  "numpy": "2.4.6",
+  "rpy2": "3.6.7",
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "R": "4.5.1",
+  "mboost": "2.9.11",
+  "scipy": "1.16.3",
+  "pandas": "2.3.3",
+  "ngboost": "0.5.11",
+  "mssm": "1.2.5",
+  "scikit-learn": "1.9.0"
+ },
+ "threads": {
+  "logical_cpus": 10,
+  "r_mclapply_default_cores": "2",
+  "RAYON_NUM_THREADS": "1",
+  "OMP_NUM_THREADS": "1",
+  "OPENBLAS_NUM_THREADS": "1",
+  "MKL_NUM_THREADS": "1"
+ },
+ "build_info": {
+  "package_version": "0.1.3",
+  "source_digest": "sha256:545abff7a0e12ca3fcef54e2b4eed955c157ff4b26cca1ab727cc0c4550b20ef",
+  "git_revision": "e314bbfd736db08de00a1640c1e2f0d033035917",
+  "git_dirty": true,
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+  "target": "aarch64-apple-darwin",
+  "profile": "release",
+  "target_features": "aes,bf16,bti,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,i8mm,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+  "crate_features": "",
+  "abi_version": 1,
+  "build_id": "sha256:f040b322af1e6fbbefc1acad06598d728a6061410bee019605042c3a5b0216a6"
+ },
+ "scripts": {
+  "/private/tmp/mboostrs-binomial-cancer/benches/audit_binomial_prediction_scale.py": "a755af47a36865c3d1f6b6f40b61eccd8f5fb5af99c84a9e87dc0ba89587ab24"
+ },
+ "thread_environment": {
+  "RAYON_NUM_THREADS": "1",
+  "OMP_NUM_THREADS": "1",
+  "OPENBLAS_NUM_THREADS": "1"
+ },
+ "protocol": {
+  "id": "binomial-prediction-scale/1",
+  "protocol_sha256": "4e8dc7b5571341b1b58551bc4e49dbd0ea3998520df41e1fadd4b61a29253aad",
+  "diagnostic_only": true
+ },
+ "repeats": {
+  "original_split_seeds": [
+   0,
+   1,
+   2
+  ]
+ },
+ "uncertainty": {
+  "unit": "one independent training and test draw; pair methods within a draw",
+  "summary": "mean and Monte Carlo standard error across draws",
+  "timing": "elapsed whole-workflow costs, not controlled implementation speed ratios"
+ },
+ "memory": {
+  "status": "not measured"
+ },
+ "results": [
+  {
+   "seed": 0,
+   "method": "mboostrs_200",
+   "input_digest": "sha256:0b11550f75311a63cfe628025d1e05fb84e537195753c626bf7c15fb5252d773",
+   "incorrect_link_clipped_log_loss": 0.2549247542901805,
+   "response_log_loss": 0.1026617721312129,
+   "brier": 0.026899207012757668,
+   "auc": 0.996031746031746,
+   "response_prediction_digest": "sha256:1d95a40b86a2b58f07e5e3bd732e2f1b4326438e63b1d0d1e1dde29049e13548",
+   "link_prediction_digest": "sha256:27bae7f2170e80c8d6ec25149ffa23fc4dab47c46f052a9c48a97596a13e9322",
+   "formula": "y ~ bbs(x0) + bbs(x1) + bbs(x2) + bbs(x3) + bbs(x4) + bbs(x5) + bbs(x6) + bbs(x7) + bbs(x8) + bbs(x9) + bbs(x10) + bbs(x11) + bbs(x12) + bbs(x13) + bbs(x14) + bbs(x15) + bbs(x16) + bbs(x17) + bbs(x18) + bbs(x19) + bbs(x20) + bbs(x21) + bbs(x22) + bbs(x23) + bbs(x24) + bbs(x25) + bbs(x26) + bbs(x27) + bbs(x28) + bbs(x29)",
+   "warnings": [
+    "predict() with default type='link' returns the half log-odds (mboost +/-1 coding) for Binomial; pass type='response' for response scale.",
+    "7 learner(s) are asked to predict outside the range they were fitted on. bbs(x14), covariate x14: 1 above 0.02333 (worst 0.36 training ranges out); bbs(x18), covariate x18: 1 above 0.06146 (worst 0.33 training ranges out); bbs(x15), covariate x15: 1 above 0.1064 (worst 0.28 training ranges out); bbs(x1), covariate x1: 1 above 33.81 (worst 0.23 training ranges out); bbs(x4), covariate x4: 1 above 0.1447 (worst 0.2 training ranges out); bbs(x26), covariate x26: 2 above 1.105 (worst 0.13 training ranges out); bbs(x5), covariate x5: 1 above 0.3114 (worst 0.12 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.36 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics.",
+    "7 learner(s) are asked to predict outside the range they were fitted on. bbs(x14), covariate x14: 1 above 0.02333 (worst 0.36 training ranges out); bbs(x18), covariate x18: 1 above 0.06146 (worst 0.33 training ranges out); bbs(x15), covariate x15: 1 above 0.1064 (worst 0.28 training ranges out); bbs(x1), covariate x1: 1 above 33.81 (worst 0.23 training ranges out); bbs(x4), covariate x4: 1 above 0.1447 (worst 0.2 training ranges out); bbs(x26), covariate x26: 2 above 1.105 (worst 0.13 training ranges out); bbs(x5), covariate x5: 1 above 0.3114 (worst 0.12 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.36 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics.",
+    "7 learner(s) are asked to predict outside the range they were fitted on. bbs(x14), covariate x14: 1 above 0.02333 (worst 0.36 training ranges out); bbs(x18), covariate x18: 1 above 0.06146 (worst 0.33 training ranges out); bbs(x15), covariate x15: 1 above 0.1064 (worst 0.28 training ranges out); bbs(x1), covariate x1: 1 above 33.81 (worst 0.23 training ranges out); bbs(x4), covariate x4: 1 above 0.1447 (worst 0.2 training ranges out); bbs(x26), covariate x26: 2 above 1.105 (worst 0.13 training ranges out); bbs(x5), covariate x5: 1 above 0.3114 (worst 0.12 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.36 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics."
+   ]
+  },
+  {
+   "seed": 0,
+   "method": "mboostrs_500",
+   "input_digest": "sha256:0b11550f75311a63cfe628025d1e05fb84e537195753c626bf7c15fb5252d773",
+   "incorrect_link_clipped_log_loss": 0.1704748338147453,
+   "response_log_loss": 0.0852905435695738,
+   "brier": 0.02291180480382077,
+   "auc": 0.9963256907701352,
+   "response_prediction_digest": "sha256:d01fb95dc5b9a7c41d056029fe0c1fdc0a7cbd6885e07f36bb3f43a39404decb",
+   "link_prediction_digest": "sha256:45513aee3557d18741956a881c9003f6cb594c509215783b90461f9d3bad0f78",
+   "formula": "y ~ bbs(x0) + bbs(x1) + bbs(x2) + bbs(x3) + bbs(x4) + bbs(x5) + bbs(x6) + bbs(x7) + bbs(x8) + bbs(x9) + bbs(x10) + bbs(x11) + bbs(x12) + bbs(x13) + bbs(x14) + bbs(x15) + bbs(x16) + bbs(x17) + bbs(x18) + bbs(x19) + bbs(x20) + bbs(x21) + bbs(x22) + bbs(x23) + bbs(x24) + bbs(x25) + bbs(x26) + bbs(x27) + bbs(x28) + bbs(x29)",
+   "warnings": [
+    "predict() with default type='link' returns the half log-odds (mboost +/-1 coding) for Binomial; pass type='response' for response scale.",
+    "7 learner(s) are asked to predict outside the range they were fitted on. bbs(x14), covariate x14: 1 above 0.02333 (worst 0.36 training ranges out); bbs(x18), covariate x18: 1 above 0.06146 (worst 0.33 training ranges out); bbs(x15), covariate x15: 1 above 0.1064 (worst 0.28 training ranges out); bbs(x1), covariate x1: 1 above 33.81 (worst 0.23 training ranges out); bbs(x4), covariate x4: 1 above 0.1447 (worst 0.2 training ranges out); bbs(x26), covariate x26: 2 above 1.105 (worst 0.13 training ranges out); bbs(x5), covariate x5: 1 above 0.3114 (worst 0.12 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.36 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics.",
+    "7 learner(s) are asked to predict outside the range they were fitted on. bbs(x14), covariate x14: 1 above 0.02333 (worst 0.36 training ranges out); bbs(x18), covariate x18: 1 above 0.06146 (worst 0.33 training ranges out); bbs(x15), covariate x15: 1 above 0.1064 (worst 0.28 training ranges out); bbs(x1), covariate x1: 1 above 33.81 (worst 0.23 training ranges out); bbs(x4), covariate x4: 1 above 0.1447 (worst 0.2 training ranges out); bbs(x26), covariate x26: 2 above 1.105 (worst 0.13 training ranges out); bbs(x5), covariate x5: 1 above 0.3114 (worst 0.12 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.36 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics.",
+    "7 learner(s) are asked to predict outside the range they were fitted on. bbs(x14), covariate x14: 1 above 0.02333 (worst 0.36 training ranges out); bbs(x18), covariate x18: 1 above 0.06146 (worst 0.33 training ranges out); bbs(x15), covariate x15: 1 above 0.1064 (worst 0.28 training ranges out); bbs(x1), covariate x1: 1 above 33.81 (worst 0.23 training ranges out); bbs(x4), covariate x4: 1 above 0.1447 (worst 0.2 training ranges out); bbs(x26), covariate x26: 2 above 1.105 (worst 0.13 training ranges out); bbs(x5), covariate x5: 1 above 0.3114 (worst 0.12 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.36 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics."
+   ]
+  },
+  {
+   "seed": 0,
+   "method": "catboost",
+   "input_digest": "sha256:0b11550f75311a63cfe628025d1e05fb84e537195753c626bf7c15fb5252d773",
+   "response_log_loss": 0.05693800730165827,
+   "brier": 0.015846699077515146,
+   "auc": 0.9988242210464432,
+   "response_prediction_digest": "sha256:01376836f32fc0bbca4cf88ddedd89a28aca96a11b2d6ebb029fb063e6f35128",
+   "warnings": []
+  },
+  {
+   "seed": 0,
+   "method": "lightgbm",
+   "input_digest": "sha256:0b11550f75311a63cfe628025d1e05fb84e537195753c626bf7c15fb5252d773",
+   "response_log_loss": 0.04584914467560906,
+   "brier": 0.013312417278329084,
+   "auc": 0.9989711934156379,
+   "response_prediction_digest": "sha256:8160adc61be1861560b6fb5d3dcbacd90ba941b42202cd8d2a81496c963f2e58",
+   "warnings": []
+  },
+  {
+   "seed": 0,
+   "method": "logistic",
+   "input_digest": "sha256:0b11550f75311a63cfe628025d1e05fb84e537195753c626bf7c15fb5252d773",
+   "response_log_loss": 0.09937542444077244,
+   "brier": 0.030757461927906644,
+   "auc": 0.9963256907701352,
+   "response_prediction_digest": "sha256:4745310407d9a6c594beb715b12a2e6e8d3ef0d65167c6a683ee8d9a99e1918c",
+   "warnings": [
+    "lbfgs failed to converge after 1000 iteration(s) (status=1):\nSTOP: TOTAL NO. OF ITERATIONS REACHED LIMIT\n\nIncrease the number of iterations to improve the convergence (max_iter=1000).\nYou might also want to scale the data as shown in:\n    https://scikit-learn.org/stable/modules/preprocessing.html\nPlease also refer to the documentation for alternative solver options:\n    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression"
+   ]
+  },
+  {
+   "seed": 1,
+   "method": "mboostrs_200",
+   "input_digest": "sha256:9773faab35cae0980f1c005cd4185581e7c65ab897b992bdd1e35ba0b1951a30",
+   "incorrect_link_clipped_log_loss": 0.3978936288269784,
+   "response_log_loss": 0.13117480194367862,
+   "brier": 0.03531806965054823,
+   "auc": 0.988095238095238,
+   "response_prediction_digest": "sha256:62295846482dd4837f96b5c08acedec942407705d656582862cf76bc6b97c380",
+   "link_prediction_digest": "sha256:f4638ff0a1afa5b4310a3d935f05c2dd4481a5e877e651ca7529444d971b2030",
+   "formula": "y ~ bbs(x0) + bbs(x1) + bbs(x2) + bbs(x3) + bbs(x4) + bbs(x5) + bbs(x6) + bbs(x7) + bbs(x8) + bbs(x9) + bbs(x10) + bbs(x11) + bbs(x12) + bbs(x13) + bbs(x14) + bbs(x15) + bbs(x16) + bbs(x17) + bbs(x18) + bbs(x19) + bbs(x20) + bbs(x21) + bbs(x22) + bbs(x23) + bbs(x24) + bbs(x25) + bbs(x26) + bbs(x27) + bbs(x28) + bbs(x29)",
+   "warnings": [
+    "predict() with default type='link' returns the half log-odds (mboost +/-1 coding) for Binomial; pass type='response' for response scale.",
+    "6 learner(s) are asked to predict outside the range they were fitted on. bbs(x29), covariate x29: 1 below 0.05521 and 2 above 0.1486 (worst 0.63 training ranges out); bbs(x18), covariate x18: 1 below 0.009539 and 1 above 0.06146 (worst 0.34 training ranges out); bbs(x26), covariate x26: 3 above 0.9608 (worst 0.3 training ranges out); bbs(x28), covariate x28: 1 below 0.1566 and 2 above 0.5558 (worst 0.27 training ranges out); bbs(x5), covariate x5: 2 above 0.2867 (worst 0.22 training ranges out); bbs(x25), covariate x25: 1 above 0.9379 (worst 0.13 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.63 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics.",
+    "6 learner(s) are asked to predict outside the range they were fitted on. bbs(x29), covariate x29: 1 below 0.05521 and 2 above 0.1486 (worst 0.63 training ranges out); bbs(x18), covariate x18: 1 below 0.009539 and 1 above 0.06146 (worst 0.34 training ranges out); bbs(x26), covariate x26: 3 above 0.9608 (worst 0.3 training ranges out); bbs(x28), covariate x28: 1 below 0.1566 and 2 above 0.5558 (worst 0.27 training ranges out); bbs(x5), covariate x5: 2 above 0.2867 (worst 0.22 training ranges out); bbs(x25), covariate x25: 1 above 0.9379 (worst 0.13 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.63 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics.",
+    "6 learner(s) are asked to predict outside the range they were fitted on. bbs(x29), covariate x29: 1 below 0.05521 and 2 above 0.1486 (worst 0.63 training ranges out); bbs(x18), covariate x18: 1 below 0.009539 and 1 above 0.06146 (worst 0.34 training ranges out); bbs(x26), covariate x26: 3 above 0.9608 (worst 0.3 training ranges out); bbs(x28), covariate x28: 1 below 0.1566 and 2 above 0.5558 (worst 0.27 training ranges out); bbs(x5), covariate x5: 2 above 0.2867 (worst 0.22 training ranges out); bbs(x25), covariate x25: 1 above 0.9379 (worst 0.13 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.63 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics."
+   ]
+  },
+  {
+   "seed": 1,
+   "method": "mboostrs_500",
+   "input_digest": "sha256:9773faab35cae0980f1c005cd4185581e7c65ab897b992bdd1e35ba0b1951a30",
+   "incorrect_link_clipped_log_loss": 0.38496410685366395,
+   "response_log_loss": 0.10848458360792222,
+   "brier": 0.030768893310760763,
+   "auc": 0.9908877131099353,
+   "response_prediction_digest": "sha256:f839d0b9544759f1b264c7e6f93b1091d763f54bcda2ccde32dacdc2f20666a2",
+   "link_prediction_digest": "sha256:342072f8168677b4a0886e03db5ec3a595f350f4039f03531885549c85da545f",
+   "formula": "y ~ bbs(x0) + bbs(x1) + bbs(x2) + bbs(x3) + bbs(x4) + bbs(x5) + bbs(x6) + bbs(x7) + bbs(x8) + bbs(x9) + bbs(x10) + bbs(x11) + bbs(x12) + bbs(x13) + bbs(x14) + bbs(x15) + bbs(x16) + bbs(x17) + bbs(x18) + bbs(x19) + bbs(x20) + bbs(x21) + bbs(x22) + bbs(x23) + bbs(x24) + bbs(x25) + bbs(x26) + bbs(x27) + bbs(x28) + bbs(x29)",
+   "warnings": [
+    "predict() with default type='link' returns the half log-odds (mboost +/-1 coding) for Binomial; pass type='response' for response scale.",
+    "6 learner(s) are asked to predict outside the range they were fitted on. bbs(x29), covariate x29: 1 below 0.05521 and 2 above 0.1486 (worst 0.63 training ranges out); bbs(x18), covariate x18: 1 below 0.009539 and 1 above 0.06146 (worst 0.34 training ranges out); bbs(x26), covariate x26: 3 above 0.9608 (worst 0.3 training ranges out); bbs(x28), covariate x28: 1 below 0.1566 and 2 above 0.5558 (worst 0.27 training ranges out); bbs(x5), covariate x5: 2 above 0.2867 (worst 0.22 training ranges out); bbs(x25), covariate x25: 1 above 0.9379 (worst 0.13 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.63 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics.",
+    "6 learner(s) are asked to predict outside the range they were fitted on. bbs(x29), covariate x29: 1 below 0.05521 and 2 above 0.1486 (worst 0.63 training ranges out); bbs(x18), covariate x18: 1 below 0.009539 and 1 above 0.06146 (worst 0.34 training ranges out); bbs(x26), covariate x26: 3 above 0.9608 (worst 0.3 training ranges out); bbs(x28), covariate x28: 1 below 0.1566 and 2 above 0.5558 (worst 0.27 training ranges out); bbs(x5), covariate x5: 2 above 0.2867 (worst 0.22 training ranges out); bbs(x25), covariate x25: 1 above 0.9379 (worst 0.13 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.63 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics.",
+    "6 learner(s) are asked to predict outside the range they were fitted on. bbs(x29), covariate x29: 1 below 0.05521 and 2 above 0.1486 (worst 0.63 training ranges out); bbs(x18), covariate x18: 1 below 0.009539 and 1 above 0.06146 (worst 0.34 training ranges out); bbs(x26), covariate x26: 3 above 0.9608 (worst 0.3 training ranges out); bbs(x28), covariate x28: 1 below 0.1566 and 2 above 0.5558 (worst 0.27 training ranges out); bbs(x5), covariate x5: 2 above 0.2867 (worst 0.22 training ranges out); bbs(x25), covariate x25: 1 above 0.9379 (worst 0.13 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.63 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics."
+   ]
+  },
+  {
+   "seed": 1,
+   "method": "catboost",
+   "input_digest": "sha256:9773faab35cae0980f1c005cd4185581e7c65ab897b992bdd1e35ba0b1951a30",
+   "response_log_loss": 0.14098900254514876,
+   "brier": 0.03767376316727368,
+   "auc": 0.9875073486184598,
+   "response_prediction_digest": "sha256:5bc7921383c67029f422621efc0089ea09d5db00bf4befa82338ac3b7c88ad7f",
+   "warnings": []
+  },
+  {
+   "seed": 1,
+   "method": "lightgbm",
+   "input_digest": "sha256:9773faab35cae0980f1c005cd4185581e7c65ab897b992bdd1e35ba0b1951a30",
+   "response_log_loss": 0.12771005677092837,
+   "brier": 0.028091019320098956,
+   "auc": 0.9904467960023515,
+   "response_prediction_digest": "sha256:eca0db18d72a6c0bcffba44b03c638e1b177ef67238a916dc4c70615b0aedef4",
+   "warnings": []
+  },
+  {
+   "seed": 1,
+   "method": "logistic",
+   "input_digest": "sha256:9773faab35cae0980f1c005cd4185581e7c65ab897b992bdd1e35ba0b1951a30",
+   "response_log_loss": 0.13479881946410588,
+   "brier": 0.04294289870362751,
+   "auc": 0.9866255144032922,
+   "response_prediction_digest": "sha256:a1d36e21651704a4b6323bf1db8b2a0e6055374bcf05b3b0c4a5cbd5c11f45c2",
+   "warnings": [
+    "lbfgs failed to converge after 1000 iteration(s) (status=1):\nSTOP: TOTAL NO. OF ITERATIONS REACHED LIMIT\n\nIncrease the number of iterations to improve the convergence (max_iter=1000).\nYou might also want to scale the data as shown in:\n    https://scikit-learn.org/stable/modules/preprocessing.html\nPlease also refer to the documentation for alternative solver options:\n    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression"
+   ]
+  },
+  {
+   "seed": 2,
+   "method": "mboostrs_200",
+   "input_digest": "sha256:e28435ed7089e7743148bc4ab12efc7165069a1444307b12ca6ffeb223d9b1c9",
+   "incorrect_link_clipped_log_loss": 0.32792001796262393,
+   "response_log_loss": 0.10321674063922154,
+   "brier": 0.02876903841031894,
+   "auc": 0.9941159586681975,
+   "response_prediction_digest": "sha256:4870c4b23d195c3c075a5a05acf5829a02305147c200662f601ca3832a28ae1f",
+   "link_prediction_digest": "sha256:4268b6e397f26f5860a1fb9194ccfdc4abbbb7f53e2c25f7d482a3ee7b423e04",
+   "formula": "y ~ bbs(x0) + bbs(x1) + bbs(x2) + bbs(x3) + bbs(x4) + bbs(x5) + bbs(x6) + bbs(x7) + bbs(x8) + bbs(x9) + bbs(x10) + bbs(x11) + bbs(x12) + bbs(x13) + bbs(x14) + bbs(x15) + bbs(x16) + bbs(x17) + bbs(x18) + bbs(x19) + bbs(x20) + bbs(x21) + bbs(x22) + bbs(x23) + bbs(x24) + bbs(x25) + bbs(x26) + bbs(x27) + bbs(x28) + bbs(x29)",
+   "warnings": [
+    "predict() with default type='link' returns the half log-odds (mboost +/-1 coding) for Binomial; pass type='response' for response scale.",
+    "9 learner(s) are asked to predict outside the range they were fitted on. bbs(x11), covariate x11: 4 above 3.12 (worst 0.64 training ranges out); bbs(x17), covariate x17: 2 above 0.03927 (worst 0.34 training ranges out); bbs(x19), covariate x19: 1 above 0.02286 (worst 0.32 training ranges out); bbs(x16), covariate x16: 1 above 0.3038 (worst 0.3 training ranges out); bbs(x28), covariate x28: 2 below 0.1603 and 2 above 0.5558 (worst 0.27 training ranges out); bbs(x12), covariate x12: 1 above 18.65 (worst 0.19 training ranges out); bbs(x10), covariate x10: 1 above 2.547 (worst 0.13 training ranges out); bbs(x24), covariate x24: 2 below 0.08409 and 1 above 0.2184 (worst 0.096 training ranges out); bbs(x8), covariate x8: 1 below 0.1167 and 1 above 0.2906 (worst 0.077 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.64 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics.",
+    "9 learner(s) are asked to predict outside the range they were fitted on. bbs(x11), covariate x11: 4 above 3.12 (worst 0.64 training ranges out); bbs(x17), covariate x17: 2 above 0.03927 (worst 0.34 training ranges out); bbs(x19), covariate x19: 1 above 0.02286 (worst 0.32 training ranges out); bbs(x16), covariate x16: 1 above 0.3038 (worst 0.3 training ranges out); bbs(x28), covariate x28: 2 below 0.1603 and 2 above 0.5558 (worst 0.27 training ranges out); bbs(x12), covariate x12: 1 above 18.65 (worst 0.19 training ranges out); bbs(x10), covariate x10: 1 above 2.547 (worst 0.13 training ranges out); bbs(x24), covariate x24: 2 below 0.08409 and 1 above 0.2184 (worst 0.096 training ranges out); bbs(x8), covariate x8: 1 below 0.1167 and 1 above 0.2906 (worst 0.077 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.64 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics.",
+    "9 learner(s) are asked to predict outside the range they were fitted on. bbs(x11), covariate x11: 4 above 3.12 (worst 0.64 training ranges out); bbs(x17), covariate x17: 2 above 0.03927 (worst 0.34 training ranges out); bbs(x19), covariate x19: 1 above 0.02286 (worst 0.32 training ranges out); bbs(x16), covariate x16: 1 above 0.3038 (worst 0.3 training ranges out); bbs(x28), covariate x28: 2 below 0.1603 and 2 above 0.5558 (worst 0.27 training ranges out); bbs(x12), covariate x12: 1 above 18.65 (worst 0.19 training ranges out); bbs(x10), covariate x10: 1 above 2.547 (worst 0.13 training ranges out); bbs(x24), covariate x24: 2 below 0.08409 and 1 above 0.2184 (worst 0.096 training ranges out); bbs(x8), covariate x8: 1 below 0.1167 and 1 above 0.2906 (worst 0.077 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.64 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics."
+   ]
+  },
+  {
+   "seed": 2,
+   "method": "mboostrs_500",
+   "input_digest": "sha256:e28435ed7089e7743148bc4ab12efc7165069a1444307b12ca6ffeb223d9b1c9",
+   "incorrect_link_clipped_log_loss": 0.26134007630619416,
+   "response_log_loss": 0.0906638485136825,
+   "brier": 0.027357841735342114,
+   "auc": 0.9948335246842709,
+   "response_prediction_digest": "sha256:01b1f5dc8a73dd061e6668859e2bf290b6122559d55e537fa73286f22f4d32b9",
+   "link_prediction_digest": "sha256:823fe26ddd3438dfbd319c41e185aa1471669e9b1f2fafc7fbcb1d6fe7f43914",
+   "formula": "y ~ bbs(x0) + bbs(x1) + bbs(x2) + bbs(x3) + bbs(x4) + bbs(x5) + bbs(x6) + bbs(x7) + bbs(x8) + bbs(x9) + bbs(x10) + bbs(x11) + bbs(x12) + bbs(x13) + bbs(x14) + bbs(x15) + bbs(x16) + bbs(x17) + bbs(x18) + bbs(x19) + bbs(x20) + bbs(x21) + bbs(x22) + bbs(x23) + bbs(x24) + bbs(x25) + bbs(x26) + bbs(x27) + bbs(x28) + bbs(x29)",
+   "warnings": [
+    "predict() with default type='link' returns the half log-odds (mboost +/-1 coding) for Binomial; pass type='response' for response scale.",
+    "9 learner(s) are asked to predict outside the range they were fitted on. bbs(x11), covariate x11: 4 above 3.12 (worst 0.64 training ranges out); bbs(x17), covariate x17: 2 above 0.03927 (worst 0.34 training ranges out); bbs(x19), covariate x19: 1 above 0.02286 (worst 0.32 training ranges out); bbs(x16), covariate x16: 1 above 0.3038 (worst 0.3 training ranges out); bbs(x28), covariate x28: 2 below 0.1603 and 2 above 0.5558 (worst 0.27 training ranges out); bbs(x12), covariate x12: 1 above 18.65 (worst 0.19 training ranges out); bbs(x10), covariate x10: 1 above 2.547 (worst 0.13 training ranges out); bbs(x24), covariate x24: 2 below 0.08409 and 1 above 0.2184 (worst 0.096 training ranges out); bbs(x8), covariate x8: 1 below 0.1167 and 1 above 0.2906 (worst 0.077 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.64 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics.",
+    "9 learner(s) are asked to predict outside the range they were fitted on. bbs(x11), covariate x11: 4 above 3.12 (worst 0.64 training ranges out); bbs(x17), covariate x17: 2 above 0.03927 (worst 0.34 training ranges out); bbs(x19), covariate x19: 1 above 0.02286 (worst 0.32 training ranges out); bbs(x16), covariate x16: 1 above 0.3038 (worst 0.3 training ranges out); bbs(x28), covariate x28: 2 below 0.1603 and 2 above 0.5558 (worst 0.27 training ranges out); bbs(x12), covariate x12: 1 above 18.65 (worst 0.19 training ranges out); bbs(x10), covariate x10: 1 above 2.547 (worst 0.13 training ranges out); bbs(x24), covariate x24: 2 below 0.08409 and 1 above 0.2184 (worst 0.096 training ranges out); bbs(x8), covariate x8: 1 below 0.1167 and 1 above 0.2906 (worst 0.077 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.64 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics.",
+    "9 learner(s) are asked to predict outside the range they were fitted on. bbs(x11), covariate x11: 4 above 3.12 (worst 0.64 training ranges out); bbs(x17), covariate x17: 2 above 0.03927 (worst 0.34 training ranges out); bbs(x19), covariate x19: 1 above 0.02286 (worst 0.32 training ranges out); bbs(x16), covariate x16: 1 above 0.3038 (worst 0.3 training ranges out); bbs(x28), covariate x28: 2 below 0.1603 and 2 above 0.5558 (worst 0.27 training ranges out); bbs(x12), covariate x12: 1 above 18.65 (worst 0.19 training ranges out); bbs(x10), covariate x10: 1 above 2.547 (worst 0.13 training ranges out); bbs(x24), covariate x24: 2 below 0.08409 and 1 above 0.2184 (worst 0.096 training ranges out); bbs(x8), covariate x8: 1 below 0.1167 and 1 above 0.2906 (worst 0.077 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.64 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide modeling-tactics."
+   ]
+  },
+  {
+   "seed": 2,
+   "method": "catboost",
+   "input_digest": "sha256:e28435ed7089e7743148bc4ab12efc7165069a1444307b12ca6ffeb223d9b1c9",
+   "response_log_loss": 0.1126745764941306,
+   "brier": 0.033305730834086236,
+   "auc": 0.9933983926521239,
+   "response_prediction_digest": "sha256:22b2751ba26f60effd878d933c77841a632e5226f5d832e561efb8c51375954b",
+   "warnings": []
+  },
+  {
+   "seed": 2,
+   "method": "lightgbm",
+   "input_digest": "sha256:e28435ed7089e7743148bc4ab12efc7165069a1444307b12ca6ffeb223d9b1c9",
+   "response_log_loss": 0.166202749555601,
+   "brier": 0.031432059527617504,
+   "auc": 0.9902411021814006,
+   "response_prediction_digest": "sha256:06a8b5f394f55d23cbe3921a4473ba04d00a14cd89d54a8f0a8f4a82f1ed8144",
+   "warnings": []
+  },
+  {
+   "seed": 2,
+   "method": "logistic",
+   "input_digest": "sha256:e28435ed7089e7743148bc4ab12efc7165069a1444307b12ca6ffeb223d9b1c9",
+   "response_log_loss": 0.13045045486288767,
+   "brier": 0.041947694885396396,
+   "auc": 0.9912456946039035,
+   "response_prediction_digest": "sha256:81d3e473cfb99bad69020259ea7203c41e7fccf0f037d32a8046aac13ad2ecbc",
+   "warnings": [
+    "lbfgs failed to converge after 1000 iteration(s) (status=1):\nSTOP: TOTAL NO. OF ITERATIONS REACHED LIMIT\n\nIncrease the number of iterations to improve the convergence (max_iter=1000).\nYou might also want to scale the data as shown in:\n    https://scikit-learn.org/stable/modules/preprocessing.html\nPlease also refer to the documentation for alternative solver options:\n    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression"
+   ]
+  }
+ ],
+ "coefficient_probe": {
+  "mboost_half_logit_beta": [
+   0.0,
+   -0.013912939991532045,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   -5.884510684815983,
+   0.0,
+   0.0,
+   -2.5067807215315447,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   59.15781713838996,
+   -0.19366182634693999,
+   -0.06174160651853111,
+   -0.0024686956389674097,
+   0.0,
+   -4.336033767536178,
+   0.0,
+   -1.08814748046186,
+   -11.43087290363765,
+   -1.6020097456056308,
+   0.0
+  ],
+  "mboost_log_odds_beta": [
+   0.0,
+   -0.02782587998306409,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   -11.769021369631966,
+   0.0,
+   0.0,
+   -5.0135614430630895,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   118.31563427677992,
+   -0.38732365269387997,
+   -0.12348321303706222,
+   -0.004937391277934819,
+   0.0,
+   -8.672067535072356,
+   0.0,
+   -2.17629496092372,
+   -22.8617458072753,
+   -3.2040194912112616,
+   0.0
+  ],
+  "reference_beta": [
+   6.882422662188151,
+   0.264851408152844,
+   -0.6612246371863528,
+   -0.021513231599726217,
+   -3.333195776859798,
+   -0.991821271495375,
+   -3.6556508938557624,
+   -5.3404476680999995,
+   -5.676099321487558,
+   0.4899526557414642,
+   1.4082631575897824,
+   4.618956874779497,
+   -1.9189972480322113,
+   -0.08769614079063634,
+   -0.26760388508320887,
+   4.8260978438024305,
+   5.177110807737895,
+   -0.19887516167314478,
+   0.24124680586691238,
+   1.0940210968784736,
+   -1.5675006923758399,
+   -0.7204320950787491,
+   0.425337195237816,
+   -0.028089149474618214,
+   -5.46977256941736,
+   -1.8072181385519686,
+   -11.687830536582087,
+   -11.05687638089433,
+   -9.973454848308045,
+   0.27708721045079915
+  ],
+  "reference_iterations": [
+   2000
+  ],
+  "correlation": 0.21924782581700578,
+  "reference_warnings": [
+   "lbfgs failed to converge after 2000 iteration(s) (status=1):\nSTOP: TOTAL NO. OF ITERATIONS REACHED LIMIT\n\nIncrease the number of iterations to improve the convergence (max_iter=2000).\nYou might also want to scale the data as shown in:\n    https://scikit-learn.org/stable/modules/preprocessing.html\nPlease also refer to the documentation for alternative solver options:\n    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression"
+  ]
+ },
+ "synthetic": [
+  {
+   "mstop": 100,
+   "log_odds_beta": [
+    0.8006975246683512,
+    -0.5651530464073661,
+    0.3852678258567145
+   ],
+   "max_slope_difference": 0.029107597559571707,
+   "training_log_loss": 0.5749154257335042,
+   "max_probability_difference": 0.016147521924191333
+  },
+  {
+   "mstop": 500,
+   "log_odds_beta": [
+    0.8298045148166165,
+    -0.5906812185497815,
+    0.41112489787032064
+   ],
+   "max_slope_difference": 6.074113063636588e-07,
+   "training_log_loss": 0.5747699769706939,
+   "max_probability_difference": 2.776278908989127e-07
+  },
+  {
+   "mstop": 5000,
+   "log_odds_beta": [
+    0.8298051158672216,
+    -0.5906816894211111,
+    0.41112536037450215
+   ],
+   "max_slope_difference": 2.2023449730568245e-08,
+   "training_log_loss": 0.5747699769706383,
+   "max_probability_difference": 2.1492991608695888e-08
+  },
+  {
+   "mstop": 20000,
+   "log_odds_beta": [
+    0.8298051158672216,
+    -0.5906816894211111,
+    0.41112536037450215
+   ],
+   "max_slope_difference": 2.2023449730568245e-08,
+   "training_log_loss": 0.5747699769706383,
+   "max_probability_difference": 2.1492991608695888e-08
+  }
+ ],
+ "synthetic_reference": {
+  "beta": [
+   0.8298051222279229,
+   -0.5906817114445608,
+   0.4111253806839596
+  ],
+  "intercept": [
+   -0.38059509561914007
+  ],
+  "iterations": [
+   8
+  ],
+  "warnings": [],
+  "training_log_loss": 0.5747699769706383
+ },
+ "r_cancer_paths": {
+  "available": true,
+  "version": "2.9.11",
+  "mstop": 200,
+  "nu": 0.1,
+  "comparisons": [
+   {
+    "seed": 0,
+    "max_link_difference": 1.2859338527348996e-07,
+    "max_probability_difference": 1.289489631739471e-08,
+    "max_risk_difference": 3.397354646494932e-07
+   },
+   {
+    "seed": 1,
+    "max_link_difference": 1.6903831223658017e-08,
+    "max_probability_difference": 5.6782242241482095e-09,
+    "max_risk_difference": 7.862880977427267e-07
+   },
+   {
+    "seed": 2,
+    "max_link_difference": 1.1987565518012389e-07,
+    "max_probability_difference": 2.38135441366083e-08,
+    "max_risk_difference": 3.579046762069993e-06
+   }
+  ]
+ }
+}

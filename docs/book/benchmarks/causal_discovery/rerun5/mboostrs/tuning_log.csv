@@ -1,0 +1,26 @@
+config_id,stage,propensity_learner,outcome_model,tune,nuisance_aggregation,covariates,seed,interval_level,ate_or_estimate,lower90_or_ci,upper90_or_ci,validation_metric,validation_score,kept,note
+T01,explore,linear (smooth=False),auto,False,single partition,"age,education,ethnicity,smsa,prior_earnings,months_unemployed,parttime,experience",1,0.95,4321.3,2954.0,5688.6,,,no,linear propensity; experience (exact combination of age and education) included; region omitted
+T02,explore,smooth,separate,False,single partition,"age,education,ethnicity,smsa,prior_earnings,months_unemployed,parttime,region,experience",1,0.95,7034.7,5731.6,8337.7,propensity out-of-fold deviance,0.9356,no,fixed mstop=200; no tuning
+T03,explore,smooth,"pooled, treatment interactions",False,single partition,as T02,1,0.95,6251.0,4988.2,7513.8,propensity out-of-fold deviance,0.9356,no,fixed mstop=200
+T04,explore,auto (chose smooth+trees),separate,False,single partition,as T02,1,0.95,6827.9,5418.0,8237.8,propensity out-of-fold deviance,0.9111,no,fixed mstop=200
+T05,explore,auto (chose smooth+trees),"pooled, treatment interactions",False,single partition,as T02,1,0.95,6101.0,4739.4,7462.5,propensity out-of-fold deviance,0.9111,no,fixed mstop=200
+T06,explore,auto (chose smooth+trees),two-part,False,single partition,as T02,1,0.95,5715.5,4330.6,7100.5,propensity out-of-fold deviance,0.9111,no,fixed mstop=200
+T07,explore,auto (chose smooth+trees),separate,True,single partition,as T02,1,0.95,6136.1,4620.8,7651.4,propensity out-of-fold deviance,0.9101,no,"tuned, max_mstop=800"
+T08,explore,auto (chose smooth+trees),"auto (chose pooled, interactions)",True,single partition,"age,education,ethnicity,smsa,region,parttime,prior_earnings,months_unemployed",1,0.9,5785.3,4549.2,7021.4,propensity out-of-fold deviance,0.9091,no,"tuned, max_mstop=800; same covariates as the final set"
+T09,explore,auto (chose smooth+trees),"auto (chose pooled, interactions)",True,single partition,as T08,2,0.9,5701.0,,,,,no,seed 2 of T08 (estimate only)
+T10a,explore,smooth,"auto (chose pooled, interactions)",True,single partition,"age,education,ethnicity,smsa,region,parttime,prior_earnings,months_unemployed",1,0.9,5801.0,,,,,no,seed-stability check (estimate only)
+T10b,explore,smooth,"auto (chose pooled, interactions)",True,single partition,as T10a,2,0.9,5730.0,,,,,no,seed-stability check (estimate only)
+T10c,explore,smooth,"auto (chose pooled, interactions)",True,single partition,as T10a,3,0.9,5794.0,,,,,no,seed-stability check (estimate only)
+T10d,explore,smooth,"auto (chose pooled, interactions)",True,single partition,as T10a,4,0.9,6459.0,,,,,no,seed-stability check (estimate only)
+T10e,explore,smooth,"auto (chose pooled, interactions)",True,single partition,as T10a,5,0.9,5606.0,,,,,no,seed-stability check (estimate only)
+T10f,explore,smooth,"auto (chose pooled, interactions)",True,average over 5 partitions,as T10a,1,0.9,5628.0,,,,,no,averaged nuisance predictions; estimate only
+T11,explore,auto (chose smooth+trees),two-part,True,single partition,as T08,1,0.9,5754.6,4537.0,6972.0,,,robustness only,alternative outcome model used for modifier robustness
+T12,explore,smooth,separate,True,single partition,as T08,1,0.9,6413.8,5086.0,7741.0,,,robustness only,alternative nuisance models used for modifier robustness
+T13,explore,smooth+trees,"pooled, treatment interactions",True,single partition,as T08,1,0.9,5785.3,4549.0,7021.0,,,robustness only,same fit as T08
+T14,explore,auto,auto,True,median over 3 partitions,as T08,1,0.9,5574.7,4318.1,6831.2,propensity out-of-fold deviance,0.9133,yes,"final ATE; repeats=3, median aggregation"
+T15,explore,auto,auto,True,average over 3 partitions,as T08,1,0.9,5604.1,4382.5,6825.7,influence standard error,742.7,yes,"final score source for subgroups, modifiers and overlap"
+T16,explore,auto,auto,True,median over 5 partitions,adjustment set missing age and education (redundancy bug),1,0.9,5637.1,4449.6,6824.5,,,discarded,discarded: the redundancy check dropped age and education; fixed
+T17,explore,smooth,auto,True,single partition,"all eight modifiers, effect_model terms=auto",1,,5036.4 (mean tau),,,"R-learner out-of-fold loss: constant 2.69751e8, smooth 2.69788e8",269788000.0,no,smooth does not beat constant by one SE; ratio-of-loss check
+T18,explore,smooth,auto,True,single partition,"modifiers age, prior_earnings, education (effect_model terms=smooth)",1,0.9,5045.4 (mean tau),,,"R-learner out-of-fold loss: constant 2.70818e8, smooth 2.70665e8",270665000.0,yes,"ranking model; gain over constant 153260 (SE 169051), so not claimed as heterogeneity"
+T19,explore,"distance_km instrument, complete cases",n/a,True,5 folds,as T08,1,0.9,4788.9,-1952.3,11530.2,first-stage partial F,105.6,yes (cross-check),"iv_effect; complier effect, not the ATE"
+T20,explore,auto,auto,False,single partition,as T08 (fit_ate in refit.py),1,0.9,6055.6,,,,,refit only,"tune=False, fixed mstop=200; used for timing"

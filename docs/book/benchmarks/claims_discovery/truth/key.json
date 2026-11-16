@@ -1,0 +1,107 @@
+{
+  "mean_active": [
+    "median_income",
+    "housing_median_age",
+    "ave_occup",
+    "roof_class",
+    "latitude",
+    "longitude"
+  ],
+  "mean_inactive": [
+    "total_rooms",
+    "total_bedrooms",
+    "population",
+    "households",
+    "median_house_value",
+    "ave_rooms",
+    "ave_bedrooms"
+  ],
+  "interactions": [
+    [
+      "latitude",
+      "longitude"
+    ],
+    [
+      "housing_median_age",
+      "median_income"
+    ]
+  ],
+  "variance_drivers": [
+    "households"
+  ],
+  "households_proxies": [
+    "population",
+    "total_rooms",
+    "total_bedrooms"
+  ],
+  "shapes": {
+    "median_income": [
+      "decreasing"
+    ],
+    "housing_median_age": [
+      "increasing",
+      "threshold_increase"
+    ],
+    "ave_occup": [
+      "increasing"
+    ],
+    "roof_class": [
+      "categorical"
+    ]
+  },
+  "roof_order": "D > C > A = B",
+  "queries": {
+    "Q1": {
+      "median_income": [
+        2.5,
+        6.0
+      ]
+    },
+    "Q2": {
+      "housing_median_age": [
+        20.0,
+        45.0
+      ]
+    },
+    "Q3": {
+      "ave_occup": [
+        2.0,
+        4.0
+      ]
+    },
+    "Q4": {
+      "roof_class": [
+        "A",
+        "D"
+      ]
+    },
+    "Q5": {
+      "ave_rooms": [
+        4.0,
+        7.0
+      ]
+    },
+    "Q6": {
+      "latitude": [
+        37.8,
+        34.2
+      ],
+      "longitude": [
+        -122.3,
+        -117.4
+      ]
+    },
+    "Q7": {
+      "households": [
+        300.0,
+        1200.0
+      ]
+    },
+    "Q8": {
+      "median_house_value": [
+        150000.0,
+        350000.0
+      ]
+    }
+  }
+}

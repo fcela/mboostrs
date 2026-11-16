@@ -1,0 +1,94 @@
+{
+  "library": "statsmodels 0.15.0",
+  "effect_queries": {
+    "ATE": {
+      "estimate": 3717.815071560719,
+      "lower90": 3177.2466983013364,
+      "upper90": 4792.217656621881
+    },
+    "ATT": {
+      "estimate": 3717.8150715607185,
+      "lower90": 2950.7109838692218,
+      "upper90": 4016.616120295763
+    },
+    "CATE_educ_lt12": {
+      "estimate": 3717.815071560718,
+      "lower90": 2757.487680930833,
+      "upper90": 4465.284006171205
+    },
+    "CATE_educ_ge16": {
+      "estimate": 3717.815071560718,
+      "lower90": 3217.148102377143,
+      "upper90": 5720.700791504733
+    },
+    "CATE_prior_q1": {
+      "estimate": 3717.8150715607185,
+      "lower90": 2174.823715063848,
+      "upper90": 3923.9920026566924
+    },
+    "CATE_prior_q4": {
+      "estimate": 3717.815071560719,
+      "lower90": 3255.142215602254,
+      "upper90": 6803.835786100436
+    },
+    "CATE_age_lt25": {
+      "estimate": 3717.8150715607185,
+      "lower90": 2589.343476349274,
+      "upper90": 3999.9066311624024
+    },
+    "EMP_ATE": {
+      "estimate": 0.06691669200763967,
+      "lower90": 0.045958212354302315,
+      "upper90": 0.08459950403782628
+    }
+  },
+  "roles": {
+    "age": "confounder",
+    "education": "outcome_only",
+    "experience": "confounder",
+    "ethnicity": "treatment_only",
+    "smsa": "outcome_only",
+    "region": "treatment_only",
+    "parttime": "outcome_only",
+    "prior_earnings": "confounder",
+    "months_unemployed": "confounder",
+    "distance_km": "instrument",
+    "caseworker_note_len": "irrelevant",
+    "enrolled": "treatment",
+    "certificate": "mediator",
+    "responded": "post_treatment_selection",
+    "hours_post": "mediator",
+    "earnings_post": "outcome"
+  },
+  "adjustment_set": [
+    "age",
+    "prior_earnings",
+    "months_unemployed"
+  ],
+  "effect_modifiers": [],
+  "channels": {
+    "employment": true,
+    "earnings_if_employed": false
+  },
+  "limited_overlap": [
+    {
+      "description": "Applicants with prior earnings at or above 40000 dollars: enrolment in the program-year data is below 2 per cent there, so the data cannot show what enrolment did for them; their effects are extrapolated from applicants with lower earnings.",
+      "variable": "prior_earnings"
+    }
+  ],
+  "warnings": [
+    "Specs chosen by 5-fold CV: propensity=quad, outcome(Y)=pe_int, outcome(E)=logpe.",
+    "Redundant columns (exact linear function of earlier columns, not used): ['experience'].",
+    "Enrolment is essentially absent for prior earnings at or above 40000 dollars: pooled enrolment above that value is below 2 per cent. The share of training applicants there is 0.265, and of test applicants 0.177. Effects there are extrapolations.",
+    "Prior earnings in the effect model is held at 39860 dollars (99th percentile of enrolled applicants) above that value. Without this cap the ATE point estimate is 3717.8 dollars and EMP_ATE is 0.0444.",
+    "ATE point estimate across propensity and outcome specifications (dollars): min 3680.6, max 3806.6.",
+    "Mean prior earnings: training 31225, test 25877. The new applicants are poorer on this variable than the program-year applicants.",
+    "Instrument check (log distance): first-stage F = 113.7; 2SLS effect on responders' earnings = 149.0 dollars (90% interval -6710.9 to 7008.8); this is a complier effect and its interval is wide.",
+    "Earnings among employed (residual log hourly wage, Lee-type bounds with induced share 0.136): naive difference 0.005, bounds [-0.092, 0.106]. ",
+    "Response to the follow-up survey depends on enrolment: logit coefficient 0.510 (p = 2.9e-16). Earnings are observed only for responders; the analysis assumes that, given covariates and enrolment, response is unrelated to earnings.",
+    "Omitted-variable robustness value of the linear enrolment coefficient on responders' earnings: 0.070 (value that keeps the 90% interval above zero: 0.054).",
+    "Employment effect model (probability scale) keeps: prior -0.0046 (90% bootstrap -0.0067 to -0.0030).",
+    "",
+    "Library message (164x): RuntimeWarning: overflow encountered in exp"
+  ]
+}

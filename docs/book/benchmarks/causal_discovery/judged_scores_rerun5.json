@@ -1,0 +1,92 @@
+{
+ "statsmodels": {
+  "D2": {
+   "score": 5.0,
+   "evidence": "REPORT section 7 gives a partial-R2 style bound (a confounder explaining about 7.7% of residual variance of both enrolment and earnings would push the estimate to zero), a 2SLS check on distance, and proposes a randomised encouragement arm below 40,000 dollars as the design that would test the main claim."
+  },
+  "D3": {
+   "score": 4.0,
+   "evidence": "States a positive effect (4,670), the employment channel falling with prior earnings, the do-not-adjust list (certificate, hours, response), distance as enrolment-only, the overlap gap above 40,000, and dollar effects rising with prior earnings and education (as unclaimed findings). False: no earnings effect among workers; education labelled outcome-only; smsa claimed as the one modifier."
+  },
+  "D7": {
+   "score": 2.5,
+   "evidence": "FRICTION: a patsy prediction error blamed the input type for a knot-range problem; a convergence warning did not name the collinear columns; a quasi-separated logit crashed with LinAlgError; TreatmentEffect needed source reading (unlabelled effect vector, AttributeError for results_select). No cross-fitting or R-learner support, written by hand."
+  },
+  "D8": {
+   "score": 3.0,
+   "evidence": "Delivered all eight items without assists in about 24 minutes; structured result objects, but no documented agent contract and the causal workflow was assembled from regression primitives."
+  }
+ },
+ "lightgbm": {
+  "D2": {
+   "score": 5.0,
+   "evidence": "REPORT section 7 gives the bias needed to move the lower bound and the point estimate to zero, a worked confounder example, and an IV estimate on distance (10,006) that it flags as the main open question; it states the high-earner effect is not identified."
+  },
+  "D3": {
+   "score": 3.0,
+   "evidence": "States a positive average effect (3,102) with the overlap gap and the employment channel. False or missing: no earnings channel among workers; education labelled outcome-only and smsa irrelevant; claims education below 12 shows the larger effect (the dollar effect is larger at higher education); no statement that the raw difference is negative."
+  },
+  "D7": {
+   "score": 2.0,
+   "evidence": "No causal estimators, cross-fitting, doubly robust scores or row intervals; every one was written by hand. verbose=-1 hides any library warning; size parameters are absolute counts; flat extrapolation in the no-overlap region goes unflagged."
+  },
+  "D8": {
+   "score": 2.5,
+   "evidence": "The analyst stopped twice with deliverables missing (it ended its turn while its own background runs were going) and needed two procedural messages; the final bootstrap reached 18 of 30 replicates inside its time budget."
+  }
+ },
+ "econml": {
+  "D2": {
+   "score": 5.0,
+   "evidence": "REPORT section 7 refits with each confounder removed (dropping prior earnings reverses the sign) and section 4 estimates the effect with distance as an instrument (6,107, wide interval) as a design-based check; states the response-at-random assumption cannot be tested."
+  },
+  "D3": {
+   "score": 4.0,
+   "evidence": "States a positive effect (5,247), both channels, the do-not-adjust list, distance as an instrument, the overlap gap, and subgroup effects rising with prior earnings and education. Missing: the employment effect being concentrated at low prior earnings and the raw negative difference. It adjusts for ethnicity and region as confounders (ethnicity affects enrolment only), which is harmless for the estimate."
+  },
+  "D7": {
+   "score": 3.0,
+   "evidence": "Coherent estimator API with analytic intervals, but FRICTION lists silent failures: OrthoIV, ForestDRLearner and spline LinearDML returned estimates in the tens to hundreds of thousands with no warning; a collinearity warning names no column; no handling of missing outcomes; return shapes undocumented."
+  },
+  "D8": {
+   "score": 3.0,
+   "evidence": "Delivered all eight items without assists; structured inference objects. The analyst had to add its own stability guard because model selection scores (RScorer) could not separate candidates."
+  }
+ },
+ "doubleml": {
+  "D2": {
+   "score": 5.0,
+   "evidence": "REPORT section 7 refits with each adjustment column removed (prior earnings reverses the sign) because the library's sensitivity analysis is not implemented for the selection model; next checks name an IV analysis on distance and bounds under non-random response."
+  },
+  "D3": {
+   "score": 3.5,
+   "evidence": "States a positive effect (2,896, low), the raw gap of -13,300 and why, the employment channel, the do-not-adjust list, distance as an instrument, the overlap gap, and education raising the effect within the overlap region. False: no earnings effect among workers; education labelled outcome-only."
+  },
+  "D7": {
+   "score": 3.0,
+   "evidence": "DoubleMLSSM handles missing outcomes directly, but FRICTION lists: no ATT score or GATE/CATE for the selection model (the obvious ATT route is biased with no warning), sensitivity analysis not implemented for it, unseeded sample splits, undocumented shapes and private-looking keys."
+  },
+  "D8": {
+   "score": 3.0,
+   "evidence": "Delivered every item without assists; the file tool refused REPORT.md and FRICTION.md and their text was saved from the final message. The longest analyst run (89 minutes)."
+  }
+ },
+ "mboostrs": {
+  "D2": {
+   "score": 5.0,
+   "evidence": "REPORT section 7 gives a sensitivity grid and the effect-times-difference product that reverses the ATE; section 8 reports a no-effect check with enrolment permuted within covariate cells (ATE -1,551, interval covering zero); section 1 gives an instrumental estimate on distance; next steps name a randomized sample above 40,000 dollars and the steering rules."
+  },
+  "D3": {
+   "score": 3.5,
+   "evidence": "States a positive effect (ATE 5,575, ATT 3,696 with the reason they differ), both channels with the conditioning caveat, smsa correctly as a confounder, the do-not-adjust list, distance as an instrument, the overlap region and the new cohort's shift. No modifier claimed: education, a true modifier, is listed as a candidate at p = 0.19 and not established. False: region treatment-only."
+  },
+  "D7": {
+   "score": 3.0,
+   "evidence": "FRICTION lists: the missing-outcome message tells iv_effect users to pass outcome_missing, which iv_effect does not accept; ci_test's 'dependent' status does not say which column to drop and the analyst first left age and education out; ci_test warnings name internal columns (__ci_given1); effect_model(terms='smooth') raised KeyError on gain_over_constant; five identical boundary warnings in one call; causal_trap_report blocked on absent post-treatment columns."
+  },
+  "D8": {
+   "score": 3.5,
+   "evidence": "Wheel-only: the analyst had the installed package, help() and the agent guide, and no repository or book. It delivered every item without assists in 98 minutes, built a rank check to replace a misread ci_test status, and removed a false modifier claim with its own R-learner gate. The file tool refused REPORT.md and FRICTION.md; their text was saved from the final message."
+  }
+ }
+}

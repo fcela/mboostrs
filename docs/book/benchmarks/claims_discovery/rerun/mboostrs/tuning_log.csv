@@ -1,0 +1,27 @@
+config_id,stage,family,mean_terms,spread_terms,interactions,mstop,folds,seed,validation_score,score_change,score_change_se,kept,note
+C01,tune_mstop,gaussian (gamboost),12 bbs(df=4) raw covariates + bols(roof_class),none,none,"617 (tuned, grid to 1000)",5,1,0.22504 (CV risk at 617),,,no,"baseline additive model, raw covariates"
+C02,compare,gaussian (gamboost),12 bbs(df=4) raw + bols(roof_class),none,none,600,5,1,0.227037,0,0,no,reference for C03-C08
+C03,compare,gaussian (gamboost),"lon, lat, housing age, income, roof",none,none,600,5,1,0.229178,0.002140,0.003391,no,removing the 7 other covariates
+C04,compare,gaussian (gamboost),C03 + bbs(median_house_value),none,none,600,5,1,0.227569,0.000531,0.003175,no,
+C05,compare,gaussian (gamboost),C03 + bbs(ave_occup),none,none,600,5,1,0.226273,-0.000764,0.001227,no,"raw ave_occup, skew 78"
+C06,compare,gaussian (gamboost),C03 + btree(ave_occup),none,none,600,5,1,0.221351,-0.005686,0.003844,no,tree on raw occupancy; superseded by log form
+C07,compare,gaussian (gamboost),"C03 with bspatial(lon,lat) in place of lon, lat",none,none,600,5,1,0.228623,0.001585,0.003384,no,
+C08,compare,gaussian (gamboost),C03 + bbs(ave_occup)+bbs(median_house_value),none,none,600,5,1,0.226617,-0.000420,0.000374,no,
+C09,compare,distributional (GaussianLSS),core + bols(housing age NA indicator),none (sigma constant),none,600,5,1,0.67962,0,0,no,reference for spread candidates
+C10,compare,distributional (GaussianLSS),C09 mean,sigma ~ bbs(households),none,600,5,1,0.60536,-0.07426,0.00316,yes,"spread driver, raw households"
+C11,compare,distributional (GaussianLSS),C09 mean,sigma ~ bbs(population),none,600,5,1,0.61208,-0.06754,0.00250,no,alternative block-size driver
+C12,compare,distributional (GaussianLSS),C09 mean,sigma ~ bbs(total_rooms),none,600,5,1,0.61274,-0.06688,0.00191,no,alternative block-size driver
+C13,compare,distributional (GaussianLSS),C09 mean,sigma ~ bbs(ave_occup),none,600,5,1,fails: fold_scores must be a non-empty finite one-dimensional array,,,no,raw covariate; candidate not scored
+C14,compare,distributional (GaussianLSS),log-scale mean: all 13 terms + indicators (backward removal),sigma ~ bbs(log households),none,600,5,1,0.58454 (full),,,yes,"log transforms adopted; backward removal changes (out-of-fold, vs full model): median_income +0.0336, housing age +0.0348, roof +0.0397, longitude +0.0112, latitude +0.0066, ave_occup +0.0017, median_house_value -0.0005, others <= 0"
+C15,compare,distributional (GaussianLSS),"core (log income, housing age, lon, lat, roof) + bbs(log ave_occup)",sigma ~ bbs(log households),none,600,5,1,0.58628 vs 0.60553 without occupancy,-0.01925,0.00160,yes,occupancy as bbs on raw scale gave -0.01925; log scale -0.02159 (C16)
+C16,compare,distributional (GaussianLSS),core + bbs(log ave_occup),sigma ~ bbs(log households),none,600,5,1,0.58394,-0.02159,0.00118,yes,log occupancy chosen
+C17,compare,distributional (GaussianLSS),core (log) mean,sigma ~ bbs(log households) / population / total_rooms / households+population,none,600,5,1,0.58339 / 0.59060 / 0.59140 / 0.58360,-0.07929 / -0.07208 / -0.07128 / -0.07908,0.00319 / 0.00304 / 0.00195 / 0.00299,partly,"households chosen; population, total rooms add nothing beyond households (C17 pair)"
+C18,compare,distributional (GaussianLSS),core (log) mean,sigma ~ bbs(log income) / housing age / lon+lat / mhv / log ave_occup,none,600,5,1,0.66225 / 0.66228 / 0.66103 / 0.66012 / 0.66536,-0.00043 / -0.00040 / -0.00166 / -0.00256 / 0.00268,0.00158 / 0.00119 / 0.00160 / 0.00218 / 0.00174,no,no spread effect
+C19,compare,distributional (GaussianLSS),core (log),"+ bols(housing age, by=log income)","product, 1 df",600,5,1,0.58130,-0.00208,0.00054,yes,varying-coefficient product; 3.9 SE
+C20,compare,distributional (GaussianLSS),core (log),"+ tensor bbs(housing age) %X% bbs(log income), df 2.5 margins","tensor, about 6 df",600,5,1,0.58273,-0.00066,0.00081,no,tensor not better than product at equal df
+C21,compare,distributional (GaussianLSS),core (log),+ tensor bbs(lon) %X% bbs(lat),"tensor, about 6 df",600,5,1,0.57977,-0.00362,0.00121,no,spatial tensor; replaced by bspatial (C23)
+C22,compare,distributional (GaussianLSS),core (log) + product housing age x income,none,product,600,5,1,"0.57752 (C + tensor lon,lat)",-0.00587,0.00108,no,two-term check; not needed for final form
+C23,compare,distributional (GaussianLSS),"bspatial(lon,lat) + log income + log occupancy + housing age + roof + product",sigma ~ bbs(log households),product,600,5,1,0.57776,-0.00563,0.00079,yes,spatial term in final model
+C24,tune_mstop,distributional (GaussianLSS),C23 mean,C23 sigma,product,1234,5,1,CV risk minimum at 1234 (grid to 2400),,,yes,final stopping iteration of the dev run uses the forward-selected formula and the product term
+C25,tune_mstop,gaussian (gamboost),all 13 units + indicators,none,none,1599 (boundary of grid 1600),5,1,not used,,,no,risk still falling at the grid end; fixed depth 600 used for the Gaussian screen
+C26,discover (library default),library default,"12 bbs + roof, after its own drops",library,library,9997 (boundary),5,1,not reported,,,no,"discover stopped on boundary, spread and interaction stages failed on NA; not used"

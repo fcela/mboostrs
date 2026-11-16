@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "description": "Focused cross-language guard for PRs touching statistical kernels, prediction, CV, LSS, learners, or bindings.",
+  "tests": [
+    {
+      "node_id": "tests/test_glmboost_parity/test_gaussian_two_predictors.py::test_gaussian_two_predictors_parity",
+      "area": "standard-family engine",
+      "rationale": "Covers the packed scalar fit and binding path."
+    },
+    {
+      "node_id": "tests/test_gamboost_parity/test_bbs_gaussian.py::test_gamboost_bbs_parity",
+      "area": "smooth learner",
+      "rationale": "Covers B-spline preparation, fitting, and R parity."
+    },
+    {
+      "node_id": "tests/test_gamboost_parity/test_bmono_parity.py::test_bmono_parity[increasing-2 * log(x + 0.5)]",
+      "area": "constrained learner",
+      "rationale": "Covers the constrained spline solver."
+    },
+    {
+      "node_id": "tests/test_gamboost_parity/test_btree_parity.py::test_btree_depth1_fit_parity",
+      "area": "tree learner",
+      "rationale": "Covers the non-linear tree learner and prediction state."
+    },
+    {
+      "node_id": "tests/test_cvrisk_parity/test_cvrisk_glmboost.py::test_cvrisk_kfold_gaussian_glmboost",
+      "area": "standard CV",
+      "rationale": "Covers folds, OOB risk, and CV bindings."
+    },
+    {
+      "node_id": "tests/test_cvrisk_parity/test_cvrisk_lss.py::test_cvrisk_glmboostlss_gaussian",
+      "area": "LSS CV",
+      "rationale": "Covers joint distributional OOB risk."
+    },
+    {
+      "node_id": "tests/test_gamlss_parity/test_gaussianlss.py::test_gaussianlss_glmboostlss_parity",
+      "area": "LSS engine",
+      "rationale": "Covers cyclic multi-parameter fitting."
+    },
+    {
+      "node_id": "tests/test_gamlss_parity/test_gamboostlss_predict.py::test_gamboostlss_bbs_newdata_matches_r",
+      "area": "smooth LSS prediction",
+      "rationale": "Covers new-data prediction replay for smooth LSS."
+    },
+    {
+      "node_id": "tests/test_predict_parity/test_glmboost_predict.py::test_glmboost_predict_newdata",
+      "area": "linear prediction",
+      "rationale": "Covers standard new-data prediction through Python and Rust."
+    },
+    {
+      "node_id": "tests/test_predict_parity/test_gamboost_predict.py::test_gamboost_predict_newdata",
+      "area": "additive prediction",
+      "rationale": "Covers smooth new-data prediction replay."
+    },
+    {
+      "node_id": "tests/test_stabsel_parity/test_stabsel_lss.py::test_stabsel_glmboostlss_gaussian",
+      "area": "stability selection",
+      "rationale": "Covers subsampling, selected-fit, and LSS aggregation."
+    },
+    {
+      "node_id": "tests/test_multinomial_parity/test_multinomial_basic.py::test_multinomial_iris_full_risk_and_fitted_match",
+      "area": "multinomial engine",
+      "rationale": "Covers vector responses and Kronecker learners."
+    }
+  ]
+}

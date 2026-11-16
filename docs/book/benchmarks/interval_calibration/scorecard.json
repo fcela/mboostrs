@@ -1,0 +1,112 @@
+{
+ "scorecard_id": "mboostrs-scorecard/2.1",
+ "scorecard_sha256": "ccfd33a0b7f9c2cbadc910912551273e66046aaf82c36440d2c286df0cc43fad",
+ "benchmark_protocol_id": "interval-calibration/1",
+ "measured_dimensions": [
+  "D9"
+ ],
+ "dimensions": [
+  {
+   "id": "D1a",
+   "name": "Relationship recovery under a prescribed specification",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D1b",
+   "name": "Relationship discovery from data alone",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D2",
+   "name": "Causal humility and support",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D3",
+   "name": "Explanation quality",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D4",
+   "name": "Importance quantification",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D5",
+   "name": "Experimental iteration speed",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D6",
+   "name": "Robustness across conditions",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D7",
+   "name": "Human-friendliness",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D8",
+   "name": "Agent-friendliness",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D9",
+   "name": "Uncertainty honesty (calibration)",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "results.json",
+    "summary.json",
+    "PROTOCOL.md"
+   ],
+   "justification": "Coverage is within two standard errors of 0.90 on all three planted DGPs for the mboostrs split, CQR and CV+ intervals, and the CQR width adapts to the true scale under heteroscedasticity (width-scale Spearman 0.977, tercile coverage 0.897 and 0.913 against 0.90). Anchor 4 is not assigned: small-n and extrapolation adaptivity are not measured. Split and CV+ intervals have constant or near-constant width and cover 0.78 of rows in the highest-scale tercile on the heteroscedastic DGP."
+  },
+  {
+   "id": "D10",
+   "name": "Reproducibility and auditability",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D11",
+   "name": "Predictive validity",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  }
+ ],
+ "aggregate": null,
+ "summary_ref": "summary.json"
+}

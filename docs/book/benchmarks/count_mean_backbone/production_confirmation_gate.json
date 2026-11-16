@@ -1,0 +1,70 @@
+{
+  "phase": "confirmation",
+  "records": 6600,
+  "statuses": {
+    "ok": 6580,
+    "failed": 20
+  },
+  "primary_width_count_upper_targets": true,
+  "candidate_finite_and_eligible": true,
+  "null_validity": true,
+  "regression_controls": [
+    {
+      "panel": "nonlinear_poisson",
+      "complete": true,
+      "mse_excess_upper95": 0.0,
+      "representation_pass": true,
+      "pass": true
+    },
+    {
+      "panel": "nonlinear_zero_inflated",
+      "complete": true,
+      "mse_excess_upper95": 0.0,
+      "representation_pass": true,
+      "pass": true
+    },
+    {
+      "panel": "interaction_zero_inflated",
+      "complete": true,
+      "mse_excess_upper95": 0.0,
+      "representation_pass": true,
+      "pass": true
+    },
+    {
+      "panel": "interaction_supplied_family",
+      "complete": true,
+      "mse_excess_upper95": 0.07623592833071524,
+      "representation_pass": true,
+      "pass": true
+    }
+  ],
+  "false_inclusion_checks": [
+    {
+      "panel": "null_poisson",
+      "complete": true,
+      "added": 1,
+      "removed": 0,
+      "one_sided_p": 0.5,
+      "pass_": true
+    },
+    {
+      "panel": "null_zero_inflated",
+      "complete": true,
+      "added": 1,
+      "removed": 0,
+      "one_sided_p": 0.5,
+      "pass_": true
+    },
+    {
+      "panel": "noise_zero_inflated",
+      "complete": true,
+      "added": 0,
+      "removed": 0,
+      "one_sided_p": 1.0,
+      "pass_": true
+    }
+  ],
+  "promotion_pass": true,
+  "learning_rates_changed": false,
+  "gaussian_scale_rule_changed": false
+}

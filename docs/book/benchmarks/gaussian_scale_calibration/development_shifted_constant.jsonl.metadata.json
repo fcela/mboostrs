@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-19T03:39:48+00:00",
+  "commit": "c9a9ddaf01578fde1b0079991919967e0781f620",
+  "working_tree": {
+    "dirty": true,
+    "status_digest": "sha256:ef37605a2da90dfbc276869b28ec8abf15f88192c02ccc8d2ec89d701fea0b12",
+    "commit_source": "working directory"
+  },
+  "platform": {
+    "system": "Darwin",
+    "release": "25.3.0",
+    "machine": "arm64",
+    "cpu": "arm",
+    "python": "3.12.11"
+  },
+  "versions": {
+    "mboostrs": "0.1.3",
+    "numpy": "2.4.6",
+    "rpy2": "3.6.7",
+    "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+    "R": "4.5.1",
+    "mboost": "2.9.11",
+    "scipy": "1.16.3",
+    "pandas": "2.3.3",
+    "ngboost": "0.5.11",
+    "mssm": "1.2.5",
+    "scikit-learn": "1.9.0"
+  },
+  "threads": {
+    "logical_cpus": 10,
+    "r_mclapply_default_cores": "2",
+    "RAYON_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "build_info": {
+    "package_version": "0.1.3",
+    "source_digest": "sha256:fe26bc1868c50bc8a653c4bcd77ae1c2fb16431ec0439939c87db3763645a65b",
+    "git_revision": "9ddd02548318ab1641308cc0d46469ed8564c3cf",
+    "git_dirty": true,
+    "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+    "target": "aarch64-apple-darwin",
+    "profile": "release",
+    "target_features": "aes,bf16,bti,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,i8mm,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+    "crate_features": "",
+    "abi_version": 1,
+    "build_id": "sha256:7adf4e746cff8d757dc7b56ea63565934779ba09979b26756a0414efebae9fb0"
+  },
+  "scripts": {
+    "/private/tmp/mboostrs-gaussian-scale/benches/study_gaussian_scale_calibration.py": "bb9e912afc4f281161d960397468dbb9fff3e82c6ad06131981d4a7344f75954",
+    "/private/tmp/mboostrs-gaussian-scale/benches/study_sharp_mean_controls.py": "9a625be81172cba5d1fe9278882ed7edc6edbdb7701786f9cb51d511f786c156",
+    "/private/tmp/mboostrs-gaussian-scale/benches/study_discovery_calibration.py": "9d07a42ac6c6f2e538b600c8038547e1803aed32936aa1ff4ae85796dcbda883",
+    "/private/tmp/mboostrs-gaussian-scale/benches/observe_calibration_scores.py": "125c72b5032b1c929b7b75caf1f2854fe595ef33ccf17d13ef1306749085c252",
+    "/private/tmp/mboostrs-gaussian-scale/benches/evidence_float_codec.py": "8af5976cd3fd05dcefd6df56fd5f4754f1aa6c5c9337df56453b3e476d27b9ae"
+  },
+  "thread_environment": {
+    "RAYON_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "protocol": {
+    "id": "gaussian-scale-calibration/1",
+    "phase": "development",
+    "sha256": "79e79ae2b81680088c1d45ff2fd863e5a9598e6fb69b69a54b4e32f2d394564c"
+  },
+  "repeats": {
+    "seeds": [
+      6293100,
+      6293101,
+      6293102,
+      6293103,
+      6293104,
+      6293105,
+      6293106,
+      6293107,
+      6293108,
+      6293109
+    ],
+    "panels": [
+      "shifted_constant"
+    ],
+    "test_seed_offset": 100000
+  },
+  "uncertainty": {
+    "unit": "one independent training and test draw; pair methods within a draw",
+    "summary": "mean and Monte Carlo standard error across draws",
+    "timing": "elapsed whole-workflow costs, not controlled implementation speed ratios"
+  },
+  "memory": {
+    "status": "not measured"
+  },
+  "loaded_sources": {
+    "conformal.py": "56006876c6d532ee0fd9d4ad65f18247c894a6a6e3e8715d4af6551eec4bca22",
+    "discover.py": "5cf5a3927c18f056c5af2df3f2ed3eb29b646c6f96a05746a713a858ce31cc0f",
+    "explore.py": "590a5d9ccee4d88ccaabc38c90107980987c3e6bd6cdc3250c44b3612fa1b4be",
+    "gamlss.py": "db93982c555f0a4936ddffe92b028a00ac07cac2dec3bf419376e799b438677c"
+  },
+  "records": 160,
+  "compressed_sha256": "09bda0060a562159abc183ce9fe6e8d07058e43ef3dfdc1165f581f8c8be83ec",
+  "uncompressed_sha256": "81803308d32a1d47d72f6fc9967ca39013a6754440505e79932d32ff6e54a61f"
+}

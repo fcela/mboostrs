@@ -1,0 +1,100 @@
+{
+  "library": "catboost 1.2.10",
+  "mean_effects": [
+    {
+      "variable": "longitude",
+      "shape": "spatial",
+      "evidence": "held-out permutation: squared-error increase 0.0080 (z=9.4); partial dependence 0.270 at -122.8 to 0.344 at -116.9. Joint permutation of longitude and latitude: increase 0.0111 (z=9.3); the two coordinates are treated as one spatial term."
+    },
+    {
+      "variable": "latitude",
+      "shape": "spatial",
+      "evidence": "held-out permutation: squared-error increase 0.0079 (z=10.3); partial dependence 0.312 at 32.72 to 0.390 at 40.17. Joint permutation of longitude and latitude: increase 0.0111 (z=9.3); the two coordinates are treated as one spatial term."
+    },
+    {
+      "variable": "housing_median_age",
+      "shape": "threshold_increase",
+      "evidence": "held-out permutation: squared-error increase 0.0429 (z=25.0); partial dependence 0.217 at 5 to 0.585 at 52."
+    },
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "held-out permutation: squared-error increase 0.0927 (z=29.0); partial dependence 0.763 at 1.227 to -0.003 at 7.853."
+    },
+    {
+      "variable": "ave_occup",
+      "shape": "increasing",
+      "evidence": "held-out permutation: squared-error increase 0.0121 (z=13.1); partial dependence 0.138 at 1.645 to 0.455 at 4.892."
+    },
+    {
+      "variable": "roof_class",
+      "shape": "categorical",
+      "evidence": "held-out permutation: squared-error increase 0.0418 (z=24.8); level means: A=0.213, B=0.219, C=0.377, D=0.584."
+    }
+  ],
+  "interactions": [],
+  "variance_drivers": [
+    {
+      "variable": "total_rooms",
+      "direction": "decreases_spread",
+      "evidence": "held-out permutation on |residual|: increase 0.0030 (z=4.2); mean predicted |residual| 0.380 at 319.6 to 0.319 at 8399 (decreasing)."
+    },
+    {
+      "variable": "households",
+      "direction": "decreases_spread",
+      "evidence": "held-out permutation on |residual|: increase 0.0079 (z=7.6); mean predicted |residual| 0.476 at 59.58 to 0.299 at 1574 (decreasing)."
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.42442,
+      "lower90": -0.462508,
+      "upper90": -0.375293
+    },
+    "Q2": {
+      "estimate": 0.359459,
+      "lower90": 0.336722,
+      "upper90": 0.388664
+    },
+    "Q3": {
+      "estimate": 0.219991,
+      "lower90": 0.181393,
+      "upper90": 0.247987
+    },
+    "Q4": {
+      "estimate": 0.370535,
+      "lower90": 0.356062,
+      "upper90": 0.388293
+    },
+    "Q5": {
+      "estimate": -0.022333,
+      "lower90": -0.04324,
+      "upper90": 0.000134
+    },
+    "Q6": {
+      "estimate": 0.235113,
+      "lower90": 0.209317,
+      "upper90": 0.269992
+    },
+    "Q7": {
+      "estimate": 0.0,
+      "lower90": -0.015476,
+      "upper90": 0.003829
+    },
+    "Q8": {
+      "estimate": -0.053716,
+      "lower90": -0.099489,
+      "upper90": -0.04614
+    }
+  },
+  "warnings": [
+    "Test rows differ from training rows in median_income: standardised mean difference 0.54 (test mean 4.539, training mean 3.648).",
+    "Test rows differ from training rows in median_house_value: standardised mean difference 0.33 (test mean 2.342e+05, training mean 1.977e+05).",
+    "housing_median_age has 1200 missing values in training (7.8%); CatBoost sends missing values to a learned side of each split.",
+    "total_bedrooms has 164 missing values in training (1.1%); CatBoost sends missing values to a learned side of each split.",
+    "ave_bedrooms has 164 missing values in training (1.1%); CatBoost sends missing values to a learned side of each split.",
+    "Borderline association, not called as mean effects (z between 3 and 4): median_house_value (z=3.3).",
+    "Effect-query intervals are 5th to 95th percentiles of bootstrap refits with fixed settings; they do not include tuning uncertainty or model bias.",
+    "Prediction intervals are calibrated on training out-of-fold residuals; coverage on a shifted test book is not guaranteed."
+  ]
+}

@@ -1,0 +1,347 @@
+{
+  "schema_version": 1,
+  "kind": "mboostrs-benchmark-result",
+  "created_at": "2026-07-16T02:43:30.686684Z",
+  "manifest_digest": "sha256:4149fcc00d5d30a146c73603b29cdea4c6bc64c77068c43df89c239fbb2abd80",
+  "metadata": {
+    "commit": "f316f76f00ff528d3ae5acf582c389d187696ecd",
+    "working_tree": {
+      "dirty": true,
+      "status_digest": "sha256:7031cb881d04d19080bac3b4686fe27a908eb1172094b11db4926077c0de4c41"
+    },
+    "platform": {
+      "system": "Darwin",
+      "release": "25.3.0",
+      "machine": "arm64",
+      "cpu": "arm",
+      "python": "3.12.11"
+    },
+    "versions": {
+      "mboostrs": "0.1.3",
+      "numpy": "2.4.6",
+      "rpy2": "3.6.7",
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14) (Homebrew)",
+      "R": "4.5.1",
+      "mboost": "2.9.11"
+    },
+    "compiler_flags": {
+      "RUSTFLAGS": null,
+      "CARGO_PROFILE": "release"
+    },
+    "threads": {
+      "logical_cpus": 10,
+      "r_mclapply_default_cores": "2",
+      "RAYON_NUM_THREADS": null,
+      "OMP_NUM_THREADS": null,
+      "OPENBLAS_NUM_THREADS": null,
+      "MKL_NUM_THREADS": null
+    }
+  },
+  "warmup_policy": {
+    "iterations": 2,
+    "description": "fresh-process untimed calls before repetitions"
+  },
+  "results": [
+    {
+      "scenario_id": "stabsel.scalar.serial.end_to_end",
+      "boundary": "end_to_end",
+      "thread_mode": "single",
+      "seed": 9001,
+      "parameters": {
+        "n": 1000,
+        "candidates": 20,
+        "subsamples": 20,
+        "mstop": 100,
+        "q": 5,
+        "PFER": 2.0
+      },
+      "input_digest": "sha256:bbc49d6db342d633ed7d60d413566046ecc4f7dd2018ab0bc42736456acff054",
+      "compared_outputs": [
+        "phat",
+        "max",
+        "selected",
+        "cutoff",
+        "q",
+        "PFER"
+      ],
+      "tolerance": {
+        "atol": 0.0,
+        "rtol": 0.0
+      },
+      "correctness": {
+        "status": "passed",
+        "max_absolute_error": 0.0,
+        "max_normalized_error": 0.0
+      },
+      "measurements": [
+        {
+          "implementation": "mboostrs-threads-1",
+          "raw_seconds": [
+            0.017272000084631145,
+            0.01729887502733618,
+            0.017313000047579408,
+            0.017414000001735985,
+            0.01751854200847447,
+            0.017328959074802697,
+            0.017400083015672863,
+            0.01746262505184859,
+            0.017502250033430755
+          ],
+          "summary": {
+            "median_seconds": 0.017400083015672863,
+            "mad_seconds": 8.708296809345484e-05,
+            "ci95_low_seconds": 0.01729887502733618,
+            "ci95_high_seconds": 0.017502250033430755,
+            "min_seconds": 0.017272000084631145,
+            "max_seconds": 0.01751854200847447
+          },
+          "peak_rss": {
+            "status": "not_measured",
+            "bytes": null
+          },
+          "allocations": {
+            "status": "not_measured",
+            "count": null
+          },
+          "raw_output_digest": "sha256:dba234f39c137c02b576120f6f493095fcfcf5ae2b6869ee2ee672626c0a53b0",
+          "correctness_digest": "sha256:dba234f39c137c02b576120f6f493095fcfcf5ae2b6869ee2ee672626c0a53b0"
+        }
+      ]
+    },
+    {
+      "scenario_id": "stabsel.scalar.default.end_to_end",
+      "boundary": "end_to_end",
+      "thread_mode": "default",
+      "seed": 9001,
+      "parameters": {
+        "n": 1000,
+        "candidates": 20,
+        "subsamples": 20,
+        "mstop": 100,
+        "q": 5,
+        "PFER": 2.0
+      },
+      "input_digest": "sha256:bbc49d6db342d633ed7d60d413566046ecc4f7dd2018ab0bc42736456acff054",
+      "compared_outputs": [
+        "phat",
+        "max",
+        "selected",
+        "cutoff",
+        "q",
+        "PFER"
+      ],
+      "tolerance": {
+        "atol": 0.0,
+        "rtol": 0.0
+      },
+      "correctness": {
+        "status": "passed",
+        "max_absolute_error": 0.0,
+        "max_normalized_error": 0.0
+      },
+      "measurements": [
+        {
+          "implementation": "mboostrs-threads-default",
+          "raw_seconds": [
+            0.0047672499204054475,
+            0.004641250008717179,
+            0.004744375008158386,
+            0.004665999906137586,
+            0.0047745839692652225,
+            0.004821041016839445,
+            0.004668582929298282,
+            0.004724457976408303,
+            0.004863542038947344
+          ],
+          "summary": {
+            "median_seconds": 0.004744375008158386,
+            "mad_seconds": 7.579207886010408e-05,
+            "ci95_low_seconds": 0.004665999906137586,
+            "ci95_high_seconds": 0.004821041016839445,
+            "min_seconds": 0.004641250008717179,
+            "max_seconds": 0.004863542038947344
+          },
+          "peak_rss": {
+            "status": "not_measured",
+            "bytes": null
+          },
+          "allocations": {
+            "status": "not_measured",
+            "count": null
+          },
+          "raw_output_digest": "sha256:dba234f39c137c02b576120f6f493095fcfcf5ae2b6869ee2ee672626c0a53b0",
+          "correctness_digest": "sha256:dba234f39c137c02b576120f6f493095fcfcf5ae2b6869ee2ee672626c0a53b0"
+        }
+      ]
+    },
+    {
+      "scenario_id": "scaling.thread_count.core",
+      "boundary": "end_to_end",
+      "thread_mode": "default",
+      "seed": 9001,
+      "parameters": {
+        "n": 1000,
+        "candidates": 20,
+        "subsamples": 20,
+        "mstop": 100,
+        "q": 5,
+        "PFER": 2.0,
+        "threads": [
+          1,
+          2,
+          4,
+          8
+        ]
+      },
+      "input_digest": "sha256:bbc49d6db342d633ed7d60d413566046ecc4f7dd2018ab0bc42736456acff054",
+      "compared_outputs": [
+        "phat",
+        "max",
+        "selected",
+        "cutoff",
+        "q",
+        "PFER"
+      ],
+      "tolerance": {
+        "atol": 0.0,
+        "rtol": 0.0
+      },
+      "correctness": {
+        "status": "passed",
+        "max_absolute_error": 0.0,
+        "max_normalized_error": 0.0
+      },
+      "measurements": [
+        {
+          "implementation": "mboostrs-threads-1",
+          "raw_seconds": [
+            0.017905874992720783,
+            0.017885750043205917,
+            0.017510916921310127,
+            0.017565625021234155,
+            0.017679124954156578,
+            0.01749441702850163,
+            0.017948874970898032,
+            0.01803625002503395,
+            0.01807866699527949
+          ],
+          "summary": {
+            "median_seconds": 0.017885750043205917,
+            "mad_seconds": 0.00019291695207357407,
+            "ci95_low_seconds": 0.017510916921310127,
+            "ci95_high_seconds": 0.01803625002503395,
+            "min_seconds": 0.01749441702850163,
+            "max_seconds": 0.01807866699527949
+          },
+          "peak_rss": {
+            "status": "not_measured",
+            "bytes": null
+          },
+          "allocations": {
+            "status": "not_measured",
+            "count": null
+          },
+          "raw_output_digest": "sha256:dba234f39c137c02b576120f6f493095fcfcf5ae2b6869ee2ee672626c0a53b0",
+          "correctness_digest": "sha256:dba234f39c137c02b576120f6f493095fcfcf5ae2b6869ee2ee672626c0a53b0"
+        },
+        {
+          "implementation": "mboostrs-threads-2",
+          "raw_seconds": [
+            0.00973687507212162,
+            0.00967216701246798,
+            0.009787207935005426,
+            0.009708500001579523,
+            0.00965995795559138,
+            0.009745916933752596,
+            0.009746416937559843,
+            0.009663625038228929,
+            0.009665666962973773
+          ],
+          "summary": {
+            "median_seconds": 0.009708500001579523,
+            "mad_seconds": 3.791693598031998e-05,
+            "ci95_low_seconds": 0.009663625038228929,
+            "ci95_high_seconds": 0.009746416937559843,
+            "min_seconds": 0.00965995795559138,
+            "max_seconds": 0.009787207935005426
+          },
+          "peak_rss": {
+            "status": "not_measured",
+            "bytes": null
+          },
+          "allocations": {
+            "status": "not_measured",
+            "count": null
+          },
+          "raw_output_digest": "sha256:dba234f39c137c02b576120f6f493095fcfcf5ae2b6869ee2ee672626c0a53b0",
+          "correctness_digest": "sha256:dba234f39c137c02b576120f6f493095fcfcf5ae2b6869ee2ee672626c0a53b0"
+        },
+        {
+          "implementation": "mboostrs-threads-4",
+          "raw_seconds": [
+            0.006641332991421223,
+            0.006616917089559138,
+            0.006585874943993986,
+            0.006623625056818128,
+            0.006597000057809055,
+            0.006592333083972335,
+            0.006739791017025709,
+            0.0065931250574067235,
+            0.006579792010597885
+          ],
+          "summary": {
+            "median_seconds": 0.006597000057809055,
+            "mad_seconds": 1.7208047211170197e-05,
+            "ci95_low_seconds": 0.006585874943993986,
+            "ci95_high_seconds": 0.006641332991421223,
+            "min_seconds": 0.006579792010597885,
+            "max_seconds": 0.006739791017025709
+          },
+          "peak_rss": {
+            "status": "not_measured",
+            "bytes": null
+          },
+          "allocations": {
+            "status": "not_measured",
+            "count": null
+          },
+          "raw_output_digest": "sha256:dba234f39c137c02b576120f6f493095fcfcf5ae2b6869ee2ee672626c0a53b0",
+          "correctness_digest": "sha256:dba234f39c137c02b576120f6f493095fcfcf5ae2b6869ee2ee672626c0a53b0"
+        },
+        {
+          "implementation": "mboostrs-threads-8",
+          "raw_seconds": [
+            0.005144833936356008,
+            0.005095583968795836,
+            0.0051727090030908585,
+            0.005097749992273748,
+            0.005188749986700714,
+            0.005064707947894931,
+            0.0051484579453244805,
+            0.005100500071421266,
+            0.005056834081187844
+          ],
+          "summary": {
+            "median_seconds": 0.005100500071421266,
+            "mad_seconds": 4.3665990233421326e-05,
+            "ci95_low_seconds": 0.005064707947894931,
+            "ci95_high_seconds": 0.0051727090030908585,
+            "min_seconds": 0.005056834081187844,
+            "max_seconds": 0.005188749986700714
+          },
+          "peak_rss": {
+            "status": "not_measured",
+            "bytes": null
+          },
+          "allocations": {
+            "status": "not_measured",
+            "count": null
+          },
+          "raw_output_digest": "sha256:dba234f39c137c02b576120f6f493095fcfcf5ae2b6869ee2ee672626c0a53b0",
+          "correctness_digest": "sha256:dba234f39c137c02b576120f6f493095fcfcf5ae2b6869ee2ee672626c0a53b0"
+        }
+      ]
+    }
+  ],
+  "regressions": []
+}

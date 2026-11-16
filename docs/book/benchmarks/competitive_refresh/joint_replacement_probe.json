@@ -1,0 +1,316 @@
+{
+ "schema_version": 1,
+ "created_at": "2026-10-15T02:53:29+00:00",
+ "commit": "6c4c1943279b95c9d08e8f8d6874f7afcd8b043a",
+ "working_tree": {
+  "dirty": true,
+  "status_digest": "sha256:5e44bb205d84bcd4c8485cbd308b82cb0be5c9d717d9d756325dfc50ec99d528",
+  "commit_source": "working directory"
+ },
+ "platform": {
+  "system": "Darwin",
+  "release": "25.3.0",
+  "machine": "arm64",
+  "cpu": "arm",
+  "python": "3.12.11"
+ },
+ "versions": {
+  "mboostrs": "0.1.3",
+  "numpy": "2.4.6",
+  "rpy2": "3.6.7",
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "R": "4.5.1",
+  "mboost": "2.9.11",
+  "scipy": "1.16.3",
+  "pandas": "2.3.3",
+  "ngboost": "0.5.11",
+  "mssm": "1.2.5",
+  "scikit-learn": "1.9.0"
+ },
+ "threads": {
+  "logical_cpus": 10,
+  "r_mclapply_default_cores": "2",
+  "RAYON_NUM_THREADS": "1",
+  "OMP_NUM_THREADS": "1",
+  "OPENBLAS_NUM_THREADS": "1",
+  "MKL_NUM_THREADS": "1"
+ },
+ "build_info": {
+  "package_version": "0.1.3",
+  "source_digest": "sha256:f539320489f804574532fd5e22c78bb55c2c062b600b1b336a7dda3fb4bf2897",
+  "git_revision": "3451c0ac6f369d7ef1a91ae91e7f52254ef66961",
+  "git_dirty": false,
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+  "target": "aarch64-apple-darwin",
+  "profile": "release",
+  "target_features": "aes,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+  "crate_features": "",
+  "abi_version": 1,
+  "build_id": "sha256:79de853ab0f5496c718fa6cc85c4a448a2127e5d72925e825b07fc4cf44dc06d"
+ },
+ "scripts": {
+  "/Users/fcela/src/public_github/mboostrs/benches/probe_joint_replacement.py": "4b9d4d30e72d7781f9dcc44bb1a45b04947f042578ae8f81ac78e1ce4287353d"
+ },
+ "thread_environment": {
+  "RAYON_NUM_THREADS": "1",
+  "OMP_NUM_THREADS": "1",
+  "OPENBLAS_NUM_THREADS": "1"
+ },
+ "protocol": {
+  "scope": "exploratory non-coordinate capacity counterfactual; no policy change",
+  "tasks": [
+   "protein",
+   "bike_iid",
+   "diamonds"
+  ],
+  "seeds": [
+   0,
+   1,
+   2
+  ],
+  "candidates": [
+   {
+    "depth": 3,
+    "nu": 0.05,
+    "cap": 1200
+   },
+   {
+    "depth": 6,
+    "nu": 0.05,
+    "cap": 1200
+   }
+  ],
+  "choice": "minimum validation-path risk; test only after selecting candidate",
+  "budget": "two candidates with one held-out path each; same split as original study",
+  "started_with_script_sha256": "4b9d4d30e72d7781f9dcc44bb1a45b04947f042578ae8f81ac78e1ce4287353d"
+ },
+ "repeats": {
+  "outer_splits": 3
+ },
+ "uncertainty": {
+  "unit": "one independent training and test draw; pair methods within a draw",
+  "summary": "mean and Monte Carlo standard error across draws",
+  "timing": "elapsed whole-workflow costs, not controlled implementation speed ratios"
+ },
+ "memory": {
+  "status": "not measured"
+ },
+ "results": [
+  {
+   "task": "protein",
+   "seed": 0,
+   "formula": "y ~ btree(F1, F2, F3, F4, F5, F6, F7, F8, F9, maxdepth=6, selection=sse)",
+   "mstop": 461,
+   "depth": 6,
+   "validation_loss": 18.343239381760657,
+   "loss": 18.89363631178019,
+   "candidates": [
+    {
+     "validation_loss": 19.884397730764437,
+     "formula": "y ~ btree(F1, F2, F3, F4, F5, F6, F7, F8, F9, maxdepth=3, selection=sse)",
+     "mstop": 715
+    },
+    {
+     "validation_loss": 18.343239381760657,
+     "formula": "y ~ btree(F1, F2, F3, F4, F5, F6, F7, F8, F9, maxdepth=6, selection=sse)",
+     "mstop": 461
+    }
+   ],
+   "partition_digest": "sha256:22c84a1d8454792546209618cd13415990a2d1e4e22c52efa54a6ffdb26a9879",
+   "prediction_digest": "sha256:1cb94ac445526378114ff39bdd1de6e6263f0d2ec34a0fca311331ef82cbfb2d",
+   "seconds": 4.031325416988693
+  },
+  {
+   "task": "protein",
+   "seed": 1,
+   "formula": "y ~ btree(F1, F2, F3, F4, F5, F6, F7, F8, F9, maxdepth=6, selection=sse)",
+   "mstop": 272,
+   "depth": 6,
+   "validation_loss": 22.49547932866831,
+   "loss": 20.588776737581693,
+   "candidates": [
+    {
+     "validation_loss": 23.555689350007317,
+     "formula": "y ~ btree(F1, F2, F3, F4, F5, F6, F7, F8, F9, maxdepth=3, selection=sse)",
+     "mstop": 802
+    },
+    {
+     "validation_loss": 22.49547932866831,
+     "formula": "y ~ btree(F1, F2, F3, F4, F5, F6, F7, F8, F9, maxdepth=6, selection=sse)",
+     "mstop": 272
+    }
+   ],
+   "partition_digest": "sha256:8a67c474fa5520d7ccb398fc41b7aaee9c211950df68b5f26464d212f7fdc054",
+   "prediction_digest": "sha256:383967bab1d5e060b177c8d85f52b0cd3b0cce5564ca31e5cd7a8c8a214e5e2e",
+   "seconds": 4.277643750072457
+  },
+  {
+   "task": "protein",
+   "seed": 2,
+   "formula": "y ~ btree(F1, F2, F3, F4, F5, F6, F7, F8, F9, maxdepth=6, selection=sse)",
+   "mstop": 1112,
+   "depth": 6,
+   "validation_loss": 20.276021829988448,
+   "loss": 18.856360261825955,
+   "candidates": [
+    {
+     "validation_loss": 21.91512218176867,
+     "formula": "y ~ btree(F1, F2, F3, F4, F5, F6, F7, F8, F9, maxdepth=3, selection=sse)",
+     "mstop": 1135
+    },
+    {
+     "validation_loss": 20.276021829988448,
+     "formula": "y ~ btree(F1, F2, F3, F4, F5, F6, F7, F8, F9, maxdepth=6, selection=sse)",
+     "mstop": 1112
+    }
+   ],
+   "partition_digest": "sha256:ffa5d2bf7dd4780218b28c2a21b354fcb0cf0d2e894fcf637dd1cbe4ebfb3cb7",
+   "prediction_digest": "sha256:eb00f7f5e4e5cd33a2a6d39797e3ad71ce80c00d4d91175fad34590a9dd82137",
+   "seconds": 4.48387708410155
+  },
+  {
+   "task": "bike_iid",
+   "seed": 0,
+   "formula": "y ~ btree(season, holiday, workingday, weathersit, weekday, hr, mnth, yr, temp, hum, windspeed, maxdepth=6, selection=sse)",
+   "mstop": 232,
+   "depth": 6,
+   "validation_loss": 0.11674169240561945,
+   "loss": 0.10716986802122655,
+   "candidates": [
+    {
+     "validation_loss": 0.11771982412478232,
+     "formula": "y ~ btree(season, holiday, workingday, weathersit, weekday, hr, mnth, yr, temp, hum, windspeed, maxdepth=3, selection=sse)",
+     "mstop": 1066
+    },
+    {
+     "validation_loss": 0.11674169240561945,
+     "formula": "y ~ btree(season, holiday, workingday, weathersit, weekday, hr, mnth, yr, temp, hum, windspeed, maxdepth=6, selection=sse)",
+     "mstop": 232
+    }
+   ],
+   "partition_digest": "sha256:8da11e03a5d5722c2e4b61b0ac4c651837db1127469288db466c4fd3f12a42f2",
+   "prediction_digest": "sha256:7358e0df65267b3b8c5bd5a93a20881ca5b1cd57af96e6b8516943b867d43c04",
+   "seconds": 5.717322333017364
+  },
+  {
+   "task": "bike_iid",
+   "seed": 1,
+   "formula": "y ~ btree(season, holiday, workingday, weathersit, weekday, hr, mnth, yr, temp, hum, windspeed, maxdepth=3, selection=sse)",
+   "mstop": 1199,
+   "depth": 3,
+   "validation_loss": 0.09139614680545881,
+   "loss": 0.09860518628954525,
+   "candidates": [
+    {
+     "validation_loss": 0.09139614680545881,
+     "formula": "y ~ btree(season, holiday, workingday, weathersit, weekday, hr, mnth, yr, temp, hum, windspeed, maxdepth=3, selection=sse)",
+     "mstop": 1199
+    },
+    {
+     "validation_loss": 0.09498821944964772,
+     "formula": "y ~ btree(season, holiday, workingday, weathersit, weekday, hr, mnth, yr, temp, hum, windspeed, maxdepth=6, selection=sse)",
+     "mstop": 469
+    }
+   ],
+   "partition_digest": "sha256:5d0af3d3984addc3cc22e9567749b377af4d2f52b9b621df2a29d17f651a4803",
+   "prediction_digest": "sha256:f1d865ecdaa3fb4ec19ff886cba4b1f586d83963d179689416b3b2651306657f",
+   "seconds": 5.710772874997929
+  },
+  {
+   "task": "bike_iid",
+   "seed": 2,
+   "formula": "y ~ btree(season, holiday, workingday, weathersit, weekday, hr, mnth, yr, temp, hum, windspeed, maxdepth=3, selection=sse)",
+   "mstop": 1191,
+   "depth": 3,
+   "validation_loss": 0.10948282230690991,
+   "loss": 0.09454148281284669,
+   "candidates": [
+    {
+     "validation_loss": 0.10948282230690991,
+     "formula": "y ~ btree(season, holiday, workingday, weathersit, weekday, hr, mnth, yr, temp, hum, windspeed, maxdepth=3, selection=sse)",
+     "mstop": 1191
+    },
+    {
+     "validation_loss": 0.11549764945471183,
+     "formula": "y ~ btree(season, holiday, workingday, weathersit, weekday, hr, mnth, yr, temp, hum, windspeed, maxdepth=6, selection=sse)",
+     "mstop": 381
+    }
+   ],
+   "partition_digest": "sha256:04abe21948e47e9f8b7e379a271ec2fd1e154490b8bfefc537fc1eec0f4a43ee",
+   "prediction_digest": "sha256:d0e14e67f37c139e7bf02301a9097c82168fc7917a55a8e67803c09699f26e51",
+   "seconds": 5.778290000045672
+  },
+  {
+   "task": "diamonds",
+   "seed": 0,
+   "formula": "y ~ btree(carat, cut, color, clarity, depth, table, x, z, maxdepth=3, selection=sse)",
+   "mstop": 1193,
+   "depth": 3,
+   "validation_loss": 0.013333856513804936,
+   "loss": 0.010978776848526925,
+   "candidates": [
+    {
+     "validation_loss": 0.013333856513804936,
+     "formula": "y ~ btree(carat, cut, color, clarity, depth, table, x, z, maxdepth=3, selection=sse)",
+     "mstop": 1193
+    },
+    {
+     "validation_loss": 0.013422082184166156,
+     "formula": "y ~ btree(carat, cut, color, clarity, depth, table, x, z, maxdepth=6, selection=sse)",
+     "mstop": 541
+    }
+   ],
+   "partition_digest": "sha256:6ea85f8886d3aa327af66975ad0188b8b1d1a9785442fc3061dd494b0e168ff1",
+   "prediction_digest": "sha256:09833580ab81365f2abfaa98b9ea58ffa0de5898782c39019cf29fbe233dd5ec",
+   "seconds": 4.250478667090647
+  },
+  {
+   "task": "diamonds",
+   "seed": 1,
+   "formula": "y ~ btree(carat, cut, color, clarity, depth, table, x, z, maxdepth=3, selection=sse)",
+   "mstop": 1155,
+   "depth": 3,
+   "validation_loss": 0.010773937001639425,
+   "loss": 0.010646194256838883,
+   "candidates": [
+    {
+     "validation_loss": 0.010773937001639425,
+     "formula": "y ~ btree(carat, cut, color, clarity, depth, table, x, z, maxdepth=3, selection=sse)",
+     "mstop": 1155
+    },
+    {
+     "validation_loss": 0.011273493893074726,
+     "formula": "y ~ btree(carat, cut, color, clarity, depth, table, x, z, maxdepth=6, selection=sse)",
+     "mstop": 318
+    }
+   ],
+   "partition_digest": "sha256:6c9c5524fa8e3ff0aad14497beafc558c975229edc925941cccd6146116007d7",
+   "prediction_digest": "sha256:f9735a71b64f99be32578dc2b6889b0cab33ed2f36fea9f5bea320f3fdbb104d",
+   "seconds": 4.180298208026215
+  },
+  {
+   "task": "diamonds",
+   "seed": 2,
+   "formula": "y ~ btree(carat, cut, color, clarity, depth, table, x, z, maxdepth=3, selection=sse)",
+   "mstop": 1200,
+   "depth": 3,
+   "validation_loss": 0.011476437343928714,
+   "loss": 0.011845066123448263,
+   "candidates": [
+    {
+     "validation_loss": 0.011476437343928714,
+     "formula": "y ~ btree(carat, cut, color, clarity, depth, table, x, z, maxdepth=3, selection=sse)",
+     "mstop": 1200
+    },
+    {
+     "validation_loss": 0.011881167633413394,
+     "formula": "y ~ btree(carat, cut, color, clarity, depth, table, x, z, maxdepth=6, selection=sse)",
+     "mstop": 568
+    }
+   ],
+   "partition_digest": "sha256:7e32547b20a836ad4219bbfd481f19bfff1c5c4aab847d0a3e132ee5c7544678",
+   "prediction_digest": "sha256:b7edd3ad3c140733c7ee3c525907aa80e3369af8695f535c10687eef80924837",
+   "seconds": 3.8764307079836726
+  }
+ ]
+}

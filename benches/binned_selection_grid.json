@@ -1,0 +1,263 @@
+{
+ "schema_version": 1,
+ "kind": "binned-selection-grid",
+ "metadata": {
+  "commit": "b0d724972e84f6a7cfb579d301670c42759943b1",
+  "working_tree": {
+   "dirty": true,
+   "status_digest": "sha256:84d922668bcfe049d14aa9c04a0c2c41eaf294bfae3b49a09950aa360e818acc",
+   "commit_source": "working directory"
+  },
+  "native_build": {
+   "package_version": "0.1.3",
+   "source_digest": "sha256:1fb2ece4ca5354a13f8a71044362b33e423d9e76889d6786fb1a20fbcba1a4be",
+   "git_revision": "b0d724972e84f6a7cfb579d301670c42759943b1",
+   "git_dirty": true,
+   "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+   "target": "aarch64-apple-darwin",
+   "profile": "release",
+   "target_features": "aes,bf16,bti,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,i8mm,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+   "crate_features": "",
+   "abi_version": 1,
+   "build_id": "sha256:ca94df95e2625846d21ad191bd1626eedaa54981d78965606243bc02aba9ca29"
+  },
+  "platform": {
+   "system": "Darwin",
+   "release": "25.3.0",
+   "machine": "arm64",
+   "cpu": "arm",
+   "python": "3.12.11"
+  },
+  "versions": {
+   "mboostrs": "0.1.3",
+   "numpy": "2.4.6",
+   "rpy2": "3.6.7",
+   "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+   "R": "4.5.1",
+   "mboost": "2.9.11"
+  },
+  "compiler_flags": {
+   "RUSTFLAGS": null,
+   "CARGO_PROFILE": "release"
+  },
+  "threads": {
+   "logical_cpus": 10,
+   "r_mclapply_default_cores": "2",
+   "RAYON_NUM_THREADS": null,
+   "OMP_NUM_THREADS": null,
+   "OPENBLAS_NUM_THREADS": null,
+   "MKL_NUM_THREADS": null
+  }
+ },
+ "design": {
+  "rows": [
+   1000,
+   4000,
+   16000
+  ],
+  "learners": [
+   4,
+   12
+  ],
+  "bins": [
+   50,
+   200,
+   800
+  ],
+  "mstop": 60,
+  "nu": 0.1,
+  "seed": 0,
+  "learner": "bbs(df=4)",
+  "note": "correctness only; wall time and peak RSS are not measured here and need a quiet machine"
+ },
+ "summary": {
+  "cells": 18,
+  "sequence_identical": 4,
+  "identical_at_bins": [
+   800
+  ],
+  "max_fitted_difference": 1.9397021969216683
+ },
+ "cells": [
+  {
+   "n": 1000,
+   "learners": 4,
+   "bins": 50,
+   "mstop": 60,
+   "family": "Gaussian",
+   "sequence_identical": false,
+   "first_divergence": 7,
+   "max_abs_fitted_difference": 1.1209743950526323
+  },
+  {
+   "n": 1000,
+   "learners": 4,
+   "bins": 200,
+   "mstop": 60,
+   "family": "Gaussian",
+   "sequence_identical": false,
+   "first_divergence": 17,
+   "max_abs_fitted_difference": 0.5363389524711852
+  },
+  {
+   "n": 1000,
+   "learners": 4,
+   "bins": 800,
+   "mstop": 60,
+   "family": "Gaussian",
+   "sequence_identical": true,
+   "first_divergence": null,
+   "max_abs_fitted_difference": 0.1259741561405341
+  },
+  {
+   "n": 1000,
+   "learners": 12,
+   "bins": 50,
+   "mstop": 60,
+   "family": "Gaussian",
+   "sequence_identical": false,
+   "first_divergence": 7,
+   "max_abs_fitted_difference": 1.1105128539010929
+  },
+  {
+   "n": 1000,
+   "learners": 12,
+   "bins": 200,
+   "mstop": 60,
+   "family": "Gaussian",
+   "sequence_identical": false,
+   "first_divergence": 7,
+   "max_abs_fitted_difference": 0.5158741203978705
+  },
+  {
+   "n": 1000,
+   "learners": 12,
+   "bins": 800,
+   "mstop": 60,
+   "family": "Gaussian",
+   "sequence_identical": true,
+   "first_divergence": null,
+   "max_abs_fitted_difference": 0.1301559385178801
+  },
+  {
+   "n": 4000,
+   "learners": 4,
+   "bins": 50,
+   "mstop": 60,
+   "family": "Gaussian",
+   "sequence_identical": false,
+   "first_divergence": 13,
+   "max_abs_fitted_difference": 1.3288218385066934
+  },
+  {
+   "n": 4000,
+   "learners": 4,
+   "bins": 200,
+   "mstop": 60,
+   "family": "Gaussian",
+   "sequence_identical": false,
+   "first_divergence": 16,
+   "max_abs_fitted_difference": 0.8510780308312622
+  },
+  {
+   "n": 4000,
+   "learners": 4,
+   "bins": 800,
+   "mstop": 60,
+   "family": "Gaussian",
+   "sequence_identical": true,
+   "first_divergence": null,
+   "max_abs_fitted_difference": 0.43878285411291573
+  },
+  {
+   "n": 4000,
+   "learners": 12,
+   "bins": 50,
+   "mstop": 60,
+   "family": "Gaussian",
+   "sequence_identical": false,
+   "first_divergence": 6,
+   "max_abs_fitted_difference": 1.352127906932926
+  },
+  {
+   "n": 4000,
+   "learners": 12,
+   "bins": 200,
+   "mstop": 60,
+   "family": "Gaussian",
+   "sequence_identical": false,
+   "first_divergence": 9,
+   "max_abs_fitted_difference": 0.8597435289291102
+  },
+  {
+   "n": 4000,
+   "learners": 12,
+   "bins": 800,
+   "mstop": 60,
+   "family": "Gaussian",
+   "sequence_identical": false,
+   "first_divergence": 44,
+   "max_abs_fitted_difference": 0.4406448025408869
+  },
+  {
+   "n": 16000,
+   "learners": 4,
+   "bins": 50,
+   "mstop": 60,
+   "family": "Gaussian",
+   "sequence_identical": false,
+   "first_divergence": 6,
+   "max_abs_fitted_difference": 1.9256297201054033
+  },
+  {
+   "n": 16000,
+   "learners": 4,
+   "bins": 200,
+   "mstop": 60,
+   "family": "Gaussian",
+   "sequence_identical": false,
+   "first_divergence": 6,
+   "max_abs_fitted_difference": 1.5078870881993087
+  },
+  {
+   "n": 16000,
+   "learners": 4,
+   "bins": 800,
+   "mstop": 60,
+   "family": "Gaussian",
+   "sequence_identical": true,
+   "first_divergence": null,
+   "max_abs_fitted_difference": 1.1190204073790038
+  },
+  {
+   "n": 16000,
+   "learners": 12,
+   "bins": 50,
+   "mstop": 60,
+   "family": "Gaussian",
+   "sequence_identical": false,
+   "first_divergence": 6,
+   "max_abs_fitted_difference": 1.9397021969216683
+  },
+  {
+   "n": 16000,
+   "learners": 12,
+   "bins": 200,
+   "mstop": 60,
+   "family": "Gaussian",
+   "sequence_identical": false,
+   "first_divergence": 6,
+   "max_abs_fitted_difference": 1.5293208732114538
+  },
+  {
+   "n": 16000,
+   "learners": 12,
+   "bins": 800,
+   "mstop": 60,
+   "family": "Gaussian",
+   "sequence_identical": false,
+   "first_divergence": 19,
+   "max_abs_fitted_difference": 1.1352727154926308
+  }
+ ]
+}

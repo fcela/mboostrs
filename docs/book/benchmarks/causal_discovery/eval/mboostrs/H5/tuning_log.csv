@@ -1,0 +1,20 @@
+stage,model,setting,validation_score,kept,note
+nuisance_mstop,treatment (roles),mstop=2000,0.45786875319032144,True,5-fold CV on all training rows
+nuisance_mstop,outcome among respondents (roles),mstop=2000,374152739.9120123,True,5-fold CV on all training rows
+nuisance_rhs,propensity,+ btree(lprior),0.46842086376742464,True,"change -0.00636872, se 0.000876866; adopt if change < -2 se"
+nuisance_mstop,propensity,mstop=340,0.4678248500069591,True,5-fold CV on all training rows
+nuisance_rhs,response probability,+ btree(lprior),0.44433609064284524,False,"change 0.000193675, se 0.000306899; adopt if change < -2 se"
+nuisance_mstop,response probability,mstop=136,0.44366719059265813,True,5-fold CV on all training rows
+nuisance_mstop,enrolment among respondents,mstop=242,0.46339097371518356,True,5-fold CV on all training rows
+nuisance_mstop,outcome mean among respondents,mstop=2000,376390096.53678495,True,5-fold CV on all training rows
+nuisance_mstop,effect term,mstop=34,2309586287.5882254,True,5-fold CV on all training rows
+nuisance_mstop,outcome mean among respondents_emp,mstop=56,0.19244475525872382,True,5-fold CV on all training rows
+nuisance_mstop,effect term_emp,mstop=56,1.2020731443592203,True,5-fold CV on all training rows
+ate_clip_sensitivity,augmented score ATE,propensity clip 0.005-0.995,,False,"ATE 5,239 (se 497); kept if equal to the design clip (0.01, 0.99)"
+ate_clip_sensitivity,augmented score ATE,propensity clip 0.01-0.99,,True,"ATE 5,239 (se 497); kept if equal to the design clip (0.01, 0.99)"
+ate_clip_sensitivity,augmented score ATE,propensity clip 0.02-0.98,,False,"ATE 5,084 (se 403); kept if equal to the design clip (0.01, 0.99)"
+ate_clip_sensitivity,augmented score ATE,propensity clip 0.05-0.95,,False,"ATE 4,830 (se 322); kept if equal to the design clip (0.01, 0.99)"
+second_stage,"bbs(lprior, df=4) + bbs(education, df=4)",compare vs adopted,860642810.0149958,False,"change 516894, se 1.47396e+06; adopt if change < -2 se"
+second_stage,"bbs(lprior, df=4) + bbs(education, df=4) + bbs(age, df=4) + bbs(months_unemployed, df=4) + bols(smsa) + bols(parttime)",compare vs adopted,860366854.1963806,False,"change 240938, se 1.26825e+06; adopt if change < -2 se"
+second_stage,"bbs(lprior, df=4) + bbs(education, df=4) + bbs(age, df=4) + bbs(months_unemployed, df=4) + bols(smsa) + bols(parttime) + bbs(distance_km, df=4) + bols(region) + bols(ethnicity) + bbs(caseworker_note_len, df=4)",compare vs adopted,859991315.9397805,False,"change -134600, se 961171; adopt if change < -2 se"
+nuisance_mstop,log earnings among employed (channels),mstop=267,0.1153669139517568,True,5-fold CV on all training rows

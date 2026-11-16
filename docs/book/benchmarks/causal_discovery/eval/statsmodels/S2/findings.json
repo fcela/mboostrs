@@ -1,0 +1,92 @@
+{
+  "library": "statsmodels 0.15.0",
+  "effect_queries": {
+    "ATE": {
+      "estimate": 4057.52110175784,
+      "lower90": 1584.67811955605,
+      "upper90": 6002.66047989813
+    },
+    "ATT": {
+      "estimate": 2577.7445441199056,
+      "lower90": 1327.641590597764,
+      "upper90": 4658.3119898091245
+    },
+    "CATE_educ_lt12": {
+      "estimate": 2990.1994826116966,
+      "lower90": 1014.885182330463,
+      "upper90": 4439.53872799363
+    },
+    "CATE_educ_ge16": {
+      "estimate": 5224.086816676644,
+      "lower90": 1083.7223411101083,
+      "upper90": 9058.729515523426
+    },
+    "CATE_prior_q1": {
+      "estimate": 1379.9672379294493,
+      "lower90": -417.52468739001944,
+      "upper90": 4109.611588442728
+    },
+    "CATE_prior_q4": {
+      "estimate": 7007.1398108299845,
+      "lower90": 1087.676260679451,
+      "upper90": 11660.45667108408
+    },
+    "CATE_age_lt25": {
+      "estimate": 2041.442763220293,
+      "lower90": 717.2566264326517,
+      "upper90": 4883.463299439074
+    },
+    "EMP_ATE": {
+      "estimate": 0.03402329953510532,
+      "lower90": -0.020612060481164846,
+      "upper90": 0.08980127753431204
+    }
+  },
+  "roles": {
+    "age": "instrument",
+    "education": "outcome_only",
+    "experience": "confounder",
+    "ethnicity": "treatment_only",
+    "smsa": "irrelevant",
+    "region": "treatment_only",
+    "parttime": "irrelevant",
+    "prior_earnings": "confounder",
+    "months_unemployed": "instrument",
+    "distance_km": "instrument",
+    "caseworker_note_len": "irrelevant",
+    "enrolled": "treatment",
+    "certificate": "mediator",
+    "responded": "post_treatment_selection",
+    "hours_post": "mediator",
+    "earnings_post": "outcome"
+  },
+  "adjustment_set": [
+    "prior_earnings"
+  ],
+  "effect_modifiers": [],
+  "channels": {
+    "employment": false,
+    "earnings_if_employed": false
+  },
+  "limited_overlap": [
+    {
+      "description": "Applicants with prior earnings at or above 45000 dollars: enrolment in the program-year data is below 2 per cent there, so the data cannot show what enrolment did for them; their effects are extrapolated from applicants with lower earnings.",
+      "variable": "prior_earnings"
+    }
+  ],
+  "warnings": [
+    "Specs chosen by 5-fold CV: propensity=lin, outcome(Y)=logpe, outcome(E)=lin.",
+    "Redundant columns (exact linear function of earlier columns, not used): ['experience'].",
+    "Enrolment is essentially absent for prior earnings at or above 45000 dollars: pooled enrolment above that value is below 2 per cent. The share of training applicants there is 0.201, and of test applicants 0.123. Effects there are extrapolations.",
+    "Prior earnings in the effect model is held at 50430 dollars (99th percentile of enrolled applicants) above that value. Without this cap the ATE point estimate is 4481.7 dollars and EMP_ATE is 0.0340.",
+    "ATE point estimate across propensity and outcome specifications (dollars): min 3013.9, max 4346.5.",
+    "Mean prior earnings: training 31335, test 25350. The new applicants are poorer on this variable than the program-year applicants.",
+    "Instrument check (log distance): first-stage F = 15.3; 2SLS effect on responders' earnings = 7991.7 dollars (90% interval -10019.1 to 26002.5); this is a complier effect and its interval is wide.",
+    "Earnings among employed (residual log hourly wage, Lee-type bounds with induced share 0.067): naive difference 0.079, bounds [0.029, 0.136]. The employment effect is not positive at the 90% level, so the bounds are not read as evidence about wages.",
+    "Response to the follow-up survey depends on enrolment: logit coefficient 0.302 (p = 0.093). Earnings are observed only for responders; the analysis assumes that, given covariates and enrolment, response is unrelated to earnings.",
+    "Omitted-variable robustness value of the linear enrolment coefficient on responders' earnings: 0.096 (value that keeps the 90% interval above zero: 0.053).",
+    "Employment effect model (probability scale) keeps: reg_south +0.1087 (90% bootstrap +0.0928 to +0.3202).",
+    "",
+    "prior_earnings also enters the dollar effect model (148.6 dollars per 1,000 dollars of prior earnings, 90% bootstrap interval 115.7 to 413.6) but its first-stage p-value does not survive a Benjamini-Hochberg correction at q = 0.10 across the 11 candidate modifiers; it is not claimed."
+  ]
+}

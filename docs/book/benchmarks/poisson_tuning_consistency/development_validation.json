@@ -1,0 +1,40 @@
+{
+  "phase": "development",
+  "draws_per_panel": 10,
+  "panels": [
+    "low",
+    "original",
+    "high",
+    "overdispersed",
+    "zero_inflated"
+  ],
+  "records": 850,
+  "failures": 0,
+  "source_and_native_identity_retained": true,
+  "identical_partitions_and_inputs": true,
+  "fixed_mean_across_scores": true,
+  "corrected_tuning_matches_fit_rate": true,
+  "reference": "prespecified LightGBM CQR",
+  "default_policy_changed": false,
+  "eligibility": [
+    0.88,
+    0.92
+  ],
+  "target_percent": 1,
+  "uncertainty": "Monte Carlo SE across independent draws within each panel; panels not pooled",
+  "example_record": {
+    "panel": "high",
+    "seed": 6493100,
+    "method": "corrected_discovery_absolute",
+    "family": "Poisson",
+    "formula": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+    "mstop": 30,
+    "nu": 0.02,
+    "tuning_nu": [
+      0.02
+    ],
+    "n_fit": 500,
+    "n_calibration": 500,
+    "quantile": 6.379864158993854
+  }
+}

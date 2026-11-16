@@ -1,0 +1,93 @@
+{
+  "library": "statsmodels 0.15.0",
+  "effect_queries": {
+    "ATE": {
+      "estimate": 3888.795861106699,
+      "lower90": 1973.7778349095474,
+      "upper90": 7710.496777847929
+    },
+    "ATT": {
+      "estimate": 4033.4254144734946,
+      "lower90": 1994.2573382790397,
+      "upper90": 5118.725347307763
+    },
+    "CATE_educ_lt12": {
+      "estimate": 4311.733353584556,
+      "lower90": -1066.5774679262586,
+      "upper90": 5230.812459630391
+    },
+    "CATE_educ_ge16": {
+      "estimate": 3936.2267696600293,
+      "lower90": 2454.6407096607095,
+      "upper90": 12277.020513952182
+    },
+    "CATE_prior_q1": {
+      "estimate": 4073.73034278683,
+      "lower90": -572.5900481876098,
+      "upper90": 4848.19619112715
+    },
+    "CATE_prior_q4": {
+      "estimate": 3717.9070362630337,
+      "lower90": 2069.1468621210593,
+      "upper90": 14396.885591586468
+    },
+    "CATE_age_lt25": {
+      "estimate": 3756.9227496976605,
+      "lower90": 783.9516667511243,
+      "upper90": 5348.402088765161
+    },
+    "EMP_ATE": {
+      "estimate": 0.06370904536796847,
+      "lower90": 0.00029685974568874297,
+      "upper90": 0.12490594202039891
+    }
+  },
+  "roles": {
+    "age": "instrument",
+    "education": "outcome_only",
+    "experience": "confounder",
+    "ethnicity": "irrelevant",
+    "smsa": "irrelevant",
+    "region": "irrelevant",
+    "parttime": "irrelevant",
+    "prior_earnings": "confounder",
+    "months_unemployed": "instrument",
+    "distance_km": "confounder",
+    "caseworker_note_len": "irrelevant",
+    "enrolled": "treatment",
+    "certificate": "mediator",
+    "responded": "post_treatment_selection",
+    "hours_post": "mediator",
+    "earnings_post": "outcome"
+  },
+  "adjustment_set": [
+    "prior_earnings",
+    "distance_km"
+  ],
+  "effect_modifiers": [],
+  "channels": {
+    "employment": true,
+    "earnings_if_employed": false
+  },
+  "limited_overlap": [
+    {
+      "description": "Applicants with prior earnings at or above 39000 dollars: enrolment in the program-year data is below 2 per cent there, so the data cannot show what enrolment did for them; their effects are extrapolated from applicants with lower earnings.",
+      "variable": "prior_earnings"
+    }
+  ],
+  "warnings": [
+    "Specs chosen by 5-fold CV: propensity=lin, outcome(Y)=lin, outcome(E)=lin.",
+    "Redundant columns (exact linear function of earlier columns, not used): ['experience'].",
+    "Enrolment is essentially absent for prior earnings at or above 39000 dollars: pooled enrolment above that value is below 2 per cent. The share of training applicants there is 0.273, and of test applicants 0.187. Effects there are extrapolations.",
+    "Prior earnings in the effect model is held at 39034 dollars (99th percentile of enrolled applicants) above that value. Without this cap the ATE point estimate is 3888.8 dollars and EMP_ATE is 0.0637.",
+    "ATE point estimate across propensity and outcome specifications (dollars): min 3720.9, max 3973.4.",
+    "Mean prior earnings: training 30972, test 25196. The new applicants are poorer on this variable than the program-year applicants.",
+    "Instrument check (log distance): first-stage F = 23.6; 2SLS effect on responders' earnings = 26409.4 dollars (90% interval 9650.9 to 43168.0); this is a complier effect and its interval is wide.",
+    "Earnings among employed (residual log hourly wage, Lee-type bounds with induced share 0.108): naive difference 0.077, bounds [-0.001, 0.158]. ",
+    "Response to the follow-up survey depends on enrolment: logit coefficient 0.481 (p = 0.011). Earnings are observed only for responders; the analysis assumes that, given covariates and enrolment, response is unrelated to earnings.",
+    "Omitted-variable robustness value of the linear enrolment coefficient on responders' earnings: 0.086 (value that keeps the 90% interval above zero: 0.043).",
+    "Employment effect model (probability scale) keeps: smsa +0.2100 (90% bootstrap +0.1577 to +0.3886).",
+    "",
+    "region also enters the dollar effect model (3511.4 dollars per unit, 90% bootstrap interval 3251.5 to 8888.3) but its first-stage p-value does not survive a Benjamini-Hochberg correction at q = 0.10 across the 11 candidate modifiers; it is not claimed."
+  ]
+}

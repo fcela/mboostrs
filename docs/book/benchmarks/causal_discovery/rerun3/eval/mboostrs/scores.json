@@ -1,0 +1,1279 @@
+{
+  "summary": {
+    "ran": 10,
+    "replicates": 10,
+    "coverage": {
+      "ATE": 0.875,
+      "ATT": 1.0,
+      "CATE_educ_lt12": 0.875,
+      "CATE_educ_ge16": 0.875,
+      "CATE_prior_q1": 1.0,
+      "CATE_prior_q4": 0.875,
+      "CATE_age_lt25": 0.875,
+      "EMP_ATE": 0.875
+    },
+    "coverage_all_queries": 0.90625,
+    "rmse": {
+      "ATE": 3250.0072330038793,
+      "ATT": 228.47170996182948,
+      "CATE_educ_lt12": 1310.735941362633,
+      "CATE_educ_ge16": 9891.366110093457,
+      "CATE_prior_q1": 463.8892391675708,
+      "CATE_prior_q4": 12384.802995678925,
+      "CATE_age_lt25": 434.73745517112405,
+      "EMP_ATE": 0.01732331088841919
+    },
+    "role_accuracy": 0.734375,
+    "adjustment_valid_share": 0.625,
+    "modifier_tpr": 0.0625,
+    "modifier_fdr": 0.0,
+    "channels_correct": 0.8125,
+    "overlap_named": 1.0,
+    "pehe": 2867.4598191243076,
+    "cate_coverage": 0.66146875,
+    "policy_regret_share": 0.7714788691725918,
+    "null_false_claims": 0.0,
+    "null_ran": 2
+  },
+  "per_replicate": {
+    "H1": {
+      "ran": true,
+      "null": false,
+      "queries": {
+        "ATE": {
+          "estimate": 5303.827210908179,
+          "truth": 4262.772058383702,
+          "error": 1041.0551525244773,
+          "covered": true,
+          "width": 3865.5475762703754,
+          "excludes_zero": true
+        },
+        "ATT": {
+          "estimate": 3306.5106424212513,
+          "truth": 3344.774146734098,
+          "error": -38.263504312846635,
+          "covered": true,
+          "width": 1151.6996832432733,
+          "excludes_zero": true
+        },
+        "CATE_educ_lt12": {
+          "estimate": 1887.7207286933392,
+          "truth": 4135.070529840235,
+          "error": -2247.3498011468964,
+          "covered": true,
+          "width": 8615.492023683211,
+          "excludes_zero": false
+        },
+        "CATE_educ_ge16": {
+          "estimate": 8013.114054619285,
+          "truth": 5718.554478059631,
+          "error": 2294.5595765596536,
+          "covered": true,
+          "width": 8901.716324659059,
+          "excludes_zero": true
+        },
+        "CATE_prior_q1": {
+          "estimate": 3400.7175717333985,
+          "truth": 3245.3571687188037,
+          "error": 155.3604030145948,
+          "covered": true,
+          "width": 1014.8041466075792,
+          "excludes_zero": true
+        },
+        "CATE_prior_q4": {
+          "estimate": 11107.42452493072,
+          "truth": 6694.928420279585,
+          "error": 4412.496104651135,
+          "covered": true,
+          "width": 11980.605418512685,
+          "excludes_zero": true
+        },
+        "CATE_age_lt25": {
+          "estimate": 3844.8025418071643,
+          "truth": 3687.5175236368955,
+          "error": 157.2850181702688,
+          "covered": true,
+          "width": 1920.7988098628475,
+          "excludes_zero": true
+        },
+        "EMP_ATE": {
+          "estimate": 0.07211809118641692,
+          "truth": 0.07364875000000001,
+          "error": -0.001530658813583094,
+          "covered": true,
+          "width": 0.05792660988072176,
+          "excludes_zero": true
+        }
+      },
+      "roles": {
+        "accuracy": 0.875,
+        "correct": {
+          "age": true,
+          "education": true,
+          "experience": true,
+          "ethnicity": true,
+          "smsa": false,
+          "region": true,
+          "parttime": false,
+          "prior_earnings": true,
+          "months_unemployed": true,
+          "distance_km": true,
+          "caseworker_note_len": true,
+          "enrolled": true,
+          "certificate": true,
+          "responded": true,
+          "hours_post": true,
+          "earnings_post": true
+        },
+        "adjusts_post_treatment": [],
+        "missing_confounders": [],
+        "adjustment_set_valid": true
+      },
+      "modifiers": {
+        "claimed": [],
+        "tpr": 0.0,
+        "fdr": 0.0,
+        "false": [],
+        "direction_correct": null
+      },
+      "channels_correct": 2,
+      "overlap_named": true,
+      "cate": {
+        "pehe": 2189.5109087529777,
+        "missing": 0,
+        "coverage": 0.547,
+        "mean_width": 3865.5475762703736,
+        "policy_value": 3873.4750523791067,
+        "policy_oracle": 6305.087188666446,
+        "policy_random": 3872.008551418037,
+        "policy_regret_share": 0.9993972652841471
+      }
+    },
+    "H2": {
+      "ran": true,
+      "null": false,
+      "queries": {
+        "ATE": {
+          "estimate": 7249.072059992229,
+          "truth": 4278.508798731478,
+          "error": 2970.5632612607506,
+          "covered": false,
+          "width": 5270.327277442431,
+          "excludes_zero": true
+        },
+        "ATT": {
+          "estimate": 3396.3514214525144,
+          "truth": 3373.169269318392,
+          "error": 23.18215213412259,
+          "covered": true,
+          "width": 1132.695769795836,
+          "excludes_zero": true
+        },
+        "CATE_educ_lt12": {
+          "estimate": 6117.027809036777,
+          "truth": 4193.520712169107,
+          "error": 1923.50709686767,
+          "covered": false,
+          "width": 2207.625608924711,
+          "excludes_zero": true
+        },
+        "CATE_educ_ge16": {
+          "estimate": 13463.91624941286,
+          "truth": 5669.737659320662,
+          "error": 7794.178590092198,
+          "covered": false,
+          "width": 14738.354868921171,
+          "excludes_zero": true
+        },
+        "CATE_prior_q1": {
+          "estimate": 3138.9134986313934,
+          "truth": 3253.2790006880837,
+          "error": -114.36550205669027,
+          "covered": true,
+          "width": 1038.935221406262,
+          "excludes_zero": true
+        },
+        "CATE_prior_q4": {
+          "estimate": 18130.762644820938,
+          "truth": 6679.781998458651,
+          "error": 11450.980646362286,
+          "covered": false,
+          "width": 17296.86354051409,
+          "excludes_zero": true
+        },
+        "CATE_age_lt25": {
+          "estimate": 3913.5635237080005,
+          "truth": 3698.6434984494035,
+          "error": 214.92002525859698,
+          "covered": true,
+          "width": 1776.1069907128913,
+          "excludes_zero": true
+        },
+        "EMP_ATE": {
+          "estimate": 0.08871614078812919,
+          "truth": 0.07246333333333332,
+          "error": 0.016252807454795862,
+          "covered": true,
+          "width": 0.05104198563108378,
+          "excludes_zero": true
+        }
+      },
+      "roles": {
+        "accuracy": 0.8125,
+        "correct": {
+          "age": true,
+          "education": false,
+          "experience": true,
+          "ethnicity": true,
+          "smsa": false,
+          "region": false,
+          "parttime": true,
+          "prior_earnings": true,
+          "months_unemployed": true,
+          "distance_km": true,
+          "caseworker_note_len": true,
+          "enrolled": true,
+          "certificate": true,
+          "responded": true,
+          "hours_post": true,
+          "earnings_post": true
+        },
+        "adjusts_post_treatment": [],
+        "missing_confounders": [],
+        "adjustment_set_valid": true
+      },
+      "modifiers": {
+        "claimed": [
+          "prior_earnings"
+        ],
+        "tpr": 0.25,
+        "fdr": 0.0,
+        "false": [],
+        "direction_correct": 1.0
+      },
+      "channels_correct": 2,
+      "overlap_named": true,
+      "cate": {
+        "pehe": 1423.0709950564838,
+        "missing": 0,
+        "coverage": 0.49375,
+        "mean_width": 1568.736694634737,
+        "policy_value": 6176.419330174874,
+        "policy_oracle": 6387.666326711153,
+        "policy_random": 3864.7981252865907,
+        "policy_regret_share": 0.08373287055463151
+      }
+    },
+    "H3": {
+      "ran": true,
+      "null": false,
+      "queries": {
+        "ATE": {
+          "estimate": -504.0762188523231,
+          "truth": 4276.475683789893,
+          "error": -4780.551902642216,
+          "covered": true,
+          "width": 11931.305250928453,
+          "excludes_zero": false
+        },
+        "ATT": {
+          "estimate": 2914.652788058756,
+          "truth": 3378.111016556325,
+          "error": -463.45822849756905,
+          "covered": true,
+          "width": 1495.255086829461,
+          "excludes_zero": true
+        },
+        "CATE_educ_lt12": {
+          "estimate": 3825.8534902473216,
+          "truth": 4185.854171639138,
+          "error": -360.00068139181667,
+          "covered": true,
+          "width": 3076.62427465187,
+          "excludes_zero": true
+        },
+        "CATE_educ_ge16": {
+          "estimate": -10681.30153148747,
+          "truth": 5685.593519998855,
+          "error": -16366.895051486325,
+          "covered": true,
+          "width": 37767.13304162561,
+          "excludes_zero": false
+        },
+        "CATE_prior_q1": {
+          "estimate": 2958.8122958261997,
+          "truth": 3267.980390925051,
+          "error": -309.16809509885115,
+          "covered": true,
+          "width": 1029.257273195749,
+          "excludes_zero": true
+        },
+        "CATE_prior_q4": {
+          "estimate": -12612.79163283172,
+          "truth": 6703.338737247708,
+          "error": -19316.13037007943,
+          "covered": true,
+          "width": 39810.1564185934,
+          "excludes_zero": false
+        },
+        "CATE_age_lt25": {
+          "estimate": 2661.619687555227,
+          "truth": 3730.641577626954,
+          "error": -1069.0218900717273,
+          "covered": false,
+          "width": 1754.3532800144112,
+          "excludes_zero": true
+        },
+        "EMP_ATE": {
+          "estimate": 0.05544179846478212,
+          "truth": 0.07248604166666667,
+          "error": -0.017044243201884544,
+          "covered": true,
+          "width": 0.07884011574060473,
+          "excludes_zero": true
+        }
+      },
+      "roles": {
+        "accuracy": 0.875,
+        "correct": {
+          "age": true,
+          "education": true,
+          "experience": true,
+          "ethnicity": true,
+          "smsa": false,
+          "region": false,
+          "parttime": true,
+          "prior_earnings": true,
+          "months_unemployed": true,
+          "distance_km": true,
+          "caseworker_note_len": true,
+          "enrolled": true,
+          "certificate": true,
+          "responded": true,
+          "hours_post": true,
+          "earnings_post": true
+        },
+        "adjusts_post_treatment": [],
+        "missing_confounders": [],
+        "adjustment_set_valid": true
+      },
+      "modifiers": {
+        "claimed": [],
+        "tpr": 0.0,
+        "fdr": 0.0,
+        "false": [],
+        "direction_correct": null
+      },
+      "channels_correct": 1,
+      "overlap_named": true,
+      "cate": {
+        "pehe": 4677.736359969822,
+        "missing": 0,
+        "coverage": 0.88425,
+        "mean_width": 11931.30525092845,
+        "policy_value": 3901.7834432846116,
+        "policy_oracle": 6318.03920752856,
+        "policy_random": 3873.0412037823758,
+        "policy_regret_share": 0.9882444732232102
+      }
+    },
+    "H4": {
+      "ran": true,
+      "null": false,
+      "queries": {
+        "ATE": {
+          "estimate": 4525.061885995022,
+          "truth": 4239.319358758084,
+          "error": 285.74252723693826,
+          "covered": true,
+          "width": 3641.9533187221336,
+          "excludes_zero": true
+        },
+        "ATT": {
+          "estimate": 3567.9211902792654,
+          "truth": 3356.5019701590336,
+          "error": 211.41922012023178,
+          "covered": true,
+          "width": 1100.5684959701475,
+          "excludes_zero": true
+        },
+        "CATE_educ_lt12": {
+          "estimate": 5285.654801416112,
+          "truth": 4168.978504127973,
+          "error": 1116.6762972881388,
+          "covered": true,
+          "width": 4635.098759286595,
+          "excludes_zero": true
+        },
+        "CATE_educ_ge16": {
+          "estimate": 4458.826473756504,
+          "truth": 5617.490137623613,
+          "error": -1158.6636638671089,
+          "covered": true,
+          "width": 9006.658630155114,
+          "excludes_zero": false
+        },
+        "CATE_prior_q1": {
+          "estimate": 3376.3808426755004,
+          "truth": 3238.111087843584,
+          "error": 138.26975483191654,
+          "covered": true,
+          "width": 985.7337387357311,
+          "excludes_zero": true
+        },
+        "CATE_prior_q4": {
+          "estimate": 8162.728837393998,
+          "truth": 6619.802046878841,
+          "error": 1542.9267905151573,
+          "covered": true,
+          "width": 11620.985178713328,
+          "excludes_zero": true
+        },
+        "CATE_age_lt25": {
+          "estimate": 3315.46221300464,
+          "truth": 3709.9502234369793,
+          "error": -394.48801043233925,
+          "covered": true,
+          "width": 2755.4089648203917,
+          "excludes_zero": true
+        },
+        "EMP_ATE": {
+          "estimate": 0.09203687198121321,
+          "truth": 0.07330041666666667,
+          "error": 0.01873645531454654,
+          "covered": true,
+          "width": 0.04534852044255491,
+          "excludes_zero": true
+        }
+      },
+      "roles": {
+        "accuracy": 0.8125,
+        "correct": {
+          "age": true,
+          "education": false,
+          "experience": true,
+          "ethnicity": true,
+          "smsa": false,
+          "region": true,
+          "parttime": false,
+          "prior_earnings": true,
+          "months_unemployed": true,
+          "distance_km": true,
+          "caseworker_note_len": true,
+          "enrolled": true,
+          "certificate": true,
+          "responded": true,
+          "hours_post": true,
+          "earnings_post": true
+        },
+        "adjusts_post_treatment": [],
+        "missing_confounders": [],
+        "adjustment_set_valid": true
+      },
+      "modifiers": {
+        "claimed": [],
+        "tpr": 0.0,
+        "fdr": 0.0,
+        "false": [],
+        "direction_correct": null
+      },
+      "channels_correct": 2,
+      "overlap_named": true,
+      "cate": {
+        "pehe": 2330.681002587024,
+        "missing": 0,
+        "coverage": 0.7565,
+        "mean_width": 3641.953318722133,
+        "policy_value": 3937.8816437366054,
+        "policy_oracle": 6455.56792311597,
+        "policy_random": 3886.429300202203,
+        "policy_regret_share": 0.9799729204662192
+      }
+    },
+    "H5": {
+      "ran": true,
+      "null": false,
+      "queries": {
+        "ATE": {
+          "estimate": 5064.511055863992,
+          "truth": 4283.858949778726,
+          "error": 780.6521060852656,
+          "covered": true,
+          "width": 2229.4111764554145,
+          "excludes_zero": true
+        },
+        "ATT": {
+          "estimate": 3467.2101057264085,
+          "truth": 3341.2128789118656,
+          "error": 125.99722681454296,
+          "covered": true,
+          "width": 1115.8055623237924,
+          "excludes_zero": true
+        },
+        "CATE_educ_lt12": {
+          "estimate": 5561.779558083738,
+          "truth": 4237.394324819222,
+          "error": 1324.3852332645165,
+          "covered": true,
+          "width": 3598.451497349173,
+          "excludes_zero": true
+        },
+        "CATE_educ_ge16": {
+          "estimate": 5004.152893751715,
+          "truth": 5696.936091311018,
+          "error": -692.7831975593026,
+          "covered": true,
+          "width": 2506.0638578319376,
+          "excludes_zero": true
+        },
+        "CATE_prior_q1": {
+          "estimate": 3447.627985218004,
+          "truth": 3243.966294167733,
+          "error": 203.6616910502712,
+          "covered": true,
+          "width": 1025.844281708789,
+          "excludes_zero": true
+        },
+        "CATE_prior_q4": {
+          "estimate": 9045.591105084603,
+          "truth": 6764.670587319712,
+          "error": 2280.920517764891,
+          "covered": true,
+          "width": 6431.7955944692985,
+          "excludes_zero": true
+        },
+        "CATE_age_lt25": {
+          "estimate": 3935.609996147878,
+          "truth": 3684.742950592176,
+          "error": 250.86704555570213,
+          "covered": true,
+          "width": 1881.798550846578,
+          "excludes_zero": true
+        },
+        "EMP_ATE": {
+          "estimate": 0.10815929458077873,
+          "truth": 0.072761875,
+          "error": 0.03539741958077873,
+          "covered": false,
+          "width": 0.03598635239364116,
+          "excludes_zero": true
+        }
+      },
+      "roles": {
+        "accuracy": 0.75,
+        "correct": {
+          "age": false,
+          "education": true,
+          "experience": false,
+          "ethnicity": true,
+          "smsa": false,
+          "region": false,
+          "parttime": true,
+          "prior_earnings": true,
+          "months_unemployed": true,
+          "distance_km": true,
+          "caseworker_note_len": true,
+          "enrolled": true,
+          "certificate": true,
+          "responded": true,
+          "hours_post": true,
+          "earnings_post": true
+        },
+        "adjusts_post_treatment": [],
+        "missing_confounders": [
+          [
+            "age",
+            "experience"
+          ]
+        ],
+        "adjustment_set_valid": false
+      },
+      "modifiers": {
+        "claimed": [],
+        "tpr": 0.0,
+        "fdr": 0.0,
+        "false": [],
+        "direction_correct": null
+      },
+      "channels_correct": 2,
+      "overlap_named": true,
+      "cate": {
+        "pehe": 2060.658656538624,
+        "missing": 0,
+        "coverage": 0.27825,
+        "mean_width": 2229.411176455415,
+        "policy_value": 3776.8458582619432,
+        "policy_oracle": 6330.194309160153,
+        "policy_random": 3858.229928884949,
+        "policy_regret_share": 1.03292283306038
+      }
+    },
+    "H6": {
+      "ran": true,
+      "null": false,
+      "queries": {
+        "ATE": {
+          "estimate": 4192.518304558179,
+          "truth": 4240.067145757995,
+          "error": -47.5488411998158,
+          "covered": true,
+          "width": 3466.7913843836905,
+          "excludes_zero": true
+        },
+        "ATT": {
+          "estimate": 3440.440317899607,
+          "truth": 3347.7114367553295,
+          "error": 92.7288811442777,
+          "covered": true,
+          "width": 1135.2487110496286,
+          "excludes_zero": true
+        },
+        "CATE_educ_lt12": {
+          "estimate": 5566.738480727572,
+          "truth": 4258.754835660313,
+          "error": 1307.9836450672592,
+          "covered": true,
+          "width": 4137.308754875854,
+          "excludes_zero": true
+        },
+        "CATE_educ_ge16": {
+          "estimate": 7112.512174990766,
+          "truth": 5588.8170829982755,
+          "error": 1523.6950919924902,
+          "covered": true,
+          "width": 8425.057156715564,
+          "excludes_zero": true
+        },
+        "CATE_prior_q1": {
+          "estimate": 3019.469079744643,
+          "truth": 3254.4098363603484,
+          "error": -234.9407566157056,
+          "covered": true,
+          "width": 1020.741327200557,
+          "excludes_zero": true
+        },
+        "CATE_prior_q4": {
+          "estimate": 5748.679111856315,
+          "truth": 6589.734784957026,
+          "error": -841.0556731007109,
+          "covered": true,
+          "width": 11072.21664524164,
+          "excludes_zero": true
+        },
+        "CATE_age_lt25": {
+          "estimate": 3512.162035121205,
+          "truth": 3682.8431368944507,
+          "error": -170.6811017732457,
+          "covered": true,
+          "width": 1724.0640324751039,
+          "excludes_zero": true
+        },
+        "EMP_ATE": {
+          "estimate": 0.07039084089721472,
+          "truth": 0.07265145833333332,
+          "error": -0.002260617436118606,
+          "covered": true,
+          "width": 0.05879115068259736,
+          "excludes_zero": true
+        }
+      },
+      "roles": {
+        "accuracy": 0.75,
+        "correct": {
+          "age": true,
+          "education": false,
+          "experience": true,
+          "ethnicity": true,
+          "smsa": false,
+          "region": false,
+          "parttime": true,
+          "prior_earnings": true,
+          "months_unemployed": true,
+          "distance_km": true,
+          "caseworker_note_len": false,
+          "enrolled": true,
+          "certificate": true,
+          "responded": true,
+          "hours_post": true,
+          "earnings_post": true
+        },
+        "adjusts_post_treatment": [],
+        "missing_confounders": [],
+        "adjustment_set_valid": true
+      },
+      "modifiers": {
+        "claimed": [],
+        "tpr": 0.0,
+        "fdr": 0.0,
+        "false": [],
+        "direction_correct": null
+      },
+      "channels_correct": 2,
+      "overlap_named": true,
+      "cate": {
+        "pehe": 1725.982832531991,
+        "missing": 0,
+        "coverage": 0.80025,
+        "mean_width": 3466.7913843836895,
+        "policy_value": 3918.830511897809,
+        "policy_oracle": 6337.303117323513,
+        "policy_random": 3869.6603009484706,
+        "policy_regret_share": 0.9800740161327037
+      }
+    },
+    "N1": {
+      "ran": true,
+      "null": true,
+      "queries": {
+        "ATE": {
+          "estimate": 481.80010363082806,
+          "truth": 0.0,
+          "error": 481.80010363082806,
+          "covered": true,
+          "width": 3340.9650612933533,
+          "excludes_zero": false
+        },
+        "ATT": {
+          "estimate": 52.00773821508424,
+          "truth": 0.0,
+          "error": 52.00773821508424,
+          "covered": true,
+          "width": 1050.69295268503,
+          "excludes_zero": false
+        },
+        "CATE_educ_lt12": {
+          "estimate": 1338.8188329802786,
+          "truth": 0.0,
+          "error": 1338.8188329802786,
+          "covered": true,
+          "width": 3855.766792137731,
+          "excludes_zero": false
+        },
+        "CATE_educ_ge16": {
+          "estimate": 3210.1694520355063,
+          "truth": 0.0,
+          "error": 3210.1694520355063,
+          "covered": true,
+          "width": 7969.039482448084,
+          "excludes_zero": false
+        },
+        "CATE_prior_q1": {
+          "estimate": -169.3551591337088,
+          "truth": 0.0,
+          "error": -169.3551591337088,
+          "covered": true,
+          "width": 1002.9006881581261,
+          "excludes_zero": false
+        },
+        "CATE_prior_q4": {
+          "estimate": 2284.8870344700813,
+          "truth": 0.0,
+          "error": 2284.8870344700813,
+          "covered": true,
+          "width": 10660.835000813297,
+          "excludes_zero": false
+        },
+        "CATE_age_lt25": {
+          "estimate": -655.9336932804057,
+          "truth": 0.0,
+          "error": -655.9336932804057,
+          "covered": true,
+          "width": 2332.6807250835677,
+          "excludes_zero": false
+        },
+        "EMP_ATE": {
+          "estimate": -0.004566407273323606,
+          "truth": 0.0,
+          "error": -0.004566407273323606,
+          "covered": true,
+          "width": 0.06083984614373838,
+          "excludes_zero": false
+        }
+      },
+      "roles": {
+        "accuracy": 0.875,
+        "correct": {
+          "age": true,
+          "education": true,
+          "experience": true,
+          "ethnicity": true,
+          "smsa": false,
+          "region": false,
+          "parttime": true,
+          "prior_earnings": true,
+          "months_unemployed": true,
+          "distance_km": true,
+          "caseworker_note_len": true,
+          "enrolled": true,
+          "certificate": true,
+          "responded": true,
+          "hours_post": true,
+          "earnings_post": true
+        },
+        "adjusts_post_treatment": [],
+        "missing_confounders": [],
+        "adjustment_set_valid": true
+      },
+      "modifiers": {
+        "claimed": [],
+        "false_claims": 0
+      },
+      "channels_correct": 2,
+      "overlap_named": true,
+      "null_false_claims": 0
+    },
+    "N2": {
+      "ran": true,
+      "null": true,
+      "queries": {
+        "ATE": {
+          "estimate": 145.34485405593287,
+          "truth": 0.0,
+          "error": 145.34485405593287,
+          "covered": true,
+          "width": 2666.0227001802377,
+          "excludes_zero": false
+        },
+        "ATT": {
+          "estimate": -252.74956871070654,
+          "truth": 0.0,
+          "error": -252.74956871070654,
+          "covered": true,
+          "width": 1060.0834676806726,
+          "excludes_zero": false
+        },
+        "CATE_educ_lt12": {
+          "estimate": 252.1185524537412,
+          "truth": 0.0,
+          "error": 252.1185524537412,
+          "covered": true,
+          "width": 1945.1741646861317,
+          "excludes_zero": false
+        },
+        "CATE_educ_ge16": {
+          "estimate": -108.91903973790785,
+          "truth": 0.0,
+          "error": -108.91903973790785,
+          "covered": true,
+          "width": 7122.796659472552,
+          "excludes_zero": false
+        },
+        "CATE_prior_q1": {
+          "estimate": -295.10666132067405,
+          "truth": 0.0,
+          "error": -295.10666132067405,
+          "covered": true,
+          "width": 1012.5205929589395,
+          "excludes_zero": false
+        },
+        "CATE_prior_q4": {
+          "estimate": -1138.7218994884574,
+          "truth": 0.0,
+          "error": -1138.7218994884574,
+          "covered": true,
+          "width": 7827.346345624839,
+          "excludes_zero": false
+        },
+        "CATE_age_lt25": {
+          "estimate": -198.83782819155766,
+          "truth": 0.0,
+          "error": -198.83782819155766,
+          "covered": true,
+          "width": 1668.4184710198049,
+          "excludes_zero": false
+        },
+        "EMP_ATE": {
+          "estimate": 0.007307506744960714,
+          "truth": 0.0,
+          "error": 0.007307506744960714,
+          "covered": true,
+          "width": 0.05560628324885794,
+          "excludes_zero": false
+        }
+      },
+      "roles": {
+        "accuracy": 0.875,
+        "correct": {
+          "age": true,
+          "education": true,
+          "experience": true,
+          "ethnicity": true,
+          "smsa": false,
+          "region": false,
+          "parttime": true,
+          "prior_earnings": true,
+          "months_unemployed": true,
+          "distance_km": true,
+          "caseworker_note_len": true,
+          "enrolled": true,
+          "certificate": true,
+          "responded": true,
+          "hours_post": true,
+          "earnings_post": true
+        },
+        "adjusts_post_treatment": [],
+        "missing_confounders": [],
+        "adjustment_set_valid": true
+      },
+      "modifiers": {
+        "claimed": [],
+        "false_claims": 0
+      },
+      "channels_correct": 2,
+      "overlap_named": true,
+      "null_false_claims": 0
+    },
+    "S1": {
+      "ran": true,
+      "null": false,
+      "queries": {
+        "ATE": {
+          "estimate": 8816.04907209471,
+          "truth": 4181.705300331001,
+          "error": 4634.343771763708,
+          "covered": true,
+          "width": 15652.395761040645,
+          "excludes_zero": true
+        },
+        "ATT": {
+          "estimate": 3515.1953733217088,
+          "truth": 3235.884670795821,
+          "error": 279.3107025258878,
+          "covered": true,
+          "width": 3149.233181178435,
+          "excludes_zero": true
+        },
+        "CATE_educ_lt12": {
+          "estimate": 4509.812672101182,
+          "truth": 4161.223565101932,
+          "error": 348.58910699925036,
+          "covered": true,
+          "width": 6855.6583535301925,
+          "excludes_zero": true
+        },
+        "CATE_educ_ge16": {
+          "estimate": 8765.731174893923,
+          "truth": 5646.757496627502,
+          "error": 3118.9736782664204,
+          "covered": true,
+          "width": 6843.3648613321675,
+          "excludes_zero": true
+        },
+        "CATE_prior_q1": {
+          "estimate": 2431.068617921325,
+          "truth": 3158.7948766832633,
+          "error": -727.7262587619384,
+          "covered": true,
+          "width": 2960.2989238094406,
+          "excludes_zero": true
+        },
+        "CATE_prior_q4": {
+          "estimate": 22805.790366737216,
+          "truth": 6609.005556994118,
+          "error": 16196.784809743098,
+          "covered": true,
+          "width": 50844.11496839847,
+          "excludes_zero": false
+        },
+        "CATE_age_lt25": {
+          "estimate": 3778.8030649585658,
+          "truth": 3559.8019527089673,
+          "error": 219.00111224959846,
+          "covered": true,
+          "width": 6724.1744652655025,
+          "excludes_zero": true
+        },
+        "EMP_ATE": {
+          "estimate": 0.057888818852236644,
+          "truth": 0.07313333333333334,
+          "error": -0.015244514481096698,
+          "covered": true,
+          "width": 0.14610621237223811,
+          "excludes_zero": false
+        }
+      },
+      "roles": {
+        "accuracy": 0.4375,
+        "correct": {
+          "age": false,
+          "education": false,
+          "experience": false,
+          "ethnicity": false,
+          "smsa": false,
+          "region": false,
+          "parttime": false,
+          "prior_earnings": true,
+          "months_unemployed": false,
+          "distance_km": false,
+          "caseworker_note_len": true,
+          "enrolled": true,
+          "certificate": true,
+          "responded": true,
+          "hours_post": true,
+          "earnings_post": true
+        },
+        "adjusts_post_treatment": [],
+        "missing_confounders": [
+          [
+            "months_unemployed"
+          ]
+        ],
+        "adjustment_set_valid": false
+      },
+      "modifiers": {
+        "claimed": [
+          "prior_earnings"
+        ],
+        "tpr": 0.25,
+        "fdr": 0.0,
+        "false": [],
+        "direction_correct": 1.0
+      },
+      "channels_correct": 1,
+      "overlap_named": true,
+      "cate": {
+        "pehe": 2361.250673140976,
+        "missing": 0,
+        "coverage": 0.53225,
+        "mean_width": 3780.5625688878135,
+        "policy_value": 6040.906633182333,
+        "policy_oracle": 6239.4001347599005,
+        "policy_random": 3817.211844483657,
+        "policy_regret_share": 0.08194800642642429
+      }
+    },
+    "S2": {
+      "ran": true,
+      "null": false,
+      "queries": {
+        "ATE": {
+          "estimate": 9716.537897822722,
+          "truth": 4278.874050799569,
+          "error": 5437.663847023153,
+          "covered": true,
+          "width": 23730.4551197149,
+          "excludes_zero": false
+        },
+        "ATT": {
+          "estimate": 3238.1103296188344,
+          "truth": 3469.6552254297935,
+          "error": -231.54489581095913,
+          "covered": true,
+          "width": 3189.4631858113894,
+          "excludes_zero": true
+        },
+        "CATE_educ_lt12": {
+          "estimate": 3874.0482063935256,
+          "truth": 4049.7488396428553,
+          "error": -175.7006332493297,
+          "covered": true,
+          "width": 5119.16986336168,
+          "excludes_zero": true
+        },
+        "CATE_educ_ge16": {
+          "estimate": 26550.936797005834,
+          "truth": 5695.447892729938,
+          "error": 20855.488904275895,
+          "covered": true,
+          "width": 72893.70586991604,
+          "excludes_zero": false
+        },
+        "CATE_prior_q1": {
+          "estimate": 2332.4021221782173,
+          "truth": 3303.672063799809,
+          "error": -971.2699416215919,
+          "covered": true,
+          "width": 2877.930199892743,
+          "excludes_zero": true
+        },
+        "CATE_prior_q4": {
+          "estimate": 27409.708744326443,
+          "truth": 6607.488778280478,
+          "error": 20802.219966045966,
+          "covered": true,
+          "width": 78990.65650017626,
+          "excludes_zero": false
+        },
+        "CATE_age_lt25": {
+          "estimate": 3640.284121868942,
+          "truth": 3691.153102485939,
+          "error": -50.868980616997305,
+          "covered": true,
+          "width": 4919.676298622771,
+          "excludes_zero": true
+        },
+        "EMP_ATE": {
+          "estimate": 0.07144293221163342,
+          "truth": 0.07293833333333333,
+          "error": -0.0014954011216999075,
+          "covered": true,
+          "width": 0.10915508886120279,
+          "excludes_zero": true
+        }
+      },
+      "roles": {
+        "accuracy": 0.5625,
+        "correct": {
+          "age": false,
+          "education": false,
+          "experience": false,
+          "ethnicity": true,
+          "smsa": false,
+          "region": false,
+          "parttime": false,
+          "prior_earnings": true,
+          "months_unemployed": false,
+          "distance_km": true,
+          "caseworker_note_len": true,
+          "enrolled": true,
+          "certificate": true,
+          "responded": true,
+          "hours_post": true,
+          "earnings_post": true
+        },
+        "adjusts_post_treatment": [],
+        "missing_confounders": [
+          [
+            "age",
+            "experience"
+          ]
+        ],
+        "adjustment_set_valid": false
+      },
+      "modifiers": {
+        "claimed": [],
+        "tpr": 0.0,
+        "fdr": 0.0,
+        "false": [],
+        "direction_correct": null
+      },
+      "channels_correct": 1,
+      "overlap_named": true,
+      "cate": {
+        "pehe": 6170.787124416564,
+        "missing": 0,
+        "coverage": 0.9995,
+        "mean_width": 23730.4551197149,
+        "policy_value": 3763.6378785292604,
+        "policy_oracle": 6259.620760771658,
+        "policy_random": 3825.7943211254888,
+        "policy_regret_share": 1.0255385682330185
+      }
+    }
+  },
+  "dev": {
+    "ran": true,
+    "null": false,
+    "queries": {
+      "ATE": {
+        "estimate": 4930.189291221964,
+        "truth": 4272.325552190968,
+        "error": 657.8637390309959,
+        "covered": true,
+        "width": 2994.1636361286824,
+        "excludes_zero": true
+      },
+      "ATT": {
+        "estimate": 3773.595343331476,
+        "truth": 3369.9056588761796,
+        "error": 403.68968445529663,
+        "covered": true,
+        "width": 1120.4880768314088,
+        "excludes_zero": true
+      },
+      "CATE_educ_lt12": {
+        "estimate": 7213.868534780016,
+        "truth": 4235.121668179409,
+        "error": 2978.746866600606,
+        "covered": true,
+        "width": 11573.34607402675,
+        "excludes_zero": true
+      },
+      "CATE_educ_ge16": {
+        "estimate": 3782.090890573124,
+        "truth": 5683.125555599033,
+        "error": -1901.034665025909,
+        "covered": true,
+        "width": 3976.5146000847876,
+        "excludes_zero": true
+      },
+      "CATE_prior_q1": {
+        "estimate": 3510.2362165926615,
+        "truth": 3266.1352927447597,
+        "error": 244.10092384790187,
+        "covered": true,
+        "width": 1031.4174820584167,
+        "excludes_zero": true
+      },
+      "CATE_prior_q4": {
+        "estimate": 8347.26247019997,
+        "truth": 6706.947479187574,
+        "error": 1640.3149910123966,
+        "covered": true,
+        "width": 9091.056980362948,
+        "excludes_zero": true
+      },
+      "CATE_age_lt25": {
+        "estimate": 4364.438904050409,
+        "truth": 3673.2099305534593,
+        "error": 691.22897349695,
+        "covered": true,
+        "width": 1847.6958522974842,
+        "excludes_zero": true
+      },
+      "EMP_ATE": {
+        "estimate": 0.098334748543198,
+        "truth": 0.07245291666666667,
+        "error": 0.025881831876531328,
+        "covered": false,
+        "width": 0.04304303472472912,
+        "excludes_zero": true
+      }
+    },
+    "roles": {
+      "accuracy": 0.875,
+      "correct": {
+        "age": true,
+        "education": true,
+        "experience": true,
+        "ethnicity": true,
+        "smsa": false,
+        "region": false,
+        "parttime": true,
+        "prior_earnings": true,
+        "months_unemployed": true,
+        "distance_km": true,
+        "caseworker_note_len": true,
+        "enrolled": true,
+        "certificate": true,
+        "responded": true,
+        "hours_post": true,
+        "earnings_post": true
+      },
+      "adjusts_post_treatment": [],
+      "missing_confounders": [],
+      "adjustment_set_valid": true
+    },
+    "modifiers": {
+      "claimed": [
+        "education"
+      ],
+      "tpr": 0.25,
+      "fdr": 0.0,
+      "false": [],
+      "direction_correct": 1.0
+    },
+    "channels_correct": 2,
+    "overlap_named": true,
+    "cate": {
+      "pehe": 1654.1518087679324,
+      "missing": 0,
+      "coverage": 0.3155,
+      "mean_width": 1325.9144199932884,
+      "policy_value": 4940.441319335075,
+      "policy_oracle": 6325.369812641136,
+      "policy_random": 3872.445109910427,
+      "policy_regret_share": 0.5646029377764002
+    }
+  }
+}

@@ -1,0 +1,212 @@
+[NbConvertApp] Converting notebook docs/book/benchmarks/nonmonotone_spread.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+Traceback (most recent call last):
+  File "/Users/fcela/src/public_github/mboostrs/.venv/bin/jupyter-nbconvert", line 10, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/Users/fcela/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/jupyter_core/application.py", line 284, in launch_instance
+    super().launch_instance(argv=argv, **kwargs)
+  File "/Users/fcela/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/traitlets/config/application.py", line 1082, in launch_instance
+    app.start()
+  File "/Users/fcela/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/nbconvert/nbconvertapp.py", line 420, in start
+    self.convert_notebooks()
+  File "/Users/fcela/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/nbconvert/nbconvertapp.py", line 597, in convert_notebooks
+    self.convert_single_notebook(notebook_filename)
+  File "/Users/fcela/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/nbconvert/nbconvertapp.py", line 563, in convert_single_notebook
+    output, resources = self.export_single_notebook(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fcela/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/nbconvert/nbconvertapp.py", line 487, in export_single_notebook
+    output, resources = self.exporter.from_filename(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fcela/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/nbconvert/exporters/exporter.py", line 201, in from_filename
+    return self.from_file(f, resources=resources, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fcela/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/nbconvert/exporters/exporter.py", line 220, in from_file
+    return self.from_notebook_node(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fcela/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/nbconvert/exporters/notebook.py", line 36, in from_notebook_node
+    nb_copy, resources = super().from_notebook_node(nb, resources, **kw)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fcela/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/nbconvert/exporters/exporter.py", line 154, in from_notebook_node
+    nb_copy, resources = self._preprocess(nb_copy, resources)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fcela/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/nbconvert/exporters/exporter.py", line 353, in _preprocess
+    nbc, resc = preprocessor(nbc, resc)
+                ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fcela/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/nbconvert/preprocessors/base.py", line 48, in __call__
+    return self.preprocess(nb, resources)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fcela/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/nbconvert/preprocessors/execute.py", line 103, in preprocess
+    self.preprocess_cell(cell, resources, index)
+  File "/Users/fcela/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/nbconvert/preprocessors/execute.py", line 124, in preprocess_cell
+    cell = self.execute_cell(cell, index, store_history=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fcela/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fcela/.local/share/uv/python/cpython-3.12.11-macos-aarch64-none/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/Users/fcela/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/Users/fcela/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import mboostrs as mb
+rng = np.random.default_rng(0)
+x1, x2 = rng.uniform(-1, 1, (2, 1000))
+y = np.sin(2*np.pi*x1) + .5*x2 + (.3 + 1.5*np.abs(x1))*rng.normal(size=1000)
+training = pl.DataFrame({"x1": x1, "x2": x2, "y": y})
+
+# This preliminary mean fit exposes the measurement used for nomination.
+mean_fit = mb.gamboost("y ~ bbs(x1, df=4) + bbs(x2, df=4)", training,
+                      control=mb.boost_control(200))
+diagnostic = mb.heteroscedasticity(mean_fit, columns=["x1"])["by_column"]["x1"]
+display(GT(pl.DataFrame([diagnostic])).tab_header(title="Slope and curve evidence for x1",
+    subtitle="Signed slope can cancel; positive held-out curve gain nominates a scale term")
+    .fmt_number(columns=["slope", "se", "t", "spread_ratio", "curve_removed"], decimals=3)
+    .tab_source_note("The slope t is the existing normal-errors diagnostic. Curve gain has squared log-squared-residual units; it is not a p-value."))
+
+------------------
+
+
+[31m---------------------------------------------------------------------------[39m
+[31mColumnNotFoundError[39m                       Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[4][39m[32m, line 13[39m
+[32m      9[39m                       control=mb.boost_control([32m200[39m))
+[32m     10[39m diagnostic = mb.heteroscedasticity(mean_fit, columns=[[33m"x1"[39m])[[33m"by_column"[39m][[33m"x1"[39m]
+[32m     11[39m display(GT(pl.DataFrame([diagnostic])).tab_header(title="Slope and curve evidence for x1",
+[32m     12[39m     subtitle=[33m"Signed slope can cancel; positive held-out curve gain nominates a scale term"[39m)
+[32m---> [39m[32m13[39m     .fmt_number(columns=[[33m"slope"[39m, [33m"se"[39m, [33m"t"[39m, [33m"spread_ratio"[39m, [33m"curve_removed"[39m], decimals=[32m3[39m)
+[32m     14[39m     .tab_source_note([33m"The slope t is the existing normal-errors diagnostic. Curve gain has squared log-squared-residual units; it is not a p-value."[39m))
+
+[36mFile [39m[32m~/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/great_tables/_formats.py:320[39m, in [36mfmt_number[39m[34m(self, columns, rows, decimals, n_sigfig, drop_trailing_zeros, drop_trailing_dec_mark, use_seps, accounting, scale_by, compact, pattern, sep_mark, dec_mark, force_sign, locale)[39m
+[32m    301[39m dec_mark = _get_locale_dec_mark(default=dec_mark, locale=locale)
+[32m    303[39m pf_format = partial(
+[32m    304[39m     fmt_number_context,
+[32m    305[39m     data=[38;5;28mself[39m,
+[32m   (...)[39m[32m    317[39m     pattern=pattern,
+[32m    318[39m )
+[32m--> [39m[32m320[39m [38;5;28;01mreturn[39;00m [30;43mfmt_by_context[39;49m[30;43m([39;49m[30;43mself[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mpf_format[39;49m[30;43m=[39;49m[30;43mpf_format[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mcolumns[39;49m[30;43m=[39;49m[30;43mcolumns[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mrows[39;49m[30;43m=[39;49m[30;43mrows[39;49m[30;43m)[39;49m
+
+[36mFile [39m[32m~/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/great_tables/_formats.py:8470[39m, in [36mfmt_by_context[39m[34m(self, pf_format, columns, rows)[39m
+[32m   8464[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mfmt_by_context[39m(
+[32m   8465[39m     [38;5;28mself[39m: GTSelf,
+[32m   8466[39m     pf_format: Callable[[Any], [38;5;28mstr[39m],
+[32m   8467[39m     columns: SelectExpr,
+[32m   8468[39m     rows: [38;5;28mint[39m | [38;5;28mlist[39m[[38;5;28mint[39m] | [38;5;28;01mNone[39;00m,
+[32m   8469[39m ) -> GTSelf:
+[32m-> [39m[32m8470[39m     [38;5;28;01mreturn[39;00m [30;43mfmt[39;49m[30;43m([39;49m
+[32m   8471[39m [30;43m        [39;49m[30;43mself[39;49m[30;43m,[39;49m
+[32m   8472[39m [30;43m        [39;49m[30;43mfns[39;49m[30;43m=[39;49m[30;43mFormatFns[39;49m[30;43m([39;49m
+[32m   8473[39m [30;43m            [39;49m[30;43mhtml[39;49m[30;43m=[39;49m[30;43mpartial[39;49m[30;43m([39;49m[30;43mpf_format[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mcontext[39;49m[30;43m=[39;49m[30;43m"[39;49m[30;43mhtml[39;49m[30;43m"[39;49m[30;43m)[39;49m[30;43m,[39;49m[30;43m  [39;49m[30;43;03m# type: ignore[39;49;00m
+[32m   8474[39m [30;43m            [39;49m[30;43mlatex[39;49m[30;43m=[39;49m[30;43mpartial[39;49m[30;43m([39;49m[30;43mpf_format[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mcontext[39;49m[30;43m=[39;49m[30;43m"[39;49m[30;43mlatex[39;49m[30;43m"[39;49m[30;43m)[39;49m[30;43m,[39;49m[30;43m  [39;49m[30;43;03m# type: ignore[39;49;00m
+[32m   8475[39m [30;43m            [39;49m[30;43mdefault[39;49m[30;43m=[39;49m[30;43mpartial[39;49m[30;43m([39;49m[30;43mpf_format[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mcontext[39;49m[30;43m=[39;49m[30;43m"[39;49m[30;43mhtml[39;49m[30;43m"[39;49m[30;43m)[39;49m[30;43m,[39;49m[30;43m  [39;49m[30;43;03m# type: ignore[39;49;00m
+[32m   8476[39m [30;43m        [39;49m[30;43m)[39;49m[30;43m,[39;49m
+[32m   8477[39m [30;43m        [39;49m[30;43mcolumns[39;49m[30;43m=[39;49m[30;43mcolumns[39;49m[30;43m,[39;49m
+[32m   8478[39m [30;43m        [39;49m[30;43mrows[39;49m[30;43m=[39;49m[30;43mrows[39;49m[30;43m,[39;49m
+[32m   8479[39m [30;43m    [39;49m[30;43m)[39;49m
+
+[36mFile [39m[32m~/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/great_tables/_formats.py:155[39m, in [36mfmt[39m[34m(self, fns, columns, rows, is_substitution)[39m
+[32m    152[39m row_res = resolve_rows_i([38;5;28mself[39m, rows)
+[32m    153[39m row_pos = [name_pos[[32m1[39m] [38;5;28;01mfor[39;00m name_pos [38;5;129;01min[39;00m row_res]
+[32m--> [39m[32m155[39m col_res = [30;43mresolve_cols_c[39;49m[30;43m([39;49m[30;43mself[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mcolumns[39;49m[30;43m)[39;49m
+[32m    157[39m formatter = FormatInfo(fns, col_res, row_pos)
+[32m    159[39m [38;5;28;01mif[39;00m is_substitution:
+
+[36mFile [39m[32m~/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/great_tables/_locations.py:1020[39m, in [36mresolve_cols_c[39m[34m(data, expr, strict, excl_stub, excl_group, null_means)[39m
+[32m   1011[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mresolve_cols_c[39m(
+[32m   1012[39m     data: GTData,
+[32m   1013[39m     expr: SelectExpr,
+[32m   (...)[39m[32m   1017[39m     null_means: Literal[[33m"[39m[33meverything[39m[33m"[39m, [33m"[39m[33mnothing[39m[33m"[39m] = [33m"[39m[33meverything[39m[33m"[39m,
+[32m   1018[39m ) -> [38;5;28mlist[39m[[38;5;28mstr[39m]:
+[32m   1019[39m [38;5;250m    [39m[33;03m"""Return a list of column names, selected by expr."""[39;00m
+[32m-> [39m[32m1020[39m     selected = [30;43mresolve_cols_i[39;49m[30;43m([39;49m
+[32m   1021[39m [30;43m        [39;49m[30;43mdata[39;49m[30;43m=[39;49m[30;43mdata[39;49m[30;43m,[39;49m
+[32m   1022[39m [30;43m        [39;49m[30;43mexpr[39;49m[30;43m=[39;49m[30;43mexpr[39;49m[30;43m,[39;49m
+[32m   1023[39m [30;43m        [39;49m[30;43mstrict[39;49m[30;43m=[39;49m[30;43mstrict[39;49m[30;43m,[39;49m
+[32m   1024[39m [30;43m        [39;49m[30;43mexcl_stub[39;49m[30;43m=[39;49m[30;43mexcl_stub[39;49m[30;43m,[39;49m
+[32m   1025[39m [30;43m        [39;49m[30;43mexcl_group[39;49m[30;43m=[39;49m[30;43mexcl_group[39;49m[30;43m,[39;49m
+[32m   1026[39m [30;43m        [39;49m[30;43mnull_means[39;49m[30;43m=[39;49m[30;43mnull_means[39;49m[30;43m,[39;49m
+[32m   1027[39m [30;43m    [39;49m[30;43m)[39;49m
+[32m   1028[39m     [38;5;28;01mreturn[39;00m [name_pos[[32m0[39m] [38;5;28;01mfor[39;00m name_pos [38;5;129;01min[39;00m selected]
+
+[36mFile [39m[32m~/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/great_tables/_locations.py:1091[39m, in [36mresolve_cols_i[39m[34m(data, expr, strict, excl_stub, excl_group, null_means)[39m
+[32m   1088[39m     tbl_data = data
+[32m   1089[39m     cols_excl = ()
+[32m-> [39m[32m1091[39m selected = [30;43meval_select[39;49m[30;43m([39;49m[30;43mtbl_data[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mexpr[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mstrict[39;49m[30;43m)[39;49m
+[32m   1092[39m [38;5;28;01mreturn[39;00m [name_pos [38;5;28;01mfor[39;00m name_pos [38;5;129;01min[39;00m selected [38;5;28;01mif[39;00m name_pos[[32m0[39m] [38;5;129;01mnot[39;00m [38;5;129;01min[39;00m cols_excl]
+
+[36mFile [39m[32m~/.local/share/uv/python/cpython-3.12.11-macos-aarch64-none/lib/python3.12/functools.py:912[39m, in [36msingledispatch.<locals>.wrapper[39m[34m(*args, **kw)[39m
+[32m    908[39m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m args:
+[32m    909[39m     [38;5;28;01mraise[39;00m [38;5;167;01mTypeError[39;00m([33mf[39m[33m'[39m[38;5;132;01m{[39;00mfuncname[38;5;132;01m}[39;00m[33m requires at least [39m[33m'[39m
+[32m    910[39m                     [33m'[39m[33m1 positional argument[39m[33m'[39m)
+[32m--> [39m[32m912[39m [38;5;28;01mreturn[39;00m [30;43mdispatch[39;49m[30;43m([39;49m[30;43margs[39;49m[30;43m[[39;49m[30;43m0[39;49m[30;43m][39;49m[30;43m.[39;49m[30;43m__class__[39;49m[30;43m)[39;49m[30;43m([39;49m[30;43m*[39;49m[30;43margs[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43m*[39;49m[30;43m*[39;49m[30;43mkw[39;49m[30;43m)[39;49m
+
+[36mFile [39m[32m~/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/great_tables/_tbl_data.py:431[39m, in [36m_[39m[34m(data, expr, strict)[39m
+[32m    426[39m     _validate_selector_list(all_selectors, **expand_opts)
+[32m    428[39m     [38;5;66;03m# this should be equivalent to reducing selectors using an "or" operator,[39;00m
+[32m    429[39m     [38;5;66;03m# which isn't possible when there are selectors mixed with expressions[39;00m
+[32m    430[39m     [38;5;66;03m# like pl.col("some_col")[39;00m
+[32m--> [39m[32m431[39m     final_columns = [30;43mOrderedSet[39;49m[30;43m([39;49m
+[32m    432[39m [30;43m        [39;49m[30;43mcol_name[39;49m
+[32m    433[39m [30;43m        [39;49m[30;43;01mfor[39;49;00m[30;43m [39;49m[30;43msel[39;49m[30;43m [39;49m[30;43;01min[39;49;00m[30;43m [39;49m[30;43mall_selectors[39;49m
+[32m    434[39m [30;43m        [39;49m[30;43;01mfor[39;49;00m[30;43m [39;49m[30;43mcol_name[39;49m[30;43m [39;49m[30;43;01min[39;49;00m[30;43m [39;49m[30;43mcs[39;49m[30;43m.[39;49m[30;43mexpand_selector[39;49m[30;43m([39;49m[30;43mdata[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43msel[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43m*[39;49m[30;43m*[39;49m[30;43mexpand_opts[39;49m[30;43m)[39;49m
+[32m    435[39m [30;43m    [39;49m[30;43m)[39;49m.as_list()
+[32m    436[39m [38;5;28;01melse[39;00m:
+[32m    437[39m     [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m [38;5;28misinstance[39m(expr, (PlSelectExpr, Expr)):
+
+[36mFile [39m[32m~/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/great_tables/_utils.py:100[39m, in [36mOrderedSet.__init__[39m[34m(self, d)[39m
+[32m     99[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34m__init__[39m([38;5;28mself[39m, d: Iterable[Any] = ()) -> [38;5;28;01mNone[39;00m:
+[32m--> [39m[32m100[39m     [38;5;28mself[39m._d = [30;43mself[39;49m[30;43m.[39;49m[30;43m_create[39;49m[30;43m([39;49m[30;43md[39;49m[30;43m)[39;49m
+
+[36mFile [39m[32m~/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/great_tables/_utils.py:103[39m, in [36mOrderedSet._create[39m[34m(self, d)[39m
+[32m    102[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34m_create[39m([38;5;28mself[39m, d: Iterable[Any]) -> [38;5;28mdict[39m[Any, [38;5;28mbool[39m]:
+[32m--> [39m[32m103[39m     [38;5;28;01mreturn[39;00m [30;43m{[39;49m[30;43mk[39;49m[30;43m:[39;49m[30;43m [39;49m[30;43;01mTrue[39;49;00m[30;43m [39;49m[30;43;01mfor[39;49;00m[30;43m [39;49m[30;43mk[39;49m[30;43m [39;49m[30;43;01min[39;49;00m[30;43m [39;49m[30;43md[39;49m[30;43m}[39;49m
+
+[36mFile [39m[32m~/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/great_tables/_tbl_data.py:434[39m, in [36m<genexpr>[39m[34m(.0)[39m
+[32m    426[39m     _validate_selector_list(all_selectors, **expand_opts)
+[32m    428[39m     [38;5;66;03m# this should be equivalent to reducing selectors using an "or" operator,[39;00m
+[32m    429[39m     [38;5;66;03m# which isn't possible when there are selectors mixed with expressions[39;00m
+[32m    430[39m     [38;5;66;03m# like pl.col("some_col")[39;00m
+[32m    431[39m     final_columns = OrderedSet(
+[32m    432[39m         col_name
+[32m    433[39m         [38;5;28;01mfor[39;00m sel [38;5;129;01min[39;00m all_selectors
+[32m--> [39m[32m434[39m         [38;5;28;01mfor[39;00m col_name [38;5;129;01min[39;00m [30;43mcs[39;49m[30;43m.[39;49m[30;43mexpand_selector[39;49m[30;43m([39;49m[30;43mdata[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43msel[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43m*[39;49m[30;43m*[39;49m[30;43mexpand_opts[39;49m[30;43m)[39;49m
+[32m    435[39m     ).as_list()
+[32m    436[39m [38;5;28;01melse[39;00m:
+[32m    437[39m     [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m [38;5;28misinstance[39m(expr, (PlSelectExpr, Expr)):
+
+[36mFile [39m[32m~/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/polars/selectors.py:187[39m, in [36mexpand_selector[39m[34m(target, selector, strict)[39m
+[32m    184[39m     msg = [33mf[39m[33m"[39m[33mexpected a selector; found [39m[38;5;132;01m{[39;00mselector[38;5;132;01m!r}[39;00m[33m instead.[39m[33m"[39m
+[32m    185[39m     [38;5;28;01mraise[39;00m [38;5;167;01mTypeError[39;00m(msg)
+[32m--> [39m[32m187[39m [38;5;28;01mreturn[39;00m [38;5;28mtuple[39m([30;43mtarget[39;49m[30;43m.[39;49m[30;43mselect[39;49m[30;43m([39;49m[30;43mselector[39;49m[30;43m)[39;49m.collect_schema())
+
+[36mFile [39m[32m~/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/polars/dataframe/frame.py:10416[39m, in [36mDataFrame.select[39m[34m(self, *exprs, **named_exprs)[39m
+[32m  10412[39m 
+[32m  10413[39m         return (
+[32m  10414[39m             self.lazy()
+[32m  10415[39m             .select(*exprs, **named_exprs)
+[32m> [39m[32m10416[39m             .collect(optimizations=QueryOptFlags._eager())
+[32m  10417[39m         )
+
+[36mFile [39m[32m~/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/polars/_utils/deprecation.py:97[39m, in [36mdeprecate_streaming_parameter.<locals>.decorate.<locals>.wrapper[39m[34m(*args, **kwargs)[39m
+[32m     93[39m         kwargs[[33m"[39m[33mengine[39m[33m"[39m] = [33m"[39m[33min-memory[39m[33m"[39m
+[32m     95[39m     [38;5;28;01mdel[39;00m kwargs[[33m"[39m[33mstreaming[39m[33m"[39m]
+[32m---> [39m[32m97[39m [38;5;28;01mreturn[39;00m [30;43mfunction[39;49m[30;43m([39;49m[30;43m*[39;49m[30;43margs[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43m*[39;49m[30;43m*[39;49m[30;43mkwargs[39;49m[30;43m)[39;49m
+
+[36mFile [39m[32m~/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/polars/lazyframe/opt_flags.py:343[39m, in [36mforward_old_opt_flags.<locals>.decorate.<locals>.wrapper[39m[34m(*args, **kwargs)[39m
+[32m    340[39m         optflags = cb(optflags, kwargs.pop(key))  [38;5;66;03m# type: ignore[no-untyped-call,unused-ignore][39;00m
+[32m    342[39m kwargs[[33m"[39m[33moptimizations[39m[33m"[39m] = optflags
+[32m--> [39m[32m343[39m [38;5;28;01mreturn[39;00m [30;43mfunction[39;49m[30;43m([39;49m[30;43m*[39;49m[30;43margs[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43m*[39;49m[30;43m*[39;49m[30;43mkwargs[39;49m[30;43m)[39;49m
+
+[36mFile [39m[32m~/src/public_github/mboostrs/.venv/lib/python3.12/site-packages/polars/lazyframe/frame.py:2630[39m, in [36mLazyFrame.collect[39m[34m(self, type_coercion, predicate_pushdown, projection_pushdown, simplify_expression, slice_pushdown, comm_subplan_elim, comm_subexpr_elim, cluster_with_columns, collapse_joins, no_optimization, engine, background, optimizations, **_kwargs)[39m
+[32m   2626[39m             [38;5;28;01mreturn[39;00m InProcessQuery(ldf.collect_concurrently())
+[32m   2627[39m 
+[32m   2628[39m         [38;5;66;03m# Only for testing purposes[39;00m
+[32m   2629[39m         callback = _kwargs.get([33m"post_opt_callback"[39m, callback)
+[32m-> [39m[32m2630[39m         [38;5;28;01mreturn[39;00m wrap_df(ldf.collect(engine, callback))
+
+[31mColumnNotFoundError[39m: "curve_removed" not found
+

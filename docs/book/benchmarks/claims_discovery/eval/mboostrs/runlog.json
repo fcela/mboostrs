@@ -1,0 +1,121 @@
+{
+  "dev": {
+    "rc": 0,
+    "ok": true,
+    "seconds": 239.73967937502312,
+    "stderr_tail": ""
+  },
+  "H1": {
+    "rc": 0,
+    "ok": true,
+    "seconds": 264.1321528329863,
+    "stderr_tail": ""
+  },
+  "H2": {
+    "rc": "timeout",
+    "ok": false,
+    "seconds": 600.0116501250304,
+    "stderr_tail": "",
+    "note": "re-run alone after a timeout under four parallel grader lanes"
+  },
+  "H3": {
+    "rc": 0,
+    "ok": true,
+    "seconds": 303.4920376249938,
+    "stderr_tail": ""
+  },
+  "H4": {
+    "rc": 0,
+    "ok": true,
+    "seconds": 340.52275050000753,
+    "stderr_tail": ""
+  },
+  "H5": {
+    "rc": 0,
+    "ok": true,
+    "seconds": 299.4547491670237,
+    "stderr_tail": ""
+  },
+  "H6": {
+    "rc": 0,
+    "ok": true,
+    "seconds": 226.42967312497785,
+    "stderr_tail": ""
+  },
+  "H7": {
+    "rc": 0,
+    "ok": true,
+    "seconds": 244.84583458298584,
+    "stderr_tail": ""
+  },
+  "H8": {
+    "rc": 0,
+    "ok": true,
+    "seconds": 249.64195629197638,
+    "stderr_tail": ""
+  },
+  "N1": {
+    "rc": 1,
+    "ok": false,
+    "seconds": 53.833946124999784,
+    "stderr_tail": "Traceback (most recent call last):\n  File \"docs/book/benchmarks/claims_discovery/runs/mboostrs/run.py\", line 796, in <module>\n    main()\n  File \"docs/book/benchmarks/claims_discovery/runs/mboostrs/run.py\", line 544, in main\n    mu_terms, adopted = choose_interactions(\n                        ^^^^^^^^^^^^^^^^^^^^\n  File \"docs/book/benchmarks/claims_discovery/runs/mboostrs/run.py\", line 333, in choose_interactions\n    fit = mb.gamboostLSS({\"mu\": \"y ~ \" + base_mu, \"sigma\": \"y ~ \" + scale}, data=data,\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"python/mboostrs/_model_api.py\", line 66, in wrapper\n    result = fn(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"python/mboostrs/_workflow.py\", line 191, in checked\n    return function(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"python/mboostrs/gamlss.py\", line 6238, in gamboostLSS\n    resp, learners = parse_gamboost_formula(f, env=env)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"python/mboostrs/formula.py\", line 1048, in parse_gamboost_formula\n    response, terms = _split_formula(formula)\n                      ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"python/mboostrs/formula.py\", line 97, in _split_formula\n    raise ValueError(\"formula must have at least one predictor after '~'\")\nValueError: formula must have at least one predictor after '~'\n"
+  },
+  "N2": {
+    "rc": 1,
+    "ok": false,
+    "seconds": 56.483264832990244,
+    "stderr_tail": "Traceback (most recent call last):\n  File \"docs/book/benchmarks/claims_discovery/runs/mboostrs/run.py\", line 796, in <module>\n    main()\n  File \"docs/book/benchmarks/claims_discovery/runs/mboostrs/run.py\", line 544, in main\n    mu_terms, adopted = choose_interactions(\n                        ^^^^^^^^^^^^^^^^^^^^\n  File \"docs/book/benchmarks/claims_discovery/runs/mboostrs/run.py\", line 333, in choose_interactions\n    fit = mb.gamboostLSS({\"mu\": \"y ~ \" + base_mu, \"sigma\": \"y ~ \" + scale}, data=data,\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"python/mboostrs/_model_api.py\", line 66, in wrapper\n    result = fn(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"python/mboostrs/_workflow.py\", line 191, in checked\n    return function(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"python/mboostrs/gamlss.py\", line 6238, in gamboostLSS\n    resp, learners = parse_gamboost_formula(f, env=env)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"python/mboostrs/formula.py\", line 1048, in parse_gamboost_formula\n    response, terms = _split_formula(formula)\n                      ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"python/mboostrs/formula.py\", line 97, in _split_formula\n    raise ValueError(\"formula must have at least one predictor after '~'\")\nValueError: formula must have at least one predictor after '~'\n"
+  },
+  "S1": {
+    "rc": 0,
+    "ok": true,
+    "seconds": 4.49384354200447,
+    "stderr_tail": ""
+  },
+  "S2": {
+    "rc": 0,
+    "ok": true,
+    "seconds": 4.947478000016417,
+    "stderr_tail": ""
+  },
+  "repro_run2": {
+    "rc": 0,
+    "ok": true,
+    "seconds": 208.21572233299958,
+    "stderr_tail": ""
+  },
+  "repro_grader_vs_grader": {
+    "findings_equal": true,
+    "pred_max_abs_diff": 0.0
+  },
+  "repro_grader_vs_analyst": {
+    "findings_equal": true,
+    "pred_max_abs_diff": 8.260059303211165e-14
+  },
+  "followup": {
+    "times": [
+      8.31168612500187,
+      7.915406749991234,
+      7.986573665984906,
+      7.999018375005107,
+      7.808743458008394,
+      7.716748000006191,
+      7.462438125046901,
+      7.746073415968567,
+      8.083250458992552,
+      7.71153183298884
+    ],
+    "errors": []
+  },
+  "large_n": {
+    "seconds": 251.8658136659651,
+    "ok": true,
+    "error": ""
+  },
+  "H2_first_attempt": {
+    "rc": "timeout",
+    "ok": false,
+    "seconds": 600.0179001670331,
+    "stderr_tail": ""
+  }
+}

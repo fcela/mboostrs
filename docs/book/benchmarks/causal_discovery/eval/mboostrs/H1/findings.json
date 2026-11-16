@@ -1,0 +1,93 @@
+{
+  "library": "mboostrs 0.1.3",
+  "effect_queries": {
+    "ATE": {
+      "estimate": 5739.039502641673,
+      "lower90": 4181.2092348620345,
+      "upper90": 7296.869770421311
+    },
+    "ATT": {
+      "estimate": 3404.0233255478083,
+      "lower90": 2943.9701367822177,
+      "upper90": 3864.076514313399
+    },
+    "EMP_ATE": {
+      "estimate": 0.06996840495661646,
+      "lower90": 0.04714612250448337,
+      "upper90": 0.09279068740874956
+    },
+    "CATE_educ_lt12": {
+      "estimate": 1917.1352896111644,
+      "lower90": -2523.8713166907296,
+      "upper90": 6358.141895913059
+    },
+    "CATE_educ_ge16": {
+      "estimate": 9081.194100079569,
+      "lower90": 4534.599183045947,
+      "upper90": 13627.789017113191
+    },
+    "CATE_prior_q1": {
+      "estimate": 3419.377544676802,
+      "lower90": 2915.046658108387,
+      "upper90": 3923.7084312452166
+    },
+    "CATE_prior_q4": {
+      "estimate": 12402.687237679773,
+      "lower90": 6495.723653364471,
+      "upper90": 18309.650821995074
+    },
+    "CATE_age_lt25": {
+      "estimate": 3880.154153790771,
+      "lower90": 2969.7931596558724,
+      "upper90": 4790.515147925669
+    }
+  },
+  "roles": {
+    "age": "confounder",
+    "education": "confounder",
+    "experience": "confounder",
+    "ethnicity": "treatment_only",
+    "smsa": "irrelevant",
+    "region": "treatment_only",
+    "parttime": "irrelevant",
+    "prior_earnings": "confounder",
+    "months_unemployed": "confounder",
+    "distance_km": "instrument",
+    "caseworker_note_len": "irrelevant",
+    "enrolled": "treatment",
+    "certificate": "mediator",
+    "responded": "post_treatment_selection",
+    "hours_post": "mediator",
+    "earnings_post": "outcome"
+  },
+  "adjustment_set": [
+    "age",
+    "education",
+    "prior_earnings",
+    "months_unemployed"
+  ],
+  "effect_modifiers": [],
+  "channels": {
+    "employment": true,
+    "earnings_if_employed": true
+  },
+  "limited_overlap": [
+    {
+      "description": "applicants with prior earnings of at least 39,000 dollars: 3361 of 12000 program-year applicants, 59 of them enrolled (1.8%). Their effects are extrapolated from enrolled applicants with lower prior earnings.",
+      "variable": "prior_earnings"
+    },
+    {
+      "description": "645 of 4000 test applicants (16.1%) have a training-model enrolment probability below 0.02; 100% of them have prior earnings at or above 39,000 dollars. No training applicant with a comparable profile was enrolled often enough to measure their effect.",
+      "variable": "prior_earnings"
+    }
+  ],
+  "warnings": [
+    "treatment (roles): CV mstop 2000 is at the edge of the grid",
+    "outcome among respondents (roles): CV mstop 2000 is at the edge of the grid",
+    "outcome mean among respondents: CV mstop 2000 is at the edge of the grid",
+    "16.1% of test applicants have a propensity below 0.02",
+    "earnings are missing for 15.7% of training applicants; the estimates assume response is unrelated to earnings given enrolment and covariates",
+    "effects above the prior-earnings limit rest on very few enrolled applicants",
+    "1 test applicants have prior earnings outside the training range"
+  ]
+}

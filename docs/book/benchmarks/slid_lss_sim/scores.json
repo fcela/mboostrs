@@ -1,0 +1,129 @@
+{
+ "scorecard_id": "mboostrs-scorecard/2.1",
+ "benchmark_protocol_id": "slid_lss_sim/1",
+ "measured_dimensions": [
+  "D11",
+  "D1a",
+  "D1b",
+  "D5",
+  "D9"
+ ],
+ "dimensions": [
+  {
+   "id": "D1a",
+   "name": "Relationship recovery under a prescribed specification",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "results.parquet",
+    "evidence.json",
+    "answer_key.md"
+   ],
+   "justification": "Track A - prescribed specification. Under the frozen true formula on the sim arm, mboostrs recovers the planted structure on held-out rows: RMSE(mu) 0.056 (SE 0.003) and RMSE(log sigma) 0.014 (0.002), better than the classical GAMLSS-style competitor at 0.123 (0.002) and 0.043 (0.005). The varying x3 slopes are recovered within sampling noise: slope(b) 1.458 (0.030) against the true 1.5, slope(c) -1.035 (0.029) against -1.0, slope(a) 0.000. Anchor 4 is not assigned: the formula handed in was the true one, so no structure was left open and its false-discovery behaviour is not exercised."
+  },
+  {
+   "id": "D1b",
+   "name": "Relationship discovery from data alone",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "results.parquet",
+    "evidence.json",
+    "answer_key.md"
+   ],
+   "justification": "Track B - data and response name only. On the sim arm mb.discover recovers the structure cleanly over 10 seeds: location precision 0.980, recall 1.000 (the x3-by-g interaction is found in 10/10), scale precision 1.000, recall 1.000 (x5), zero false discoveries among the nuisances x6/x7/x8, and zero x5-in-location or x1/x2/x3/g-in-scale traps; Gaussian is inferred in 10/10. But the same path on the real SLID arm returns an empty model (formula 1): family inference picks GammaReg for the positive log(wage) response, the boosted path does not descend, and backward elimination drops every term. Anchor 4 (screening and adoption validated on the benchmark with false-discovery behaviour characterised) is not assigned because the real-data arm collapses."
+  },
+  {
+   "id": "D2",
+   "name": "Causal humility and support",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D3",
+   "name": "Explanation quality",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D4",
+   "name": "Importance quantification",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D5",
+   "name": "Experimental iteration speed",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "results.parquet",
+    "evidence.json"
+   ],
+   "justification": "Sim arm (3000x8): the known-spec LSS fit takes 0.279 s median (p90 0.308 s) and a drop-one-covariate what-if 0.246 s median. SLID (2007x4): 0.119 s and 0.100 s. The discovery path is about an order of magnitude slower (3.34 s sim, 1.84 s SLID per fit; 2.49 s and 1.11 s per what-if). Seconds per fit place this at anchor 3; anchor 4's sub-second refits hold for the known-spec path but the data is smaller than the standardised 50k x 20 session, which is not measured here. One catboost_uncertainty fit recorded 3404 s against a 0.76 s median - a wall-clock artifact of the shared machine - so medians are used."
+  },
+  {
+   "id": "D6",
+   "name": "Robustness across conditions",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D7",
+   "name": "Human-friendliness",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D8",
+   "name": "Agent-friendliness",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D9",
+   "name": "Uncertainty honesty (calibration)",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "results.parquet",
+    "evidence.json"
+   ],
+   "justification": "On the heteroscedastic sim arm the known-spec 95% interval covers 0.9481 (gap -0.19 pp, SE 0.13) and the 80% interval 0.7979 (gap -0.21 pp, SE 0.27); both are within about two standard errors of nominal, and the sigma model is a function of x5, the true scale driver. On SLID the known-spec 95% interval covers 0.9548 (+0.48 pp, SE 0.19) and 80% 0.8119 (+1.19 pp, SE 0.50). Anchor 4 is not assigned: small-n and extrapolation adaptivity are not measured, and the discovery track undercovers badly on SLID (80% interval covers 0.716, gap -8.4 pp) because it returns the intercept-only model."
+  },
+  {
+   "id": "D10",
+   "name": "Reproducibility and auditability",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D11",
+   "name": "Predictive validity",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "results.parquet",
+    "evidence.json",
+    "BENCHMARK_GUIDANCE.md"
+   ],
+   "justification": "Primary loss is the Gaussian CRPS; the best competitor is a per-seed retrospective best, and comparator settings are untuned. On sim mboostrs beats the best competitor in both tracks: known-spec -4.56% (SE 0.16), discovery -4.44% (SE 0.16); RMSE -1.02% (0.14) and -0.99% (0.14). On SLID the known-spec path is at par with the best competitor (+0.58% CRPS, SE 0.13; +0.75% RMSE, SE 0.13), inside the 1% goal, but the discovery path is +34.07% CRPS (0.47) and +28.76% RMSE (0.42) because it returns the intercept-only model. Anchor 4 (competitive across the prespecified task families under matched budgets) is not assigned: the discovery track fails on the real arm."
+  }
+ ],
+ "aggregate": null,
+ "summary_ref": "evidence.json"
+}

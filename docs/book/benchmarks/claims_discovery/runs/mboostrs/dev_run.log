@@ -1,0 +1,9 @@
+[    0.1s] data: 15480 training rows, 5160 test rows, covariates ['longitude', 'latitude', 'housing_median_age', 'log_households', 'log_median_income', 'log_median_house_value', 'log_ave_rooms', 'log_ave_bedrooms', 'log_ave_occup', 'miss_housing_median_age', 'miss_ave_bedrooms'], categorical ['roof_class']
+[    9.8s] scale: bols(log_households)
+[   57.5s] location terms kept after drop-one: ['longitude', 'latitude', 'housing_median_age', 'log_median_income', 'log_ave_occup', 'roof_class']
+[   78.6s] location terms after surface check: ['bbs(housing_median_age, df=4)', 'bbs(log_median_income, df=4)', 'bbs(log_ave_occup, df=4)', 'brandom(roof_class_code, df=4)', 'bspatial(longitude, latitude)'] (joint surface True)
+[  141.5s] location terms after interaction check: ['bbs(housing_median_age, df=4)', 'bbs(log_median_income, df=4)', 'bbs(log_ave_occup, df=4)', 'brandom(roof_class_code, df=4)', 'bspatial(longitude, latitude)', 'bbs(housing_median_age, df=4, by=log_median_income)']; adopted [('housing_median_age', 'log_median_income')]
+[  175.0s] boosting steps by CV: 1600
+[  229.5s] REML refit done
+[  229.6s] predictions written
+[  243.4s] wrote dev_out/findings.json, predictions.parquet, tuning_log.csv, diagnostics.json

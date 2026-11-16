@@ -1,0 +1,36 @@
+stage,config,terms,lam,cv_loss,delta_vs_reference,delta_se,kept,notes
+mean_lam_candidates,"candidate set, lam=1.0",loc|hma|inc|roof|logmhv|loghh|logavocc|logavrooms|logavbeds,1.0,0.232428,,,False,"held-out MSE, 5-fold x 2 repeats"
+mean_lam_candidates,"candidate set, lam=3.0",loc|hma|inc|roof|logmhv|loghh|logavocc|logavrooms|logavbeds,3.0,0.232081,,,False,"held-out MSE, 5-fold x 2 repeats"
+mean_lam_candidates,"candidate set, lam=10.0",loc|hma|inc|roof|logmhv|loghh|logavocc|logavrooms|logavbeds,10.0,0.231939,,,False,"held-out MSE, 5-fold x 2 repeats"
+mean_drop_one,drop loc,hma|inc|roof|logmhv|loghh|logavocc|logavrooms|logavbeds,10.0,0.236321,0.004383,0.0004,True,term kept: removing it raises MSE
+mean_drop_one,drop hma,loc|inc|roof|logmhv|loghh|logavocc|logavrooms|logavbeds,10.0,0.245436,0.013498,0.000782,True,term kept: removing it raises MSE
+mean_drop_one,drop inc,loc|hma|roof|logmhv|loghh|logavocc|logavrooms|logavbeds,10.0,0.246518,0.014579,0.000627,True,term kept: removing it raises MSE
+mean_drop_one,drop roof,loc|hma|inc|logmhv|loghh|logavocc|logavrooms|logavbeds,10.0,0.245643,0.013705,0.000801,True,term kept: removing it raises MSE
+mean_drop_one,drop logmhv,loc|hma|inc|roof|loghh|logavocc|logavrooms|logavbeds,10.0,0.232273,0.000335,0.000181,False,term not needed
+mean_drop_one,drop loghh,loc|hma|inc|roof|logmhv|logavocc|logavrooms|logavbeds,10.0,0.231348,-0.000591,0.000308,False,term not needed
+mean_drop_one,drop logavocc,loc|hma|inc|roof|logmhv|loghh|logavrooms|logavbeds,10.0,0.236117,0.004178,0.000509,True,term kept: removing it raises MSE
+mean_drop_one,drop logavrooms,loc|hma|inc|roof|logmhv|loghh|logavocc|logavbeds,10.0,0.232241,0.000302,0.000212,False,term not needed
+mean_drop_one,drop logavbeds,loc|hma|inc|roof|logmhv|loghh|logavocc|logavrooms,10.0,0.231627,-0.000312,0.000131,False,term not needed
+mean_lam_reduced,"reduced model, lam=0.1",loc|hma|inc|roof|logavocc,0.1,0.231654,,,False,"held-out MSE, 5-fold x 2 repeats"
+mean_lam_reduced,"reduced model, lam=0.3",loc|hma|inc|roof|logavocc,0.3,0.231343,,,False,"held-out MSE, 5-fold x 2 repeats"
+mean_lam_reduced,"reduced model, lam=1.0",loc|hma|inc|roof|logavocc,1.0,0.231168,,,False,"held-out MSE, 5-fold x 2 repeats"
+mean_lam_reduced,"reduced model, lam=3.0",loc|hma|inc|roof|logavocc,3.0,0.231174,,,False,"held-out MSE, 5-fold x 2 repeats"
+mean_lam_reduced,"reduced model, lam=10.0",loc|hma|inc|roof|logavocc,10.0,0.231412,,,False,"held-out MSE, 5-fold x 2 repeats"
+mean_lam_reduced,"reduced model, lam=30.0",loc|hma|inc|roof|logavocc,30.0,0.231941,,,False,"held-out MSE, 5-fold x 2 repeats"
+interaction_screen,residual screen of 9 pairs (see interaction_screen.csv),loc|hma|inc|roof|logavocc,1.0,,,,True,"tensor term on each pair of reduced-model features, fit to out-of-fold residuals; candidates: hma:inc"
+interaction_refit,reduced model + candidate pairs,loc|hma|inc|roof|logavocc + hma:inc,1.0,0.230088,-0.00108,0.000129,True,pairs kept if the joint refit lowers MSE
+spread_lam_candidates,"spread, candidate set, lam=1.0",loc|hma|inc|roof|logmhv|loghh|logavocc|logavrooms|logavbeds,1.0,0.980082,,,False,held-out MSE of log(|residual|+0.01)
+spread_lam_candidates,"spread, candidate set, lam=10.0",loc|hma|inc|roof|logmhv|loghh|logavocc|logavrooms|logavbeds,10.0,0.97787,,,False,held-out MSE of log(|residual|+0.01)
+spread_lam_candidates,"spread, candidate set, lam=100.0",loc|hma|inc|roof|logmhv|loghh|logavocc|logavrooms|logavbeds,100.0,0.976291,,,False,held-out MSE of log(|residual|+0.01)
+spread_lam_candidates,"spread, candidate set, lam=1000.0",loc|hma|inc|roof|logmhv|loghh|logavocc|logavrooms|logavbeds,1000.0,0.975335,,,False,held-out MSE of log(|residual|+0.01)
+spread_drop_one,"spread, drop loc",hma|inc|roof|logmhv|loghh|logavocc|logavrooms|logavbeds,1000.0,0.974993,-0.000342,0.000242,False,spread term not needed
+spread_drop_one,"spread, drop hma",loc|inc|roof|logmhv|loghh|logavocc|logavrooms|logavbeds,1000.0,0.975092,-0.000243,0.000236,False,spread term not needed
+spread_drop_one,"spread, drop inc",loc|hma|roof|logmhv|loghh|logavocc|logavrooms|logavbeds,1000.0,0.975078,-0.000257,0.000113,False,spread term not needed
+spread_drop_one,"spread, drop roof",loc|hma|inc|logmhv|loghh|logavocc|logavrooms|logavbeds,1000.0,0.975002,-0.000333,9.6e-05,False,spread term not needed
+spread_drop_one,"spread, drop logmhv",loc|hma|inc|roof|loghh|logavocc|logavrooms|logavbeds,1000.0,0.974822,-0.000514,0.000186,False,spread term not needed
+spread_drop_one,"spread, drop loghh",loc|hma|inc|roof|logmhv|logavocc|logavrooms|logavbeds,1000.0,1.015913,0.040578,0.003217,True,spread term kept: removing it raises MSE
+spread_drop_one,"spread, drop logavocc",loc|hma|inc|roof|logmhv|loghh|logavrooms|logavbeds,1000.0,0.975276,-5.9e-05,0.000131,False,spread term not needed
+spread_drop_one,"spread, drop logavrooms",loc|hma|inc|roof|logmhv|loghh|logavocc|logavbeds,1000.0,0.975086,-0.000249,6.1e-05,False,spread term not needed
+spread_drop_one,"spread, drop logavbeds",loc|hma|inc|roof|logmhv|loghh|logavocc|logavrooms,1000.0,0.97509,-0.000245,0.000139,False,spread term not needed
+final_mean,final mean model,loc|hma|inc|roof|logavocc + hma:inc,1.0,0.230088,,,True,selected
+final_spread,final spread model,loghh,1000.0,,,,True,selected

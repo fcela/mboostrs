@@ -1,0 +1,23 @@
+[workspace]
+members = ["crates/mboostrs-core", "crates/mboostrs-py", "crates/mboostrs-r"]
+resolver = "2"
+
+[workspace.package]
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/fcela/mboostrs"
+version = "0.2.0"
+
+# Debug builds at opt-level 0 crashed about 7 in 20 runs of a dense
+# bbs(x) %X% bbs(z) fit on arm64 macOS (exit 138, no traceback). opt-level 1
+# ran 20 of 20 clean (#237). Release profiles are unchanged.
+[profile.dev]
+opt-level = 1
+
+[profile.release]
+lto = "fat"
+codegen-units = 1
+# Unwind (not abort): the PyO3 layer converts a Rust panic into a Python
+# exception. With panic="abort" any panic SIGABRTs the host interpreter.
+panic = "unwind"
+strip = true

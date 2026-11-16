@@ -1,0 +1,132 @@
+{
+ "scorecard_id": "mboostrs-scorecard/2.1",
+ "scorecard_sha256": "ccfd33a0b7f9c2cbadc910912551273e66046aaf82c36440d2c286df0cc43fad",
+ "library": "mboostrs",
+ "model_revision": "9266d914aebafc1e5449568ebc32770eafb76ab0",
+ "benchmark_protocol_id": "pair-form-stopping/1",
+ "mode": "automated pipeline",
+ "dimensions": [
+  {
+   "id": "D1a",
+   "name": "Relationship recovery under a prescribed specification",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D1b",
+   "name": "Relationship discovery from data alone",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D2",
+   "name": "Causal humility and support",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D3",
+   "name": "Explanation quality",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D4",
+   "name": "Importance quantification",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D5",
+   "name": "Experimental iteration speed",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D6",
+   "name": "Robustness across conditions",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D7",
+   "name": "Human-friendliness",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D8",
+   "name": "Agent-friendliness",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D9",
+   "name": "Uncertainty honesty (calibration)",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": null
+  },
+  {
+   "id": "D10",
+   "name": "Reproducibility and auditability",
+   "score": 5,
+   "status": "scored",
+   "evidence": [
+    "before.json",
+    "after.json",
+    "PROTOCOL.md"
+   ],
+   "justification": "Artifacts retain code/environment, loaded binary, input/partition and prediction hashes; the recorded runner reproduces the procedure and the reporter verifies paired identities. This is evidence for this instrument, not a general end-user workflow score."
+  },
+  {
+   "id": "D11",
+   "name": "Predictive validity",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "summary.json",
+    "PROTOCOL.md"
+   ],
+   "justification": "All three completed outer task batteries improve over the prespecified Ridge baseline; per-draw changes, spread and failures are reported. Known Gaussian generators, historical comparators and unequal tuning budgets preclude level 4 or an independent confirmation claim."
+  }
+ ],
+ "aggregate": null,
+ "model_identity": {
+  "source_commit": "9266d914aebafc1e5449568ebc32770eafb76ab0",
+  "working_tree": {
+   "dirty": true,
+   "status_digest": "sha256:c39fa8120f29cb9026770b343180ae9d3b9a4d98cc98ebe008cf788a6899aaea",
+   "commit_source": "working directory"
+  },
+  "job_package_hash": "1628a4b7b9c0224b8a57f4b79e9eb55cbebf464f6ea21e49113d1a98a7f74f35"
+ },
+ "assessment_identity": {
+  "reporter_sha256": "a030dc6544ae187e66d1c722bed3d53c05ee1145a8d8cb14c401702938a2f5e1",
+  "artifact_sha256": {
+   "before.json": "905cc27b4480f287143a382db47de3abc39cae2a0e11e070dea3788a26cb3644",
+   "after.json": "615675a26d44acebd2c82a307aa7c4bc3496ae2787cc6c1aff206c8afa8ccb31",
+   "summary.json": "37bd1591202c6741602dc16c965fb7534ff2b200f336569f1d501644d0da0222"
+  },
+  "comparator_sha256": "45e2f6c621007c60e9e60f0298f834f7bdfafc0a620fd857dffa8542c42034fd"
+ }
+}

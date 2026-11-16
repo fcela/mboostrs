@@ -1,0 +1,100 @@
+{
+  "library": "statsmodels 0.15.0",
+  "mean_effects": [
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "drop-one F=519.6 on 6 df, p<1e-300, Holm-adjusted p<1e-300 over 5 terms; average fitted y +0.909 at 1.046 (1st pct) to -0.150 at 8.768 (99th pct)"
+    },
+    {
+      "variable": "housing_median_age",
+      "shape": "threshold_increase",
+      "evidence": "drop-one F=204.8 on 6 df, p=2.8e-252, Holm-adjusted p=1.1e-251 over 5 terms; average fitted y +0.197 at 4 (1st pct) to +0.601 at 52 (99th pct)"
+    },
+    {
+      "variable": "ave_occup",
+      "shape": "increasing",
+      "evidence": "drop-one F=104.3 on 6 df, p=2.5e-129, Holm-adjusted p=5e-129 over 5 terms; average fitted y +0.081 at 1.528 (1st pct) to +0.471 at 5.394 (99th pct)"
+    },
+    {
+      "variable": "roof_class",
+      "shape": "categorical",
+      "evidence": "drop-one F=334.8 on 3 df, p=1.2e-210, Holm-adjusted p=3.7e-210 over 5 terms; average fitted y by level: A +0.218, B +0.194, C +0.366, D +0.574"
+    },
+    {
+      "variable": "longitude",
+      "shape": "spatial",
+      "evidence": "joint longitude-latitude spline surface, drop-one F=27.4 on 16 df, p=6.6e-82, Holm-adjusted p=6.6e-82 over 5 terms; the two coordinates are not separable in the fit"
+    },
+    {
+      "variable": "latitude",
+      "shape": "spatial",
+      "evidence": "joint longitude-latitude spline surface, drop-one F=27.4 on 16 df, p=6.6e-82, Holm-adjusted p=6.6e-82 over 5 terms; the two coordinates are not separable in the fit"
+    }
+  ],
+  "interactions": [],
+  "variance_drivers": [
+    {
+      "variable": "total_rooms",
+      "direction": "decreases_spread",
+      "evidence": "drop-one F=103.7 on 6 df, p=1.8e-128, Holm-adjusted p=3.5e-128 over 2 terms; sigma 0.900 at 163.6 (1st pct) to 0.238 at 1.078e+04 (99th pct)"
+    },
+    {
+      "variable": "ave_rooms",
+      "direction": "increases_spread",
+      "evidence": "drop-one F=12.2 on 6 df, p=9e-14, Holm-adjusted p=9e-14 over 2 terms; sigma 0.294 at 2.553 (1st pct) to 0.445 at 10.35 (99th pct)"
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.477303,
+      "lower90": -0.501728,
+      "upper90": -0.455724
+    },
+    "Q2": {
+      "estimate": 0.440451,
+      "lower90": 0.415836,
+      "upper90": 0.468322
+    },
+    "Q3": {
+      "estimate": 0.299942,
+      "lower90": 0.276745,
+      "upper90": 0.323283
+    },
+    "Q4": {
+      "estimate": 0.355672,
+      "lower90": 0.330708,
+      "upper90": 0.384132
+    },
+    "Q5": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q6": {
+      "estimate": 0.278918,
+      "lower90": 0.25452,
+      "upper90": 0.312934
+    },
+    "Q7": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q8": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    }
+  },
+  "warnings": [
+    "Missing values were imputed by linear regression on the other covariates (training rows only), and a missing indicator is kept in every model. Missing counts: train {'housing_median_age': 1142, 'ave_bedrooms': 179}, test {'housing_median_age': 392, 'ave_bedrooms': 46}.",
+    "Covariate shift between train and test: median_income: standardized mean difference test minus train = +0.44; ave_rooms: standardized mean difference test minus train = +0.15; median_house_value: standardized mean difference test minus train = +0.31",
+    "Rows with housing_median_age missing have fitted y +0.076 (90% CI +0.051 to +0.101) relative to the imputed-value prediction; the imputation does not remove that difference.",
+    "Rows with ave_bedrooms missing have fitted y -0.029 (90% CI -0.087 to +0.029) relative to the imputed-value prediction; the imputation does not remove that difference.",
+    "Effect-query intervals are bootstrap intervals for the selected terms. They do not include uncertainty from variable selection or from tuning.",
+    "Prediction intervals use standardized training residual quantiles. Coverage of the 90% interval on the training rows is 0.900.",
+    "row_id is not used as a covariate. Its correlation with y in the training file is -0.11; it is treated as an identifier, not as a covariate.",
+    "Interactions are screened for pairs of main effects only; no three-way terms are searched."
+  ]
+}

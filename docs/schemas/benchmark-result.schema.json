@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/fcela/mboostrs/docs/schemas/benchmark-result.schema.json",
+  "title": "mboostrs benchmark result",
+  "type": "object",
+  "required": [
+    "schema_version", "kind", "created_at", "manifest_digest", "metadata", "warmup_policy", "results"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "kind": {"const": "mboostrs-benchmark-result"},
+    "created_at": {"type": "string"},
+    "manifest_digest": {"type": "string", "pattern": "^sha256:"},
+    "metadata": {
+      "type": "object",
+      "required": ["commit", "platform", "versions", "compiler_flags", "threads"]
+    },
+    "warmup_policy": {
+      "type": "object",
+      "required": ["iterations", "description"],
+      "properties": {
+        "iterations": {"type": "integer", "minimum": 0},
+        "description": {"type": "string"}
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "scenario_id", "boundary", "thread_mode", "seed", "parameters", "input_digest",
+          "compared_outputs", "tolerance", "correctness", "measurements"
+        ],
+        "properties": {
+          "scenario_id": {"type": "string"},
+          "boundary": {"enum": ["core", "binding", "end_to_end"]},
+          "thread_mode": {"enum": ["single", "default"]},
+          "seed": {"type": "integer"},
+          "parameters": {"type": "object"},
+          "input_digest": {"type": "string", "pattern": "^sha256:"},
+          "compared_outputs": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+          "tolerance": {
+            "type": "object",
+            "required": ["atol", "rtol"],
+            "properties": {
+              "atol": {"type": "number", "minimum": 0},
+              "rtol": {"type": "number", "minimum": 0}
+            }
+          },
+          "correctness": {
+            "type": "object",
+            "required": ["status", "max_absolute_error", "max_normalized_error"],
+            "properties": {"status": {"const": "passed"}}
+          },
+          "measurements": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "implementation", "raw_seconds", "summary", "peak_rss", "allocations",
+                "raw_output_digest", "correctness_digest"
+              ],
+              "properties": {
+                "implementation": {"type": "string"},
+                "raw_seconds": {
+                  "type": "array", "minItems": 3, "items": {"type": "number", "exclusiveMinimum": 0}
+                },
+                "summary": {
+                  "type": "object",
+                  "required": [
+                    "median_seconds", "mad_seconds", "ci95_low_seconds", "ci95_high_seconds",
+                    "min_seconds", "max_seconds"
+                  ]
+                },
+                "peak_rss": {
+                  "type": "object",
+                  "required": ["status", "bytes"],
+                  "properties": {
+                    "status": {"enum": ["measured", "not_measured"]},
+                    "bytes": {"type": ["integer", "null"], "minimum": 0}
+                  }
+                },
+                "allocations": {
+                  "type": "object",
+                  "required": ["status", "count"],
+                  "properties": {
+                    "status": {"enum": ["measured", "not_measured"]},
+                    "count": {"type": ["integer", "null"], "minimum": 0},
+                    "method": {"type": ["string", "null"]},
+                    "scope": {"type": ["string", "null"]}
+                  },
+                  "allOf": [
+                    {
+                      "if": {"properties": {"status": {"const": "measured"}}},
+                      "then": {
+                        "required": ["method", "scope"],
+                        "properties": {
+                          "count": {"type": "integer", "minimum": 0},
+                          "method": {"type": "string", "minLength": 1},
+                          "scope": {"type": "string", "minLength": 1}
+                        }
+                      }
+                    },
+                    {
+                      "if": {"properties": {"status": {"const": "not_measured"}}},
+                      "then": {"properties": {"count": {"type": "null"}}}
+                    }
+                  ]
+                },
+                "raw_output_digest": {"type": "string", "pattern": "^sha256:"},
+                "correctness_digest": {"type": "string", "pattern": "^(mboostrs-(cmp|self)-v1:)?sha256:"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "regressions": {"type": "array"}
+  }
+}

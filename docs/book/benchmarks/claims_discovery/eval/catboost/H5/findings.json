@@ -1,0 +1,117 @@
+{
+  "library": "catboost 1.2.10",
+  "mean_effects": [
+    {
+      "variable": "longitude",
+      "shape": "spatial",
+      "evidence": "held-out permutation: squared-error increase 0.0160 (z=12.9); partial dependence 0.229 at -122.8 to 0.450 at -116.9. Joint permutation of longitude and latitude: increase 0.0124 (z=10.7); the two coordinates are treated as one spatial term."
+    },
+    {
+      "variable": "latitude",
+      "shape": "spatial",
+      "evidence": "held-out permutation: squared-error increase 0.0101 (z=11.2); partial dependence 0.226 at 32.72 to 0.412 at 40.17. Joint permutation of longitude and latitude: increase 0.0124 (z=10.7); the two coordinates are treated as one spatial term."
+    },
+    {
+      "variable": "housing_median_age",
+      "shape": "threshold_increase",
+      "evidence": "held-out permutation: squared-error increase 0.0460 (z=25.7); partial dependence 0.204 at 5 to 0.570 at 52."
+    },
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "held-out permutation: squared-error increase 0.0894 (z=33.4); partial dependence 0.755 at 1.227 to -0.062 at 7.853."
+    },
+    {
+      "variable": "ave_occup",
+      "shape": "increasing",
+      "evidence": "held-out permutation: squared-error increase 0.0120 (z=12.1); partial dependence 0.196 at 1.645 to 0.498 at 4.892."
+    },
+    {
+      "variable": "roof_class",
+      "shape": "categorical",
+      "evidence": "held-out permutation: squared-error increase 0.0410 (z=24.9); level means: A=0.209, B=0.214, C=0.365, D=0.587."
+    }
+  ],
+  "interactions": [
+    {
+      "variables": [
+        "housing_median_age",
+        "median_income"
+      ],
+      "evidence": "Out-of-fold gain 0.965 x 10^-3 in squared error from a depth-4 model of the additive residual on these two covariates (paired t=3.9, threshold 3.0)."
+    }
+  ],
+  "variance_drivers": [
+    {
+      "variable": "total_rooms",
+      "direction": "decreases_spread",
+      "evidence": "held-out permutation on |residual|: increase 0.0017 (z=4.3); mean predicted |residual| 0.366 at 319.6 to 0.313 at 8399 (decreasing)."
+    },
+    {
+      "variable": "total_bedrooms",
+      "direction": "decreases_spread",
+      "evidence": "held-out permutation on |residual|: increase 0.0017 (z=4.2); mean predicted |residual| 0.355 at 72 to 0.306 at 1729 (decreasing)."
+    },
+    {
+      "variable": "population",
+      "direction": "decreases_spread",
+      "evidence": "held-out permutation on |residual|: increase 0.0017 (z=5.1); mean predicted |residual| 0.379 at 174.6 to 0.305 at 4548 (decreasing)."
+    },
+    {
+      "variable": "households",
+      "direction": "decreases_spread",
+      "evidence": "held-out permutation on |residual|: increase 0.0067 (z=7.9); mean predicted |residual| 0.485 at 59.58 to 0.301 at 1574 (decreasing)."
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.401257,
+      "lower90": -0.454706,
+      "upper90": -0.365084
+    },
+    "Q2": {
+      "estimate": 0.369917,
+      "lower90": 0.340588,
+      "upper90": 0.388666
+    },
+    "Q3": {
+      "estimate": 0.221615,
+      "lower90": 0.189369,
+      "upper90": 0.251675
+    },
+    "Q4": {
+      "estimate": 0.377113,
+      "lower90": 0.359046,
+      "upper90": 0.39291
+    },
+    "Q5": {
+      "estimate": -0.018383,
+      "lower90": -0.041557,
+      "upper90": 0.00237
+    },
+    "Q6": {
+      "estimate": 0.298505,
+      "lower90": 0.242445,
+      "upper90": 0.332216
+    },
+    "Q7": {
+      "estimate": -0.003259,
+      "lower90": -0.019572,
+      "upper90": 0.00118
+    },
+    "Q8": {
+      "estimate": -0.042231,
+      "lower90": -0.06639,
+      "upper90": -0.020121
+    }
+  },
+  "warnings": [
+    "Test rows differ from training rows in median_income: standardised mean difference 0.54 (test mean 4.539, training mean 3.648).",
+    "Test rows differ from training rows in median_house_value: standardised mean difference 0.33 (test mean 2.342e+05, training mean 1.977e+05).",
+    "housing_median_age has 1156 missing values in training (7.5%); CatBoost sends missing values to a learned side of each split.",
+    "total_bedrooms has 161 missing values in training (1.0%); CatBoost sends missing values to a learned side of each split.",
+    "ave_bedrooms has 161 missing values in training (1.0%); CatBoost sends missing values to a learned side of each split.",
+    "Effect-query intervals are 5th to 95th percentiles of bootstrap refits with fixed settings; they do not include tuning uncertainty or model bias.",
+    "Prediction intervals are calibrated on training out-of-fold residuals; coverage on a shifted test book is not guaranteed."
+  ]
+}

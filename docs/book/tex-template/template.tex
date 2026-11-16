@@ -1,0 +1,157 @@
+\documentclass[a4paper,11pt,oneside]{book}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathpazo}
+\usepackage{graphicx}
+\DeclareGraphicsRule{.svg}{pdf}{.pdf}{}
+\usepackage{caption}
+\usepackage{fancyhdr}
+\usepackage{natbib}
+\usepackage{xcolor}
+\usepackage{changepage}
+\usepackage{framed}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage{textcomp}
+\DeclareUnicodeCharacter{2713}{\checkmark}
+\DeclareUnicodeCharacter{2191}{\ensuremath{\uparrow}}
+\DeclareUnicodeCharacter{2193}{\ensuremath{\downarrow}}
+\DeclareUnicodeCharacter{226B}{\ensuremath{\gg}}
+\DeclareUnicodeCharacter{221A}{\ensuremath{\surd}}
+\DeclareUnicodeCharacter{1D40}{\ensuremath{^{\top}}}
+\DeclareUnicodeCharacter{2070}{\ensuremath{^{0}}}
+\DeclareUnicodeCharacter{2074}{\ensuremath{^{4}}}
+\DeclareUnicodeCharacter{2075}{\ensuremath{^{5}}}
+\DeclareUnicodeCharacter{2076}{\ensuremath{^{6}}}
+\DeclareUnicodeCharacter{2077}{\ensuremath{^{7}}}
+\DeclareUnicodeCharacter{2078}{\ensuremath{^{8}}}
+\DeclareUnicodeCharacter{2079}{\ensuremath{^{9}}}
+\DeclareUnicodeCharacter{207A}{\ensuremath{^{+}}}
+\DeclareUnicodeCharacter{207B}{\ensuremath{^{-}}}
+\DeclareUnicodeCharacter{1D50}{\ensuremath{^{m}}}
+\DeclareUnicodeCharacter{2080}{\ensuremath{_{0}}}
+\DeclareUnicodeCharacter{2081}{\ensuremath{_{1}}}
+\DeclareUnicodeCharacter{2082}{\ensuremath{_{2}}}
+\DeclareUnicodeCharacter{2083}{\ensuremath{_{3}}}
+\DeclareUnicodeCharacter{2084}{\ensuremath{_{4}}}
+\DeclareUnicodeCharacter{2085}{\ensuremath{_{5}}}
+\DeclareUnicodeCharacter{2086}{\ensuremath{_{6}}}
+\DeclareUnicodeCharacter{2087}{\ensuremath{_{7}}}
+\DeclareUnicodeCharacter{2088}{\ensuremath{_{8}}}
+\DeclareUnicodeCharacter{2089}{\ensuremath{_{9}}}
+\DeclareUnicodeCharacter{208A}{\ensuremath{_{+}}}
+\DeclareUnicodeCharacter{208B}{\ensuremath{_{-}}}
+\DeclareUnicodeCharacter{1D62}{\ensuremath{_{i}}}
+\DeclareUnicodeCharacter{223C}{\ensuremath{\sim}}
+\DeclareUnicodeCharacter{0303}{}
+\DeclareUnicodeCharacter{0304}{}
+\bibliographystyle{abbrvnat}
+
+% Make list items more compact
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep, topsep=0pt}
+
+% code highlighting with minted (requires --shell-escape)
+\usepackage{minted}
+\usepackage{longtable}
+\usepackage{tabularx}
+\setminted{
+    fontfamily=tt,
+    fontsize=\footnotesize,
+    frame=single,
+    rulecolor=\color{black!25},
+    breaklines=true,
+    tabsize=4,
+    bgcolor={gray!5},
+    xleftmargin=2mm,
+    xrightmargin=2mm,
+    autogobble=true,
+}
+
+[- IMPORTS -]
+
+\hypersetup{
+  colorlinks,
+  linkcolor={black},
+  citecolor={black},
+  urlcolor={black}
+}
+
+% Style quotes
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.55}
+\definecolor{quoteshade}{rgb}{0.95, 0.95, 1}
+\renewenvironment{quote}{%
+  \def\FrameCommand{%
+    \hspace{1pt}%
+    {\color{darkblue}\vrule width 2pt}%
+    {\color{quoteshade}\vrule width 4pt}%
+    \colorbox{quoteshade}%
+  }%
+  \MakeFramed {\advance\hsize-\width \FrameRestore}%
+  \noindent\hspace{-8pt}%
+  \begin{adjustwidth}{0pt}{0pt}%
+  \vspace{2pt}\vspace{2pt}%
+}
+{%
+  \vspace{2pt}\end{adjustwidth}\endMakeFramed%
+}
+
+% Make \paragraph a block heading (not run-in)
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+  {3.25ex \@plus1ex \@minus.2ex}%
+  {1.5ex \@plus.2ex}%
+  {\normalfont\normalsize\bfseries}}
+\renewcommand\subparagraph{\@startsection{subparagraph}{5}{\parindent}%
+  {3.25ex \@plus1ex \@minus .2ex}%
+  {1.5ex \@plus.2ex}%
+  {\normalfont\normalsize\bfseries}}
+\makeatother
+
+\title{\Huge \textbf{[-doc.title-]}[# if doc.subtitle #] \\ \huge [-doc.subtitle-][# endif #]}
+\author{\textsc{
+[#- for author in doc.authors #]
+  [#- if not loop.first #] and [# endif #][-author.name-][# if not loop.last and not loop.first #], [# endif #]
+[#- endfor -#]
+}}
+
+\begin{document}
+\sloppy
+
+\frontmatter
+\maketitle
+
+\tableofcontents
+
+\mainmatter
+
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+
+% MyST renders each part heading as \section and each notebook's own
+% title as \subsection; no \chapter command is ever emitted (see
+% render_mermaid.py / the toc structure in myst.yml, which nests files
+% two levels below the book root). The book class's stock "headings"
+% page style only refreshes the running head from \chaptermark, and
+% \tableofcontents seeds that mark to \MakeUppercase{\contentsname}
+% ("CONTENTS") via an explicit \markboth call before \mainmatter even
+% starts. With no \chapter in the document, that mark is never
+% overwritten, so every page prints "CONTENTS". Rewire the header with
+% fancyhdr and make \sectionmark/\subsectionmark (silent no-ops in the
+% stock class) update it, so the header tracks the current part and,
+% within it, the current chapter's own title.
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\slshape\rightmark}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+\renewcommand{\subsectionmark}[1]{\markright{#1}}
+
+[- CONTENT -]
+
+[# if doc.bibliography #]
+\bibliography{[- doc.bibliography | join(", ") -]}
+[# endif #]
+
+\end{document}

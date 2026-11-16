@@ -1,0 +1,321 @@
+{
+  "library_warnings": [
+    "ExtrapolationWarning: 14 fold predictions in this call asked 10 learner(s) to predict outside the range they were fitted on. bbs(l_median_house_value), covariate l_median_house_value: 4 below 10.71 (worst 0.22 training ranges out); bbs(l_total_rooms), covariate l_total_rooms: 2 above 9.5557 (worst 0.13 training ranges out); bbs(l_total_bedrooms), covariate l_total_bedrooms: 2 above 7.80507 (worst 0.13 training ranges out); bbs(l_ave_rooms), covariate l_ave_rooms: 1 below 0.764606 (worst 0.12 training ranges out); bbs(l_households), covariate l_households: 1 above 7.72621 (worst 0.12 training ranges out); bbs(l_population), covariate l_population: 2 above 8.8323 (worst 0.12 training ranges out); bbs(ave_occup), covariate ave_occup: 1 above 5.52754 (worst 0.097 training ranges out); bbs(l_total_rooms), covariate l_total_rooms: 1 below 4.06044 (worst 0.095 training ranges out); bbs(longitude), covariate longitude: 1 below -124.16 and 1 above -115.39 (worst 0.084 training ranges out); bspatial(longitude,latitude), covariate longitude: 1 below -124.16 and 1 above -115.39 (worst 0.084 training ranges out); bbs(l_population), covariate l_population: 1 below 3.71357 (worst 0.079 training ranges out); bbs(l_total_bedrooms), covariate l_total_bedrooms: 1 below 2.63906 (worst 0.075 training ranges out); bbs(latitude), covariate latitude: 2 above 40.99 (worst 0.064 training ranges out); bspatial(longitude,latitude), covariate latitude: 2 above 40.99 (worst 0.064 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.22 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse.",
+    "ExtrapolationWarning: 12 fold predictions in this call asked 9 learner(s) to predict outside the range they were fitted on. bbs(l_median_house_value) [sigma], covariate l_median_house_value: 4 below 10.71 (worst 0.22 training ranges out); bbs(l_total_rooms) [sigma], covariate l_total_rooms: 2 above 9.5557 (worst 0.13 training ranges out); bbs(l_total_bedrooms) [sigma], covariate l_total_bedrooms: 2 above 7.80507 (worst 0.13 training ranges out); bbs(l_ave_rooms) [sigma], covariate l_ave_rooms: 1 below 0.764606 (worst 0.12 training ranges out); bbs(l_households) [sigma], covariate l_households: 1 above 7.72621 (worst 0.12 training ranges out); bbs(l_population) [sigma], covariate l_population: 2 above 8.8323 (worst 0.12 training ranges out); bbs(ave_occup) [sigma], covariate ave_occup: 1 above 5.52754 (worst 0.097 training ranges out); bbs(l_total_rooms) [sigma], covariate l_total_rooms: 1 below 4.06044 (worst 0.095 training ranges out); bbs(longitude) [sigma], covariate longitude: 1 below -124.16 and 1 above -115.39 (worst 0.084 training ranges out); bbs(l_population) [sigma], covariate l_population: 1 below 3.71357 (worst 0.079 training ranges out); bbs(l_total_bedrooms) [sigma], covariate l_total_bedrooms: 1 below 2.63906 (worst 0.075 training ranges out); bbs(latitude) [sigma], covariate latitude: 2 above 40.99 (worst 0.064 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.22 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse.",
+    "ExtrapolationWarning: 10 fold predictions in this call asked 4 learner(s) to predict outside the range they were fitted on. bbs(l_total_rooms) [sigma], covariate l_total_rooms: 2 above 9.5557 (worst 0.13 training ranges out); bbs(l_total_bedrooms) [sigma], covariate l_total_bedrooms: 2 above 7.80507 (worst 0.13 training ranges out); bbs(l_households) [sigma], covariate l_households: 1 above 7.72621 (worst 0.12 training ranges out); bbs(l_population) [sigma], covariate l_population: 2 above 8.8323 (worst 0.12 training ranges out); bbs(l_total_rooms) [sigma], covariate l_total_rooms: 1 below 4.06044 (worst 0.095 training ranges out); bbs(l_population) [sigma], covariate l_population: 1 below 3.71357 (worst 0.079 training ranges out); bbs(l_total_bedrooms) [sigma], covariate l_total_bedrooms: 1 below 2.63906 (worst 0.075 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.13 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse.",
+    "ExtrapolationWarning: 8 fold predictions in this call asked 1 learner(s) to predict outside the range they were fitted on. bbs(l_population) [sigma], covariate l_population: 2 above 8.8323 (worst 0.12 training ranges out); bbs(l_population) [sigma], covariate l_population: 1 below 3.71357 (worst 0.079 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.12 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse.",
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(l_median_income) [mu], covariate l_median_income: 8 below -0.180204 and 107 above 2.41195 (worst 0.2 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.2 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse.",
+    "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(l_population) [sigma], covariate l_population: 11 below 3.2581 and 2 above 9.49183 (worst 0.19 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.19 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse."
+  ],
+  "mean_shapes": [
+    {
+      "variables": [
+        "housing_median_age"
+      ],
+      "shape": "increasing",
+      "range": 0.6470689015254064,
+      "first": 0.1428028370546492,
+      "last": 0.7478738180665296
+    },
+    {
+      "variables": [
+        "l_median_income"
+      ],
+      "shape": "decreasing",
+      "range": 0.9633266210424527,
+      "first": 0.7514664381630259,
+      "last": -0.21186018287942673
+    }
+  ],
+  "spread_shapes": [
+    {
+      "variable": "l_population",
+      "shape": "decreasing",
+      "range": 1.261736533705689
+    }
+  ],
+  "queries": {
+    "Q1": {
+      "estimate": -0.46854997975845963,
+      "lower90": -0.5229643707208761,
+      "upper90": -0.4245648680083182
+    },
+    "Q2": {
+      "estimate": 0.6156377034395996,
+      "lower90": 0.5365218500944573,
+      "upper90": 0.7380514379851861
+    },
+    "Q3": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0,
+      "note": "ave_occup not in the adopted mean model"
+    },
+    "Q4": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0,
+      "note": "roof_class not in the adopted mean model"
+    },
+    "Q5": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0,
+      "note": "ave_rooms not in the adopted mean model"
+    },
+    "Q6": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0,
+      "note": "latitude/longitude not in the adopted mean model"
+    },
+    "Q7": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0,
+      "note": "households not in the adopted mean model"
+    },
+    "Q8": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0,
+      "note": "median_house_value not in the adopted mean model"
+    }
+  },
+  "holdout": {
+    "holdout_overall_coverage": 0.9416666666666667,
+    "holdout_mean_width": 1.6201399534985177,
+    "holdout_subgroup_coverage": {
+      "households_quartile_1": {
+        "coverage": 0.8666666666666667,
+        "n": 30
+      },
+      "households_quartile_2": {
+        "coverage": 0.9666666666666667,
+        "n": 30
+      },
+      "households_quartile_3": {
+        "coverage": 0.9666666666666667,
+        "n": 30
+      },
+      "households_quartile_4": {
+        "coverage": 0.9666666666666667,
+        "n": 30
+      },
+      "roof_A": {
+        "coverage": 0.9629629629629629,
+        "n": 27
+      },
+      "roof_B": {
+        "coverage": 0.9523809523809523,
+        "n": 42
+      },
+      "roof_C": {
+        "coverage": 0.9354838709677419,
+        "n": 31
+      },
+      "roof_D": {
+        "coverage": 0.9,
+        "n": 20
+      },
+      "income_tercile_1": {
+        "coverage": 0.875,
+        "n": 40
+      },
+      "income_tercile_2": {
+        "coverage": 1.0,
+        "n": 40
+      },
+      "income_tercile_3": {
+        "coverage": 0.95,
+        "n": 40
+      }
+    }
+  },
+  "forward_mean": [
+    {
+      "round": 1,
+      "best": "housing_median_age",
+      "change": -0.08164306670566668,
+      "change_se": 0.015048352007709282,
+      "adopted": true,
+      "all": {
+        "longitude": [
+          -0.002567615447945759,
+          0.0029129026405293012
+        ],
+        "latitude": [
+          -0.008610529861766691,
+          0.002706743220337618
+        ],
+        "housing_median_age": [
+          -0.08164306670566668,
+          0.015048352007709282
+        ],
+        "l_total_rooms": [
+          -0.03258800993641736,
+          0.011910888346372384
+        ],
+        "l_total_bedrooms": [
+          -0.019313690914398607,
+          0.012594331961614165
+        ],
+        "l_population": [
+          -0.011473900633013234,
+          0.011812273846162038
+        ],
+        "l_households": [
+          -0.015361946956369776,
+          0.011370531971152835
+        ],
+        "l_median_income": [
+          -0.07245778630401795,
+          0.009172851862194692
+        ],
+        "l_median_house_value": [
+          -0.023339104080438322,
+          0.004872795075976201
+        ],
+        "l_ave_rooms": [
+          -0.03774865399345556,
+          0.010468327816691065
+        ],
+        "l_ave_bedrooms": [
+          0.0007024910459856315,
+          0.005016434595048473
+        ],
+        "ave_occup": [
+          -0.017987541595100576,
+          0.006819226660785919
+        ],
+        "roof_class": [
+          -0.037087883169140745,
+          0.010796941799658146
+        ],
+        "spatial(longitude, latitude)": [
+          -0.012320346269499571,
+          0.003011901126858236
+        ]
+      }
+    },
+    {
+      "round": 2,
+      "best": "l_median_income",
+      "change": -0.057855328901806974,
+      "change_se": 0.00949463491081875,
+      "adopted": true,
+      "all": {
+        "longitude": [
+          0.0012704008706966863,
+          0.0022576308112976303
+        ],
+        "latitude": [
+          -0.005413762909140973,
+          0.003320670813071371
+        ],
+        "l_total_rooms": [
+          -0.009641131740235231,
+          0.005380634144810895
+        ],
+        "l_total_bedrooms": [
+          -0.008203415005673342,
+          0.006238009899059443
+        ],
+        "l_population": [
+          -0.010179261567091036,
+          0.007853711619426624
+        ],
+        "l_households": [
+          -0.004821107322377227,
+          0.006062715216446912
+        ],
+        "l_median_income": [
+          -0.057855328901806974,
+          0.00949463491081875
+        ],
+        "l_median_house_value": [
+          -0.032513019646026264,
+          0.0062605684777256665
+        ],
+        "l_ave_rooms": [
+          -0.022333933267356942,
+          0.007202921733697637
+        ],
+        "l_ave_bedrooms": [
+          0.0012443020438793195,
+          0.0034767861912602866
+        ],
+        "ave_occup": [
+          -0.009750149129759189,
+          0.004016974472363551
+        ],
+        "roof_class": [
+          -0.005254109001718021,
+          0.0023231105425965647
+        ],
+        "spatial(longitude, latitude)": [
+          -0.00731213128311109,
+          0.0031254595830644354
+        ]
+      }
+    },
+    {
+      "round": 3,
+      "best": "l_population",
+      "change": -0.006703264171694506,
+      "change_se": 0.006565970621929362,
+      "adopted": false,
+      "all": {
+        "longitude": [
+          0.0038481870822581754,
+          0.0019035290350357475
+        ],
+        "latitude": [
+          -0.0011685556738249558,
+          0.000847007629785967
+        ],
+        "l_total_rooms": [
+          -0.003617218791855309,
+          0.004513794820317671
+        ],
+        "l_total_bedrooms": [
+          -0.003912312654445832,
+          0.004499089481570419
+        ],
+        "l_population": [
+          -0.006703264171694506,
+          0.006565970621929362
+        ],
+        "l_households": [
+          -0.0011837726114325708,
+          0.004790816782384348
+        ],
+        "l_median_house_value": [
+          -0.00039946711334398755,
+          0.0012355824352628657
+        ],
+        "l_ave_rooms": [
+          0.0004973935782464078,
+          0.0013846434170019823
+        ],
+        "l_ave_bedrooms": [
+          0.0020752861199949957,
+          0.0035449547337459905
+        ],
+        "ave_occup": [
+          -0.0033250846715829063,
+          0.003245814728408157
+        ],
+        "roof_class": [
+          -0.006255453511060688,
+          0.0029369994047583987
+        ],
+        "spatial(longitude, latitude)": [
+          0.0013582961683238082,
+          0.0004611048668350743
+        ]
+      }
+    }
+  ],
+  "elapsed_s": 6.8
+}

@@ -1,0 +1,50 @@
+dataset,library,call,n_rows,seconds
+main,numpy penalized spline + Huber IRLS,additive model: GCV lambda (2 passes) + Huber fit,2000,0.0702
+main,"numpy score test (Freedman-Lane, 499 permutations)",21 reduced Huber fits for main effects,2000,0.5503
+main,"numpy score test (Freedman-Lane, 499 permutations)",190 pair tensor-block tests,2000,0.4153
+main,numpy penalized spline + Huber IRLS,final mean model with selected pairs,2000,0.0372
+main,numpy penalized spline (log squared residual) + score tests,scale model GCV + 21 variance tests,2000,0.0782
+main,numpy penalized spline + Huber IRLS,10-fold OOF fold 1: final and additive fits,1800,0.0498
+main,numpy penalized spline + Huber IRLS,10-fold OOF fold 2: final and additive fits,1800,0.044
+main,numpy penalized spline + Huber IRLS,10-fold OOF fold 3: final and additive fits,1800,0.0506
+main,numpy penalized spline + Huber IRLS,10-fold OOF fold 4: final and additive fits,1800,0.0451
+main,numpy penalized spline + Huber IRLS,10-fold OOF fold 5: final and additive fits,1800,0.0434
+main,numpy penalized spline + Huber IRLS,10-fold OOF fold 6: final and additive fits,1800,0.0451
+main,numpy penalized spline + Huber IRLS,10-fold OOF fold 7: final and additive fits,1800,0.0444
+main,numpy penalized spline + Huber IRLS,10-fold OOF fold 8: final and additive fits,1800,0.054
+main,numpy penalized spline + Huber IRLS,10-fold OOF fold 9: final and additive fits,1800,0.0522
+main,numpy penalized spline + Huber IRLS,10-fold OOF fold 10: final and additive fits,1800,0.0606
+main,"numpy bootstrap (row resampling, warm-start Huber)",300 bootstrap refits for effect intervals,2000,3.1098
+small,numpy penalized spline + Huber IRLS,additive model: GCV lambda (2 passes) + Huber fit,200,0.0486
+small,"numpy score test (Freedman-Lane, 499 permutations)",21 reduced Huber fits for main effects,200,0.2398
+small,"numpy score test (Freedman-Lane, 499 permutations)",190 pair tensor-block tests,200,0.1426
+small,numpy penalized spline + Huber IRLS,final mean model with selected pairs,200,0.0198
+small,numpy penalized spline (log squared residual) + score tests,scale model GCV + 21 variance tests,200,0.0293
+small,numpy penalized spline + Huber IRLS,10-fold OOF fold 1: final and additive fits,180,0.0253
+small,numpy penalized spline + Huber IRLS,10-fold OOF fold 2: final and additive fits,180,0.023
+small,numpy penalized spline + Huber IRLS,10-fold OOF fold 3: final and additive fits,180,0.0174
+small,numpy penalized spline + Huber IRLS,10-fold OOF fold 4: final and additive fits,180,0.0281
+small,numpy penalized spline + Huber IRLS,10-fold OOF fold 5: final and additive fits,180,0.0231
+small,numpy penalized spline + Huber IRLS,10-fold OOF fold 6: final and additive fits,180,0.0278
+small,numpy penalized spline + Huber IRLS,10-fold OOF fold 7: final and additive fits,180,0.022
+small,numpy penalized spline + Huber IRLS,10-fold OOF fold 8: final and additive fits,180,0.03
+small,numpy penalized spline + Huber IRLS,10-fold OOF fold 9: final and additive fits,180,0.0232
+small,numpy penalized spline + Huber IRLS,10-fold OOF fold 10: final and additive fits,180,0.0232
+small,"numpy bootstrap (row resampling, warm-start Huber)",300 bootstrap refits for effect intervals,200,1.0032
+messy,sklearn IterativeImputer,"fit_transform train x1-x20, transform test",2000,0.1052
+messy,numpy penalized spline + Huber IRLS,additive model: GCV lambda (2 passes) + Huber fit,2000,0.0587
+messy,"numpy score test (Freedman-Lane, 499 permutations)",21 reduced Huber fits for main effects,2000,0.4039
+messy,"numpy score test (Freedman-Lane, 499 permutations)",190 pair tensor-block tests,2000,0.4179
+messy,numpy penalized spline + Huber IRLS,final mean model with selected pairs,2000,0.0246
+messy,numpy penalized spline (log squared residual) + score tests,scale model GCV + 21 variance tests,2000,0.0834
+messy,numpy penalized spline + Huber IRLS,10-fold OOF fold 1: final and additive fits,1800,0.031
+messy,numpy penalized spline + Huber IRLS,10-fold OOF fold 2: final and additive fits,1800,0.0314
+messy,numpy penalized spline + Huber IRLS,10-fold OOF fold 3: final and additive fits,1800,0.0332
+messy,numpy penalized spline + Huber IRLS,10-fold OOF fold 4: final and additive fits,1800,0.031
+messy,numpy penalized spline + Huber IRLS,10-fold OOF fold 5: final and additive fits,1800,0.0302
+messy,numpy penalized spline + Huber IRLS,10-fold OOF fold 6: final and additive fits,1800,0.0327
+messy,numpy penalized spline + Huber IRLS,10-fold OOF fold 7: final and additive fits,1800,0.0313
+messy,numpy penalized spline + Huber IRLS,10-fold OOF fold 8: final and additive fits,1800,0.0306
+messy,numpy penalized spline + Huber IRLS,10-fold OOF fold 9: final and additive fits,1800,0.0332
+messy,numpy penalized spline + Huber IRLS,10-fold OOF fold 10: final and additive fits,1800,0.0326
+messy,"numpy bootstrap (row resampling, warm-start Huber)",300 bootstrap refits for effect intervals,2000,3.1021

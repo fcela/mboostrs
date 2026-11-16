@@ -1,0 +1,3500 @@
+{
+  "dataset_name": "desk_ops_exceptions",
+  "challenge": "cos_unseen_2026-09-29_teaching_twin",
+  "dataset": {
+    "train_rows_raw": 3136,
+    "test_rows_raw": 784,
+    "train_rows": 2647,
+    "test_rows": 650,
+    "n_train_desks": 112,
+    "n_test_desks": 28,
+    "response": "exception_count",
+    "predictors": [
+      "quarter",
+      "region",
+      "aum_bn",
+      "complexity_score",
+      "overnight_frac",
+      "vendor_n",
+      "has_legacy_stack",
+      "staff_per_bn",
+      "vol_proxy",
+      "rate_env",
+      "util_ratio"
+    ],
+    "proxies_held_out_of_baseline": [
+      "aum_bn_proxy",
+      "complexity_z"
+    ],
+    "split": "group holdout by desk_id; CV folds grouped by desk_id",
+    "na_note": "overnight_frac MAR; primary path uses complete-case drop_nulls because na_action=omit mismatches residual length vs full data in interaction_screen/pair_candidates/tune"
+  },
+  "library_map": {
+    "tree_probe": "pre_scan engine=native",
+    "neural_probe": "pre_scan engine=neural",
+    "dual_probe": "pre_scan engine=dual",
+    "interaction_screen": "after retained fit",
+    "pair_candidates": "surrogate=dual pre_scan report dict (not True; #31)",
+    "tree_candidate": "multiway tree over accepted columns"
+  },
+  "probes": {
+    "native": {
+      "status": "screening_only",
+      "seconds": 0.3954401249065995,
+      "summary": {
+        "engine": "native",
+        "priority": [
+          "aum_bn",
+          "complexity_score",
+          "complexity_z",
+          "aum_bn_proxy",
+          "desk_id",
+          "vendor_n",
+          "region",
+          "util_ratio",
+          "overnight_frac",
+          "quarter",
+          "rate_env",
+          "staff_per_bn",
+          "has_legacy_stack",
+          "vol_proxy"
+        ],
+        "pair_sources": [],
+        "interpretation": "screening proposal, not adoption"
+      },
+      "report": {
+        "engine": "native",
+        "fits": 1,
+        "training_r2": 0.9470011303634814,
+        "priority": [
+          "aum_bn",
+          "complexity_score",
+          "complexity_z",
+          "aum_bn_proxy",
+          "desk_id",
+          "vendor_n",
+          "region",
+          "util_ratio",
+          "overnight_frac",
+          "quarter",
+          "rate_env",
+          "staff_per_bn",
+          "has_legacy_stack",
+          "vol_proxy"
+        ],
+        "columns": [
+          {
+            "column": "desk_id",
+            "importance_fraction": 0.06451050928256154,
+            "neural_importance_fraction": null,
+            "reason": "smooth partial dependence",
+            "shapes": [
+              "bols",
+              "bbs"
+            ],
+            "partial_linear_r2": 0.059390623695200796,
+            "partial_curve_r2": 0.6802643387872154,
+            "partial_step_share": 0.3066090533318703
+          },
+          {
+            "column": "quarter",
+            "importance_fraction": 0.01982985776780312,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.6107944704644785,
+            "partial_curve_r2": 0.9815528060906347,
+            "partial_step_share": 0.13641153865460132
+          },
+          {
+            "column": "region",
+            "importance_fraction": 0.041775904116903864,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.24236733604462443,
+            "partial_curve_r2": 0.0,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "aum_bn",
+            "importance_fraction": 0.8716497202235128,
+            "neural_importance_fraction": null,
+            "reason": "linear partial dependence",
+            "shapes": [
+              "bols",
+              "bbs"
+            ],
+            "partial_linear_r2": 0.9096195678417233,
+            "partial_curve_r2": 0.7044150645047647,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "complexity_score",
+            "importance_fraction": 0.3551576009501617,
+            "neural_importance_fraction": null,
+            "reason": "step partial dependence",
+            "shapes": [
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.35940356365031473,
+            "partial_curve_r2": 0.8107995746423664,
+            "partial_step_share": 1.031463088321602
+          },
+          {
+            "column": "overnight_frac",
+            "importance_fraction": 0.027353640742296265,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.5581599505240172,
+            "partial_curve_r2": 0.7601123595331621,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "vendor_n",
+            "importance_fraction": 0.051611103601957226,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.7803561843010585,
+            "partial_curve_r2": 0.9909963650094623,
+            "partial_step_share": 0.9615993924959153
+          },
+          {
+            "column": "has_legacy_stack",
+            "importance_fraction": 0.00746796610926323,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 1.0000000000000013,
+            "partial_curve_r2": 1.0,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "staff_per_bn",
+            "importance_fraction": 0.008107008476335428,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.2852347062910826,
+            "partial_curve_r2": 0.7722949515072486,
+            "partial_step_share": 0.39702173042698763
+          },
+          {
+            "column": "vol_proxy",
+            "importance_fraction": 0.005558053158315798,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.007926443973428406,
+            "partial_curve_r2": 0.23455222726645064,
+            "partial_step_share": 1.229508864136581
+          },
+          {
+            "column": "rate_env",
+            "importance_fraction": 0.012097855297105553,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.025263992665313303,
+            "partial_curve_r2": 0.3132291444105636,
+            "partial_step_share": 0.4117316886139856
+          },
+          {
+            "column": "util_ratio",
+            "importance_fraction": 0.03157893526883099,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.019548407415173788,
+            "partial_curve_r2": 0.5303817678554428,
+            "partial_step_share": 0.41820617119589687
+          },
+          {
+            "column": "aum_bn_proxy",
+            "importance_fraction": 0.2317208265602893,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.003997508484270443,
+            "partial_curve_r2": 0.2902096377425878,
+            "partial_step_share": 1.4178625481696205
+          },
+          {
+            "column": "complexity_z",
+            "importance_fraction": 0.32701460231585255,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.13858539198717262,
+            "partial_curve_r2": 0.5788881699380866,
+            "partial_step_share": 0.8860179982572197
+          }
+        ],
+        "pairs": [
+          {
+            "left": "aum_bn",
+            "right": "complexity_score",
+            "h2": 0.5926486761159174,
+            "variance": 4.455254187225733
+          },
+          {
+            "left": "aum_bn",
+            "right": "complexity_z",
+            "h2": 0.6142414799419436,
+            "variance": 2.6706851280671278
+          },
+          {
+            "left": "complexity_z",
+            "right": "aum_bn_proxy",
+            "h2": 0.4568158708567634,
+            "variance": 1.0237416797467493
+          },
+          {
+            "left": "complexity_score",
+            "right": "complexity_z",
+            "h2": 0.08670275662921534,
+            "variance": 0.24821676721500513
+          },
+          {
+            "left": "aum_bn_proxy",
+            "right": "vendor_n",
+            "h2": 0.21381767961073284,
+            "variance": 0.15240006328497863
+          },
+          {
+            "left": "complexity_score",
+            "right": "desk_id",
+            "h2": 0.045589110266735976,
+            "variance": 0.08906302556585402
+          },
+          {
+            "left": "complexity_z",
+            "right": "desk_id",
+            "h2": 0.07543387702261381,
+            "variance": 0.0536230801803046
+          },
+          {
+            "left": "complexity_score",
+            "right": "aum_bn_proxy",
+            "h2": 0.02869026831672592,
+            "variance": 0.0530528439765569
+          },
+          {
+            "left": "aum_bn",
+            "right": "region",
+            "h2": 0.1033843223774214,
+            "variance": 0.05019116348154317
+          },
+          {
+            "left": "aum_bn",
+            "right": "desk_id",
+            "h2": 0.07431157917320695,
+            "variance": 0.041776661354620055
+          },
+          {
+            "left": "aum_bn_proxy",
+            "right": "region",
+            "h2": 0.07250504049015298,
+            "variance": 0.03948053673883133
+          },
+          {
+            "left": "aum_bn",
+            "right": "aum_bn_proxy",
+            "h2": 0.08939258888766433,
+            "variance": 0.028958133778533332
+          }
+        ],
+        "pair_sources": [],
+        "neural_failure": null
+      }
+    },
+    "neural": {
+      "status": "screening_only",
+      "seconds": 0.47061879211105406,
+      "summary": {
+        "engine": "neural",
+        "priority": [
+          "aum_bn",
+          "aum_bn_proxy",
+          "complexity_z",
+          "complexity_score",
+          "vendor_n",
+          "has_legacy_stack",
+          "region",
+          "desk_id",
+          "staff_per_bn",
+          "quarter",
+          "util_ratio",
+          "overnight_frac",
+          "vol_proxy",
+          "rate_env"
+        ],
+        "pair_sources": [],
+        "interpretation": "screening proposal, not adoption"
+      },
+      "report": {
+        "engine": "neural",
+        "fits": 1,
+        "training_r2": 0.6009737318216422,
+        "priority": [
+          "aum_bn",
+          "aum_bn_proxy",
+          "complexity_z",
+          "complexity_score",
+          "vendor_n",
+          "has_legacy_stack",
+          "region",
+          "desk_id",
+          "staff_per_bn",
+          "quarter",
+          "util_ratio",
+          "overnight_frac",
+          "vol_proxy",
+          "rate_env"
+        ],
+        "columns": [
+          {
+            "column": "desk_id",
+            "importance_fraction": 0.04636250030562117,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.990666606892201,
+            "partial_curve_r2": 0.9953934457274719,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "quarter",
+            "importance_fraction": 0.0216259474373951,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.9993393027453067,
+            "partial_curve_r2": 0.9976098611210862,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "region",
+            "importance_fraction": 0.0548076085089354,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.4247222775044351,
+            "partial_curve_r2": 1.0,
+            "partial_step_share": 0.6085989964375154
+          },
+          {
+            "column": "aum_bn",
+            "importance_fraction": 0.4894741406054579,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.9988158106749614,
+            "partial_curve_r2": 0.9248450266268061,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "complexity_score",
+            "importance_fraction": 0.2647463741921654,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.588302661755471,
+            "partial_curve_r2": 0.9919769266324201,
+            "partial_step_share": 0.8568879596945452
+          },
+          {
+            "column": "overnight_frac",
+            "importance_fraction": 0.014019457508578026,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.9096372008494353,
+            "partial_curve_r2": 0.942271126951523,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "vendor_n",
+            "importance_fraction": 0.09046742323393187,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.8180630932040593,
+            "partial_curve_r2": 0.9784899575043917,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "has_legacy_stack",
+            "importance_fraction": 0.08625707325826382,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.9999999999999991,
+            "partial_curve_r2": 1.0,
+            "partial_step_share": 1.0
+          },
+          {
+            "column": "staff_per_bn",
+            "importance_fraction": 0.036207636802466525,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.9888997365432729,
+            "partial_curve_r2": 0.9945435174021943,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "vol_proxy",
+            "importance_fraction": 0.008453299592415142,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.9422086066765317,
+            "partial_curve_r2": 0.9147044093220428,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "rate_env",
+            "importance_fraction": -0.020620815536025905,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.8402888100623195,
+            "partial_curve_r2": 0.8680798068669806,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "util_ratio",
+            "importance_fraction": 0.014475810987368831,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.9986326938100597,
+            "partial_curve_r2": 0.9962751515862831,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "aum_bn_proxy",
+            "importance_fraction": 0.35813006114490975,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.5095107110614586,
+            "partial_curve_r2": 0.46525880021783594,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "complexity_z",
+            "importance_fraction": 0.27507167341760774,
+            "neural_importance_fraction": null,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.3583007815052921,
+            "partial_curve_r2": 0.9778479160800919,
+            "partial_step_share": 0.527910825723062
+          }
+        ],
+        "pairs": [
+          {
+            "left": "aum_bn",
+            "right": "complexity_score",
+            "h2": 0.12877140900477504,
+            "variance": 0.24105245982162732
+          },
+          {
+            "left": "complexity_z",
+            "right": "complexity_score",
+            "h2": 0.1105868193074263,
+            "variance": 0.19067527466453704
+          },
+          {
+            "left": "complexity_score",
+            "right": "has_legacy_stack",
+            "h2": 0.0440972446052349,
+            "variance": 0.0835543612288965
+          },
+          {
+            "left": "complexity_z",
+            "right": "has_legacy_stack",
+            "h2": 0.45921432173794097,
+            "variance": 0.06411251405227038
+          },
+          {
+            "left": "complexity_score",
+            "right": "desk_id",
+            "h2": 0.030919063566353436,
+            "variance": 0.06335561048311873
+          },
+          {
+            "left": "complexity_z",
+            "right": "region",
+            "h2": 0.2852306677100763,
+            "variance": 0.057574601415110484
+          },
+          {
+            "left": "complexity_score",
+            "right": "region",
+            "h2": 0.02454751709334231,
+            "variance": 0.056032661887455565
+          },
+          {
+            "left": "aum_bn",
+            "right": "complexity_z",
+            "h2": 0.08520149779971253,
+            "variance": 0.04466555692110421
+          },
+          {
+            "left": "aum_bn_proxy",
+            "right": "complexity_z",
+            "h2": 0.7277735580673711,
+            "variance": 0.03498821467508228
+          },
+          {
+            "left": "region",
+            "right": "desk_id",
+            "h2": 0.06959247361310959,
+            "variance": 0.026914739065676544
+          },
+          {
+            "left": "vendor_n",
+            "right": "region",
+            "h2": 0.12725071755749298,
+            "variance": 0.02580588976090426
+          },
+          {
+            "left": "has_legacy_stack",
+            "right": "region",
+            "h2": 0.10068407805567778,
+            "variance": 0.025497583714581256
+          }
+        ],
+        "pair_sources": [],
+        "neural_failure": null
+      }
+    },
+    "dual": {
+      "status": "screening_only",
+      "seconds": 0.5174671248532832,
+      "summary": {
+        "engine": "dual",
+        "priority": [
+          "aum_bn",
+          "aum_bn_proxy",
+          "complexity_score",
+          "complexity_z",
+          "vendor_n",
+          "has_legacy_stack",
+          "desk_id",
+          "region",
+          "staff_per_bn",
+          "util_ratio",
+          "overnight_frac",
+          "quarter",
+          "rate_env",
+          "vol_proxy"
+        ],
+        "pair_sources": [
+          {
+            "indices": [
+              0,
+              2
+            ],
+            "neural": [
+              2,
+              0,
+              0.06959247361310959,
+              0.026914739065676544
+            ],
+            "sources": [
+              "neural"
+            ],
+            "tree": [
+              0,
+              2,
+              0.00092141546568609,
+              0.00038122349177245997
+            ],
+            "columns": [
+              "desk_id",
+              "region"
+            ]
+          },
+          {
+            "indices": [
+              0,
+              3
+            ],
+            "neural": [
+              3,
+              0,
+              0.0020073536967761254,
+              0.0011907546498929865
+            ],
+            "sources": [
+              "tree"
+            ],
+            "tree": [
+              3,
+              0,
+              0.07431157917320695,
+              0.041776661354620055
+            ],
+            "columns": [
+              "desk_id",
+              "aum_bn"
+            ]
+          },
+          {
+            "indices": [
+              0,
+              4
+            ],
+            "neural": [
+              4,
+              0,
+              0.030919063566353436,
+              0.06335561048311873
+            ],
+            "sources": [],
+            "tree": [
+              4,
+              0,
+              0.045589110266735976,
+              0.08906302556585402
+            ],
+            "columns": [
+              "desk_id",
+              "complexity_score"
+            ]
+          },
+          {
+            "indices": [
+              0,
+              6
+            ],
+            "neural": [
+              6,
+              0,
+              0.03095819182762572,
+              0.007180948290336921
+            ],
+            "sources": [],
+            "tree": [
+              0,
+              6,
+              0.014276645273827144,
+              0.004741466623932151
+            ],
+            "columns": [
+              "desk_id",
+              "vendor_n"
+            ]
+          },
+          {
+            "indices": [
+              0,
+              7
+            ],
+            "neural": [
+              7,
+              0,
+              0.0554330280060881,
+              0.016610279236533767
+            ],
+            "sources": [
+              "neural"
+            ],
+            "tree": null,
+            "columns": [
+              "desk_id",
+              "has_legacy_stack"
+            ]
+          },
+          {
+            "indices": [
+              0,
+              11
+            ],
+            "neural": null,
+            "sources": [],
+            "tree": [
+              0,
+              11,
+              0.04791311213238099,
+              0.014734126728272073
+            ],
+            "columns": [
+              "desk_id",
+              "util_ratio"
+            ]
+          },
+          {
+            "indices": [
+              0,
+              12
+            ],
+            "neural": [
+              12,
+              0,
+              0.011808149153251053,
+              0.0020796036213216965
+            ],
+            "sources": [],
+            "tree": [
+              12,
+              0,
+              0.016479542394160714,
+              0.010447436194060035
+            ],
+            "columns": [
+              "desk_id",
+              "aum_bn_proxy"
+            ]
+          },
+          {
+            "indices": [
+              0,
+              13
+            ],
+            "neural": [
+              13,
+              0,
+              0.12760697706942592,
+              0.01988999580812266
+            ],
+            "sources": [
+              "tree",
+              "neural"
+            ],
+            "tree": [
+              13,
+              0,
+              0.07543387702261381,
+              0.0536230801803046
+            ],
+            "columns": [
+              "desk_id",
+              "complexity_z"
+            ]
+          }
+        ],
+        "interpretation": "screening proposal, not adoption"
+      },
+      "report": {
+        "engine": "dual",
+        "fits": 2,
+        "training_r2": 0.9470011303634814,
+        "priority": [
+          "aum_bn",
+          "aum_bn_proxy",
+          "complexity_score",
+          "complexity_z",
+          "vendor_n",
+          "has_legacy_stack",
+          "desk_id",
+          "region",
+          "staff_per_bn",
+          "util_ratio",
+          "overnight_frac",
+          "quarter",
+          "rate_env",
+          "vol_proxy"
+        ],
+        "columns": [
+          {
+            "column": "desk_id",
+            "importance_fraction": 0.06451050928256154,
+            "neural_importance_fraction": 0.04636250030562117,
+            "reason": "smooth partial dependence",
+            "shapes": [
+              "bols",
+              "bbs"
+            ],
+            "partial_linear_r2": 0.059390623695200796,
+            "partial_curve_r2": 0.6802643387872154,
+            "partial_step_share": 0.3066090533318703
+          },
+          {
+            "column": "quarter",
+            "importance_fraction": 0.01982985776780312,
+            "neural_importance_fraction": 0.0216259474373951,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.6107944704644785,
+            "partial_curve_r2": 0.9815528060906347,
+            "partial_step_share": 0.13641153865460132
+          },
+          {
+            "column": "region",
+            "importance_fraction": 0.041775904116903864,
+            "neural_importance_fraction": 0.0548076085089354,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.24236733604462443,
+            "partial_curve_r2": 0.0,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "aum_bn",
+            "importance_fraction": 0.8716497202235128,
+            "neural_importance_fraction": 0.4894741406054579,
+            "reason": "linear partial dependence",
+            "shapes": [
+              "bols",
+              "bbs"
+            ],
+            "partial_linear_r2": 0.9096195678417233,
+            "partial_curve_r2": 0.7044150645047647,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "complexity_score",
+            "importance_fraction": 0.3551576009501617,
+            "neural_importance_fraction": 0.2647463741921654,
+            "reason": "step partial dependence",
+            "shapes": [
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.35940356365031473,
+            "partial_curve_r2": 0.8107995746423664,
+            "partial_step_share": 1.031463088321602
+          },
+          {
+            "column": "overnight_frac",
+            "importance_fraction": 0.027353640742296265,
+            "neural_importance_fraction": 0.014019457508578026,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.5581599505240172,
+            "partial_curve_r2": 0.7601123595331621,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "vendor_n",
+            "importance_fraction": 0.051611103601957226,
+            "neural_importance_fraction": 0.09046742323393187,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.7803561843010585,
+            "partial_curve_r2": 0.9909963650094623,
+            "partial_step_share": 0.9615993924959153
+          },
+          {
+            "column": "has_legacy_stack",
+            "importance_fraction": 0.00746796610926323,
+            "neural_importance_fraction": 0.08625707325826382,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 1.0000000000000013,
+            "partial_curve_r2": 1.0,
+            "partial_step_share": 0.0
+          },
+          {
+            "column": "staff_per_bn",
+            "importance_fraction": 0.008107008476335428,
+            "neural_importance_fraction": 0.036207636802466525,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.2852347062910826,
+            "partial_curve_r2": 0.7722949515072486,
+            "partial_step_share": 0.39702173042698763
+          },
+          {
+            "column": "vol_proxy",
+            "importance_fraction": 0.005558053158315798,
+            "neural_importance_fraction": 0.008453299592415142,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.007926443973428406,
+            "partial_curve_r2": 0.23455222726645064,
+            "partial_step_share": 1.229508864136581
+          },
+          {
+            "column": "rate_env",
+            "importance_fraction": 0.012097855297105553,
+            "neural_importance_fraction": -0.020620815536025905,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.025263992665313303,
+            "partial_curve_r2": 0.3132291444105636,
+            "partial_step_share": 0.4117316886139856
+          },
+          {
+            "column": "util_ratio",
+            "importance_fraction": 0.03157893526883099,
+            "neural_importance_fraction": 0.014475810987368831,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.019548407415173788,
+            "partial_curve_r2": 0.5303817678554428,
+            "partial_step_share": 0.41820617119589687
+          },
+          {
+            "column": "aum_bn_proxy",
+            "importance_fraction": 0.2317208265602893,
+            "neural_importance_fraction": 0.35813006114490975,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.003997508484270443,
+            "partial_curve_r2": 0.2902096377425878,
+            "partial_step_share": 1.4178625481696205
+          },
+          {
+            "column": "complexity_z",
+            "importance_fraction": 0.32701460231585255,
+            "neural_importance_fraction": 0.27507167341760774,
+            "reason": "ambiguous",
+            "shapes": [
+              "bols",
+              "bbs",
+              "btree"
+            ],
+            "partial_linear_r2": 0.13858539198717262,
+            "partial_curve_r2": 0.5788881699380866,
+            "partial_step_share": 0.8860179982572197
+          }
+        ],
+        "pairs": [
+          {
+            "left": "aum_bn",
+            "right": "complexity_score",
+            "h2": 0.5926486761159174,
+            "variance": 4.455254187225733
+          },
+          {
+            "left": "aum_bn",
+            "right": "complexity_z",
+            "h2": 0.6142414799419436,
+            "variance": 2.6706851280671278
+          },
+          {
+            "left": "complexity_z",
+            "right": "aum_bn_proxy",
+            "h2": 0.4568158708567634,
+            "variance": 1.0237416797467493
+          },
+          {
+            "left": "complexity_score",
+            "right": "complexity_z",
+            "h2": 0.08670275662921534,
+            "variance": 0.24821676721500513
+          },
+          {
+            "left": "aum_bn_proxy",
+            "right": "vendor_n",
+            "h2": 0.21381767961073284,
+            "variance": 0.15240006328497863
+          },
+          {
+            "left": "complexity_score",
+            "right": "desk_id",
+            "h2": 0.045589110266735976,
+            "variance": 0.08906302556585402
+          },
+          {
+            "left": "complexity_score",
+            "right": "has_legacy_stack",
+            "h2": 0.0440972446052349,
+            "variance": 0.0835543612288965
+          },
+          {
+            "left": "complexity_z",
+            "right": "has_legacy_stack",
+            "h2": 0.45921432173794097,
+            "variance": 0.06411251405227038
+          },
+          {
+            "left": "complexity_z",
+            "right": "region",
+            "h2": 0.2852306677100763,
+            "variance": 0.057574601415110484
+          },
+          {
+            "left": "complexity_score",
+            "right": "region",
+            "h2": 0.02454751709334231,
+            "variance": 0.056032661887455565
+          },
+          {
+            "left": "complexity_z",
+            "right": "desk_id",
+            "h2": 0.07543387702261381,
+            "variance": 0.0536230801803046
+          },
+          {
+            "left": "complexity_score",
+            "right": "aum_bn_proxy",
+            "h2": 0.02869026831672592,
+            "variance": 0.0530528439765569
+          }
+        ],
+        "pair_sources": [
+          {
+            "columns": [
+              "desk_id",
+              "region"
+            ],
+            "sources": [
+              "neural"
+            ],
+            "tree": [
+              0,
+              2,
+              0.00092141546568609,
+              0.00038122349177245997
+            ],
+            "neural": [
+              2,
+              0,
+              0.06959247361310959,
+              0.026914739065676544
+            ]
+          },
+          {
+            "columns": [
+              "desk_id",
+              "aum_bn"
+            ],
+            "sources": [
+              "tree"
+            ],
+            "tree": [
+              3,
+              0,
+              0.07431157917320695,
+              0.041776661354620055
+            ],
+            "neural": [
+              3,
+              0,
+              0.0020073536967761254,
+              0.0011907546498929865
+            ]
+          },
+          {
+            "columns": [
+              "desk_id",
+              "complexity_score"
+            ],
+            "sources": [],
+            "tree": [
+              4,
+              0,
+              0.045589110266735976,
+              0.08906302556585402
+            ],
+            "neural": [
+              4,
+              0,
+              0.030919063566353436,
+              0.06335561048311873
+            ]
+          },
+          {
+            "columns": [
+              "desk_id",
+              "vendor_n"
+            ],
+            "sources": [],
+            "tree": [
+              0,
+              6,
+              0.014276645273827144,
+              0.004741466623932151
+            ],
+            "neural": [
+              6,
+              0,
+              0.03095819182762572,
+              0.007180948290336921
+            ]
+          },
+          {
+            "columns": [
+              "desk_id",
+              "has_legacy_stack"
+            ],
+            "sources": [
+              "neural"
+            ],
+            "tree": null,
+            "neural": [
+              7,
+              0,
+              0.0554330280060881,
+              0.016610279236533767
+            ]
+          },
+          {
+            "columns": [
+              "desk_id",
+              "util_ratio"
+            ],
+            "sources": [],
+            "tree": [
+              0,
+              11,
+              0.04791311213238099,
+              0.014734126728272073
+            ],
+            "neural": null
+          },
+          {
+            "columns": [
+              "desk_id",
+              "aum_bn_proxy"
+            ],
+            "sources": [],
+            "tree": [
+              12,
+              0,
+              0.016479542394160714,
+              0.010447436194060035
+            ],
+            "neural": [
+              12,
+              0,
+              0.011808149153251053,
+              0.0020796036213216965
+            ]
+          },
+          {
+            "columns": [
+              "desk_id",
+              "complexity_z"
+            ],
+            "sources": [
+              "tree",
+              "neural"
+            ],
+            "tree": [
+              13,
+              0,
+              0.07543387702261381,
+              0.0536230801803046
+            ],
+            "neural": [
+              13,
+              0,
+              0.12760697706942592,
+              0.01988999580812266
+            ]
+          },
+          {
+            "columns": [
+              "region",
+              "aum_bn"
+            ],
+            "sources": [
+              "tree"
+            ],
+            "tree": [
+              3,
+              2,
+              0.1033843223774214,
+              0.05019116348154317
+            ],
+            "neural": [
+              3,
+              2,
+              0.01460427483629626,
+              0.013923748600259297
+            ]
+          },
+          {
+            "columns": [
+              "region",
+              "complexity_score"
+            ],
+            "sources": [],
+            "tree": [
+              4,
+              2,
+              0.014884245838922313,
+              0.02028339629749319
+            ],
+            "neural": [
+              4,
+              2,
+              0.02454751709334231,
+              0.056032661887455565
+            ]
+          },
+          {
+            "columns": [
+              "region",
+              "vendor_n"
+            ],
+            "sources": [
+              "neural"
+            ],
+            "tree": [
+              6,
+              2,
+              0.01555791879400204,
+              0.0035952001631037993
+            ],
+            "neural": [
+              6,
+              2,
+              0.12725071755749298,
+              0.02580588976090426
+            ]
+          },
+          {
+            "columns": [
+              "region",
+              "has_legacy_stack"
+            ],
+            "sources": [
+              "neural"
+            ],
+            "tree": null,
+            "neural": [
+              7,
+              2,
+              0.10068407805567778,
+              0.025497583714581256
+            ]
+          }
+        ],
+        "neural_failure": null
+      }
+    }
+  },
+  "reasoning": {
+    "symptoms_vs_causes": [
+      {
+        "finding": "count response with mean<<variance on train (skewed / overdispersed)",
+        "reading": "Exception counts are non-negative integers with a long right tail. Start Poisson mean model; switch to NBinomial if family risk clears two-SE vs Poisson. Hetero LSS is a later nomination.",
+        "would_count_against": "Poisson CV risk competitive with NBinomial after structure terms."
+      },
+      {
+        "finding": "complexity / overnight / legacy / vendors / staffing are ops drivers",
+        "reading": "More complex books, overnight settlement share, legacy stacks, and more vendors should raise exceptions; higher staff_per_bn should lower them. Treat aum_bn_proxy and complexity_z as collinear red herrings \u2014 keep one of each sibling pair.",
+        "would_count_against": "Proxy siblings clear two-SE after the primary is in the model."
+      },
+      {
+        "finding": "panel dependence by desk_id; MAR on overnight_frac",
+        "reading": "Grouped folds by desk_id. na_action=omit so MAR overnight rows do not crash fits; do not impute inside the sealed challenge.",
+        "would_count_against": "Ignoring groups improves apparent CV but collapses on desk holdout."
+      },
+      {
+        "finding": "non-product interaction likely (threshold / hinge / intensity)",
+        "reading": "Expect complexity\u00d7overnight or legacy\u00d7vendors style effects that are not pure products. Use interaction_screen + pair_candidates + tree_candidate; measure with two-SE compare.",
+        "would_count_against": "Nominated pairs fail two-SE against additive baseline."
+      }
+    ],
+    "priority": [
+      "aum_bn",
+      "aum_bn_proxy",
+      "complexity_score",
+      "complexity_z",
+      "vendor_n",
+      "has_legacy_stack",
+      "desk_id",
+      "region",
+      "staff_per_bn",
+      "util_ratio",
+      "overnight_frac",
+      "quarter",
+      "rate_env",
+      "vol_proxy"
+    ],
+    "shape_hints": {
+      "desk_id": {
+        "reason": "smooth partial dependence",
+        "shapes": [
+          "bols",
+          "bbs"
+        ],
+        "partial_linear_r2": 0.059390623695200796,
+        "partial_curve_r2": 0.6802643387872154,
+        "partial_step_share": 0.3066090533318703
+      },
+      "quarter": {
+        "reason": "ambiguous",
+        "shapes": [
+          "bols",
+          "bbs",
+          "btree"
+        ],
+        "partial_linear_r2": 0.6107944704644785,
+        "partial_curve_r2": 0.9815528060906347,
+        "partial_step_share": 0.13641153865460132
+      },
+      "region": {
+        "reason": "ambiguous",
+        "shapes": [
+          "bols",
+          "bbs",
+          "btree"
+        ],
+        "partial_linear_r2": 0.24236733604462443,
+        "partial_curve_r2": 0.0,
+        "partial_step_share": 0.0
+      },
+      "aum_bn": {
+        "reason": "linear partial dependence",
+        "shapes": [
+          "bols",
+          "bbs"
+        ],
+        "partial_linear_r2": 0.9096195678417233,
+        "partial_curve_r2": 0.7044150645047647,
+        "partial_step_share": 0.0
+      },
+      "complexity_score": {
+        "reason": "step partial dependence",
+        "shapes": [
+          "bbs",
+          "btree"
+        ],
+        "partial_linear_r2": 0.35940356365031473,
+        "partial_curve_r2": 0.8107995746423664,
+        "partial_step_share": 1.031463088321602
+      },
+      "overnight_frac": {
+        "reason": "ambiguous",
+        "shapes": [
+          "bols",
+          "bbs",
+          "btree"
+        ],
+        "partial_linear_r2": 0.5581599505240172,
+        "partial_curve_r2": 0.7601123595331621,
+        "partial_step_share": 0.0
+      },
+      "vendor_n": {
+        "reason": "ambiguous",
+        "shapes": [
+          "bols",
+          "bbs",
+          "btree"
+        ],
+        "partial_linear_r2": 0.7803561843010585,
+        "partial_curve_r2": 0.9909963650094623,
+        "partial_step_share": 0.9615993924959153
+      },
+      "has_legacy_stack": {
+        "reason": "ambiguous",
+        "shapes": [
+          "bols",
+          "bbs",
+          "btree"
+        ],
+        "partial_linear_r2": 1.0000000000000013,
+        "partial_curve_r2": 1.0,
+        "partial_step_share": 0.0
+      },
+      "staff_per_bn": {
+        "reason": "ambiguous",
+        "shapes": [
+          "bols",
+          "bbs",
+          "btree"
+        ],
+        "partial_linear_r2": 0.2852347062910826,
+        "partial_curve_r2": 0.7722949515072486,
+        "partial_step_share": 0.39702173042698763
+      },
+      "vol_proxy": {
+        "reason": "ambiguous",
+        "shapes": [
+          "bols",
+          "bbs",
+          "btree"
+        ],
+        "partial_linear_r2": 0.007926443973428406,
+        "partial_curve_r2": 0.23455222726645064,
+        "partial_step_share": 1.229508864136581
+      },
+      "rate_env": {
+        "reason": "ambiguous",
+        "shapes": [
+          "bols",
+          "bbs",
+          "btree"
+        ],
+        "partial_linear_r2": 0.025263992665313303,
+        "partial_curve_r2": 0.3132291444105636,
+        "partial_step_share": 0.4117316886139856
+      },
+      "util_ratio": {
+        "reason": "ambiguous",
+        "shapes": [
+          "bols",
+          "bbs",
+          "btree"
+        ],
+        "partial_linear_r2": 0.019548407415173788,
+        "partial_curve_r2": 0.5303817678554428,
+        "partial_step_share": 0.41820617119589687
+      },
+      "aum_bn_proxy": {
+        "reason": "ambiguous",
+        "shapes": [
+          "bols",
+          "bbs",
+          "btree"
+        ],
+        "partial_linear_r2": 0.003997508484270443,
+        "partial_curve_r2": 0.2902096377425878,
+        "partial_step_share": 1.4178625481696205
+      },
+      "complexity_z": {
+        "reason": "ambiguous",
+        "shapes": [
+          "bols",
+          "bbs",
+          "btree"
+        ],
+        "partial_linear_r2": 0.13858539198717262,
+        "partial_curve_r2": 0.5788881699380866,
+        "partial_step_share": 0.8860179982572197
+      }
+    },
+    "top_pairs": [
+      {
+        "left": "aum_bn",
+        "right": "complexity_score",
+        "h2": 0.5926486761159174,
+        "variance": 4.455254187225733
+      },
+      {
+        "left": "aum_bn",
+        "right": "complexity_z",
+        "h2": 0.6142414799419436,
+        "variance": 2.6706851280671278
+      },
+      {
+        "left": "complexity_z",
+        "right": "aum_bn_proxy",
+        "h2": 0.4568158708567634,
+        "variance": 1.0237416797467493
+      },
+      {
+        "left": "complexity_score",
+        "right": "complexity_z",
+        "h2": 0.08670275662921534,
+        "variance": 0.24821676721500513
+      },
+      {
+        "left": "aum_bn_proxy",
+        "right": "vendor_n",
+        "h2": 0.21381767961073284,
+        "variance": 0.15240006328497863
+      },
+      {
+        "left": "complexity_score",
+        "right": "desk_id",
+        "h2": 0.045589110266735976,
+        "variance": 0.08906302556585402
+      }
+    ],
+    "spec_strategy": "Additive Poisson/NBinomial with quarter+region environment, aum_bn + complexity_score (not proxies), overnight_frac, vendors, legacy, staff, vol, rate_env, util; then measured interactions."
+  },
+  "search": {
+    "classify": {
+      "columns": [
+        {
+          "name": "desk_id",
+          "kind": "continuous",
+          "suggested": null
+        },
+        {
+          "name": "quarter",
+          "kind": "continuous",
+          "suggested": null
+        },
+        {
+          "name": "region",
+          "kind": "categorical",
+          "suggested": null
+        },
+        {
+          "name": "aum_bn",
+          "kind": "continuous",
+          "suggested": null
+        },
+        {
+          "name": "complexity_score",
+          "kind": "continuous",
+          "suggested": null
+        },
+        {
+          "name": "overnight_frac",
+          "kind": "continuous",
+          "suggested": null
+        },
+        {
+          "name": "vendor_n",
+          "kind": "continuous",
+          "suggested": null
+        },
+        {
+          "name": "has_legacy_stack",
+          "kind": "binary",
+          "suggested": null
+        },
+        {
+          "name": "staff_per_bn",
+          "kind": "continuous",
+          "suggested": null
+        },
+        {
+          "name": "vol_proxy",
+          "kind": "continuous",
+          "suggested": null
+        },
+        {
+          "name": "rate_env",
+          "kind": "continuous",
+          "suggested": null
+        },
+        {
+          "name": "util_ratio",
+          "kind": "continuous",
+          "suggested": null
+        },
+        {
+          "name": "aum_bn_proxy",
+          "kind": "continuous",
+          "suggested": null
+        },
+        {
+          "name": "complexity_z",
+          "kind": "continuous",
+          "suggested": null
+        }
+      ]
+    },
+    "column_screen": {
+      "rows": [
+        {
+          "column": "complexity_score",
+          "kind": "numeric",
+          "distinct": 2137,
+          "integer_like": false,
+          "skewness": 0.03896335014279179,
+          "pearson": 0.30290602932237193,
+          "spearman": 0.27059579453434884,
+          "linear_r2": 0.09175206259984564,
+          "curve_r2": 0.17422593050285806,
+          "step_r2": 0.17872824485618213,
+          "curvature": 0.08247386790301242,
+          "step_share": 1.0545907990955232,
+          "hint": "step"
+        },
+        {
+          "column": "complexity_z",
+          "kind": "numeric",
+          "distinct": 2532,
+          "integer_like": false,
+          "skewness": 0.040443154975331366,
+          "pearson": 0.3009416343413248,
+          "spearman": 0.26586421162885,
+          "linear_r2": 0.09056586728002765,
+          "curve_r2": 0.16408447706021734,
+          "step_r2": 0.1754278176933944,
+          "curvature": 0.07351860978018969,
+          "step_share": 1.154292099198993,
+          "hint": "step"
+        },
+        {
+          "column": "aum_bn",
+          "kind": "numeric",
+          "distinct": 2601,
+          "integer_like": false,
+          "skewness": 2.4805441922665423,
+          "pearson": 0.3032236185745081,
+          "spearman": 0.21356076753684788,
+          "linear_r2": 0.09194456286141876,
+          "curve_r2": 0.0764996055085585,
+          "step_r2": 0.07111837624856925,
+          "curvature": 0.0,
+          "step_share": 0.0,
+          "hint": "line"
+        },
+        {
+          "column": "aum_bn_proxy",
+          "kind": "numeric",
+          "distinct": 2616,
+          "integer_like": false,
+          "skewness": 2.462918858651417,
+          "pearson": 0.3006058568392037,
+          "spearman": 0.212319421532558,
+          "linear_r2": 0.09036388116603183,
+          "curve_r2": 0.07429816962890867,
+          "step_r2": 0.0628129406331219,
+          "curvature": 0.0,
+          "step_share": 0.0,
+          "hint": "line"
+        },
+        {
+          "column": "has_legacy_stack",
+          "kind": "numeric",
+          "distinct": 2,
+          "integer_like": true,
+          "skewness": 0.8789666152326278,
+          "pearson": 0.18016917776970504,
+          "spearman": 0.20631064284856393,
+          "linear_r2": 0.03246093261821158,
+          "curve_r2": 0.03209513334889491,
+          "step_r2": 0.03246093261821507,
+          "curvature": 0.0,
+          "step_share": 0.0,
+          "hint": "line"
+        },
+        {
+          "column": "desk_id",
+          "kind": "numeric",
+          "distinct": 112,
+          "integer_like": true,
+          "skewness": 0.06382816050238846,
+          "pearson": 0.007188521604408166,
+          "spearman": 0.01146828456686708,
+          "linear_r2": 5.167484285704295e-05,
+          "curve_r2": 0.022034175504459408,
+          "step_r2": 0.0025873456214986616,
+          "curvature": 0.021982500661602365,
+          "step_share": 0.11534951449226007,
+          "hint": "curve"
+        },
+        {
+          "column": "vendor_n",
+          "kind": "numeric",
+          "distinct": 12,
+          "integer_like": true,
+          "skewness": 0.7433785090407993,
+          "pearson": 0.11849763205605046,
+          "spearman": 0.12959248237230514,
+          "linear_r2": 0.014041688802891118,
+          "curve_r2": 0.016179012572911877,
+          "step_r2": 0.018419388350598316,
+          "curvature": 0.002137323770020759,
+          "step_share": 2.0482154407821325,
+          "hint": "step"
+        },
+        {
+          "column": "region",
+          "kind": "categorical",
+          "distinct": 3,
+          "integer_like": true,
+          "skewness": 0.4307343044569987,
+          "pearson": 0.023479363555433234,
+          "spearman": -0.015659570209560145,
+          "linear_r2": 0.0005512805129682063,
+          "curve_r2": 0.012314009504877932,
+          "step_r2": 0.004107443761422786,
+          "curvature": 0.011762728991909726,
+          "step_share": 0.3023246774537158,
+          "hint": "levels"
+        },
+        {
+          "column": "overnight_frac",
+          "kind": "numeric",
+          "distinct": 2205,
+          "integer_like": false,
+          "skewness": 0.21260280278365115,
+          "pearson": 0.06764671093883282,
+          "spearman": 0.08350785426686123,
+          "linear_r2": 0.004576077500842004,
+          "curve_r2": 0.004809417462562027,
+          "step_r2": 0.008393080013509083,
+          "curvature": 0.000233339961720023,
+          "step_share": 16.35811750602315,
+          "hint": "none"
+        },
+        {
+          "column": "staff_per_bn",
+          "kind": "numeric",
+          "distinct": 2385,
+          "integer_like": false,
+          "skewness": 1.5161097972089035,
+          "pearson": -0.020136616020801724,
+          "spearman": -0.03450997264380853,
+          "linear_r2": 0.00040548330476920867,
+          "curve_r2": 0.0013355455993377952,
+          "step_r2": 0.0025994184971427736,
+          "curvature": 0.0009300622945685865,
+          "step_share": 2.3589120913575274,
+          "hint": "none"
+        },
+        {
+          "column": "vol_proxy",
+          "kind": "numeric",
+          "distinct": 1691,
+          "integer_like": false,
+          "skewness": 1.24338965001188,
+          "pearson": -0.029940800530024403,
+          "spearman": -0.05138755339287348,
+          "linear_r2": 0.0008964515363787096,
+          "curve_r2": 0.001189012484575147,
+          "step_r2": 0.0030596594145941972,
+          "curvature": 0.00029256094819643747,
+          "step_share": 7.394041793859039,
+          "hint": "none"
+        },
+        {
+          "column": "util_ratio",
+          "kind": "numeric",
+          "distinct": 2243,
+          "integer_like": false,
+          "skewness": 0.4307676865488797,
+          "pearson": 0.061768121680141896,
+          "spearman": 0.06598058036310904,
+          "linear_r2": 0.003815300855892815,
+          "curve_r2": 0.0008818262252913156,
+          "step_r2": 0.005084004432940437,
+          "curvature": 0.0,
+          "step_share": 0.0,
+          "hint": "none"
+        }
+      ],
+      "total_columns": 14
+    },
+    "baseline_spec": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio)",
+    "shape_compare": {
+      "baseline": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio)",
+      "family": "NBinomial",
+      "score": "mse",
+      "fold_id": "2bb3e8dbde2482f5ba9d13a8c10001d64a43a05b12f333375e3fd498c1c4f872",
+      "two_se_candidates": [],
+      "also_cleared": [],
+      "winner_gaps": [],
+      "soft_removal_candidates": [],
+      "rows": [
+        {
+          "specification": "current",
+          "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio)",
+          "out-of-fold risk": 18.647953203046328,
+          "change": 0.0,
+          "change se": 0.0
+        },
+        {
+          "specification": "linear_complexity",
+          "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bols(complexity_score) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio)",
+          "out-of-fold risk": 21.191758364099243,
+          "change": 2.5438051610529158,
+          "change se": 0.7766579893631094
+        },
+        {
+          "specification": "smooth_aum",
+          "rhs": "bols(quarter) + bols(region) + bbs(aum_bn, df=4) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio)",
+          "out-of-fold risk": 19.821157643223838,
+          "change": 1.1732044401775106,
+          "change se": 1.34162642476412
+        }
+      ],
+      "rule": "two paired SE; explicit caller adoption; descriptive heuristic"
+    },
+    "family_side_compare": {
+      "poisson": 26.546117491168264,
+      "nbinomial": 18.647953203046328
+    },
+    "interaction_screen": {
+      "top_pairs": [
+        {
+          "left": "aum_bn",
+          "right": "complexity_z",
+          "removed": 1.6492158380876916,
+          "thresholded_sibling_suggested": true,
+          "threshold_column": "complexity_z",
+          "sibling_term": "btree(complexity_z, by=aum_bn, maxdepth=1)",
+          "next_action": "transform_candidates"
+        },
+        {
+          "left": "aum_bn_proxy",
+          "right": "complexity_z",
+          "removed": 1.536293458968009,
+          "thresholded_sibling_suggested": true,
+          "threshold_column": "complexity_z",
+          "sibling_term": "btree(complexity_z, by=aum_bn_proxy, maxdepth=1)",
+          "next_action": "transform_candidates"
+        },
+        {
+          "left": "aum_bn",
+          "right": "complexity_score",
+          "removed": 1.3697350494137446,
+          "thresholded_sibling_suggested": true,
+          "threshold_column": "complexity_score",
+          "sibling_term": "btree(complexity_score, by=aum_bn, maxdepth=1)",
+          "next_action": "transform_candidates"
+        },
+        {
+          "left": "complexity_score",
+          "right": "aum_bn_proxy",
+          "removed": 1.2595623421695858,
+          "thresholded_sibling_suggested": true,
+          "threshold_column": "complexity_score",
+          "sibling_term": "btree(complexity_score, by=aum_bn_proxy, maxdepth=1)",
+          "next_action": "transform_candidates"
+        },
+        {
+          "left": "region",
+          "right": "aum_bn",
+          "removed": 0.23769439908889645,
+          "thresholded_sibling_suggested": true,
+          "threshold_column": "region",
+          "sibling_term": "btree(region, by=aum_bn, maxdepth=1)",
+          "next_action": "transform_candidates"
+        },
+        {
+          "left": "region",
+          "right": "aum_bn_proxy",
+          "removed": 0.17998175767860936,
+          "thresholded_sibling_suggested": true,
+          "threshold_column": "region",
+          "sibling_term": "btree(region, by=aum_bn_proxy, maxdepth=1)",
+          "next_action": "transform_candidates"
+        }
+      ],
+      "constraint_barred": {},
+      "constraints": {
+        "heredity": "none",
+        "forbidden_pairs": [],
+        "mandatory_terms": []
+      },
+      "interpretation": "removed is residual-screen MSE, not a paired two-SE comparison; compare before adoption"
+    },
+    "pair_candidates": {
+      "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio)",
+      "leads": [
+        {
+          "term": "bbs(aum_bn, df=2.5, knots=5) %X% bbs(complexity_score, df=2.5, knots=5)",
+          "source": "residual+tree+neural",
+          "kind": "tensor"
+        },
+        {
+          "term": "bbs(aum_bn, df=2.5, knots=5) %X% bbs(vendor_n, df=2.5, knots=5)",
+          "source": "residual",
+          "kind": "tensor"
+        },
+        {
+          "term": "bbs(complexity_score, df=2.5, knots=5) %X% bbs(vendor_n, df=2.5, knots=5)",
+          "source": "residual",
+          "kind": "tensor"
+        },
+        {
+          "term": "bbs(vendor_n, by=has_legacy_stack)",
+          "source": "residual",
+          "kind": "varying"
+        },
+        {
+          "term": "bbs(aum_bn, by=has_legacy_stack)",
+          "source": "residual",
+          "kind": "varying"
+        },
+        {
+          "term": "bbs(overnight_frac, df=2.5, knots=5) %X% bbs(vendor_n, df=2.5, knots=5)",
+          "source": "residual",
+          "kind": "tensor"
+        },
+        {
+          "term": "btree(aum_bn, complexity_score, maxdepth=3, selection=sse)",
+          "source": "residual+tree+neural",
+          "kind": "joint_tree"
+        }
+      ],
+      "constraint_barred": {},
+      "constraints": {
+        "heredity": "none",
+        "forbidden_pairs": [],
+        "mandatory_terms": []
+      },
+      "fits_reported": 0,
+      "interpretation": "nomination, not adoption"
+    },
+    "tree_candidate": {
+      "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio)",
+      "term": "btree(quarter, region, aum_bn, complexity_score, overnight_frac, vendor_n, has_legacy_stack, staff_per_bn, vol_proxy, rate_env, util_ratio, maxdepth=5, selection=sse)",
+      "constraint_barred": null,
+      "constraints": {
+        "heredity": "none",
+        "forbidden_pairs": [],
+        "mandatory_terms": []
+      },
+      "interpretation": "nomination, not adoption"
+    },
+    "interaction_compare": {
+      "baseline": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio)",
+      "family": "NBinomial",
+      "score": "mse",
+      "fold_id": "2bb3e8dbde2482f5ba9d13a8c10001d64a43a05b12f333375e3fd498c1c4f872",
+      "two_se_candidates": [
+        {
+          "candidate": "pair_4",
+          "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(vendor_n, by=has_legacy_stack)",
+          "change": -0.5490309768046622,
+          "change_se": 0.1963473732936089
+        },
+        {
+          "candidate": "btree_complexity",
+          "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + btree(complexity_score)",
+          "change": -0.512383565300528,
+          "change_se": 0.1582829427762642
+        },
+        {
+          "candidate": "pair_3",
+          "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(complexity_score, df=2.5, knots=5) %X% bbs(vendor_n, df=2.5, knots=5)",
+          "change": -0.10489488302325611,
+          "change_se": 0.015568749887329956
+        }
+      ],
+      "also_cleared": [
+        {
+          "candidate": "btree_complexity",
+          "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + btree(complexity_score)",
+          "change": -0.512383565300528,
+          "change_se": 0.1582829427762642
+        },
+        {
+          "candidate": "pair_3",
+          "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(complexity_score, df=2.5, knots=5) %X% bbs(vendor_n, df=2.5, knots=5)",
+          "change": -0.10489488302325611,
+          "change_se": 0.015568749887329956
+        }
+      ],
+      "winner_gaps": [
+        {
+          "candidate": "btree_complexity",
+          "gap_vs_best": 0.0366474115041342,
+          "paired_se": 0.1985523595191836,
+          "within_two_se": true
+        },
+        {
+          "candidate": "pair_3",
+          "gap_vs_best": 0.44413609378140606,
+          "paired_se": 0.19579068319672438,
+          "within_two_se": false
+        }
+      ],
+      "soft_removal_candidates": [],
+      "rows": [
+        {
+          "specification": "current",
+          "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio)",
+          "out-of-fold risk": 18.647953203046328,
+          "change": 0.0,
+          "change se": 0.0
+        },
+        {
+          "specification": "pair_1",
+          "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(aum_bn, df=2.5, knots=5) %X% bbs(complexity_score, df=2.5, knots=5)",
+          "out-of-fold risk": 21.284693617255563,
+          "change": 2.6367404142092354,
+          "change se": 5.801318585208392
+        },
+        {
+          "specification": "pair_2",
+          "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(aum_bn, df=2.5, knots=5) %X% bbs(vendor_n, df=2.5, knots=5)",
+          "out-of-fold risk": 19.340539681139397,
+          "change": 0.6925864780930695,
+          "change se": 1.0271858081487983
+        },
+        {
+          "specification": "pair_3",
+          "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(complexity_score, df=2.5, knots=5) %X% bbs(vendor_n, df=2.5, knots=5)",
+          "out-of-fold risk": 18.54305832002307,
+          "change": -0.10489488302325611,
+          "change se": 0.015568749887329956
+        },
+        {
+          "specification": "pair_4",
+          "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(vendor_n, by=has_legacy_stack)",
+          "out-of-fold risk": 18.098922226241665,
+          "change": -0.5490309768046622,
+          "change se": 0.1963473732936089
+        },
+        {
+          "specification": "tree",
+          "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + btree(quarter, region, aum_bn, complexity_score, overnight_frac, vendor_n, has_legacy_stack, staff_per_bn, vol_proxy, rate_env, util_ratio, maxdepth=5, selection=sse)",
+          "out-of-fold risk": 34510599.93335354,
+          "change": 34510581.28540034,
+          "change se": 34471580.416994326
+        },
+        {
+          "specification": "complexity_x_overnight",
+          "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(complexity_score, df=2.5, knots=5) %X% bols(overnight_frac)",
+          "out-of-fold risk": 18.6348182732791,
+          "change": -0.013134929767225856,
+          "change se": 0.03752055092606975
+        },
+        {
+          "specification": "btree_complexity",
+          "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + btree(complexity_score)",
+          "out-of-fold risk": 18.1355696377458,
+          "change": -0.512383565300528,
+          "change se": 0.1582829427762642
+        },
+        {
+          "specification": "legacy_x_vendors",
+          "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bols(has_legacy_stack) %X% bols(vendor_n)",
+          "out-of-fold risk": 18.318531665624924,
+          "change": -0.32942153742140334,
+          "change se": 0.20564678786433035
+        }
+      ],
+      "rule": "two paired SE; explicit caller adoption; descriptive heuristic"
+    },
+    "proxy_red_herring_compare": {
+      "baseline": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(vendor_n, by=has_legacy_stack)",
+      "family": "NBinomial",
+      "score": "mse",
+      "fold_id": "2bb3e8dbde2482f5ba9d13a8c10001d64a43a05b12f333375e3fd498c1c4f872",
+      "two_se_candidates": [],
+      "also_cleared": [],
+      "winner_gaps": [],
+      "soft_removal_candidates": [],
+      "rows": [
+        {
+          "specification": "current",
+          "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(vendor_n, by=has_legacy_stack)",
+          "out-of-fold risk": 18.440865309172846,
+          "change": 0.0,
+          "change se": 0.0
+        },
+        {
+          "specification": "add_aum_proxy",
+          "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(vendor_n, by=has_legacy_stack) + bols(aum_bn_proxy)",
+          "out-of-fold risk": 18.444193128356417,
+          "change": 0.003327819183571279,
+          "change se": 0.003327819183570835
+        },
+        {
+          "specification": "add_complexity_z",
+          "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(vendor_n, by=has_legacy_stack) + bols(complexity_z)",
+          "out-of-fold risk": 18.440865309172846,
+          "change": 0.0,
+          "change se": 0.0
+        }
+      ],
+      "rule": "two paired SE; explicit caller adoption; descriptive heuristic"
+    },
+    "term_report": {
+      "baseline": 18.098922226241665,
+      "terms": [
+        {
+          "term": "bbs(complexity_score, df=4)",
+          "variable": "complexity_score",
+          "without it": 27.601915361549366,
+          "earns": 9.502993135307701,
+          "se": 2.7262309164572196,
+          "measurable": true
+        },
+        {
+          "term": "bols(aum_bn)",
+          "variable": "aum_bn",
+          "without it": 23.87467396724702,
+          "earns": 5.7757517410053545,
+          "se": 2.6415360508124386,
+          "measurable": true
+        },
+        {
+          "term": "bbs(vendor_n, by=has_legacy_stack)",
+          "variable": "vendor_n",
+          "without it": 18.647953203046328,
+          "earns": 0.5490309768046622,
+          "se": 0.1963473732936089,
+          "measurable": true
+        },
+        {
+          "term": "bols(staff_per_bn)",
+          "variable": "staff_per_bn",
+          "without it": 18.12715779741939,
+          "earns": 0.02823557117772424,
+          "se": 0.009741119563008955,
+          "measurable": true
+        },
+        {
+          "term": "bols(has_legacy_stack)",
+          "variable": "has_legacy_stack",
+          "without it": 18.100030512316753,
+          "earns": 0.0011082860750875057,
+          "se": 0.017789004176178295,
+          "measurable": true
+        },
+        {
+          "term": "bols(quarter)",
+          "variable": "quarter",
+          "without it": 18.098922226241665,
+          "earns": 0.0,
+          "se": 0.0,
+          "measurable": true
+        },
+        {
+          "term": "bols(vendor_n)",
+          "variable": "vendor_n",
+          "without it": 18.098922226241665,
+          "earns": 0.0,
+          "se": 0.0,
+          "measurable": true
+        },
+        {
+          "term": "bols(vol_proxy)",
+          "variable": "vol_proxy",
+          "without it": 18.098922226241665,
+          "earns": 0.0,
+          "se": 0.0,
+          "measurable": true
+        },
+        {
+          "term": "bols(rate_env)",
+          "variable": "rate_env",
+          "without it": 18.098922226241665,
+          "earns": 0.0,
+          "se": 0.0,
+          "measurable": true
+        },
+        {
+          "term": "bols(util_ratio)",
+          "variable": "util_ratio",
+          "without it": 18.098922226241665,
+          "earns": 0.0,
+          "se": 0.0,
+          "measurable": true
+        },
+        {
+          "term": "bols(overnight_frac)",
+          "variable": "overnight_frac",
+          "without it": 18.05627513856266,
+          "earns": -0.04264708767900416,
+          "se": 0.07639547909576737,
+          "measurable": true
+        },
+        {
+          "term": "bols(region)",
+          "variable": "region",
+          "without it": 17.90145188624342,
+          "earns": -0.19747033999824382,
+          "se": 0.9904768042749804,
+          "measurable": true
+        }
+      ]
+    },
+    "tune": {
+      "mstop": 183,
+      "summary": {
+        "mstop": 183,
+        "score": "mse",
+        "fits_reported": 5
+      }
+    },
+    "budget_before_freeze": {
+      "budget": {
+        "seconds": null,
+        "fits": 400,
+        "memory_mb": null
+      },
+      "fit_charges": 246,
+      "elapsed_seconds": 14.986910625128075,
+      "peak_memory_mb": 154.546875,
+      "memory_scope": "absolute process-lifetime high-water RSS, MiB",
+      "limits": "fit admission is hard; time and memory checked between native calls",
+      "failed_fit_accounting": "failed native batches retain their full reserved charge; actual completed folds unknown",
+      "stopped": null,
+      "blocked_request": null,
+      "operation_count": 246,
+      "recent_operations": [
+        {
+          "operation": "fit_gamboost_specs",
+          "fit_charges": 1,
+          "status": "returned",
+          "cumulative_fit_charges": 239,
+          "seconds": 0.06631166697479784,
+          "peak_memory_mb": 150.796875
+        },
+        {
+          "operation": "fit_gamboost_specs",
+          "fit_charges": 1,
+          "status": "returned",
+          "cumulative_fit_charges": 240,
+          "seconds": 0.0712554999627173,
+          "peak_memory_mb": 151.390625
+        },
+        {
+          "operation": "fit_gamboost_specs",
+          "fit_charges": 1,
+          "status": "returned",
+          "cumulative_fit_charges": 241,
+          "seconds": 0.06158641702495515,
+          "peak_memory_mb": 152.359375
+        },
+        {
+          "operation": "fit_gamboost_continue_specs",
+          "fit_charges": 1,
+          "status": "returned",
+          "cumulative_fit_charges": 242,
+          "seconds": 0.06029166700318456,
+          "peak_memory_mb": 153.3125
+        },
+        {
+          "operation": "fit_gamboost_continue_specs",
+          "fit_charges": 1,
+          "status": "returned",
+          "cumulative_fit_charges": 243,
+          "seconds": 0.060994124971330166,
+          "peak_memory_mb": 153.609375
+        },
+        {
+          "operation": "fit_gamboost_continue_specs",
+          "fit_charges": 1,
+          "status": "returned",
+          "cumulative_fit_charges": 244,
+          "seconds": 0.05369754205457866,
+          "peak_memory_mb": 153.734375
+        },
+        {
+          "operation": "fit_gamboost_continue_specs",
+          "fit_charges": 1,
+          "status": "returned",
+          "cumulative_fit_charges": 245,
+          "seconds": 0.055689499946311116,
+          "peak_memory_mb": 153.765625
+        },
+        {
+          "operation": "fit_gamboost_specs",
+          "fit_charges": 1,
+          "status": "returned",
+          "cumulative_fit_charges": 246,
+          "seconds": 0.1375119579024613,
+          "peak_memory_mb": 154.484375
+        }
+      ]
+    },
+    "available_before_freeze": [
+      "adopt",
+      "autospec",
+      "check_declarations",
+      "classify",
+      "column_screen",
+      "compare",
+      "evaluate",
+      "fit",
+      "freeze",
+      "hypothesis",
+      "interaction_screen",
+      "lock",
+      "pair_candidates",
+      "partial_effects",
+      "pre_scan",
+      "set_family",
+      "set_spec",
+      "structure_candidates",
+      "term_report",
+      "transform_candidates",
+      "tree_candidate",
+      "tune"
+    ],
+    "model_before_freeze": true,
+    "final_evaluate": {
+      "score": 21.838247154465503,
+      "score_name": "mse",
+      "n_test": 650,
+      "task": "one-time untouched-test evaluation"
+    },
+    "final_spec": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(vendor_n, by=has_legacy_stack)",
+    "final_mstop": 183,
+    "adopted": [
+      "pair_4"
+    ],
+    "family": "NBinomial",
+    "evidence": [
+      {
+        "action": "classify",
+        "status": "screening_only",
+        "evidence_id": "4fb21723639b69b9ee8edb886a04da5f908f167a81f2046b7cdae87981d477f7",
+        "state_id": "2b427ccc2d7c79502580b4e7c5f040822a252ae259c3a6263f4747fef4139d46",
+        "fit_charges": 0,
+        "seconds": 0.013796374900266528,
+        "summary": {
+          "columns": [
+            {
+              "name": "desk_id",
+              "kind": "continuous",
+              "suggested": null
+            },
+            {
+              "name": "quarter",
+              "kind": "continuous",
+              "suggested": null
+            },
+            {
+              "name": "region",
+              "kind": "categorical",
+              "suggested": null
+            },
+            {
+              "name": "aum_bn",
+              "kind": "continuous",
+              "suggested": null
+            },
+            {
+              "name": "complexity_score",
+              "kind": "continuous",
+              "suggested": null
+            },
+            {
+              "name": "overnight_frac",
+              "kind": "continuous",
+              "suggested": null
+            },
+            {
+              "name": "vendor_n",
+              "kind": "continuous",
+              "suggested": null
+            },
+            {
+              "name": "has_legacy_stack",
+              "kind": "binary",
+              "suggested": null
+            },
+            {
+              "name": "staff_per_bn",
+              "kind": "continuous",
+              "suggested": null
+            },
+            {
+              "name": "vol_proxy",
+              "kind": "continuous",
+              "suggested": null
+            },
+            {
+              "name": "rate_env",
+              "kind": "continuous",
+              "suggested": null
+            },
+            {
+              "name": "util_ratio",
+              "kind": "continuous",
+              "suggested": null
+            },
+            {
+              "name": "aum_bn_proxy",
+              "kind": "continuous",
+              "suggested": null
+            },
+            {
+              "name": "complexity_z",
+              "kind": "continuous",
+              "suggested": null
+            }
+          ]
+        }
+      },
+      {
+        "action": "column_screen",
+        "status": "screening_only",
+        "evidence_id": "9875de08982ab3fd10e2a66624c78ebf3bb56cb7b2010fcbac615dba1a3b6f34",
+        "state_id": "74690b5873181d27bcdb3299554d61fb47d5cb7f26533c5c7897e9e7a435b3c5",
+        "fit_charges": 0,
+        "seconds": 0.002934457967057824,
+        "summary": {
+          "rows": [
+            {
+              "column": "complexity_score",
+              "kind": "numeric",
+              "distinct": 2137,
+              "integer_like": false,
+              "skewness": 0.03896335014279179,
+              "pearson": 0.30290602932237193,
+              "spearman": 0.27059579453434884,
+              "linear_r2": 0.09175206259984564,
+              "curve_r2": 0.17422593050285806,
+              "step_r2": 0.17872824485618213,
+              "curvature": 0.08247386790301242,
+              "step_share": 1.0545907990955232,
+              "hint": "step"
+            },
+            {
+              "column": "complexity_z",
+              "kind": "numeric",
+              "distinct": 2532,
+              "integer_like": false,
+              "skewness": 0.040443154975331366,
+              "pearson": 0.3009416343413248,
+              "spearman": 0.26586421162885,
+              "linear_r2": 0.09056586728002765,
+              "curve_r2": 0.16408447706021734,
+              "step_r2": 0.1754278176933944,
+              "curvature": 0.07351860978018969,
+              "step_share": 1.154292099198993,
+              "hint": "step"
+            },
+            {
+              "column": "aum_bn",
+              "kind": "numeric",
+              "distinct": 2601,
+              "integer_like": false,
+              "skewness": 2.4805441922665423,
+              "pearson": 0.3032236185745081,
+              "spearman": 0.21356076753684788,
+              "linear_r2": 0.09194456286141876,
+              "curve_r2": 0.0764996055085585,
+              "step_r2": 0.07111837624856925,
+              "curvature": 0.0,
+              "step_share": 0.0,
+              "hint": "line"
+            },
+            {
+              "column": "aum_bn_proxy",
+              "kind": "numeric",
+              "distinct": 2616,
+              "integer_like": false,
+              "skewness": 2.462918858651417,
+              "pearson": 0.3006058568392037,
+              "spearman": 0.212319421532558,
+              "linear_r2": 0.09036388116603183,
+              "curve_r2": 0.07429816962890867,
+              "step_r2": 0.0628129406331219,
+              "curvature": 0.0,
+              "step_share": 0.0,
+              "hint": "line"
+            },
+            {
+              "column": "has_legacy_stack",
+              "kind": "numeric",
+              "distinct": 2,
+              "integer_like": true,
+              "skewness": 0.8789666152326278,
+              "pearson": 0.18016917776970504,
+              "spearman": 0.20631064284856393,
+              "linear_r2": 0.03246093261821158,
+              "curve_r2": 0.03209513334889491,
+              "step_r2": 0.03246093261821507,
+              "curvature": 0.0,
+              "step_share": 0.0,
+              "hint": "line"
+            },
+            {
+              "column": "desk_id",
+              "kind": "numeric",
+              "distinct": 112,
+              "integer_like": true,
+              "skewness": 0.06382816050238846,
+              "pearson": 0.007188521604408166,
+              "spearman": 0.01146828456686708,
+              "linear_r2": 5.167484285704295e-05,
+              "curve_r2": 0.022034175504459408,
+              "step_r2": 0.0025873456214986616,
+              "curvature": 0.021982500661602365,
+              "step_share": 0.11534951449226007,
+              "hint": "curve"
+            },
+            {
+              "column": "vendor_n",
+              "kind": "numeric",
+              "distinct": 12,
+              "integer_like": true,
+              "skewness": 0.7433785090407993,
+              "pearson": 0.11849763205605046,
+              "spearman": 0.12959248237230514,
+              "linear_r2": 0.014041688802891118,
+              "curve_r2": 0.016179012572911877,
+              "step_r2": 0.018419388350598316,
+              "curvature": 0.002137323770020759,
+              "step_share": 2.0482154407821325,
+              "hint": "step"
+            },
+            {
+              "column": "region",
+              "kind": "categorical",
+              "distinct": 3,
+              "integer_like": true,
+              "skewness": 0.4307343044569987,
+              "pearson": 0.023479363555433234,
+              "spearman": -0.015659570209560145,
+              "linear_r2": 0.0005512805129682063,
+              "curve_r2": 0.012314009504877932,
+              "step_r2": 0.004107443761422786,
+              "curvature": 0.011762728991909726,
+              "step_share": 0.3023246774537158,
+              "hint": "levels"
+            },
+            {
+              "column": "overnight_frac",
+              "kind": "numeric",
+              "distinct": 2205,
+              "integer_like": false,
+              "skewness": 0.21260280278365115,
+              "pearson": 0.06764671093883282,
+              "spearman": 0.08350785426686123,
+              "linear_r2": 0.004576077500842004,
+              "curve_r2": 0.004809417462562027,
+              "step_r2": 0.008393080013509083,
+              "curvature": 0.000233339961720023,
+              "step_share": 16.35811750602315,
+              "hint": "none"
+            },
+            {
+              "column": "staff_per_bn",
+              "kind": "numeric",
+              "distinct": 2385,
+              "integer_like": false,
+              "skewness": 1.5161097972089035,
+              "pearson": -0.020136616020801724,
+              "spearman": -0.03450997264380853,
+              "linear_r2": 0.00040548330476920867,
+              "curve_r2": 0.0013355455993377952,
+              "step_r2": 0.0025994184971427736,
+              "curvature": 0.0009300622945685865,
+              "step_share": 2.3589120913575274,
+              "hint": "none"
+            },
+            {
+              "column": "vol_proxy",
+              "kind": "numeric",
+              "distinct": 1691,
+              "integer_like": false,
+              "skewness": 1.24338965001188,
+              "pearson": -0.029940800530024403,
+              "spearman": -0.05138755339287348,
+              "linear_r2": 0.0008964515363787096,
+              "curve_r2": 0.001189012484575147,
+              "step_r2": 0.0030596594145941972,
+              "curvature": 0.00029256094819643747,
+              "step_share": 7.394041793859039,
+              "hint": "none"
+            },
+            {
+              "column": "util_ratio",
+              "kind": "numeric",
+              "distinct": 2243,
+              "integer_like": false,
+              "skewness": 0.4307676865488797,
+              "pearson": 0.061768121680141896,
+              "spearman": 0.06598058036310904,
+              "linear_r2": 0.003815300855892815,
+              "curve_r2": 0.0008818262252913156,
+              "step_r2": 0.005084004432940437,
+              "curvature": 0.0,
+              "step_share": 0.0,
+              "hint": "none"
+            }
+          ],
+          "total_columns": 14
+        }
+      },
+      {
+        "action": "hypothesis",
+        "status": "screening_only",
+        "evidence_id": "f6d831ad41385ee230642d12e2708af2aec05994d4448513b01b8ce266dd7ed2",
+        "state_id": "80532c61a5a3c16745f14df66aecdd58540c00d033e4d2220734fd84c9b9682b",
+        "fit_charges": 0,
+        "seconds": 2.4707987904548645e-05,
+        "summary": {
+          "statement": "Higher ops complexity raises next-window exception counts after controlling for book size and rate/vol environment.",
+          "variable": "complexity_score",
+          "role": "ops_complexity",
+          "would_count_against": "Non-positive partial effect once aum and env are controlled, or no OOF gain.",
+          "status": "analyst-stated; not established by data"
+        }
+      },
+      {
+        "action": "hypothesis",
+        "status": "screening_only",
+        "evidence_id": "58510df7be76805e9b370d6d33dd3e281caf495ff5425c473c6fe94340744a24",
+        "state_id": "b85e2a128d72d15169b408c9da6dbc9713a17da08ec3bb3c16cb6fabdbc00dd1",
+        "fit_charges": 0,
+        "seconds": 1.7083948478102684e-05,
+        "summary": {
+          "statement": "Overnight settlement share and legacy stacks increase exception intensity; staffing per AUM reduces it.",
+          "variable": "overnight_frac",
+          "role": "settlement_ops",
+          "would_count_against": "Overnight/legacy terms fail two-SE; staff_per_bn raises counts.",
+          "status": "analyst-stated; not established by data"
+        }
+      },
+      {
+        "action": "hypothesis",
+        "status": "screening_only",
+        "evidence_id": "322bf20c9770f651749698c49ff62d0949f4ec3378f9cea7811aedcc18c84973",
+        "state_id": "a30fe0dc380a4f3ea1c249164ec88f7451003baa525aa80087592e482f9d316a",
+        "fit_charges": 0,
+        "seconds": 1.4250166714191437e-05,
+        "summary": {
+          "statement": "Complexity interacts with overnight intensity or legacy\u00d7vendor depth rather than acting only additively.",
+          "variable": "complexity_score",
+          "role": "interaction",
+          "would_count_against": "Nominated pairs/tree fail two-SE vs additive model.",
+          "status": "analyst-stated; not established by data"
+        }
+      },
+      {
+        "action": "set_family",
+        "status": "unmeasured",
+        "evidence_id": "1640351e1bf5279272f48edcaed8a7455bc91a4533b5d7d0d6a40c2423aa910f",
+        "state_id": "f39c9eb1ffe45af4c7d54ea6aaec58c32e66dba7c7d7f998d905321909763ddc",
+        "fit_charges": 0,
+        "seconds": 1.8625054508447647e-05,
+        "summary": {
+          "family": "NBinomial",
+          "family_id": "eeb550e3ea14af869080685bce9725b609239e8332564536636364c299b2f2ed"
+        }
+      },
+      {
+        "action": "set_spec",
+        "status": "unmeasured",
+        "evidence_id": "1e58cd6194b2f9641cb2f798c735e962fd1f9ebf0475922dabe1c4d99cf846a4",
+        "state_id": "6b3442ee61aa4849dfe12f869458485c0d0e18178a8df468151408ba512c2f0c",
+        "fit_charges": 0,
+        "seconds": 0.00042229099199175835,
+        "summary": {
+          "spec": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio)",
+          "status": "unmeasured"
+        }
+      },
+      {
+        "action": "lock",
+        "status": "unmeasured",
+        "evidence_id": "cfe86de122be44c649ea2500171a4e69700e63f2f15c8eb941f033ed2176f9f4",
+        "state_id": "3dc37395c5e60f7013c3c3b1ce56ac4cc324a19fac591c76a976da33d1b01158",
+        "fit_charges": 0,
+        "seconds": 3.3916905522346497e-05,
+        "summary": {
+          "locked_columns": [
+            "quarter"
+          ]
+        }
+      },
+      {
+        "action": "compare",
+        "status": "measured",
+        "evidence_id": "7efd62f6bf2c0b0e25241a5d2742678d6f2a1047a070a278f97f279a47a520eb",
+        "state_id": "5d293ed3c0bbafd981be33da52faa9e7be25ebb70623ade047c7b4350d7bf2db",
+        "fit_charges": 12,
+        "seconds": 0.6471422920003533,
+        "summary": {
+          "baseline": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio)",
+          "family": "NBinomial",
+          "score": "mse",
+          "fold_id": "2bb3e8dbde2482f5ba9d13a8c10001d64a43a05b12f333375e3fd498c1c4f872",
+          "two_se_candidates": [],
+          "also_cleared": [],
+          "winner_gaps": [],
+          "soft_removal_candidates": [],
+          "rows": [
+            {
+              "specification": "current",
+              "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio)",
+              "out-of-fold risk": 18.647953203046328,
+              "change": 0.0,
+              "change se": 0.0
+            },
+            {
+              "specification": "linear_complexity",
+              "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bols(complexity_score) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio)",
+              "out-of-fold risk": 21.191758364099243,
+              "change": 2.5438051610529158,
+              "change se": 0.7766579893631094
+            },
+            {
+              "specification": "smooth_aum",
+              "rhs": "bols(quarter) + bols(region) + bbs(aum_bn, df=4) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio)",
+              "out-of-fold risk": 19.821157643223838,
+              "change": 1.1732044401775106,
+              "change se": 1.34162642476412
+            }
+          ],
+          "rule": "two paired SE; explicit caller adoption; descriptive heuristic"
+        }
+      },
+      {
+        "action": "fit",
+        "status": "unmeasured",
+        "evidence_id": "8eb344201cd043a200db8af365cd29c63bb231b9f92e5a6592f8db7c79fdf9a3",
+        "state_id": "28b2ac48d31dacfffd37a5229ab2cec22e9f8ad51ec86aa20b75b69018ce1eb3",
+        "fit_charges": 1,
+        "seconds": 0.062308707972988486,
+        "summary": {
+          "spec": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio)",
+          "mstop": 100
+        }
+      },
+      {
+        "action": "interaction_screen",
+        "status": "screening_only",
+        "evidence_id": "80c15a7dcea78c2870b8de84360d99a49058c8fd87b2252253f84801bc0cccb4",
+        "state_id": "28e82cf40a1f0296d1bd33b5992597f09ddab2ec6d265fd0507120e5324cd6db",
+        "fit_charges": 0,
+        "seconds": 0.012002875097095966,
+        "summary": {
+          "top_pairs": [
+            {
+              "left": "aum_bn",
+              "right": "complexity_z",
+              "removed": 1.6492158380876916,
+              "thresholded_sibling_suggested": true,
+              "threshold_column": "complexity_z",
+              "sibling_term": "btree(complexity_z, by=aum_bn, maxdepth=1)",
+              "next_action": "transform_candidates"
+            },
+            {
+              "left": "aum_bn_proxy",
+              "right": "complexity_z",
+              "removed": 1.536293458968009,
+              "thresholded_sibling_suggested": true,
+              "threshold_column": "complexity_z",
+              "sibling_term": "btree(complexity_z, by=aum_bn_proxy, maxdepth=1)",
+              "next_action": "transform_candidates"
+            },
+            {
+              "left": "aum_bn",
+              "right": "complexity_score",
+              "removed": 1.3697350494137446,
+              "thresholded_sibling_suggested": true,
+              "threshold_column": "complexity_score",
+              "sibling_term": "btree(complexity_score, by=aum_bn, maxdepth=1)",
+              "next_action": "transform_candidates"
+            },
+            {
+              "left": "complexity_score",
+              "right": "aum_bn_proxy",
+              "removed": 1.2595623421695858,
+              "thresholded_sibling_suggested": true,
+              "threshold_column": "complexity_score",
+              "sibling_term": "btree(complexity_score, by=aum_bn_proxy, maxdepth=1)",
+              "next_action": "transform_candidates"
+            },
+            {
+              "left": "region",
+              "right": "aum_bn",
+              "removed": 0.23769439908889645,
+              "thresholded_sibling_suggested": true,
+              "threshold_column": "region",
+              "sibling_term": "btree(region, by=aum_bn, maxdepth=1)",
+              "next_action": "transform_candidates"
+            },
+            {
+              "left": "region",
+              "right": "aum_bn_proxy",
+              "removed": 0.17998175767860936,
+              "thresholded_sibling_suggested": true,
+              "threshold_column": "region",
+              "sibling_term": "btree(region, by=aum_bn_proxy, maxdepth=1)",
+              "next_action": "transform_candidates"
+            }
+          ],
+          "constraint_barred": {},
+          "constraints": {
+            "heredity": "none",
+            "forbidden_pairs": [],
+            "mandatory_terms": []
+          },
+          "interpretation": "removed is residual-screen MSE, not a paired two-SE comparison; compare before adoption"
+        }
+      },
+      {
+        "action": "pair_candidates",
+        "status": "screening_only",
+        "evidence_id": "81af1df0d7c4a5f524ac912643c972291d906cfaa939a810dbaba3f8d16d3304",
+        "state_id": "fa54e535f28c6b31c16d24995ef69efcee64be02788ec55d8438fc22222f772c",
+        "fit_charges": 0,
+        "seconds": 0.045584707986563444,
+        "summary": {
+          "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio)",
+          "leads": [
+            {
+              "term": "bbs(aum_bn, df=2.5, knots=5) %X% bbs(complexity_score, df=2.5, knots=5)",
+              "source": "residual+tree+neural",
+              "kind": "tensor"
+            },
+            {
+              "term": "bbs(aum_bn, df=2.5, knots=5) %X% bbs(vendor_n, df=2.5, knots=5)",
+              "source": "residual",
+              "kind": "tensor"
+            },
+            {
+              "term": "bbs(complexity_score, df=2.5, knots=5) %X% bbs(vendor_n, df=2.5, knots=5)",
+              "source": "residual",
+              "kind": "tensor"
+            },
+            {
+              "term": "bbs(vendor_n, by=has_legacy_stack)",
+              "source": "residual",
+              "kind": "varying"
+            },
+            {
+              "term": "bbs(aum_bn, by=has_legacy_stack)",
+              "source": "residual",
+              "kind": "varying"
+            },
+            {
+              "term": "bbs(overnight_frac, df=2.5, knots=5) %X% bbs(vendor_n, df=2.5, knots=5)",
+              "source": "residual",
+              "kind": "tensor"
+            },
+            {
+              "term": "btree(aum_bn, complexity_score, maxdepth=3, selection=sse)",
+              "source": "residual+tree+neural",
+              "kind": "joint_tree"
+            }
+          ],
+          "constraint_barred": {},
+          "constraints": {
+            "heredity": "none",
+            "forbidden_pairs": [],
+            "mandatory_terms": []
+          },
+          "fits_reported": 0,
+          "interpretation": "nomination, not adoption"
+        }
+      },
+      {
+        "action": "tree_candidate",
+        "status": "screening_only",
+        "evidence_id": "669f982cddbc0bbd4becc090b723fad14f3bc1ba62c5aa518d9628f01350114f",
+        "state_id": "a5f47bd34083ab9beccb90dfce5516ebb8206460169ff11d697f135e58069ad8",
+        "fit_charges": 0,
+        "seconds": 0.0004863329231739044,
+        "summary": {
+          "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio)",
+          "term": "btree(quarter, region, aum_bn, complexity_score, overnight_frac, vendor_n, has_legacy_stack, staff_per_bn, vol_proxy, rate_env, util_ratio, maxdepth=5, selection=sse)",
+          "constraint_barred": null,
+          "constraints": {
+            "heredity": "none",
+            "forbidden_pairs": [],
+            "mandatory_terms": []
+          },
+          "interpretation": "nomination, not adoption"
+        }
+      },
+      {
+        "action": "compare",
+        "status": "measured",
+        "evidence_id": "bb376d2ccd0b62cc2b4fa3d48a6f895257eb07df47750916b30add3de8ef019c",
+        "state_id": "6ef62c1ce872e3e71999800e81fdac64c7ebaac4ed74b9432163929c4030aa54",
+        "fit_charges": 36,
+        "seconds": 2.248755417065695,
+        "summary": {
+          "baseline": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio)",
+          "family": "NBinomial",
+          "score": "mse",
+          "fold_id": "2bb3e8dbde2482f5ba9d13a8c10001d64a43a05b12f333375e3fd498c1c4f872",
+          "two_se_candidates": [
+            {
+              "candidate": "pair_4",
+              "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(vendor_n, by=has_legacy_stack)",
+              "change": -0.5490309768046622,
+              "change_se": 0.1963473732936089
+            },
+            {
+              "candidate": "btree_complexity",
+              "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + btree(complexity_score)",
+              "change": -0.512383565300528,
+              "change_se": 0.1582829427762642
+            },
+            {
+              "candidate": "pair_3",
+              "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(complexity_score, df=2.5, knots=5) %X% bbs(vendor_n, df=2.5, knots=5)",
+              "change": -0.10489488302325611,
+              "change_se": 0.015568749887329956
+            }
+          ],
+          "also_cleared": [
+            {
+              "candidate": "btree_complexity",
+              "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + btree(complexity_score)",
+              "change": -0.512383565300528,
+              "change_se": 0.1582829427762642
+            },
+            {
+              "candidate": "pair_3",
+              "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(complexity_score, df=2.5, knots=5) %X% bbs(vendor_n, df=2.5, knots=5)",
+              "change": -0.10489488302325611,
+              "change_se": 0.015568749887329956
+            }
+          ],
+          "winner_gaps": [
+            {
+              "candidate": "btree_complexity",
+              "gap_vs_best": 0.0366474115041342,
+              "paired_se": 0.1985523595191836,
+              "within_two_se": true
+            },
+            {
+              "candidate": "pair_3",
+              "gap_vs_best": 0.44413609378140606,
+              "paired_se": 0.19579068319672438,
+              "within_two_se": false
+            }
+          ],
+          "soft_removal_candidates": [],
+          "rows": [
+            {
+              "specification": "current",
+              "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio)",
+              "out-of-fold risk": 18.647953203046328,
+              "change": 0.0,
+              "change se": 0.0
+            },
+            {
+              "specification": "pair_1",
+              "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(aum_bn, df=2.5, knots=5) %X% bbs(complexity_score, df=2.5, knots=5)",
+              "out-of-fold risk": 21.284693617255563,
+              "change": 2.6367404142092354,
+              "change se": 5.801318585208392
+            },
+            {
+              "specification": "pair_2",
+              "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(aum_bn, df=2.5, knots=5) %X% bbs(vendor_n, df=2.5, knots=5)",
+              "out-of-fold risk": 19.340539681139397,
+              "change": 0.6925864780930695,
+              "change se": 1.0271858081487983
+            },
+            {
+              "specification": "pair_3",
+              "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(complexity_score, df=2.5, knots=5) %X% bbs(vendor_n, df=2.5, knots=5)",
+              "out-of-fold risk": 18.54305832002307,
+              "change": -0.10489488302325611,
+              "change se": 0.015568749887329956
+            },
+            {
+              "specification": "pair_4",
+              "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(vendor_n, by=has_legacy_stack)",
+              "out-of-fold risk": 18.098922226241665,
+              "change": -0.5490309768046622,
+              "change se": 0.1963473732936089
+            },
+            {
+              "specification": "tree",
+              "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + btree(quarter, region, aum_bn, complexity_score, overnight_frac, vendor_n, has_legacy_stack, staff_per_bn, vol_proxy, rate_env, util_ratio, maxdepth=5, selection=sse)",
+              "out-of-fold risk": 34510599.93335354,
+              "change": 34510581.28540034,
+              "change se": 34471580.416994326
+            },
+            {
+              "specification": "complexity_x_overnight",
+              "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(complexity_score, df=2.5, knots=5) %X% bols(overnight_frac)",
+              "out-of-fold risk": 18.6348182732791,
+              "change": -0.013134929767225856,
+              "change se": 0.03752055092606975
+            },
+            {
+              "specification": "btree_complexity",
+              "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + btree(complexity_score)",
+              "out-of-fold risk": 18.1355696377458,
+              "change": -0.512383565300528,
+              "change se": 0.1582829427762642
+            },
+            {
+              "specification": "legacy_x_vendors",
+              "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bols(has_legacy_stack) %X% bols(vendor_n)",
+              "out-of-fold risk": 18.318531665624924,
+              "change": -0.32942153742140334,
+              "change se": 0.20564678786433035
+            }
+          ],
+          "rule": "two paired SE; explicit caller adoption; descriptive heuristic"
+        }
+      },
+      {
+        "action": "adopt",
+        "status": "unmeasured",
+        "evidence_id": "b6aefbd11b1796a02ebf48de58c5f761441df1612347459cbcd21c1e96870738",
+        "state_id": "e3d35cda1f1afb151dd65d6f4dc031b0e06e2f1487d6c751f6ca0d51a03c0380",
+        "fit_charges": 0,
+        "seconds": 5.725002847611904e-05,
+        "summary": {
+          "spec": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(vendor_n, by=has_legacy_stack)",
+          "comparison_id": "bb376d2ccd0b62cc2b4fa3d48a6f895257eb07df47750916b30add3de8ef019c",
+          "candidate": "pair_4",
+          "change": -0.5490309768046622,
+          "change_se": 0.1963473732936089,
+          "simplification_se": 0.0
+        }
+      },
+      {
+        "action": "compare",
+        "status": "measured",
+        "evidence_id": "947f22a6db547a4ef8be5d73b75db0bfc5d68d7c5cc505a039a226e8ac65c8a7",
+        "state_id": "1bfc698e388e975b752a4027746968a641d41ddec279e20507d316005e9c6bb8",
+        "fit_charges": 12,
+        "seconds": 0.5200336249545217,
+        "summary": {
+          "baseline": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(vendor_n, by=has_legacy_stack)",
+          "family": "NBinomial",
+          "score": "mse",
+          "fold_id": "2bb3e8dbde2482f5ba9d13a8c10001d64a43a05b12f333375e3fd498c1c4f872",
+          "two_se_candidates": [],
+          "also_cleared": [],
+          "winner_gaps": [],
+          "soft_removal_candidates": [],
+          "rows": [
+            {
+              "specification": "current",
+              "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(vendor_n, by=has_legacy_stack)",
+              "out-of-fold risk": 18.440865309172846,
+              "change": 0.0,
+              "change se": 0.0
+            },
+            {
+              "specification": "add_aum_proxy",
+              "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(vendor_n, by=has_legacy_stack) + bols(aum_bn_proxy)",
+              "out-of-fold risk": 18.444193128356417,
+              "change": 0.003327819183571279,
+              "change se": 0.003327819183570835
+            },
+            {
+              "specification": "add_complexity_z",
+              "rhs": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(vendor_n, by=has_legacy_stack) + bols(complexity_z)",
+              "out-of-fold risk": 18.440865309172846,
+              "change": 0.0,
+              "change se": 0.0
+            }
+          ],
+          "rule": "two paired SE; explicit caller adoption; descriptive heuristic"
+        }
+      },
+      {
+        "action": "term_report",
+        "status": "measured",
+        "evidence_id": "15d491cd70485ceb65b53932c7f9151e7ec2aa826945cfe0f2fab40645635e3d",
+        "state_id": "eb8fdbf4310eefec4afc275e14bb9fb260256edf9477835d6b4b0a13da32f6e1",
+        "fit_charges": 176,
+        "seconds": 10.486680792178959,
+        "summary": {
+          "baseline": 18.098922226241665,
+          "terms": [
+            {
+              "term": "bbs(complexity_score, df=4)",
+              "variable": "complexity_score",
+              "without it": 27.601915361549366,
+              "earns": 9.502993135307701,
+              "se": 2.7262309164572196,
+              "measurable": true
+            },
+            {
+              "term": "bols(aum_bn)",
+              "variable": "aum_bn",
+              "without it": 23.87467396724702,
+              "earns": 5.7757517410053545,
+              "se": 2.6415360508124386,
+              "measurable": true
+            },
+            {
+              "term": "bbs(vendor_n, by=has_legacy_stack)",
+              "variable": "vendor_n",
+              "without it": 18.647953203046328,
+              "earns": 0.5490309768046622,
+              "se": 0.1963473732936089,
+              "measurable": true
+            },
+            {
+              "term": "bols(staff_per_bn)",
+              "variable": "staff_per_bn",
+              "without it": 18.12715779741939,
+              "earns": 0.02823557117772424,
+              "se": 0.009741119563008955,
+              "measurable": true
+            },
+            {
+              "term": "bols(has_legacy_stack)",
+              "variable": "has_legacy_stack",
+              "without it": 18.100030512316753,
+              "earns": 0.0011082860750875057,
+              "se": 0.017789004176178295,
+              "measurable": true
+            },
+            {
+              "term": "bols(quarter)",
+              "variable": "quarter",
+              "without it": 18.098922226241665,
+              "earns": 0.0,
+              "se": 0.0,
+              "measurable": true
+            },
+            {
+              "term": "bols(vendor_n)",
+              "variable": "vendor_n",
+              "without it": 18.098922226241665,
+              "earns": 0.0,
+              "se": 0.0,
+              "measurable": true
+            },
+            {
+              "term": "bols(vol_proxy)",
+              "variable": "vol_proxy",
+              "without it": 18.098922226241665,
+              "earns": 0.0,
+              "se": 0.0,
+              "measurable": true
+            },
+            {
+              "term": "bols(rate_env)",
+              "variable": "rate_env",
+              "without it": 18.098922226241665,
+              "earns": 0.0,
+              "se": 0.0,
+              "measurable": true
+            },
+            {
+              "term": "bols(util_ratio)",
+              "variable": "util_ratio",
+              "without it": 18.098922226241665,
+              "earns": 0.0,
+              "se": 0.0,
+              "measurable": true
+            },
+            {
+              "term": "bols(overnight_frac)",
+              "variable": "overnight_frac",
+              "without it": 18.05627513856266,
+              "earns": -0.04264708767900416,
+              "se": 0.07639547909576737,
+              "measurable": true
+            },
+            {
+              "term": "bols(region)",
+              "variable": "region",
+              "without it": 17.90145188624342,
+              "earns": -0.19747033999824382,
+              "se": 0.9904768042749804,
+              "measurable": true
+            }
+          ],
+          "proxy_notes": [],
+          "concurvity_notes": [],
+          "concurvity_pairs": [],
+          "fits_reported": 176
+        }
+      },
+      {
+        "action": "tune",
+        "status": "measured",
+        "evidence_id": "9f84c7add3ef4f4deb6116ce42f6a9ea37968b482b64a147d8664893b16c655f",
+        "state_id": "acd2914888ed1719772b907ff3f2366ec10fcfbc1c498de4057bb92356497de6",
+        "fit_charges": 9,
+        "seconds": 0.6795767080038786,
+        "summary": {
+          "mstop": 183,
+          "score": "mse",
+          "fits_reported": 5
+        }
+      },
+      {
+        "action": "freeze",
+        "status": "unmeasured",
+        "evidence_id": "30d5bd4aa3b1920af2bae88b9dee53636f68e9162a3f3a45bc58a0c885dd1cb4",
+        "state_id": "73dcdefc495f54d1a12f1aad6df62bf9115f7591b4ca8d547567e07881530ebc",
+        "fit_charges": 0,
+        "seconds": 3.258301876485348e-05,
+        "summary": {
+          "spec": "bols(quarter) + bols(region) + bols(aum_bn) + bbs(complexity_score, df=4) + bols(overnight_frac) + bols(vendor_n) + bols(has_legacy_stack) + bols(staff_per_bn) + bols(vol_proxy) + bols(rate_env) + bols(util_ratio) + bbs(vendor_n, by=has_legacy_stack)",
+          "mstop": 183,
+          "test_status": "not_evaluated"
+        }
+      },
+      {
+        "action": "final_evaluate",
+        "status": "measured",
+        "evidence_id": "8c4a064d650894640a7c71ef486651c0a3dfa03ad61e4661287f7d3398d08179",
+        "state_id": "ef354fe9c1dfafdcac938a9e7594f2b0241a4ff9a966b0f1ebda74720a7fca27",
+        "fit_charges": 0,
+        "seconds": 0.0008249590173363686,
+        "summary": {
+          "score": 21.838247154465503,
+          "score_name": "mse",
+          "n_test": 650,
+          "task": "one-time untouched-test evaluation"
+        }
+      }
+    ]
+  },
+  "gaps_observed": [
+    {
+      "action": "interaction_screen_with_na_omit",
+      "error": "ValueError: residual has 2647 rows, data has 3136",
+      "repro": "open_search(train_with_nulls, ..., na_action='omit', score='family'); set_spec; fit; interaction_screen  # residual length = complete cases",
+      "status": "reproduced_prior_run",
+      "candidate_new_issue": true
+    },
+    {
+      "action": "final_evaluate_with_score_family",
+      "error": "ValueError: final_evaluate currently requires a response-scale score",
+      "repro": "open_search(..., score='family'); ...; freeze; final_evaluate(test)  # refuses family score",
+      "status": "reproduced_prior_run",
+      "candidate_new_issue": true
+    }
+  ],
+  "holdout_metrics": {
+    "rmse": 6.590886150298107,
+    "mae": 2.3414108966989886,
+    "mean_poisson_deviance": 15.354325392940616,
+    "n": 650
+  },
+  "elapsed_seconds": 16.41290850006044,
+  "budget": {
+    "budget": {
+      "seconds": null,
+      "fits": 400,
+      "memory_mb": null
+    },
+    "fit_charges": 246,
+    "elapsed_seconds": 14.9923933329992,
+    "peak_memory_mb": 154.5625,
+    "memory_scope": "absolute process-lifetime high-water RSS, MiB",
+    "limits": "fit admission is hard; time and memory checked between native calls",
+    "failed_fit_accounting": "failed native batches retain their full reserved charge; actual completed folds unknown",
+    "stopped": null,
+    "blocked_request": null,
+    "operation_count": 246,
+    "recent_operations": [
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 239,
+        "seconds": 0.06631166697479784,
+        "peak_memory_mb": 150.796875
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 240,
+        "seconds": 0.0712554999627173,
+        "peak_memory_mb": 151.390625
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 241,
+        "seconds": 0.06158641702495515,
+        "peak_memory_mb": 152.359375
+      },
+      {
+        "operation": "fit_gamboost_continue_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 242,
+        "seconds": 0.06029166700318456,
+        "peak_memory_mb": 153.3125
+      },
+      {
+        "operation": "fit_gamboost_continue_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 243,
+        "seconds": 0.060994124971330166,
+        "peak_memory_mb": 153.609375
+      },
+      {
+        "operation": "fit_gamboost_continue_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 244,
+        "seconds": 0.05369754205457866,
+        "peak_memory_mb": 153.734375
+      },
+      {
+        "operation": "fit_gamboost_continue_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 245,
+        "seconds": 0.055689499946311116,
+        "peak_memory_mb": 153.765625
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 246,
+        "seconds": 0.1375119579024613,
+        "peak_memory_mb": 154.484375
+      }
+    ]
+  },
+  "provenance": {
+    "created_at": "2026-10-22T02:08:17+00:00",
+    "commit": {
+      "sha": "387d08d1642bc41fe0bd8dedabf7627daf96c305",
+      "dirty": false,
+      "status_digest": null,
+      "commit_source": "working directory"
+    },
+    "platform": {
+      "system": "Darwin",
+      "release": "25.3.0",
+      "machine": "arm64",
+      "cpu": "arm",
+      "python": "3.12.11"
+    },
+    "versions": {
+      "mboostrs": "0.1.3",
+      "numpy": "2.4.6",
+      "rpy2": "3.6.7",
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "R": "4.5.1",
+      "mboost": "2.9.11"
+    },
+    "threads": {
+      "logical_cpus": 10,
+      "r_mclapply_default_cores": "2",
+      "RAYON_NUM_THREADS": null,
+      "OMP_NUM_THREADS": null,
+      "OPENBLAS_NUM_THREADS": null,
+      "MKL_NUM_THREADS": null,
+      "per_fit": 1
+    },
+    "protocol": {
+      "kind": "teaching-case transcript, one deterministic run",
+      "dataset": "docs/book/data/desk_ops_exceptions.parquet",
+      "response": "exception_count",
+      "groups": "desk_id",
+      "seed": 20260929,
+      "search": "pre_scan native/neural/dual, NBinomial baseline, interaction_screen / pair_candidates / tree_candidate, two-SE compare/adopt, tune, freeze, final_evaluate",
+      "holdout": "complete-case desk-quarter test split; the sealed oracle is not part of the public transcript"
+    },
+    "repeats": {
+      "runs": 1
+    },
+    "uncertainty": "none; a single deterministic run at fixed seeds"
+  }
+}

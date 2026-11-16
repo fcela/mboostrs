@@ -1,0 +1,59 @@
+{
+  "mu": [
+    {
+      "frag": "bbs(housing_median_age, df=4)",
+      "vars": [
+        "housing_median_age"
+      ]
+    },
+    {
+      "frag": "bbs(l_median_income, df=4)",
+      "vars": [
+        "l_median_income"
+      ]
+    },
+    {
+      "frag": "bols(housing_median_age_isna, intercept=False)",
+      "vars": [
+        "housing_median_age_isna"
+      ]
+    },
+    {
+      "frag": "bols(total_bedrooms_isna, intercept=False)",
+      "vars": [
+        "total_bedrooms_isna"
+      ]
+    },
+    {
+      "frag": "bols(ave_bedrooms_isna, intercept=False)",
+      "vars": [
+        "ave_bedrooms_isna"
+      ]
+    }
+  ],
+  "sigma": [
+    {
+      "frag": "bbs(l_population, df=4)",
+      "vars": [
+        "l_population"
+      ]
+    }
+  ],
+  "mstop": 18,
+  "nu": 0.1,
+  "transforms": {
+    "l_total_rooms": "total_rooms",
+    "l_total_bedrooms": "total_bedrooms",
+    "l_population": "population",
+    "l_households": "households",
+    "l_median_income": "median_income",
+    "l_median_house_value": "median_house_value",
+    "l_ave_rooms": "ave_rooms",
+    "l_ave_bedrooms": "ave_bedrooms"
+  },
+  "indicators": [
+    "housing_median_age_isna",
+    "total_bedrooms_isna",
+    "ave_bedrooms_isna"
+  ]
+}

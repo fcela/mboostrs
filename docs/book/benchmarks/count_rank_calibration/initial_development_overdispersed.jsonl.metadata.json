@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-18T19:16:55+00:00",
+  "commit": "033305243f81e1d3c389a3cdbe3813556e3ba55c",
+  "working_tree": {
+    "dirty": true,
+    "status_digest": "sha256:013c20df4cf8c417d5b5b46ab87724664360003f05c144a9b25480d2c2f82a86",
+    "commit_source": "working directory"
+  },
+  "platform": {
+    "system": "Darwin",
+    "release": "25.3.0",
+    "machine": "arm64",
+    "cpu": "arm",
+    "python": "3.12.11"
+  },
+  "versions": {
+    "mboostrs": "0.1.3",
+    "numpy": "2.4.6",
+    "rpy2": "3.6.7",
+    "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+    "R": "4.5.1",
+    "mboost": "2.9.11",
+    "scipy": "1.16.3",
+    "pandas": "2.3.3",
+    "ngboost": "0.5.11",
+    "mssm": "1.2.5",
+    "scikit-learn": "1.9.0"
+  },
+  "threads": {
+    "logical_cpus": 10,
+    "r_mclapply_default_cores": "2",
+    "RAYON_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "build_info": {
+    "package_version": "0.1.3",
+    "source_digest": "sha256:af4831b3838c1d5149437335430af276a3e63b621cad103e0a68004cf6d2199f",
+    "git_revision": "5581f503c5eb56fc43200c8533561ae7b25b4137",
+    "git_dirty": true,
+    "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+    "target": "aarch64-apple-darwin",
+    "profile": "release",
+    "target_features": "aes,bf16,bti,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,i8mm,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+    "crate_features": "",
+    "abi_version": 1,
+    "build_id": "sha256:ead2ead0635695dfb38964f96c26d5070c95771a8cd2466e7cb68ec13bbf2b37"
+  },
+  "scripts": {
+    "/private/tmp/mboostrs-count-cdf/benches/study_count_rank_calibration.py": "4ff504a7e4a66682181b27d54cff30c546d9b32e2f7facc9a8daac2d4264ee7b",
+    "/private/tmp/mboostrs-count-cdf/benches/study_poisson_tuning_consistency.py": "7cb3f625fba4fb6a43b0c9452f9c67498ece2648b4a0fe77cf038059cb409c6a",
+    "/private/tmp/mboostrs-count-cdf/benches/study_discovery_calibration.py": "9d07a42ac6c6f2e538b600c8038547e1803aed32936aa1ff4ae85796dcbda883"
+  },
+  "thread_environment": {
+    "RAYON_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "protocol": {
+    "id": "count-rank-calibration/1",
+    "phase": "development",
+    "sha256": "940cb34fb79cf49e2468ba61a025c8221d103e471ba965057acb72fff1ecfb4e"
+  },
+  "repeats": {
+    "seeds": [
+      6603100,
+      6603101,
+      6603102,
+      6603103,
+      6603104,
+      6603105,
+      6603106,
+      6603107,
+      6603108,
+      6603109
+    ],
+    "panels": [
+      "overdispersed"
+    ],
+    "test_seed_offset": 100000
+  },
+  "uncertainty": {
+    "unit": "one independent training and test draw; pair methods within a draw",
+    "summary": "mean and Monte Carlo standard error across draws",
+    "timing": "elapsed whole-workflow costs, not controlled implementation speed ratios"
+  },
+  "memory": {
+    "status": "not measured"
+  },
+  "loaded_sources": {
+    "conformal.py": "e51181901b301a2e22a42f91adba1e7b0fd2e33f3df23b4a7733522725cafbc5",
+    "discover.py": "5cf5a3927c18f056c5af2df3f2ed3eb29b646c6f96a05746a713a858ce31cc0f",
+    "explore.py": "590a5d9ccee4d88ccaabc38c90107980987c3e6bd6cdc3250c44b3612fa1b4be"
+  }
+}

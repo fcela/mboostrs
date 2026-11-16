@@ -1,0 +1,1298 @@
+{
+  "design": {
+    "n_train": 1500,
+    "n_test": 4000,
+    "seeds": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "nu": 0.1,
+    "folds": 5,
+    "df": 4.0,
+    "mstop": {
+      "glm": 600,
+      "gam": 1200
+    },
+    "constant_mean": "mu = 0.30 + 0.80 x1 - 0.35 x2",
+    "constant_sigma": 1.25,
+    "varying_mean": "mu = 0.10 + sin(1.4 x1) + 0.25 x2",
+    "varying_sigma": "log sigma = 0.10 + 0.55 sin(2 x3)",
+    "scale": "sigma is the t scale, not the standard deviation",
+    "links": "identity mu, log sigma, log df",
+    "competitor": "statsmodels.miscmodels.tmodel.TLinearModel"
+  },
+  "results": [
+    {
+      "task": "constant",
+      "seed": 0,
+      "method": "generating Student-t",
+      "own_nll": 1.918872671971612,
+      "nll_at_true_scale": 1.918872671971612,
+      "mae": 0.0,
+      "mae_log_sigma": 0.0,
+      "mae_df": 0.0,
+      "sigma_mean": 1.25,
+      "df_mean": 4.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:cf359f398960f352cb2b958e8ea82d04fa6c25351bb1ec5085882f6cd3e6756c",
+        "measured_at": "2026-10-24T05:08:59.258377+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:4cb2dffebe7950daa5780bb3ef8548b9e99dd4c3e1b593d5db594b9e80588362",
+        "output_digest": "sha256:830f87d91030bbc7bbaf179d09b1544f353872a6b4f9c4572d909ff76ea343bc",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "constant",
+      "seed": 0,
+      "method": "mboostrs glmboostLSS StudentTLSS",
+      "own_nll": 1.922870066665272,
+      "nll_at_true_scale": 1.9185453775444818,
+      "mae": 0.04725328058768121,
+      "mae_log_sigma": 0.048652679770947754,
+      "mae_df": 0.7312203369209005,
+      "sigma_mean": 1.285939307484527,
+      "df_mean": 4.7312203369209005,
+      "seconds": 2.635870917001739,
+      "mstop": 185,
+      "at_boundary": false,
+      "converged": true,
+      "allocation": {
+        "mu": 134,
+        "sigma": 51,
+        "df": 0
+      },
+      "_identity": {
+        "fingerprint": "sha256:cb88e6e177f3272873af04e261585a007adbfd119052090785eb52105507fb3b",
+        "measured_at": "2026-10-24T05:08:59.259127+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:4cb2dffebe7950daa5780bb3ef8548b9e99dd4c3e1b593d5db594b9e80588362",
+        "output_digest": "sha256:6d39d712f2d5a5fe58a6e0bc4cb04d53aa5b8c2924e00b8926ff25f9a89ae543",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "constant",
+      "seed": 0,
+      "method": "statsmodels TLinearModel",
+      "own_nll": 1.9190523416472014,
+      "nll_at_true_scale": 1.919263861823343,
+      "mae": 0.04366870931631107,
+      "mae_log_sigma": 0.03207538151544048,
+      "mae_df": 0.2657849952008155,
+      "sigma_mean": 1.2105419716712063,
+      "df_mean": 3.7342150047991836,
+      "seconds": 0.012772333808243275,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:ecdaa851bab847dd653756fa0257f9ba918e167fc375ff4fd14ca7eb08454c67",
+        "measured_at": "2026-10-24T05:08:59.259920+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:4cb2dffebe7950daa5780bb3ef8548b9e99dd4c3e1b593d5db594b9e80588362",
+        "output_digest": "sha256:6cda5deecdaf99b552d720c00a5794ebe9ef6472730109fc05b0eaf8d60c36f6",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "constant",
+      "seed": 0,
+      "method": "statsmodels OLS",
+      "own_nll": 2.0458922449463595,
+      "nll_at_true_scale": 1.9185465227912175,
+      "mae": 0.06475724343150312,
+      "mae_log_sigma": null,
+      "mae_df": null,
+      "sigma_mean": null,
+      "df_mean": null,
+      "seconds": 0.0003124577924609184,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:710f71323e3a42c5bccc3b3f18fa40e3d13b18837bda6f9a91c17d29de57706d",
+        "measured_at": "2026-10-24T05:08:59.260366+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:4cb2dffebe7950daa5780bb3ef8548b9e99dd4c3e1b593d5db594b9e80588362",
+        "output_digest": "sha256:828caef487a3f4ae973749045ea23ad29d0069b9e17fe3233a090e647a86bd6c",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "constant",
+      "seed": 1,
+      "method": "generating Student-t",
+      "own_nll": 1.918872671971612,
+      "nll_at_true_scale": 1.918872671971612,
+      "mae": 0.0,
+      "mae_log_sigma": 0.0,
+      "mae_df": 0.0,
+      "sigma_mean": 1.25,
+      "df_mean": 4.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:abc9bad5ceac146574b8a800ccd0047c3d20b6a2a09ee2b5a336416904fe388b",
+        "measured_at": "2026-10-24T05:09:01.997706+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:13a6763e4c8c70243406255fd7f3da1ed7d3e89df4b377e504fe995c943a0042",
+        "output_digest": "sha256:dfbee93693ad75b6ac8af8f076367a065f5cfcffc04382e14927b2f9e33fff80",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "constant",
+      "seed": 1,
+      "method": "mboostrs glmboostLSS StudentTLSS",
+      "own_nll": 1.9228111538547115,
+      "nll_at_true_scale": 1.9188137494841138,
+      "mae": 0.06821984438525844,
+      "mae_log_sigma": 0.0768822485139432,
+      "mae_df": 0.7274387028177342,
+      "sigma_mean": 1.3480821094587228,
+      "df_mean": 4.6875178457276245,
+      "seconds": 2.673492082860321,
+      "mstop": 595,
+      "at_boundary": false,
+      "converged": true,
+      "allocation": {
+        "mu": 298,
+        "sigma": 106,
+        "df": 191
+      },
+      "_identity": {
+        "fingerprint": "sha256:0d3c8cccf1d3d73d87fe73d4411039412889fe9e1f99a156aa0202c0d74dd2db",
+        "measured_at": "2026-10-24T05:09:01.998431+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:13a6763e4c8c70243406255fd7f3da1ed7d3e89df4b377e504fe995c943a0042",
+        "output_digest": "sha256:52f99c5b12ce5906a62bc04b309ee7150b9efef06cd12da57d84bfaf261acda0",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "constant",
+      "seed": 1,
+      "method": "statsmodels TLinearModel",
+      "own_nll": 1.9211484343699856,
+      "nll_at_true_scale": 1.9190694876900622,
+      "mae": 0.07316317168109836,
+      "mae_log_sigma": 0.06222861186570205,
+      "mae_df": 0.4273087224204754,
+      "sigma_mean": 1.330257008687443,
+      "df_mean": 4.427308722420476,
+      "seconds": 0.012298875022679567,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:9da7b75bca4051bf4c21c78e67704d8834db83e498a613ee7e2e1205d37b5143",
+        "measured_at": "2026-10-24T05:09:01.999079+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:13a6763e4c8c70243406255fd7f3da1ed7d3e89df4b377e504fe995c943a0042",
+        "output_digest": "sha256:150b55ccc4aab710c7597316793611062c65737439f1ba85e5809ce8e888297d",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "constant",
+      "seed": 1,
+      "method": "statsmodels OLS",
+      "own_nll": 2.046528359642588,
+      "nll_at_true_scale": 1.920531178112391,
+      "mae": 0.08244459636181355,
+      "mae_log_sigma": null,
+      "mae_df": null,
+      "sigma_mean": null,
+      "df_mean": null,
+      "seconds": 0.00029641715809702873,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:a99535180ae391bcdc4daaa55806b8968d569df6819929f309d18628b1e1af13",
+        "measured_at": "2026-10-24T05:09:01.999487+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:13a6763e4c8c70243406255fd7f3da1ed7d3e89df4b377e504fe995c943a0042",
+        "output_digest": "sha256:c27b21a9573a6e0658ea58be341d3746949351064179a0342ef87a1eb2f35fe7",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "constant",
+      "seed": 2,
+      "method": "generating Student-t",
+      "own_nll": 1.918872671971612,
+      "nll_at_true_scale": 1.918872671971612,
+      "mae": 0.0,
+      "mae_log_sigma": 0.0,
+      "mae_df": 0.0,
+      "sigma_mean": 1.25,
+      "df_mean": 4.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:a1e2b9604922b61f9a170672362a95b31bc6c5611646a7dead0498e9fb83864c",
+        "measured_at": "2026-10-24T05:09:04.678870+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f3ef66935548b76f9e592ff4ec94aa2461b687642d0de63157718a8bf290f1fb",
+        "output_digest": "sha256:0e614ba0b4e10970f7552cc02201013f5dbf3226c3e1240f5a3a78ff0b51054e",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "constant",
+      "seed": 2,
+      "method": "mboostrs glmboostLSS StudentTLSS",
+      "own_nll": 1.92284572088977,
+      "nll_at_true_scale": 1.9199068772003829,
+      "mae": 0.059157773339220926,
+      "mae_log_sigma": 0.06569848035348481,
+      "mae_df": 0.8717155125280087,
+      "sigma_mean": 1.335044747308365,
+      "df_mean": 4.871715512528008,
+      "seconds": 2.663303041132167,
+      "mstop": 187,
+      "at_boundary": false,
+      "converged": true,
+      "allocation": {
+        "mu": 157,
+        "sigma": 30,
+        "df": 0
+      },
+      "_identity": {
+        "fingerprint": "sha256:473d2dc12bf7b861f4ff92bbac7ba0ac9913e9b5e77ff9a722a9a3d021b42cce",
+        "measured_at": "2026-10-24T05:09:04.679498+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f3ef66935548b76f9e592ff4ec94aa2461b687642d0de63157718a8bf290f1fb",
+        "output_digest": "sha256:ec1c7ef8d4dd26b245008a2cdc3ffeba69a3e9abebdf8ffff8e1c509db694463",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "constant",
+      "seed": 2,
+      "method": "statsmodels TLinearModel",
+      "own_nll": 1.9208542256358796,
+      "nll_at_true_scale": 1.9207483434407322,
+      "mae": 0.06956864923576274,
+      "mae_log_sigma": 0.01627067949773464,
+      "mae_df": 0.03544907256151486,
+      "sigma_mean": 1.2705047097952524,
+      "df_mean": 4.035449072561514,
+      "seconds": 0.012248791055753827,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:4866c6da2aa116bc499ae58e8ffc9118e317774864646bfe3faa673272ff2f1f",
+        "measured_at": "2026-10-24T05:09:04.680128+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f3ef66935548b76f9e592ff4ec94aa2461b687642d0de63157718a8bf290f1fb",
+        "output_digest": "sha256:0afd432af9477e5c74a3f7428df28e390de4c35d6b04e3da8d0c12b8c93b76d3",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "constant",
+      "seed": 2,
+      "method": "statsmodels OLS",
+      "own_nll": 2.046205099338338,
+      "nll_at_true_scale": 1.9198532449086285,
+      "mae": 0.06914940765379055,
+      "mae_log_sigma": null,
+      "mae_df": null,
+      "sigma_mean": null,
+      "df_mean": null,
+      "seconds": 0.0003082500770688057,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:3ada082f731dbd6554097bb0da1114f805998f16a732385da76909df2c1c4cbd",
+        "measured_at": "2026-10-24T05:09:04.680534+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:f3ef66935548b76f9e592ff4ec94aa2461b687642d0de63157718a8bf290f1fb",
+        "output_digest": "sha256:1dd60413210d87d62f89aab2182d7d6388cecbf4222f9999bdacb177c93cd544",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "constant",
+      "seed": 3,
+      "method": "generating Student-t",
+      "own_nll": 1.918872671971612,
+      "nll_at_true_scale": 1.918872671971612,
+      "mae": 0.0,
+      "mae_log_sigma": 0.0,
+      "mae_df": 0.0,
+      "sigma_mean": 1.25,
+      "df_mean": 4.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:fa891c0bf89c13cdea8cf65977d62cb75849a4b5b72e504534aa7cbed069fa3c",
+        "measured_at": "2026-10-24T05:09:07.325097+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:0eac9cd046ea022441a7bd92276dfc3294191e470b0cbfb9b5064c9051844e9c",
+        "output_digest": "sha256:6475a99dac4baa897963dee781203ca64b34b27b69791f40218e4039fa7e7798",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "constant",
+      "seed": 3,
+      "method": "mboostrs glmboostLSS StudentTLSS",
+      "own_nll": 1.9221276658104038,
+      "nll_at_true_scale": 1.920955708655705,
+      "mae": 0.09655540166661382,
+      "mae_log_sigma": 0.03761586652172399,
+      "mae_df": 0.14226309841673543,
+      "sigma_mean": 1.2766240335789616,
+      "df_mean": 4.052939165695985,
+      "seconds": 2.6289557088166475,
+      "mstop": 597,
+      "at_boundary": false,
+      "converged": true,
+      "allocation": {
+        "mu": 246,
+        "sigma": 114,
+        "df": 237
+      },
+      "_identity": {
+        "fingerprint": "sha256:a655b62ac2697b063b58d463c1520e56644b45ba60fd86fa00770e3b0e39eb94",
+        "measured_at": "2026-10-24T05:09:07.325816+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:0eac9cd046ea022441a7bd92276dfc3294191e470b0cbfb9b5064c9051844e9c",
+        "output_digest": "sha256:2d31cc31708866a846aac5a01b53c69c6f4af9e5fa269d3297c6cb6058e3d11a",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "constant",
+      "seed": 3,
+      "method": "statsmodels TLinearModel",
+      "own_nll": 1.9210303264655735,
+      "nll_at_true_scale": 1.9215327565072144,
+      "mae": 0.10049672320067111,
+      "mae_log_sigma": 0.0025154295636935498,
+      "mae_df": 0.3268040073996218,
+      "sigma_mean": 1.2468596643477954,
+      "df_mean": 3.6731959926003768,
+      "seconds": 0.011814041994512081,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:03d3c5d1c2696b9039718060ede9b69c0cb312c485d442f272341b93030494a3",
+        "measured_at": "2026-10-24T05:09:07.326610+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:0eac9cd046ea022441a7bd92276dfc3294191e470b0cbfb9b5064c9051844e9c",
+        "output_digest": "sha256:bfcdf970e7b55cb0758b028041bd38951d308f446718c619898852418aa792d6",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "constant",
+      "seed": 3,
+      "method": "statsmodels OLS",
+      "own_nll": 2.047911883371503,
+      "nll_at_true_scale": 1.9244133590445867,
+      "mae": 0.13442847171258393,
+      "mae_log_sigma": null,
+      "mae_df": null,
+      "sigma_mean": null,
+      "df_mean": null,
+      "seconds": 0.0002975000534206629,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:2b7262229d34ac8aac13f793b4278c8eac6a6ebeb7c49cbba2fcb2bd5dbc5938",
+        "measured_at": "2026-10-24T05:09:07.327049+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:0eac9cd046ea022441a7bd92276dfc3294191e470b0cbfb9b5064c9051844e9c",
+        "output_digest": "sha256:99499d83bff9837449ca0bf941ad264bd742538a955ae556f6d72171e4541718",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 0,
+      "method": "generating Student-t",
+      "own_nll": 1.77220006012598,
+      "nll_at_true_scale": 1.77220006012598,
+      "mae": 0.0,
+      "mae_log_sigma": 0.0,
+      "mae_df": 0.0,
+      "sigma_mean": 1.189966589563237,
+      "df_mean": 4.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:e75da6997e5b04edbbf5229af3714edaffdd4daa67207e9daafa553c79afe1e3",
+        "measured_at": "2026-10-24T05:09:22.522824+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5d0691d40baa132d00766b1de5887171c47a0ecee17fcc35bd55096e34ec6737",
+        "output_digest": "sha256:cfce2d7c2efd52f4f681dc425c734700f00c4ebd8f0f114ab2fb8fa584bcf5b9",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 0,
+      "method": "mboostrs glmboostLSS StudentTLSS",
+      "own_nll": 1.8979309961341067,
+      "nll_at_true_scale": 1.8402452572924184,
+      "mae": 0.34710737178243994,
+      "mae_log_sigma": 0.32789642808386427,
+      "mae_df": 0.883874488787064,
+      "sigma_mean": 1.1762539038164121,
+      "df_mean": 3.837245818640323,
+      "seconds": 2.7689423330593854,
+      "mstop": 593,
+      "at_boundary": false,
+      "converged": true,
+      "allocation": {
+        "mu": 165,
+        "sigma": 143,
+        "df": 285
+      },
+      "_identity": {
+        "fingerprint": "sha256:d2ce9c7c08a223c878636bce42340777ab3a2d55608a6588bbac500cd7906330",
+        "measured_at": "2026-10-24T05:09:22.523531+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5d0691d40baa132d00766b1de5887171c47a0ecee17fcc35bd55096e34ec6737",
+        "output_digest": "sha256:ca45bd4051d22d335cc9b188bbec11cd196fb808d2db08b7f274ca98c7b683e8",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 0,
+      "method": "mboostrs gamboostLSS StudentTLSS",
+      "own_nll": 1.782470287690168,
+      "nll_at_true_scale": 1.7779919122068568,
+      "mae": 0.08615204399655717,
+      "mae_log_sigma": 0.06480245102351882,
+      "mae_df": 0.20302411228122424,
+      "sigma_mean": 1.1439234654405874,
+      "df_mean": 3.7974948733861615,
+      "seconds": 12.274839625228196,
+      "mstop": 255,
+      "at_boundary": false,
+      "converged": true,
+      "allocation": {
+        "mu": 138,
+        "sigma": 99,
+        "df": 18
+      },
+      "_identity": {
+        "fingerprint": "sha256:5947a3f4dc555ccad1933ed444ee4e4f2f532abc880b6c3ab4f9cd20e5c4fdfd",
+        "measured_at": "2026-10-24T05:09:22.524159+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5d0691d40baa132d00766b1de5887171c47a0ecee17fcc35bd55096e34ec6737",
+        "output_digest": "sha256:18446325ffe8715575cc7ac8f9608c5a07e08edd4cf3e354f39c3c0b5c3a3c8d",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 0,
+      "method": "statsmodels TLinearModel",
+      "own_nll": 1.902344390300618,
+      "nll_at_true_scale": 1.8389708389143926,
+      "mae": 0.33651577013232964,
+      "mae_log_sigma": 0.3507633097304644,
+      "mae_df": 1.0606576465248898,
+      "sigma_mean": 1.1182973983810278,
+      "df_mean": 2.93934235347511,
+      "seconds": 0.011812041979283094,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:b5ac8ad082f0c4578114e46ca0d8479396c0a97a986b0ea4b69e95098570f05f",
+        "measured_at": "2026-10-24T05:09:22.524728+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5d0691d40baa132d00766b1de5887171c47a0ecee17fcc35bd55096e34ec6737",
+        "output_digest": "sha256:4834d6789e009d3fe5ad0db165a2d9bfca651d4da4a5dc925073bf21b777023c",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 0,
+      "method": "statsmodels TLinearModel spline",
+      "own_nll": 1.858821766424017,
+      "nll_at_true_scale": 1.7771714077851353,
+      "mae": 0.07335096423385974,
+      "mae_log_sigma": 0.35395110207566105,
+      "mae_df": 1.3348179447717166,
+      "sigma_mean": 1.0142857991502863,
+      "df_mean": 2.6651820552282834,
+      "seconds": 0.1279589592013508,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:06fba1544701cddecedb2b52ee44ce9e38a4607d6f0637d47a47eac58e53b76d",
+        "measured_at": "2026-10-24T05:09:22.525281+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5d0691d40baa132d00766b1de5887171c47a0ecee17fcc35bd55096e34ec6737",
+        "output_digest": "sha256:c8dca553b25f4f777835aa3c9f5a4b9989a75926e5299877a41b1767f19193d3",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 0,
+      "method": "statsmodels OLS",
+      "own_nll": 2.037242267900788,
+      "nll_at_true_scale": 1.8416901562291754,
+      "mae": 0.35255710151633224,
+      "mae_log_sigma": null,
+      "mae_df": null,
+      "sigma_mean": null,
+      "df_mean": null,
+      "seconds": 0.00028979103080928326,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:3254c0288fa75c478e1a3ca0935466851e4be403ff67f3bbe097d7a039085b73",
+        "measured_at": "2026-10-24T05:09:22.525647+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5d0691d40baa132d00766b1de5887171c47a0ecee17fcc35bd55096e34ec6737",
+        "output_digest": "sha256:095e51d1067442b615093d91592abe8bbaddc13b98e0a5107a78edd5669748b3",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 1,
+      "method": "generating Student-t",
+      "own_nll": 1.77220006012598,
+      "nll_at_true_scale": 1.77220006012598,
+      "mae": 0.0,
+      "mae_log_sigma": 0.0,
+      "mae_df": 0.0,
+      "sigma_mean": 1.189966589563237,
+      "df_mean": 4.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:bdda8fdf4962cfc845de8a1985dfeb40e8e7a38c1a42b4813041033491ffc3fc",
+        "measured_at": "2026-10-24T05:09:37.528583+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:9d52a1b08c22be75180a837364d0fa5237f331183e03df6d16d7aa5c9156ce2e",
+        "output_digest": "sha256:a38e214de0bd5c2866159d2432fb17be6ccc7d40e5a88144c9ba49d87e9762a8",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 1,
+      "method": "mboostrs glmboostLSS StudentTLSS",
+      "own_nll": 1.9003654397629266,
+      "nll_at_true_scale": 1.8455203052024158,
+      "mae": 0.37265479324743767,
+      "mae_log_sigma": 0.33214468965625343,
+      "mae_df": 0.07962495173310202,
+      "sigma_mean": 1.2603849204130917,
+      "df_mean": 3.9203750482668984,
+      "seconds": 2.625154667068273,
+      "mstop": 220,
+      "at_boundary": false,
+      "converged": true,
+      "allocation": {
+        "mu": 158,
+        "sigma": 62,
+        "df": 0
+      },
+      "_identity": {
+        "fingerprint": "sha256:047f30bd06d2592b55a1947d3421d140bceeb0525e023d6327a6dee61e78058c",
+        "measured_at": "2026-10-24T05:09:37.529187+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:9d52a1b08c22be75180a837364d0fa5237f331183e03df6d16d7aa5c9156ce2e",
+        "output_digest": "sha256:999c5ab6491c372c57eb8d08e906b7c8b59af32f947ff595534a75bd6f3194c3",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 1,
+      "method": "mboostrs gamboostLSS StudentTLSS",
+      "own_nll": 1.7852257846082755,
+      "nll_at_true_scale": 1.779510368407571,
+      "mae": 0.07974232653937278,
+      "mae_log_sigma": 0.08688381920682686,
+      "mae_df": 0.20550500123044685,
+      "sigma_mean": 1.2065432178250095,
+      "df_mean": 4.098071605948662,
+      "seconds": 12.205998957855627,
+      "mstop": 696,
+      "at_boundary": false,
+      "converged": true,
+      "allocation": {
+        "mu": 269,
+        "sigma": 353,
+        "df": 74
+      },
+      "_identity": {
+        "fingerprint": "sha256:5c22dadfe22609a859d407a695733b92fe4ba9ad503f77d73cc054e31dd5b397",
+        "measured_at": "2026-10-24T05:09:37.529827+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:9d52a1b08c22be75180a837364d0fa5237f331183e03df6d16d7aa5c9156ce2e",
+        "output_digest": "sha256:8c763b059a30bbf91152ac0a39979687745727aa2ac733f2ee5a95e77ebcb497",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 1,
+      "method": "statsmodels TLinearModel",
+      "own_nll": 1.9054548340836215,
+      "nll_at_true_scale": 1.8434435131351583,
+      "mae": 0.3596673398908822,
+      "mae_log_sigma": 0.35563970000098055,
+      "mae_df": 0.5893401073517739,
+      "sigma_mean": 1.2062965079273167,
+      "df_mean": 3.4106598926482254,
+      "seconds": 0.011946832993999124,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:0e7c7bbc66ad5530749733c37b140dad81d5ac7c54b2ba8f66e3b8b6402620d7",
+        "measured_at": "2026-10-24T05:09:37.530390+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:9d52a1b08c22be75180a837364d0fa5237f331183e03df6d16d7aa5c9156ce2e",
+        "output_digest": "sha256:8c3b9f0f5e33eb6bdd6b60c7eac7f0c7ab681361123788e9bf897e8c280a1ddc",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 1,
+      "method": "statsmodels TLinearModel spline",
+      "own_nll": 1.8644024957288399,
+      "nll_at_true_scale": 1.78268705475119,
+      "mae": 0.11461243765386724,
+      "mae_log_sigma": 0.35049515531046754,
+      "mae_df": 0.9532198388934727,
+      "sigma_mean": 1.0961746549178744,
+      "df_mean": 3.046780161106527,
+      "seconds": 0.1474402081221342,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:e54b15c9c524d6d74d091e5e1819b0b2b1f68d2e38cfa5dd6c598325ac0692b1",
+        "measured_at": "2026-10-24T05:09:37.530939+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:9d52a1b08c22be75180a837364d0fa5237f331183e03df6d16d7aa5c9156ce2e",
+        "output_digest": "sha256:63b29e43c39fc4de8d3887ca7b5e9d7ce334b3c141eefe6b63155ccc5cc136e5",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 1,
+      "method": "statsmodels OLS",
+      "own_nll": 2.037853705383572,
+      "nll_at_true_scale": 1.8424700860644643,
+      "mae": 0.3541332686184277,
+      "mae_log_sigma": null,
+      "mae_df": null,
+      "sigma_mean": null,
+      "df_mean": null,
+      "seconds": 0.0003262499812990427,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:2d188c227ed59ad9775e64fb9c48d364d50a1692b27f4bb27710d44d9cedd1ef",
+        "measured_at": "2026-10-24T05:09:37.531314+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:9d52a1b08c22be75180a837364d0fa5237f331183e03df6d16d7aa5c9156ce2e",
+        "output_digest": "sha256:dfb87899e001fe89ab7dfa5495757aff7b73da4d06e19662c9c3596442912a0d",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 2,
+      "method": "generating Student-t",
+      "own_nll": 1.77220006012598,
+      "nll_at_true_scale": 1.77220006012598,
+      "mae": 0.0,
+      "mae_log_sigma": 0.0,
+      "mae_df": 0.0,
+      "sigma_mean": 1.189966589563237,
+      "df_mean": 4.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:3d690d3964c7ecfc95ae8ef9cbcb1c3543a66420b5b78ea1b0a223d342d86a1c",
+        "measured_at": "2026-10-24T05:09:52.635463+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:80dbc6921ce1edb6ff7fd1440095827d6608a4bb8504932b39e97a6fbb5ff569",
+        "output_digest": "sha256:05d45e10f018c445ef8243ed94edeb592b23ca6607030ec5bc42272ee7e272fc",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 2,
+      "method": "mboostrs glmboostLSS StudentTLSS",
+      "own_nll": 1.8957203647401795,
+      "nll_at_true_scale": 1.8392310837573922,
+      "mae": 0.336685098783307,
+      "mae_log_sigma": 0.3210054040269005,
+      "mae_df": 0.06304350624610988,
+      "sigma_mean": 1.2458977335255248,
+      "df_mean": 3.9369564937538897,
+      "seconds": 2.662978374864906,
+      "mstop": 187,
+      "at_boundary": false,
+      "converged": true,
+      "allocation": {
+        "mu": 129,
+        "sigma": 58,
+        "df": 0
+      },
+      "_identity": {
+        "fingerprint": "sha256:b3166f6f900d0255159f18132a0c374d7cb58f0d8a331866329dffb5a7f55bb7",
+        "measured_at": "2026-10-24T05:09:52.636191+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:80dbc6921ce1edb6ff7fd1440095827d6608a4bb8504932b39e97a6fbb5ff569",
+        "output_digest": "sha256:9c8d13b86a8165c43b107d5b00fa441db9f7f294e08866d157e741b6958b3541",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 2,
+      "method": "mboostrs gamboostLSS StudentTLSS",
+      "own_nll": 1.7782687180759518,
+      "nll_at_true_scale": 1.776044447905308,
+      "mae": 0.0821977802678613,
+      "mae_log_sigma": 0.045929855469208226,
+      "mae_df": 0.36242497883523106,
+      "sigma_mean": 1.1909423977590912,
+      "df_mean": 3.964283243774855,
+      "seconds": 12.30945449997671,
+      "mstop": 504,
+      "at_boundary": false,
+      "converged": true,
+      "allocation": {
+        "mu": 198,
+        "sigma": 201,
+        "df": 105
+      },
+      "_identity": {
+        "fingerprint": "sha256:a5a2a85ede23dc9df70fdd52ae2c9ac18797bd1b5a660fb96058b33c526f974a",
+        "measured_at": "2026-10-24T05:09:52.636890+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:80dbc6921ce1edb6ff7fd1440095827d6608a4bb8504932b39e97a6fbb5ff569",
+        "output_digest": "sha256:4f70c6178273367325cb880205c1cf36aee3d0276e97eae2d0dddb1513285605",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 2,
+      "method": "statsmodels TLinearModel",
+      "own_nll": 1.9026766857070747,
+      "nll_at_true_scale": 1.8401498744834388,
+      "mae": 0.33110163340398663,
+      "mae_log_sigma": 0.35197984894426315,
+      "mae_df": 0.9995088761396341,
+      "sigma_mean": 1.151534823416089,
+      "df_mean": 3.0004911238603653,
+      "seconds": 0.01235541608184576,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:ccd0aa7f158ad036fb2ab15465dd4ca49b7f75a5f4ffa4507fa8b2f189f6a28d",
+        "measured_at": "2026-10-24T05:09:52.637504+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:80dbc6921ce1edb6ff7fd1440095827d6608a4bb8504932b39e97a6fbb5ff569",
+        "output_digest": "sha256:9e177886193b352d8b51c1b80a4dc050d04b348fa5be3878988be1c1b105cc00",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 2,
+      "method": "statsmodels TLinearModel spline",
+      "own_nll": 1.8573966915826994,
+      "nll_at_true_scale": 1.7764393174932631,
+      "mae": 0.09510156364055791,
+      "mae_log_sigma": 0.35050956070369976,
+      "mae_df": 1.0971518813675267,
+      "sigma_mean": 1.0885714948066598,
+      "df_mean": 2.902848118632474,
+      "seconds": 0.10688920808024704,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:094eb18544f3de546d3e98a7d276bd8aaec3a8876e2c8e0c2b328e16cc4ded34",
+        "measured_at": "2026-10-24T05:09:52.638113+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:80dbc6921ce1edb6ff7fd1440095827d6608a4bb8504932b39e97a6fbb5ff569",
+        "output_digest": "sha256:b542fab3fbeacd0fcebe4c1ac726111959d1f17c3513118248745b084834a22e",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 2,
+      "method": "statsmodels OLS",
+      "own_nll": 2.0383397901245948,
+      "nll_at_true_scale": 1.8460325087977816,
+      "mae": 0.3530538064044513,
+      "mae_log_sigma": null,
+      "mae_df": null,
+      "sigma_mean": null,
+      "df_mean": null,
+      "seconds": 0.0003132079727947712,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:0e906f7a7a08a53d5719015418ded6b7f0085781b57c62df5756e9ba63d870f6",
+        "measured_at": "2026-10-24T05:09:52.638511+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:80dbc6921ce1edb6ff7fd1440095827d6608a4bb8504932b39e97a6fbb5ff569",
+        "output_digest": "sha256:70fc896ec483cb1fb463b72b5d8248285a58d8e3d437401732a7b4725be39877",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 3,
+      "method": "generating Student-t",
+      "own_nll": 1.77220006012598,
+      "nll_at_true_scale": 1.77220006012598,
+      "mae": 0.0,
+      "mae_log_sigma": 0.0,
+      "mae_df": 0.0,
+      "sigma_mean": 1.189966589563237,
+      "df_mean": 4.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:327c6470cf5bc8c67a7f8d22dc8a8ccb67b7bf0084bef3ee7b2cfafa1f02d050",
+        "measured_at": "2026-10-24T05:10:07.575156+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:51953b1dd30569a976964caa0c7da97ad3d006d58afb85f7f27ee10712d697dc",
+        "output_digest": "sha256:97bbe742d71d2940ee2f9fce3a5cb6b6d9bb7e8d643e44ab4171e95435e54568",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 3,
+      "method": "mboostrs glmboostLSS StudentTLSS",
+      "own_nll": 1.8977430982681702,
+      "nll_at_true_scale": 1.8434976304778725,
+      "mae": 0.3581579066237027,
+      "mae_log_sigma": 0.32465401644107716,
+      "mae_df": 0.38721061756264985,
+      "sigma_mean": 1.2280805201287501,
+      "df_mean": 3.612789382437349,
+      "seconds": 2.5884830001741648,
+      "mstop": 367,
+      "at_boundary": false,
+      "converged": true,
+      "allocation": {
+        "mu": 165,
+        "sigma": 107,
+        "df": 95
+      },
+      "_identity": {
+        "fingerprint": "sha256:d861a891583ca25f76f6105dfb35bc45dc6e99c1391ec62b035ba44ed751f371",
+        "measured_at": "2026-10-24T05:10:07.575815+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:51953b1dd30569a976964caa0c7da97ad3d006d58afb85f7f27ee10712d697dc",
+        "output_digest": "sha256:647ca75c646438b6e84f8dc85d5319434a8678408d3acf48733a6d25a82f4309",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 3,
+      "method": "mboostrs gamboostLSS StudentTLSS",
+      "own_nll": 1.7793526476461143,
+      "nll_at_true_scale": 1.7756693426569727,
+      "mae": 0.08849175100811632,
+      "mae_log_sigma": 0.07110596079103916,
+      "mae_df": 0.012656408121223706,
+      "sigma_mean": 1.1914036144573157,
+      "df_mean": 3.9873435918787763,
+      "seconds": 12.224819374969229,
+      "mstop": 321,
+      "at_boundary": false,
+      "converged": true,
+      "allocation": {
+        "mu": 187,
+        "sigma": 134,
+        "df": 0
+      },
+      "_identity": {
+        "fingerprint": "sha256:9fa739d44c815762ad706dafbd21dc6e3fcbc156702d9a17ebcf891dcccc4821",
+        "measured_at": "2026-10-24T05:10:07.576449+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:51953b1dd30569a976964caa0c7da97ad3d006d58afb85f7f27ee10712d697dc",
+        "output_digest": "sha256:20dac219fc38ab383b7675baa471ccee2db5f4100aa7d0047f44246ecce4da58",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 3,
+      "method": "statsmodels TLinearModel",
+      "own_nll": 1.9042661933795084,
+      "nll_at_true_scale": 1.8415397907261832,
+      "mae": 0.3460722292608282,
+      "mae_log_sigma": 0.3524432977989064,
+      "mae_df": 0.9801541777995871,
+      "sigma_mean": 1.160548841632114,
+      "df_mean": 3.019845822200412,
+      "seconds": 0.012059540953487158,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:112c95f19ab436737a92077865e399e28a988bc79e4ae60199712f374a7d2dbe",
+        "measured_at": "2026-10-24T05:10:07.577095+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:51953b1dd30569a976964caa0c7da97ad3d006d58afb85f7f27ee10712d697dc",
+        "output_digest": "sha256:57a34e50bbf9487b06c7e446fd9ffd2ce85b01509eed8fb0edb0907b81dd4524",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 3,
+      "method": "statsmodels TLinearModel spline",
+      "own_nll": 1.8608665225223255,
+      "nll_at_true_scale": 1.780428148114984,
+      "mae": 0.12136336451877282,
+      "mae_log_sigma": 0.35075273748144536,
+      "mae_df": 1.2229083832785932,
+      "sigma_mean": 1.0708070960031504,
+      "df_mean": 2.777091616721407,
+      "seconds": 0.09904649993404746,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:eacd08587fa298dd400e455b8d76efe08866c5c9fc3b6b0202556c19f08e7495",
+        "measured_at": "2026-10-24T05:10:07.577670+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:51953b1dd30569a976964caa0c7da97ad3d006d58afb85f7f27ee10712d697dc",
+        "output_digest": "sha256:c7c664612c811ffd48383c5b53caf0552d33c5522df22326cd27458e7b99f69e",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "varying",
+      "seed": 3,
+      "method": "statsmodels OLS",
+      "own_nll": 2.0439407701079877,
+      "nll_at_true_scale": 1.8523656695122523,
+      "mae": 0.3880465385991988,
+      "mae_log_sigma": null,
+      "mae_df": null,
+      "sigma_mean": null,
+      "df_mean": null,
+      "seconds": 0.000298250000923872,
+      "mstop": null,
+      "at_boundary": null,
+      "converged": true,
+      "allocation": null,
+      "_identity": {
+        "fingerprint": "sha256:3c054d2b491f9dda3cad193e63ae5cf51dd8b11c41e73c017a03cd6030a96f95",
+        "measured_at": "2026-10-24T05:10:07.578065+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:51953b1dd30569a976964caa0c7da97ad3d006d58afb85f7f27ee10712d697dc",
+        "output_digest": "sha256:3b6fede6b791bf664ab891c3b2758fd6de7f30a0c12df0d8207e57a62d88c2a0",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    }
+  ],
+  "recovery": {
+    "train_sigma": 1.25,
+    "train_df": 4.0,
+    "lss_loglik": -2838.0596092505316,
+    "lss_scipy_loglik": -2838.059609250531,
+    "lss_allocation": {
+      "mu": 134,
+      "sigma": 51,
+      "df": 0
+    },
+    "lss_mstop": 185,
+    "tmodel_llf": -2838.415591719472,
+    "tmodel_df": 3.7342150047991844,
+    "tmodel_scale": 1.2105419716712063
+  },
+  "usability": {
+    "probes": [
+      {
+        "label": "predict default is mu, log sigma and log df",
+        "ok": true,
+        "detail": "type='link' is mu, log sigma and log df. Identity matches mu to 0.00e+00; exp matches sigma to 0.00e+00 and df to 0.00e+00."
+      },
+      {
+        "label": "StudentTLSS logLik is the t density",
+        "ok": true,
+        "detail": "logLik() = -2856.382296 matches the t density at the fitted mu, sigma and df to 7.28e-12."
+      },
+      {
+        "label": "sigma is the t scale, not the standard deviation",
+        "ok": true,
+        "detail": "mean sigma = 1.351, mean df = 4.73, implied sd = sigma * sqrt(df / (df - 2)) = 1.778, residual sd = 1.784."
+      },
+      {
+        "label": "offset is on the link scale",
+        "ok": true,
+        "detail": "offset is on the link: sigma offset 0.3813 against log(mean sigma) 0.3813; df offset 1.5542 against log(mean df) 1.5542."
+      },
+      {
+        "label": "a non-finite y is refused",
+        "ok": false,
+        "error": "ValueError",
+        "detail": "Column 'y' contains 1 NaN value(s) out of 1500 (first at row 0). Fitting and prediction require finite values; pass na_action='impute' to the fit (median fill plus a missing-value indicator term, replayed when predicting new rows), na_action='impute_model' when the other covariates predict the column (the same, with a model-based fill), or na_action='omit' (drop those rows), or drop or impute them"
+      },
+      {
+        "label": "glmboost does not take StudentTLSS",
+        "ok": false,
+        "error": "TypeError",
+        "detail": "StudentTLSS is a distributional family (parameters: mu, sigma, df). glmboost() fits one predictor. Use glmboostLSS() or gamboostLSS(), for example mb.gamboostLSS(formula, data, family=mb.StudentTLSS())."
+      }
+    ]
+  },
+  "provenance": {
+    "commit": "f54f1531831e3f14a2db0bd238cf36238683d5ed",
+    "working_tree": {
+      "dirty": false,
+      "status_digest": null,
+      "commit_source": "working directory"
+    },
+    "native_build": {
+      "package_version": "0.1.3",
+      "source_digest": "sha256:a771766f1a4820a76b9d908fbc12ed53123e648afcb8583181708b5273ca6b49",
+      "git_revision": "e9c670d73f2aff2d153b2c02b4cf8a71aa2c46e2",
+      "git_dirty": false,
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+      "target": "aarch64-apple-darwin",
+      "profile": "release",
+      "target_features": "aes,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+      "crate_features": "",
+      "abi_version": 1,
+      "build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+    },
+    "platform": {
+      "system": "Darwin",
+      "release": "25.3.0",
+      "machine": "arm64",
+      "cpu": "arm",
+      "python": "3.12.11"
+    },
+    "versions": {
+      "mboostrs": "0.1.3",
+      "numpy": "2.4.6",
+      "rpy2": "3.6.7",
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "R": "4.5.1",
+      "mboost": "2.9.11",
+      "scipy": "1.16.3",
+      "statsmodels": "0.15.0",
+      "scikit-learn": "1.9.0",
+      "polars": "1.41.0",
+      "patsy": "1.0.3"
+    },
+    "compiler_flags": {
+      "RUSTFLAGS": null,
+      "CARGO_PROFILE": "release"
+    },
+    "threads": {
+      "logical_cpus": 10,
+      "r_mclapply_default_cores": "2",
+      "RAYON_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+    },
+    "created_at": "2026-10-24T05:08:55.769744+00:00",
+    "runner": "benches/bench_studentt.py",
+    "runner_sha256": "241c18498103397785493c3a81ffea54a0890d43a048c09ca6742a0aeab4a71f",
+    "protocol": {
+      "kind": "seeded predictive-method comparison",
+      "design": {
+        "n_train": 1500,
+        "n_test": 4000,
+        "seeds": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "nu": 0.1,
+        "folds": 5,
+        "df": 4.0,
+        "mstop": {
+          "glm": 600,
+          "gam": 1200
+        },
+        "constant_mean": "mu = 0.30 + 0.80 x1 - 0.35 x2",
+        "constant_sigma": 1.25,
+        "varying_mean": "mu = 0.10 + sin(1.4 x1) + 0.25 x2",
+        "varying_sigma": "log sigma = 0.10 + 0.55 sin(2 x3)",
+        "scale": "sigma is the t scale, not the standard deviation",
+        "links": "identity mu, log sigma, log df",
+        "competitor": "statsmodels.miscmodels.tmodel.TLinearModel"
+      },
+      "timing": "runner perf_counter regions; method-specific fit/tuning/prediction work",
+      "order": "sequential task, seed, method order in the recorded runner",
+      "timing_claim": "descriptive elapsed times; no paired equal-work speedup or timing interval",
+      "warmup": "no dedicated warmup; imports and provenance collection excluded from timers"
+    },
+    "repeats": {
+      "training_seeds": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "test": "one independently generated test sample per task, shared across methods and seeds"
+    },
+    "uncertainty": {
+      "scope": "descriptive timing spread across training seeds, not repeated identical-input trials",
+      "groups": [
+        {
+          "task": "constant",
+          "method": "generating Student-t",
+          "n": 4,
+          "seconds_sd": 0.0,
+          "seconds_se": 0.0
+        },
+        {
+          "task": "constant",
+          "method": "mboostrs glmboostLSS StudentTLSS",
+          "n": 4,
+          "seconds_sd": 0.021375098597429577,
+          "seconds_se": 0.010687549298714788
+        },
+        {
+          "task": "constant",
+          "method": "statsmodels TLinearModel",
+          "n": 4,
+          "seconds_sd": 0.00039191428173895805,
+          "seconds_se": 0.00019595714086947903
+        },
+        {
+          "task": "constant",
+          "method": "statsmodels OLS",
+          "n": 4,
+          "seconds_sd": 7.934599438133934e-06,
+          "seconds_se": 3.967299719066967e-06
+        },
+        {
+          "task": "varying",
+          "method": "generating Student-t",
+          "n": 4,
+          "seconds_sd": 0.0,
+          "seconds_se": 0.0
+        },
+        {
+          "task": "varying",
+          "method": "mboostrs glmboostLSS StudentTLSS",
+          "n": 4,
+          "seconds_sd": 0.07788550840142613,
+          "seconds_se": 0.03894275420071307
+        },
+        {
+          "task": "varying",
+          "method": "mboostrs gamboostLSS StudentTLSS",
+          "n": 4,
+          "seconds_sd": 0.04713421806841837,
+          "seconds_se": 0.023567109034209183
+        },
+        {
+          "task": "varying",
+          "method": "statsmodels TLinearModel",
+          "n": 4,
+          "seconds_sd": 0.00023127636617322348,
+          "seconds_se": 0.00011563818308661174
+        },
+        {
+          "task": "varying",
+          "method": "statsmodels TLinearModel spline",
+          "n": 4,
+          "seconds_sd": 0.02180830583432137,
+          "seconds_se": 0.010904152917160684
+        },
+        {
+          "task": "varying",
+          "method": "statsmodels OLS",
+          "n": 4,
+          "seconds_sd": 1.6142584023559113e-05,
+          "seconds_se": 8.071292011779557e-06
+        }
+      ]
+    }
+  }
+}

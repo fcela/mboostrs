@@ -1,0 +1,34 @@
+{
+  "scale": "bbs(log_households, df=4)",
+  "location": [
+    "bbs(housing_median_age, df=4)",
+    "bbs(log_median_income, df=4)",
+    "bbs(log_ave_occup, df=4)",
+    "bols(miss_housing_median_age)",
+    "brandom(roof_class_code, df=4)",
+    "bspatial(longitude, latitude)",
+    "bbs(log_median_income, df=4, by=housing_median_age)"
+  ],
+  "steps": 1200,
+  "nu": 0.1,
+  "logged": [
+    "ave_bedrooms",
+    "ave_occup",
+    "ave_rooms",
+    "households",
+    "median_house_value",
+    "median_income"
+  ],
+  "categories": {
+    "roof_class": {
+      "A": 0,
+      "B": 1,
+      "C": 2,
+      "D": 3
+    }
+  },
+  "flags": [
+    "miss_housing_median_age",
+    "miss_ave_bedrooms"
+  ]
+}

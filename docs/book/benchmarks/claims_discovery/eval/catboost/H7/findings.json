@@ -1,0 +1,104 @@
+{
+  "library": "catboost 1.2.10",
+  "mean_effects": [
+    {
+      "variable": "longitude",
+      "shape": "spatial",
+      "evidence": "held-out permutation: squared-error increase 0.0069 (z=11.4); partial dependence 0.285 at -122.8 to 0.297 at -116.9. Joint permutation of longitude and latitude: increase 0.0101 (z=14.2); the two coordinates are treated as one spatial term."
+    },
+    {
+      "variable": "latitude",
+      "shape": "spatial",
+      "evidence": "held-out permutation: squared-error increase 0.0062 (z=11.9); partial dependence 0.291 at 32.72 to 0.364 at 40.17. Joint permutation of longitude and latitude: increase 0.0101 (z=14.2); the two coordinates are treated as one spatial term."
+    },
+    {
+      "variable": "housing_median_age",
+      "shape": "threshold_increase",
+      "evidence": "held-out permutation: squared-error increase 0.0457 (z=26.9); partial dependence 0.219 at 5 to 0.575 at 52."
+    },
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "held-out permutation: squared-error increase 0.0887 (z=32.5); partial dependence 0.723 at 1.227 to 0.002 at 7.853."
+    },
+    {
+      "variable": "median_house_value",
+      "shape": "threshold_decrease",
+      "evidence": "held-out permutation: squared-error increase 0.0025 (z=6.1); partial dependence 0.348 at 5.43e+04 to 0.234 at 5e+05."
+    },
+    {
+      "variable": "ave_occup",
+      "shape": "increasing",
+      "evidence": "held-out permutation: squared-error increase 0.0122 (z=13.4); partial dependence 0.199 at 1.645 to 0.517 at 4.892."
+    },
+    {
+      "variable": "roof_class",
+      "shape": "categorical",
+      "evidence": "held-out permutation: squared-error increase 0.0385 (z=24.9); level means: A=0.219, B=0.219, C=0.374, D=0.591."
+    }
+  ],
+  "interactions": [],
+  "variance_drivers": [
+    {
+      "variable": "population",
+      "direction": "decreases_spread",
+      "evidence": "held-out permutation on |residual|: increase 0.0022 (z=4.2); mean predicted |residual| 0.379 at 174.6 to 0.307 at 4548 (decreasing)."
+    },
+    {
+      "variable": "households",
+      "direction": "decreases_spread",
+      "evidence": "held-out permutation on |residual|: increase 0.0059 (z=6.9); mean predicted |residual| 0.448 at 59.58 to 0.290 at 1574 (decreasing)."
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.393293,
+      "lower90": -0.451659,
+      "upper90": -0.36783
+    },
+    "Q2": {
+      "estimate": 0.374604,
+      "lower90": 0.342639,
+      "upper90": 0.383266
+    },
+    "Q3": {
+      "estimate": 0.248158,
+      "lower90": 0.204161,
+      "upper90": 0.272868
+    },
+    "Q4": {
+      "estimate": 0.371235,
+      "lower90": 0.354677,
+      "upper90": 0.400025
+    },
+    "Q5": {
+      "estimate": -0.00029,
+      "lower90": -0.02944,
+      "upper90": 0.003299
+    },
+    "Q6": {
+      "estimate": 0.236741,
+      "lower90": 0.178653,
+      "upper90": 0.265048
+    },
+    "Q7": {
+      "estimate": -0.00188,
+      "lower90": -0.011532,
+      "upper90": 0.000394
+    },
+    "Q8": {
+      "estimate": -0.082507,
+      "lower90": -0.104817,
+      "upper90": -0.056425
+    }
+  },
+  "warnings": [
+    "Test rows differ from training rows in median_income: standardised mean difference 0.54 (test mean 4.539, training mean 3.648).",
+    "Test rows differ from training rows in median_house_value: standardised mean difference 0.33 (test mean 2.342e+05, training mean 1.977e+05).",
+    "housing_median_age has 1186 missing values in training (7.7%); CatBoost sends missing values to a learned side of each split.",
+    "total_bedrooms has 168 missing values in training (1.1%); CatBoost sends missing values to a learned side of each split.",
+    "ave_bedrooms has 168 missing values in training (1.1%); CatBoost sends missing values to a learned side of each split.",
+    "Effect-query intervals are 5th to 95th percentiles of bootstrap refits with fixed settings; they do not include tuning uncertainty or model bias.",
+    "Prediction intervals are calibrated on training out-of-fold residuals; coverage on a shifted test book is not guaranteed."
+  ]
+}

@@ -1,0 +1,34 @@
+# Python dependencies for executing the mboostrs examples and MyST book.
+#   pip install -r docs/book/requirements.txt
+# Install MyST separately with `npm install -g mystmd`; install mboostrs from
+# this checkout with maturin before executing the documentation.
+ipykernel
+# `myst build --execute` drives cells through the Jupyter *server* API, not
+# ipykernel directly. Without jupyter-server every executable page fails with
+# "Could not load Jupyter session manager to run executable nodes" — 37 of them,
+# which --strict turns into a failed build.
+jupyter-server
+nbconvert
+numpy
+polars
+pandas
+matplotlib
+scikit-learn
+scipy
+altair
+# Result tables: every benchmark and case-study table is rendered with
+# great_tables (HTML for the site, LaTeX for the PDF).
+great_tables
+# Registers Altair's SVG renderer and the bundled fonts. The book's build
+# scripts set MBOOSTRS_SVG_RENDERER=1, which needs it.
+vl-convert-python
+jupytext
+pyyaml
+hypothesis
+# Comparator libraries executed by the case studies under case_studies/
+# (bike_sharing_hourly, california_housing): GLM/GAM and tree baselines.
+statsmodels
+pygam
+lightgbm
+xgboost
+catboost

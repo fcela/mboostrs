@@ -1,0 +1,110 @@
+{
+  "library": "xgboost 3.4.0",
+  "mean_effects": [
+    {
+      "variable": "housing_median_age",
+      "shape": "increasing",
+      "evidence": "Held-out MSE rises by 0.0452 when permuted (fold t=21.0); partial-dependence range 0.372 = 0.61 SD(y); shape 'increasing' (linear R2 0.81, step R2 0.89)."
+    },
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "Held-out MSE rises by 0.0968 when permuted (fold t=40.7); partial-dependence range 0.788 = 1.28 SD(y); shape 'decreasing' (linear R2 0.88, step R2 0.72)."
+    },
+    {
+      "variable": "median_house_value",
+      "shape": "nonmonotone",
+      "evidence": "Held-out MSE rises by 0.0016 when permuted (fold t=7.9); partial-dependence range 0.063 = 0.10 SD(y); shape 'nonmonotone' (linear R2 0.55, step R2 0.82)."
+    },
+    {
+      "variable": "ave_occup",
+      "shape": "increasing",
+      "evidence": "Held-out MSE rises by 0.0098 when permuted (fold t=10.3); partial-dependence range 0.270 = 0.44 SD(y); shape 'increasing' (linear R2 0.95, step R2 0.66)."
+    },
+    {
+      "variable": "roof_class",
+      "shape": "categorical",
+      "evidence": "Held-out MSE rises by 0.0393 when permuted (fold t=50.0); partial dependence by level: A=+0.208, B=+0.222, C=+0.372, D=+0.573."
+    },
+    {
+      "variable": "longitude",
+      "shape": "spatial",
+      "evidence": "Joint longitude+latitude permutation test significant (Bonferroni-adjusted, 10 folds); joint partial-dependence range 0.328."
+    },
+    {
+      "variable": "latitude",
+      "shape": "spatial",
+      "evidence": "Joint longitude+latitude permutation test significant (Bonferroni-adjusted, 10 folds); joint partial-dependence range 0.328."
+    }
+  ],
+  "interactions": [
+    {
+      "variables": [
+        "longitude",
+        "latitude"
+      ],
+      "evidence": "Pair model improves held-out MSE over the additive model by 0.00073 (Bonferroni p=0.0273); global additive-vs-full test p=0.00931."
+    }
+  ],
+  "variance_drivers": [
+    {
+      "variable": "total_bedrooms",
+      "direction": "decreases_spread",
+      "evidence": "Spread permutation test significant (Bonferroni, 10 folds); shape of log squared-residual curve: decreasing; range 0.394 on log r^2 scale."
+    },
+    {
+      "variable": "households",
+      "direction": "decreases_spread",
+      "evidence": "Spread permutation test significant (Bonferroni, 10 folds); shape of log squared-residual curve: decreasing; range 0.820 on log r^2 scale."
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.3857599198818207,
+      "lower90": -0.4183517247438431,
+      "upper90": -0.35832914859056475
+    },
+    "Q2": {
+      "estimate": 0.3640534281730652,
+      "lower90": 0.3463000863790512,
+      "upper90": 0.3912814110517502
+    },
+    "Q3": {
+      "estimate": 0.17401012778282166,
+      "lower90": 0.15333995148539542,
+      "upper90": 0.20799747705459593
+    },
+    "Q4": {
+      "estimate": 0.36423033475875854,
+      "lower90": 0.35297496914863585,
+      "upper90": 0.38665549606084826
+    },
+    "Q5": {
+      "estimate": -0.0075461287051439285,
+      "lower90": -0.026082835625857115,
+      "upper90": 0.0022470631171017824
+    },
+    "Q6": {
+      "estimate": 0.22730472683906555,
+      "lower90": 0.1850130833685398,
+      "upper90": 0.25391279757022855
+    },
+    "Q7": {
+      "estimate": -0.0006701296078972518,
+      "lower90": -0.005737534258514643,
+      "upper90": 0.0013312796480022355
+    },
+    "Q8": {
+      "estimate": -0.057245999574661255,
+      "lower90": -0.08155670240521432,
+      "upper90": -0.04544795341789723
+    }
+  },
+  "warnings": [
+    "Missing values (train): housing_median_age=1239, total_bedrooms=148, ave_bedrooms=148; XGBoost routes them with learned default directions.",
+    "Train-vs-test adversarial AUC = 0.599; calibration weights from the density ratio.",
+    "Placebo noise column: mean MSE increase -0.00017 (p=0.984).",
+    "Prediction intervals are weighted split-conformal (OOF residual scores scaled by a spread model).",
+    "Effect-query intervals are bootstrap percentile intervals of the average contrast over training rows; they reflect model refit variability and do not include the sampling noise of y."
+  ]
+}

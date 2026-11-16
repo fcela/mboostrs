@@ -1,0 +1,1544 @@
+{
+  "design": {
+    "n_train": 1500,
+    "n_test": 4000,
+    "seeds": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "shape": 4.0,
+    "nu": 0.1,
+    "folds": 5,
+    "mstop": {
+      "glm": 400,
+      "gam": 1000,
+      "gaussian": 800
+    },
+    "linear": "log mu = 0.15 + 0.55 x1 - 0.30 x2",
+    "smooth": "log mu = 0.05 + sin(1.5 x1) + 0.30 x2",
+    "spline": "bs(x1, df=8, lower_bound=-6, upper_bound=6) + x2 + noise"
+  },
+  "results": [
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "generating Gamma",
+      "gamma_nll": 0.7939208469220506,
+      "nll_at_true_shape": 0.7939208469220506,
+      "mae": 0.0,
+      "log_rmse": 4.791012171819685e-17,
+      "shape": 4.0,
+      "seconds": 0.0,
+      "n_nonpositive": 0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:8abf8b8e75706d8ee00dc55e9f71ca717bda10af9c303a5fd92c8959da5a50b1",
+        "measured_at": "2026-10-24T05:10:57.249378+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:4f464c831752d5590e2224acb75fad7a998d643911616da52104c47704064212",
+        "output_digest": "sha256:d8a8195991b3965b200fcdf2a4ebf44f8cd071363905b9f6a45db2df5d3ea4a0",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "statsmodels Gamma GLM",
+      "gamma_nll": 0.7945814751075564,
+      "nll_at_true_shape": 0.7944199246442752,
+      "mae": 0.0285402505827781,
+      "log_rmse": 0.021325410011206594,
+      "shape": 3.9465308216855157,
+      "seconds": 0.002721250057220459,
+      "n_nonpositive": 0,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:be29752daa60ccb9e963c70d3c8733c50996a86f3b0f407f10b2fc441a2de3d5",
+        "measured_at": "2026-10-24T05:10:57.253529+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:4f464c831752d5590e2224acb75fad7a998d643911616da52104c47704064212",
+        "output_digest": "sha256:94fbf5fb20e4f78ee43369731fcb5afe9a834923c9fa06587141aace962dac3a",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "statsmodels Gamma spline GLM",
+      "gamma_nll": 0.7973025191380482,
+      "nll_at_true_shape": 0.7971783148565191,
+      "mae": 0.04619060284422532,
+      "log_rmse": 0.0362789390080519,
+      "shape": 3.946676636928556,
+      "seconds": 0.0040712079498916864,
+      "n_nonpositive": 0,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:7a3616728341c074edf41d4732ba3dcae415f93b8fe7c54e8c6f7a81f895ec6e",
+        "measured_at": "2026-10-24T05:10:57.261432+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:4f464c831752d5590e2224acb75fad7a998d643911616da52104c47704064212",
+        "output_digest": "sha256:81bbb9af28be14f6ccd824dc3e2857446b6b529a71741867d9b8e0c16272de61",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "sklearn GammaRegressor",
+      "gamma_nll": 0.7945815410741324,
+      "nll_at_true_shape": 0.7944200076063096,
+      "mae": 0.02854277841175932,
+      "log_rmse": 0.021329490714359738,
+      "shape": 3.9465348512236793,
+      "seconds": 0.00277124997228384,
+      "n_nonpositive": 0,
+      "_identity": {
+        "fingerprint": "sha256:ea79685c438d60d04c68065bb4ce262b7662152875e4daefeae3562f3343fdc4",
+        "measured_at": "2026-10-24T05:10:57.264738+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:4f464c831752d5590e2224acb75fad7a998d643911616da52104c47704064212",
+        "output_digest": "sha256:1f27e58d0dc5aaf6eccc784fd331f652c6ea5ab7bbc16732c20dd7f063e7c44f",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "mboostrs glmboost GammaReg",
+      "gamma_nll": 0.7947823358523443,
+      "nll_at_true_shape": 0.7943802029000926,
+      "mae": 0.028117665412213885,
+      "log_rmse": 0.02111089053178017,
+      "shape": 3.8967822025681453,
+      "seconds": 0.05713045806623995,
+      "n_nonpositive": 0,
+      "mstop": 51,
+      "at_boundary": false,
+      "mstop_1se": 21,
+      "_identity": {
+        "fingerprint": "sha256:ea00c776f99f74b0a65d91ded56a515a8f434c268078aa5309a19d6abef5d1fa",
+        "measured_at": "2026-10-24T05:10:57.322321+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:4f464c831752d5590e2224acb75fad7a998d643911616da52104c47704064212",
+        "output_digest": "sha256:2e23503d3521f204a27d76b808b761b4dbfc64df032b762a04e654388d91036c",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "mboostrs gamboost GammaReg",
+      "gamma_nll": 0.7958556266489292,
+      "nll_at_true_shape": 0.7954906705345148,
+      "mae": 0.03829400415036857,
+      "log_rmse": 0.030824497669424165,
+      "shape": 3.8983603311226225,
+      "seconds": 0.23579520895145833,
+      "n_nonpositive": 0,
+      "mstop": 21,
+      "at_boundary": false,
+      "mstop_1se": 15,
+      "_identity": {
+        "fingerprint": "sha256:236af407188cd2589a23623c6b4db9ba34d7cdce43907c865dee005ee8a214d8",
+        "measured_at": "2026-10-24T05:10:57.558705+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:4f464c831752d5590e2224acb75fad7a998d643911616da52104c47704064212",
+        "output_digest": "sha256:d7a33f71ca81c80b5e0242544db59ebc29f31076aef6c3060d19b88e53f8d0d0",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "mboostrs glmboost Gaussian",
+      "gamma_nll": null,
+      "nll_at_true_shape": null,
+      "mae": 0.28425647037670815,
+      "log_rmse": null,
+      "shape": null,
+      "seconds": 0.019881207961589098,
+      "n_nonpositive": 247,
+      "mstop": 171,
+      "at_boundary": false,
+      "mstop_1se": 9,
+      "gaussian_nll": 1.3968437084689909,
+      "sigma2": 1.1157185282285493,
+      "_identity": {
+        "fingerprint": "sha256:f938cf42171a9be8559fb54890676061cdc19ed92616214c7cf64235b85304af",
+        "measured_at": "2026-10-24T05:10:57.578943+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:4f464c831752d5590e2224acb75fad7a998d643911616da52104c47704064212",
+        "output_digest": "sha256:21aadf853a348c5cdfd5b8dfe8cb2270fc91c6612896b5355066a88026ee4f54",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "generating Gamma",
+      "gamma_nll": 0.7939208469220506,
+      "nll_at_true_shape": 0.7939208469220506,
+      "mae": 0.0,
+      "log_rmse": 4.791012171819685e-17,
+      "shape": 4.0,
+      "seconds": 0.0,
+      "n_nonpositive": 0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:0053f86e08d2096dfdc38adf823b7192f9775162389906d8f8c34ab259caa3c4",
+        "measured_at": "2026-10-24T05:10:57.582644+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e1f7c2a586c223a39223a7d292289cda1f46cc7a93dbfe1b54a7ae7cb5e05ba3",
+        "output_digest": "sha256:a4fa2b8cabb1e0cc630d2951e4420406d87147f3893502cb1911fd217f51bf2a",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "statsmodels Gamma GLM",
+      "gamma_nll": 0.7964295705509092,
+      "nll_at_true_shape": 0.7964671837459952,
+      "mae": 0.040271155351685094,
+      "log_rmse": 0.0314846430974657,
+      "shape": 4.042915553355202,
+      "seconds": 0.0026071250904351473,
+      "n_nonpositive": 0,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:f84f1215f92361f6bbf0c58182b01956b25d1760ae0655a7a1d926035e8c4e92",
+        "measured_at": "2026-10-24T05:10:57.586306+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e1f7c2a586c223a39223a7d292289cda1f46cc7a93dbfe1b54a7ae7cb5e05ba3",
+        "output_digest": "sha256:05321f4a4e22669f082f9ec1a40fdb24cac1d2d2b7e17e4d466a1efb705f7214",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "statsmodels Gamma spline GLM",
+      "gamma_nll": 0.8030037880736709,
+      "nll_at_true_shape": 0.8028993770379269,
+      "mae": 0.05990120660158415,
+      "log_rmse": 0.05304284027721022,
+      "shape": 4.078772712906282,
+      "seconds": 0.004078458063304424,
+      "n_nonpositive": 0,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:08e224c6b0f4dcf62ef9554f498900af81c83b0d4d6dffbc53ad440f1a3a8c71",
+        "measured_at": "2026-10-24T05:10:57.594033+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e1f7c2a586c223a39223a7d292289cda1f46cc7a93dbfe1b54a7ae7cb5e05ba3",
+        "output_digest": "sha256:715106f4dce69be222fa0cf09ec27554f99ffb50bb546e47876ac18cad8c4cc2",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "sklearn GammaRegressor",
+      "gamma_nll": 0.7964360955954838,
+      "nll_at_true_shape": 0.7964735733315458,
+      "mae": 0.04032400402140462,
+      "log_rmse": 0.031523537268993714,
+      "shape": 4.042513405501469,
+      "seconds": 0.0008427919819951057,
+      "n_nonpositive": 0,
+      "_identity": {
+        "fingerprint": "sha256:b345362cfea4a7ef7ebf5bc40f96f665dc7249badd8625870c351e24bf4e3fbc",
+        "measured_at": "2026-10-24T05:10:57.595366+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e1f7c2a586c223a39223a7d292289cda1f46cc7a93dbfe1b54a7ae7cb5e05ba3",
+        "output_digest": "sha256:a35303b67fc06fa69826019922890e76af7686d9905f7f2d56bfcc09a1e89f65",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "mboostrs glmboost GammaReg",
+      "gamma_nll": 0.7961284474877225,
+      "nll_at_true_shape": 0.7960207946194826,
+      "mae": 0.04090964414890237,
+      "log_rmse": 0.03112922816967898,
+      "shape": 3.956159320007281,
+      "seconds": 0.05932429200038314,
+      "n_nonpositive": 0,
+      "mstop": 33,
+      "at_boundary": false,
+      "mstop_1se": 17,
+      "_identity": {
+        "fingerprint": "sha256:4704f43d33a59c6a8f7f1f811998c663f9891944e7e695f19c628e6b7178ace2",
+        "measured_at": "2026-10-24T05:10:57.655145+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e1f7c2a586c223a39223a7d292289cda1f46cc7a93dbfe1b54a7ae7cb5e05ba3",
+        "output_digest": "sha256:1f7c09679b2a181f4b274154b9db29250c95db06195d1c6f8704767e1486d15e",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "mboostrs gamboost GammaReg",
+      "gamma_nll": 0.7983552045410356,
+      "nll_at_true_shape": 0.7982949457693276,
+      "mae": 0.0518571501373571,
+      "log_rmse": 0.04254408065484515,
+      "shape": 3.9652066076747743,
+      "seconds": 0.24418404093012214,
+      "n_nonpositive": 0,
+      "mstop": 21,
+      "at_boundary": false,
+      "mstop_1se": 12,
+      "_identity": {
+        "fingerprint": "sha256:fc8a30f7b2cd17d9417ca35399e3fea9bb16dd38e5e5ea3b2cb0166bcc30d8bf",
+        "measured_at": "2026-10-24T05:10:57.899932+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e1f7c2a586c223a39223a7d292289cda1f46cc7a93dbfe1b54a7ae7cb5e05ba3",
+        "output_digest": "sha256:3d46e5709852996ec06ecd67d036bbbcea61f87cd4fc075efbdc1495ddb449fd",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "mboostrs glmboost Gaussian",
+      "gamma_nll": null,
+      "nll_at_true_shape": null,
+      "mae": 0.2422753219215491,
+      "log_rmse": null,
+      "shape": null,
+      "seconds": 0.01984079205431044,
+      "n_nonpositive": 195,
+      "mstop": 84,
+      "at_boundary": false,
+      "mstop_1se": 19,
+      "gaussian_nll": 1.4080254197613404,
+      "sigma2": 0.7409283290910792,
+      "_identity": {
+        "fingerprint": "sha256:25d8f687ffb89ed34c072a6b149a544277c5228843e0920f28da9961b464647e",
+        "measured_at": "2026-10-24T05:10:57.920132+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e1f7c2a586c223a39223a7d292289cda1f46cc7a93dbfe1b54a7ae7cb5e05ba3",
+        "output_digest": "sha256:c6a3204d8d24a191c829e6456397e437c61a0b9ea51d3300783fe35b405ccdd4",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "generating Gamma",
+      "gamma_nll": 0.7939208469220506,
+      "nll_at_true_shape": 0.7939208469220506,
+      "mae": 0.0,
+      "log_rmse": 4.791012171819685e-17,
+      "shape": 4.0,
+      "seconds": 0.0,
+      "n_nonpositive": 0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:abe466d7f3d33db7063181f78e7219020129882b98a931b0a59d8d6aa394260a",
+        "measured_at": "2026-10-24T05:10:57.921519+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:afa6414a9d05692673de50cab6f9967d0f8b70ea73607785457fdd694284111b",
+        "output_digest": "sha256:610b921e9b615d790e807f1159596c79751c52691b15df6f302c5fe99318f724",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "statsmodels Gamma GLM",
+      "gamma_nll": 0.7948398464548861,
+      "nll_at_true_shape": 0.7948873294921718,
+      "mae": 0.04019496071388872,
+      "log_rmse": 0.02883851827698739,
+      "shape": 4.086655563429507,
+      "seconds": 0.002513166982680559,
+      "n_nonpositive": 0,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:74b40422582f206e8b0a138aaa09016d43595a644f53c04f0ef47f2d70832a83",
+        "measured_at": "2026-10-24T05:10:57.925067+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:afa6414a9d05692673de50cab6f9967d0f8b70ea73607785457fdd694284111b",
+        "output_digest": "sha256:48450f9a41ae3270809e77393c552d997f6b6b00ae95fec1ad999c4f48207190",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "statsmodels Gamma spline GLM",
+      "gamma_nll": 0.797918945594636,
+      "nll_at_true_shape": 0.797875250335091,
+      "mae": 0.0649758483868062,
+      "log_rmse": 0.05560968162507309,
+      "shape": 4.100935558903563,
+      "seconds": 0.0040436668787151575,
+      "n_nonpositive": 0,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:57f5fbd074f3ebc20a68e74542d1267f8069db4869fd3c420179ce5306f1549c",
+        "measured_at": "2026-10-24T05:10:57.932735+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:afa6414a9d05692673de50cab6f9967d0f8b70ea73607785457fdd694284111b",
+        "output_digest": "sha256:21ddb5956b3ef34a13fa05603e515bf6ac88cbde7d94cf0ec5a3e0ffd164fdef",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "sklearn GammaRegressor",
+      "gamma_nll": 0.7948413484299816,
+      "nll_at_true_shape": 0.7948888478412384,
+      "mae": 0.04021048820752222,
+      "log_rmse": 0.028842810113294017,
+      "shape": 4.0865992043782216,
+      "seconds": 0.0007938749622553587,
+      "n_nonpositive": 0,
+      "_identity": {
+        "fingerprint": "sha256:7b9a9b809bf82fc7d3ef18c92a825e4038d2979d2f8819bb0cae91f7e7265816",
+        "measured_at": "2026-10-24T05:10:57.934004+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:afa6414a9d05692673de50cab6f9967d0f8b70ea73607785457fdd694284111b",
+        "output_digest": "sha256:3dd95b5d142e4acf24b1237af2b1ef43117bdffe0c3a468e6bdb43505612c715",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "mboostrs glmboost GammaReg",
+      "gamma_nll": 0.7947602933133974,
+      "nll_at_true_shape": 0.7948035811529438,
+      "mae": 0.03861693394216388,
+      "log_rmse": 0.030326330839656537,
+      "shape": 4.0929455788054625,
+      "seconds": 0.05476612504571676,
+      "n_nonpositive": 0,
+      "mstop": 31,
+      "at_boundary": false,
+      "mstop_1se": 17,
+      "_identity": {
+        "fingerprint": "sha256:a6f7ee3aaee31bcf9f65fb301026d2c5673841370c05c91b229f5a93ba27e157",
+        "measured_at": "2026-10-24T05:10:57.989179+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:afa6414a9d05692673de50cab6f9967d0f8b70ea73607785457fdd694284111b",
+        "output_digest": "sha256:11a73ab54e76d374d60d330ad2bc73fd677ab62246d385d2df642521957b5c17",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "mboostrs gamboost GammaReg",
+      "gamma_nll": 0.7975738283776612,
+      "nll_at_true_shape": 0.797455517434576,
+      "mae": 0.06288963608008917,
+      "log_rmse": 0.047130909035479104,
+      "shape": 4.13478088775798,
+      "seconds": 0.24486841703765094,
+      "n_nonpositive": 0,
+      "mstop": 399,
+      "at_boundary": false,
+      "mstop_1se": 12,
+      "_identity": {
+        "fingerprint": "sha256:56f2de75a73119b694ff5e535940bcb22e24a0810f46b5559c219629e5fc9411",
+        "measured_at": "2026-10-24T05:10:58.234596+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:afa6414a9d05692673de50cab6f9967d0f8b70ea73607785457fdd694284111b",
+        "output_digest": "sha256:3ef9a830ba9e645d3b39898a4cb3e149b372da56b696dff713669e4145bfd8f7",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "mboostrs glmboost Gaussian",
+      "gamma_nll": null,
+      "nll_at_true_shape": null,
+      "mae": 0.27671731923285176,
+      "log_rmse": null,
+      "shape": null,
+      "seconds": 0.019820166053250432,
+      "n_nonpositive": 210,
+      "mstop": 67,
+      "at_boundary": false,
+      "mstop_1se": 18,
+      "gaussian_nll": 1.3890355490537414,
+      "sigma2": 0.9493446999211145,
+      "_identity": {
+        "fingerprint": "sha256:33f0693002fc5ec08fc0803dea54bb72ff1900fd93dbffb589901e5b82f27118",
+        "measured_at": "2026-10-24T05:10:58.254770+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:afa6414a9d05692673de50cab6f9967d0f8b70ea73607785457fdd694284111b",
+        "output_digest": "sha256:061ac78cb6fba7bff9774ed9ea007c89ed7912151c2d06ccce7268050cd2f561",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "generating Gamma",
+      "gamma_nll": 0.7939208469220506,
+      "nll_at_true_shape": 0.7939208469220506,
+      "mae": 0.0,
+      "log_rmse": 4.791012171819685e-17,
+      "shape": 4.0,
+      "seconds": 0.0,
+      "n_nonpositive": 0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:6e2f4bdb10129fcc9caf7c4061e513be04fd6a7b7031a6fb63b0eef221cbb07a",
+        "measured_at": "2026-10-24T05:10:58.256219+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:86be6122193b3b2c8818f62bcf55b7c964d921a123afaf429b04c46cf0290297",
+        "output_digest": "sha256:fcec5091362d246dc5ef0be16de482231fd8530e92a40d4cc2da23d6f6f5b367",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "statsmodels Gamma GLM",
+      "gamma_nll": 0.796779890890858,
+      "nll_at_true_shape": 0.7957993508332734,
+      "mae": 0.03353491330221587,
+      "log_rmse": 0.02434997435926796,
+      "shape": 3.808353112084642,
+      "seconds": 0.0022234590724110603,
+      "n_nonpositive": 0,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:c3bf92e232b631ccab6a11224557eda2e8c98b2717ddd87921686b485513a299",
+        "measured_at": "2026-10-24T05:10:58.259485+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:86be6122193b3b2c8818f62bcf55b7c964d921a123afaf429b04c46cf0290297",
+        "output_digest": "sha256:2852adf670b090415576834a0f4324a8ee57000bc1ba1ce4d90e5207bef67b4f",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "statsmodels Gamma spline GLM",
+      "gamma_nll": 0.7983929684050279,
+      "nll_at_true_shape": 0.7973968724737335,
+      "mae": 0.047411904426770825,
+      "log_rmse": 0.038071775224507304,
+      "shape": 3.797378019566258,
+      "seconds": 0.004250750178471208,
+      "n_nonpositive": 0,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:d600ff8fa14aede6365d7213a3710fbd18f855560cc929ff3087dbb30e627680",
+        "measured_at": "2026-10-24T05:10:58.267315+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:86be6122193b3b2c8818f62bcf55b7c964d921a123afaf429b04c46cf0290297",
+        "output_digest": "sha256:94b6246b46a9fa9fe7a8ca489ba95c45294604f0e1e96059a7c656ba8e339644",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "sklearn GammaRegressor",
+      "gamma_nll": 0.7967667168101634,
+      "nll_at_true_shape": 0.7957911087679218,
+      "mae": 0.03336810156658069,
+      "log_rmse": 0.024268904481441155,
+      "shape": 3.8089743088358015,
+      "seconds": 0.0008171249646693468,
+      "n_nonpositive": 0,
+      "_identity": {
+        "fingerprint": "sha256:86483bab85d42603e8fff7059965975d3282dea9e336165b91b389ac021c1105",
+        "measured_at": "2026-10-24T05:10:58.268597+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:86be6122193b3b2c8818f62bcf55b7c964d921a123afaf429b04c46cf0290297",
+        "output_digest": "sha256:86a91b28982efba808e51ad7bcf09d351e49a77aee91e80b00f9d10a3c3f0be1",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "mboostrs glmboost GammaReg",
+      "gamma_nll": 0.7952102774216193,
+      "nll_at_true_shape": 0.7950657783208358,
+      "mae": 0.033770518607866506,
+      "log_rmse": 0.02144759740736004,
+      "shape": 3.9487804161588804,
+      "seconds": 0.056256999960169196,
+      "n_nonpositive": 0,
+      "mstop": 33,
+      "at_boundary": false,
+      "mstop_1se": 17,
+      "_identity": {
+        "fingerprint": "sha256:4b23d68b4a361300ff4678a0c1a045441f1db4fb7c59ce0c8f2244970fa95c81",
+        "measured_at": "2026-10-24T05:10:58.325288+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:86be6122193b3b2c8818f62bcf55b7c964d921a123afaf429b04c46cf0290297",
+        "output_digest": "sha256:cfdb8c5ebbf198a47107f284bd43a7bd3f79a3edf3d6cd17cc7a5b6216885d3d",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "mboostrs gamboost GammaReg",
+      "gamma_nll": 0.7959807528097651,
+      "nll_at_true_shape": 0.795863006884693,
+      "mae": 0.04078527716890359,
+      "log_rmse": 0.029795642616994283,
+      "shape": 3.9536185353138995,
+      "seconds": 0.24484970909543335,
+      "n_nonpositive": 0,
+      "mstop": 24,
+      "at_boundary": false,
+      "mstop_1se": 12,
+      "_identity": {
+        "fingerprint": "sha256:342b363fa868259af9cb99244b466fce59e365461cb774b6b5bf43e200ff951a",
+        "measured_at": "2026-10-24T05:10:58.570750+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:86be6122193b3b2c8818f62bcf55b7c964d921a123afaf429b04c46cf0290297",
+        "output_digest": "sha256:76a8033a8711b58d86086f409f4db8d51a016fa8cb4e9be8499b0caa005878f4",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "mboostrs glmboost Gaussian",
+      "gamma_nll": null,
+      "nll_at_true_shape": null,
+      "mae": 0.2451427246265286,
+      "log_rmse": null,
+      "shape": null,
+      "seconds": 0.02218024991452694,
+      "n_nonpositive": 232,
+      "mstop": 783,
+      "at_boundary": false,
+      "mstop_1se": 15,
+      "gaussian_nll": 1.3897254230602951,
+      "sigma2": 0.955016067385158,
+      "_identity": {
+        "fingerprint": "sha256:3e22fc758ba417813f18a6607f429408d5cff4f407d8de4643d58563132d7f5c",
+        "measured_at": "2026-10-24T05:10:58.593278+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:86be6122193b3b2c8818f62bcf55b7c964d921a123afaf429b04c46cf0290297",
+        "output_digest": "sha256:038988556372e427d024af7a90a2c3295d445895d2aad06a077cbcb89660acf3",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "generating Gamma",
+      "gamma_nll": 0.7090343852802191,
+      "nll_at_true_shape": 0.7090343852802191,
+      "mae": 0.0,
+      "log_rmse": 4.867914505535817e-17,
+      "shape": 4.0,
+      "seconds": 0.0,
+      "n_nonpositive": 0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:261ad33d1488af5a5a92a7b7a10fd57e9c00576c8b64afec5d3be63fd3bce119",
+        "measured_at": "2026-10-24T05:10:58.594903+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:13ce16804dc2019dcba47b8d5f0312c408fb16e8bdca3f8c9795e1cf08184bb4",
+        "output_digest": "sha256:b2603c56cf60988ea43c59d1cca37757b464819eefe013872324e8bbd5378172",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "statsmodels Gamma GLM",
+      "gamma_nll": 1.165166767785318,
+      "nll_at_true_shape": 1.2351654655932263,
+      "mae": 0.5412012233800201,
+      "log_rmse": 0.5326080391680146,
+      "shape": 1.0898338178106945,
+      "seconds": 0.00809170794673264,
+      "n_nonpositive": 0,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:5aac62c951c331f1e07c92eefea921a391b9147cf1874cd3474725b92a6338a2",
+        "measured_at": "2026-10-24T05:10:58.604369+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:13ce16804dc2019dcba47b8d5f0312c408fb16e8bdca3f8c9795e1cf08184bb4",
+        "output_digest": "sha256:cd0f1ed164883738aff8eefef9c262d28e694a2dec4709631d6c1cd7616acd9a",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "statsmodels Gamma spline GLM",
+      "gamma_nll": 0.7123780876775367,
+      "nll_at_true_shape": 0.7126089171595579,
+      "mae": 0.04054798125834529,
+      "log_rmse": 0.03518207733485007,
+      "shape": 3.9452503147070033,
+      "seconds": 0.004183083074167371,
+      "n_nonpositive": 0,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:f4dff5e33164fdc33950f46fa2c836fa7fb60307cd6607e1110d8581a425adc4",
+        "measured_at": "2026-10-24T05:10:58.612539+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:13ce16804dc2019dcba47b8d5f0312c408fb16e8bdca3f8c9795e1cf08184bb4",
+        "output_digest": "sha256:a27a37f106230637b721a5d53211f8043998e047bff4550fa94aa9bc4a80a6a3",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "sklearn GammaRegressor",
+      "gamma_nll": 1.1651653194537435,
+      "nll_at_true_shape": 1.2351656451546318,
+      "mae": 0.5412007607229196,
+      "log_rmse": 0.532608875130776,
+      "shape": 1.0898396103447694,
+      "seconds": 0.0009659579955041409,
+      "n_nonpositive": 0,
+      "_identity": {
+        "fingerprint": "sha256:23edfb446830fd8f01f7b7a72d31af0c1b5e62b3e946ddfe27dce8b862939a0a",
+        "measured_at": "2026-10-24T05:10:58.614040+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:13ce16804dc2019dcba47b8d5f0312c408fb16e8bdca3f8c9795e1cf08184bb4",
+        "output_digest": "sha256:4b6201dad067cbcc722086beb55be875fc69391ee74526c2d3926fb502246469",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "mboostrs glmboost GammaReg",
+      "gamma_nll": 1.071914377982695,
+      "nll_at_true_shape": 1.23588428264602,
+      "mae": 0.5423701661326259,
+      "log_rmse": 0.5343144948155637,
+      "shape": 1.8986668641712443,
+      "seconds": 0.05926249991171062,
+      "n_nonpositive": 0,
+      "mstop": 68,
+      "at_boundary": false,
+      "mstop_1se": 16,
+      "_identity": {
+        "fingerprint": "sha256:a6894ececda78e3c0743fc75d9c61004da899695dda082a3c643e6cc52801dbf",
+        "measured_at": "2026-10-24T05:10:58.673749+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:13ce16804dc2019dcba47b8d5f0312c408fb16e8bdca3f8c9795e1cf08184bb4",
+        "output_digest": "sha256:aecf142047ee74ddaec55c19d35e95a74b8ab07d472c5110a22c1dd889b42438",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "mboostrs gamboost GammaReg",
+      "gamma_nll": 0.7136870880911861,
+      "nll_at_true_shape": 0.7140593772364877,
+      "mae": 0.035752600978169395,
+      "log_rmse": 0.03849928820482971,
+      "shape": 3.903314314956239,
+      "seconds": 0.24116425006650388,
+      "n_nonpositive": 0,
+      "mstop": 372,
+      "at_boundary": false,
+      "mstop_1se": 35,
+      "_identity": {
+        "fingerprint": "sha256:cab0ed1711ee52cc67f89e41d111ea01242423fce8d2033ca04d716798b20248",
+        "measured_at": "2026-10-24T05:10:58.915435+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:13ce16804dc2019dcba47b8d5f0312c408fb16e8bdca3f8c9795e1cf08184bb4",
+        "output_digest": "sha256:36ea59ab90220425867e36f951d6a121f1885122846beb27d8ae500c327719b3",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "mboostrs glmboost Gaussian",
+      "gamma_nll": null,
+      "nll_at_true_shape": null,
+      "mae": 0.5319122864205514,
+      "log_rmse": null,
+      "shape": null,
+      "seconds": 0.019648790825158358,
+      "n_nonpositive": 91,
+      "mstop": 277,
+      "at_boundary": false,
+      "mstop_1se": 24,
+      "gaussian_nll": 1.5190898023419277,
+      "sigma2": 1.2358718473049077,
+      "_identity": {
+        "fingerprint": "sha256:fca3efc7fdde0c26eac697d4b11e5a6bf69b3ce9ade4f90f18174aaca1556282",
+        "measured_at": "2026-10-24T05:10:58.935404+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:13ce16804dc2019dcba47b8d5f0312c408fb16e8bdca3f8c9795e1cf08184bb4",
+        "output_digest": "sha256:3cc47f945d8798fd6edc7e2d7be91ed90ae441de27181f37c9766a434ab2a73c",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "generating Gamma",
+      "gamma_nll": 0.7090343852802191,
+      "nll_at_true_shape": 0.7090343852802191,
+      "mae": 0.0,
+      "log_rmse": 4.867914505535817e-17,
+      "shape": 4.0,
+      "seconds": 0.0,
+      "n_nonpositive": 0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:db6e5427dd9e23f5185c660a850b5181cb024df59361123c835679606676fb63",
+        "measured_at": "2026-10-24T05:10:58.936896+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:ee621084bdc493329a298e9d9806cdfc58b40f53d3aa2d4ddc07fe444c4ea8a1",
+        "output_digest": "sha256:ea57daf4f89719dea756eac337434f40cbb24f9bf5ed67564d5067ee1701918f",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "statsmodels Gamma GLM",
+      "gamma_nll": 1.1725924043859492,
+      "nll_at_true_shape": 1.2344443199387383,
+      "mae": 0.5427249314990659,
+      "log_rmse": 0.5267796305118538,
+      "shape": 1.0612287804625296,
+      "seconds": 0.004935584031045437,
+      "n_nonpositive": 0,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:0f417dc0a502115bb43a7c15f84ee63a429c4d381e98ae92392ecea9b3119ede",
+        "measured_at": "2026-10-24T05:10:58.942820+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:ee621084bdc493329a298e9d9806cdfc58b40f53d3aa2d4ddc07fe444c4ea8a1",
+        "output_digest": "sha256:98dd11314dc4f62129c6bb831348ffba8ce8c734dce0a220544efb117928664f",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "statsmodels Gamma spline GLM",
+      "gamma_nll": 0.7148374800017168,
+      "nll_at_true_shape": 0.7142368725851466,
+      "mae": 0.05403805210883246,
+      "log_rmse": 0.05046655902885746,
+      "shape": 4.085926861722915,
+      "seconds": 0.0037036659196019173,
+      "n_nonpositive": 0,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:9f5cc2d8d0a952f4d1bb089fba5934c0a0f9c7f13638cfc83797c6d027185f3a",
+        "measured_at": "2026-10-24T05:10:58.950047+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:ee621084bdc493329a298e9d9806cdfc58b40f53d3aa2d4ddc07fe444c4ea8a1",
+        "output_digest": "sha256:8a0f69c74a970118a6a3c4f90d7aa4dbf8da983131b0c55824ec0594583d449e",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "sklearn GammaRegressor",
+      "gamma_nll": 1.172593256975806,
+      "nll_at_true_shape": 1.2344440105174372,
+      "mae": 0.5427243491313025,
+      "log_rmse": 0.5267793172167949,
+      "shape": 1.0612253743407347,
+      "seconds": 0.0008529999759048223,
+      "n_nonpositive": 0,
+      "_identity": {
+        "fingerprint": "sha256:2683793d1843d1bd57a8e7a1ed407c18271493b590eabe03f68426493f2b979d",
+        "measured_at": "2026-10-24T05:10:58.951370+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:ee621084bdc493329a298e9d9806cdfc58b40f53d3aa2d4ddc07fe444c4ea8a1",
+        "output_digest": "sha256:fa04455e1d9109c207abe997f71a855a24e0a83966c93b71de6aa9f725ae3acc",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "mboostrs glmboost GammaReg",
+      "gamma_nll": 1.072603158545342,
+      "nll_at_true_shape": 1.234612852292767,
+      "mae": 0.5444064084767235,
+      "log_rmse": 0.5290115580702227,
+      "shape": 1.8457611850090867,
+      "seconds": 0.05525424983352423,
+      "n_nonpositive": 0,
+      "mstop": 59,
+      "at_boundary": false,
+      "mstop_1se": 21,
+      "_identity": {
+        "fingerprint": "sha256:48129c7643d65a65d24fcb3a6ef52007b9b24679188fcf0cdda4bef1f3aea373",
+        "measured_at": "2026-10-24T05:10:59.007065+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:ee621084bdc493329a298e9d9806cdfc58b40f53d3aa2d4ddc07fe444c4ea8a1",
+        "output_digest": "sha256:b4f311ace8ab596ce2965e48c99ec24541c10379ed9ce1a78afd17b0df2cd0b6",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "mboostrs gamboost GammaReg",
+      "gamma_nll": 0.7127237888062573,
+      "nll_at_true_shape": 0.7128491495423048,
+      "mae": 0.05074483744734197,
+      "log_rmse": 0.04621511959921932,
+      "shape": 3.9736849371288456,
+      "seconds": 0.24212566716596484,
+      "n_nonpositive": 0,
+      "mstop": 428,
+      "at_boundary": false,
+      "mstop_1se": 29,
+      "_identity": {
+        "fingerprint": "sha256:330f909816012e758b3d691a1e56261cdbe56d054d1862c1e7deb381ebbee0eb",
+        "measured_at": "2026-10-24T05:10:59.249700+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:ee621084bdc493329a298e9d9806cdfc58b40f53d3aa2d4ddc07fe444c4ea8a1",
+        "output_digest": "sha256:2f72cd94bb3549c8c3bd5a03a72d18169a169bee53579e335c6ff78f6ef58380",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "mboostrs glmboost Gaussian",
+      "gamma_nll": null,
+      "nll_at_true_shape": null,
+      "mae": 0.5442488592811073,
+      "log_rmse": null,
+      "shape": null,
+      "seconds": 0.019662957871332765,
+      "n_nonpositive": 90,
+      "mstop": 154,
+      "at_boundary": false,
+      "mstop_1se": 8,
+      "gaussian_nll": 1.5243461853744358,
+      "sigma2": 1.4029000387428447,
+      "_identity": {
+        "fingerprint": "sha256:e52500d70038cd6b9d99349d07ee9a1b056aec1a34e0f39bbe4d010045fa9dfe",
+        "measured_at": "2026-10-24T05:10:59.269690+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:ee621084bdc493329a298e9d9806cdfc58b40f53d3aa2d4ddc07fe444c4ea8a1",
+        "output_digest": "sha256:ef0bab3344b78a1d765070a820fd40fb92d26298cc640c8d5c2caa46791e231f",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "generating Gamma",
+      "gamma_nll": 0.7090343852802191,
+      "nll_at_true_shape": 0.7090343852802191,
+      "mae": 0.0,
+      "log_rmse": 4.867914505535817e-17,
+      "shape": 4.0,
+      "seconds": 0.0,
+      "n_nonpositive": 0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:2d8b7395d83d5d87a0ae273fc30ae259f00fa2633f28f46fcc615346aee80250",
+        "measured_at": "2026-10-24T05:10:59.271182+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5f455e25d16c0aefee1bc722a8266b8dff7855e51de79514ba354b187fa1b0bb",
+        "output_digest": "sha256:0805be4ff58ea110db82cfa8aff6bf24e5813e4a3f3db3a65ae1abba1252e453",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "statsmodels Gamma GLM",
+      "gamma_nll": 1.1366078947077767,
+      "nll_at_true_shape": 1.2296121938581424,
+      "mae": 0.5365464358058466,
+      "log_rmse": 0.5272064864555519,
+      "shape": 1.2070295997710787,
+      "seconds": 0.005219040904194117,
+      "n_nonpositive": 0,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:08f55a4b6578b135b571ca4b0c9d510596bf9e426763d0031bb4f0066c92745b",
+        "measured_at": "2026-10-24T05:10:59.277465+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5f455e25d16c0aefee1bc722a8266b8dff7855e51de79514ba354b187fa1b0bb",
+        "output_digest": "sha256:f85781e9700cfccc8d29c818ecca9084d958cf1e1d7dc345edd3f9ef910333ad",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "statsmodels Gamma spline GLM",
+      "gamma_nll": 0.7138872655737805,
+      "nll_at_true_shape": 0.7133130935237668,
+      "mae": 0.04230407965539908,
+      "log_rmse": 0.0475111938500158,
+      "shape": 4.085118819977697,
+      "seconds": 0.0037045420613139868,
+      "n_nonpositive": 0,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:bc08b2d4ab17b67e4c5ecb4a6291eda5826e23e73cba46d25c5f4cb07cd171f0",
+        "measured_at": "2026-10-24T05:10:59.284734+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5f455e25d16c0aefee1bc722a8266b8dff7855e51de79514ba354b187fa1b0bb",
+        "output_digest": "sha256:2e4461b4da5533da54f7c015a2bb86f8e137549e842bb8b533deed5cdbe9a3e1",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "sklearn GammaRegressor",
+      "gamma_nll": 1.1366113070506776,
+      "nll_at_true_shape": 1.229612425019658,
+      "mae": 0.5365408118234932,
+      "log_rmse": 0.5272101338446852,
+      "shape": 1.2070131948039882,
+      "seconds": 0.0007904160302132368,
+      "n_nonpositive": 0,
+      "_identity": {
+        "fingerprint": "sha256:c79aaa24cb6e5ecf4e63d508e89101ce23c29097c3e13174fe798b13eb0d04f8",
+        "measured_at": "2026-10-24T05:10:59.285999+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5f455e25d16c0aefee1bc722a8266b8dff7855e51de79514ba354b187fa1b0bb",
+        "output_digest": "sha256:febb9e3def74052628386fb6694963bca2633d9b5261e448e6887d2ef9a66cdd",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "mboostrs glmboost GammaReg",
+      "gamma_nll": 1.0695746038737466,
+      "nll_at_true_shape": 1.2336632274559507,
+      "mae": 0.5418999112609166,
+      "log_rmse": 0.5341344416966676,
+      "shape": 2.0070403658097806,
+      "seconds": 0.05511545902118087,
+      "n_nonpositive": 0,
+      "mstop": 42,
+      "at_boundary": false,
+      "mstop_1se": 17,
+      "_identity": {
+        "fingerprint": "sha256:a60fa23cff21c5d868d3c612addbe210c6c0df1313f6c6f4a1063ef3acdba567",
+        "measured_at": "2026-10-24T05:10:59.341510+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5f455e25d16c0aefee1bc722a8266b8dff7855e51de79514ba354b187fa1b0bb",
+        "output_digest": "sha256:bc0b5522e401576ba18a50d63298a855d0215024fb13647450a8fa76cdcb3e1d",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "mboostrs gamboost GammaReg",
+      "gamma_nll": 0.7167343439079412,
+      "nll_at_true_shape": 0.7155473409602058,
+      "mae": 0.058566659717100934,
+      "log_rmse": 0.050619910031874674,
+      "shape": 4.143746037928165,
+      "seconds": 0.2413944168947637,
+      "n_nonpositive": 0,
+      "mstop": 735,
+      "at_boundary": false,
+      "mstop_1se": 25,
+      "_identity": {
+        "fingerprint": "sha256:905978a59a8d3d5376b8acde79995fe753e9b0895cd6b2546e5014a50a382a8b",
+        "measured_at": "2026-10-24T05:10:59.583402+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5f455e25d16c0aefee1bc722a8266b8dff7855e51de79514ba354b187fa1b0bb",
+        "output_digest": "sha256:72b9ff4d58af2d2f1ad0eab046af22405fd5df53945b3b70d6e84f6bada15460",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "mboostrs glmboost Gaussian",
+      "gamma_nll": null,
+      "nll_at_true_shape": null,
+      "mae": 0.5451428630098522,
+      "log_rmse": null,
+      "shape": null,
+      "seconds": 0.019897917052730918,
+      "n_nonpositive": 77,
+      "mstop": 57,
+      "at_boundary": false,
+      "mstop_1se": 17,
+      "gaussian_nll": 1.519733121400969,
+      "sigma2": 1.259104534348485,
+      "_identity": {
+        "fingerprint": "sha256:d4a6c77843b923cd01b74e8dd339fc98b71b15cace484db0f2851ae2ddfbdd20",
+        "measured_at": "2026-10-24T05:10:59.603656+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5f455e25d16c0aefee1bc722a8266b8dff7855e51de79514ba354b187fa1b0bb",
+        "output_digest": "sha256:3288005413873cfa69d64cb92b33442759126c2339c89d7504de7bd4c97c8d93",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "generating Gamma",
+      "gamma_nll": 0.7090343852802191,
+      "nll_at_true_shape": 0.7090343852802191,
+      "mae": 0.0,
+      "log_rmse": 4.867914505535817e-17,
+      "shape": 4.0,
+      "seconds": 0.0,
+      "n_nonpositive": 0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:a2f661b4045e2cbed31fa25efaa1da53e071b8bd43e87d2a401efd2b51624c20",
+        "measured_at": "2026-10-24T05:10:59.605130+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:3970048b4c2bc4dbebfb970082c0cad05dd131509a5991302b699a5d270ccb7d",
+        "output_digest": "sha256:0924db9003714689f5dbd5ff9135bfdf1d2e7596ba5309d6f7676864d1fb84da",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "statsmodels Gamma GLM",
+      "gamma_nll": 1.1447235997945369,
+      "nll_at_true_shape": 1.2266819780660072,
+      "mae": 0.5320546338013715,
+      "log_rmse": 0.5198994641353757,
+      "shape": 1.1649228856414178,
+      "seconds": 0.005376333137974143,
+      "n_nonpositive": 0,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:85fd575ebaf68f6e4f24673466b8b3033921be3b3a2f50d69f1fb7a9acf9fe5c",
+        "measured_at": "2026-10-24T05:10:59.611563+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:3970048b4c2bc4dbebfb970082c0cad05dd131509a5991302b699a5d270ccb7d",
+        "output_digest": "sha256:15613e333f5bef7afebdeeffbbd5013a2b4bad81f09593c6f01ac3beb28fa706",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "statsmodels Gamma spline GLM",
+      "gamma_nll": 0.7104793832052585,
+      "nll_at_true_shape": 0.7106983434210511,
+      "mae": 0.043836997052434046,
+      "log_rmse": 0.035647412482371195,
+      "shape": 3.7942081559178114,
+      "seconds": 0.004608375020325184,
+      "n_nonpositive": 0,
+      "converged": true,
+      "_identity": {
+        "fingerprint": "sha256:6b30af03d84f7f8f6ce28be5b1db9ab61decbf080e911280564171d7399c65be",
+        "measured_at": "2026-10-24T05:10:59.619752+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:3970048b4c2bc4dbebfb970082c0cad05dd131509a5991302b699a5d270ccb7d",
+        "output_digest": "sha256:fc2da98a2e9f58d1f685ef0454e93d8bc9a4595a4349b2b2476f088e459ca4b8",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "sklearn GammaRegressor",
+      "gamma_nll": 1.1447230827721515,
+      "nll_at_true_shape": 1.2266815134613505,
+      "mae": 0.5320542190413027,
+      "log_rmse": 0.5198989848645406,
+      "shape": 1.164924595544479,
+      "seconds": 0.0008520002011209726,
+      "n_nonpositive": 0,
+      "_identity": {
+        "fingerprint": "sha256:246bafb1bf468c173a5d9b63f8f9f77716c87a05de8ce787f749e21ccd4826c7",
+        "measured_at": "2026-10-24T05:10:59.621091+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:3970048b4c2bc4dbebfb970082c0cad05dd131509a5991302b699a5d270ccb7d",
+        "output_digest": "sha256:03d4f8d0b8e28bc2e5f457ee420e7a0a3a34ea3589253f298643c2cf6b995790",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "mboostrs glmboost GammaReg",
+      "gamma_nll": 1.0665570771381716,
+      "nll_at_true_shape": 1.2276482502146973,
+      "mae": 0.5338585815036802,
+      "log_rmse": 0.5224131607939695,
+      "shape": 2.0069361587160786,
+      "seconds": 0.057440249947831035,
+      "n_nonpositive": 0,
+      "mstop": 52,
+      "at_boundary": false,
+      "mstop_1se": 17,
+      "_identity": {
+        "fingerprint": "sha256:10b0e562bb4a292369f47c144bc4be0f0e92a0e3aef206affed0ea7bc514acd3",
+        "measured_at": "2026-10-24T05:10:59.678974+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:3970048b4c2bc4dbebfb970082c0cad05dd131509a5991302b699a5d270ccb7d",
+        "output_digest": "sha256:d89c65e6d68bd4c65acbaafd2dc4670d2600a34635d92f858c7811afe29ad9a5",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "mboostrs gamboost GammaReg",
+      "gamma_nll": 0.7103590514602406,
+      "nll_at_true_shape": 0.7105251712677156,
+      "mae": 0.046610226064777466,
+      "log_rmse": 0.03421966367509097,
+      "shape": 3.957461765380068,
+      "seconds": 0.24092150013893843,
+      "n_nonpositive": 0,
+      "mstop": 287,
+      "at_boundary": false,
+      "mstop_1se": 27,
+      "_identity": {
+        "fingerprint": "sha256:ae69de4a72a18a30125f6a5af241835e37baffd894221781f440499dd060b59e",
+        "measured_at": "2026-10-24T05:10:59.920482+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:3970048b4c2bc4dbebfb970082c0cad05dd131509a5991302b699a5d270ccb7d",
+        "output_digest": "sha256:96f00cd4905137b5d8c670e63d4b4e76e3a8eb4493056aed0f74c4a27ef09eb9",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "mboostrs glmboost Gaussian",
+      "gamma_nll": null,
+      "nll_at_true_shape": null,
+      "mae": 0.5313968325612791,
+      "log_rmse": null,
+      "shape": null,
+      "seconds": 0.02017508284188807,
+      "n_nonpositive": 96,
+      "mstop": 767,
+      "at_boundary": false,
+      "mstop_1se": 14,
+      "gaussian_nll": 1.5179556496855724,
+      "sigma2": 1.2017765060210177,
+      "_identity": {
+        "fingerprint": "sha256:6481129e5dfd65771fffb1690273a5b660e79349628f84a9fa6c8e642c3f8003",
+        "measured_at": "2026-10-24T05:10:59.940979+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:3970048b4c2bc4dbebfb970082c0cad05dd131509a5991302b699a5d270ccb7d",
+        "output_digest": "sha256:36a95e9d156eecd0738adedd96b8da273cb12e44871515c2dcf40338e2b04656",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    }
+  ],
+  "recovery": {
+    "statsmodels": {
+      "Intercept": 0.16162093019475698,
+      "x1": 0.5625681245952162,
+      "x2": -0.2931979847261713,
+      "noise": -0.011107808752077668
+    },
+    "glmboost_off2int": {
+      "(Intercept)": 0.16202979397934372,
+      "x1": 0.5620363990419499,
+      "x2": -0.29266117992264473,
+      "noise": -0.010507287766223882
+    },
+    "glmboost_raw_intercept": -0.21210821762138712,
+    "offset": 0.37413801160073085,
+    "sklearn_intercept": 0.1616218532642533,
+    "sklearn_coef": {
+      "x1": 0.5625684213822639,
+      "x2": -0.29319097318279524,
+      "noise": -0.011110242817273866
+    },
+    "glmboost_shape": 3.8967822025681453,
+    "statsmodels_shape": 3.9465308216855157,
+    "glmboost_loglik": -1223.789859701712,
+    "statsmodels_llf": -1223.852199245774
+  },
+  "usability": {
+    "probes": [
+      {
+        "label": "gamboost(family=GammaLSS())",
+        "ok": false,
+        "error": "TypeError",
+        "detail": "GammaLSS is a distributional family (parameters: mu, sigma). gamboost() fits one predictor. Use glmboostLSS() or gamboostLSS(), for example mb.gamboostLSS(formula, data, family=mb.GammaLSS())."
+      },
+      {
+        "label": "glmboost(family=GammaLSS())",
+        "ok": false,
+        "error": "TypeError",
+        "detail": "GammaLSS is a distributional family (parameters: mu, sigma). glmboost() fits one predictor. Use glmboostLSS() or gamboostLSS(), for example mb.gamboostLSS(formula, data, family=mb.GammaLSS())."
+      },
+      {
+        "label": "GammaReg rejects a zero",
+        "ok": false,
+        "error": "MboostrsValueError",
+        "detail": "family 'GammaReg': y must be > 0, got 0"
+      },
+      {
+        "label": "predict default is the log mean",
+        "ok": true,
+        "detail": "type='link' matches log(type='response') to 1.11e-16; the default type is 'link', so a caller who treats predict() as E[Y] scores the log mean."
+      },
+      {
+        "label": "GammaReg nuisance is the shape",
+        "ok": true,
+        "detail": "nuisance() = 3.8936. Variance is mu**2 / shape. A Gamma GLM's scale is 1/shape, not this number."
+      },
+      {
+        "label": "glmboost Gaussian nuisance()",
+        "ok": true,
+        "detail": "returned None."
+      },
+      {
+        "label": "cvrisk after glmboost.continue_to",
+        "ok": true,
+        "detail": "cvrisk after continue_to returned"
+      },
+      {
+        "label": "cvrisk after gamboost.continue_to",
+        "ok": true,
+        "detail": "cvrisk after gamboost.continue_to returned"
+      },
+      {
+        "label": "autospec on a gamma sample",
+        "ok": true,
+        "detail": "family=GammaReg(), formula='y ~ bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(noise, df=4.0)', defaulted=('family', 'shapes', 'interactions', 'mstop'), priority=('nothing measured contradicts the dtype-driven specification',)"
+      },
+      {
+        "label": "bbs predict outside the training range",
+        "ok": true,
+        "detail": "ExtrapolationWarning: 1 learner(s) are asked to predict outside the range they were fitted on. bbs(x1), covariate x1: 1 above 3.06604 (worst 0.42 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.42 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside the range instead, or 'error' to refuse. Guide: python -m mboostrs guide mode"
+      }
+    ]
+  },
+  "provenance": {
+    "commit": "f54f1531831e3f14a2db0bd238cf36238683d5ed",
+    "working_tree": {
+      "dirty": false,
+      "status_digest": null,
+      "commit_source": "working directory"
+    },
+    "native_build": {
+      "package_version": "0.1.3",
+      "source_digest": "sha256:a771766f1a4820a76b9d908fbc12ed53123e648afcb8583181708b5273ca6b49",
+      "git_revision": "e9c670d73f2aff2d153b2c02b4cf8a71aa2c46e2",
+      "git_dirty": false,
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+      "target": "aarch64-apple-darwin",
+      "profile": "release",
+      "target_features": "aes,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+      "crate_features": "",
+      "abi_version": 1,
+      "build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+    },
+    "platform": {
+      "system": "Darwin",
+      "release": "25.3.0",
+      "machine": "arm64",
+      "cpu": "arm",
+      "python": "3.12.11"
+    },
+    "versions": {
+      "mboostrs": "0.1.3",
+      "numpy": "2.4.6",
+      "rpy2": "3.6.7",
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "R": "4.5.1",
+      "mboost": "2.9.11",
+      "scipy": "1.16.3",
+      "statsmodels": "0.15.0",
+      "scikit-learn": "1.9.0",
+      "polars": "1.41.0",
+      "patsy": "1.0.3"
+    },
+    "compiler_flags": {
+      "RUSTFLAGS": null,
+      "CARGO_PROFILE": "release"
+    },
+    "threads": {
+      "logical_cpus": 10,
+      "r_mclapply_default_cores": "2",
+      "RAYON_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+    },
+    "created_at": "2026-10-24T05:10:56.417129+00:00",
+    "runner": "benches/bench_gamma.py",
+    "runner_sha256": "fd5e0c467565e8084da6f96da0ecb454bec197bf9b3988ac0a019636e6571e7b",
+    "protocol": {
+      "kind": "seeded predictive-method comparison",
+      "design": {
+        "n_train": 1500,
+        "n_test": 4000,
+        "seeds": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "shape": 4.0,
+        "nu": 0.1,
+        "folds": 5,
+        "mstop": {
+          "glm": 400,
+          "gam": 1000,
+          "gaussian": 800
+        },
+        "linear": "log mu = 0.15 + 0.55 x1 - 0.30 x2",
+        "smooth": "log mu = 0.05 + sin(1.5 x1) + 0.30 x2",
+        "spline": "bs(x1, df=8, lower_bound=-6, upper_bound=6) + x2 + noise"
+      },
+      "timing": "runner perf_counter regions; method-specific fit/tuning/prediction work",
+      "order": "sequential task, seed, method order in the recorded runner",
+      "timing_claim": "descriptive elapsed times; no paired equal-work speedup or timing interval",
+      "warmup": "no dedicated warmup; imports and provenance collection excluded from timers"
+    },
+    "repeats": {
+      "training_seeds": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "test": "one independently generated test sample per task, shared across methods and seeds"
+    },
+    "uncertainty": {
+      "scope": "descriptive timing spread across training seeds, not repeated identical-input trials",
+      "groups": [
+        {
+          "task": "linear",
+          "method": "generating Gamma",
+          "n": 4,
+          "seconds_sd": 0.0,
+          "seconds_se": 0.0
+        },
+        {
+          "task": "linear",
+          "method": "statsmodels Gamma GLM",
+          "n": 4,
+          "seconds_sd": 0.0002129313956777391,
+          "seconds_se": 0.00010646569783886955
+        },
+        {
+          "task": "linear",
+          "method": "statsmodels Gamma spline GLM",
+          "n": 4,
+          "seconds_sd": 9.435084308975547e-05,
+          "seconds_se": 4.7175421544877735e-05
+        },
+        {
+          "task": "linear",
+          "method": "sklearn GammaRegressor",
+          "n": 4,
+          "seconds_sd": 0.0009768639844415742,
+          "seconds_se": 0.0004884319922207871
+        },
+        {
+          "task": "linear",
+          "method": "mboostrs glmboost GammaReg",
+          "n": 4,
+          "seconds_sd": 0.0019055572562619554,
+          "seconds_se": 0.0009527786281309777
+        },
+        {
+          "task": "linear",
+          "method": "mboostrs gamboost GammaReg",
+          "n": 4,
+          "seconds_sd": 0.004430871006818844,
+          "seconds_se": 0.002215435503409422
+        },
+        {
+          "task": "linear",
+          "method": "mboostrs glmboost Gaussian",
+          "n": 4,
+          "seconds_sd": 0.001166706111431143,
+          "seconds_se": 0.0005833530557155715
+        },
+        {
+          "task": "smooth",
+          "method": "generating Gamma",
+          "n": 4,
+          "seconds_sd": 0.0,
+          "seconds_se": 0.0
+        },
+        {
+          "task": "smooth",
+          "method": "statsmodels Gamma GLM",
+          "n": 4,
+          "seconds_sd": 0.001468727989381208,
+          "seconds_se": 0.000734363994690604
+        },
+        {
+          "task": "smooth",
+          "method": "statsmodels Gamma spline GLM",
+          "n": 4,
+          "seconds_sd": 0.00043542401661022867,
+          "seconds_se": 0.00021771200830511433
+        },
+        {
+          "task": "smooth",
+          "method": "sklearn GammaRegressor",
+          "n": 4,
+          "seconds_sd": 7.318426207469312e-05,
+          "seconds_se": 3.659213103734656e-05
+        },
+        {
+          "task": "smooth",
+          "method": "mboostrs glmboost GammaReg",
+          "n": 4,
+          "seconds_sd": 0.001974570079997192,
+          "seconds_se": 0.000987285039998596
+        },
+        {
+          "task": "smooth",
+          "method": "mboostrs gamboost GammaReg",
+          "n": 4,
+          "seconds_sd": 0.0005199857835676713,
+          "seconds_se": 0.00025999289178383565
+        },
+        {
+          "task": "smooth",
+          "method": "mboostrs glmboost Gaussian",
+          "n": 4,
+          "seconds_sd": 0.0002472425506804908,
+          "seconds_se": 0.0001236212753402454
+        }
+      ]
+    }
+  }
+}

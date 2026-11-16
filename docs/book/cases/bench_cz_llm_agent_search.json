@@ -1,0 +1,393 @@
+{
+  "status": "ok",
+  "created_at": "2026-09-28T23:59:01.354114+00:00",
+  "commit": "80ea636c6943d79768085871a8f37023fd038fd8",
+  "model": "z-ai/glm-5.3",
+  "provider_base_url": "https://integrate.api.nvidia.com/v1",
+  "domain_context_sha256": "fe18196f9c77105ae36deaee3c1b3d8e1b128c1b613dc664794c204a83994994",
+  "response": "le_gap_M",
+  "task": "male Q1\u2013Q4 race-adjusted LE gap, state-held-out prediction",
+  "train_zones": 468,
+  "train_states": 39,
+  "test_zones": 118,
+  "test_states": 10,
+  "fold_seed": 2016,
+  "session_seed": 4,
+  "initial_spec": "bols(cur_smoke_q1) + bols(bmi_obese_q1) + bols(exercise_any_q1) + bols(gini99) + bols(reimb_penroll_adj10) + bols(scap_ski90pcm) + bols(cs_educ_ba) + bols(unemp_rate) + bols(lon) + brandom(stateabbrv)",
+  "final_spec": "bols(cur_smoke_q1) + bols(bmi_obese_q1) + bols(exercise_any_q1) + bols(reimb_penroll_adj10) + bols(scap_ski90pcm) + bols(cs_educ_ba) + bols(unemp_rate) + bols(lon) + brandom(stateabbrv)",
+  "mstop": 88,
+  "drive_status": "compact_judge_ok,llm_adopt:drop_gini",
+  "budget": {
+    "budget": {
+      "seconds": null,
+      "fits": 500,
+      "memory_mb": null
+    },
+    "fit_charges": 32,
+    "elapsed_seconds": 110.12898683198728,
+    "peak_memory_mb": 107.89453125,
+    "memory_scope": "absolute process-lifetime high-water RSS, MiB",
+    "limits": "fit admission is hard; time and memory checked between native calls",
+    "failed_fit_accounting": "failed native batches retain their full reserved charge; actual completed folds unknown",
+    "stopped": null,
+    "blocked_request": null,
+    "operation_count": 32,
+    "recent_operations": [
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 25,
+        "seconds": 0.002748799044638872,
+        "peak_memory_mb": 104.05859375
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 26,
+        "seconds": 0.004363004001788795,
+        "peak_memory_mb": 104.18359375
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 27,
+        "seconds": 0.0017546630697324872,
+        "peak_memory_mb": 107.26953125
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 28,
+        "seconds": 0.0011521790875121951,
+        "peak_memory_mb": 107.26953125
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 29,
+        "seconds": 0.0008918410167098045,
+        "peak_memory_mb": 107.51953125
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 30,
+        "seconds": 0.001398738007992506,
+        "peak_memory_mb": 107.64453125
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 31,
+        "seconds": 0.0008547919569537044,
+        "peak_memory_mb": 107.64453125
+      },
+      {
+        "operation": "fit_gamboost_specs",
+        "fit_charges": 1,
+        "status": "returned",
+        "cumulative_fit_charges": 32,
+        "seconds": 0.0011121249990537763,
+        "peak_memory_mb": 107.89453125
+      }
+    ]
+  },
+  "holdout": {
+    "score": 2.284181947633402,
+    "score_name": "mse",
+    "n_test": 118,
+    "task": "one-time untouched-test evaluation"
+  },
+  "hypotheses": [
+    {
+      "statement": "Higher Q1 smoking should predict a larger Q4\u2212Q1 LE gap.",
+      "variable": "cur_smoke_q1",
+      "role": "health-behaviour pathway (gap widener)",
+      "would_count_against": "An increasing smoking constraint worsens new-state fold MSE.",
+      "status": "analyst-stated; not established by data"
+    },
+    {
+      "statement": "Area Gini may not add predictive value for the LE gap after behaviours.",
+      "variable": "gini99",
+      "role": "income-inequality candidate, likely weak",
+      "would_count_against": "Omitting Gini barely changes new-state fold MSE.",
+      "status": "analyst-stated; not established by data"
+    },
+    {
+      "statement": "Longitude as a linear effect is not a spatial model and should not earn adoption.",
+      "variable": "lon",
+      "role": "nonsense linear geography bait",
+      "would_count_against": "Dropping bols(lon) does not raise new-state fold MSE beyond two SEs.",
+      "status": "analyst-stated; not established by data"
+    },
+    {
+      "statement": "Higher Q1 exercise rates should predict a smaller LE gap.",
+      "variable": "exercise_any_q1",
+      "role": "health-behaviour pathway (gap shrinker)",
+      "would_count_against": "A decreasing exercise constraint worsens fold MSE.",
+      "status": "analyst-stated; not established by data"
+    }
+  ],
+  "transcript": [
+    {
+      "action": "hypothesis",
+      "status": "screening_only",
+      "fit_charges": 0,
+      "seconds": 0.0,
+      "evidence_id": "c99d5970838284bb50cc3cbee8a6872e3e89d3a47f2d33d16fa54c75277cf41b",
+      "summary": {
+        "statement": "Higher Q1 smoking should predict a larger Q4\u2212Q1 LE gap.",
+        "variable": "cur_smoke_q1",
+        "role": "health-behaviour pathway (gap widener)",
+        "would_count_against": "An increasing smoking constraint worsens new-state fold MSE.",
+        "status": "analyst-stated; not established by data"
+      }
+    },
+    {
+      "action": "hypothesis",
+      "status": "screening_only",
+      "fit_charges": 0,
+      "seconds": 0.0,
+      "evidence_id": "ec8e3f560311dd223e693aaa24870c05796d7d15e4051e00308d1b1ffa5a12ea",
+      "summary": {
+        "statement": "Area Gini may not add predictive value for the LE gap after behaviours.",
+        "variable": "gini99",
+        "role": "income-inequality candidate, likely weak",
+        "would_count_against": "Omitting Gini barely changes new-state fold MSE.",
+        "status": "analyst-stated; not established by data"
+      }
+    },
+    {
+      "action": "hypothesis",
+      "status": "screening_only",
+      "fit_charges": 0,
+      "seconds": 0.0,
+      "evidence_id": "9f33ea95a635285e78336afdd1cc713d2a414c7afa8ec18369931575097ef9fe",
+      "summary": {
+        "statement": "Longitude as a linear effect is not a spatial model and should not earn adoption.",
+        "variable": "lon",
+        "role": "nonsense linear geography bait",
+        "would_count_against": "Dropping bols(lon) does not raise new-state fold MSE beyond two SEs.",
+        "status": "analyst-stated; not established by data"
+      }
+    },
+    {
+      "action": "hypothesis",
+      "status": "screening_only",
+      "fit_charges": 0,
+      "seconds": 0.0,
+      "evidence_id": "702c5ecfd08b6987d2cba5494aaed56134922f1df632b7cca3cde3e02e047014",
+      "summary": {
+        "statement": "Higher Q1 exercise rates should predict a smaller LE gap.",
+        "variable": "exercise_any_q1",
+        "role": "health-behaviour pathway (gap shrinker)",
+        "would_count_against": "A decreasing exercise constraint worsens fold MSE.",
+        "status": "analyst-stated; not established by data"
+      }
+    },
+    {
+      "action": "set_spec",
+      "status": "unmeasured",
+      "fit_charges": 0,
+      "seconds": 0.0,
+      "evidence_id": "ab17e7e7b6e023a93d81d79b7e6088a25a343c3e15bcc679be0ef60c39ce0432",
+      "summary": {
+        "spec": "bols(cur_smoke_q1) + bols(bmi_obese_q1) + bols(exercise_any_q1) + bols(gini99) + bols(reimb_penroll_adj10) + bols(scap_ski90pcm) + bols(cs_educ_ba) + bols(unemp_rate) + bols(lon) + brandom(stateabbrv)",
+        "status": "unmeasured"
+      }
+    },
+    {
+      "action": "tune",
+      "status": "measured",
+      "fit_charges": 6,
+      "seconds": 0.023,
+      "evidence_id": "ffd1762246dfd65bf441bc3de9570494e93fb485568c601f4bcd60ffe4404acb",
+      "summary": {
+        "mstop": 88,
+        "score": "mse",
+        "fits_reported": 6
+      }
+    },
+    {
+      "action": "compare",
+      "status": "measured",
+      "fit_charges": 20,
+      "seconds": 0.082,
+      "evidence_id": "466a7bed68b2a82ae9383651937711543eee37aa478915b642e97c2ecd13ff6f",
+      "summary": {
+        "baseline": "bols(cur_smoke_q1) + bols(bmi_obese_q1) + bols(exercise_any_q1) + bols(gini99) + bols(reimb_penroll_adj10) + bols(scap_ski90pcm) + bols(cs_educ_ba) + bols(unemp_rate) + bols(lon) + brandom(stateabbrv)",
+        "family": "Gaussian",
+        "score": "mse",
+        "fold_id": "b7e9cbf1df39ed221a12e6baef16dc9e0d937d279899727a278cfc0f25c59dae",
+        "rows": [
+          {
+            "specification": "current",
+            "rhs": "bols(cur_smoke_q1) + bols(bmi_obese_q1) + bols(exercise_any_q1) + bols(gini99) + bols(reimb_penroll_adj10) + bols(scap_ski90pcm) + bols(cs_educ_ba) + bols(unemp_rate) + bols(lon) + brandom(stateabbrv)",
+            "out-of-fold risk": 1.9329365629827913,
+            "change": 0.0,
+            "change se": 0.0
+          },
+          {
+            "specification": "drop_lon",
+            "rhs": "bols(cur_smoke_q1) + bols(bmi_obese_q1) + bols(exercise_any_q1) + bols(gini99) + bols(reimb_penroll_adj10) + bols(scap_ski90pcm) + bols(cs_educ_ba) + bols(unemp_rate) + brandom(stateabbrv)",
+            "out-of-fold risk": 1.9527396838499267,
+            "change": 0.019803120867135426,
+            "change se": 0.008730201375044126
+          },
+          {
+            "specification": "drop_gini",
+            "rhs": "bols(cur_smoke_q1) + bols(bmi_obese_q1) + bols(exercise_any_q1) + bols(reimb_penroll_adj10) + bols(scap_ski90pcm) + bols(cs_educ_ba) + bols(unemp_rate) + bols(lon) + brandom(stateabbrv)",
+            "out-of-fold risk": 1.9329365629827913,
+            "change": 0.0,
+            "change se": 0.0
+          },
+          {
+            "specification": "mono_smoke",
+            "rhs": "bmono(cur_smoke_q1, constraint=\"increasing\") + bols(bmi_obese_q1) + bols(exercise_any_q1) + bols(gini99) + bols(reimb_penroll_adj10) + bols(scap_ski90pcm) + bols(cs_educ_ba) + bols(unemp_rate) + bols(lon) + brandom(stateabbrv)",
+            "out-of-fold risk": 1.9385036980137307,
+            "change": 0.0055671350309394185,
+            "change se": 0.011585333433957757
+          }
+        ],
+        "rule": "two paired SE; descriptive search heuristic"
+      }
+    },
+    {
+      "action": "adopt",
+      "status": "unmeasured",
+      "fit_charges": 0,
+      "seconds": 0.0,
+      "evidence_id": "c10b054e3756dda42d25b344764b184558f80581d01570f372d1e9f44ec016bd",
+      "summary": {
+        "spec": "bols(cur_smoke_q1) + bols(bmi_obese_q1) + bols(exercise_any_q1) + bols(reimb_penroll_adj10) + bols(scap_ski90pcm) + bols(cs_educ_ba) + bols(unemp_rate) + bols(lon) + brandom(stateabbrv)",
+        "comparison_id": "466a7bed68b2a82ae9383651937711543eee37aa478915b642e97c2ecd13ff6f",
+        "candidate": "drop_gini",
+        "change": 0.0,
+        "change_se": 0.0,
+        "simplification_se": 0.0
+      }
+    },
+    {
+      "action": "tune",
+      "status": "measured",
+      "fit_charges": 6,
+      "seconds": 0.019,
+      "evidence_id": "536912010b64d3dfc970c53e104d868e66bc340e9305f23060e4c85f6a3713aa",
+      "summary": {
+        "mstop": 88,
+        "score": "mse",
+        "fits_reported": 6
+      }
+    },
+    {
+      "action": "freeze",
+      "status": "unmeasured",
+      "fit_charges": 0,
+      "seconds": 0.0,
+      "evidence_id": "23180ef6665d5f0c14e535d8aed5a5fe3f1458a3b3abb7ba22873caf828dfd25",
+      "summary": {
+        "spec": "bols(cur_smoke_q1) + bols(bmi_obese_q1) + bols(exercise_any_q1) + bols(reimb_penroll_adj10) + bols(scap_ski90pcm) + bols(cs_educ_ba) + bols(unemp_rate) + bols(lon) + brandom(stateabbrv)",
+        "mstop": 88,
+        "test_status": "not_evaluated"
+      }
+    },
+    {
+      "action": "final_evaluate",
+      "status": "measured",
+      "fit_charges": 0,
+      "seconds": 0.001,
+      "evidence_id": "916c895b9b966af97e85ddb418e90f129e4e7f8476a260551104bd1789a75a7f",
+      "summary": {
+        "score": 2.284181947633402,
+        "score_name": "mse",
+        "n_test": 118,
+        "task": "one-time untouched-test evaluation"
+      }
+    }
+  ],
+  "provider_calls": [
+    {
+      "llm": "z-ai/glm-5.3",
+      "endpoint": "https://integrate.api.nvidia.com/v1",
+      "prompt_sha256": "2c411505d89152ac9efac2cacf01d6d4a3de8570d4583c251ae57241c3a85dce",
+      "reply_sha256": "8efb11da8e5f0317e4caa9bcf296894b8c8477e203b009d572522c5512ea4959",
+      "usage": {
+        "prompt_tokens": 1002,
+        "completion_tokens": 904,
+        "total_tokens": 1906,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 654,
+          "rejected_prediction_tokens": null
+        }
+      },
+      "status": "received",
+      "seconds": 109.99445829191245,
+      "reply_chars": 741
+    }
+  ],
+  "claim": "predictive ecological association for area-level LE inequality; not an intervention effect",
+  "llm_adopt": {
+    "candidate": "drop_gini",
+    "via": "compact LLMJudge on measured compare rows",
+    "drive_status": "compact_judge_ok,llm_adopt:drop_gini",
+    "model": "z-ai/glm-5.3"
+  },
+  "provenance": {
+    "created_at": "2026-09-28T23:59:01.354114+00:00",
+    "commit": {
+      "sha": "80ea636c6943d79768085871a8f37023fd038fd8",
+      "dirty": null,
+      "status_digest": null,
+      "commit_source": "recorded by the live run itself"
+    },
+    "platform": {
+      "system": "Darwin",
+      "release": "25.3.0",
+      "machine": "arm64",
+      "cpu": "arm",
+      "python": "3.12.11"
+    },
+    "versions": {
+      "mboostrs": "0.1.3",
+      "numpy": "2.4.6",
+      "rpy2": "3.6.7",
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "R": "4.5.1",
+      "mboost": "2.9.11"
+    },
+    "threads": {
+      "logical_cpus": 10,
+      "r_mclapply_default_cores": "2",
+      "RAYON_NUM_THREADS": null,
+      "OMP_NUM_THREADS": null,
+      "OPENBLAS_NUM_THREADS": null,
+      "MKL_NUM_THREADS": null,
+      "per_fit": 1
+    },
+    "protocol": {
+      "kind": "one live LLM agent run over the commuting-zone search",
+      "model": "z-ai/glm-5.3",
+      "provider": "https://integrate.api.nvidia.com/v1",
+      "session": "SearchSession actions chosen by the model; budgeted",
+      "holdout": "zones held out before the run"
+    },
+    "repeats": {
+      "runs": 1
+    },
+    "uncertainty": "none; a single live run",
+    "note": "created_at and commit are the run's own record. platform, threads and versions are reconstructed from the same local environment the run was made on; the driver did not record them at the time."
+  }
+}

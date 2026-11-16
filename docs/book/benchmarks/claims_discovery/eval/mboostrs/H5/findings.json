@@ -1,0 +1,122 @@
+{
+  "library": "mboostrs 0.1.3",
+  "mean_effects": [
+    {
+      "variable": "housing_median_age",
+      "shape": "threshold_increase",
+      "evidence": "Moving housing_median_age from its 5th to its 95th percentile (9 to 52) changes the expected y by +0.383 (90% interval +0.346 to +0.424). Dropping it from the location model raises out-of-fold NLL by 0.0391 (SE 0.0019). The curve depends on median_income: see the interaction entry for the curves at low and high values."
+    },
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "Moving median_income from its 5th to its 95th percentile (1.55 to 6.605) changes the expected y by -0.673 (90% interval -0.710 to -0.637). Dropping it from the location model raises out-of-fold NLL by 0.0311 (SE 0.0011)."
+    },
+    {
+      "variable": "ave_occup",
+      "shape": "increasing",
+      "evidence": "Moving ave_occup from its 5th to its 95th percentile (1.865 to 4.361) changes the expected y by +0.269 (90% interval +0.248 to +0.287). Dropping it from the location model raises out-of-fold NLL by 0.0148 (SE 0.0007)."
+    },
+    {
+      "variable": "miss_housing_median_age",
+      "shape": "threshold_increase",
+      "evidence": "Moving miss_housing_median_age from its 5th to its 95th percentile (0 to 1) changes the expected y by +0.062 (90% interval +0.038 to +0.081). Dropping it from the location model raises out-of-fold NLL by 0.0007 (SE 0.0003)."
+    },
+    {
+      "variable": "miss_ave_bedrooms",
+      "shape": "flat",
+      "evidence": "Moving miss_ave_bedrooms from its 5th to its 95th percentile (0 to 0) changes the expected y by +0.000 (90% interval +0.000 to +0.000). Dropping it from the location model raises out-of-fold NLL by 0.0002 (SE 0.0000)."
+    },
+    {
+      "variable": "roof_class",
+      "shape": "categorical",
+      "evidence": "Level effects on the expected y relative to A (90% interval in brackets): B vs A: +0.013 (-0.001 to +0.029); C vs A: +0.156 (+0.140 to +0.175); D vs A: +0.369 (+0.348 to +0.389). Dropping it from the location model raises out-of-fold NLL by 0.0347 (SE 0.0023)."
+    },
+    {
+      "variable": "longitude",
+      "shape": "spatial",
+      "evidence": "Joint longitude and latitude surface on the 5th-to-95th percentile grid (5 by 5). The fitted expected y is lowest at longitude -118.51, latitude 32.81 (-0.056) and highest at longitude -117.07, latitude 34.26 (+0.395). The surface beats the additive longitude and latitude terms by 0.0029 in out-of-fold NLL (SE 0.0003)."
+    },
+    {
+      "variable": "latitude",
+      "shape": "spatial",
+      "evidence": "Joint longitude and latitude surface on the 5th-to-95th percentile grid (5 by 5). The fitted expected y is lowest at longitude -118.51, latitude 32.81 (-0.056) and highest at longitude -117.07, latitude 34.26 (+0.395). The surface beats the additive longitude and latitude terms by 0.0029 in out-of-fold NLL (SE 0.0003)."
+    }
+  ],
+  "interactions": [
+    {
+      "variables": [
+        "longitude",
+        "latitude"
+      ],
+      "evidence": "A joint surface beats the additive terms by 0.0029 out-of-fold NLL (SE 0.0003), so the effect of one coordinate depends on the other."
+    },
+    {
+      "variables": [
+        "housing_median_age",
+        "median_income"
+      ],
+      "evidence": "The effect of housing_median_age depends on median_income (varying-coefficient term). Out-of-fold NLL improves by 0.0031 (SE 0.0008) against the additive model. At the 10th percentile of median_income (1.84) the 5th-to-95th percentile change in housing_median_age is +0.546 (90% interval +0.503 to +0.601), shape threshold increase; at the 90th percentile of median_income (5.752) the 5th-to-95th percentile change in housing_median_age is +0.240 (90% interval +0.186 to +0.291), shape threshold increase."
+    }
+  ],
+  "variance_drivers": [
+    {
+      "variable": "households",
+      "direction": "decreases_spread",
+      "evidence": "Standard deviation of y at the 95th percentile of households (1151) is 0.461 times its value at the 5th percentile (124); 90% interval of the log ratio -0.802 to -0.743. Scale formula: bols(log_households)."
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.450581,
+      "lower90": -0.467913,
+      "upper90": -0.43551
+    },
+    "Q2": {
+      "estimate": 0.409835,
+      "lower90": 0.382315,
+      "upper90": 0.437829
+    },
+    "Q3": {
+      "estimate": 0.219589,
+      "lower90": 0.20266,
+      "upper90": 0.233866
+    },
+    "Q4": {
+      "estimate": 0.368992,
+      "lower90": 0.347541,
+      "upper90": 0.389063
+    },
+    "Q5": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q6": {
+      "estimate": 0.41475,
+      "lower90": 0.38397,
+      "upper90": 0.453817
+    },
+    "Q7": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q8": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    }
+  },
+  "warnings": [
+    "total_bedrooms equals ave_bedrooms times households on every observed row, so it is left out as a duplicate of that product.",
+    "total_rooms equals ave_rooms times households on every observed row, so it is left out as a duplicate of that product.",
+    "population equals ave_occup times households on every observed row, so it is left out as a duplicate of that product.",
+    "housing_median_age is missing for 7.5% of training rows and 7.1% of test rows. Those values are filled from the other covariates (imputation RMSE on observed training rows 10.2; sd of housing_median_age 12.5). An indicator miss_housing_median_age is offered to the model.",
+    "ave_bedrooms is missing for 1.0% of training rows and 1.1% of test rows. Those values are filled from the other covariates (imputation RMSE on observed training rows 0.133; sd of ave_bedrooms 0.495). An indicator miss_ave_bedrooms is offered to the model.",
+    "The test rows differ from the training rows in covariate distribution (two-sample Kolmogorov-Smirnov p < 0.001 for: latitude (training median 34.26, test median 34.24); total_rooms (training median 2096, test median 2234); median_income (training median 3.375, test median 4.039); median_house_value (training median 1.731e+05, test median 2.054e+05); ave_rooms (training median 5.143, test median 5.484); ave_bedrooms (training median 1.051, test median 1.044)). The intervals assume the relation between covariates and y is the same for the test rows; coverage on the test rows is not measured.",
+    "The out-of-fold NLL was still falling at 1600 boosting steps, the end of the search grid.",
+    "The longitude and latitude effects are reported as one joint surface. Its 90% draw intervals are wide at the corners of the grid, where the training rows are sparse; use the surface values inside the training range.",
+    "Effect intervals and prediction calibration come from a REML refit of the selected terms and treat the selected terms as fixed. They do not include the uncertainty of the term selection, so the stated intervals are narrower than the uncertainty of the selection.",
+    "Associations describe how the data move together. They are not causal effects."
+  ]
+}

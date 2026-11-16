@@ -1,0 +1,44 @@
+{
+  "mu": "bbs(ave_occup__log, df=4.0) + bols(roof_class) + bbs(longitude, df=2.5, knots=5) + bbs(latitude, df=2.5, knots=5) + bbs(longitude, df=2.5, knots=5) %X% bbs(latitude, df=2.5, knots=5) + bbs(housing_median_age, df=2.5, knots=5) + bbs(median_income__log, df=2.5, knots=5) + bbs(housing_median_age, df=2.5, knots=5) %X% bbs(median_income__log, df=2.5, knots=5)",
+  "sigma": "bbs(households__log, df=4)",
+  "mstop": 3532,
+  "nu": 0.1,
+  "family": "GaussianLSS",
+  "na_action": "error",
+  "response": "y",
+  "id": "row_id",
+  "covariates": [
+    "longitude",
+    "latitude",
+    "housing_median_age",
+    "total_rooms",
+    "total_bedrooms",
+    "population",
+    "households",
+    "median_income",
+    "median_house_value",
+    "ave_rooms",
+    "ave_bedrooms",
+    "ave_occup",
+    "roof_class",
+    "housing_median_age_missing",
+    "total_bedrooms_missing",
+    "ave_bedrooms_missing"
+  ],
+  "fills": {
+    "housing_median_age": 29.0,
+    "total_bedrooms": 437.0,
+    "ave_bedrooms": 1.050611122174649
+  },
+  "log_cols": {
+    "total_rooms": "total_rooms__log",
+    "total_bedrooms": "total_bedrooms__log",
+    "population": "population__log",
+    "households": "households__log",
+    "median_income": "median_income__log",
+    "median_house_value": "median_house_value__log",
+    "ave_rooms": "ave_rooms__log",
+    "ave_bedrooms": "ave_bedrooms__log",
+    "ave_occup": "ave_occup__log"
+  }
+}

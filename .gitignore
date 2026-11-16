@@ -1,0 +1,113 @@
+# Rust build artifacts
+target/
+
+# Contributor / agent guide (kept locally, not in repo)
+AGENTS.md
+
+# Compiled object files
+*.o
+
+# Shared / dynamic libraries
+*.so
+*.dylib*
+*.dll
+
+# R installation metadata generated beside compiled objects
+mboostrs/src/symbols.rds
+
+# Python bytecode & caches
+*.pyc
+__pycache__/
+*.egg-info/
+*.egg
+*.whl
+dist/
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+venv/
+
+# AI agent working memory. The writing guide is contributor documentation;
+# the remaining session notes stay local.
+.remember/*
+!.remember/.gitignore
+!.remember/WRITING_STYLE_GUIDE.md
+.bob/
+/.roborev/
+.omo/
+
+# Jupyter virtual documents
+.virtual_documents/
+
+# R CMD check artifacts
+*.Rcheck/
+*.Rcheck/
+
+# R package generated files
+mboostrs/src/Makevars
+
+# Docs build
+docs/book/_build/
+_build/
+docs/book/exports/*.pdf
+# The notebook download bundle is built by build-html.sh beside the rendered
+# site and published with it. A tracked copy cost ~0.6 MB of new history on
+# every docs change, since zip content does not delta-compress.
+docs/book/exports/*.zip
+
+# npm / mermaid
+node_modules/
+chrome-headless-shell/
+
+# Linters / type-checkers
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+
+# Profiling
+perf.data*
+flamegraph.svg
+benches/results/
+.antigravitycli/
+restart.sh
+docs/book/exports/notebooks/
+.antigravitycli/
+
+# Agent worktrees (transient, created by subagents)
+.claude/worktrees/
+
+# Demo artifacts written by usage/plotting_serialization.ipynb and
+# usage/quickstart.ipynb when the book executes. Regenerated on every build
+# with different bytes, so tracking them dirties the tree after each run.
+docs/book/usage/risk_path.pdf
+docs/book/usage/risk_path.png
+docs/book/usage/quickstart_fit.json
+
+# Published third-party article supplements downloaded as inputs to the
+# commuting-zone study. The 61-page appendix to Chetty et al., "The Association
+# between Income and Life Expectancy in the United States, 2001-2014" (JAMA
+# 2016) is American Medical Association material, redistributable only on their
+# terms, and nothing in the repository reads it — the study uses the Health
+# Inequality Project's data tables, not the appendix. The second name is a 4KB
+# HTML error page a download saved under a .pdf extension.
+data/hp_02/jama_supplement.pdf
+studies/**/jama2016_online_supplement.pdf
+benches/.cache/
+.feynman/cache/
+catboost_info/
+
+# Raw per-draw benchmark run archives are assets of the GitHub release
+# benchmark-raw-archives-1, not tracked files. docs/book/benchmarks/raw_archives.json
+# lists each one with its size, SHA-256 and regenerating command (issue #812).
+docs/book/benchmarks/**/*.jsonl.xz
+docs/book/benchmarks/**/*.jsonl.gz

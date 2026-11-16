@@ -1,0 +1,179 @@
+{
+ "round1_test": {
+  "mboostrs point champion": {
+   "log_rmse": 0.7037632896214985,
+   "mae_log": 0.5571518312132996,
+   "rmse_orig": 76.61493737140952,
+   "log_score": -1.0733565008725152,
+   "coverage90": 0.8806142477773929,
+   "sigma_plug_in": 0.6536686902979811
+  },
+  "mboostrs LSS (LogNormalLSS)": {
+   "log_rmse": 0.7053732533880721,
+   "mae_log": 0.558105081741108,
+   "rmse_orig": 76.6092781100534,
+   "log_score": -1.079133012945476,
+   "coverage90": 0.8719547396374553,
+   "sigma_plug_in": null
+  },
+  "CatBoost": {
+   "log_rmse": 0.6302896208236428,
+   "mae_log": 0.4998545544824771,
+   "rmse_orig": 71.05484071478344,
+   "log_score": -0.9575205566246621,
+   "coverage90": 0.9063618519801409,
+   "sigma_plug_in": 0.6224523500739846
+  },
+  "LightGBM": {
+   "log_rmse": 0.6400455469893235,
+   "mae_log": 0.5069855389680703,
+   "rmse_orig": 68.9111327130575,
+   "log_score": -0.972941051693721,
+   "coverage90": 0.9113266366470385,
+   "sigma_plug_in": 0.649623388912743
+  },
+  "XGBoost": {
+   "log_rmse": 0.6367289099160426,
+   "mae_log": 0.5032028355099479,
+   "rmse_orig": 69.01096075835792,
+   "log_score": -0.9675279722622225,
+   "coverage90": 0.9075164530654659,
+   "sigma_plug_in": 0.6361703276634216
+  },
+  "EBM": {
+   "log_rmse": 0.666702320446428,
+   "mae_log": 0.528994879413813,
+   "rmse_orig": 71.96277215177093,
+   "log_score": -1.0147057676872222,
+   "coverage90": 0.9136358388176885,
+   "sigma_plug_in": 0.6902650972696246
+  },
+  "APLR": {
+   "log_rmse": 0.6348288095565622,
+   "mae_log": 0.4974363238702955,
+   "rmse_orig": 67.42174061925287,
+   "log_score": -0.9650671580097363,
+   "coverage90": 0.9008197667705807,
+   "sigma_plug_in": 0.6205091634913976
+  },
+  "Lasso": {
+   "log_rmse": 0.8634299624536642,
+   "mae_log": 0.6919710263352278,
+   "rmse_orig": 95.73123768244088,
+   "log_score": -1.29090460684719,
+   "coverage90": 0.8399722895739522,
+   "sigma_plug_in": 0.7573016531494614
+  },
+  "PyTorch MLP": {
+   "log_rmse": 0.6749594468696767,
+   "mae_log": 0.5365472912692055,
+   "rmse_orig": 79.28138518596074,
+   "log_score": -1.03187425339148,
+   "coverage90": 0.8698764576838702,
+   "sigma_plug_in": 0.6257227063179016
+  },
+  "dumb baseline (train mean)": {
+   "log_rmse": 1.034576273765696,
+   "mae_log": 0.846720812012348,
+   "rmse_orig": 99.65312822065229,
+   "log_score": -1.4539812777274215,
+   "coverage90": 0.8768040641958204,
+   "sigma_plug_in": 1.0019242794151233
+  }
+ },
+ "round1_fit_times": {
+  "catboost": 1.9650886058807373,
+  "lightgbm": 0.8883240222930908,
+  "xgboost": 6.905516147613525,
+  "mboostrs_point": 2.280097007751465,
+  "mboostrs_lss": 79.25984358787537,
+  "lasso": 0.7787284851074219,
+  "dumb_baseline": 6.508827209472656e-05,
+  "mlp": 763.6102628707886,
+  "ebm": 1793.7355654239655,
+  "aplr": 876.6327712059021
+ },
+ "mboostrs_progression": {
+  "round1": 0.7038,
+  "round2": 0.6959,
+  "round3": 0.689
+ },
+ "round3_variants": {
+  "A0_baseline": {
+   "formula": "logpm ~ bbs(hour, cyclic=True, df=12) + bbs(DEWP, df=4) + btree(month, maxdepth=3) + bbs(TEMP, df=4) + bbs(PRES, df=3) + btree(Iws, maxdepth=2) + bols(Is) + bols(Ir) + bols(cbwd_NE) + bols(cbwd_NW) + bols(cbwd_SE) + bbs(TEMP, by=cbwd_NW, df=4)",
+   "mstop": 2500,
+   "extrapolation": "clip",
+   "tune_rmse": 0.6474809796379822,
+   "test_rmse": 0.6959172117736024,
+   "tune_test_gap": 0.048436232135620205,
+   "fit_seconds": 22.0
+  },
+  "A_year_bols": {
+   "formula": "logpm ~ bbs(hour, cyclic=True, df=12) + bbs(DEWP, df=4) + btree(month, maxdepth=3) + bbs(TEMP, df=4) + bbs(PRES, df=3) + btree(Iws, maxdepth=2) + bols(Is) + bols(Ir) + bols(cbwd_NE) + bols(cbwd_NW) + bols(cbwd_SE) + bbs(TEMP, by=cbwd_NW, df=4) + bols(year)",
+   "mstop": 1000,
+   "extrapolation": "allow",
+   "tune_rmse": 0.6831135079095529,
+   "test_rmse": 0.732151804458182,
+   "tune_test_gap": 0.04903829654862901,
+   "fit_seconds": 22.2
+  },
+  "A_year_bbs": {
+   "formula": "logpm ~ bbs(hour, cyclic=True, df=12) + bbs(DEWP, df=4) + btree(month, maxdepth=3) + bbs(TEMP, df=4) + bbs(PRES, df=3) + btree(Iws, maxdepth=2) + bols(Is) + bols(Ir) + bols(cbwd_NE) + bols(cbwd_NW) + bols(cbwd_SE) + bbs(TEMP, by=cbwd_NW, df=4) + bbs(year, df=2)",
+   "mstop": 1000,
+   "extrapolation": "allow",
+   "tune_rmse": 0.6831146950368464,
+   "test_rmse": 0.7321534756865861,
+   "tune_test_gap": 0.049038780649739655,
+   "fit_seconds": 23.5
+  },
+  "B_DEWPxTEMP": {
+   "formula": "logpm ~ bbs(hour, cyclic=True, df=12) + bbs(DEWP, df=4) + btree(month, maxdepth=3) + bbs(TEMP, df=4) + bbs(PRES, df=3) + btree(Iws, maxdepth=2) + bols(Is) + bols(Ir) + bols(cbwd_NE) + bols(cbwd_NW) + bols(cbwd_SE) + bbs(TEMP, by=cbwd_NW, df=4) + btree(DEWP, TEMP, maxdepth=2)",
+   "mstop": 2500,
+   "extrapolation": "clip",
+   "tune_rmse": 0.6542189291817725,
+   "test_rmse": 0.6971215074601375,
+   "tune_test_gap": 0.04290257827836497,
+   "fit_seconds": 33.9
+  },
+  "B_DEWPxmonth": {
+   "formula": "logpm ~ bbs(hour, cyclic=True, df=12) + bbs(DEWP, df=4) + btree(month, maxdepth=3) + bbs(TEMP, df=4) + bbs(PRES, df=3) + btree(Iws, maxdepth=2) + bols(Is) + bols(Ir) + bols(cbwd_NE) + bols(cbwd_NW) + bols(cbwd_SE) + bbs(TEMP, by=cbwd_NW, df=4) + btree(DEWP, month, maxdepth=2)",
+   "mstop": 2000,
+   "extrapolation": "clip",
+   "tune_rmse": 0.6582176032724116,
+   "test_rmse": 0.6877793031352493,
+   "tune_test_gap": 0.02956169986283763,
+   "fit_seconds": 31.6
+  },
+  "B_TEMPxPRES": {
+   "formula": "logpm ~ bbs(hour, cyclic=True, df=12) + bbs(DEWP, df=4) + btree(month, maxdepth=3) + bbs(TEMP, df=4) + bbs(PRES, df=3) + btree(Iws, maxdepth=2) + bols(Is) + bols(Ir) + bols(cbwd_NE) + bols(cbwd_NW) + bols(cbwd_SE) + bbs(TEMP, by=cbwd_NW, df=4) + btree(TEMP, PRES, maxdepth=2)",
+   "mstop": 1500,
+   "extrapolation": "clip",
+   "tune_rmse": 0.6561261934522704,
+   "test_rmse": 0.6990043323707164,
+   "tune_test_gap": 0.04287813891844594,
+   "fit_seconds": 32.0
+  },
+  "B_TEMPxIws": {
+   "formula": "logpm ~ bbs(hour, cyclic=True, df=12) + bbs(DEWP, df=4) + btree(month, maxdepth=3) + bbs(TEMP, df=4) + bbs(PRES, df=3) + btree(Iws, maxdepth=2) + bols(Is) + bols(Ir) + bols(cbwd_NE) + bols(cbwd_NW) + bols(cbwd_SE) + bbs(TEMP, by=cbwd_NW, df=4) + btree(TEMP, Iws, maxdepth=2)",
+   "mstop": 2000,
+   "extrapolation": "clip",
+   "tune_rmse": 0.6413570316771908,
+   "test_rmse": 0.6890038500069335,
+   "tune_test_gap": 0.04764681832974271,
+   "fit_seconds": 32.3
+  },
+  "B_DEWPxPRES": {
+   "formula": "logpm ~ bbs(hour, cyclic=True, df=12) + bbs(DEWP, df=4) + btree(month, maxdepth=3) + bbs(TEMP, df=4) + bbs(PRES, df=3) + btree(Iws, maxdepth=2) + bols(Is) + bols(Ir) + bols(cbwd_NE) + bols(cbwd_NW) + bols(cbwd_SE) + bbs(TEMP, by=cbwd_NW, df=4) + btree(TEMP, Iws, maxdepth=2) + btree(DEWP, PRES, maxdepth=2)",
+   "mstop": 1500,
+   "extrapolation": "clip",
+   "tune_rmse": 0.653172017996101,
+   "test_rmse": 0.6849806912538546,
+   "tune_test_gap": 0.031808673257753606,
+   "fit_seconds": 43.9
+  }
+ },
+ "lss_const_scale": {
+  "log_score": -1.0636,
+  "coverage90": 0.88
+ }
+}

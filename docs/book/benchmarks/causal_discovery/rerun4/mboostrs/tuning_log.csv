@@ -1,0 +1,24 @@
+config_id,stage,settings,estimate,lower90,upper90,validation_metric,validation_value,kept,note
+T01,ATE nuisance search,smooth=True; propensity_learner=smooth; tune=True; mstop=200; all 8 covariates; outcome_model=auto,5855.28,4633.37,7077.18,out-of-fold propensity deviance (smooth),0.928734,no,superseded by T03: the auto rule finds a lower deviance for smooth+trees
+T02,ATE nuisance search,smooth=False; propensity_learner=smooth; tune=True; mstop=200; all 8 covariates,5855.28,4633.37,7077.18,not recorded,,no,same estimate as T01 to 0.01 dollars; see FRICTION.md on the smooth flag
+T03,ATE nuisance search,smooth=True; propensity_learner=auto; tune=True; mstop=200; all 8 covariates,5897.51,4659.20,7135.82,out-of-fold propensity deviance (smooth vs smooth+trees),0.928734 vs 0.909132,no,tuned reference pass; its median step count (325) sets the fixed count of the final fit
+T04,outcome model,smooth=True; propensity_learner=smooth; tune=True; outcome_model=separate,6395.10,5047.50,7742.70,none,,no,reported as sensitivity; the library auto rule chose two_part (zero earnings and a flagged sparse arm)
+T05,estimand target,target=overlap; propensity_learner=smooth; tune=True,4126.50,3578.60,4674.30,none,,no,"overlap-weighted effect, a different quantity from the ATE"
+T06,covariate set,"confounders only (age, education, prior_earnings, months_unemployed); tune=True",5947.50,4802.90,7092.20,none,,no,drops the treatment-only and outcome-only columns; the final set keeps every column that is neither an instrument nor irrelevant
+T07,nuisance step count,tune=True; max_mstop=3200; propensity_learner=auto,5880.38,4649.48,7111.27,none,,no,log-outcome nuisance still falling at 3200 steps; estimate moved 0.3 percent
+T08,nuisance step count,tune=False; mstop=200; propensity_learner=auto,5711.50,4617.80,6805.20,none,,no,tuned pass had 1600 or more steps in 4 of 5 folds for the log-outcome nuisance
+T09,nuisance step count,tune=False; mstop=325; propensity_learner=smooth; smooth=True,6028.44,not recorded,not recorded,none,,no,propensity_learner=auto was kept
+T10,nuisance step count,tune=False; mstop=325; propensity_learner=auto; smooth=True,5840.75,4664.25,7017.25,none,,yes,final ATE; the same setting is in refit.py
+T11,nuisance step count,tune=False; mstop=400; propensity_learner=auto,5849.00,4641.20,7056.70,none,,no,within 0.2 percent of T10
+T12,nuisance step count,tune=False; mstop=800; propensity_learner=auto,5916.90,4646.90,7186.80,none,,no,within 1.3 percent of T10
+T13,ATT,estimand=att; tune=True; propensity_learner=smooth,3724.40,3254.50,4194.30,none,,no,superseded by T14
+T14,ATT,estimand=att; tune=False; mstop=325; propensity_learner=auto,3714.23,3246.81,4181.66,none,,yes,final ATT
+T15,employment ATE,outcome=employed (binary); tune=True; propensity_learner=auto,0.1046,0.0883,0.1208,none,,no,superseded by T16
+T16,employment ATE,outcome=employed (binary); tune=False; mstop=325; propensity_learner=auto,0.1048,0.0888,0.1208,none,,yes,final EMP_ATE
+T17,individual effects,effect_model terms=smooth; modifiers = all 8 covariates,,,,R-learner loss gain over constant effect (SE),-38154 (SE 196333),no,"the constant effect does not lose by more than its SE, so no reliable heterogeneity"
+T18,individual effects,"effect_model terms=smooth; modifiers = age, education, parttime, prior_earnings, months_unemployed",,,,R-learner loss gain over constant effect (SE),78812 (SE 180680),no,not beyond its SE
+T19,individual effects,"effect_model terms=smooth; modifiers = education, prior_earnings (raw BLP p < 0.05 on dev data)",,,,R-learner loss gain over constant effect (SE),152201 (SE 157664),yes,"final individual-effect model; the gain is still under one SE, so per-applicant differences have weak support"
+T20,channel: log earnings among employed,gamboost log(earnings_post) on employed respondents; mstop=300; nu=0.1; bols(enrolled),0.1052,not computed,not computed,none,,no,boosting shrinks the coefficient; the REML refit of the same selected terms is used
+T21,channel: log earnings among employed,gam_refit of T20 model; posterior SD of the enrolled coefficient,0.1448,0.1237,0.1660,posterior SD,0.0108,yes,final earnings_if_employed channel
+T22,role rule,association threshold ALPHA=0.01,,,,roles changed,education = outcome_only (p_treatment 0.0143),no,education has a treatment association at 0.05 and an outcome association at p < 1e-36
+T23,role rule,association threshold ALPHA=0.05,,,,roles,education = confounder,yes,final role rule

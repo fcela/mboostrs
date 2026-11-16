@@ -1,0 +1,128 @@
+{
+  "mboostrs": {
+    "D2": {
+      "score": 4.0,
+      "evidence": "Report opens 'These are associations, not causal effects' and answers the surcharge question with a held-out comparison. The library ships confounding_sensitivity, negative_control, aipw and causal_trap_report (anchor 4: built-in sensitivity checks); the agent guide tells the agent to say 'moves with', not 'drives'. No experimental-design support (anchor 5)."
+    },
+    "D3": {
+      "score": 4.5,
+      "evidence": "Report states all 8 key facts, including the direction of the age x income interaction (age effect +0.51 at low income vs +0.24 at high), each with an out-of-fold comparison and an interval, then limits and next checks. Library outputs (term_report earns/se, compare_specifications change se, REML refit draws) were reportable nearly verbatim. Half a point off: the location contrast Q6 (+0.38, interval +0.35 to +0.42) misses the true +0.45 and the report calls confidence high."
+    },
+    "D7": {
+      "score": 3.5,
+      "evidence": "FRICTION.md: of 3 errors met, 1 named a fix (NaN: 'drop or impute') but not the built-in na_action='impute'; 1 was misleading (gamlss_refit string levels, suggesting unseen_levels='zero_effect', which would have removed the roof effect); risk() gave numpy's 'object is not callable'. Warnings from tune_mstop, cvrisk and extrapolation named the next step. Executable case studies exist (anchor 4) but the analyst never opened them."
+    },
+    "D8": {
+      "score": 3.5,
+      "evidence": "A Haiku agent with no prior knowledge of the library learned it from agent_guide() and the package source and delivered every item; the shipped skill is a documented agent contract (anchor 4). But the demonstration fell short: it spent the most tokens of the seven (459k), hand-wrote imputation because the guide did not mention na_action='impute', recoded roof_class to integers to dodge a refit bug, never ran its pipeline on data with no signal (the other six analysts did), and its pipeline crashed on both null replicates and timed out on one full replicate. The run was also interrupted once by the coordinator (not the library) and resumed with a 'continue' message."
+    }
+  },
+  "xgboost": {
+    "D2": {
+      "score": 2.0,
+      "evidence": "Report: 'These are associations within this book, not causal effects.' The library itself is neutral: no adjustment or sensitivity tools, and its importance outputs carry no causal caveat (anchor 2)."
+    },
+    "D3": {
+      "score": 3.0,
+      "evidence": "Report states 8 key facts but also lists median_house_value as an associated covariate ('small decrease'), a false statement; the age x income direction was not characterised. The library supplies gain importances and SHAP-style contributions; partial dependence, permutation tests and every interval were written by the analyst (FRICTION item 3). Dataset-level summaries had to be built, so anchor 3 at most."
+    },
+    "D7": {
+      "score": 3.0,
+      "evidence": "One error met: 'Constrained features are not a subset of training data feature names' (with KeyError: 0) when constraints were integer indices; no fix given. Mature documentation, but no discovery workflow to follow."
+    },
+    "D8": {
+      "score": 3.0,
+      "evidence": "The agent completed every deliverable it could write (report and friction files were refused by the harness, not the library). Outputs are arrays and dicts (structured), but interaction output is an unlabeled (n, p+1, p+1) array; no agent contract (anchor 4)."
+    }
+  },
+  "lightgbm": {
+    "D2": {
+      "score": 2.0,
+      "evidence": "Report: 'These are associations with the simulated outcome, not causal effects.' Library neutral, no adjustment tools."
+    },
+    "D3": {
+      "score": 3.0,
+      "evidence": "Report states 7 of 8 key facts cleanly: spread is attributed to a cluster of four counts rather than households, and nine further interaction pairs are reported as weak evidence. No library summaries beyond gain importance; everything else hand-written (FRICTION item 7)."
+    },
+    "D7": {
+      "score": 2.5,
+      "evidence": "A Polars String column aborts the process ('[LightGBM] [Fatal] Unsupported Arrow type: string_view', uncatchable); lgb.cv defaults to stratified folds and fails on a continuous target without naming the fix; an invalid interaction-constraint index is accepted silently."
+    },
+    "D8": {
+      "score": 2.5,
+      "evidence": "Completed every deliverable. An uncatchable process abort on a common input type is hostile to an unattended agent; metric keys in cv results depend on the metric name; no agent contract."
+    }
+  },
+  "catboost": {
+    "D2": {
+      "score": 2.0,
+      "evidence": "Report: 'The data cannot establish causal effects.' Library neutral."
+    },
+    "D3": {
+      "score": 3.0,
+      "evidence": "Report states 7 of 8 key facts: the age x income interaction was found borderline (t 2.9 against a cut of 3.0) and not claimed. Native partial dependence covers float features only and needs plotly; permutation tests and intervals were hand-written (FRICTION items 7, 8, 10)."
+    },
+    "D7": {
+      "score": 2.5,
+      "evidence": "Four errors met, none told the fix: an undeclared string column, a missing prediction column reported as 'cat_features[0] = 12 value: index must be < 12', a C++ 'Out of range treeEnd', and nulls in a categorical column behind a C++ backtrace. Writes catboost_info/ silently."
+    },
+    "D8": {
+      "score": 3.0,
+      "evidence": "Completed every deliverable it could write (report refused by the harness). Polars input accepted directly; per-tree evaluation curves are structured; no agent contract."
+    }
+  },
+  "ebm": {
+    "D2": {
+      "score": 2.0,
+      "evidence": "Report lists 'causal effects' first among what the data cannot tell. InterpretML's glassbox models carry no adjustment or sensitivity tools (anchor 2)."
+    },
+    "D3": {
+      "score": 3.5,
+      "evidence": "Report states 7 of 8 key facts plus a false roof x age interaction, and lists three proxies of households beside it as spread drivers. EBM's shape functions are faithful global summaries of the fitted model (anchor 3), with bag-to-bag standard deviations; tests and intervals were the analyst's own (FRICTION items 7, 8)."
+    },
+    "D7": {
+      "score": 3.0,
+      "evidence": "The missing-value warning gives a partial fix; 'illegal sample_weight value of zero' gives none; the default interactions='5x' silently adds 65 pair terms; validation_size=0 ran to 650,000 iterations without a message. Visual dashboards serve a human reader well."
+    },
+    "D8": {
+      "score": 3.0,
+      "evidence": "Completed every deliverable it could write (report and friction files refused). term_scores_ and bins_ are structured but index-misaligned (an IndexError from mapping one onto the other); predict_with_uncertainty returns the spread of the bagged mean, not a predictive spread, which an agent cannot tell from the name."
+    }
+  },
+  "pygam": {
+    "D2": {
+      "score": 2.0,
+      "evidence": "Report: the missingness fill and test shift are flagged; causal language is avoided. Library neutral, no adjustment tools."
+    },
+    "D3": {
+      "score": 3.5,
+      "evidence": "Report states all 8 key facts, with the interaction direction (income slope steeper for older stock), and corrects its own pipeline's 'inverted_u' age label in prose. pyGAM supplies partial dependence with confidence bands (anchor 3), but its summary p-values carry a 'KNOWN BUG' warning, so tests had to be cross-validated by hand."
+    },
+    "D7": {
+      "score": 2.5,
+      "evidence": "The p-value warning is candid but leaves no inference route; PIRLS divergence suggests a fix; the Gamma 'deviance' statistic is silently a Pearson-type term; term and feature indices differ in partial_dependence, which led to mislabelled curves in a first pass."
+    },
+    "D8": {
+      "score": 2.5,
+      "evidence": "Completed every deliverable it could write (report refused). summary() prints text; no location-scale model, so the spread had to be modelled with a second GAM on log residuals; no agent contract."
+    }
+  },
+  "statsmodels": {
+    "D2": {
+      "score": 3.0,
+      "evidence": "Report: 'conditional correlations in one data set, not the effects of changing a block group's properties.' statsmodels supports adjustment workflows (regression adjustment; statsmodels.treatment.TreatmentEffect with ipw, ra, aipw), anchor 3; no built-in sensitivity analysis for unmeasured confounding."
+    },
+    "D3": {
+      "score": 4.0,
+      "evidence": "Report states all 8 key facts with test statistics and the interaction direction (income gradient -0.52 at age 13 vs -0.78 at age 46). Result objects carry tests and confidence intervals that are reportable nearly verbatim (anchor 4). The spatial surface and splines were assembled by hand."
+    },
+    "D7": {
+      "score": 3.0,
+      "evidence": "patsy bs() raises 'NotImplementedError: some data points fall outside the outermost knots ... (Patches accepted!)' with no fix; SingularMatrixWarning and the condition-number note do not name columns. Extensive reference documentation."
+    },
+    "D8": {
+      "score": 3.0,
+      "evidence": "Completed every deliverable it could write (report refused). Structured result objects (params, bse, tests); the default OLS solver was too slow for a selection loop and the analyst re-derived least squares from cross products to stay within budget; no agent contract."
+    }
+  }
+}

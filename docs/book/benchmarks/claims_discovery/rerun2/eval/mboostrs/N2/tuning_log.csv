@@ -1,0 +1,24 @@
+stage,configuration,settings,validation_score,change_vs_reference,change_se,kept,reason
+spread round 1,"mu: 1...; sigma: bbs(longitude, df=4)","GaussianLSS, 5-fold, mstop=800, seed=1",0.6024579530152627,0.0014477031776620741,0.000664736226568143,False,not adopted
+spread round 1,"mu: 1...; sigma: bbs(latitude, df=4)","GaussianLSS, 5-fold, mstop=800, seed=1",0.6035632811679719,0.0025530313303712138,0.0013133624900882658,False,not adopted
+spread round 1,"mu: 1...; sigma: bbs(housing_median_age, df=4)","GaussianLSS, 5-fold, mstop=800, seed=1",0.6021718790432312,0.0011616292056305655,0.0008041503030223697,False,not adopted
+spread round 1,"mu: 1...; sigma: bbs(total_rooms__log, df=4)","GaussianLSS, 5-fold, mstop=800, seed=1",0.6025568341804872,0.00154658434288657,0.0010061946887305062,False,not adopted
+spread round 1,"mu: 1...; sigma: bbs(total_bedrooms__log, df=4)","GaussianLSS, 5-fold, mstop=800, seed=1",0.6019315485159338,0.0009212986783331267,0.0003184019251060462,False,not adopted
+spread round 1,"mu: 1...; sigma: bbs(population__log, df=4)","GaussianLSS, 5-fold, mstop=800, seed=1",0.6023657415497553,0.001355491712154655,0.00032520122145434066,False,not adopted
+spread round 1,"mu: 1...; sigma: bbs(households__log, df=4)","GaussianLSS, 5-fold, mstop=800, seed=1",0.6023463408065145,0.00133609096891385,0.000499124292333185,False,not adopted
+spread round 1,"mu: 1...; sigma: bbs(median_income__log, df=4)","GaussianLSS, 5-fold, mstop=800, seed=1",0.601701377053794,0.0006911272161933546,0.0003786144329288512,False,not adopted
+spread round 1,"mu: 1...; sigma: bbs(median_house_value__log, df=4)","GaussianLSS, 5-fold, mstop=800, seed=1",0.6012591903980237,0.0002489405604230166,0.0003567707311708925,False,not adopted
+spread round 1,"mu: 1...; sigma: bbs(ave_rooms__log, df=4)","GaussianLSS, 5-fold, mstop=800, seed=1",0.6026016044887442,0.0015913546511435728,0.0006697464436500784,False,not adopted
+spread round 1,"mu: 1...; sigma: bbs(ave_bedrooms__log, df=4)","GaussianLSS, 5-fold, mstop=800, seed=1",0.6017000744277021,0.0006898245901014732,0.0005732336164340453,False,not adopted
+spread round 1,"mu: 1...; sigma: bbs(ave_occup__log, df=4)","GaussianLSS, 5-fold, mstop=800, seed=1",0.613910297101065,0.012900047263464387,0.012608199652060403,False,not adopted
+spread round 1,mu: 1...; sigma: bols(roof_class),"GaussianLSS, 5-fold, mstop=800, seed=1",0.6011857638296915,0.00017551399209081442,0.00013266669402414084,False,not adopted
+spread round 1,mu: 1...; sigma: bols(housing_median_age_missing),"GaussianLSS, 5-fold, mstop=800, seed=1",0.6012071549220355,0.00019690508443481747,0.00016069053106276942,False,not adopted
+spread round 1,mu: 1...; sigma: bols(total_bedrooms_missing),"GaussianLSS, 5-fold, mstop=800, seed=1",0.6010206240873918,1.03742497911119e-05,7.609098603229305e-05,False,not adopted
+spread round 1,mu: 1...; sigma: bols(ave_bedrooms_missing),"GaussianLSS, 5-fold, mstop=800, seed=1",0.6010206240873918,1.03742497911119e-05,7.609098603229305e-05,False,not adopted
+mean check C: additions,"add bbs(households__log, df=4)","GaussianLSS, 5-fold, mstop=800, seed=1",0.6010102498376007,0.0003357507288987982,0.00018742070579353578,False,not added
+mean check C: additions,"add bbs(population__log, df=4)","GaussianLSS, 5-fold, mstop=800, seed=1",0.6010102498376007,0.0003340450673556816,0.00023031537826748313,False,not added
+mean check C: additions,"add bbs(total_rooms__log, df=4)","GaussianLSS, 5-fold, mstop=800, seed=1",0.6010102498376007,0.0004615104961830374,0.0001910495302990402,False,not added
+mean check C: additions,"add bbs(median_house_value__log, df=4)","GaussianLSS, 5-fold, mstop=800, seed=1",0.6010102498376007,0.0003071072318250323,0.00020215682902354254,False,not added
+mean check C: additions,"add bbs(ave_rooms__log, df=4)","GaussianLSS, 5-fold, mstop=800, seed=1",0.6010102498376007,0.0002161252830067406,0.00024462940742683154,False,not added
+mean check C: additions,"add bbs(total_bedrooms__log, df=4)","GaussianLSS, 5-fold, mstop=800, seed=1",0.6010102498376007,0.0004204401537054592,0.0002583786595138413,False,not added
+final mstop tuning,mu: 1...; sigma: 1,"GaussianLSS, 5-fold, nu=0.1, max_mstop=5000, seed=1",,,,True,mstop=1

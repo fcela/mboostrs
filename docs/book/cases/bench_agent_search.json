@@ -1,0 +1,1259 @@
+{
+ "created_at": "2026-09-25T06:59:12+00:00",
+ "commit": "3f8d272d4b323ec1b6c67a4e46b32602c8eb1b8e",
+ "working_tree": {
+  "dirty": true,
+  "status_digest": "sha256:0bbb2523eae3d6d646c9cedeeddf29fd1726a2273ad3aeecca660fcc9e7b0a3c"
+ },
+ "platform": {
+  "system": "Darwin",
+  "release": "25.3.0",
+  "machine": "arm64",
+  "cpu": "arm",
+  "python": "3.12.11"
+ },
+ "versions": {
+  "mboostrs": "0.1.3",
+  "numpy": "2.4.6",
+  "rpy2": "3.6.7",
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "R": "4.5.1",
+  "mboost": "2.9.11"
+ },
+ "threads": {
+  "logical_cpus": 10,
+  "r_mclapply_default_cores": "2",
+  "RAYON_NUM_THREADS": null,
+  "OMP_NUM_THREADS": null,
+  "OPENBLAS_NUM_THREADS": null,
+  "MKL_NUM_THREADS": null
+ },
+ "protocol": {
+  "budget": 250,
+  "max_rounds": 4,
+  "train_seed": 11,
+  "test_rows": 4000,
+  "acceptance": "a change that lowers the out-of-fold risk by more than two paired fold standard errors; otherwise a removal whose cost is within two standard errors"
+ },
+ "repeats": 1,
+ "uncertainty": {
+  "per_change": "each accepted change records the paired fold standard error of its difference in risk (results[].steps[].se)",
+  "across_draws": "not measured: one training draw per process"
+ },
+ "results": [
+  {
+   "scenario": "notebook",
+   "description": "sine, threshold and a product interaction, 40 group intercepts",
+   "notes": "",
+   "rows": 1200,
+   "final": "bbs(x1, df=4.0) + btree(x2) + brandom(g, df=4.0) + bbs(x1, df=2.5, knots=5) %X% bbs(x4, df=2.5, knots=5)",
+   "family": "Gaussian",
+   "family_ok": true,
+   "mstop": 2152,
+   "signal": [
+    "x1",
+    "x2"
+   ],
+   "signal_found": [
+    "x1",
+    "x2"
+   ],
+   "pairs": [
+    [
+     "x1",
+     "x4"
+    ]
+   ],
+   "pairs_found": [
+    [
+     "x1",
+     "x4"
+    ]
+   ],
+   "extra_pairs": [],
+   "groups": [
+    "g"
+   ],
+   "groups_found": [
+    "g"
+   ],
+   "noise": 5,
+   "noise_in_formula": [],
+   "noise_selected": [],
+   "test_mse": 1.827030668045002,
+   "floor_mse": 1.7892383439997215,
+   "excess": 0.021122017741246335,
+   "seconds": 9.4,
+   "steps": [
+    {
+     "step": "autospec",
+     "formula": "y ~ bbs(x1, df=4.0) + btree(x2) + brandom(g, df=4.0)",
+     "family": "Gaussian",
+     "mstop": 724,
+     "groups": [
+      "g"
+     ],
+     "folds": "5 grouped folds holding whole groups of g out (declare folds= for another design)",
+     "priority": [
+      "structure: x1 x x4 removes 0.408 of the residual the additive terms leave \u2014 additive terms cannot recover it at any mstop; add bbs(x1, df=2.5, knots=5) %X% bbs(x4, df=2.5, knots=5) to test it held out",
+      "shape: x2: btree over bbs: btree 3.1153, bbs 3.1578, bols 3.3187 \u2014 1.3% less held-out risk, 2.1 paired fold standard errors"
+     ],
+     "fits": 49
+    },
+    {
+     "step": "accept",
+     "round": 0,
+     "change": "add bbs(x1, df=2.5, knots=5) %X% bbs(x4, df=2.5, knots=5)",
+     "delta": -0.79885,
+     "se": 0.11246,
+     "fits": 130
+    },
+    {
+     "step": "final",
+     "spec": "bbs(x1, df=4.0) + btree(x2) + brandom(g, df=4.0) + bbs(x1, df=2.5, knots=5) %X% bbs(x4, df=2.5, knots=5)",
+     "mstop": 2152,
+     "sentence": "the risk was still falling at 724, so the grid was extended to 2896; the cross-validated risk turns at 2152 of 2896 iterations tried",
+     "fits": 186
+    }
+   ]
+  },
+  {
+   "scenario": "negbin_sites",
+   "description": "overdispersed counts across 25 sites",
+   "notes": "",
+   "rows": 1500,
+   "final": "bbs(a, df=4.0) + bbs(b, df=4.0)",
+   "family": "NBinomial",
+   "family_ok": true,
+   "mstop": 115,
+   "signal": [
+    "a",
+    "b"
+   ],
+   "signal_found": [
+    "a",
+    "b"
+   ],
+   "pairs": [],
+   "pairs_found": [],
+   "extra_pairs": [],
+   "groups": [
+    "site"
+   ],
+   "groups_found": [],
+   "noise": 3,
+   "noise_in_formula": [],
+   "noise_selected": [],
+   "test_mse": 26.31177243863991,
+   "floor_mse": 26.88000038395339,
+   "excess": -0.021139432187385565,
+   "seconds": 10.7,
+   "steps": [
+    {
+     "step": "autospec",
+     "formula": "y ~ bbs(a, df=4.0) + bbs(b, df=4.0) + brandom(site, df=4.0)",
+     "family": "NBinomial",
+     "mstop": 106,
+     "groups": [
+      "site"
+     ],
+     "folds": "5 grouped folds holding whole groups of site out (declare folds= for another design)",
+     "priority": [
+      "family: held-out Pearson dispersion 4.73: the counts are more spread than a Poisson mean allows, so NBinomial carries the extra variance",
+      "structure: a x e removes 0.508 of the residual the additive terms leave \u2014 additive terms cannot recover it at any mstop; add bbs(a, df=2.5, knots=5) %X% bbs(e, df=2.5, knots=5) to test it held out"
+     ],
+     "fits": 38
+    },
+    {
+     "step": "accept",
+     "round": 0,
+     "change": "drop brandom(site, df=4.0)",
+     "delta": -0.01087,
+     "se": 0.00478,
+     "fits": 139
+    },
+    {
+     "step": "final",
+     "spec": "bbs(a, df=4.0) + bbs(b, df=4.0)",
+     "mstop": 115,
+     "sentence": "the cross-validated risk turns at 115 of 200 iterations tried",
+     "fits": 180
+    }
+   ]
+  },
+  {
+   "scenario": "varying_binary",
+   "description": "a slope that changes sign with a binary column; spread grows with w",
+   "notes": "",
+   "rows": 1200,
+   "final": "bbs(x, df=4.0) + bbs(w, df=4.0) + bbs(x, by=grp)",
+   "family": "Gaussian",
+   "family_ok": true,
+   "mstop": 200,
+   "signal": [
+    "x",
+    "w"
+   ],
+   "signal_found": [
+    "w",
+    "x"
+   ],
+   "pairs": [
+    [
+     "grp",
+     "x"
+    ]
+   ],
+   "pairs_found": [
+    [
+     "grp",
+     "x"
+    ]
+   ],
+   "extra_pairs": [],
+   "groups": [],
+   "groups_found": [],
+   "noise": 2,
+   "noise_in_formula": [],
+   "noise_selected": [],
+   "test_mse": 2.619235721611969,
+   "floor_mse": 2.586289101001577,
+   "excess": 0.012738955052485457,
+   "seconds": 0.5,
+   "steps": [
+    {
+     "step": "autospec",
+     "formula": "y ~ bbs(x, df=4.0) + bbs(w, df=4.0)",
+     "family": "Gaussian",
+     "mstop": 77,
+     "groups": [],
+     "folds": "5 random folds (rows, not groups, are held out)",
+     "priority": [
+      "structure: x x grp removes 0.734 of the residual the additive terms leave \u2014 additive terms cannot recover it at any mstop; add bbs(x, by=grp) to test it held out"
+     ],
+     "fits": 30
+    },
+    {
+     "step": "distributional-flag",
+     "round": 0
+    },
+    {
+     "step": "accept",
+     "round": 0,
+     "change": "add bbs(x, by=grp)",
+     "delta": -0.94284,
+     "se": 0.05011,
+     "fits": 91
+    },
+    {
+     "step": "distributional-flag",
+     "round": 1
+    },
+    {
+     "step": "final",
+     "spec": "bbs(x, df=4.0) + bbs(w, df=4.0) + bbs(x, by=grp)",
+     "mstop": 200,
+     "sentence": "the risk was still falling at 200, so the grid was extended to 400; the cross-validated risk turns at 200 of 400 iterations tried",
+     "fits": 122
+    }
+   ]
+  },
+  {
+   "scenario": "random_slopes",
+   "description": "30 clinics with random intercepts and random slopes",
+   "notes": "a new clinic's slope cannot be predicted, so grouped folds cannot credit the slope term",
+   "rows": 1500,
+   "final": "bbs(x, df=4.0) + bbs(z, df=4.0) + brandom(clinic, df=4.0)",
+   "family": "Gaussian",
+   "family_ok": true,
+   "mstop": 301,
+   "signal": [
+    "x",
+    "z"
+   ],
+   "signal_found": [
+    "x",
+    "z"
+   ],
+   "pairs": [
+    [
+     "clinic",
+     "x"
+    ]
+   ],
+   "pairs_found": [],
+   "extra_pairs": [],
+   "groups": [
+    "clinic"
+   ],
+   "groups_found": [
+    "clinic"
+   ],
+   "noise": 2,
+   "noise_in_formula": [],
+   "noise_selected": [],
+   "test_mse": 1.8388321571301056,
+   "floor_mse": 1.8419866155799187,
+   "excess": -0.0017125306031715581,
+   "seconds": 1.6,
+   "steps": [
+    {
+     "step": "autospec",
+     "formula": "y ~ bbs(x, df=4.0) + bbs(z, df=4.0) + brandom(clinic, df=4.0)",
+     "family": "Gaussian",
+     "mstop": 301,
+     "groups": [
+      "clinic"
+     ],
+     "folds": "5 grouped folds holding whole groups of clinic out (declare folds= for another design)",
+     "priority": [
+      "structure: x x clinic removes 0.837 of the residual the additive terms leave \u2014 additive terms cannot recover it at any mstop; add brandom(clinic, by=x) to test it held out"
+     ],
+     "fits": 37
+    },
+    {
+     "step": "distributional-flag",
+     "round": 0
+    },
+    {
+     "step": "final",
+     "spec": "bbs(x, df=4.0) + bbs(z, df=4.0) + brandom(clinic, df=4.0)",
+     "mstop": 301,
+     "sentence": "the risk was still falling at 301, so the grid was extended to 602; the cross-validated risk turns at 301 of 602 iterations tried",
+     "fits": 128
+    }
+   ]
+  },
+  {
+   "scenario": "many_noise",
+   "description": "3 signals among 30 columns",
+   "notes": "",
+   "rows": 600,
+   "final": "bols(v00) + bbs(v01, df=4.0) + bbs(v02, df=4.0)",
+   "family": "Gaussian",
+   "family_ok": true,
+   "mstop": 607,
+   "signal": [
+    "v00",
+    "v01",
+    "v02"
+   ],
+   "signal_found": [
+    "v00",
+    "v01",
+    "v02"
+   ],
+   "pairs": [],
+   "pairs_found": [],
+   "extra_pairs": [],
+   "groups": [],
+   "groups_found": [],
+   "noise": 27,
+   "noise_in_formula": [],
+   "noise_selected": [],
+   "test_mse": 1.0218828796496413,
+   "floor_mse": 0.9953021702601927,
+   "excess": 0.02670617043113621,
+   "seconds": 2.1,
+   "steps": [
+    {
+     "step": "autospec",
+     "formula": "y ~ bols(v00) + bbs(v01, df=4.0) + bbs(v02, df=4.0)",
+     "family": "Gaussian",
+     "mstop": 607,
+     "groups": [],
+     "folds": "5 random folds (rows, not groups, are held out)",
+     "priority": [
+      "shape: v00: bols over bbs: bols 1.0071, bbs 1.0115, btree 1.0496 \u2014 0.4% less held-out risk, 2.8 paired fold standard errors"
+     ],
+     "fits": 46
+    },
+    {
+     "step": "final",
+     "spec": "bols(v00) + bbs(v01, df=4.0) + bbs(v02, df=4.0)",
+     "mstop": 607,
+     "sentence": "the risk was still falling at 607, so the grid was extended to 1214; the cross-validated risk turns at 607 of 1214 iterations tried",
+     "fits": 137
+    }
+   ]
+  },
+  {
+   "scenario": "correlated",
+   "description": "a signal and its near-copy",
+   "notes": "x1_proxy is neither signal nor pure noise",
+   "rows": 800,
+   "final": "bbs(x1, df=4.0) + bols(x3)",
+   "family": "Gaussian",
+   "family_ok": true,
+   "mstop": 66,
+   "signal": [
+    "x1",
+    "x3"
+   ],
+   "signal_found": [
+    "x1",
+    "x3"
+   ],
+   "pairs": [],
+   "pairs_found": [],
+   "extra_pairs": [],
+   "groups": [],
+   "groups_found": [],
+   "noise": 1,
+   "noise_in_formula": [],
+   "noise_selected": [],
+   "test_mse": 0.500147171671377,
+   "floor_mse": 0.4924593184556831,
+   "excess": 0.01561114375864081,
+   "seconds": 0.3,
+   "steps": [
+    {
+     "step": "autospec",
+     "formula": "y ~ bbs(x1, df=4.0) + bbs(x3, df=4.0)",
+     "family": "Gaussian",
+     "mstop": 69,
+     "groups": [],
+     "folds": "5 random folds (rows, not groups, are held out)",
+     "priority": [
+      "nothing measured contradicts the dtype-driven specification"
+     ],
+     "fits": 30
+    },
+    {
+     "step": "accept",
+     "round": 0,
+     "change": "refit bbs(x3, df=4.0)",
+     "delta": -0.00251,
+     "se": 0.00081,
+     "fits": 86
+    },
+    {
+     "step": "final",
+     "spec": "bbs(x1, df=4.0) + bols(x3)",
+     "mstop": 66,
+     "sentence": "the cross-validated risk turns at 66 of 200 iterations tried",
+     "fits": 107
+    }
+   ]
+  },
+  {
+   "scenario": "binary_logit",
+   "description": "a logistic response with a product interaction",
+   "notes": "",
+   "rows": 2000,
+   "final": "bbs(dose, df=4.0) + bbs(age, df=2.5, knots=5) %X% bbs(bmi, df=2.5, knots=5)",
+   "family": "Binomial",
+   "family_ok": true,
+   "mstop": 90,
+   "signal": [
+    "dose"
+   ],
+   "signal_found": [
+    "dose"
+   ],
+   "pairs": [
+    [
+     "age",
+     "bmi"
+    ]
+   ],
+   "pairs_found": [
+    [
+     "age",
+     "bmi"
+    ]
+   ],
+   "extra_pairs": [],
+   "groups": [],
+   "groups_found": [],
+   "noise": 2,
+   "noise_in_formula": [],
+   "noise_selected": [],
+   "test_mse": 0.19641167006553423,
+   "floor_mse": 0.19602472199596674,
+   "excess": 0.001973975861960131,
+   "seconds": 3.0,
+   "steps": [
+    {
+     "step": "autospec",
+     "formula": "y ~ bbs(age, df=4.0) + bbs(dose, df=4.0) + bbs(junk1, df=4.0) + btree(junk2)",
+     "family": "Binomial",
+     "mstop": 46,
+     "groups": [],
+     "folds": "5 random folds (rows, not groups, are held out)",
+     "priority": [
+      "structure: age x bmi removes 0.018 of the residual the additive terms leave \u2014 additive terms cannot recover it at any mstop; add bbs(age, df=2.5, knots=5) %X% bbs(bmi, df=2.5, knots=5) to test it held out",
+      "shape: junk2: btree over bbs: btree 0.6259, bbs 0.6263, bols 0.6264 \u2014 0.1% less held-out risk, 2.5 paired fold standard errors"
+     ],
+     "fits": 35
+    },
+    {
+     "step": "accept",
+     "round": 0,
+     "change": "add bbs(age, df=2.5, knots=5) %X% bbs(bmi, df=2.5, knots=5)",
+     "delta": -0.05265,
+     "se": 0.00591,
+     "fits": 151
+    },
+    {
+     "step": "accept",
+     "round": 1,
+     "change": "drop 3 terms that earn nothing",
+     "delta": -0.00067,
+     "se": 0.0002,
+     "fits": 207
+    },
+    {
+     "step": "final",
+     "spec": "bbs(dose, df=4.0) + bbs(age, df=2.5, knots=5) %X% bbs(bmi, df=2.5, knots=5)",
+     "mstop": 90,
+     "sentence": "the cross-validated risk turns at 90 of 200 iterations tried",
+     "fits": 228
+    }
+   ]
+  },
+  {
+   "scenario": "monotone",
+   "description": "a saturating dose response",
+   "notes": "",
+   "rows": 600,
+   "final": "bbs(dose, df=4.0) + bbs(weight, df=4.0)",
+   "family": "Gaussian",
+   "family_ok": true,
+   "mstop": 94,
+   "signal": [
+    "dose",
+    "weight"
+   ],
+   "signal_found": [
+    "dose",
+    "weight"
+   ],
+   "pairs": [],
+   "pairs_found": [],
+   "extra_pairs": [],
+   "groups": [],
+   "groups_found": [],
+   "noise": 1,
+   "noise_in_formula": [],
+   "noise_selected": [],
+   "test_mse": 0.3654666703568498,
+   "floor_mse": 0.3545497169663603,
+   "excess": 0.03079103682241935,
+   "seconds": 0.2,
+   "steps": [
+    {
+     "step": "autospec",
+     "formula": "y ~ bbs(dose, df=4.0) + bbs(weight, df=4.0)",
+     "family": "Gaussian",
+     "mstop": 94,
+     "groups": [],
+     "folds": "5 random folds (rows, not groups, are held out)",
+     "priority": [
+      "nothing measured contradicts the dtype-driven specification"
+     ],
+     "fits": 30
+    },
+    {
+     "step": "final",
+     "spec": "bbs(dose, df=4.0) + bbs(weight, df=4.0)",
+     "mstop": 94,
+     "sentence": "the cross-validated risk turns at 94 of 200 iterations tried",
+     "fits": 81
+    }
+   ]
+  },
+  {
+   "scenario": "string_groups",
+   "description": "20 stores as text labels, a trend and a season",
+   "notes": "",
+   "rows": 1200,
+   "final": "bbs(x, df=4.0) + bbs(day, df=4.0) + brandom(store, df=4.0)",
+   "family": "Gaussian",
+   "family_ok": true,
+   "mstop": 400,
+   "signal": [
+    "x",
+    "day"
+   ],
+   "signal_found": [
+    "day",
+    "x"
+   ],
+   "pairs": [],
+   "pairs_found": [],
+   "extra_pairs": [],
+   "groups": [
+    "store"
+   ],
+   "groups_found": [
+    "store"
+   ],
+   "noise": 1,
+   "noise_in_formula": [],
+   "noise_selected": [],
+   "test_mse": 0.7826474631014357,
+   "floor_mse": 0.7602752562163162,
+   "excess": 0.029426456671048262,
+   "seconds": 1.1,
+   "steps": [
+    {
+     "step": "autospec",
+     "formula": "y ~ bbs(x, df=4.0) + bbs(day, df=4.0) + brandom(store, df=4.0)",
+     "family": "Gaussian",
+     "mstop": 400,
+     "groups": [
+      "store"
+     ],
+     "folds": "5 grouped folds holding whole groups of store out (declare folds= for another design)",
+     "priority": [
+      "nothing measured contradicts the dtype-driven specification"
+     ],
+     "fits": 37
+    },
+    {
+     "step": "final",
+     "spec": "bbs(x, df=4.0) + bbs(day, df=4.0) + brandom(store, df=4.0)",
+     "mstop": 400,
+     "sentence": "the risk was still falling at 400, so the grid was extended to 800; the cross-validated risk turns at 400 of 800 iterations tried",
+     "fits": 98
+    }
+   ]
+  },
+  {
+   "scenario": "heavy_tails",
+   "description": "t-distributed noise with two degrees of freedom",
+   "notes": "",
+   "rows": 800,
+   "final": "bbs(x, df=4.0) + bbs(z, df=4.0)",
+   "family": "Gaussian",
+   "family_ok": true,
+   "mstop": 435,
+   "signal": [
+    "x",
+    "z"
+   ],
+   "signal_found": [
+    "x",
+    "z"
+   ],
+   "pairs": [],
+   "pairs_found": [],
+   "extra_pairs": [],
+   "groups": [],
+   "groups_found": [],
+   "noise": 1,
+   "noise_in_formula": [],
+   "noise_selected": [],
+   "test_mse": 3.243183317552757,
+   "floor_mse": 3.1965569480402816,
+   "excess": 0.014586434801689085,
+   "seconds": 0.7,
+   "steps": [
+    {
+     "step": "autospec",
+     "formula": "y ~ bbs(x, df=4.0) + bbs(z, df=4.0)",
+     "family": "Gaussian",
+     "mstop": 435,
+     "groups": [],
+     "folds": "5 random folds (rows, not groups, are held out)",
+     "priority": [
+      "nothing measured contradicts the dtype-driven specification"
+     ],
+     "fits": 35
+    },
+    {
+     "step": "final",
+     "spec": "bbs(x, df=4.0) + bbs(z, df=4.0)",
+     "mstop": 435,
+     "sentence": "the risk was still falling at 435, so the grid was extended to 870; the cross-validated risk turns at 435 of 870 iterations tried",
+     "fits": 91
+    }
+   ]
+  },
+  {
+   "scenario": "small_n",
+   "description": "150 rows, two signals, five noise columns",
+   "notes": "",
+   "rows": 150,
+   "final": "bols(a) + bbs(b, df=4.0)",
+   "family": "Gaussian",
+   "family_ok": true,
+   "mstop": 108,
+   "signal": [
+    "a",
+    "b"
+   ],
+   "signal_found": [
+    "a",
+    "b"
+   ],
+   "pairs": [],
+   "pairs_found": [],
+   "extra_pairs": [],
+   "groups": [],
+   "groups_found": [],
+   "noise": 5,
+   "noise_in_formula": [],
+   "noise_selected": [],
+   "test_mse": 0.7137449882527124,
+   "floor_mse": 0.6271093205209711,
+   "excess": 0.13815082139070856,
+   "seconds": 0.3,
+   "steps": [
+    {
+     "step": "autospec",
+     "formula": "y ~ bols(a) + bbs(b, df=4.0) + bbs(d, df=4.0)",
+     "family": "Gaussian",
+     "mstop": 133,
+     "groups": [],
+     "folds": "5 random folds (rows, not groups, are held out)",
+     "priority": [
+      "shape: a: bols over bbs: bols 0.6637, bbs 0.6788, btree 0.7416 \u2014 2.2% less held-out risk, 1.2 paired fold standard errors"
+     ],
+     "fits": 35
+    },
+    {
+     "step": "accept",
+     "round": 0,
+     "change": "drop bbs(d, df=4.0)",
+     "delta": 0.02347,
+     "se": 0.01525,
+     "fits": 111
+    },
+    {
+     "step": "final",
+     "spec": "bols(a) + bbs(b, df=4.0)",
+     "mstop": 108,
+     "sentence": "the cross-validated risk turns at 108 of 200 iterations tried",
+     "fits": 132
+    }
+   ]
+  },
+  {
+   "scenario": "linear_additive",
+   "description": "three straight lines, two noise columns",
+   "notes": "",
+   "rows": 800,
+   "final": "bols(p) + bbs(q, df=4.0) + bols(r)",
+   "family": "Gaussian",
+   "family_ok": true,
+   "mstop": 129,
+   "signal": [
+    "p",
+    "q",
+    "r"
+   ],
+   "signal_found": [
+    "p",
+    "q",
+    "r"
+   ],
+   "pairs": [],
+   "pairs_found": [],
+   "extra_pairs": [],
+   "groups": [],
+   "groups_found": [],
+   "noise": 2,
+   "noise_in_formula": [],
+   "noise_selected": [],
+   "test_mse": 1.0168078603035453,
+   "floor_mse": 1.0128099678505629,
+   "excess": 0.003947327316956573,
+   "seconds": 0.8,
+   "steps": [
+    {
+     "step": "autospec",
+     "formula": "y ~ bols(p) + bbs(q, df=4.0) + bbs(r, df=4.0)",
+     "family": "Gaussian",
+     "mstop": 104,
+     "groups": [],
+     "folds": "5 random folds (rows, not groups, are held out)",
+     "priority": [
+      "shape: p: bols over bbs: bols 0.9896, bbs 0.9924, btree 0.9993 \u2014 0.3% less held-out risk, 2.1 paired fold standard errors"
+     ],
+     "fits": 35
+    },
+    {
+     "step": "accept",
+     "round": 0,
+     "change": "refit bbs(r, df=4.0)",
+     "delta": -0.0062,
+     "se": 0.00224,
+     "fits": 111
+    },
+    {
+     "step": "final",
+     "spec": "bols(p) + bbs(q, df=4.0) + bols(r)",
+     "mstop": 129,
+     "sentence": "the cross-validated risk turns at 129 of 200 iterations tried",
+     "fits": 137
+    }
+   ]
+  },
+  {
+   "scenario": "pure_interaction",
+   "description": "a product of two saturating curves with no main effects",
+   "notes": "",
+   "rows": 1000,
+   "final": "bols(w) + bbs(u, df=2.5, knots=5) %X% bbs(v, df=2.5, knots=5)",
+   "family": "Gaussian",
+   "family_ok": true,
+   "mstop": 5188,
+   "signal": [
+    "w"
+   ],
+   "signal_found": [
+    "w"
+   ],
+   "pairs": [
+    [
+     "u",
+     "v"
+    ]
+   ],
+   "pairs_found": [
+    [
+     "u",
+     "v"
+    ]
+   ],
+   "extra_pairs": [],
+   "groups": [],
+   "groups_found": [],
+   "noise": 1,
+   "noise_in_formula": [],
+   "noise_selected": [],
+   "test_mse": 0.26680439975260434,
+   "floor_mse": 0.25261274213007373,
+   "excess": 0.05617950030099084,
+   "seconds": 2.3,
+   "steps": [
+    {
+     "step": "autospec",
+     "formula": "y ~ bbs(u, df=4.0) + bbs(v, df=4.0) + bols(w) + bbs(k, df=4.0)",
+     "family": "Gaussian",
+     "mstop": 56,
+     "groups": [],
+     "folds": "5 random folds (rows, not groups, are held out)",
+     "priority": [
+      "structure: u x v removes 1.158 of the residual the additive terms leave \u2014 additive terms cannot recover it at any mstop; add bbs(u, df=2.5, knots=5) %X% bbs(v, df=2.5, knots=5) to test it held out",
+      "shape: w: bols over bbs: bols 1.5241, bbs 1.5301, btree 1.5442 \u2014 0.4% less held-out risk, 3.5 paired fold standard errors"
+     ],
+     "fits": 30
+    },
+    {
+     "step": "accept",
+     "round": 0,
+     "change": "add bbs(u, df=2.5, knots=5) %X% bbs(v, df=2.5, knots=5)",
+     "delta": -1.0954,
+     "se": 0.02815,
+     "fits": 151
+    },
+    {
+     "step": "accept",
+     "round": 1,
+     "change": "drop 3 terms that earn nothing",
+     "delta": 0.0,
+     "se": 0.0,
+     "fits": 212
+    },
+    {
+     "step": "final",
+     "spec": "bols(w) + bbs(u, df=2.5, knots=5) %X% bbs(v, df=2.5, knots=5)",
+     "mstop": 5188,
+     "sentence": "the risk was still falling at 200, so the grid was extended to 6400; the cross-validated risk turns at 5188 of 6400 iterations tried",
+     "fits": 268
+    }
+   ]
+  },
+  {
+   "scenario": "group_covariate",
+   "description": "a group-level covariate and group intercepts",
+   "notes": "",
+   "rows": 1400,
+   "final": "bbs(x, df=4.0) + brandom(region, df=4.0) + bbs(income, df=4.0)",
+   "family": "Gaussian",
+   "family_ok": true,
+   "mstop": 399,
+   "signal": [
+    "x",
+    "income"
+   ],
+   "signal_found": [
+    "income",
+    "x"
+   ],
+   "pairs": [],
+   "pairs_found": [],
+   "extra_pairs": [],
+   "groups": [
+    "region"
+   ],
+   "groups_found": [
+    "region"
+   ],
+   "noise": 1,
+   "noise_in_formula": [],
+   "noise_selected": [],
+   "test_mse": 0.5677739152546578,
+   "floor_mse": 0.570779891497623,
+   "excess": -0.005266436830978827,
+   "seconds": 1.7,
+   "steps": [
+    {
+     "step": "autospec",
+     "formula": "y ~ bbs(x, df=4.0) + brandom(region, df=4.0) + bbs(income, df=4.0)",
+     "family": "Gaussian",
+     "mstop": 399,
+     "groups": [
+      "region"
+     ],
+     "folds": "5 grouped folds holding whole groups of region out (declare folds= for another design)",
+     "priority": [
+      "nothing measured contradicts the dtype-driven specification"
+     ],
+     "fits": 32
+    },
+    {
+     "step": "final",
+     "spec": "bbs(x, df=4.0) + brandom(region, df=4.0) + bbs(income, df=4.0)",
+     "mstop": 399,
+     "sentence": "the risk was still falling at 399, so the grid was extended to 798; the cross-validated risk turns at 399 of 798 iterations tried",
+     "fits": 108
+    }
+   ]
+  },
+  {
+   "scenario": "missing",
+   "description": "12% of a signal column missing",
+   "notes": "",
+   "rows": 800,
+   "final": "bbs(x, df=4.0) + bbs(z, df=4.0)",
+   "family": "Gaussian",
+   "family_ok": true,
+   "mstop": 5878,
+   "signal": [
+    "x",
+    "z"
+   ],
+   "signal_found": [
+    "x",
+    "z"
+   ],
+   "pairs": [],
+   "pairs_found": [],
+   "extra_pairs": [],
+   "groups": [],
+   "groups_found": [],
+   "noise": 1,
+   "noise_in_formula": [],
+   "noise_selected": [],
+   "test_mse": 0.256536698059793,
+   "floor_mse": 0.2456463599015789,
+   "excess": 0.04433339929228941,
+   "seconds": 4.7,
+   "steps": [
+    {
+     "step": "autospec",
+     "formula": "y ~ bbs(x, df=4.0) + bbs(z, df=4.0)",
+     "family": "Gaussian",
+     "mstop": 5878,
+     "groups": [],
+     "folds": "5 random folds (rows, not groups, are held out)",
+     "priority": [
+      "data: 88 of 800 rows (11%) are left out because a modelled column is missing there, mostly z (88); decide whether the complete rows are the population you mean, or leave the worst columns out"
+     ],
+     "fits": 55
+    },
+    {
+     "step": "final",
+     "spec": "bbs(x, df=4.0) + bbs(z, df=4.0)",
+     "mstop": 5878,
+     "sentence": "the risk was still falling at 5878, so the grid was extended to 10000; the cross-validated risk turns at 5878 of 10000 iterations tried",
+     "fits": 111
+    }
+   ]
+  },
+  {
+   "scenario": "exposure",
+   "description": "Poisson counts over unequal exposure hours",
+   "notes": "the process is an offset log(hours), which mboostrs cannot fit as an offset",
+   "rows": 1000,
+   "final": "bbs(x, df=4.0) + bbs(hours, df=4.0)",
+   "family": "Poisson",
+   "family_ok": true,
+   "mstop": 79,
+   "signal": [
+    "x",
+    "hours"
+   ],
+   "signal_found": [
+    "hours",
+    "x"
+   ],
+   "pairs": [],
+   "pairs_found": [],
+   "extra_pairs": [],
+   "groups": [],
+   "groups_found": [],
+   "noise": 1,
+   "noise_in_formula": [],
+   "noise_selected": [],
+   "test_mse": 8.925998862477773,
+   "floor_mse": 8.836262474833893,
+   "excess": 0.01015546877420781,
+   "seconds": 0.9,
+   "steps": [
+    {
+     "step": "autospec",
+     "formula": "y ~ bbs(x, df=4.0) + bbs(hours, df=4.0)",
+     "family": "Poisson",
+     "mstop": 79,
+     "groups": [],
+     "folds": "5 random folds (rows, not groups, are held out)",
+     "priority": [
+      "family: held-out Pearson dispersion 1.06: consistent with Poisson, whose variance equals its mean"
+     ],
+     "fits": 35
+    },
+    {
+     "step": "final",
+     "spec": "bbs(x, df=4.0) + bbs(hours, df=4.0)",
+     "mstop": 79,
+     "sentence": "the cross-validated risk turns at 79 of 200 iterations tried",
+     "fits": 86
+    }
+   ]
+  },
+  {
+   "scenario": "zero_inflated",
+   "description": "structural zeros driven by z",
+   "notes": "",
+   "rows": 1200,
+   "final": "bbs(x, df=4.0) + bbs(z, df=4.0)",
+   "family": "NBinomial",
+   "family_ok": true,
+   "mstop": 155,
+   "signal": [
+    "x",
+    "z"
+   ],
+   "signal_found": [
+    "x",
+    "z"
+   ],
+   "pairs": [],
+   "pairs_found": [],
+   "extra_pairs": [],
+   "groups": [],
+   "groups_found": [],
+   "noise": 1,
+   "noise_in_formula": [],
+   "noise_selected": [],
+   "test_mse": 4.263847924995147,
+   "floor_mse": 4.016883713192755,
+   "excess": 0.061481543762713864,
+   "seconds": 6.1,
+   "steps": [
+    {
+     "step": "autospec",
+     "formula": "y ~ bbs(x, df=4.0) + bbs(z, df=4.0) + bbs(noise, df=4.0)",
+     "family": "NBinomial",
+     "mstop": 189,
+     "groups": [],
+     "folds": "5 random folds (rows, not groups, are held out)",
+     "priority": [
+      "family: held-out Pearson dispersion 2.07: the counts are more spread than a Poisson mean allows, so NBinomial carries the extra variance"
+     ],
+     "fits": 35
+    },
+    {
+     "step": "accept",
+     "round": 0,
+     "change": "drop bbs(noise, df=4.0)",
+     "delta": 0.00049,
+     "se": 0.00118,
+     "fits": 111
+    },
+    {
+     "step": "final",
+     "spec": "bbs(x, df=4.0) + bbs(z, df=4.0)",
+     "mstop": 155,
+     "sentence": "the cross-validated risk turns at 155 of 200 iterations tried",
+     "fits": 132
+    }
+   ]
+  },
+  {
+   "scenario": "gamma",
+   "description": "a positive skewed response with a log-linear mean",
+   "notes": "",
+   "rows": 900,
+   "final": "bols(x) + bbs(z, df=4.0)",
+   "family": "GammaReg",
+   "family_ok": true,
+   "mstop": 232,
+   "signal": [
+    "x",
+    "z"
+   ],
+   "signal_found": [
+    "x",
+    "z"
+   ],
+   "pairs": [],
+   "pairs_found": [],
+   "extra_pairs": [],
+   "groups": [],
+   "groups_found": [],
+   "noise": 1,
+   "noise_in_formula": [],
+   "noise_selected": [],
+   "test_mse": 4.0842905756211,
+   "floor_mse": 4.065103680967299,
+   "excess": 0.0047199029002960025,
+   "seconds": 2.4,
+   "steps": [
+    {
+     "step": "autospec",
+     "formula": "y ~ bbs(x, df=4.0) + bbs(z, df=4.0) + bbs(noise, df=4.0)",
+     "family": "GammaReg",
+     "mstop": 200,
+     "groups": [],
+     "folds": "5 random folds (rows, not groups, are held out)",
+     "priority": [
+      "family: spread against level: correlation +0.44 between the absolute residual and the fitted mean \u2014 the spread grows with the level, which is what a Gamma models and a Gaussian does not; boosted, GammaReg predicts as well as Gaussian (held-out squared error 4.98 against 5.15, standard error of the difference 0.054)"
+     ],
+     "fits": 60
+    },
+    {
+     "step": "accept",
+     "round": 0,
+     "change": "refit bbs(x, df=4.0)",
+     "delta": -0.00115,
+     "se": 0.00055,
+     "fits": 141
+    },
+    {
+     "step": "accept",
+     "round": 1,
+     "change": "drop bbs(noise, df=4.0)",
+     "delta": 0.0005,
+     "se": 0.00057,
+     "fits": 172
+    },
+    {
+     "step": "final",
+     "spec": "bols(x) + bbs(z, df=4.0)",
+     "mstop": 232,
+     "sentence": "the risk was still falling at 200, so the grid was extended to 400; the cross-validated risk turns at 232 of 400 iterations tried",
+     "fits": 198
+    }
+   ]
+  },
+  {
+   "scenario": "age_integer",
+   "description": "a whole-number age with a curved effect",
+   "notes": "",
+   "rows": 1200,
+   "final": "bbs(age, df=4.0) + bbs(x, df=4.0)",
+   "family": "Gaussian",
+   "family_ok": true,
+   "mstop": 287,
+   "signal": [
+    "age",
+    "x"
+   ],
+   "signal_found": [
+    "age",
+    "x"
+   ],
+   "pairs": [],
+   "pairs_found": [],
+   "extra_pairs": [],
+   "groups": [],
+   "groups_found": [],
+   "noise": 1,
+   "noise_in_formula": [],
+   "noise_selected": [],
+   "test_mse": 0.24590649528328168,
+   "floor_mse": 0.24352495339374367,
+   "excess": 0.009779457326031915,
+   "seconds": 0.4,
+   "steps": [
+    {
+     "step": "autospec",
+     "formula": "y ~ bbs(age, df=4.0) + bbs(x, df=4.0)",
+     "family": "Gaussian",
+     "mstop": 287,
+     "groups": [],
+     "folds": "5 random folds (rows, not groups, are held out)",
+     "priority": [
+      "nothing measured contradicts the dtype-driven specification"
+     ],
+     "fits": 30
+    },
+    {
+     "step": "final",
+     "spec": "bbs(age, df=4.0) + bbs(x, df=4.0)",
+     "mstop": 287,
+     "sentence": "the risk was still falling at 287, so the grid was extended to 574; the cross-validated risk turns at 287 of 574 iterations tried",
+     "fits": 86
+    }
+   ]
+  },
+  {
+   "scenario": "narrow_positive",
+   "description": "a positive response that varies by 1% of its level",
+   "notes": "",
+   "rows": 800,
+   "final": "bbs(x, df=4.0) + bbs(z, df=4.0)",
+   "family": "Gaussian",
+   "family_ok": true,
+   "mstop": 2405,
+   "signal": [
+    "x",
+    "z"
+   ],
+   "signal_found": [
+    "x",
+    "z"
+   ],
+   "pairs": [],
+   "pairs_found": [],
+   "extra_pairs": [],
+   "groups": [],
+   "groups_found": [],
+   "noise": 1,
+   "noise_in_formula": [],
+   "noise_selected": [],
+   "test_mse": 0.6522285878058675,
+   "floor_mse": 0.6320057488724204,
+   "excess": 0.03199787180658897,
+   "seconds": 2.8,
+   "steps": [
+    {
+     "step": "autospec",
+     "formula": "y ~ bbs(x, df=4.0) + bbs(z, df=4.0)",
+     "family": "Gaussian",
+     "mstop": 2405,
+     "groups": [],
+     "folds": "5 random folds (rows, not groups, are held out)",
+     "priority": [
+      "family: the response's standard deviation is 1.8% of its mean, below 10%: a Gamma's spread would change by as little across the range of means, which the data cannot tell from constant variance, and boosting a Gamma that narrow diverges, so Gaussian",
+      "structure: z x noise removes 0.010 of the residual the additive terms leave \u2014 additive terms cannot recover it at any mstop; add bbs(z, df=2.5, knots=5) %X% bbs(noise, df=2.5, knots=5) to test it held out"
+     ],
+     "fits": 60
+    },
+    {
+     "step": "final",
+     "spec": "bbs(x, df=4.0) + bbs(z, df=4.0)",
+     "mstop": 2405,
+     "sentence": "the risk was still falling at 2405, so the grid was extended to 4810; the cross-validated risk turns at 2405 of 4810 iterations tried",
+     "fits": 131
+    }
+   ]
+  }
+ ]
+}

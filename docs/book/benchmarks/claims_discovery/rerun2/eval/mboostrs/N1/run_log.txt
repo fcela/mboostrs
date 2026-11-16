@@ -1,0 +1,25 @@
+[08:43:03] loaded train 15480 rows, test 5160 rows, 16 covariates
+[08:43:03] stage 1: discover (mean, constant spread)
+[08:43:36] discover mean: 1 terms
+[08:43:36] stage 2: spread search over all covariates
+[08:44:07] spread round 1: best total_bedrooms_missing change=+0.00013 se=0.00012 adopt=False
+[08:44:07] stage 3: mean check under the spread model
+[08:44:22] mean terms after check: 0: 1
+[08:44:22] stage 4: tune stopping iteration of the final model
+[08:44:22] final mstop=1
+[08:44:22] stage 5: shapes, interactions and spread direction
+[08:44:22] stage 6: effect queries
+[08:44:23] Q1 median_income: +0.0093 [-0.0020, +0.0210] (not selected)
+[08:44:23] Q2 housing_median_age: -0.0079 [-0.0210, +0.0041] (not selected)
+[08:44:23] Q3 ave_occup: +0.0032 [-0.0145, +0.0189] (not selected)
+[08:44:23] Q4 roof_class: +0.0145 [-0.0029, +0.0321] (not selected)
+[08:44:24] Q5 ave_rooms: +0.0104 [-0.0041, +0.0256] (not selected)
+[08:44:24] Q6 latitude+longitude: -0.0193 [-0.0380, +0.0000] (not selected)
+[08:44:24] Q7 households: +0.0083 [-0.0020, +0.0205] (not selected)
+[08:44:24] Q8 median_house_value: -0.0010 [-0.0117, +0.0104] (not selected)
+[08:44:24] stage 7: prediction intervals
+[08:44:24] stage 7b: cross-fitted coverage on held-out training rows
+[08:44:25] held-out coverage overall 0.901; worst subgroup gap 0.009
+[08:44:25] stage 8: extrapolation and validation of test rows
+[08:44:25] stage 9: null run with permuted response
+[08:45:23] null run mean terms: 0; interactions: 0

@@ -1,0 +1,94 @@
+{
+  "library": "statsmodels 0.15.0",
+  "effect_queries": {
+    "ATE": {
+      "estimate": 3675.0407904601643,
+      "lower90": 3081.566094340134,
+      "upper90": 4548.701983214537
+    },
+    "ATT": {
+      "estimate": 3675.0407904601648,
+      "lower90": 2896.4602940315176,
+      "upper90": 4061.9364637689337
+    },
+    "CATE_educ_lt12": {
+      "estimate": 3675.0407904601648,
+      "lower90": 2825.669340434168,
+      "upper90": 4146.884353958953
+    },
+    "CATE_educ_ge16": {
+      "estimate": 3675.0407904601643,
+      "lower90": 2998.16335745416,
+      "upper90": 5252.120799150331
+    },
+    "CATE_prior_q1": {
+      "estimate": 3675.0407904601643,
+      "lower90": 2290.1306552762135,
+      "upper90": 4081.9383160002244
+    },
+    "CATE_prior_q4": {
+      "estimate": 3675.0407904601643,
+      "lower90": 3001.4797214477585,
+      "upper90": 6026.8264749078635
+    },
+    "CATE_age_lt25": {
+      "estimate": 3675.040790460165,
+      "lower90": 2826.5868489333266,
+      "upper90": 4427.257223744865
+    },
+    "EMP_ATE": {
+      "estimate": 0.0647176957939315,
+      "lower90": 0.04042770483345521,
+      "upper90": 0.08254708456267205
+    }
+  },
+  "roles": {
+    "age": "instrument",
+    "education": "outcome_only",
+    "experience": "confounder",
+    "ethnicity": "treatment_only",
+    "smsa": "outcome_only",
+    "region": "confounder",
+    "parttime": "outcome_only",
+    "prior_earnings": "confounder",
+    "months_unemployed": "confounder",
+    "distance_km": "instrument",
+    "caseworker_note_len": "irrelevant",
+    "enrolled": "treatment",
+    "certificate": "mediator",
+    "responded": "post_treatment_selection",
+    "hours_post": "mediator",
+    "earnings_post": "outcome"
+  },
+  "adjustment_set": [
+    "region",
+    "prior_earnings",
+    "months_unemployed"
+  ],
+  "effect_modifiers": [],
+  "channels": {
+    "employment": true,
+    "earnings_if_employed": false
+  },
+  "limited_overlap": [
+    {
+      "description": "Applicants with prior earnings at or above 39000 dollars: enrolment in the program-year data is below 2 per cent there, so the data cannot show what enrolment did for them; their effects are extrapolated from applicants with lower earnings.",
+      "variable": "prior_earnings"
+    }
+  ],
+  "warnings": [
+    "Specs chosen by 5-fold CV: propensity=quad, outcome(Y)=pe_int, outcome(E)=logpe.",
+    "Redundant columns (exact linear function of earlier columns, not used): ['experience'].",
+    "Enrolment is essentially absent for prior earnings at or above 39000 dollars: pooled enrolment above that value is below 2 per cent. The share of training applicants there is 0.280, and of test applicants 0.192. Effects there are extrapolations.",
+    "Prior earnings in the effect model is held at 39721 dollars (99th percentile of enrolled applicants) above that value. Without this cap the ATE point estimate is 3675.0 dollars and EMP_ATE is 0.0275.",
+    "ATE point estimate across propensity and outcome specifications (dollars): min 3526.7, max 3676.8.",
+    "Mean prior earnings: training 31449, test 25779. The new applicants are poorer on this variable than the program-year applicants.",
+    "Instrument check (log distance): first-stage F = 151.5; 2SLS effect on responders' earnings = 2594.6 dollars (90% interval -3348.9 to 8538.1); this is a complier effect and its interval is wide.",
+    "Earnings among employed (residual log hourly wage, Lee-type bounds with induced share 0.145): naive difference -0.012, bounds [-0.119, 0.099]. ",
+    "Response to the follow-up survey depends on enrolment: logit coefficient 0.443 (p = 2.8e-12). Earnings are observed only for responders; the analysis assumes that, given covariates and enrolment, response is unrelated to earnings.",
+    "Omitted-variable robustness value of the linear enrolment coefficient on responders' earnings: 0.056 (value that keeps the 90% interval above zero: 0.040).",
+    "Employment effect model (probability scale) keeps: prior -0.0070 (90% bootstrap -0.0090 to -0.0048); cauc +0.0944 (90% bootstrap +0.0892 to +0.1667).",
+    "",
+    "Library message (5027x): RuntimeWarning: overflow encountered in exp"
+  ]
+}

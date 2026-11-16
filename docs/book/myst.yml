@@ -1,0 +1,253 @@
+# MyST / Jupyter Book 2.x configuration.
+# Chapter sources are executable notebooks; the capability appendix is a
+# generated, markdown-only notebook.
+#   cd docs/book
+#   python3 generate_figures.py     # methodology figures (SVG)
+#   bash build-pdf.sh               # full-book PDF (pdflatex + bibtex)
+#   bash build-html.sh              # website -> _build/html (executes all cells)
+#   bash start.sh                   # local preview, with the cells run
+#
+# No notebook here stores its outputs -- they would go stale in git, and
+# check_examples.py refuses them -- so the outputs a reader sees are produced
+# by the build. `myst start` on its own does not execute (the flag defaults to
+# false), and every code cell then renders with nothing under it. Pass
+# --execute from a shell with the docs environment active, or use start.sh to
+# activate the repository environment and check its Python/native build first.
+version: 1
+project:
+  id: mboostrs-book
+  title: "mboostrs — component-wise gradient boosting in Rust"
+  description: >-
+    Three-layer documentation for mboostrs: usage tutorials, a methodological
+    review, and implementation details.
+  authors:
+    - name: mboostrs contributors
+  bibliography:
+    - references.bib
+  exports:
+    - format: tex
+      template: tex-template
+      output: _build/tex/mboostrs.tex
+  math:
+    "\\argmin": "\\operatorname*{arg\\,min}"
+    "\\argmax": "\\operatorname*{arg\\,max}"
+  toc:
+    - file: intro.ipynb
+    - title: "Part I — Using mboostrs"
+      children:
+        - file: usage/install.ipynb
+        - file: usage/quickstart.ipynb
+        - file: usage/five_decisions.ipynb
+        - file: usage/glmboost.ipynb
+        - file: usage/gamboost.ipynb
+        - file: usage/base_learners.ipynb
+        - file: usage/families.ipynb
+        - file: usage/real_data.ipynb
+        - file: usage/model_selection.ipynb
+        - file: usage/diagnostics.ipynb
+        - file: usage/survival.ipynb
+        - file: usage/stability_selection.ipynb
+        - file: usage/inference.ipynb
+        - file: usage/refit.ipynb
+        - file: usage/effects.ipynb
+        - file: usage/causal.ipynb
+        - file: usage/llm_explanations.ipynb
+        - file: usage/gamboostlss.ipynb
+        - file: usage/multinomial.ipynb
+        - file: usage/functional_data.ipynb
+        - file: usage/sklearn.ipynb
+        - file: usage/r_migration.ipynb
+        - file: usage/r_examples.ipynb
+        - file: usage/case_studies.ipynb
+        - file: usage/result_json.ipynb
+        - file: usage/plotting_serialization.ipynb
+        - title: "Advanced"
+          children:
+            - file: usage/learning_path.ipynb
+            - file: usage/interface_map.ipynb
+            - file: usage/choosing_terms.ipynb
+            - file: usage/specification_search.ipynb
+    - title: "Part II — Methodology"
+      children:
+        - file: methodology/overview.ipynb
+        - file: methodology/prerequisites.ipynb
+        - file: methodology/from_glm_to_boosting.ipynb
+        - file: methodology/functional_gradient_boosting.ipynb
+        - file: methodology/worked_example.ipynb
+        - file: methodology/base_learners.ipynb
+        - file: methodology/penalties_df.ipynb
+        - file: methodology/penalized_reml.ipynb
+        - file: methodology/families.ipynb
+        - file: methodology/survival.ipynb
+        - file: methodology/gamlss_framework.ipynb
+        - file: methodology/gamlss.ipynb
+        - file: methodology/gamlss_reml.ipynb
+        - file: methodology/multinomial.ipynb
+        - file: methodology/preexploration.ipynb
+        - file: methodology/search_decisions.ipynb
+        - file: methodology/model_selection.ipynb
+        - file: methodology/conformal.ipynb
+        - file: methodology/stability_selection.ipynb
+        - file: methodology/theory_properties.ipynb
+    - title: "Part III — Case studies"
+      children:
+        - file: cases/overview.ipynb
+        - file: cases/bodyfat.ipynb
+        - file: cases/india_stunting.ipynb
+        - file: cases/after_selection.ipynb
+        - file: cases/wpbc_censoring.ipynb
+        - file: cases/choosing_a_distribution.ipynb
+        - file: cases/calibration.ipynb
+        - file: cases/class_probability.ipynb
+        - file: cases/growth_centiles.ipynb
+        - file: cases/many_models.ipynb
+        - file: cases/munich_rents.ipynb
+        - file: cases/munich_rents_distributional.ipynb
+        - file: cases/motorcycle_variance.ipynb
+        - file: cases/stopping_rule.ipynb
+        - file: cases/learner_flexibility.ipynb
+        - file: cases/beyond_the_data.ipynb
+        - file: cases/buser.ipynb
+        - file: cases/monotone_five.ipynb
+        - file: cases/working_a_model.ipynb
+        - file: cases/term_choice.ipynb
+        - file: cases/concurvity_girth.ipynb
+        - file: cases/library_comparison.ipynb
+        - file: cases/library_comparison_interactions.ipynb
+        - file: cases/distributional_comparison.ipynb
+        - file: cases/benchmark_insight.ipynb
+        - file: cases/benchmark_causal.ipynb
+        - file: cases/benchmark_runtime_api.ipynb
+        - file: cases/benchmark_structure.ipynb
+        - file: cases/benchmark_gamma.ipynb
+        - file: cases/benchmark_zero_inflated.ipynb
+        - file: cases/benchmark_uncertainty.ipynb
+        - file: cases/benchmark_quantile.ipynb
+        - file: cases/benchmark_survival.ipynb
+        - file: cases/benchmark_beta.ipynb
+        - file: cases/benchmark_classes.ipynb
+        - file: cases/benchmark_studentt.ipynb
+        - file: cases/benchmark_spatial.ipynb
+        - file: cases/benchmark_drivers.ipynb
+        - file: cases/benchmark_shapes.ipynb
+        - file: cases/benchmark_pairs.ipynb
+        - file: cases/benchmark_realdata.ipynb
+        - file: cases/benchmark_lss_drivers.ipynb
+        - file: cases/benchmark_negbin.ipynb
+        - file: cases/benchmark_gamma_lss.ipynb
+        - file: cases/causal_constraint.ipynb
+        - file: cases/shape_constraint_and_the_estimate.ipynb
+        - file: cases/shape_constraint_and_variable_selection.ipynb
+        - file: cases/deposit_elasticity.ipynb
+        - file: cases/deposit_saturation.ipynb
+        - file: cases/fdic_preexplore_reason.ipynb
+        - file: cases/fdic_distill_unfold.ipynb
+        - file: cases/desk_ops_exceptions.ipynb
+        - file: cases/cz_inequality.ipynb
+        - file: cases/cz_known_variance.ipynb
+        - file: cases/county_positive_deviance.ipynb
+        - file: cases/million_rows_binned.ipynb
+        - file: cases/llm_explains_a_model.ipynb
+        - file: cases/autospec_bodyfat.ipynb
+        - file: cases/budgeted_interaction_search.ipynb
+        - file: cases/bodyfat_modeler.ipynb
+        - file: cases/preexploration_shapes.ipynb
+        - file: cases/ishigami_recovery.ipynb
+        - file: cases/benchmark_preexploration.ipynb
+        - file: cases/respiratory_infection.ipynb
+        - file: cases/polio_counts.ipynb
+        - file: cases/agent_specification_search.ipynb
+        - file: cases/cz_agent_search.ipynb
+        - file: cases/cz_llm_agent_search.ipynb
+        - file: cases/munich_agent_investigation.ipynb
+        - file: cases/specification_search_validation.ipynb
+        - file: case_studies/unemployment_forecast.ipynb
+        - file: case_studies/industry_funding_rate.ipynb
+        - file: case_studies/physician_visits.ipynb
+        - file: case_studies/claim_severity.ipynb
+        - file: case_studies/lung_survival.ipynb
+        - file: case_studies/blood_donation.ipynb
+        - file: case_studies/medical_bill.ipynb
+        - file: case_studies/batting_average.ipynb
+        - file: case_studies/wine_grade.ipynb
+        - file: case_studies/bike_sharing_hourly.ipynb
+        - file: case_studies/california_housing.ipynb
+        - file: case_studies/kdd_scorecard_benchmark.ipynb
+    - title: "Part IV — Implementation"
+      children:
+        - file: implementation/architecture.ipynb
+        - file: implementation/engine.ipynb
+        - file: implementation/linear_algebra.ipynb
+        - file: implementation/base_learners.ipynb
+        - file: implementation/binned_learners.ipynb
+        - file: implementation/lss_engine.ipynb
+        - file: implementation/kronecker_multinomial.ipynb
+        - file: implementation/frontends.ipynb
+        - file: implementation/conformal.ipynb
+        - file: implementation/testing.ipynb
+        - file: implementation/parity_and_bugs.ipynb
+        - file: implementation/performance.ipynb
+    - title: "Part V — Benchmarks"
+      children:
+        - file: benchmarks/where_we_stand.ipynb
+        - file: benchmarks/overview.ipynb
+        - file: benchmarks/pair_form_stopping.ipynb
+        - file: benchmarks/competitive_refresh.ipynb
+        - file: benchmarks/public_count.ipynb
+        - file: benchmarks/poisson_conformal.ipynb
+        - file: benchmarks/poisson_tuning_consistency.ipynb
+        - file: benchmarks/count_rank_calibration.ipynb
+        - file: benchmarks/count_mean_backbone.ipynb
+        - file: benchmarks/public_binary.ipynb
+        - file: benchmarks/public_spatial.ipynb
+        - file: benchmarks/public_distributional.ipynb
+        - file: benchmarks/lss_response_scale.ipynb
+        - file: benchmarks/conformal_predictor_coding.ipynb
+        - file: benchmarks/conformal_response_units.ipynb
+        - file: benchmarks/public_scaling.ipynb
+        - file: benchmarks/claims_discovery.ipynb
+        - file: benchmarks/causal_discovery.ipynb
+        - file: benchmarks/kdd_scorecard_study.ipynb
+        - file: benchmarks/competitive_shootout.ipynb
+        - file: benchmarks/chooser_shootout.ipynb
+        - file: benchmarks/hostile_workflows_v4.ipynb
+        - file: benchmarks/stopping_rule_ablation.ipynb
+        - file: benchmarks/nu_search_benchmark.md
+        - file: benchmarks/dlib_tuning_benchmark.md
+        - file: benchmarks/joint_regularization_pilot.ipynb
+        - file: benchmarks/paired_estimation_discovery.ipynb
+        - file: benchmarks/causal_estimator_benchmark.ipynb
+        - file: benchmarks/interval_calibration.ipynb
+        - file: benchmarks/interval_calibration_gaps.ipynb
+        - file: benchmarks/nonmonotone_spread.ipynb
+        - file: benchmarks/gaussian_two_column.ipynb
+        - file: benchmarks/discovery_calibration.ipynb
+        - file: benchmarks/slid_lss_sim.ipynb
+        - file: benchmarks/discovery_d1b.ipynb
+        - file: benchmarks/iteration_speed_d5.ipynb
+        - file: benchmarks/predictive_tracks.ipynb
+        - file: benchmarks/encoding_tracks.ipynb
+        - file: benchmarks/interaction_capacity.ipynb
+        - file: benchmarks/all_column_boundary.ipynb
+        - file: benchmarks/d5_gap_closing_round3.ipynb
+        - file: benchmarks/gaussian_scale_development.ipynb
+    - title: "Appendix"
+      children:
+        - file: appendix/capabilities.ipynb
+        - file: appendix/notation.ipynb
+        - file: appendix/glossary.ipynb
+        - file: appendix/benchmark_findings.ipynb
+        - file: appendix/api_reference.ipynb
+        - file: api/index.md
+          children:
+            - pattern: api/functions/*.md
+            - pattern: api/classes/*.md
+        - file: appendix/r_reference.ipynb
+        - file: appendix/r_parity_matrix.ipynb
+        - file: appendix/open_questions.md
+site:
+  template: ./book-theme
+  options:
+    url: https://fcela.github.io/mboostrs
+    logo_text: "mboostrs"
+    style: custom.css

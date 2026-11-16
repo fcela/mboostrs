@@ -1,0 +1,22 @@
+[package]
+name = "mboostrs-r"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "R bindings for mboostrs-core via extendr"
+publish = false
+
+[lib]
+# staticlib so the R package can force_load it into mboostrs.so, pulling in
+# R_init_mboostrs (a cdylib's R_init is not re-exported by the package .so).
+crate-type = ["staticlib"]
+
+[features]
+hessboost = ["mboostrs-core/hessboost"]
+
+[dependencies]
+extendr-api = "0.9"
+mboostrs-core = { path = "../mboostrs-core" }
+ndarray = "0.16"
+serde_json = { version = "1", features = ["float_roundtrip"] }

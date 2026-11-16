@@ -1,0 +1,1321 @@
+{
+  "bank_funding": {
+    "summary": "Quarterly Call Report totals for all insured US banks, 1992Q1 onward.",
+    "provenance_note": "Every insured institution's balances summed by report date, from the FDIC BankFind financials API (index ``risview_20260608210616``, retrieved 2026-08-17) by ``tools/curate_deposit_data.py``. Dollar amounts are in thousands, as the API reports them.",
+    "rows": 137,
+    "columns": {
+      "repdte": {
+        "dtype": "String",
+        "missing": 0
+      },
+      "n_banks": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "deposits": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "deposits_domestic": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "deposits_interest_bearing": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "deposits_noninterest": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "interest_expense_ytd": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "interest_expense_qtr": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "assets": {
+        "dtype": "Int64",
+        "missing": 0
+      }
+    },
+    "license": null,
+    "retrieved": null,
+    "curation_script": null,
+    "exclusions": null,
+    "units": null,
+    "known_biases": null
+  },
+  "bank_funding_annual": {
+    "summary": "Annual deposit interest expense for all insured US banks, 1992 onward.",
+    "provenance_note": "State aggregates from the FDIC BankFind summary API, summed across states, retrieved 2026-08-17. This endpoint is the only public aggregate that separates interest expense on deposits from interest expense on all liabilities, and it is published annually, at year end.",
+    "rows": 34,
+    "columns": {
+      "year": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "n_states": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "dep": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "depi": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "depni": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "edep": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "edepdom": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "eintexp": {
+        "dtype": "Float64",
+        "missing": 0
+      }
+    },
+    "license": null,
+    "retrieved": null,
+    "curation_script": null,
+    "exclusions": null,
+    "units": null,
+    "known_biases": null
+  },
+  "bodyfat": {
+    "summary": "Body fat prediction data (71 women, 10 variables).",
+    "provenance_note": "From Garcia et al., distributed via R package TH.data. Used in the mboost tutorial (Bühlmann & Hothorn, 2007) for GLMBoost and GAMBoost examples.",
+    "rows": 71,
+    "columns": {
+      "age": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "DEXfat": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "waistcirc": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "hipcirc": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "elbowbreadth": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "kneebreadth": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "anthro3a": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "anthro3b": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "anthro3c": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "anthro4": {
+        "dtype": "Float64",
+        "missing": 0
+      }
+    },
+    "license": null,
+    "retrieved": null,
+    "curation_script": null,
+    "exclusions": null,
+    "units": null,
+    "known_biases": null
+  },
+  "deposit_market": {
+    "summary": "US monthly deposit market, May 2009 to August 2026 (208 observations).",
+    "provenance_note": "Assembled by ``tools/curate_deposit_data.py``, retrieved 2026-08-17, from FRED's ``fredgraph.csv`` endpoint and the FDIC's *National Rates and Rate Caps* pages. Weekly and daily source series are averaged within the calendar month; monthly series pass through unchanged.",
+    "rows": 208,
+    "columns": {
+      "date": {
+        "dtype": "String",
+        "missing": 0
+      },
+      "fedfunds": {
+        "dtype": "Float64",
+        "missing": 1
+      },
+      "tbill3m": {
+        "dtype": "Float64",
+        "missing": 1
+      },
+      "natl_mmda": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "natl_savings": {
+        "dtype": "Float64",
+        "missing": 143
+      },
+      "natl_checking": {
+        "dtype": "Float64",
+        "missing": 143
+      },
+      "natl_cd12m": {
+        "dtype": "Float64",
+        "missing": 143
+      },
+      "mmda_source": {
+        "dtype": "String",
+        "missing": 0
+      },
+      "deposits": {
+        "dtype": "Float64",
+        "missing": 1
+      },
+      "walcl": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "wresbal": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "personal_income": {
+        "dtype": "Float64",
+        "missing": 2
+      },
+      "cpi": {
+        "dtype": "Float64",
+        "missing": 2
+      }
+    },
+    "license": null,
+    "retrieved": null,
+    "curation_script": null,
+    "exclusions": null,
+    "units": null,
+    "known_biases": null
+  },
+  "dutchboys": {
+    "summary": "Body mass index against age for 7294 Dutch boys (2 variables).",
+    "provenance_note": "From the Fourth Dutch Growth Study (Fredriks et al., 2000), distributed via R package ``gamlss.data`` as ``dbbmi``, where it is the running example for the LMS centile method.",
+    "rows": 7294,
+    "columns": {
+      "age": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "bmi": {
+        "dtype": "Float64",
+        "missing": 0
+      }
+    },
+    "license": null,
+    "retrieved": null,
+    "curation_script": null,
+    "exclusions": null,
+    "units": null,
+    "known_biases": null
+  },
+  "fdic_bank_yearend": {
+    "summary": "FDIC BankFind year-end institution financials, 2017–2025.",
+    "provenance_note": "A frozen 44,828-row extract of December Call Reports retrieved on 2026-08-21 from the FDIC BankFind Suite ``financials`` endpoint. One row identifies a bank (``CERT``) and report date (``REPDTE``). Balances and income amounts, including ``ASSET``, ``DEP``, ``DEPI`` and ``EDEP``, are reported in thousands of US dollars. ``OFFDOM`` counts domestic offices. The extract is unfiltered; case studies apply their own complete-case and response-range rules. ``100 * EDEP / DEPI`` is a derived annual deposit interest expense rate in percent, not a column in this raw extract. See :func:`data_card` for source and missingness by column.",
+    "rows": 44828,
+    "columns": {
+      "NAME": {
+        "dtype": "String",
+        "missing": 0
+      },
+      "STALP": {
+        "dtype": "String",
+        "missing": 0
+      },
+      "CERT": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "REPDTE": {
+        "dtype": "String",
+        "missing": 0
+      },
+      "ASSET": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "DEP": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "DEPI": {
+        "dtype": "Int64",
+        "missing": 153
+      },
+      "DEPNI": {
+        "dtype": "Int64",
+        "missing": 153
+      },
+      "EDEP": {
+        "dtype": "Int64",
+        "missing": 153
+      },
+      "EINTEXP": {
+        "dtype": "Int64",
+        "missing": 153
+      },
+      "LNLSNET": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "BRO": {
+        "dtype": "Int64",
+        "missing": 153
+      },
+      "OFFDOM": {
+        "dtype": "Int64",
+        "missing": 0
+      }
+    },
+    "license": null,
+    "retrieved": "2026-08-21",
+    "curation_script": "tools/curate_fdic_bank_yearend.py",
+    "exclusions": "None in the packaged raw extract; applications decide complete-case and response-range exclusions.",
+    "units": "ASSET, DEP, DEPI, DEPNI, EDEP, EINTEXP, LNLSNET and BRO are thousands of US dollars; OFFDOM is a count of domestic offices; REPDTE is YYYYMMDD.",
+    "known_biases": "Year-end reports only, 2017–2025; repeated banks are dependent and the extract covers FDIC-insured institutions rather than every US financial firm."
+  },
+  "hip_county": {
+    "summary": "County life expectancy and local characteristics (US, 2001-2014).",
+    "provenance_note": "The county-level counterpart of :func:`hip_cz`, built from Health Inequality Project Tables 11 and 12. Each row contains race-adjusted expected age at death at 40 for the bottom and top income quartiles by gender, their published standard errors and cell counts, 39 local-area covariates, county population and identifiers, census division, and the centroid of the county's commuting zone. The coordinates are therefore suitable only for the study's CZ-resolution spatial adjustment; use a county boundary file to map county results.",
+    "rows": 935,
+    "columns": {
+      "cty": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "county_name": {
+        "dtype": "String",
+        "missing": 0
+      },
+      "cty_pop2000": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "cz": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "stateabbrv": {
+        "dtype": "String",
+        "missing": 0
+      },
+      "le_raceadj_q1_M": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "le_raceadj_q1_F": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "le_raceadj_q4_M": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "le_raceadj_q4_F": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "sd_le_raceadj_q1_M": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "sd_le_raceadj_q1_F": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "sd_le_raceadj_q4_M": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "sd_le_raceadj_q4_F": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "count_q1_M": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "count_q1_F": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "count_q4_M": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "count_q4_F": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "cur_smoke_q1": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "bmi_obese_q1": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "exercise_any_q1": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "puninsured2010": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "reimb_penroll_adj10": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "mort_30day_hosp_z": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "med_prev_qual_z": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "primcarevis_10": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "diab_eyeexam_10": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "mammogram_10": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "amb_disch_per1000_10": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "gini99": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "poor_share": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "inc_share_1perc": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "frac_middleclass": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cs00_seg_inc": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cs00_seg_inc_pov25": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cs00_seg_inc_aff75": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cs_race_theil_2000": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "scap_ski90pcm": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "rel_tot": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "crime_total": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "unemp_rate": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cs_labforce": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cs_elf_ind_man": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "pop_d_2000_1980": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cs_educ_ba": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "dropout_r": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "ccd_pup_tch_ratio": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "ccd_exp_tot": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "mig_inflow": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "mig_outflow": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cs_frac_black": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cs_frac_hisp": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cs_born_foreign": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "pop_density": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "subcty_exp_pc": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "taxrate": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "tax_st_diff_top20": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "lon": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "lat": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "census_div": {
+        "dtype": "Int64",
+        "missing": 0
+      }
+    },
+    "license": null,
+    "retrieved": null,
+    "curation_script": null,
+    "exclusions": null,
+    "units": null,
+    "known_biases": null
+  },
+  "hip_cz": {
+    "summary": "Commuting-zone life expectancy and local characteristics (US, 2001-2014).",
+    "provenance_note": "The Health Inequality Project merge behind Chetty, Stepner, Abraham, Lin, Scuderi, Turner, Bergeron & Cutler (JAMA 2016, 315:1750-1766): race-adjusted expected age at death at 40 for the bottom (Q1) and top (Q4) income quartiles, by gender, joined to 39 area-level covariates in nine groups (health behaviours, healthcare access and quality, income inequality, segregation, social cohesion, labour market, education, migration and composition, local government), CZ population (2000), person counts per gender-quartile cell, census division, and the CZ centroid longitude and latitude (vertex mean of the 1990 CZ polygon's largest ring). The 595 rows are the commuting zones above the 25,000-population reporting cutoff the paper's CZ-level tables use; covariates are missing for some CZs, and the complete-case analysis sample is 437.",
+    "rows": 595,
+    "columns": {
+      "cz": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "czname": {
+        "dtype": "String",
+        "missing": 0
+      },
+      "pop2000": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "stateabbrv": {
+        "dtype": "String",
+        "missing": 0
+      },
+      "le_raceadj_q1_F": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "le_raceadj_q1_M": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "le_raceadj_q4_F": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "le_raceadj_q4_M": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "sd_le_raceadj_q1_F": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "sd_le_raceadj_q1_M": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "sd_le_raceadj_q4_F": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "sd_le_raceadj_q4_M": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "count_q1_M": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "count_q1_F": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "count_q4_M": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "count_q4_F": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "cur_smoke_q1": {
+        "dtype": "Float64",
+        "missing": 5
+      },
+      "bmi_obese_q1": {
+        "dtype": "Float64",
+        "missing": 5
+      },
+      "exercise_any_q1": {
+        "dtype": "Float64",
+        "missing": 5
+      },
+      "puninsured2010": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "reimb_penroll_adj10": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "mort_30day_hosp_z": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "med_prev_qual_z": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "primcarevis_10": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "diab_eyeexam_10": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "mammogram_10": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "amb_disch_per1000_10": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "gini99": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "poor_share": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "inc_share_1perc": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "frac_middleclass": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cs00_seg_inc": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cs00_seg_inc_pov25": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cs00_seg_inc_aff75": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cs_race_theil_2000": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "scap_ski90pcm": {
+        "dtype": "Float64",
+        "missing": 7
+      },
+      "rel_tot": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "crime_total": {
+        "dtype": "Float64",
+        "missing": 27
+      },
+      "unemp_rate": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cs_labforce": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cs_elf_ind_man": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "pop_d_2000_1980": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cs_educ_ba": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "dropout_r": {
+        "dtype": "Float64",
+        "missing": 103
+      },
+      "ccd_pup_tch_ratio": {
+        "dtype": "Float64",
+        "missing": 28
+      },
+      "ccd_exp_tot": {
+        "dtype": "Float64",
+        "missing": 2
+      },
+      "mig_inflow": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "mig_outflow": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cs_frac_black": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cs_frac_hisp": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cs_born_foreign": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "pop_density": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "subcty_exp_pc": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "taxrate": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "tax_st_diff_top20": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "lon": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "lat": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "census_div": {
+        "dtype": "Int64",
+        "missing": 0
+      }
+    },
+    "license": null,
+    "retrieved": null,
+    "curation_script": null,
+    "exclusions": null,
+    "units": null,
+    "known_biases": null
+  },
+  "india": {
+    "summary": "Child undernutrition in India (4000 observations, 7 variables).",
+    "provenance_note": "Distributed via R package gamboostLSS. Used in the gamboostLSS tutorial for GaussianLSS and spatial (bmrf) modeling. Each row is a mother-child pair; the response is child stunting z-score.",
+    "rows": 4000,
+    "columns": {
+      "stunting": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cbmi": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cage": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "mbmi": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "mage": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "mcdist": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "mcdist_lab": {
+        "dtype": "String",
+        "missing": 0
+      }
+    },
+    "license": null,
+    "retrieved": null,
+    "curation_script": null,
+    "exclusions": null,
+    "units": null,
+    "known_biases": null
+  },
+  "iris": {
+    "summary": "Anderson's Iris data (150 observations, 5 variables).",
+    "provenance_note": "The classic three-class classification dataset from R's built-in `iris`. Used here for Multinomial boosting examples.",
+    "rows": 150,
+    "columns": {
+      "Sepal.Length": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "Sepal.Width": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "Petal.Length": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "Petal.Width": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "Species": {
+        "dtype": "String",
+        "missing": 0
+      }
+    },
+    "license": null,
+    "retrieved": null,
+    "curation_script": null,
+    "exclusions": null,
+    "units": null,
+    "known_biases": null
+  },
+  "motorcycle": {
+    "summary": "Head acceleration in a simulated motorcycle crash (133 observations).",
+    "provenance_note": "From Silverman (1985), \"Some aspects of the spline smoothing approach to non-parametric regression curve fitting\", J. R. Statist. Soc. B 47(1), 1-52, and distributed with R's ``MASS`` package as ``mcycle``. It is the standard benchmark for nonparametric curve fitting.",
+    "rows": 133,
+    "columns": {
+      "times": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "accel": {
+        "dtype": "Float64",
+        "missing": 0
+      }
+    },
+    "license": null,
+    "retrieved": null,
+    "curation_script": null,
+    "exclusions": null,
+    "units": null,
+    "known_biases": null
+  },
+  "munich_rent": {
+    "summary": "Munich rent survey, 1999 (3082 apartments, 9 variables).",
+    "provenance_note": "The city of Munich's official rent survey (*Mietspiegel*), distributed via R package ``gamlss.data`` as ``rent99``. Landlords and tenants use the published survey to establish what a legally defensible rent is for a given apartment, so the model output is the deliverable.",
+    "rows": 3082,
+    "columns": {
+      "rent": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "rentsqm": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "area": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "yearc": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "location": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "bath": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "kitchen": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "cheating": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "district": {
+        "dtype": "Int64",
+        "missing": 0
+      }
+    },
+    "license": null,
+    "retrieved": null,
+    "curation_script": null,
+    "exclusions": null,
+    "units": "rent: monthly net rent in euros; rentsqm: euros per square metre; area: square metres; yearc: calendar year; location, bath, kitchen, cheating: 0/1 codes; district: Munich postal district code. Upstream gamlss.data::rent99 documents rent and rentsqm in euros.",
+    "known_biases": null
+  },
+  "munich_rent_adjacency": {
+    "summary": "Which districts in :func:`munich_rent` border which.",
+    "provenance_note": "One row per adjacent pair, with columns ``a`` and ``b`` holding district codes. 685 pairs over 336 districts; each unordered pair appears once.",
+    "rows": 685,
+    "columns": {
+      "a": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "b": {
+        "dtype": "Int64",
+        "missing": 0
+      }
+    },
+    "license": null,
+    "retrieved": null,
+    "curation_script": null,
+    "exclusions": null,
+    "units": null,
+    "known_biases": null
+  },
+  "munich_rent_districts": {
+    "summary": "Centroid coordinates for the 336 districts in :func:`munich_rent`.",
+    "provenance_note": "Columns: ``district`` (matching the column of the same name in ``munich_rent``), and ``x`` / ``y``, the mean of the district's boundary vertices in the Gauss-Krüger projection metres that the original polygons use. These are the coordinates for a `bspatial` surface.",
+    "rows": 336,
+    "columns": {
+      "district": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "x": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "y": {
+        "dtype": "Float64",
+        "missing": 0
+      }
+    },
+    "license": null,
+    "retrieved": null,
+    "curation_script": null,
+    "exclusions": null,
+    "units": null,
+    "known_biases": null
+  },
+  "munich_rent_polygons": {
+    "summary": "District boundary outlines for :func:`munich_rent`, for drawing maps.",
+    "provenance_note": "Columns: ``district``, ``order`` (vertex sequence within a district), and ``x`` / ``y`` in the same projected metres as :func:`munich_rent_districts`. Draw one filled polygon per district with the vertices in ``order``.",
+    "rows": 5065,
+    "columns": {
+      "district": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "order": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "x": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "y": {
+        "dtype": "Int64",
+        "missing": 0
+      }
+    },
+    "license": null,
+    "retrieved": null,
+    "curation_script": null,
+    "exclusions": null,
+    "units": null,
+    "known_biases": null
+  },
+  "polio": {
+    "summary": "Monthly US poliomyelitis cases, 1970-1983 (168 observations).",
+    "provenance_note": "Cases reported to the US Centers for Disease Control, distributed with R package ``gamlss.data`` as ``polio``, a monthly time series; the calendar is made explicit here as ``year``, ``month`` and a first-of-month ``date`` column (a Polars ``Date``), which orders the rows the way the series is read. The series was analysed by Zeger (1988), Zeger and Qaqish (1988), Li (1994), Davis et al. (1999) and Benjamin et al. (2003); Zeger's finding is evidence of a decrease in the polio infection rate across the vaccination era.",
+    "rows": 168,
+    "columns": {
+      "year": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "month": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "date": {
+        "dtype": "Date",
+        "missing": 0
+      },
+      "cases": {
+        "dtype": "Int64",
+        "missing": 0
+      }
+    },
+    "license": null,
+    "retrieved": null,
+    "curation_script": null,
+    "exclusions": null,
+    "units": null,
+    "known_biases": null
+  },
+  "resp_inf": {
+    "summary": "Respiratory infection in Indonesian preschool children (cohort).",
+    "provenance_note": "The Sommer cohort: 275 children examined on up to six consecutive quarters for the presence of respiratory infection, with xerophthalmia (vitamin A deficiency) recorded at each exam, age in months centered at 36, height-for-age centered at 90% of the NCHS standard, a stunting indicator, and the annual seasonal cycle as a season code plus cosine and sine terms. Distributed with R package ``gamlss.data`` as ``respInf``; analysed by Zeger and Karim (1991), Diggle et al. (2002) and Skrondal and Rabe-Hesketh (2004), among others. The original study is Sommer et al. (1983).",
+    "rows": 1200,
+    "columns": {
+      "child": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "infection": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "resp": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "age": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "age_first": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "xero": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "cosine": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "sine": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "female": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "height": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "stunted": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "round": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "month": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "season": {
+        "dtype": "Int64",
+        "missing": 0
+      }
+    },
+    "license": null,
+    "retrieved": null,
+    "curation_script": null,
+    "exclusions": null,
+    "units": null,
+    "known_biases": null
+  },
+  "usmacro": {
+    "summary": "US quarterly macro aggregates, 1959Q1-2009Q3 (203 observations).",
+    "provenance_note": "The extract distributed with ``statsmodels`` as ``statsmodels.datasets.macrodata``, itself assembled from FRED in 2009. It is packaged here as a frozen vintage: the same FRED series pulled today carry three later benchmark revisions, so a rerun against current FRED would not reproduce published estimates made on this extract.",
+    "rows": 203,
+    "columns": {
+      "year": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "quarter": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "realgdp": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "realcons": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "realdpi": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "cpi": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "m1": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "tbilrate": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "unemp": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "pop": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "infl": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "realint": {
+        "dtype": "Float64",
+        "missing": 0
+      }
+    },
+    "license": null,
+    "retrieved": null,
+    "curation_script": null,
+    "exclusions": null,
+    "units": null,
+    "known_biases": null
+  },
+  "wpbc": {
+    "summary": "Wisconsin Prognostic Breast Cancer data (198 patients, 34 variables).",
+    "provenance_note": "From the UCI ML repository, distributed via R package TH.data. Used in the mboost illustrations vignette for Binomial and CoxPH boosting examples.",
+    "rows": 198,
+    "columns": {
+      "time": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "status": {
+        "dtype": "Int64",
+        "missing": 0
+      },
+      "mean_radius": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "mean_texture": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "mean_perimeter": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "mean_area": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "mean_smoothness": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "mean_compactness": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "mean_concavity": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "mean_concavepoints": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "mean_symmetry": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "mean_fractaldim": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "SE_radius": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "SE_texture": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "SE_perimeter": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "SE_area": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "SE_smoothness": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "SE_compactness": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "SE_concavity": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "SE_concavepoints": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "SE_symmetry": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "SE_fractaldim": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "worst_radius": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "worst_texture": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "worst_perimeter": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "worst_area": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "worst_smoothness": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "worst_compactness": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "worst_concavity": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "worst_concavepoints": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "worst_symmetry": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "worst_fractaldim": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "tsize": {
+        "dtype": "Float64",
+        "missing": 0
+      },
+      "pnodes": {
+        "dtype": "Int64",
+        "missing": 4
+      }
+    },
+    "license": null,
+    "retrieved": null,
+    "curation_script": null,
+    "exclusions": null,
+    "units": null,
+    "known_biases": null
+  }
+}

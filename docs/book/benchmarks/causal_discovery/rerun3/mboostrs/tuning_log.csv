@@ -1,0 +1,38 @@
+config_id,stage,settings,validation_score,score_meaning,kept,note
+C01,effect,"aipw ATE; smooth=TRUE; tune=FALSE; mstop=150; no clipping; no eligibility feature; seed 1",ATE 6179.6 (IF 90% interval 4726.3 to 7632.8),no held-out score for effect fits,FALSE,fixed stopping iteration; propensity reached 1e-5 in the tail
+C02,effect,"aipw ATE; smooth=TRUE; tune=TRUE; clip (0.01,0.99); no eligibility feature; seed 1",ATE 5859.1 (4377.6 to 7340.6),no held-out score for effect fits,FALSE,propensity stopping ran to max_mstop=1600
+C03,effect,"as C02, seed 2",ATE 5645.0 (4178.2 to 7111.9),no held-out score for effect fits,FALSE,seed sensitivity of C02
+C04,effect,"aipw ATE; smooth=TRUE; tune=FALSE; mstop=150; clip (0.01,0.99); no eligibility feature",ATE 6055.1 (4801.7 to 7308.4),no held-out score for effect fits,FALSE,clipping changed 212 rows
+C05,effect,"aipw ATE; smooth=FALSE; tune=TRUE; clip (0.01,0.99); no eligibility feature; seed 1",ATE 4789.9 (3376.0 to 6203.7),no held-out score for effect fits,FALSE,linear baseline without the eligibility feature
+C06,effect,"aipw ATE with target=overlap; smooth=TRUE; tune=TRUE; clip (0.01,0.99)",overlap-weighted ATE 4128.5 (3471.3 to 4785.7),no held-out score for effect fits,FALSE,different estimand (weights e(1-e)); kept as a sensitivity only
+C07,nuisance,"propensity, linear terms, no eligibility feature; binomial CV, 5 folds, mstop 400",0.46752,binomial deviance per row, lower is better,FALSE,
+C08,nuisance,"propensity, spline (df=4) terms, no eligibility feature; mstop 400",0.46672,binomial deviance per row,FALSE,
+C09,nuisance,"propensity, spline terms plus btree(prior_earnings, months_unemployed); mstop 400",0.45536,binomial deviance per row,FALSE,best of the no-feature shapes; aipw cannot take a btree term
+C10,nuisance,"propensity, linear terms plus eligibility step feature prior_above_cut; mstop 400",0.45242,binomial deviance per row,TRUE,used in the final propensity model (linear shape)
+C11,nuisance,"propensity, spline terms plus eligibility step feature; mstop 400",0.45130,binomial deviance per row,FALSE,spline not chosen: the outcome model chose the linear shape and aipw has one shape switch
+C12,nuisance,"propensity, spline terms plus step feature plus btree; mstop 400",0.45078,binomial deviance per row,FALSE,not expressible in aipw
+C13,nuisance,"outcome model, linear terms plus step feature, no enrolment term; Gaussian CV, mstop 150",3.3574e8,out-of-fold MSE on responders,FALSE,discarded: the model omitted the treatment indicator and does not answer the question
+C14,nuisance,"outcome model, linear terms plus step feature plus enrolment (no interactions); mstop 150",3.33201e8,out-of-fold MSE on responders,FALSE,
+C15,nuisance,"outcome model, linear terms plus enrolment plus enrolment interactions for prior, education, age; mstop 150",3.32889e8,out-of-fold MSE on responders,TRUE,chosen over the spline shape (C16) by the rule in run.py
+C16,nuisance,"outcome model, spline (df=4) terms plus enrolment; mstop 150",3.37728e8,out-of-fold MSE on responders,FALSE,lost to C15; spline fits worsen with more steps (mstop 400: 3.44e8)
+C17,nuisance,"outcome model, spline terms plus enrolment interactions; mstop 150",3.37739e8,out-of-fold MSE on responders,FALSE,
+C18,effect,"final: aipw ATE; smooth=FALSE (C15 shape); tune=TRUE; repeats=1; clip (0.01,0.99); eligibility feature; seed 1",ATE 4930.2 (3433.1 to 6427.3),no held-out score for effect fits,TRUE,reported ATE
+C19,effect,"as C18, seed 2",ATE 4871.7 (3390.7 to 6352.6),no held-out score for effect fits,FALSE,seed check
+C20,effect,"as C18, seed 3",ATE 4875.0 (3322.4 to 6427.6),no held-out score for effect fits,FALSE,seed check
+C21,effect,"as C18 with repeats=3 (three cross-fitting partitions averaged)",ATE 4876.5 (3388.3 to 6364.6),no held-out score for effect fits,FALSE,used in the first full runs; repeats=1 kept for refit.py run time
+C22,effect,"as C18: aipw ATT",ATT 3773.6 (3213.4 to 4333.8),no held-out score for effect fits,TRUE,reported ATT
+C23,effect,"as C18: aipw ATE of employment (binary outcome, risk difference)",0.0983 (0.0768 to 0.1199),no held-out score for effect fits,TRUE,reported EMP_ATE
+C24,cut,"eligibility cut: one-split step on prior_earnings, chosen by Bernoulli log-likelihood over the 5th to 95th percentile grid",cut 39900; enrolment 0.417 at or below, 0.0099 above,Bernoulli log-likelihood,TRUE,used as prior_above_cut
+C25,heterogeneity,"effect_model terms=smooth, all nine covariates as modifiers, full training file",constant minus smooth R-loss gain -34543 (SE 191456),out-of-fold R-loss gain,FALSE,no detectable heterogeneity; R-learner pseudo-outcome clipped at +-3.9e6
+C26,heterogeneity,"effect_model terms=auto (smooth, stumps, joint), full training file",chosen stumps; gain 3002 (SE 42869),out-of-fold R-loss gain,FALSE,
+C27,heterogeneity,"effect_model terms=smooth, rows with prior_earnings <= 40000 only",gain 98944 (SE 239607),out-of-fold R-loss gain,FALSE,
+C28,heterogeneity,"boosted second stage on overlap rows, 8 candidates, term_report, pseudo-outcome from spline ATE scores",prior_earnings earns 1.54e6 (SE 5.7e5); education earns -2.6e5,term_report gain on CV folds,FALSE,pseudo-outcome noisy in the tails
+C29,heterogeneity,"boosted second stage on overlap rows, 8 candidates, term_report, pseudo-outcome from C18 (one fold seed)",education earns 2.0e5 (SE 6.7e4); prior_earnings 2.5e5 (SE 1.4e5),term_report gain on CV folds,FALSE,single-seed screen; replaced by the stability rule in C30
+C30,heterogeneity,"term_report, keep a term only when its gain exceeds 2 SE on each of three fold seeds",none kept,rule,FALSE,too strict: the boosted term test has low power on this pseudo-outcome; replaced by C34
+C31,heterogeneity,"REML refit of all eight candidates jointly on overlap rows (pseudo-outcome repeats=3)",p education 0.054; prior 0.16; age 0.12; months 0.49,REML term p-value,FALSE,
+C32,heterogeneity,"REML refit, linear education and prior earnings",p education 0.0098; prior 0.065,REML term p-value,FALSE,prior earnings weakens once education is in the model
+C33,heterogeneity,"REML refit, linear education alone",p education 0.0025,REML term p-value,TRUE,
+C34,heterogeneity,"univariate linear REML term test per candidate; keep when p < 0.05/8 = 0.00625",education 0.00244 KEPT; prior 0.0144; months 0.040; age 0.096; others 0.15-0.31,REML term p-value,TRUE,final rule; education is the only modifier
+C35,roles,"ci_test role tests; region tested as one column through its strings; other region levels not in the conditioning set",region p(enrolment)=3e-5; p(earnings given enrolment)=0.0060,ci_test p-values,FALSE,rejected: the conditioning set omitted the other region levels
+C36,roles,"ci_test role tests with level indicators, other levels conditioned, Bonferroni over levels; alpha 0.05",region treatment_only (p enrolment 0.011, p earnings 0.10),ci_test p-values,TRUE,final labels
+C37,sensitivity,"confounding_benchmark, leave one measured covariate out (prior_earnings, education, months_unemployed)",prior_earnings shift -2342 (3.1 SE); education -7; months -140,shift in ATE,TRUE,used to scale the sensitivity grid

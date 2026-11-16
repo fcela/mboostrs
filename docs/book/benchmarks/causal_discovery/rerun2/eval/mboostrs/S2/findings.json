@@ -1,0 +1,403 @@
+{
+  "library": "mboostrs 0.1.3",
+  "effect_queries": {
+    "ATE": {
+      "estimate": 7058.783185117795,
+      "lower90": 1934.6622483787878,
+      "upper90": 12182.904121856802
+    },
+    "ATT": {
+      "estimate": 3336.319791205795,
+      "lower90": 2046.436804938933,
+      "upper90": 4626.202777472657
+    },
+    "EMP_ATE": {
+      "estimate": 0.06793718223498353,
+      "lower90": 0.026087851852255574,
+      "upper90": 0.1097865126177115
+    },
+    "CATE_educ_lt12": {
+      "estimate": 4278.032213403186,
+      "lower90": 1490.325457399255,
+      "upper90": 7065.738969407117
+    },
+    "CATE_educ_ge16": {
+      "estimate": 15140.94455959303,
+      "lower90": -3232.268452260847,
+      "upper90": 33514.15757144691
+    },
+    "CATE_prior_q1": {
+      "estimate": 2451.0618674155194,
+      "lower90": 1032.6979840215579,
+      "upper90": 3869.4257508094806
+    },
+    "CATE_prior_q4": {
+      "estimate": 16776.801647298627,
+      "lower90": null,
+      "upper90": null
+    },
+    "CATE_age_lt25": {
+      "estimate": 3877.162897815725,
+      "lower90": 1390.062068834808,
+      "upper90": 6364.263726796642
+    }
+  },
+  "roles": {
+    "age": "irrelevant",
+    "education": "outcome_only",
+    "experience": "outcome_only",
+    "ethnicity": "irrelevant",
+    "smsa": "irrelevant",
+    "region": "instrument",
+    "parttime": "irrelevant",
+    "prior_earnings": "confounder",
+    "months_unemployed": "irrelevant",
+    "distance_km": "instrument",
+    "caseworker_note_len": "irrelevant",
+    "enrolled": "treatment",
+    "certificate": "mediator",
+    "responded": "post_treatment_selection",
+    "hours_post": "mediator",
+    "earnings_post": "outcome"
+  },
+  "adjustment_set": [
+    "age",
+    "education",
+    "ethnicity",
+    "smsa",
+    "parttime",
+    "prior_earnings",
+    "months_unemployed",
+    "caseworker_note_len"
+  ],
+  "effect_modifiers": [],
+  "channels": {
+    "employment": true,
+    "earnings_if_employed": false
+  },
+  "limited_overlap": [
+    {
+      "description": "0 of 1500 training rows (0.0%) have estimated enrolment probability outside (0.02, 0.98); the effect for those rows rests on the outcome model rather than on comparable enrolled and non-enrolled applicants",
+      "variable": "prior_earnings"
+    }
+  ],
+  "warnings": [
+    "experience equals age - education - 6 in every training row, so it is left out of the design as an exact function of age and education",
+    "outcome_missing='ipw': 223 training outcomes are missing (survey not answered)",
+    "adjustment set excludes instrument-role columns: ['south', 'west', 'midwest', 'distance_km']",
+    "causal_trap_report advisory: 'earnings_post' is missing for 223 rows; the estimate then covers the 1277 rows with an observed outcome, a subpopulation of the spec's target",
+    "causal_trap_report advisory: level(s) [1.0] of 'education' appear under only one treatment arm; within those levels the contrast is not observed, and the estimate rests on the levels that are",
+    "causal_trap_report advisory: level(s) [12.0, 14.0] of 'months_unemployed' appear under only one treatment arm; within those levels the contrast is not observed, and the estimate rests on the levels that are",
+    "causal_trap_report advisory: no column in the frame is a timestamp, so time_zero ('enrolment decision at application') and the follow-up window ('earnings in the year after application') stay a modeler-stated claim: nothing in these rows can check them",
+    "19 distinct library warnings were raised during the run; the first 19 follow",
+    "2 learner(s) are asked to predict outside the range they were fitted on. bbs(__ci_given9), covariate __ci_given9: 1 above 92.4 (worst 0.26 training ranges out); bbs(__ci_given7), covariate __ci_given7: 1 above 159460 (worst 0.13 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.26 training ranges out that is an ass",
+    "1 learner(s) are asked to predict outside the range they were fitted on. bbs(__ci_given8), covariate __ci_given8: 4 above 12 (worst 0.17 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.17 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect",
+    "2 learner(s) are asked to predict outside the range they were fitted on. bbs(__ci_given7), covariate __ci_given7: 1 above 159460 (worst 0.13 training ranges out); bbs(__ci_given8), covariate __ci_given8: 1 above 13 (worst 0.077 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.13 training ranges out that is an assu",
+    "1 learner(s) are asked to predict outside the range they were fitted on. bbs(__ci_given9), covariate __ci_given9: 1 above 92.4 (worst 0.26 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.26 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effe",
+    "2 learner(s) are asked to predict outside the range they were fitted on. bbs(__ci_given8), covariate __ci_given8: 1 above 159460 (worst 0.13 training ranges out); bbs(__ci_given9), covariate __ci_given9: 1 above 13 (worst 0.077 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.13 training ranges out that is an assu",
+    "2 learner(s) are asked to predict outside the range they were fitted on. bbs(__ci_given10), covariate __ci_given10: 1 above 92.4 (worst 0.26 training ranges out); bbs(__ci_given8), covariate __ci_given8: 1 above 159460 (worst 0.13 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.26 training ranges out that is an a",
+    "1 learner(s) are asked to predict outside the range they were fitted on. bbs(__ci_given10), covariate __ci_given10: 1 above 92.4 (worst 0.26 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.26 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the ef",
+    "1 learner(s) are asked to predict outside the range they were fitted on. bbs(months_unemployed), covariate months_unemployed: 1 above 13 (worst 0.077 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.077 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to h",
+    "1 learner(s) are asked to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 1 above 159460 (worst 0.13 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.13 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold ",
+    "2 learner(s) are asked to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 2 below 3860 and 2 above 135420 (worst 0.18 training ranges out); bbs(education), covariate education: 1 below 1 (worst 0.059 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.18 training ranges o",
+    "aipw: 3 propensity bin(s) hold more than 5% of the all rows but fewer than 20 rows of an arm. The outcome model of that arm is fitted from too few rows there and extrapolates, so the estimate and its interval are unreliable for those rows. (1) bin 0 with propensity in [0.01594, 0.04748] holds 10.0% of the all rows and only 4 treated rows (counts: 4 treated, 146 control); covariates age in [25, 65]",
+    "1 learner(s) are asked to predict outside the range they were fitted on. bbs(age), covariate age: 1 above 67 (worst 0.061 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.061 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect flat outside ",
+    "2 learner(s) are asked to predict outside the range they were fitted on. bbs(months_unemployed), covariate months_unemployed: 2 above 8 (worst 0.62 training ranges out); bbs(education), covariate education: 1 below 5 (worst 0.077 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.62 training ranges out that is an as",
+    "3 learner(s) are asked to predict outside the range they were fitted on. bbs(prior_earnings), covariate prior_earnings: 1 below 3290 and 10 above 82830 (worst 1.2 training ranges out); bbs(months_unemployed), covariate months_unemployed: 1 above 10 (worst 0.2 training ranges out); bbs(education), covariate education: 1 below 5 (worst 0.15 training ranges out). A spline basis continues by its edge ",
+    "aipw: 5 propensity bin(s) hold more than 5% of the all rows but fewer than 20 rows of an arm. The outcome model of that arm is fitted from too few rows there and extrapolates, so the estimate and its interval are unreliable for those rows. (1) bin 0 with propensity in [0.03257, 0.06942] holds 10.1% of the all rows and only 4 treated rows (counts: 4 treated, 87 control); covariates age in [25, 65];",
+    "terms='smooth' does not beat a constant effect by more than its standard error. Out-of-fold R-loss 3.16952e+08 for 'smooth' against 3.0319e+08 for the constant effect (the ATE), a difference of -1.3762e+07 with standard error 7.82703e+06. The modifiers add no reliable heterogeneity at this sample size: report the constant effect from aipw, or pass terms= to name a candidate explicitly.",
+    "1 fold prediction in this call asked 2 learner(s) to predict outside the range they were fitted on. bbs(prior_earnings, df=4), covariate prior_earnings: 1 above 159460 (worst 0.13 training ranges out); bbs(months_unemployed, df=4), covariate months_unemployed: 1 above 13 (worst 0.077 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not",
+    "1 learner(s) are asked to predict outside the range they were fitted on. bbs(education), covariate education: 1 below 1 (worst 0.059 training ranges out). A spline basis continues by its edge slope outside its boundary knots, which the fit does not constrain -- at 0.059 training ranges out that is an assumption, not an estimate. Pass extrapolation='allow' to accept it, 'clip' to hold the effect fl",
+    "aipw: 2 propensity bin(s) hold more than 5% of the all rows but fewer than 20 rows of an arm. The outcome model of that arm is fitted from too few rows there and extrapolates, so the estimate and its interval are unreliable for those rows. (1) bin 0 with propensity in [0.07849, 0.1353] holds 10.0% of the all rows and only 15 treated rows (counts: 15 treated, 135 control); covariates age in [33, 65",
+    "14 test rows lie outside a modifier's training range; predicted with extrapolation='clip'"
+  ],
+  "screen": [
+    {
+      "column": "age",
+      "p_treatment": 0.017717901919087783,
+      "p_outcome_given_treatment": 0.7691006091583023,
+      "role": "irrelevant"
+    },
+    {
+      "column": "education",
+      "p_treatment": 0.678040239148465,
+      "p_outcome_given_treatment": 1.4695946305443095e-11,
+      "role": "outcome_only"
+    },
+    {
+      "column": "afam",
+      "p_treatment": 0.03839707853945757,
+      "p_outcome_given_treatment": 0.12450491740311143,
+      "role": "irrelevant"
+    },
+    {
+      "column": "smsa_yes",
+      "p_treatment": 0.5409929878935289,
+      "p_outcome_given_treatment": 0.5444500416646194,
+      "role": "irrelevant"
+    },
+    {
+      "column": "south",
+      "p_treatment": 0.0006293956549907958,
+      "p_outcome_given_treatment": 0.37050783602813453,
+      "role": "instrument"
+    },
+    {
+      "column": "west",
+      "p_treatment": 0.804572236343591,
+      "p_outcome_given_treatment": 0.6491466492792868,
+      "role": "irrelevant"
+    },
+    {
+      "column": "midwest",
+      "p_treatment": 0.8185969128639975,
+      "p_outcome_given_treatment": 0.9533472289240849,
+      "role": "irrelevant"
+    },
+    {
+      "column": "pt_yes",
+      "p_treatment": 0.9516138959180468,
+      "p_outcome_given_treatment": 0.5757205827834839,
+      "role": "irrelevant"
+    },
+    {
+      "column": "prior_earnings",
+      "p_treatment": 4.719708832785802e-29,
+      "p_outcome_given_treatment": 3.434705419235207e-36,
+      "role": "confounder"
+    },
+    {
+      "column": "months_unemployed",
+      "p_treatment": 0.15029568832414444,
+      "p_outcome_given_treatment": 0.0559231993963108,
+      "role": "irrelevant"
+    },
+    {
+      "column": "distance_km",
+      "p_treatment": 2.0609422320682845e-05,
+      "p_outcome_given_treatment": 0.16450531078039218,
+      "role": "instrument"
+    },
+    {
+      "column": "caseworker_note_len",
+      "p_treatment": 0.9966402133136527,
+      "p_outcome_given_treatment": 0.8701630139519525,
+      "role": "irrelevant"
+    }
+  ],
+  "overlap": {
+    "share_outside": 0.0,
+    "bounds": [
+      0.02,
+      0.98
+    ],
+    "estimate_inside": 7058.783185117789,
+    "standard_error_inside": 3115.244331032616,
+    "n_inside": 1500
+  },
+  "ranking": {
+    "n_test": 4000,
+    "n_inside_overlap": 3998,
+    "n_chosen": 800,
+    "n_outside_overlap": 2,
+    "mean_cate_chosen": 11918.543454330207,
+    "shortfall": 0
+  },
+  "nuisance_mstop_fixed": 50,
+  "dr_mstop": 80,
+  "heterogeneity_gate": {
+    "gain": 23307305.551564686,
+    "standard_error": 10306867.535611533,
+    "passes": true
+  },
+  "sensitivity": {
+    "omit_one_covariate": [
+      {
+        "omitted_covariate": "age",
+        "full_estimate": 7058.783185117795,
+        "omitted_estimate": 7152.698937342553,
+        "estimate_shift": 93.91575222475785,
+        "absolute_shift": 93.91575222475785,
+        "shift_in_full_standard_errors": 0.030147154523069927,
+        "omitted_propensity_min": 0.02874166423412058,
+        "omitted_propensity_max": 0.8324514149508443,
+        "benchmark": "leave_one_measured_covariate_out"
+      },
+      {
+        "omitted_covariate": "education",
+        "full_estimate": 7058.783185117795,
+        "omitted_estimate": 7293.723717842923,
+        "estimate_shift": 234.94053272512792,
+        "absolute_shift": 234.94053272512792,
+        "shift_in_full_standard_errors": 0.07541640647083749,
+        "omitted_propensity_min": 0.03212781002848543,
+        "omitted_propensity_max": 0.8400914024001209,
+        "benchmark": "leave_one_measured_covariate_out"
+      },
+      {
+        "omitted_covariate": "afam",
+        "full_estimate": 7058.783185117795,
+        "omitted_estimate": 7255.463339750985,
+        "estimate_shift": 196.6801546331899,
+        "absolute_shift": 196.6801546331899,
+        "shift_in_full_standard_errors": 0.06313474441601696,
+        "omitted_propensity_min": 0.029774906759567604,
+        "omitted_propensity_max": 0.7948183543592592,
+        "benchmark": "leave_one_measured_covariate_out"
+      },
+      {
+        "omitted_covariate": "smsa_yes",
+        "full_estimate": 7058.783185117795,
+        "omitted_estimate": 7360.359222655738,
+        "estimate_shift": 301.5760375379432,
+        "absolute_shift": 301.5760375379432,
+        "shift_in_full_standard_errors": 0.09680654404336217,
+        "omitted_propensity_min": 0.032088802111866696,
+        "omitted_propensity_max": 0.8431723129779308,
+        "benchmark": "leave_one_measured_covariate_out"
+      },
+      {
+        "omitted_covariate": "pt_yes",
+        "full_estimate": 7058.783185117795,
+        "omitted_estimate": 7058.783185117795,
+        "estimate_shift": 0.0,
+        "absolute_shift": 0.0,
+        "shift_in_full_standard_errors": 0.0,
+        "omitted_propensity_min": 0.03212781002848543,
+        "omitted_propensity_max": 0.8400914024001209,
+        "benchmark": "leave_one_measured_covariate_out"
+      },
+      {
+        "omitted_covariate": "prior_earnings",
+        "full_estimate": 7058.783185117795,
+        "omitted_estimate": -3369.3592510786316,
+        "estimate_shift": -10428.142436196427,
+        "absolute_shift": 10428.142436196427,
+        "shift_in_full_standard_errors": 3.347455713927836,
+        "omitted_propensity_min": 0.07848646681760632,
+        "omitted_propensity_max": 0.8664657592903694,
+        "benchmark": "leave_one_measured_covariate_out"
+      },
+      {
+        "omitted_covariate": "months_unemployed",
+        "full_estimate": 7058.783185117795,
+        "omitted_estimate": 6862.947783080252,
+        "estimate_shift": -195.83540203754364,
+        "absolute_shift": 195.83540203754364,
+        "shift_in_full_standard_errors": 0.06286357705131583,
+        "omitted_propensity_min": 0.029094314823764265,
+        "omitted_propensity_max": 0.8488129378636249,
+        "benchmark": "leave_one_measured_covariate_out"
+      },
+      {
+        "omitted_covariate": "caseworker_note_len",
+        "full_estimate": 7058.783185117795,
+        "omitted_estimate": 7070.826091947201,
+        "estimate_shift": 12.042906829406093,
+        "absolute_shift": 12.042906829406093,
+        "shift_in_full_standard_errors": 0.0038657984895246436,
+        "omitted_propensity_min": 0.03212781002848543,
+        "omitted_propensity_max": 0.8400914024001209,
+        "benchmark": "leave_one_measured_covariate_out"
+      }
+    ],
+    "assumed_bias_grid": [
+      {
+        "outcome_effect": 500.0,
+        "imbalance": 0.1,
+        "assumed_bias": 50.0,
+        "adjusted_estimate": 7008.783185117795,
+        "changes_sign": false,
+        "lower": 1884.6622483787878,
+        "upper": 12132.904121856802,
+        "interval_includes_zero": false
+      },
+      {
+        "outcome_effect": 500.0,
+        "imbalance": 0.25,
+        "assumed_bias": 125.0,
+        "adjusted_estimate": 6933.783185117795,
+        "changes_sign": false,
+        "lower": 1809.6622483787878,
+        "upper": 12057.904121856802,
+        "interval_includes_zero": false
+      },
+      {
+        "outcome_effect": 500.0,
+        "imbalance": 0.5,
+        "assumed_bias": 250.0,
+        "adjusted_estimate": 6808.783185117795,
+        "changes_sign": false,
+        "lower": 1684.6622483787878,
+        "upper": 11932.904121856802,
+        "interval_includes_zero": false
+      },
+      {
+        "outcome_effect": 1000.0,
+        "imbalance": 0.1,
+        "assumed_bias": 100.0,
+        "adjusted_estimate": 6958.783185117795,
+        "changes_sign": false,
+        "lower": 1834.6622483787878,
+        "upper": 12082.904121856802,
+        "interval_includes_zero": false
+      },
+      {
+        "outcome_effect": 1000.0,
+        "imbalance": 0.25,
+        "assumed_bias": 250.0,
+        "adjusted_estimate": 6808.783185117795,
+        "changes_sign": false,
+        "lower": 1684.6622483787878,
+        "upper": 11932.904121856802,
+        "interval_includes_zero": false
+      },
+      {
+        "outcome_effect": 1000.0,
+        "imbalance": 0.5,
+        "assumed_bias": 500.0,
+        "adjusted_estimate": 6558.783185117795,
+        "changes_sign": false,
+        "lower": 1434.6622483787878,
+        "upper": 11682.904121856802,
+        "interval_includes_zero": false
+      },
+      {
+        "outcome_effect": 2000.0,
+        "imbalance": 0.1,
+        "assumed_bias": 200.0,
+        "adjusted_estimate": 6858.783185117795,
+        "changes_sign": false,
+        "lower": 1734.6622483787878,
+        "upper": 11982.904121856802,
+        "interval_includes_zero": false
+      },
+      {
+        "outcome_effect": 2000.0,
+        "imbalance": 0.25,
+        "assumed_bias": 500.0,
+        "adjusted_estimate": 6558.783185117795,
+        "changes_sign": false,
+        "lower": 1434.6622483787878,
+        "upper": 11682.904121856802,
+        "interval_includes_zero": false
+      },
+      {
+        "outcome_effect": 2000.0,
+        "imbalance": 0.5,
+        "assumed_bias": 1000.0,
+        "adjusted_estimate": 6058.783185117795,
+        "changes_sign": false,
+        "lower": 934.6622483787878,
+        "upper": 11182.904121856802,
+        "interval_includes_zero": false
+      }
+    ]
+  },
+  "earnings_among_employed": {
+    "estimate": 5309.352978667247,
+    "lower90": -1826.0185193339166,
+    "upper90": 12444.72447666841
+  },
+  "runtime_seconds": 6.4
+}

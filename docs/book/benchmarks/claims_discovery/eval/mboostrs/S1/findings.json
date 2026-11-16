@@ -1,0 +1,88 @@
+{
+  "library": "mboostrs 0.1.3",
+  "mean_effects": [
+    {
+      "variable": "housing_median_age",
+      "shape": "threshold_increase",
+      "evidence": "Moving housing_median_age from its 5th to its 95th percentile (10 to 52) changes the expected y by +0.484 (90% interval +0.379 to +0.612). Dropping it from the location model raises out-of-fold NLL by 0.0190 (SE 0.0129). The curve depends on ave_occup: see the interaction entry for the curves at low and high values."
+    },
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "Moving median_income from its 5th to its 95th percentile (1.482 to 6.753) changes the expected y by -0.814 (90% interval -0.922 to -0.719). Dropping it from the location model raises out-of-fold NLL by 0.0276 (SE 0.0080)."
+    },
+    {
+      "variable": "ave_occup",
+      "shape": "decreasing",
+      "evidence": "Moving ave_occup from its 5th to its 95th percentile (1.859 to 4.267) changes the expected y by -0.025 (90% interval -0.062 to +0.007). Dropping it from the location model raises out-of-fold NLL by 0.0064 (SE 0.0104)."
+    }
+  ],
+  "interactions": [
+    {
+      "variables": [
+        "housing_median_age",
+        "ave_occup"
+      ],
+      "evidence": "The effect of housing_median_age depends on ave_occup (varying-coefficient term). Out-of-fold NLL improves by 0.0876 (SE 0.0180) against the additive model. At the 10th percentile of ave_occup (2.065) the 5th-to-95th percentile change in housing_median_age is +0.356 (90% interval +0.279 to +0.451), shape threshold increase; at the 90th percentile of ave_occup (3.908) the 5th-to-95th percentile change in housing_median_age is +0.674 (90% interval +0.528 to +0.854), shape threshold increase."
+    }
+  ],
+  "variance_drivers": [
+    {
+      "variable": "households",
+      "direction": "decreases_spread",
+      "evidence": "Standard deviation of y at the 95th percentile of households (1143) is 0.513 times its value at the 5th percentile (115.7); 90% interval of the log ratio -0.784 to -0.540. Scale formula: bols(log_households)."
+    }
+  ],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.4564,
+      "lower90": -0.515417,
+      "upper90": -0.38904
+    },
+    "Q2": {
+      "estimate": 0.500014,
+      "lower90": 0.409228,
+      "upper90": 0.579473
+    },
+    "Q3": {
+      "estimate": 0.0,
+      "lower90": -0.0,
+      "upper90": 0.0
+    },
+    "Q4": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q5": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q6": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q7": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    },
+    "Q8": {
+      "estimate": 0.0,
+      "lower90": 0.0,
+      "upper90": 0.0
+    }
+  },
+  "warnings": [
+    "total_bedrooms equals ave_bedrooms times households on every observed row, so it is left out as a duplicate of that product.",
+    "total_rooms equals ave_rooms times households on every observed row, so it is left out as a duplicate of that product.",
+    "population equals ave_occup times households on every observed row, so it is left out as a duplicate of that product.",
+    "housing_median_age is missing for 6.9% of training rows and 7.5% of test rows. Those values are filled from the other covariates (imputation RMSE on observed training rows 10; sd of housing_median_age 12.4). An indicator miss_housing_median_age is offered to the model.",
+    "ave_bedrooms is missing for 0.9% of training rows and 0.9% of test rows. Those values are filled from the other covariates (imputation RMSE on observed training rows 0.108; sd of ave_bedrooms 0.461). An indicator miss_ave_bedrooms is offered to the model.",
+    "The test rows differ from the training rows in covariate distribution (two-sample Kolmogorov-Smirnov p < 0.001 for: median_income (training median 3.245, test median 4.039); median_house_value (training median 1.716e+05, test median 2.054e+05); ave_rooms (training median 5.087, test median 5.484)). The intervals assume the relation between covariates and y is the same for the test rows; coverage on the test rows is not measured.",
+    "Effect intervals and prediction calibration come from a REML refit of the selected terms and treat the selected terms as fixed. They do not include the uncertainty of the term selection, so the stated intervals are narrower than the uncertainty of the selection.",
+    "Associations describe how the data move together. They are not causal effects."
+  ]
+}

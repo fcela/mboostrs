@@ -1,0 +1,378 @@
+[
+  {
+    "stage": "gaussian_screen_depth",
+    "t": 0.0,
+    "mstop": 600
+  },
+  {
+    "stage": "forward_mean",
+    "t": 4.5,
+    "rounds": [
+      {
+        "round": 1,
+        "best": "l_median_income",
+        "change": -0.07955271143194909,
+        "change_se": 0.010563863769715088,
+        "adopted": true,
+        "all": {
+          "longitude": [
+            -0.001451942190208222,
+            0.0021212033112351057
+          ],
+          "latitude": [
+            -0.009320298458422416,
+            0.00460415263849257
+          ],
+          "housing_median_age": [
+            -0.052194622375040745,
+            0.015179469465091048
+          ],
+          "l_total_rooms": [
+            -0.005414211075976727,
+            0.011007066919140851
+          ],
+          "l_total_bedrooms": [
+            0.013901585897047597,
+            0.013678187045417413
+          ],
+          "l_population": [
+            0.009145015369161513,
+            0.011739647657083305
+          ],
+          "l_households": [
+            0.012172220571837755,
+            0.016561166759138442
+          ],
+          "l_median_income": [
+            -0.07955271143194909,
+            0.010563863769715088
+          ],
+          "l_median_house_value": [
+            -0.037023002423927476,
+            0.007010286262131643
+          ],
+          "l_ave_rooms": [
+            -0.02723626900612719,
+            0.003643005003948383
+          ],
+          "l_ave_bedrooms": [
+            -0.001958695620746964,
+            0.005216952422821498
+          ],
+          "ave_occup": [
+            -0.02037089797808972,
+            0.008274215169066085
+          ],
+          "roof_class": [
+            -0.04363902283617849,
+            0.00623299857603999
+          ],
+          "spatial(longitude, latitude)": [
+            -0.012910771293519974,
+            0.006007739483084619
+          ]
+        }
+      },
+      {
+        "round": 2,
+        "best": "housing_median_age",
+        "change": -0.04332852973197504,
+        "change_se": 0.010635138792814481,
+        "adopted": true,
+        "all": {
+          "longitude": [
+            -0.0008465624984685394,
+            0.0023716402030466376
+          ],
+          "latitude": [
+            -0.00657774732412475,
+            0.004133186518519375
+          ],
+          "housing_median_age": [
+            -0.04332852973197504,
+            0.010635138792814481
+          ],
+          "l_total_rooms": [
+            0.002552679741290531,
+            0.005199525363633091
+          ],
+          "l_total_bedrooms": [
+            0.007862516501950467,
+            0.008082018763921926
+          ],
+          "l_population": [
+            0.00552149826846432,
+            0.005231834491486597
+          ],
+          "l_households": [
+            0.007423218412086263,
+            0.009036585587434174
+          ],
+          "l_median_house_value": [
+            -0.0004913353690157996,
+            0.0015745110940661832
+          ],
+          "l_ave_rooms": [
+            0.0004401909939240056,
+            0.005660893564429869
+          ],
+          "l_ave_bedrooms": [
+            0.00205105512749848,
+            0.004649032745534582
+          ],
+          "ave_occup": [
+            -0.009183937243438856,
+            0.00390554729869041
+          ],
+          "roof_class": [
+            -0.037439171575457064,
+            0.004955762737791848
+          ],
+          "spatial(longitude, latitude)": [
+            -0.006974987839238722,
+            0.0044950949548314655
+          ]
+        }
+      },
+      {
+        "round": 3,
+        "best": "roof_class",
+        "change": -0.008681348250845072,
+        "change_se": 0.005262876474385567,
+        "adopted": false,
+        "all": {
+          "longitude": [
+            0.0016306217086547448,
+            0.0012967830311807708
+          ],
+          "latitude": [
+            -0.0007215557534672179,
+            0.00312022724081497
+          ],
+          "l_total_rooms": [
+            0.00618907108684319,
+            0.006913392891278308
+          ],
+          "l_total_bedrooms": [
+            0.011350681564243847,
+            0.010707532151055292
+          ],
+          "l_population": [
+            0.0043167790850906496,
+            0.008382173119219535
+          ],
+          "l_households": [
+            0.009749478256497468,
+            0.011579013084058854
+          ],
+          "l_median_house_value": [
+            -0.0011292710756205526,
+            0.0008823760731748979
+          ],
+          "l_ave_rooms": [
+            0.0003920587560450328,
+            0.006388456484026522
+          ],
+          "l_ave_bedrooms": [
+            0.004286909722823695,
+            0.005285845670348467
+          ],
+          "ave_occup": [
+            -0.00660731957662547,
+            0.003422905962855192
+          ],
+          "roof_class": [
+            -0.008681348250845072,
+            0.005262876474385567
+          ],
+          "spatial(longitude, latitude)": [
+            0.0004606745923977362,
+            0.004763160176608921
+          ]
+        }
+      }
+    ],
+    "adopted": [
+      "l_median_income",
+      "housing_median_age"
+    ]
+  },
+  {
+    "stage": "spread_scan",
+    "t": 6.0,
+    "round": 0,
+    "best": "l_population",
+    "change": -0.05593888196788177,
+    "change_se": 0.029597114890191865,
+    "adopted": false,
+    "all": {
+      "longitude": [
+        0.00120518501986977,
+        0.014227990134419758
+      ],
+      "latitude": [
+        4.1592008514168555e-05,
+        0.01724829098708359
+      ],
+      "housing_median_age": [
+        0.013368038342257416,
+        0.00347878208068759
+      ],
+      "l_total_rooms": [
+        -0.006517906636238524,
+        0.04829853650502144
+      ],
+      "l_total_bedrooms": [
+        -0.029646908754584755,
+        0.031849071906805436
+      ],
+      "l_population": [
+        -0.05593888196788177,
+        0.029597114890191865
+      ],
+      "l_households": [
+        -0.04651360266440929,
+        0.02490639065515979
+      ],
+      "l_median_income": [
+        0.3098120980409864,
+        0.2958498992410609
+      ],
+      "l_median_house_value": [
+        0.03285889135985354,
+        0.028708187393628275
+      ],
+      "l_ave_rooms": [
+        0.086811612670738,
+        0.07737155954355603
+      ],
+      "l_ave_bedrooms": [
+        0.020019700880594127,
+        0.013620688419269862
+      ],
+      "ave_occup": [
+        NaN,
+        NaN
+      ]
+    }
+  },
+  {
+    "stage": "tune",
+    "t": 6.0,
+    "mstop": 29,
+    "at_boundary": false,
+    "sentence": "the cross-validated risk turns at 29 of 300 iterations tried"
+  },
+  {
+    "stage": "interactions",
+    "t": 6.1,
+    "screened": [
+      "l_ave_bedrooms x ave_occup: +0.01983",
+      "ave_occup x roof_class: +0.007781",
+      "l_median_income x roof_class: +0.006445",
+      "l_population x roof_class: +0.005718",
+      "l_ave_rooms x ave_occup: -0.001082",
+      "l_ave_bedrooms x roof_class: -0.003217",
+      "l_ave_rooms x roof_class: -0.003703",
+      "l_median_income x l_ave_bedrooms: -0.004701",
+      "l_median_house_value x ave_occup: -0.006376",
+      "l_median_house_value x l_ave_bedrooms: -0.006403"
+    ],
+    "candidates": [
+      {
+        "pair": [
+          "l_ave_bedrooms",
+          "ave_occup"
+        ],
+        "form": "product",
+        "term": "bols(l_ave_bedrooms, by=ave_occup)",
+        "change": 0.0010309887290008701,
+        "change_se": 0.0011580614850615943
+      }
+    ],
+    "adopted": []
+  },
+  {
+    "stage": "final_model",
+    "t": 6.1,
+    "spec": {
+      "mu": "y ~ bbs(l_median_income, df=4) + bbs(housing_median_age, df=4) + bols(housing_median_age_isna, intercept=False) + bols(total_bedrooms_isna, intercept=False) + bols(ave_bedrooms_isna, intercept=False)",
+      "sigma": "y ~ 1"
+    },
+    "mstop": 29
+  },
+  {
+    "stage": "refit_failed",
+    "t": 6.1,
+    "error": "the sigma formula's 0 terms do not map one to one onto its 1 learners; pass terms= explicitly"
+  },
+  {
+    "stage": "query",
+    "t": 6.1,
+    "q": "Q1",
+    "estimate": -0.4561596858263029,
+    "lower90": null,
+    "upper90": null
+  },
+  {
+    "stage": "query",
+    "t": 6.1,
+    "q": "Q2",
+    "estimate": 0.5571142120338746,
+    "lower90": null,
+    "upper90": null
+  },
+  {
+    "stage": "query",
+    "t": 6.1,
+    "q": "Q3",
+    "estimate": 0.0,
+    "reason": "not in mean model"
+  },
+  {
+    "stage": "query",
+    "t": 6.1,
+    "q": "Q4",
+    "estimate": 0.0,
+    "reason": "not in mean model"
+  },
+  {
+    "stage": "query",
+    "t": 6.1,
+    "q": "Q5",
+    "estimate": 0.0,
+    "reason": "not in mean model"
+  },
+  {
+    "stage": "query",
+    "t": 6.1,
+    "q": "Q6",
+    "estimate": 0.0,
+    "reason": "not in mean model"
+  },
+  {
+    "stage": "query",
+    "t": 6.1,
+    "q": "Q7",
+    "estimate": 0.0,
+    "reason": "not in mean model"
+  },
+  {
+    "stage": "query",
+    "t": 6.1,
+    "q": "Q8",
+    "estimate": 0.0,
+    "reason": "not in mean model"
+  },
+  {
+    "stage": "conformal_quantile",
+    "t": 6.1,
+    "q": 1.5907375231240628,
+    "n_calibration": 120
+  },
+  {
+    "stage": "coverage_check",
+    "t": 6.1,
+    "overall": 0.9583333333333334
+  }
+]

@@ -1,0 +1,506 @@
+# CI: lint, test, and build-check on every push and PR.
+#
+# Runs Rust unit tests, clippy, and fmt checks, then builds the Python package
+# via maturin and runs the no-R pytest suite.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  rust:
+    name: Rust — test / clippy / fmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: cargo fmt — check
+        run: cargo fmt --check --all
+
+      # --all-targets brings in the test, bench, and example targets. Without
+      # it the gate covered only lib code, leaving out the R oracle literals
+      # and the performance claims — the two places least likely to be read
+      # closely. `--exclude mboostrs-r` stays because that crate needs an R
+      # installation to build; it is clean under --all-targets locally.
+      - name: cargo clippy
+        run: cargo clippy --workspace --exclude mboostrs-r --all-targets -- -D warnings
+
+      - name: cargo test
+        run: cargo test --workspace --exclude mboostrs-r
+
+      # The R binding crate is excluded above because extendr needs R's
+      # headers to build. With the headers installed it compiles in one
+      # `cargo check`, which is what keeps it from drifting behind core
+      # signature changes: a crate CI never builds is a crate nobody
+      # breaks on purpose, and the drift only surfaces when the R package
+      # needs rebuilding. Checked separately from `--workspace` so the
+      # matrix above stays buildable without R.
+      - name: Install R headers for the binding crate
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends r-base-dev
+      - name: cargo check the R binding
+        run: cargo check -p mboostrs-r
+
+      - name: Rust doctests
+        run: cargo test --doc -p mboostrs-core
+
+      # The core crate is published, so its rendered docs are its manual. An
+      # index such as `x[0]` reads as an intra-doc link and renders broken;
+      # 29 such warnings had accumulated before this check.
+      - name: Rust docs build without warnings
+        run: cargo doc -p mboostrs-core --no-deps
+        env:
+          RUSTDOCFLAGS: -D warnings
+
+      - name: Validate core crate package contents
+        run: cargo package -p mboostrs-core --no-verify --list
+
+  # ── Cross-platform build check ──────────────────────────────────────
+  # Verifies wheels build natively on each target platform. Does NOT run
+  # tests (that is covered by the ubuntu-latest python job above).
+  # Uses native maturin (not manylinux Docker) for simplicity — the
+  # release workflow handles proper manylinux/CI builds.
+  build-wheels:
+    name: Build wheel — ${{ matrix.label }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: macOS arm64
+            os: macos-14
+          - label: Linux x86_64
+            os: ubuntu-latest
+          - label: Windows x86_64
+            os: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ matrix.label }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install maturin
+        run: pip install maturin
+
+      - name: Build wheel
+        run: maturin build --release --out dist
+
+      - name: Upload wheel
+        uses: actions/upload-artifact@v7
+        with:
+          name: wheel-${{ matrix.label }}
+          path: dist/
+
+  debug-dense-fit:
+    # Repeats a dense tensor fit on a debug build. The debug profile is opt-level 1
+    # (Cargo.toml); opt-level 0 crashed about a third of runs on arm64 macOS (#237).
+    name: Debug build — repeated dense fit (macOS arm64)
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: debug-dense-fit
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Build debug wheel
+        run: |
+          pip install maturin numpy polars
+          maturin build --out dist
+
+      - name: Install debug wheel
+        run: pip install dist/*.whl
+
+      - name: Repeat the dense fit in fresh processes
+        run: |
+          cd "$RUNNER_TEMP"
+          for i in $(seq 1 20); do
+            python "$GITHUB_WORKSPACE/tools/dense_fit_check.py" || { echo "run $i failed"; exit 1; }
+          done
+
+  python:
+    name: Python — build / test
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+        include:
+          # The sklearn compatibility surface is only real if it is executed
+          # at each end of the declared support range. The 1.3 minimum needs
+          # Python 3.11 (it predates the 3.12 support floor) and an old numpy/
+          # scipy/pandas for its metadata pin. The rest of this job does not
+          # tolerate 3.11+1.3's pins, so the min-sklearn arm runs the
+          # estimator suite alone on its own wheel.
+          - name: Python — sklearn minimum
+            python-version: "3.11"
+            sklearn: 1.3.2
+            pandas: 2.2.1
+            numpy: 1.26.4
+            scipy: 1.11.4
+            run: estimator
+          # The current release arm shares the ordinary matrix cell; pinning a
+          # floor but installing the newest available satisfies "current" for
+          # the installed-version check while the 1.3 arm exercises the far end.
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: python-${{ matrix.python-version }}${{ matrix.run }}
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install build dependencies
+        run: pip install maturin
+
+      - name: Build wheel
+        run: maturin build --release --out dist
+
+      - name: Install wheel
+        if: ${{ !matrix.run }}
+        # `[plot]` because the test suite exercises the plotting module, and
+        # Altair is no longer a base dependency: importing it cost 509 ms of a
+        # 559 ms `import mboostrs`, so it moved to an extra.
+        run: pip install "mboostrs[plot]" --find-links dist
+
+      - name: Install minimum-sklearn pins
+        if: ${{ matrix.run == 'estimator' }}
+        # The module under test needs no `[plot]` extra. `pip install
+        # mboostrs` first pulls the newest scikit-learn via the >= floor, then
+        # the pins below step it (and its metadata pin) down to the 1.3 end.
+        run: |
+          pip install mboostrs --find-links dist
+          pip install "scikit-learn==${{ matrix.sklearn }}" \
+            "pandas==${{ matrix.pandas }}" \
+            "numpy==${{ matrix.numpy }}" \
+            "scipy==${{ matrix.scipy }}" \
+            polars pytest
+
+      - name: Install test dependencies
+        # Install the declared extra so collection-time dependencies cannot
+        # drift from local development installs (hypothesis and great-tables
+        # were previously missing from the manually maintained CI list).
+        # The min-sklearn cell skips this and takes its pins from the step
+        # above instead, so a later upgrade cannot clobber the 1.3 API.
+        if: ${{ !matrix.run }}
+        run: pip install "mboostrs[dev,sklearn]" --find-links dist
+
+      - name: Validate generated capability contract
+        run: python tools/generate_capabilities.py --check
+
+      - name: Validate the generated dataset cards
+        # Row counts, column dtypes and missingness are measured from the
+        # shipped files, so a changed CSV or a new loader fails here. The
+        # fields no measurement can supply -- licence, retrieval date -- stay
+        # `None` and are reported, not invented.
+        run: python tools/generate_data_cards.py --check
+
+      - name: Validate the generated API reference
+        # The page it replaced was hand-written and had drifted: it showed
+        # `data` as keyword-only after it became positional, and listed
+        # `control()` and `offset()` after both became properties. A changed
+        # signature now fails here rather than waiting to be noticed.
+        run: python tools/generate_api_reference.py --check
+
+      - name: Lint Python
+        # `python/`, `tests/`, `tools/` and `benches/` -- the whole maintained
+        # tree. It was not run in CI at all, so the 144 findings outside
+        # `python/` had accumulated unseen.
+        run: |
+          pip install ruff
+          ruff check python/ tests/ tools/ benches/
+
+      - name: Validate the Rust extension type stub
+        # `_rust.pyi` describes the compiled module. Nothing compared the two,
+        # and it had drifted both ways: 22 of 36 registered symbols had no
+        # stub, and 8 stub entries named symbols the module does not export.
+        run: python tools/generate_rust_stub.py --check
+
+      - name: Run estimator suite on minimum sklearn
+        # The 1.3 minimum's numpy/scipy pins (a numpy<1.30 guard, scipy<1.14)
+        # are the reason the min-sklearn matrix cell does not run the whole
+        # suite, which needs recent pins. Running the name-safety module alone
+        # still exercises the shim's 1.3 API branch at 1.3; the ordinary cells
+        # run the suite at current.
+        if: ${{ matrix.run == 'estimator' }}
+        run: pytest -q tests/test_sklearn_name_safety.py
+
+      - name: Run tests (no R)
+        if: ${{ !matrix.run }}
+        run: pytest -m "not r_parity" -v
+
+  documentation:
+    name: Documentation — source / notebooks / HTML / PDF
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # check_docs.py's artifact report compares each benchmark's recorded
+          # commit with the history, which a shallow clone does not have.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 20
+
+      - name: Install MyST
+        run: npm install -g mystmd
+
+      - name: Install PDF system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y librsvg2-bin texlive texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra python3-pygments
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: docs/book/requirements.txt
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: documentation
+
+      - name: Install documentation dependencies and package
+        run: |
+          python -m pip install -r docs/book/requirements.txt maturin
+          maturin build --release --out dist
+          python -m pip install dist/*.whl
+
+      - name: Validate documentation sources
+        run: |
+          python docs/book/check_cells.py
+          python docs/book/check_docs.py
+
+      - name: Check the generated API manual is current
+        # #166. docs/book/api/ is written by tools/generate_api_manual.py. This
+        # fails when a committed page no longer matches what the generator
+        # produces from the installed package, so a docstring or signature
+        # change must be followed by regenerating the pages. The docstring
+        # audit (--audit) is not run here; it is not yet clean.
+        run: python tools/generate_api_manual.py --check
+
+      - name: Execute the README's front-door calls
+        # D8 item 4. Nothing ran the README's Python, so the first thing a new
+        # user copies could stop working silently -- and two blocks had:
+        # the scikit-learn example used an undefined `X`, and the
+        # classification example fitted Binomial against a continuous `y`,
+        # which the family rejects by name. Prose-only calls are included,
+        # because that is where `mb.plot_cvrisk` hid in the examples.
+        run: python tools/check_front_door.py
+
+      - name: Walk the two documented reader journeys
+        # D8 items 1 and 2. Both are claims about reachability and neither was
+        # checked. The new-user journey ran four of its six operations: the
+        # README and quickstart fitted, tuned, truncated and predicted, and
+        # never diagnosed, so a reader could finish the walkthrough without
+        # ever learning what a wrong fit looks like. This runs the two
+        # documents as one session and requires each operation to be called,
+        # to execute, and to be interpreted in the prose.
+        run: python tools/check_walkthrough.py
+
+      - name: Check the interaction-memory measurement
+        # P3.4 item 7 is gated on a memory measurement that had not been
+        # made, so the item could neither be done nor dropped. A
+        # `bbs %X% brandom` interaction materialises every pair — 480 columns
+        # for 24 splines over 20 groups, 232.6 MB retained at 20,000 rows —
+        # where keeping the factors apart would be 44.
+        run: python benches/bench_interaction_memory.py --check
+
+      - name: Check the binned selection-agreement grid
+        # P3.3 gates its work on an n/p/K grid. One committed point reported
+        # an identical selection sequence and read as though agreement were
+        # general; across 18 cells binning changes which learner is selected,
+        # from the first dozen iterations, at every bin count the speedup
+        # benchmark measured. The correctness dimension is milliseconds and
+        # decides whether the timing dimension means anything.
+        run: python benches/bench_binned_selection_grid.py --check
+
+      - name: Check the canonical scorecard
+        run: python tools/check_scorecard.py
+
+      - name: Ratchet the published benchmarks' provenance
+        # P3.5. The repository defines a benchmark contract requiring commit,
+        # platform, versions, threads, warmup and digests, and the eight
+        # artifacts the book renders carry none of it — 50 of 64 fields
+        # missing. Re-running them is a job for one quiet machine, so this
+        # records the gap and fails when it grows rather than inventing the
+        # fields.
+        run: python tools/check_benchmark_provenance.py
+
+      - name: Keep the R reference current
+        # D1. The Python surface was generated and the R one was not, so an R
+        # reader had a migration table and no reference: to see what
+        # `mboostrs::stabsel` takes they had to install the package and type
+        # `?`. NAMESPACE says what is exported and man/*.Rd carries the usage;
+        # this renders both into the book and fails when they move.
+        run: python tools/generate_r_reference.py --check
+
+      - name: Run the family contract over every standard family
+        # P1.2. The LSS families had a reachability sweep; the standard ones
+        # were covered only by whichever per-family parity test someone had
+        # written. One contract over all 21 found a missing Multinomial label
+        # surfacing as `KeyError: np.float64(nan)`, a fit writing its inferred
+        # class count onto the caller's family object, and adaptive Huber's
+        # non-monotone risk — the last shared with mboost and now a recorded
+        # parity note rather than a surprise.
+        run: python tools/check_family_contract.py
+
+      - name: Run the end-to-end semantic matrix
+        # P1.2. The cross of model kind, weight kind, prediction kind and
+        # fit mode was covered in pieces and nothing said which of the 144
+        # cells run, so an uncovered cell and an inapplicable one looked the
+        # same. Running it found `fit.with_mstop(fit.mstop)` raising on a
+        # non-cyclic distributional fit: the truncation refused the number
+        # the model had just reported.
+        run: python tools/check_semantic_matrix.py
+
+      - name: Check the capability ledger's evidence still exists
+        # P1.1. Every capability row is backed by a validation naming a test
+        # node, and nothing checked the link, so a renamed test would leave
+        # the tables — and the review packet built from them — asserting
+        # evidence that no longer runs. Also gates `verified`: it means a
+        # comparison against something outside mboostrs, and
+        # GaussianKnownVarLSS claimed a verified R fit and prediction on the
+        # strength of three numbers copied from a Python run.
+        run: python tools/check_capability_evidence.py
+
+      - name: Check the shipped surfaces describe the same package
+        # D8 item 6. The notebook ZIP a reader downloads was missing a page
+        # the ToC lists, still carried one the ToC had dropped, and 46 of its
+        # 86 pages differed from their sources. R help had no page for five
+        # exported objects, so `?aic_path` failed. The crate README named 18
+        # standard families where the crate defines 21. All three are
+        # surfaces nothing re-reads, which is why they drift.
+        run: python tools/check_surfaces_agree.py
+
+      - name: Check the migration table names its deviations at the call
+        # D8 item 3. The tables mapped R spellings to mboostrs spellings and
+        # the deviations sat in a section thousands of words away, which is
+        # exactly the reader who copies a row and never scrolls. Seven
+        # objects differ from their upstream namesake without the row saying
+        # so, four were absent from the page entirely, and `coef()` was
+        # documented with a key that raises KeyError.
+        run: python tools/check_migration_table.py
+
+      - name: Ratchet the case-study reconstruction standard
+        # D3. 109 gaps across 29 studies -- 28 do not say what one row is, 26
+        # name no estimand. Closing those means understanding each analysis,
+        # so this does not invent them and does not fail on the backlog: it
+        # fails when a study loses an element it had, or a new study arrives
+        # below the standard. The backlog can only shrink.
+        run: python tools/check_case_standard.py
+
+      - name: Check the family and learner pages cover their template
+        # D2's page templates. Checking them found the link and inverse link
+        # missing from `usage/families.ipynb` -- the two things that decide
+        # whether `predict()` returns a probability or a log-odds -- and
+        # extrapolation missing from both learner pages, for a policy the
+        # package ships and warns about.
+        run: python tools/check_page_templates.py
+
+      - name: Check the public examples against the package
+        # The eight `examples/python/` notebooks sat outside every factual
+        # check the book pages get. Measured against the package, they called
+        # `mb.plot_cvrisk`, `mb.plot_aic` and `mb.plot_stabsel` (all of which
+        # live in `mb.plot`), described `bns` as unpenalised where it is
+        # ridge-penalised, called `bkernel` Nadaraya-Watson where it is kernel
+        # ridge, and said trees take missing data where every learner refuses
+        # a NaN. Seven of eight also stored outputs nothing regenerated.
+        run: python tools/check_examples.py
+
+      - name: Execute public example notebooks
+        run: bash docs/book/execute_examples.sh
+
+      - name: Build executable HTML and PDF book
+        run: bash docs/book/build-html.sh
+
+      - name: Upload rendered documentation
+        uses: actions/upload-artifact@v7
+        with:
+          name: documentation
+          path: |
+            docs/book/_build/html
+            docs/book/exports/mboostrs.pdf
+            docs/book/exports/notebooks.zip
+
+  r-package:
+    name: R package - check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: r-package
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - name: Install R check dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          working-directory: mboostrs
+          extra-packages: |
+            any::rcmdcheck
+            any::mboost
+            any::gamboostLSS
+            any::stabs
+            any::survival
+
+      - name: cargo test mboostrs-r
+        run: cargo test -p mboostrs-r
+
+      - name: R CMD check
+        uses: r-lib/actions/check-r-package@v2
+        with:
+          working-directory: mboostrs
+          args: 'c("--no-manual", "--as-cran")'

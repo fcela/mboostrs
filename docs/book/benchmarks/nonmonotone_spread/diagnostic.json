@@ -1,0 +1,1517 @@
+{
+ "schema_version": 1,
+ "created_at": "2026-10-17T21:23:26+00:00",
+ "commit": "ec42756c55e5ade80e201a25e760722139e54ce0",
+ "working_tree": {
+  "dirty": true,
+  "status_digest": "sha256:fc46854d30d343be59d47b0b3c326fee133436a868d2b248472aa00a54daecb8",
+  "commit_source": "working directory"
+ },
+ "platform": {
+  "system": "Darwin",
+  "release": "25.3.0",
+  "machine": "arm64",
+  "cpu": "arm",
+  "python": "3.12.11"
+ },
+ "versions": {
+  "mboostrs": "0.1.3",
+  "numpy": "2.4.6",
+  "rpy2": "3.6.7",
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "R": "4.5.1",
+  "mboost": "2.9.11",
+  "scipy": "1.16.3",
+  "pandas": "2.3.3",
+  "ngboost": "0.5.11",
+  "mssm": "1.2.5",
+  "scikit-learn": "1.9.0"
+ },
+ "threads": {
+  "logical_cpus": 10,
+  "r_mclapply_default_cores": "2",
+  "RAYON_NUM_THREADS": "1",
+  "OMP_NUM_THREADS": "1",
+  "OPENBLAS_NUM_THREADS": "1",
+  "MKL_NUM_THREADS": "1"
+ },
+ "build_info": {
+  "package_version": "0.1.3",
+  "source_digest": "sha256:545abff7a0e12ca3fcef54e2b4eed955c157ff4b26cca1ab727cc0c4550b20ef",
+  "git_revision": "e314bbfd736db08de00a1640c1e2f0d033035917",
+  "git_dirty": true,
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+  "target": "aarch64-apple-darwin",
+  "profile": "release",
+  "target_features": "aes,bf16,bti,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,i8mm,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+  "crate_features": "",
+  "abi_version": 1,
+  "build_id": "sha256:f040b322af1e6fbbefc1acad06598d728a6061410bee019605042c3a5b0216a6"
+ },
+ "scripts": {
+  "/private/tmp/mboostrs-spread-screen/benches/study_nonmonotone_spread.py": "d45ee968e8511d92cb701cca1d673d3dcd5528d6df5d314c51c13ce1bb4b308c"
+ },
+ "thread_environment": {
+  "RAYON_NUM_THREADS": "1",
+  "OMP_NUM_THREADS": "1",
+  "OPENBLAS_NUM_THREADS": "1"
+ },
+ "protocol": {
+  "id": "nonmonotone-spread/1",
+  "phase": "diagnostic",
+  "sha256": "e1030c809dc2ac9c55a1b882b51b0703031ae483f66b67b9916ad8c5c3050a26"
+ },
+ "repeats": {
+  "seeds": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "independent_test_seed_offset": 50000
+ },
+ "uncertainty": {
+  "unit": "one independent training and test draw; pair methods within a draw",
+  "summary": "mean and Monte Carlo standard error across draws",
+  "timing": "elapsed whole-workflow costs, not controlled implementation speed ratios"
+ },
+ "memory": {
+  "status": "not measured"
+ },
+ "results": [
+  {
+   "process": "absolute",
+   "seed": 0,
+   "method": "discover",
+   "phase": "diagnostic",
+   "input_digest": "sha256:8d8694b274bb4db4648178de3c82eb7863fc1aa1b86590b5f50484c9e5a6463f",
+   "status": "ok",
+   "details": {
+    "mean_formula": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+    "spread_formula": null,
+    "spread_log": [
+     {
+      "stage": "spread",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no predictor's residual spread has |t| >= 2; constant scale kept. Tested the spread against 2 column(s): x1, x2",
+      "estimated_seconds": null
+     }
+    ],
+    "discovery_log": [
+     {
+      "stage": "family",
+      "candidate": "Gaussian",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "the probe has no comparison to make on this response (a binary or a categorical response), so the dtype-inferred family stands",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "setup",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no missing values in the data or newdata: fits use na_action='omit', the same rows without the imputation terms that 'impute' adds to every model",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "rule",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "rule in force: mu heredity none",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "draft",
+      "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "2 terms from the columns, each continuous column a P-spline at df=4",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "mean effects",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.04 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.039302490768022835
+     },
+     {
+      "stage": "mean effects",
+      "candidate": "bbs(x1, df=4.0)",
+      "score": 1.2969407455210102,
+      "change": 0.5704195596263113,
+      "se": 0.039109892167114815,
+      "adopted": true,
+      "reason": "kept: removing it raises out-of-fold risk by more than 2 change se",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "mean effects",
+      "candidate": "bbs(x2, df=4.0)",
+      "score": 1.2969407455210102,
+      "change": 0.07703857888932641,
+      "se": 0.014833369376224974,
+      "adopted": true,
+      "reason": "kept: removing it raises out-of-fold risk by more than 2 change se",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "interactions",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no pair explains residual variation out of sample",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "spread",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no predictor's residual spread has |t| >= 2; constant scale kept. Tested the spread against 2 column(s): x1, x2",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "tune",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.01 s for the first tune_mstop of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.0052052519749850035
+     },
+     {
+      "stage": "tune",
+      "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "boundary: the cross-validated risk is still falling at the end of the mstop grid (400 steps after 2 doubling(s)); the full adopted term set is kept, at mstop=400, and the stopping iteration is not resolved",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "final model",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.0008422080427408218
+     },
+     {
+      "stage": "estimate",
+      "candidate": "refit",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.0008233330445364118
+     },
+     {
+      "stage": "refit",
+      "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": true,
+      "reason": "REML refit of the adopted terms",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "predict",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first conformal_interval of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.0014862499665468931
+     },
+     {
+      "stage": "predict",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": true,
+      "reason": "intervals: split, guarantee 'finite-sample marginal split-conformal coverage'",
+      "estimated_seconds": null
+     }
+    ],
+    "provenance": {
+     "mboostrs_version": "0.1.3",
+     "build": {
+      "package_version": "0.1.3",
+      "source_digest": "sha256:545abff7a0e12ca3fcef54e2b4eed955c157ff4b26cca1ab727cc0c4550b20ef",
+      "git_revision": "e314bbfd736db08de00a1640c1e2f0d033035917",
+      "git_dirty": true,
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+      "target": "aarch64-apple-darwin",
+      "profile": "release",
+      "target_features": "aes,bf16,bti,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,i8mm,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+      "crate_features": "",
+      "abi_version": 1,
+      "build_id": "sha256:f040b322af1e6fbbefc1acad06598d728a6061410bee019605042c3a5b0216a6"
+     },
+     "python_version": "3.12.11",
+     "platform": "macOS-26.3-arm64-arm-64bit",
+     "packages": {
+      "numpy": "2.4.6",
+      "polars": "1.41.0",
+      "pandas": "2.3.3"
+     },
+     "seed": 0,
+     "data": {
+      "n_rows": 1000,
+      "columns": [
+       {
+        "name": "x1",
+        "dtype": "float64"
+       },
+       {
+        "name": "x2",
+        "dtype": "float64"
+       },
+       {
+        "name": "y",
+        "dtype": "float64"
+       }
+      ],
+      "sha256": "a585941d38b4eef110b1b8d8668d5ba5e30e0f492ab5a2e5527b78362b67c607"
+     }
+    }
+   },
+   "coverage": 0.89,
+   "width": 3.7522051268231116,
+   "coverage_low": 0.9910044977511244,
+   "coverage_high": 0.7511244377811095,
+   "width_scale_rank": null,
+   "oracle_width": 3.5116981618828955,
+   "interval_score": 5.485748749314538,
+   "prediction_digest": "sha256:bcc3dcc7ed3295168ec9459694947d170300e4ebbee0a0452e9956a600af91bd",
+   "warnings": [],
+   "elapsed": 0.2697971250163391
+  },
+  {
+   "process": "absolute",
+   "seed": 1,
+   "method": "discover",
+   "phase": "diagnostic",
+   "input_digest": "sha256:47e8162ba80946e3d41848e8aa013c3ec8a8417e72ae69b94e22a99122091075",
+   "status": "ok",
+   "details": {
+    "mean_formula": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+    "spread_formula": null,
+    "spread_log": [
+     {
+      "stage": "spread",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no predictor's residual spread has |t| >= 2; constant scale kept. Tested the spread against 2 column(s): x1, x2",
+      "estimated_seconds": null
+     }
+    ],
+    "discovery_log": [
+     {
+      "stage": "family",
+      "candidate": "Gaussian",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "the probe has no comparison to make on this response (a binary or a categorical response), so the dtype-inferred family stands",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "setup",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no missing values in the data or newdata: fits use na_action='omit', the same rows without the imputation terms that 'impute' adds to every model",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "rule",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "rule in force: mu heredity none",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "draft",
+      "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "2 terms from the columns, each continuous column a P-spline at df=4",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "mean effects",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.02 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.02357812598347664
+     },
+     {
+      "stage": "mean effects",
+      "candidate": "bbs(x1, df=4.0)",
+      "score": 1.2739143813288858,
+      "change": 0.43462935853539353,
+      "se": 0.014814298292647507,
+      "adopted": true,
+      "reason": "kept: removing it raises out-of-fold risk by more than 2 change se",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "mean effects",
+      "candidate": "bbs(x2, df=4.0)",
+      "score": 1.2739143813288858,
+      "change": 0.06485757382105994,
+      "se": 0.007643950977383501,
+      "adopted": true,
+      "reason": "kept: removing it raises out-of-fold risk by more than 2 change se",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "interactions",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no pair explains residual variation out of sample",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "spread",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no predictor's residual spread has |t| >= 2; constant scale kept. Tested the spread against 2 column(s): x1, x2",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "tune",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first tune_mstop of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.004977749660611153
+     },
+     {
+      "stage": "tune",
+      "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "boundary: the cross-validated risk is still falling at the end of the mstop grid (400 steps after 2 doubling(s)); the full adopted term set is kept, at mstop=400, and the stopping iteration is not resolved",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "final model",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.0007976669585332274
+     },
+     {
+      "stage": "estimate",
+      "candidate": "refit",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.0008023749105632305
+     },
+     {
+      "stage": "refit",
+      "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": true,
+      "reason": "REML refit of the adopted terms",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "predict",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first conformal_interval of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.0016440000617876649
+     },
+     {
+      "stage": "predict",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": true,
+      "reason": "intervals: split, guarantee 'finite-sample marginal split-conformal coverage'",
+      "estimated_seconds": null
+     }
+    ],
+    "provenance": {
+     "mboostrs_version": "0.1.3",
+     "build": {
+      "package_version": "0.1.3",
+      "source_digest": "sha256:545abff7a0e12ca3fcef54e2b4eed955c157ff4b26cca1ab727cc0c4550b20ef",
+      "git_revision": "e314bbfd736db08de00a1640c1e2f0d033035917",
+      "git_dirty": true,
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+      "target": "aarch64-apple-darwin",
+      "profile": "release",
+      "target_features": "aes,bf16,bti,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,i8mm,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+      "crate_features": "",
+      "abi_version": 1,
+      "build_id": "sha256:f040b322af1e6fbbefc1acad06598d728a6061410bee019605042c3a5b0216a6"
+     },
+     "python_version": "3.12.11",
+     "platform": "macOS-26.3-arm64-arm-64bit",
+     "packages": {
+      "numpy": "2.4.6",
+      "polars": "1.41.0",
+      "pandas": "2.3.3"
+     },
+     "seed": 1,
+     "data": {
+      "n_rows": 1000,
+      "columns": [
+       {
+        "name": "x1",
+        "dtype": "float64"
+       },
+       {
+        "name": "x2",
+        "dtype": "float64"
+       },
+       {
+        "name": "y",
+        "dtype": "float64"
+       }
+      ],
+      "sha256": "536c1bac5af411d95ef367951e80ff9ae8802ce7fca3864f88eccca1ca613668"
+     }
+    }
+   },
+   "coverage": 0.8825,
+   "width": 3.647042721387834,
+   "coverage_low": 0.9940029985007496,
+   "coverage_high": 0.7376311844077961,
+   "width_scale_rank": null,
+   "oracle_width": 3.417521590791581,
+   "interval_score": 5.23978921540619,
+   "prediction_digest": "sha256:2b6708f6734f532cd342b86f5c1763d6882e32aa05d6cf116ce92dba1b773981",
+   "warnings": [],
+   "elapsed": 0.059942167019471526
+  },
+  {
+   "process": "absolute",
+   "seed": 2,
+   "method": "discover",
+   "phase": "diagnostic",
+   "input_digest": "sha256:9f7569b3bdd3f678987f17085e1313a346725bc8ea19e30aed5de8f6076ff560",
+   "status": "ok",
+   "details": {
+    "mean_formula": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+    "spread_formula": null,
+    "spread_log": [
+     {
+      "stage": "spread",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no predictor's residual spread has |t| >= 2; constant scale kept. Tested the spread against 2 column(s): x1, x2",
+      "estimated_seconds": null
+     }
+    ],
+    "discovery_log": [
+     {
+      "stage": "family",
+      "candidate": "Gaussian",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "the probe has no comparison to make on this response (a binary or a categorical response), so the dtype-inferred family stands",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "setup",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no missing values in the data or newdata: fits use na_action='omit', the same rows without the imputation terms that 'impute' adds to every model",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "rule",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "rule in force: mu heredity none",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "draft",
+      "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "2 terms from the columns, each continuous column a P-spline at df=4",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "mean effects",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.02 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.015075631672516465
+     },
+     {
+      "stage": "mean effects",
+      "candidate": "bbs(x1, df=4.0)",
+      "score": 1.3506353396317574,
+      "change": 0.4136071244330495,
+      "se": 0.081534790584496,
+      "adopted": true,
+      "reason": "kept: removing it raises out-of-fold risk by more than 2 change se",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "mean effects",
+      "candidate": "bbs(x2, df=4.0)",
+      "score": 1.3506353396317574,
+      "change": 0.05853232518857476,
+      "se": 0.014467717198630645,
+      "adopted": true,
+      "reason": "kept: removing it raises out-of-fold risk by more than 2 change se",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "interactions",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no pair explains residual variation out of sample",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "spread",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no predictor's residual spread has |t| >= 2; constant scale kept. Tested the spread against 2 column(s): x1, x2",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "tune",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first tune_mstop of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.004906998015940189
+     },
+     {
+      "stage": "tune",
+      "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "boundary: the cross-validated risk is still falling at the end of the mstop grid (400 steps after 2 doubling(s)); the full adopted term set is kept, at mstop=400, and the stopping iteration is not resolved",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "final model",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.0008286250522360206
+     },
+     {
+      "stage": "estimate",
+      "candidate": "refit",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.0008262080373242497
+     },
+     {
+      "stage": "refit",
+      "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": true,
+      "reason": "REML refit of the adopted terms",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "predict",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first conformal_interval of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.0014124169247224927
+     },
+     {
+      "stage": "predict",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": true,
+      "reason": "intervals: split, guarantee 'finite-sample marginal split-conformal coverage'",
+      "estimated_seconds": null
+     }
+    ],
+    "provenance": {
+     "mboostrs_version": "0.1.3",
+     "build": {
+      "package_version": "0.1.3",
+      "source_digest": "sha256:545abff7a0e12ca3fcef54e2b4eed955c157ff4b26cca1ab727cc0c4550b20ef",
+      "git_revision": "e314bbfd736db08de00a1640c1e2f0d033035917",
+      "git_dirty": true,
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+      "target": "aarch64-apple-darwin",
+      "profile": "release",
+      "target_features": "aes,bf16,bti,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,i8mm,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+      "crate_features": "",
+      "abi_version": 1,
+      "build_id": "sha256:f040b322af1e6fbbefc1acad06598d728a6061410bee019605042c3a5b0216a6"
+     },
+     "python_version": "3.12.11",
+     "platform": "macOS-26.3-arm64-arm-64bit",
+     "packages": {
+      "numpy": "2.4.6",
+      "polars": "1.41.0",
+      "pandas": "2.3.3"
+     },
+     "seed": 2,
+     "data": {
+      "n_rows": 1000,
+      "columns": [
+       {
+        "name": "x1",
+        "dtype": "float64"
+       },
+       {
+        "name": "x2",
+        "dtype": "float64"
+       },
+       {
+        "name": "y",
+        "dtype": "float64"
+       }
+      ],
+      "sha256": "14b05857845db86f7f721a9e2b5f91e19a630b8dec6fcb56c02d2701b264ca82"
+     }
+    }
+   },
+   "coverage": 0.8795,
+   "width": 3.5626491234223905,
+   "coverage_low": 0.992503748125937,
+   "coverage_high": 0.7526236881559221,
+   "width_scale_rank": null,
+   "oracle_width": 3.406731897844249,
+   "interval_score": 5.223898344880032,
+   "prediction_digest": "sha256:c3700857d0df1a0e5469becba701a87bb2d8fe7adde399ea3a6405e00106d806",
+   "warnings": [],
+   "elapsed": 0.05671516596339643
+  },
+  {
+   "process": "absolute",
+   "seed": 3,
+   "method": "discover",
+   "phase": "diagnostic",
+   "input_digest": "sha256:f00836409b3a5c5575d962b0d50cf11a62a9d247f97c89eead961c98912ff17f",
+   "status": "ok",
+   "details": {
+    "mean_formula": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+    "spread_formula": null,
+    "spread_log": [
+     {
+      "stage": "spread",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no predictor's residual spread has |t| >= 2; constant scale kept. Tested the spread against 2 column(s): x1, x2",
+      "estimated_seconds": null
+     }
+    ],
+    "discovery_log": [
+     {
+      "stage": "family",
+      "candidate": "Gaussian",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "the probe has no comparison to make on this response (a binary or a categorical response), so the dtype-inferred family stands",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "setup",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no missing values in the data or newdata: fits use na_action='omit', the same rows without the imputation terms that 'impute' adds to every model",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "rule",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "rule in force: mu heredity none",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "draft",
+      "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "2 terms from the columns, each continuous column a P-spline at df=4",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "mean effects",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.02 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.015648749540559947
+     },
+     {
+      "stage": "mean effects",
+      "candidate": "bbs(x1, df=4.0)",
+      "score": 1.445687090552458,
+      "change": 0.5743952189502144,
+      "se": 0.030436611429870534,
+      "adopted": true,
+      "reason": "kept: removing it raises out-of-fold risk by more than 2 change se",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "mean effects",
+      "candidate": "bbs(x2, df=4.0)",
+      "score": 1.445687090552458,
+      "change": 0.0597910466128575,
+      "se": 0.016246051197140062,
+      "adopted": true,
+      "reason": "kept: removing it raises out-of-fold risk by more than 2 change se",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "interactions",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no pair explains residual variation out of sample",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "spread",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no predictor's residual spread has |t| >= 2; constant scale kept. Tested the spread against 2 column(s): x1, x2",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "tune",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first tune_mstop of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.004657998215407133
+     },
+     {
+      "stage": "tune",
+      "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "boundary: the cross-validated risk is still falling at the end of the mstop grid (400 steps after 2 doubling(s)); the full adopted term set is kept, at mstop=400, and the stopping iteration is not resolved",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "final model",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.0007989999139681458
+     },
+     {
+      "stage": "estimate",
+      "candidate": "refit",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.0008210840169340372
+     },
+     {
+      "stage": "refit",
+      "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": true,
+      "reason": "REML refit of the adopted terms",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "predict",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first conformal_interval of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.0013879160396754742
+     },
+     {
+      "stage": "predict",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": true,
+      "reason": "intervals: split, guarantee 'finite-sample marginal split-conformal coverage'",
+      "estimated_seconds": null
+     }
+    ],
+    "provenance": {
+     "mboostrs_version": "0.1.3",
+     "build": {
+      "package_version": "0.1.3",
+      "source_digest": "sha256:545abff7a0e12ca3fcef54e2b4eed955c157ff4b26cca1ab727cc0c4550b20ef",
+      "git_revision": "e314bbfd736db08de00a1640c1e2f0d033035917",
+      "git_dirty": true,
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+      "target": "aarch64-apple-darwin",
+      "profile": "release",
+      "target_features": "aes,bf16,bti,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,i8mm,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+      "crate_features": "",
+      "abi_version": 1,
+      "build_id": "sha256:f040b322af1e6fbbefc1acad06598d728a6061410bee019605042c3a5b0216a6"
+     },
+     "python_version": "3.12.11",
+     "platform": "macOS-26.3-arm64-arm-64bit",
+     "packages": {
+      "numpy": "2.4.6",
+      "polars": "1.41.0",
+      "pandas": "2.3.3"
+     },
+     "seed": 3,
+     "data": {
+      "n_rows": 1000,
+      "columns": [
+       {
+        "name": "x1",
+        "dtype": "float64"
+       },
+       {
+        "name": "x2",
+        "dtype": "float64"
+       },
+       {
+        "name": "y",
+        "dtype": "float64"
+       }
+      ],
+      "sha256": "819416d465bbbdabe48d532f0deee9799aa7d851e6b9ac88109d12d06f61399f"
+     }
+    }
+   },
+   "coverage": 0.9035,
+   "width": 4.03312020446991,
+   "coverage_low": 0.9940029985007496,
+   "coverage_high": 0.7916041979010495,
+   "width_scale_rank": null,
+   "oracle_width": 3.4400946930176426,
+   "interval_score": 5.237907936821283,
+   "prediction_digest": "sha256:4c12bcdfbf0bbdcabb7c6714942d9ef860714538e7b14413a71b254e896b99c9",
+   "warnings": [],
+   "elapsed": 0.0558448750525713
+  },
+  {
+   "process": "absolute",
+   "seed": 4,
+   "method": "discover",
+   "phase": "diagnostic",
+   "input_digest": "sha256:2e6010c6cd388c8e4b5a2207215ed7847f1d9f0871887c44544dcf835c058a06",
+   "status": "ok",
+   "details": {
+    "mean_formula": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+    "spread_formula": null,
+    "spread_log": [
+     {
+      "stage": "spread",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no predictor's residual spread has |t| >= 2; constant scale kept. Tested the spread against 2 column(s): x1, x2",
+      "estimated_seconds": null
+     }
+    ],
+    "discovery_log": [
+     {
+      "stage": "family",
+      "candidate": "Gaussian",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "the probe has no comparison to make on this response (a binary or a categorical response), so the dtype-inferred family stands",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "setup",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no missing values in the data or newdata: fits use na_action='omit', the same rows without the imputation terms that 'impute' adds to every model",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "rule",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "rule in force: mu heredity none",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "draft",
+      "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "2 terms from the columns, each continuous column a P-spline at df=4",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "mean effects",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.01 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.014613750390708447
+     },
+     {
+      "stage": "mean effects",
+      "candidate": "bbs(x1, df=4.0)",
+      "score": 1.3814656665149738,
+      "change": 0.4127282285595668,
+      "se": 0.032482241117202285,
+      "adopted": true,
+      "reason": "kept: removing it raises out-of-fold risk by more than 2 change se",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "mean effects",
+      "candidate": "bbs(x2, df=4.0)",
+      "score": 1.3814656665149738,
+      "change": 0.03451145219227936,
+      "se": 0.007341047389503746,
+      "adopted": true,
+      "reason": "kept: removing it raises out-of-fold risk by more than 2 change se",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "interactions",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no pair explains residual variation out of sample",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "spread",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no predictor's residual spread has |t| >= 2; constant scale kept. Tested the spread against 2 column(s): x1, x2",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "tune",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first tune_mstop of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.004990247776731849
+     },
+     {
+      "stage": "tune",
+      "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "boundary: the cross-validated risk is still falling at the end of the mstop grid (400 steps after 2 doubling(s)); the full adopted term set is kept, at mstop=400, and the stopping iteration is not resolved",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "final model",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.0008333750301972032
+     },
+     {
+      "stage": "estimate",
+      "candidate": "refit",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.0008144589373841882
+     },
+     {
+      "stage": "refit",
+      "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": true,
+      "reason": "REML refit of the adopted terms",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "predict",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first conformal_interval of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.001394915976561606
+     },
+     {
+      "stage": "predict",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": true,
+      "reason": "intervals: split, guarantee 'finite-sample marginal split-conformal coverage'",
+      "estimated_seconds": null
+     }
+    ],
+    "provenance": {
+     "mboostrs_version": "0.1.3",
+     "build": {
+      "package_version": "0.1.3",
+      "source_digest": "sha256:545abff7a0e12ca3fcef54e2b4eed955c157ff4b26cca1ab727cc0c4550b20ef",
+      "git_revision": "e314bbfd736db08de00a1640c1e2f0d033035917",
+      "git_dirty": true,
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+      "target": "aarch64-apple-darwin",
+      "profile": "release",
+      "target_features": "aes,bf16,bti,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,i8mm,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+      "crate_features": "",
+      "abi_version": 1,
+      "build_id": "sha256:f040b322af1e6fbbefc1acad06598d728a6061410bee019605042c3a5b0216a6"
+     },
+     "python_version": "3.12.11",
+     "platform": "macOS-26.3-arm64-arm-64bit",
+     "packages": {
+      "numpy": "2.4.6",
+      "polars": "1.41.0",
+      "pandas": "2.3.3"
+     },
+     "seed": 4,
+     "data": {
+      "n_rows": 1000,
+      "columns": [
+       {
+        "name": "x1",
+        "dtype": "float64"
+       },
+       {
+        "name": "x2",
+        "dtype": "float64"
+       },
+       {
+        "name": "y",
+        "dtype": "float64"
+       }
+      ],
+      "sha256": "5210c615424d40a011e524d845848fbdf87400e0c339db7dabdbd679de39eb43"
+     }
+    }
+   },
+   "coverage": 0.9175,
+   "width": 3.995146128564573,
+   "coverage_low": 0.9985007496251874,
+   "coverage_high": 0.815592203898051,
+   "width_scale_rank": null,
+   "oracle_width": 3.442008680702858,
+   "interval_score": 4.945774440860776,
+   "prediction_digest": "sha256:04292180a6e4ec71144106e210eeab6b052a3b2bd3896fc30efaaa6f2575c3c6",
+   "warnings": [],
+   "elapsed": 0.05551787500735372
+  },
+  {
+   "process": "absolute",
+   "seed": 5,
+   "method": "discover",
+   "phase": "diagnostic",
+   "input_digest": "sha256:26f30ac5f191726eb224a5ab3a1614be7e9d61c5338a735992db99d399df6f03",
+   "status": "ok",
+   "details": {
+    "mean_formula": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+    "spread_formula": null,
+    "spread_log": [
+     {
+      "stage": "spread",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no predictor's residual spread has |t| >= 2; constant scale kept. Tested the spread against 2 column(s): x1, x2",
+      "estimated_seconds": null
+     }
+    ],
+    "discovery_log": [
+     {
+      "stage": "family",
+      "candidate": "Gaussian",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "the probe has no comparison to make on this response (a binary or a categorical response), so the dtype-inferred family stands",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "setup",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no missing values in the data or newdata: fits use na_action='omit', the same rows without the imputation terms that 'impute' adds to every model",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "rule",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "rule in force: mu heredity none",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "draft",
+      "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "2 terms from the columns, each continuous column a P-spline at df=4",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "mean effects",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.02 s for the first compare_specifications of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.015776248765178025
+     },
+     {
+      "stage": "mean effects",
+      "candidate": "bbs(x1, df=4.0)",
+      "score": 1.5694246418842228,
+      "change": 0.46057032234331086,
+      "se": 0.04365971728694846,
+      "adopted": true,
+      "reason": "kept: removing it raises out-of-fold risk by more than 2 change se",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "mean effects",
+      "candidate": "bbs(x2, df=4.0)",
+      "score": 1.5694246418842228,
+      "change": 0.0733370348424569,
+      "se": 0.009010544056031841,
+      "adopted": true,
+      "reason": "kept: removing it raises out-of-fold risk by more than 2 change se",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "interactions",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no pair explains residual variation out of sample",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "spread",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "no predictor's residual spread has |t| >= 2; constant scale kept. Tested the spread against 2 column(s): x1, x2",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "tune",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first tune_mstop of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.004706754349172115
+     },
+     {
+      "stage": "tune",
+      "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "boundary: the cross-validated risk is still falling at the end of the mstop grid (400 steps after 2 doubling(s)); the full adopted term set is kept, at mstop=399, and the stopping iteration is not resolved",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "final model",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.0008136670803651214
+     },
+     {
+      "stage": "estimate",
+      "candidate": "refit",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first gamboost of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.0008174580289050937
+     },
+     {
+      "stage": "refit",
+      "candidate": "bbs(x1, df=4.0) + bbs(x2, df=4.0)",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": true,
+      "reason": "REML refit of the adopted terms",
+      "estimated_seconds": null
+     },
+     {
+      "stage": "estimate",
+      "candidate": "predict",
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": false,
+      "reason": "about 0.00 s for the first conformal_interval of this stage (estimate_cost), logged before the stage runs",
+      "estimated_seconds": 0.0013727089390158653
+     },
+     {
+      "stage": "predict",
+      "candidate": null,
+      "score": null,
+      "change": null,
+      "se": null,
+      "adopted": true,
+      "reason": "intervals: split, guarantee 'finite-sample marginal split-conformal coverage'",
+      "estimated_seconds": null
+     }
+    ],
+    "provenance": {
+     "mboostrs_version": "0.1.3",
+     "build": {
+      "package_version": "0.1.3",
+      "source_digest": "sha256:545abff7a0e12ca3fcef54e2b4eed955c157ff4b26cca1ab727cc0c4550b20ef",
+      "git_revision": "e314bbfd736db08de00a1640c1e2f0d033035917",
+      "git_dirty": true,
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+      "target": "aarch64-apple-darwin",
+      "profile": "release",
+      "target_features": "aes,bf16,bti,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,i8mm,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+      "crate_features": "",
+      "abi_version": 1,
+      "build_id": "sha256:f040b322af1e6fbbefc1acad06598d728a6061410bee019605042c3a5b0216a6"
+     },
+     "python_version": "3.12.11",
+     "platform": "macOS-26.3-arm64-arm-64bit",
+     "packages": {
+      "numpy": "2.4.6",
+      "polars": "1.41.0",
+      "pandas": "2.3.3"
+     },
+     "seed": 5,
+     "data": {
+      "n_rows": 1000,
+      "columns": [
+       {
+        "name": "x1",
+        "dtype": "float64"
+       },
+       {
+        "name": "x2",
+        "dtype": "float64"
+       },
+       {
+        "name": "y",
+        "dtype": "float64"
+       }
+      ],
+      "sha256": "cc4b150d997655f86720393a978f93a3f9c79449bdc6cf55d60a1132a8ca55b8"
+     }
+    }
+   },
+   "coverage": 0.907,
+   "width": 4.082133194283293,
+   "coverage_low": 0.992503748125937,
+   "coverage_high": 0.7886056971514243,
+   "width_scale_rank": null,
+   "oracle_width": 3.4095011583311936,
+   "interval_score": 5.2191955712347236,
+   "prediction_digest": "sha256:3bfbd30f0907389b01d6b17458891ef500490cab5ef2492ff6cd427497cfcd19",
+   "warnings": [],
+   "elapsed": 0.054921084083616734
+  }
+ ],
+ "loaded_sources": {
+  "/private/tmp/mboostrs-spread-baseline/python/mboostrs/discover.py": "1448328d4779c6b992889ce3a622eae292487b35197216c76f3bcaaaa175a16a",
+  "/private/tmp/mboostrs-spread-baseline/python/mboostrs/explore.py": "72fc7bc563ae4693a4590e4f94b4e48c500d01258c77cbbb58ae3965d881ae62"
+ }
+}

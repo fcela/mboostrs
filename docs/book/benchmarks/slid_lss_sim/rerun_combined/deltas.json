@@ -1,0 +1,1347 @@
+{
+ "study": "slid_lss_sim",
+ "scorecard": "mboostrs-scorecard/2.1",
+ "baseline": {
+  "mboostrs_file": "/workspace/agent-test/bench4/site-base/mboostrs/__init__.py",
+  "build_sha_declared": "0ae6f81d",
+  "git_revision": "65f71c769e868a84d1338fdb38b0bfbcb6e106ab",
+  "results_rows": 260
+ },
+ "combined": {
+  "mboostrs_file": "/workspace/agent-test/bench4/site-combined/mboostrs/__init__.py",
+  "build_sha_declared": "0ae6f81d",
+  "combined_commit_sha": "e79fa6140ee013e1f024b4fc296b0deabc1712ca",
+  "git_revision": "65f71c769e868a84d1338fdb38b0bfbcb6e106ab",
+  "results_rows": 260
+ },
+ "tracks": [
+  "sim_known",
+  "sim_discovery",
+  "slid_known",
+  "slid_discovery"
+ ],
+ "headline": {
+  "sim_known": {
+   "crps_gap_pct": {
+    "baseline": -4.555032347953104,
+    "baseline_se": 0.15826118934963987,
+    "combined": -4.555032347953104,
+    "combined_se": 0.15826118934963987,
+    "delta": 0.0
+   },
+   "rmse_gap_pct": {
+    "baseline": -1.0194188169363616,
+    "baseline_se": 0.1419082994888487,
+    "combined": -1.0194188169363616,
+    "combined_se": 0.1419082994888487,
+    "delta": 0.0
+   }
+  },
+  "sim_discovery": {
+   "crps_gap_pct": {
+    "baseline": -4.441754195095271,
+    "baseline_se": 0.1574725670563401,
+    "combined": -4.441754195095271,
+    "combined_se": 0.1574725670563401,
+    "delta": 0.0
+   },
+   "rmse_gap_pct": {
+    "baseline": -0.9907331109995587,
+    "baseline_se": 0.13745051539547415,
+    "combined": -0.9907331109995587,
+    "combined_se": 0.13745051539547415,
+    "delta": 0.0
+   }
+  },
+  "slid_known": {
+   "crps_gap_pct": {
+    "baseline": 0.5788429887845425,
+    "baseline_se": 0.12805465777197264,
+    "combined": 0.5788429887845425,
+    "combined_se": 0.12805465777197264,
+    "delta": 0.0
+   },
+   "rmse_gap_pct": {
+    "baseline": 0.7522667304051822,
+    "baseline_se": 0.13183048478512177,
+    "combined": 0.7522667304051822,
+    "combined_se": 0.13183048478512177,
+    "delta": 0.0
+   }
+  },
+  "slid_discovery": {
+   "crps_gap_pct": {
+    "baseline": 34.067043754738044,
+    "baseline_se": 0.46674379202003824,
+    "combined": 1.1480598394175523,
+    "combined_se": 0.16701836021891403,
+    "delta": -32.918983915320496
+   },
+   "rmse_gap_pct": {
+    "baseline": 28.761297064768723,
+    "baseline_se": 0.4220716041175934,
+    "combined": 0.8480449586612003,
+    "combined_se": 0.1457331284192271,
+    "delta": -27.91325210610752
+   }
+  }
+ },
+ "rows": [
+  {
+   "dimension": "D1a",
+   "name": "Relationship recovery under a prescribed specification",
+   "track": "sim_known",
+   "arm": "sim",
+   "applicable": true,
+   "status": "measured",
+   "score_baseline": 3,
+   "score_combined": 3,
+   "anchor_changed": false,
+   "metrics": {
+    "mb_lss_known.rmse_mu": {
+     "baseline": 0.05625213323014679,
+     "baseline_se": 0.003207599777921551,
+     "combined": 0.05625213323014679,
+     "combined_se": 0.003207599777921551,
+     "delta": 0.0
+    },
+    "mb_lss_known.rmse_log_sigma": {
+     "baseline": 0.013956923889455361,
+     "baseline_se": 0.0024107404077972805,
+     "combined": 0.013956923889455361,
+     "combined_se": 0.0024107404077972805,
+     "delta": 0.0
+    },
+    "mb_lss_known.slope_b": {
+     "baseline": 1.458109901548415,
+     "baseline_se": 0.029944387721344393,
+     "combined": 1.458109901548415,
+     "combined_se": 0.029944387721344393,
+     "delta": 0.0
+    },
+    "mb_lss_known.slope_c": {
+     "baseline": -1.0351784905246995,
+     "baseline_se": 0.028559446477576182,
+     "combined": -1.0351784905246995,
+     "combined_se": 0.028559446477576182,
+     "delta": 0.0
+    },
+    "statsmodels_gamlss_known.rmse_mu": {
+     "baseline": 0.1227285309297238,
+     "baseline_se": 0.002305100149651019,
+     "combined": 0.1227285309297238,
+     "combined_se": 0.002305100149651019,
+     "delta": 0.0
+    },
+    "statsmodels_gamlss_known.rmse_log_sigma": {
+     "baseline": 0.04333812637231751,
+     "baseline_se": 0.005002522120929736,
+     "combined": 0.04333812637231751,
+     "combined_se": 0.005002522120929736,
+     "delta": 0.0
+    },
+    "statsmodels_gamlss_known.slope_b": {
+     "baseline": 1.5307655319050277,
+     "baseline_se": 0.03473362442850204,
+     "combined": 1.5307655319050277,
+     "combined_se": 0.03473362442850204,
+     "delta": 0.0
+    },
+    "statsmodels_gamlss_known.slope_c": {
+     "baseline": -0.9449111113363052,
+     "baseline_se": 0.05679031909362853,
+     "combined": -0.9449111113363052,
+     "combined_se": 0.05679031909362853,
+     "delta": 0.0
+    }
+   },
+   "primary_metric": "mb_lss_known.rmse_mu",
+   "fix_attribution": [],
+   "note": "known-spec path untouched by the fixes; identical recovery"
+  },
+  {
+   "dimension": "D1a",
+   "name": "Relationship recovery under a prescribed specification",
+   "track": "sim_discovery",
+   "arm": "sim",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": 3,
+   "score_combined": 3,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "no planted truth on this arm; not measured"
+  },
+  {
+   "dimension": "D1a",
+   "name": "Relationship recovery under a prescribed specification",
+   "track": "slid_known",
+   "arm": "slid",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": 3,
+   "score_combined": 3,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "no planted truth on this arm; not measured"
+  },
+  {
+   "dimension": "D1a",
+   "name": "Relationship recovery under a prescribed specification",
+   "track": "slid_discovery",
+   "arm": "slid",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": 3,
+   "score_combined": 3,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "no planted truth on this arm; not measured"
+  },
+  {
+   "dimension": "D1b",
+   "name": "Relationship discovery from data alone",
+   "track": "sim_known",
+   "arm": "sim",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": 3,
+   "score_combined": 3,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "no planted truth; discovery quality not scored on this arm"
+  },
+  {
+   "dimension": "D1b",
+   "name": "Relationship discovery from data alone",
+   "track": "sim_discovery",
+   "arm": "sim",
+   "applicable": true,
+   "status": "measured",
+   "score_baseline": 3,
+   "score_combined": 3,
+   "anchor_changed": false,
+   "metrics": {
+    "loc_precision": {
+     "baseline": 0.9800000000000001,
+     "baseline_se": 0.019999999999999997,
+     "combined": 0.9800000000000001,
+     "combined_se": 0.019999999999999997,
+     "delta": 0.0
+    },
+    "loc_recall": {
+     "baseline": 1.0,
+     "baseline_se": 0.0,
+     "combined": 1.0,
+     "combined_se": 0.0,
+     "delta": 0.0
+    },
+    "scale_precision": {
+     "baseline": 1.0,
+     "baseline_se": 0.0,
+     "combined": 1.0,
+     "combined_se": 0.0,
+     "delta": 0.0
+    },
+    "scale_recall": {
+     "baseline": 1.0,
+     "baseline_se": 0.0,
+     "combined": 1.0,
+     "combined_se": 0.0,
+     "delta": 0.0
+    },
+    "family_discovered_gaussian_seeds": {
+     "baseline": 10,
+     "combined": 10,
+     "delta": 0
+    },
+    "false_nuisance_total": {
+     "baseline": 0,
+     "combined": 0,
+     "delta": 0
+    },
+    "trap_x5_in_loc_seeds": {
+     "baseline": 0,
+     "combined": 0,
+     "delta": 0
+    },
+    "trap_active_in_scale_seeds": {
+     "baseline": 0,
+     "combined": 0,
+     "delta": 0
+    },
+    "loc_interaction_seeds": {
+     "baseline": 10,
+     "combined": 10,
+     "delta": 0
+    }
+   },
+   "primary_metric": "loc_precision",
+   "fix_attribution": [
+    585,
+    589,
+    590
+   ],
+   "note": "sim selection unchanged; the real-arm collapse that previously capped this dimension is gone"
+  },
+  {
+   "dimension": "D1b",
+   "name": "Relationship discovery from data alone",
+   "track": "slid_known",
+   "arm": "slid",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": 3,
+   "score_combined": 3,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "no planted truth; discovery quality not scored on this arm"
+  },
+  {
+   "dimension": "D1b",
+   "name": "Relationship discovery from data alone",
+   "track": "slid_discovery",
+   "arm": "slid",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": 3,
+   "score_combined": 3,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "no planted truth; discovery quality not scored on this arm"
+  },
+  {
+   "dimension": "D2",
+   "name": "Causal humility and support",
+   "track": "sim_known",
+   "arm": "sim",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D2",
+   "name": "Causal humility and support",
+   "track": "sim_discovery",
+   "arm": "sim",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D2",
+   "name": "Causal humility and support",
+   "track": "slid_known",
+   "arm": "slid",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D2",
+   "name": "Causal humility and support",
+   "track": "slid_discovery",
+   "arm": "slid",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D3",
+   "name": "Explanation quality",
+   "track": "sim_known",
+   "arm": "sim",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D3",
+   "name": "Explanation quality",
+   "track": "sim_discovery",
+   "arm": "sim",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D3",
+   "name": "Explanation quality",
+   "track": "slid_known",
+   "arm": "slid",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D3",
+   "name": "Explanation quality",
+   "track": "slid_discovery",
+   "arm": "slid",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D4",
+   "name": "Importance quantification",
+   "track": "sim_known",
+   "arm": "sim",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D4",
+   "name": "Importance quantification",
+   "track": "sim_discovery",
+   "arm": "sim",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D4",
+   "name": "Importance quantification",
+   "track": "slid_known",
+   "arm": "slid",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D4",
+   "name": "Importance quantification",
+   "track": "slid_discovery",
+   "arm": "slid",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D5",
+   "name": "Experimental iteration speed",
+   "track": "sim_known",
+   "arm": "sim",
+   "applicable": true,
+   "status": "measured",
+   "score_baseline": 3,
+   "score_combined": 3,
+   "anchor_changed": false,
+   "metrics": {
+    "fit_median": {
+     "baseline": 0.27921319007873535,
+     "combined": 0.264357328414917,
+     "delta": -0.01485586166381836
+    },
+    "fit_p90": {
+     "baseline": 0.30841362476348877,
+     "combined": 0.30371880531311035,
+     "delta": -0.004694819450378418
+    },
+    "whatif_median": {
+     "baseline": 0.24606282711029054,
+     "combined": 0.2278620719909668,
+     "delta": -0.01820075511932373
+    }
+   },
+   "primary_metric": "fit_median",
+   "fix_attribution": [],
+   "note": "unchanged"
+  },
+  {
+   "dimension": "D5",
+   "name": "Experimental iteration speed",
+   "track": "sim_discovery",
+   "arm": "sim",
+   "applicable": true,
+   "status": "measured",
+   "score_baseline": 3,
+   "score_combined": 3,
+   "anchor_changed": false,
+   "metrics": {
+    "fit_median": {
+     "baseline": 3.3410831689834595,
+     "combined": 3.224793791770935,
+     "delta": -0.11628937721252441
+    },
+    "fit_p90": {
+     "baseline": 3.9753880739212035,
+     "combined": 3.5970151662826537,
+     "delta": -0.3783729076385498
+    },
+    "whatif_median": {
+     "baseline": 2.494083595275879,
+     "combined": 2.363894820213318,
+     "delta": -0.1301887750625612
+    }
+   },
+   "primary_metric": "fit_median",
+   "fix_attribution": [],
+   "note": "unchanged"
+  },
+  {
+   "dimension": "D5",
+   "name": "Experimental iteration speed",
+   "track": "slid_known",
+   "arm": "slid",
+   "applicable": true,
+   "status": "measured",
+   "score_baseline": 3,
+   "score_combined": 3,
+   "anchor_changed": false,
+   "metrics": {
+    "fit_median": {
+     "baseline": 0.11900854110717773,
+     "combined": 0.13963449001312256,
+     "delta": 0.020625948905944824
+    },
+    "fit_p90": {
+     "baseline": 0.14851613044738768,
+     "combined": 0.17395265102386476,
+     "delta": 0.02543652057647708
+    },
+    "whatif_median": {
+     "baseline": 0.09973669052124023,
+     "combined": 0.10690730810165405,
+     "delta": 0.007170617580413818
+    }
+   },
+   "primary_metric": "fit_median",
+   "fix_attribution": [],
+   "note": "unchanged"
+  },
+  {
+   "dimension": "D5",
+   "name": "Experimental iteration speed",
+   "track": "slid_discovery",
+   "arm": "slid",
+   "applicable": true,
+   "status": "measured",
+   "score_baseline": 3,
+   "score_combined": 3,
+   "anchor_changed": false,
+   "metrics": {
+    "fit_median": {
+     "baseline": 1.840144157409668,
+     "combined": 1.1366511583328247,
+     "delta": -0.7034929990768433
+    },
+    "fit_p90": {
+     "baseline": 1.9593661546707153,
+     "combined": 1.2063272714614868,
+     "delta": -0.7530388832092285
+    },
+    "whatif_median": {
+     "baseline": 1.1063779592514038,
+     "combined": 0.666016161441803,
+     "delta": -0.44036179780960083
+    }
+   },
+   "primary_metric": "fit_median",
+   "fix_attribution": [],
+   "note": "SLID discovery fit and what-if both faster under the Gaussian family"
+  },
+  {
+   "dimension": "D6",
+   "name": "Robustness across conditions",
+   "track": "sim_known",
+   "arm": "sim",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D6",
+   "name": "Robustness across conditions",
+   "track": "sim_discovery",
+   "arm": "sim",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D6",
+   "name": "Robustness across conditions",
+   "track": "slid_known",
+   "arm": "slid",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D6",
+   "name": "Robustness across conditions",
+   "track": "slid_discovery",
+   "arm": "slid",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D7",
+   "name": "Human-friendliness",
+   "track": "sim_known",
+   "arm": "sim",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D7",
+   "name": "Human-friendliness",
+   "track": "sim_discovery",
+   "arm": "sim",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D7",
+   "name": "Human-friendliness",
+   "track": "slid_known",
+   "arm": "slid",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D7",
+   "name": "Human-friendliness",
+   "track": "slid_discovery",
+   "arm": "slid",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D8",
+   "name": "Agent-friendliness",
+   "track": "sim_known",
+   "arm": "sim",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D8",
+   "name": "Agent-friendliness",
+   "track": "sim_discovery",
+   "arm": "sim",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D8",
+   "name": "Agent-friendliness",
+   "track": "slid_known",
+   "arm": "slid",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D8",
+   "name": "Agent-friendliness",
+   "track": "slid_discovery",
+   "arm": "slid",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D9",
+   "name": "Uncertainty honesty (calibration)",
+   "track": "sim_known",
+   "arm": "sim",
+   "applicable": true,
+   "status": "measured",
+   "score_baseline": 3,
+   "score_combined": 3,
+   "anchor_changed": false,
+   "metrics": {
+    "coverage80_mean": {
+     "baseline": 0.7979333333333334,
+     "combined": 0.7979333333333334,
+     "delta": 0.0
+    },
+    "coverage80_gap_pp": {
+     "baseline": -0.20666666666667055,
+     "combined": -0.20666666666667055,
+     "delta": 0.0
+    },
+    "coverage80_gap_se_pp": {
+     "baseline": 0.26987880224507155,
+     "combined": 0.26987880224507155,
+     "delta": 0.0
+    },
+    "coverage80_width": {
+     "baseline": 2.7632287339281936,
+     "combined": 2.7632287339281936,
+     "delta": 0.0
+    },
+    "coverage95_mean": {
+     "baseline": 0.9480666666666668,
+     "combined": 0.9480666666666668,
+     "delta": 0.0
+    },
+    "coverage95_gap_pp": {
+     "baseline": -0.1933333333333298,
+     "combined": -0.1933333333333298,
+     "delta": 0.0
+    },
+    "coverage95_gap_se_pp": {
+     "baseline": 0.12927146286443628,
+     "combined": 0.12927146286443628,
+     "delta": 0.0
+    },
+    "coverage95_width": {
+     "baseline": 4.225993666703527,
+     "combined": 4.225993666703527,
+     "delta": 0.0
+    }
+   },
+   "primary_metric": "coverage80_gap_pp",
+   "fix_attribution": [],
+   "note": "calibrated, unchanged"
+  },
+  {
+   "dimension": "D9",
+   "name": "Uncertainty honesty (calibration)",
+   "track": "sim_discovery",
+   "arm": "sim",
+   "applicable": true,
+   "status": "measured",
+   "score_baseline": 3,
+   "score_combined": 3,
+   "anchor_changed": false,
+   "metrics": {
+    "coverage80_mean": {
+     "baseline": 0.8159666666666666,
+     "combined": 0.8159666666666666,
+     "delta": 0.0
+    },
+    "coverage80_gap_pp": {
+     "baseline": 1.596666666666663,
+     "combined": 1.596666666666663,
+     "delta": 0.0
+    },
+    "coverage80_gap_se_pp": {
+     "baseline": 0.30219158341426267,
+     "combined": 0.30219158341426267,
+     "delta": 0.0
+    },
+    "coverage80_width": {
+     "baseline": 2.8592407110707394,
+     "combined": 2.8592407110707394,
+     "delta": 0.0
+    },
+    "coverage95_mean": {
+     "baseline": 0.9559666666666665,
+     "combined": 0.9559666666666665,
+     "delta": 0.0
+    },
+    "coverage95_gap_pp": {
+     "baseline": 0.5966666666666698,
+     "combined": 0.5966666666666698,
+     "delta": 0.0
+    },
+    "coverage95_gap_se_pp": {
+     "baseline": 0.19654107728851042,
+     "combined": 0.19654107728851042,
+     "delta": 0.0
+    },
+    "coverage95_width": {
+     "baseline": 4.3728313143981055,
+     "combined": 4.3728313143981055,
+     "delta": 0.0
+    }
+   },
+   "primary_metric": "coverage80_gap_pp",
+   "fix_attribution": [],
+   "note": "calibrated, unchanged"
+  },
+  {
+   "dimension": "D9",
+   "name": "Uncertainty honesty (calibration)",
+   "track": "slid_known",
+   "arm": "slid",
+   "applicable": true,
+   "status": "measured",
+   "score_baseline": 3,
+   "score_combined": 3,
+   "anchor_changed": false,
+   "metrics": {
+    "coverage80_mean": {
+     "baseline": 0.8118584952665671,
+     "combined": 0.8118584952665671,
+     "delta": 0.0
+    },
+    "coverage80_gap_pp": {
+     "baseline": 1.185849526656697,
+     "combined": 1.185849526656697,
+     "delta": 0.0
+    },
+    "coverage80_gap_se_pp": {
+     "baseline": 0.502895962655017,
+     "combined": 0.502895962655017,
+     "delta": 0.0
+    },
+    "coverage80_width": {
+     "baseline": 0.9917429905282502,
+     "combined": 0.9917429905282502,
+     "delta": 0.0
+    },
+    "coverage95_mean": {
+     "baseline": 0.9548081714000995,
+     "combined": 0.9548081714000995,
+     "delta": 0.0
+    },
+    "coverage95_gap_pp": {
+     "baseline": 0.4808171400099715,
+     "combined": 0.4808171400099715,
+     "delta": 0.0
+    },
+    "coverage95_gap_se_pp": {
+     "baseline": 0.18791148367533078,
+     "combined": 0.18791148367533078,
+     "delta": 0.0
+    },
+    "coverage95_width": {
+     "baseline": 1.5167400170350542,
+     "combined": 1.5167400170350542,
+     "delta": 0.0
+    }
+   },
+   "primary_metric": "coverage80_gap_pp",
+   "fix_attribution": [],
+   "note": "calibrated, unchanged"
+  },
+  {
+   "dimension": "D9",
+   "name": "Uncertainty honesty (calibration)",
+   "track": "slid_discovery",
+   "arm": "slid",
+   "applicable": true,
+   "status": "measured",
+   "score_baseline": 3,
+   "score_combined": 3,
+   "anchor_changed": false,
+   "metrics": {
+    "coverage80_mean": {
+     "baseline": 0.7159441953163925,
+     "combined": 0.8036870951669158,
+     "delta": 0.0877428998505233
+    },
+    "coverage80_gap_pp": {
+     "baseline": -8.405580468360744,
+     "combined": 0.36870951669157437,
+     "delta": 8.774289985052318
+    },
+    "coverage80_gap_se_pp": {
+     "baseline": 0.572474363675832,
+     "combined": 0.47350352914679855,
+     "delta": -0.09897083452903349
+    },
+    "coverage80_width": {
+     "baseline": 1.1962596870942406,
+     "combined": 0.9879336393977614,
+     "delta": -0.20832604769647922
+    },
+    "coverage95_mean": {
+     "baseline": 0.9582461385151968,
+     "combined": 0.9498754359740907,
+     "delta": -0.008370702541106056
+    },
+    "coverage95_gap_pp": {
+     "baseline": 0.8246138515196865,
+     "combined": -0.01245640259092573,
+     "delta": -0.8370702541106122
+    },
+    "coverage95_gap_se_pp": {
+     "baseline": 0.154700295926856,
+     "combined": 0.2111571509757556,
+     "delta": 0.05645685504889961
+    },
+    "coverage95_width": {
+     "baseline": 1.8295213129918093,
+     "combined": 1.510914117226605,
+     "delta": -0.31860719576520435
+    }
+   },
+   "primary_metric": "coverage80_gap_pp",
+   "fix_attribution": [
+    585,
+    589
+   ],
+   "note": "SLID discovery undercoverage repaired"
+  },
+  {
+   "dimension": "D10",
+   "name": "Reproducibility and auditability",
+   "track": "sim_known",
+   "arm": "sim",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D10",
+   "name": "Reproducibility and auditability",
+   "track": "sim_discovery",
+   "arm": "sim",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D10",
+   "name": "Reproducibility and auditability",
+   "track": "slid_known",
+   "arm": "slid",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D10",
+   "name": "Reproducibility and auditability",
+   "track": "slid_discovery",
+   "arm": "slid",
+   "applicable": false,
+   "status": "unmeasured",
+   "score_baseline": null,
+   "score_combined": null,
+   "anchor_changed": false,
+   "metrics": {},
+   "primary_metric": null,
+   "fix_attribution": [],
+   "note": "not exercised by this benchmark; unchanged"
+  },
+  {
+   "dimension": "D11",
+   "name": "Predictive validity",
+   "track": "sim_known",
+   "arm": "sim",
+   "applicable": true,
+   "status": "measured",
+   "score_baseline": 3,
+   "score_combined": 3,
+   "anchor_changed": false,
+   "metrics": {
+    "crps_gap_pct": {
+     "baseline": -4.555032347953104,
+     "baseline_se": 0.15826118934963987,
+     "combined": -4.555032347953104,
+     "combined_se": 0.15826118934963987,
+     "delta": 0.0
+    },
+    "rmse_gap_pct": {
+     "baseline": -1.0194188169363616,
+     "baseline_se": 0.1419082994888487,
+     "combined": -1.0194188169363616,
+     "combined_se": 0.1419082994888487,
+     "delta": 0.0
+    }
+   },
+   "primary_metric": "crps_gap_pct",
+   "fix_attribution": [],
+   "note": "unchanged"
+  },
+  {
+   "dimension": "D11",
+   "name": "Predictive validity",
+   "track": "sim_discovery",
+   "arm": "sim",
+   "applicable": true,
+   "status": "measured",
+   "score_baseline": 3,
+   "score_combined": 3,
+   "anchor_changed": false,
+   "metrics": {
+    "crps_gap_pct": {
+     "baseline": -4.441754195095271,
+     "baseline_se": 0.1574725670563401,
+     "combined": -4.441754195095271,
+     "combined_se": 0.1574725670563401,
+     "delta": 0.0
+    },
+    "rmse_gap_pct": {
+     "baseline": -0.9907331109995587,
+     "baseline_se": 0.13745051539547415,
+     "combined": -0.9907331109995587,
+     "combined_se": 0.13745051539547415,
+     "delta": 0.0
+    }
+   },
+   "primary_metric": "crps_gap_pct",
+   "fix_attribution": [],
+   "note": "unchanged"
+  },
+  {
+   "dimension": "D11",
+   "name": "Predictive validity",
+   "track": "slid_known",
+   "arm": "slid",
+   "applicable": true,
+   "status": "measured",
+   "score_baseline": 3,
+   "score_combined": 3,
+   "anchor_changed": false,
+   "metrics": {
+    "crps_gap_pct": {
+     "baseline": 0.5788429887845425,
+     "baseline_se": 0.12805465777197264,
+     "combined": 0.5788429887845425,
+     "combined_se": 0.12805465777197264,
+     "delta": 0.0
+    },
+    "rmse_gap_pct": {
+     "baseline": 0.7522667304051822,
+     "baseline_se": 0.13183048478512177,
+     "combined": 0.7522667304051822,
+     "combined_se": 0.13183048478512177,
+     "delta": 0.0
+    }
+   },
+   "primary_metric": "crps_gap_pct",
+   "fix_attribution": [],
+   "note": "unchanged"
+  },
+  {
+   "dimension": "D11",
+   "name": "Predictive validity",
+   "track": "slid_discovery",
+   "arm": "slid",
+   "applicable": true,
+   "status": "measured",
+   "score_baseline": 3,
+   "score_combined": 3,
+   "anchor_changed": false,
+   "metrics": {
+    "crps_gap_pct": {
+     "baseline": 34.067043754738044,
+     "baseline_se": 0.46674379202003824,
+     "combined": 1.1480598394175523,
+     "combined_se": 0.16701836021891403,
+     "delta": -32.918983915320496
+    },
+    "rmse_gap_pct": {
+     "baseline": 28.761297064768723,
+     "baseline_se": 0.4220716041175934,
+     "combined": 0.8480449586612003,
+     "combined_se": 0.1457331284192271,
+     "delta": -27.91325210610752
+    }
+   },
+   "primary_metric": "crps_gap_pct",
+   "fix_attribution": [
+    585,
+    589,
+    590
+   ],
+   "note": "SLID discovery gap closed from +34% to +1.1%"
+  }
+ ],
+ "fixes": [
+  {
+   "pr": 585,
+   "slug": "empty-model guard / family inference",
+   "changed": "discovery always infers a family and never returns an empty model silently",
+   "dims": [
+    "D1b",
+    "D9",
+    "D11"
+   ],
+   "primary_track": "slid_discovery"
+  },
+  {
+   "pr": 586,
+   "slug": "intercept-only warning",
+   "changed": "discovery warns when it can only fit an intercept",
+   "dims": [
+    "D1b",
+    "D7"
+   ],
+   "primary_track": null
+  },
+  {
+   "pr": 587,
+   "slug": "cvrisk folds accepted as int",
+   "changed": "cvrisk_gamboostLSS(folds=5) no longer raises IndexError",
+   "dims": [
+    "D5",
+    "D8"
+   ],
+   "primary_track": null
+  },
+  {
+   "pr": 589,
+   "slug": "sigma accessor / spread_formula",
+   "changed": "discovery exposes the fitted scale model and a sigma accessor",
+   "dims": [
+    "D9",
+    "D11",
+    "D1b"
+   ],
+   "primary_track": "slid_discovery"
+  },
+  {
+   "pr": 590,
+   "slug": "response-copy / row-id hygiene",
+   "changed": "discovery drops identifier columns and the response's own transforms before selecting predictors",
+   "dims": [
+    "D1b",
+    "D11"
+   ],
+   "primary_track": "slid_discovery"
+  }
+ ],
+ "friction": [
+  {
+   "id": 1,
+   "title": "no high-level mb.fit discovery front door",
+   "fix": null,
+   "status": "open",
+   "fix_pr": null
+  },
+  {
+   "id": 2,
+   "title": "DiscoveryResult has no fitted sigma accessor",
+   "fix": 589,
+   "status": "resolved",
+   "fix_pr": 589
+  },
+  {
+   "id": 3,
+   "title": "discover treats every non-response column as a predictor",
+   "fix": 590,
+   "status": "resolved",
+   "fix_pr": 590
+  },
+  {
+   "id": 4,
+   "title": "discover silent on an intercept-only result",
+   "fix": 586,
+   "status": "resolved",
+   "fix_pr": 586
+  },
+  {
+   "id": 5,
+   "title": "family probe off by default in discovery",
+   "fix": 585,
+   "status": "resolved",
+   "fix_pr": 585
+  },
+  {
+   "id": 6,
+   "title": "cvrisk_gamboostLSS(folds=int) raises IndexError",
+   "fix": 587,
+   "status": "resolved",
+   "fix_pr": 587
+  },
+  {
+   "id": 7,
+   "title": "with_mstop predictions disagree with a direct refit",
+   "fix": null,
+   "status": "open",
+   "fix_pr": null
+  },
+  {
+   "id": 8,
+   "title": "build_info git_revision is checkout HEAD not build SHA",
+   "fix": null,
+   "status": "open",
+   "fix_pr": null
+  },
+  {
+   "id": 9,
+   "title": "brandom(language) fold warning names an absent learner",
+   "fix": null,
+   "status": "open",
+   "fix_pr": null
+  },
+  {
+   "id": 10,
+   "title": "discover interval level is the only uncertainty knob",
+   "fix": null,
+   "status": "open",
+   "fix_pr": null
+  }
+ ]
+}

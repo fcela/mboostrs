@@ -1,0 +1,570 @@
+{
+ "models": {
+  "le_raceadj_q1_M_naive": {
+   "mstop": [
+    50,
+    50
+   ],
+   "sigma": [
+    {
+     "column": "lon,lat",
+     "freq": 1.0
+    },
+    {
+     "column": "med_prev_qual_z",
+     "freq": 0.84
+    },
+    {
+     "column": "pop_density",
+     "freq": 0.56
+    },
+    {
+     "column": "census_division",
+     "freq": 0.44
+    }
+   ],
+   "mu": [
+    {
+     "column": "lon,lat",
+     "freq": 1.0
+    },
+    {
+     "column": "reimb_penroll_adj10",
+     "freq": 0.84
+    },
+    {
+     "column": "cur_smoke_q1",
+     "freq": 0.76
+    }
+   ]
+  },
+  "le_raceadj_q1_M_weighted": {
+   "mstop": [
+    50,
+    50
+   ],
+   "sigma": [
+    {
+     "column": "lon,lat",
+     "freq": 1.0
+    },
+    {
+     "column": "med_prev_qual_z",
+     "freq": 0.84
+    },
+    {
+     "column": "pop_density",
+     "freq": 0.56
+    },
+    {
+     "column": "census_division",
+     "freq": 0.44
+    }
+   ],
+   "mu": [
+    {
+     "column": "lon,lat",
+     "freq": 1.0
+    },
+    {
+     "column": "reimb_penroll_adj10",
+     "freq": 0.84
+    },
+    {
+     "column": "cur_smoke_q1",
+     "freq": 0.76
+    }
+   ]
+  },
+  "le_raceadj_q1_M_corrected": {
+   "mstop": [
+    100,
+    100
+   ],
+   "sigma": [
+    {
+     "column": "lon,lat",
+     "freq": 1.0
+    },
+    {
+     "column": "pop_density",
+     "freq": 0.56
+    },
+    {
+     "column": "med_prev_qual_z",
+     "freq": 0.52
+    }
+   ],
+   "mu": [
+    {
+     "column": "cur_smoke_q1",
+     "freq": 1.0
+    },
+    {
+     "column": "lon,lat",
+     "freq": 1.0
+    },
+    {
+     "column": "reimb_penroll_adj10",
+     "freq": 0.88
+    },
+    {
+     "column": "cs00_seg_inc",
+     "freq": 0.72
+    }
+   ],
+   "decomposition": {
+    "observed_cross_cz_variance": 1.6098003157968364,
+    "mean_sampling_variance": 0.2546280255468396,
+    "mean_excess_variance": 0.8736070302526511,
+    "mean_predictive_variance": 1.1282350557994907,
+    "sampling_share_of_predictive": 0.22568703590441527,
+    "sampling_share_of_observed": 0.158173671012607
+   }
+  },
+  "le_raceadj_q1_F_naive": {
+   "mstop": [
+    50,
+    50
+   ],
+   "sigma": [
+    {
+     "column": "lon,lat",
+     "freq": 1.0
+    },
+    {
+     "column": "rel_tot",
+     "freq": 0.76
+    },
+    {
+     "column": "inc_share_1perc",
+     "freq": 0.48
+    }
+   ],
+   "mu": [
+    {
+     "column": "cur_smoke_q1",
+     "freq": 1.0
+    },
+    {
+     "column": "lon,lat",
+     "freq": 1.0
+    }
+   ]
+  },
+  "le_raceadj_q1_F_weighted": {
+   "mstop": [
+    50,
+    50
+   ],
+   "sigma": [
+    {
+     "column": "lon,lat",
+     "freq": 1.0
+    },
+    {
+     "column": "rel_tot",
+     "freq": 0.76
+    },
+    {
+     "column": "inc_share_1perc",
+     "freq": 0.48
+    }
+   ],
+   "mu": [
+    {
+     "column": "cur_smoke_q1",
+     "freq": 1.0
+    },
+    {
+     "column": "lon,lat",
+     "freq": 1.0
+    }
+   ]
+  },
+  "le_raceadj_q1_F_corrected": {
+   "mstop": [
+    100,
+    100
+   ],
+   "sigma": [
+    {
+     "column": "lon,lat",
+     "freq": 1.0
+    }
+   ],
+   "mu": [
+    {
+     "column": "cur_smoke_q1",
+     "freq": 1.0
+    },
+    {
+     "column": "lon,lat",
+     "freq": 1.0
+    },
+    {
+     "column": "cs00_seg_inc_aff75",
+     "freq": 0.76
+    },
+    {
+     "column": "reimb_penroll_adj10",
+     "freq": 0.6
+    }
+   ],
+   "decomposition": {
+    "observed_cross_cz_variance": 1.3100719601978807,
+    "mean_sampling_variance": 0.38922206158586226,
+    "mean_excess_variance": 0.6613208609210486,
+    "mean_predictive_variance": 1.050542922506911,
+    "sampling_share_of_predictive": 0.37049610562989804,
+    "sampling_share_of_observed": 0.2970997574263569
+   }
+  },
+  "le_raceadj_q4_M_naive": {
+   "mstop": [
+    3000,
+    3000
+   ],
+   "sigma": [
+    {
+     "column": "lon,lat",
+     "freq": 0.8
+    },
+    {
+     "column": "cs00_seg_inc",
+     "freq": 0.72
+    },
+    {
+     "column": "cur_smoke_q1",
+     "freq": 0.64
+    },
+    {
+     "column": "cs00_seg_inc_pov25",
+     "freq": 0.6
+    },
+    {
+     "column": "poor_share",
+     "freq": 0.56
+    },
+    {
+     "column": "rel_tot",
+     "freq": 0.56
+    },
+    {
+     "column": "mammogram_10",
+     "freq": 0.48
+    }
+   ],
+   "mu": [
+    {
+     "column": "cs_educ_ba",
+     "freq": 1.0
+    },
+    {
+     "column": "lon,lat",
+     "freq": 0.96
+    },
+    {
+     "column": "exercise_any_q1",
+     "freq": 0.6
+    }
+   ]
+  },
+  "le_raceadj_q4_M_weighted": {
+   "mstop": [
+    3000,
+    3000
+   ],
+   "sigma": [
+    {
+     "column": "lon,lat",
+     "freq": 0.8
+    },
+    {
+     "column": "cs00_seg_inc",
+     "freq": 0.72
+    },
+    {
+     "column": "cur_smoke_q1",
+     "freq": 0.64
+    },
+    {
+     "column": "cs00_seg_inc_pov25",
+     "freq": 0.6
+    },
+    {
+     "column": "poor_share",
+     "freq": 0.56
+    },
+    {
+     "column": "rel_tot",
+     "freq": 0.56
+    },
+    {
+     "column": "mammogram_10",
+     "freq": 0.48
+    }
+   ],
+   "mu": [
+    {
+     "column": "cs_educ_ba",
+     "freq": 1.0
+    },
+    {
+     "column": "lon,lat",
+     "freq": 0.96
+    },
+    {
+     "column": "exercise_any_q1",
+     "freq": 0.6
+    }
+   ]
+  },
+  "le_raceadj_q4_M_corrected": {
+   "mstop": [
+    50,
+    50
+   ],
+   "sigma": [
+    {
+     "column": "cs_race_theil_2000",
+     "freq": 0.52
+    },
+    {
+     "column": "cs00_seg_inc",
+     "freq": 0.48
+    },
+    {
+     "column": "lon,lat",
+     "freq": 0.44
+    }
+   ],
+   "mu": [
+    {
+     "column": "cs_educ_ba",
+     "freq": 1.0
+    },
+    {
+     "column": "lon,lat",
+     "freq": 1.0
+    },
+    {
+     "column": "exercise_any_q1",
+     "freq": 0.88
+    },
+    {
+     "column": "amb_disch_per1000_10",
+     "freq": 0.72
+    }
+   ],
+   "decomposition": {
+    "observed_cross_cz_variance": 2.0948885495423344,
+    "mean_sampling_variance": 1.1784315645798038,
+    "mean_excess_variance": 0.7442411779441797,
+    "mean_predictive_variance": 1.9226727425239836,
+    "sampling_share_of_predictive": 0.6129132319381722,
+    "sampling_share_of_observed": 0.5625270923540315
+   }
+  },
+  "le_raceadj_q4_F_naive": {
+   "mstop": [
+    300,
+    300
+   ],
+   "sigma": [
+    {
+     "column": "lon,lat",
+     "freq": 1.0
+    },
+    {
+     "column": "cs00_seg_inc_pov25",
+     "freq": 0.92
+    },
+    {
+     "column": "poor_share",
+     "freq": 0.76
+    },
+    {
+     "column": "frac_middleclass",
+     "freq": 0.52
+    },
+    {
+     "column": "bmi_obese_q1",
+     "freq": 0.4
+    }
+   ],
+   "mu": [
+    {
+     "column": "diab_eyeexam_10",
+     "freq": 0.92
+    },
+    {
+     "column": "reimb_penroll_adj10",
+     "freq": 0.68
+    }
+   ]
+  },
+  "le_raceadj_q4_F_weighted": {
+   "mstop": [
+    300,
+    300
+   ],
+   "sigma": [
+    {
+     "column": "lon,lat",
+     "freq": 1.0
+    },
+    {
+     "column": "cs00_seg_inc_pov25",
+     "freq": 0.92
+    },
+    {
+     "column": "poor_share",
+     "freq": 0.76
+    },
+    {
+     "column": "frac_middleclass",
+     "freq": 0.52
+    },
+    {
+     "column": "bmi_obese_q1",
+     "freq": 0.4
+    }
+   ],
+   "mu": [
+    {
+     "column": "diab_eyeexam_10",
+     "freq": 0.92
+    },
+    {
+     "column": "reimb_penroll_adj10",
+     "freq": 0.68
+    }
+   ]
+  },
+  "le_raceadj_q4_F_corrected": {
+   "mstop": [
+    100,
+    100
+   ],
+   "sigma": [
+    {
+     "column": "cs00_seg_inc_pov25",
+     "freq": 0.76
+    },
+    {
+     "column": "lon,lat",
+     "freq": 0.52
+    }
+   ],
+   "mu": [
+    {
+     "column": "lon,lat",
+     "freq": 1.0
+    },
+    {
+     "column": "reimb_penroll_adj10",
+     "freq": 0.96
+    },
+    {
+     "column": "diab_eyeexam_10",
+     "freq": 0.96
+    },
+    {
+     "column": "census_division",
+     "freq": 0.8
+    },
+    {
+     "column": "cs_educ_ba",
+     "freq": 0.64
+    },
+    {
+     "column": "med_prev_qual_z",
+     "freq": 0.6
+    }
+   ],
+   "decomposition": {
+    "observed_cross_cz_variance": 1.9778163019915647,
+    "mean_sampling_variance": 1.2571884944490104,
+    "mean_excess_variance": 0.4713771319375717,
+    "mean_predictive_variance": 1.728565626386582,
+    "sampling_share_of_predictive": 0.7273015703066218,
+    "sampling_share_of_observed": 0.6356447225068793
+   }
+  }
+ },
+ "sensitivity": {
+  "le_raceadj_q1_M": {
+   "mean_sampling_variance": 0.2546280255468396,
+   "observed_variance": 1.6098003157968364,
+   "path": [
+    {
+     "mstop": 100,
+     "mean_excess_variance": 0.8736070302526511
+    },
+    {
+     "mstop": 500,
+     "mean_excess_variance": 0.45461251731032964
+    },
+    {
+     "mstop": 2000,
+     "mean_excess_variance": 0.2364559704863611
+    }
+   ]
+  },
+  "le_raceadj_q1_F": {
+   "mean_sampling_variance": 0.38922206158586226,
+   "observed_variance": 1.3100719601978807,
+   "path": [
+    {
+     "mstop": 100,
+     "mean_excess_variance": 0.6613208609210486
+    },
+    {
+     "mstop": 500,
+     "mean_excess_variance": 0.3115603508737558
+    },
+    {
+     "mstop": 2000,
+     "mean_excess_variance": 0.1454987472281288
+    }
+   ]
+  },
+  "le_raceadj_q4_M": {
+   "mean_sampling_variance": 1.1784315645798038,
+   "observed_variance": 2.0948885495423344,
+   "path": [
+    {
+     "mstop": 100,
+     "mean_excess_variance": 0.5561947502357943
+    },
+    {
+     "mstop": 500,
+     "mean_excess_variance": 0.2548151138928264
+    },
+    {
+     "mstop": 2000,
+     "mean_excess_variance": 0.2013228599980706
+    }
+   ]
+  },
+  "le_raceadj_q4_F": {
+   "mean_sampling_variance": 1.2571884944490104,
+   "observed_variance": 1.9778163019915647,
+   "path": [
+    {
+     "mstop": 100,
+     "mean_excess_variance": 0.4713771319375717
+    },
+    {
+     "mstop": 500,
+     "mean_excess_variance": 0.2951550542550221
+    },
+    {
+     "mstop": 2000,
+     "mean_excess_variance": 0.2567405162206224
+    }
+   ]
+  }
+ }
+}

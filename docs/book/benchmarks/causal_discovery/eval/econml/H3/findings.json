@@ -1,0 +1,96 @@
+{
+  "library": "econml 0.17.0",
+  "effect_queries": {
+    "ATE": {
+      "estimate": 2679.6060941783753,
+      "lower90": 1427.92344472267,
+      "upper90": 3931.2887436340798
+    },
+    "ATT": {
+      "estimate": 3046.162058176521,
+      "lower90": 2549.801799770288,
+      "upper90": 3542.522316582754
+    },
+    "CATE_educ_lt12": {
+      "estimate": 2453.3566251269826,
+      "lower90": 1523.8176052768245,
+      "upper90": 3382.8956449771404
+    },
+    "CATE_educ_ge16": {
+      "estimate": 2693.85529423764,
+      "lower90": 268.7120210397843,
+      "upper90": 5118.998567435494
+    },
+    "CATE_prior_q1": {
+      "estimate": 3315.5324054197795,
+      "lower90": 2572.0727539429167,
+      "upper90": 4058.9920568966418
+    },
+    "CATE_prior_q4": {
+      "estimate": 1266.25867202475,
+      "lower90": -2587.787005112396,
+      "upper90": 5120.304349161894
+    },
+    "CATE_age_lt25": {
+      "estimate": 3014.16129662904,
+      "lower90": 2279.889607431595,
+      "upper90": 3748.4329858264846
+    },
+    "EMP_ATE": {
+      "estimate": 0.027680688318083953,
+      "lower90": 0.003496409702101508,
+      "upper90": 0.05186496693406639
+    }
+  },
+  "roles": {
+    "age": "confounder",
+    "education": "confounder",
+    "experience": "confounder",
+    "ethnicity": "confounder",
+    "smsa": "confounder",
+    "region": "confounder",
+    "prior_earnings": "confounder",
+    "months_unemployed": "confounder",
+    "parttime": "outcome_only",
+    "distance_km": "instrument",
+    "caseworker_note_len": "irrelevant",
+    "enrolled": "treatment",
+    "certificate": "mediator",
+    "responded": "post_treatment_selection",
+    "hours_post": "mediator",
+    "earnings_post": "outcome"
+  },
+  "adjustment_set": [
+    "age",
+    "education",
+    "prior_earnings",
+    "months_unemployed",
+    "ethnicity",
+    "smsa",
+    "region",
+    "parttime"
+  ],
+  "effect_modifiers": [],
+  "channels": {
+    "employment": true,
+    "earnings_if_employed": true
+  },
+  "limited_overlap": [
+    {
+      "description": "894 of 12000 training applicants have a fitted enrolment probability below 0.02; their median prior earnings are 77,185 dollars. Their effects are extrapolated from the other applicants.",
+      "variable": "prior_earnings"
+    },
+    {
+      "description": "180 of 4000 new applicants have a fitted enrolment probability below 0.02; their predicted effects rest on extrapolation.",
+      "variable": "prior_earnings"
+    }
+  ],
+  "warnings": [
+    "Follow-up survey response: 10006 of 12000 applicants answered (83.4%). Response depends on enrolment (logit coefficient 0.42 per enrolment). Results assume response is random given the covariates and enrolment; nothing in the data tests this, and response that depends on unobserved earnings would bias every estimate.",
+    "Final model: linear. RScorer (held-out responders): linear=-0.0007, causal_forest=-0.0020.",
+    "Instrument check: distance_km first-stage t statistic given covariates = -7.7; its direct t statistic in the follow-up earnings regression = -1.99. Distance-based IV estimate of the ATE = 12715 (90% -2211 to 27640).",
+    "Conditional-on-employment earnings effect = 3651 (90% 2809 to 4492); this compares employed applicants only, so it is not a causal effect on earnings of the employed unless employment is unaffected by enrolment.",
+    "Omitted-confounder benchmark: ATE when each strong confounder is dropped from the adjustment set: without prior_earnings = -4537, without months_unemployed = 2581, without education = 2296; full model = 2680.",
+    "Run time 10 seconds with seed 1; training rows 12000, responders 10006."
+  ]
+}

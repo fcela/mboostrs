@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-11-08T15:08:50+00:00",
+  "commit": "unknown",
+  "working_tree": {
+    "dirty": false,
+    "status_digest": null,
+    "commit_source": "mboostrs build_info"
+  },
+  "platform": {
+    "system": "Linux",
+    "release": "7.0.0-43-generic",
+    "machine": "x86_64",
+    "cpu": "x86_64",
+    "python": "3.12.3"
+  },
+  "versions": {
+    "mboostrs": "0.2.0",
+    "numpy": "2.5.4",
+    "rpy2": null,
+    "rustc": null,
+    "R": null,
+    "mboost": null,
+    "scipy": "1.18.1",
+    "pandas": "3.1.1",
+    "ngboost": null,
+    "mssm": null,
+    "scikit-learn": "1.9.1",
+    "catboost": "1.2.10",
+    "lightgbm": "4.7.0"
+  },
+  "threads": {
+    "logical_cpus": 4,
+    "r_mclapply_default_cores": null,
+    "RAYON_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "build_info": {
+    "package_version": "0.2.0",
+    "source_digest": "sha256:abbe8d741164f5c6c3893ebeb427677c983549ecbeebd33101d1372b0705bf79",
+    "git_revision": "unknown",
+    "git_dirty": false,
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28) | binary: rustc | commit-hash: b940084d7eb6a299eb4bfeb8e34901bc051e7ac4 | commit-date: 2026-09-28 | host: x86_64-unknown-linux-gnu | release: 1.99.0 | LLVM version: 23.1.1",
+    "target": "x86_64-unknown-linux-gnu",
+    "profile": "release",
+    "target_features": "fxsr,sse,sse2",
+    "crate_features": "",
+    "abi_version": 1,
+    "build_id": "sha256:917f53785dc906fcdf3b46f4d79fdb4302b7066e637b03542e1d920c392a69fc"
+  },
+  "scripts": {
+    "/home/hatch/workspace/mboostrs-dev-s629/tree/benches/study_sharp_mean_controls_confirmation.py": "5c16424d4c27b82e3bbd1dd6b7121c7b98eb65f96d620fe88dff9a25839ce5b9"
+  },
+  "thread_environment": {
+    "RAYON_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "protocol": {
+    "id": "sharp-mean-controls/1",
+    "phase": "confirmation",
+    "sha256": "edb693b1c2cb95fb9e01d7f201894a627be893a165b78294587f2a929fe346a8",
+    "decision_sha256": "9a6b4a75c6e79e45b19970751336b6e3b23d1811d10c0303411b0fbbdb8437af"
+  },
+  "repeats": {
+    "seeds": [
+      6294100,
+      6294101,
+      6294102,
+      6294103,
+      6294104,
+      6294105,
+      6294106,
+      6294107,
+      6294108,
+      6294109,
+      6294110,
+      6294111,
+      6294112,
+      6294113,
+      6294114,
+      6294115,
+      6294116,
+      6294117,
+      6294118,
+      6294119,
+      6294120,
+      6294121,
+      6294122,
+      6294123,
+      6294124,
+      6294125,
+      6294126,
+      6294127,
+      6294128,
+      6294129,
+      6294130,
+      6294131,
+      6294132,
+      6294133,
+      6294134,
+      6294135,
+      6294136,
+      6294137,
+      6294138,
+      6294139
+    ],
+    "test_seed_offset": 100000
+  },
+  "uncertainty": {
+    "unit": "one independent training and test draw; pair methods within a draw",
+    "summary": "mean and Monte Carlo standard error across draws",
+    "timing": "elapsed whole-workflow costs, not controlled implementation speed ratios"
+  },
+  "memory": {
+    "status": "not measured"
+  },
+  "loaded_sources": {
+    "discover.py": "8821edf2599fc70dc697c30e1cc1da2342725299f0d3252b7930840bc96f442a",
+    "explore.py": "af90e18d3abaeaf742cac7be7806519012eee57c1145fea765cd5d010f0eaae1",
+    "conformal.py": "9761b9b35f03213fe7118a10f66bbf7fc7eb4c270d34d48aedff2f6ac5f36098"
+  },
+  "records": 4000,
+  "journal_sha256": {
+    "confirmation.axis_constant.jsonl": "718e6867866449b265ab8b2507433dc91ae7f79d8379171fc2e8f728b5754051",
+    "confirmation.axis_varying.jsonl": "b436ad3f8453d8240ac05a2c213917002b3180651d5814dcc81051e18d3b9926",
+    "confirmation.shifted_constant.jsonl": "ab3f357b721fd2cb45984abade0695ec1f94df2f822b0d2bc2468417beec7085",
+    "confirmation.shifted_varying.jsonl": "0cb98b805c1b62a3f7210f305582702b54f3c27f8aeb8c730c1adebdcdb64266",
+    "confirmation.smooth_constant.jsonl": "ca9ca9578a20bb0331ff17cbd135ee4af99f5d8587cd78b62c7abafb95a02827",
+    "confirmation.smooth_absolute.jsonl": "939118067c91d089c09b325171882e9ef61ff65f02729505ba7f4e627489be41",
+    "confirmation.smooth_bell.jsonl": "98a5d42a3bd15095b35baa375e1459e38f3fc618275ccf5422f9c5a5261c7bdd",
+    "confirmation.smooth_monotone.jsonl": "cd324f351c398f5c9862a9bf4df76ba18c2206bf05411ec71e33686e1e0e0dd8",
+    "confirmation.null_constant.jsonl": "d92d2bc75b9b0b5b10a11ba99a29b002d6791871397d550bb37414f3eb62a749",
+    "confirmation.heavy_tail.jsonl": "d96e10c0a043989e91958dcea848d8ea1d7969cc81db25d1f6b5376ee1051e96"
+  }
+}

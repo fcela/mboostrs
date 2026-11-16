@@ -1,0 +1,402 @@
+{
+  "seed": 1,
+  "marginal_spearman_with_y": {
+    "longitude": 0.0022583335348277164,
+    "latitude": 0.04696621208989468,
+    "housing_median_age": 0.4220669752362153,
+    "total_rooms": -0.2693984700849245,
+    "total_bedrooms": -0.1517818801264851,
+    "population": -0.07956814380531833,
+    "households": -0.15546044828121608,
+    "median_income": -0.4612772331297008,
+    "median_house_value": -0.29996772996020016,
+    "ave_rooms": -0.3080193349424819,
+    "ave_bedrooms": 0.03471417101223537,
+    "ave_occup": 0.17081118565102166,
+    "roof_class": 0.37744498441823804
+  },
+  "config": {
+    "max_leaves": 2,
+    "min_samples_leaf": 50
+  },
+  "outer_bags": {
+    "selection": 4,
+    "final": 8
+  },
+  "cv_rmse_all_features": 0.48062054549730715,
+  "cv_rmse_chosen_set": 0.48062054549730715,
+  "chosen_features": [
+    "longitude",
+    "latitude",
+    "housing_median_age",
+    "total_rooms",
+    "total_bedrooms",
+    "population",
+    "households",
+    "median_income",
+    "median_house_value",
+    "ave_rooms",
+    "ave_bedrooms",
+    "ave_occup",
+    "roof_class"
+  ],
+  "accepted_pairs": [
+    [
+      "housing_median_age",
+      "median_income"
+    ],
+    [
+      "longitude",
+      "latitude"
+    ]
+  ],
+  "drop_one": {
+    "longitude": {
+      "mean_gain": 0.002531329001829918,
+      "rel_gain": 0.010958318802349392,
+      "z": 8.22094427835014,
+      "p": 1.0095353330725493e-16,
+      "fold_positive": 5,
+      "rmse_without": 0.4832467669379269,
+      "holm_p": 1.0095353330725494e-15
+    },
+    "latitude": {
+      "mean_gain": 0.002599730973892917,
+      "rel_gain": 0.011254436223685722,
+      "z": 7.644806814840995,
+      "p": 1.0462963281440063e-14,
+      "fold_positive": 5,
+      "rmse_without": 0.4833175350926366,
+      "holm_p": 9.416666953296057e-14
+    },
+    "housing_median_age": {
+      "mean_gain": 0.012217652050488558,
+      "rel_gain": 0.05289115958006442,
+      "z": 13.596586550193228,
+      "p": 2.097813629027198e-42,
+      "fold_positive": 5,
+      "rmse_without": 0.49316707189817294,
+      "holm_p": 2.517376354832638e-41
+    },
+    "total_rooms": {
+      "mean_gain": 2.163447753420875e-05,
+      "rel_gain": 9.365732457959438e-05,
+      "z": 0.15844700097057016,
+      "p": 0.4370522900469066,
+      "fold_positive": 1,
+      "rmse_without": 0.4806430517875644,
+      "holm_p": 1.0
+    },
+    "total_bedrooms": {
+      "mean_gain": -0.00014812990600218852,
+      "rel_gain": -0.0006412658066022104,
+      "z": -1.0953785698551533,
+      "p": 0.8633245906493329,
+      "fold_positive": 2,
+      "rmse_without": 0.4804664180232859,
+      "holm_p": 1.0
+    },
+    "population": {
+      "mean_gain": -6.217025809971251e-05,
+      "rel_gain": -0.0002691398501690181,
+      "z": -0.3978631811951199,
+      "p": 0.6546344792487508,
+      "fold_positive": 2,
+      "rmse_without": 0.4805558640741255,
+      "holm_p": 1.0
+    },
+    "households": {
+      "mean_gain": -0.00019034008828659467,
+      "rel_gain": -0.0008239969465857606,
+      "z": -1.4213543759685134,
+      "p": 0.9223931185149208,
+      "fold_positive": 1,
+      "rmse_without": 0.48042248975859,
+      "holm_p": 1.0
+    },
+    "median_income": {
+      "mean_gain": 0.013989038529078998,
+      "rel_gain": 0.06055962849126973,
+      "z": 12.77396685016021,
+      "p": 1.1458524493490234e-37,
+      "fold_positive": 5,
+      "rmse_without": 0.4949597430935248,
+      "holm_p": 1.2604376942839258e-36
+    },
+    "median_house_value": {
+      "mean_gain": -2.801050815181562e-05,
+      "rel_gain": -0.00012125965369239116,
+      "z": -0.11140658574169568,
+      "p": 0.544353031046861,
+      "fold_positive": 3,
+      "rmse_without": 0.4805914046734266,
+      "holm_p": 1.0
+    },
+    "ave_rooms": {
+      "mean_gain": 0.00020620473397393318,
+      "rel_gain": 0.0008926762233619108,
+      "z": 1.4211716385476576,
+      "p": 0.07763343381405075,
+      "fold_positive": 4,
+      "rmse_without": 0.48083501691131336,
+      "holm_p": 0.621067470512406
+    },
+    "ave_bedrooms": {
+      "mean_gain": -0.00012267184564936716,
+      "rel_gain": -0.0005310558966165891,
+      "z": -0.9159238412340079,
+      "p": 0.820146579403807,
+      "fold_positive": 1,
+      "rmse_without": 0.48049291036234837,
+      "holm_p": 1.0
+    },
+    "ave_occup": {
+      "mean_gain": 0.00044413254406744954,
+      "rel_gain": 0.001922684093956672,
+      "z": 1.2472699019439204,
+      "p": 0.10614927477947012,
+      "fold_positive": 5,
+      "rmse_without": 0.4810823643599883,
+      "holm_p": 0.7430449234562908
+    },
+    "roof_class": {
+      "mean_gain": 0.0143749374768311,
+      "rel_gain": 0.06223021484804187,
+      "z": 14.512749667725776,
+      "p": 5.030272263947929e-48,
+      "fold_positive": 5,
+      "rmse_without": 0.4953494183210072,
+      "holm_p": 6.539353943132308e-47
+    }
+  },
+  "pair_candidates": {
+    "housing_median_age & median_income": {
+      "mean_gain": 0.0008940850682784221,
+      "rel_gain": 0.003870563331567117,
+      "z": 4.236094567896067,
+      "p": 1.1372050922098598e-05,
+      "fold_positive": 5,
+      "rmse_with": 0.47968950758365636,
+      "holm_p": 5.686025461049299e-05
+    },
+    "households & ave_occup": {
+      "mean_gain": -0.0002821579568574884,
+      "rel_gain": -0.0012214835928592012,
+      "z": -1.4741123201332635,
+      "p": 0.929774324045541,
+      "fold_positive": 2,
+      "rmse_with": 0.48091399097030496,
+      "holm_p": 1.0
+    },
+    "households & median_income": {
+      "mean_gain": 0.00014917381746277217,
+      "rel_gain": 0.0006457849799606447,
+      "z": 0.6873160122419362,
+      "p": 0.24594180531989585,
+      "fold_positive": 4,
+      "rmse_with": 0.48046533166989924,
+      "holm_p": 0.9837672212795834
+    },
+    "population & ave_occup": {
+      "mean_gain": -1.4013954072993822e-05,
+      "rel_gain": -6.06674898056841e-05,
+      "z": -0.11800864592472654,
+      "p": 0.546969596351415,
+      "fold_positive": 4,
+      "rmse_with": 0.4806351242972179,
+      "holm_p": 1.0
+    },
+    "longitude & latitude": {
+      "mean_gain": 0.0011896690762689382,
+      "rel_gain": 0.005150169336987468,
+      "z": 5.410368736240076,
+      "p": 3.144755502717543e-08,
+      "fold_positive": 5,
+      "rmse_with": 0.47938130927045974,
+      "holm_p": 1.8868533016305258e-07
+    },
+    "population & median_income": {
+      "mean_gain": -3.167038026768129e-05,
+      "rel_gain": -0.00013710352281904047,
+      "z": -0.22376103073888376,
+      "p": 0.5885283729636043,
+      "fold_positive": 3,
+      "rmse_with": 0.4806534917530474,
+      "holm_p": 1.0
+    }
+  },
+  "spread_permutation": {
+    "longitude": {
+      "mean_gain": -0.00029397948395200714,
+      "rel_gain": -5.6391026411715604e-05,
+      "z": -0.5253309189219177,
+      "p": 0.7003234164173644,
+      "fold_positive": 1,
+      "holm_p": 1.0
+    },
+    "latitude": {
+      "mean_gain": 0.0007621346084370926,
+      "rel_gain": 0.00014619235415990733,
+      "z": 1.0987378279666944,
+      "p": 0.13594121876747384,
+      "fold_positive": 2,
+      "holm_p": 1.0
+    },
+    "housing_median_age": {
+      "mean_gain": 0.0012687547468274627,
+      "rel_gain": 0.00024337202540983136,
+      "z": 0.9092537108702917,
+      "p": 0.18160810922958998,
+      "fold_positive": 3,
+      "holm_p": 1.0
+    },
+    "total_rooms": {
+      "mean_gain": 0.039023513060316116,
+      "rel_gain": 0.007485474585095415,
+      "z": 7.646404700007588,
+      "p": 1.0333825325458185e-14,
+      "fold_positive": 5,
+      "holm_p": 1.2400590390549822e-13
+    },
+    "total_bedrooms": {
+      "mean_gain": 0.025514136403805024,
+      "rel_gain": 0.004894111386541403,
+      "z": 6.0116762786861795,
+      "p": 9.180735179967193e-10,
+      "fold_positive": 5,
+      "holm_p": 9.180735179967192e-09
+    },
+    "population": {
+      "mean_gain": 0.04366402430219703,
+      "rel_gain": 0.00837561558570854,
+      "z": 7.952278948979771,
+      "p": 9.155568482999602e-16,
+      "fold_positive": 5,
+      "holm_p": 1.1902239027899482e-14
+    },
+    "households": {
+      "mean_gain": 0.03854601505776945,
+      "rel_gain": 0.00739388111023393,
+      "z": 7.201216844262564,
+      "p": 2.9838775436812005e-13,
+      "fold_positive": 5,
+      "holm_p": 3.2822652980493207e-12
+    },
+    "median_income": {
+      "mean_gain": -0.0002185328509225701,
+      "rel_gain": -4.191888359874108e-05,
+      "z": -0.32872937865860113,
+      "p": 0.6288198768114682,
+      "fold_positive": 1,
+      "holm_p": 1.0
+    },
+    "median_house_value": {
+      "mean_gain": -0.0008024190843803408,
+      "rel_gain": -0.000153919706138213,
+      "z": -1.5360576938444557,
+      "p": 0.9377378844887729,
+      "fold_positive": 0,
+      "holm_p": 1.0
+    },
+    "ave_rooms": {
+      "mean_gain": -0.00026917604993486737,
+      "rel_gain": -5.163324167123312e-05,
+      "z": -0.2803250623063343,
+      "p": 0.610385937825072,
+      "fold_positive": 2,
+      "holm_p": 1.0
+    },
+    "ave_bedrooms": {
+      "mean_gain": -0.0005182276769081323,
+      "rel_gain": -9.94062246213729e-05,
+      "z": -0.6496771961092362,
+      "p": 0.7420496215231653,
+      "fold_positive": 3,
+      "holm_p": 1.0
+    },
+    "ave_occup": {
+      "mean_gain": 0.0005984724803287201,
+      "rel_gain": 0.00011479875054958366,
+      "z": 0.6018210580950808,
+      "p": 0.27364662812099383,
+      "fold_positive": 4,
+      "holm_p": 1.0
+    },
+    "roof_class": {
+      "mean_gain": -0.00046592943644337376,
+      "rel_gain": -8.937439716291015e-05,
+      "z": -1.118279775054056,
+      "p": 0.8682762389650946,
+      "fold_positive": 1,
+      "holm_p": 1.0
+    }
+  },
+  "spread_flagged": [
+    "population",
+    "total_rooms",
+    "households",
+    "total_bedrooms"
+  ],
+  "conformal_q": 3.395690714697384,
+  "conformal_weights_auc": 0.609031658754482,
+  "oof_coverage": 0.8999354005167959,
+  "oof_coverage_groups": {
+    "roof_class=A": {
+      "n": 3336,
+      "coverage": 0.8905875299760192
+    },
+    "roof_class=B": {
+      "n": 5419,
+      "coverage": 0.9055176231777081
+    },
+    "roof_class=C": {
+      "n": 3987,
+      "coverage": 0.9036869826937547
+    },
+    "roof_class=D": {
+      "n": 2738,
+      "coverage": 0.8948137326515705
+    },
+    "median_income_tercile=1": {
+      "n": 5163,
+      "coverage": 0.8915359287236103
+    },
+    "median_income_tercile=2": {
+      "n": 5159,
+      "coverage": 0.9042450087226207
+    },
+    "median_income_tercile=3": {
+      "n": 5158,
+      "coverage": 0.904032570763862
+    }
+  },
+  "point_effects": {
+    "Q1": -0.3992581100970173,
+    "Q2": 0.3842773237019186,
+    "Q3": 0.19378743784549982,
+    "Q4": 0.40949190189786644,
+    "Q5": -0.0064303272013794535,
+    "Q6": 0.27182299902459656,
+    "Q7": -0.02713591995495431,
+    "Q8": -0.07660394041210151
+  },
+  "bootstrap_refits": 30,
+  "bootstrap_sd": {
+    "Q1": 0.02187460244618119,
+    "Q2": 0.01965264917391965,
+    "Q3": 0.017712221178164702,
+    "Q4": 0.011279620121074294,
+    "Q5": 0.017540323714567457,
+    "Q6": 0.03482118966902605,
+    "Q7": 0.009333590861410081,
+    "Q8": 0.019359834763607878
+  },
+  "shapes": {
+    "roof_class": "categorical",
+    "median_income": "decreasing",
+    "housing_median_age": "u_shaped",
+    "latitude": "spatial",
+    "longitude": "spatial"
+  },
+  "runtime_seconds": 122.09317517280579
+}

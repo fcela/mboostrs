@@ -1,0 +1,80 @@
+{
+  "library": "lightgbm 4.7.0",
+  "mean_effects": [
+    {
+      "variable": "housing_median_age",
+      "shape": "threshold_increase",
+      "evidence": "drop-test (group housing_median_age): mean MSE increase 0.02523 (11.24% of MSE), p=2e-05; partial value from 5 to 52: 0.168 -> 0.636, range 0.471"
+    },
+    {
+      "variable": "median_income",
+      "shape": "decreasing",
+      "evidence": "drop-test (group median_income): mean MSE increase 0.01227 (5.47% of MSE), p=0.0019; partial value from 1.24 to 8.15: 0.716 -> -0.060, range 0.776"
+    },
+    {
+      "variable": "roof_class",
+      "shape": "categorical",
+      "evidence": "drop-test (group roof_class): mean MSE increase 0.01063 (4.73% of MSE), p=8.4e-06; partial mean by level: A=0.265, B=0.263, C=0.357, D=0.519"
+    }
+  ],
+  "interactions": [
+    {
+      "variables": [
+        "median_income",
+        "roof_class"
+      ],
+      "evidence": "pair model vs additive model: held-out MSE gain 0.002182 (0.96% of additive MSE), p=0.005 over 3 pairs"
+    }
+  ],
+  "variance_drivers": [],
+  "effect_queries": {
+    "Q1": {
+      "estimate": -0.38781810430273095,
+      "lower90": -0.4530219188712716,
+      "upper90": -0.29013163515620255
+    },
+    "Q2": {
+      "estimate": 0.46630751806324366,
+      "lower90": 0.3928429838449431,
+      "upper90": 0.5458112991229475
+    },
+    "Q3": {
+      "estimate": 0.1149346940179143,
+      "lower90": 0.012784302709061505,
+      "upper90": 0.17285553349042335
+    },
+    "Q4": {
+      "estimate": 0.253061421173343,
+      "lower90": 0.1289574166323101,
+      "upper90": 0.29583341962082255
+    },
+    "Q5": {
+      "estimate": 0.004272528935007038,
+      "lower90": -0.08950791822232491,
+      "upper90": 0.05698143322864492
+    },
+    "Q6": {
+      "estimate": 0.12795280455561422,
+      "lower90": 0.009255661583572784,
+      "upper90": 0.1824101349818295
+    },
+    "Q7": {
+      "estimate": -0.006867820005451144,
+      "lower90": -0.02916331224754682,
+      "upper90": 0.015868739454008633
+    },
+    "Q8": {
+      "estimate": -0.11031614264805448,
+      "lower90": -0.19435553363303765,
+      "upper90": -0.030571084585587185
+    }
+  },
+  "warnings": [
+    "Missing values in training data (handled by LightGBM native missing direction): {'housing_median_age': 68, 'total_bedrooms': 7, 'ave_bedrooms': 7}.",
+    "Test covariates differ from training (standardized mean difference > 0.2): {'median_income': 0.587, 'median_house_value': 0.309, 'ave_rooms': 0.244, 'ave_occup': 0.412}. Test rows are described as a later book of business.",
+    "Highly correlated covariate pairs (|r| >= 0.9): [('longitude', 'latitude', -0.926), ('total_rooms', 'total_bedrooms', 0.931), ('total_rooms', 'households', 0.906), ('total_bedrooms', 'households', 0.961), ('population', 'households', 0.925)]. Clusters of such covariates are tested as one group; a single member's effect is not separately identified.",
+    "Association and interaction p-values come from paired cross-validation differences. The folds overlap, so the p-values are approximate and somewhat optimistic; Bonferroni is applied over the tests in each family.",
+    "Effect-query intervals are percentile intervals of a bootstrap of the full training fit with the tuned settings held fixed; they reflect model estimation uncertainty, not noise in y.",
+    "Effect queries contrast two covariate settings for every training row, with the other columns at observed values, and average the contrast over rows."
+  ]
+}

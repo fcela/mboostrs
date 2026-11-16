@@ -1,0 +1,64 @@
+[package]
+name = "mboostrs-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage = "https://github.com/fcela/mboostrs"
+documentation = "https://docs.rs/mboostrs-core"
+readme = "README.md"
+description = "Pure-Rust component-wise functional gradient boosting engine (R mboost semantics)"
+keywords = ["boosting", "gradient-boosting", "statistics", "machine-learning", "mboostrs"]
+categories = ["science", "mathematics", "algorithms"]
+
+[features]
+instrumentation-baseline = []
+hessboost = ["dep:hessboost"]
+
+[dependencies]
+hessboost = { version = "=0.4.8", optional = true }
+# ndarray pinned to 0.16 to match `numpy = "0.23"` in mboostrs-py (its
+# IntoPyArray/into_pyarray impls are for ndarray 0.16). Bumping to 0.17 needs a
+# coordinated numpy/pyo3 bump; revisit those together.
+ndarray = "0.16"
+faer = { version = "0.20", features = ["cholesky", "evd", "lu", "qr", "rayon"] }
+libm = "0.2"
+thiserror = "2"
+# rand 0.10 renamed the extension trait `Rng` -> `RngExt` (rand_core's
+# `RngCore` took over the `Rng` name). rand_chacha 0.10 tracks rand_core 0.10.
+# Both must move together or the trait/version pins won't line up.
+rand = "0.10"
+rand_chacha = "0.10"
+rayon = "1.10"
+# Used only by `artifact` to read the portable JSON model artifact written by
+# Python's `mb.save_model` (see python/mboostrs/serialize.py). No serde
+# derives are used — the reader walks `serde_json::Value` directly, mirroring
+# the dynamic decode in the R reader (mboostrs/R/mboostrs_load.R), so this
+# stays a plain JSON-parsing dependency rather than a serialization framework
+# wired through the rest of the crate.
+#
+# `float_roundtrip` is required, not optional: serde_json's default float
+# parser is not correctly rounded and can be off by 1 ULP versus the decimal
+# text (confirmed empirically parsing an artifact-fixture coefficient:
+# "0.39173632285007604" parses to a different f64 bit pattern without this
+# feature). The whole point of this reader is bit-identical predictions, so
+# a 1-ULP parse error is a correctness bug, not a rounding nicety.
+serde_json = { version = "1", features = ["float_roundtrip"] }
+
+[build-dependencies]
+sha2 = "0.11"
+
+[dev-dependencies]
+criterion = { version = "0.8", features = ["html_reports"] }
+
+[[bench]]
+name = "bench_core"
+harness = false
+
+[[bench]]
+name = "bench_ranking"
+harness = false
+
+[[bench]]
+name = "bench_screen"
+harness = false

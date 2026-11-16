@@ -1,0 +1,363 @@
+{
+ "issue": 679,
+ "phase": "development",
+ "seeds": {
+  "count": [
+   6607100,
+   6607109
+  ],
+  "gaussian": [
+   6293100,
+   6293109
+  ]
+ },
+ "recorder": "benches/study_interaction_production.py",
+ "note": "development evidence only; the candidate failed development gates, so the 50-draw efficiency extension was not run and no confirmation-3 seed was drawn",
+ "identity_checks": {
+  "guard_equals_candidate": {
+   "mismatches": [],
+   "n_mismatch": 0
+  },
+  "baseline_equals_prior": {
+   "compared": 130,
+   "mismatches": [],
+   "n_mismatch": 0
+  }
+ },
+ "summary": {
+  "deterministic_incumbent": {
+   "adopted_with_check": 56,
+   "violations": 0,
+   "pass_": true
+  },
+  "binding_mean_error_upper95": -59.99396203931293,
+  "binding_efficiency": {
+   "complete": true,
+   "coverage": 0.8999,
+   "coverage_eligible": true,
+   "control_eligible": true,
+   "width_excess": -3.749054296391538,
+   "width_upper95": -0.7016986755075285,
+   "count_size_excess": 0.4257322918017447,
+   "count_size_upper95": 2.752434419048328,
+   "pass_": false
+  },
+  "supplied_tuned_efficiency": {
+   "complete": true,
+   "coverage": 0.9056000000000001,
+   "coverage_eligible": true,
+   "control_eligible": true,
+   "width_excess": -5.061073647135939,
+   "width_upper95": -3.1577924223475335,
+   "count_size_excess": -0.8988297889404742,
+   "count_size_upper95": -0.2233476712419712,
+   "pass_": true
+  },
+  "additive_representation": {
+   "nonlinear_poisson": {
+    "curve_terms": 10,
+    "interactions": 0,
+    "curve_pass": true,
+    "interaction_pass": true
+   },
+   "nonlinear_zero_inflated": {
+    "curve_terms": 10,
+    "interactions": 0,
+    "curve_pass": true,
+    "interaction_pass": true
+   }
+  },
+  "other_count_panels": {
+   "low": {
+    "mean_error_upper95": 5.840723344761116,
+    "coverage": 0.9032,
+    "pass_at_5": false,
+    "pass_at_10": true,
+    "per_draw": [
+     4.5943614634218255,
+     0.056793761124818154,
+     15.566022528306478,
+     6.1658029839292805,
+     -1.0083863942748517,
+     0.0,
+     -5.276629752410433,
+     0.40702047159486554,
+     0.0,
+     4.979576816134879
+    ]
+   },
+   "original": {
+    "mean_error_upper95": 0.054511243355989315,
+    "coverage": 0.8988999999999999,
+    "pass_at_5": true,
+    "pass_at_10": true,
+    "per_draw": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.19240759070229263,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "high": {
+    "mean_error_upper95": 0.0,
+    "coverage": 0.9146000000000001,
+    "pass_at_5": true,
+    "pass_at_10": true,
+    "per_draw": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overdispersed": {
+    "mean_error_upper95": 3.116129986289876e-05,
+    "coverage": 0.8915,
+    "pass_at_5": true,
+    "pass_at_10": true,
+    "per_draw": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     -0.0003740345233094189
+    ]
+   },
+   "zero_inflated": {
+    "mean_error_upper95": 38.13571435076533,
+    "coverage": 0.9022,
+    "pass_at_5": false,
+    "pass_at_10": false,
+    "per_draw": [
+     -61.01775172478157,
+     -58.945885568002275,
+     -43.3953351543439,
+     185.61075167593484,
+     -46.46505564571228,
+     -56.73753212262758,
+     0.4075792487438612,
+     -27.781634335739568,
+     -8.982703917606049,
+     55.88699737098679
+    ]
+   },
+   "null_poisson": {
+    "mean_error_upper95": 0.0,
+    "coverage": 0.9069999999999998,
+    "pass_at_5": true,
+    "pass_at_10": true,
+    "per_draw": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "null_zero_inflated": {
+    "mean_error_upper95": 0.0,
+    "coverage": 0.9084,
+    "pass_at_5": true,
+    "pass_at_10": true,
+    "per_draw": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "noise_zero_inflated": {
+    "mean_error_upper95": 31.528016479775975,
+    "coverage": 0.9064,
+    "pass_at_5": false,
+    "pass_at_10": false,
+    "per_draw": [
+     0.0,
+     0.0,
+     -84.91005490830607,
+     -43.42450274307935,
+     0.0,
+     0.0,
+     -70.07524578825918,
+     -53.71381599173184,
+     -66.49760424956537,
+     185.34373275982992
+    ]
+   }
+  },
+  "genuine_interaction": {
+   "interaction_zero_inflated": {
+    "candidate_interactions": 8,
+    "baseline_interactions": 8,
+    "mean_error_upper95": 0.0,
+    "pass_": true
+   },
+   "nonlinear_interaction_zero_inflated": {
+    "candidate_interactions": 8,
+    "baseline_interactions": 8,
+    "mean_error_upper95": 0.8559861226239882,
+    "pass_": true
+   },
+   "interaction_supplied_family": {
+    "candidate_interactions": 9,
+    "draws": 10,
+    "representation_pass": true,
+    "mean_error_upper95": 1.1631188715970775
+   }
+  },
+  "false_inclusion_mcnemar": {
+   "null_poisson": {
+    "complete": true,
+    "added": 0,
+    "removed": 0,
+    "one_sided_p": 1.0,
+    "pass_": true
+   },
+   "null_zero_inflated": {
+    "complete": true,
+    "added": 0,
+    "removed": 0,
+    "one_sided_p": 1.0,
+    "pass_": true
+   },
+   "noise_zero_inflated": {
+    "complete": true,
+    "added": 0,
+    "removed": 0,
+    "one_sided_p": 1.0,
+    "pass_": true
+   }
+  },
+  "gaussian_mean_error_upper95": {
+   "axis_constant": 0.0,
+   "axis_varying": 0.0,
+   "shifted_constant": 0.0,
+   "shifted_varying": 0.0,
+   "smooth_constant": 0.0,
+   "smooth_absolute": 0.0,
+   "smooth_bell": 0.0,
+   "smooth_monotone": 0.0,
+   "null_constant": 0.0,
+   "heavy_tail": 7.703354538464623
+  },
+  "extension_anatomy": {
+   "low": {
+    "extended": 9,
+    "grids_reached": [
+     800,
+     1600
+    ],
+    "still_boundary": 0
+   },
+   "original": {
+    "extended": 2,
+    "grids_reached": [
+     800
+    ],
+    "still_boundary": 0
+   },
+   "high": {
+    "extended": 0,
+    "grids_reached": [],
+    "still_boundary": 0
+   },
+   "overdispersed": {
+    "extended": 2,
+    "grids_reached": [
+     800
+    ],
+    "still_boundary": 0
+   },
+   "zero_inflated": {
+    "extended": 10,
+    "grids_reached": [
+     800,
+     1600,
+     2000
+    ],
+    "still_boundary": 5
+   },
+   "nonlinear_poisson": {
+    "extended": 1,
+    "grids_reached": [
+     800
+    ],
+    "still_boundary": 0
+   },
+   "nonlinear_zero_inflated": {
+    "extended": 10,
+    "grids_reached": [
+     1600,
+     2000
+    ],
+    "still_boundary": 1
+   },
+   "null_poisson": {
+    "extended": 0,
+    "grids_reached": [],
+    "still_boundary": 0
+   },
+   "null_zero_inflated": {
+    "extended": 0,
+    "grids_reached": [],
+    "still_boundary": 0
+   },
+   "noise_zero_inflated": {
+    "extended": 6,
+    "grids_reached": [
+     800,
+     1600,
+     2000
+    ],
+    "still_boundary": 3
+   },
+   "interaction_zero_inflated": {
+    "extended": 0,
+    "grids_reached": [],
+    "still_boundary": 0
+   },
+   "interaction_supplied_family": {
+    "extended": 4,
+    "grids_reached": [
+     800
+    ],
+    "still_boundary": 0
+   },
+   "nonlinear_interaction_zero_inflated": {
+    "extended": 1,
+    "grids_reached": [
+     2000
+    ],
+    "still_boundary": 1
+   }
+  }
+ }
+}

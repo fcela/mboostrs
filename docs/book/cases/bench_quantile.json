@@ -1,0 +1,1467 @@
+{
+  "design": {
+    "n_train": 1500,
+    "n_test": 4000,
+    "seeds": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "tau": 0.9,
+    "nu": 0.1,
+    "folds": 5,
+    "mstop": {
+      "glm": 2500,
+      "gam": 2500
+    },
+    "linear": "mu = 0.30 + 0.55 x1 - 0.35 x2, scale 0.8",
+    "smooth": "mu = 0.15 + sin(1.5 x1) + 0.35 x2, scale 0.7",
+    "quantile": "mu + scale * Phi^{-1}(0.9)",
+    "qoffset_default": 0.5,
+    "sklearn_alpha": 0.0
+  },
+  "results": [
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "generating quantile",
+      "pinball": 0.13825132968225096,
+      "mae": 0.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:f4fd591ab8d71791571f7a95e4357a303a35e143362650a6679dc7a6a24aaa7d",
+        "measured_at": "2026-10-24T05:10:11.945332+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5584816c64efffeff11b7ac15e59cf1e053f45005ed7cd78c808c4428f280d3f",
+        "output_digest": "sha256:d89437f83e8dd09dc47912d2a0a8cc40b02f8a0e7449b9114801145a10e66819",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "statsmodels QuantReg",
+      "pinball": 0.13933833220826988,
+      "mae": 0.070285481481435,
+      "seconds": 0.03401212487369776,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:2a06dce5ec9bc16139fb557cba5d362d3d40164fe6483223d2e686014feee5a8",
+        "measured_at": "2026-10-24T05:10:11.945523+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5584816c64efffeff11b7ac15e59cf1e053f45005ed7cd78c808c4428f280d3f",
+        "output_digest": "sha256:63b8d68f91c284fabf4d2c7d338efe718768250a4d64f223a0bc5d688e7a2a4f",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "statsmodels QuantReg spline",
+      "pinball": 0.13981619469479104,
+      "mae": 0.06836355582349575,
+      "seconds": 0.0118155418895185,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:ef23aab47b62c4769907282fa0378d2b7721dc5cbe95c63dacd770cdde726ee2",
+        "measured_at": "2026-10-24T05:10:11.945695+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5584816c64efffeff11b7ac15e59cf1e053f45005ed7cd78c808c4428f280d3f",
+        "output_digest": "sha256:b3c090b202ba4fb6060609968c4c6c61c78ad258873080a17cd735c29f23815e",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "sklearn QuantileRegressor",
+      "pinball": 0.13933836549342304,
+      "mae": 0.07028310056457739,
+      "seconds": 0.06084654084406793,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:d7e3149a493232e1e242dd1e11fe9730106a1455a0407b950c389cdc44392cf0",
+        "measured_at": "2026-10-24T05:10:11.945818+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5584816c64efffeff11b7ac15e59cf1e053f45005ed7cd78c808c4428f280d3f",
+        "output_digest": "sha256:0025e479f09eb999b87c35bb3cafc793ef557c0b51c4ef3c19f7d735502f6f4c",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "mboostrs glmboost Quantile",
+      "pinball": 0.1393358156744005,
+      "mae": 0.0704907716484592,
+      "seconds": 0.1011592501308769,
+      "mstop": 2405,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:03b9dd6d10d5baaaf51e02ceedde7d190255a07dd705962d086e6efc8364f6f3",
+        "measured_at": "2026-10-24T05:10:11.945932+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5584816c64efffeff11b7ac15e59cf1e053f45005ed7cd78c808c4428f280d3f",
+        "output_digest": "sha256:c81aaac11d97803d5731be8a6761f76817c05ce8635071d7f4b8627eb1043ca4",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "mboostrs glmboost Quantile qoffset=tau",
+      "pinball": 0.13926009345796667,
+      "mae": 0.0672597630169836,
+      "seconds": 0.09999608318321407,
+      "mstop": 858,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:053cd1d7fbba3baacb5054d70b3f4d0968dafa69caf2e09373a1d49796d3751a",
+        "measured_at": "2026-10-24T05:10:11.946043+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5584816c64efffeff11b7ac15e59cf1e053f45005ed7cd78c808c4428f280d3f",
+        "output_digest": "sha256:82886a2cebd8ca9a8ed6a06297b0a38de396ef8ed32d80c5a7cd8e7f641a5f49",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "mboostrs gamboost Quantile",
+      "pinball": 0.1391767945009532,
+      "mae": 0.05819404493051884,
+      "seconds": 0.5501891251187772,
+      "mstop": 207,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:53232760897a6eb05468450ef128065ada435204ba9736af6e8adcda7dfa9f28",
+        "measured_at": "2026-10-24T05:10:11.946151+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5584816c64efffeff11b7ac15e59cf1e053f45005ed7cd78c808c4428f280d3f",
+        "output_digest": "sha256:c0103896c9e9bc922e63382910c8545ae9009b6b4ae92ba1911ae46f48590993",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 0,
+      "method": "mboostrs gamboost Quantile qoffset=tau",
+      "pinball": 0.13950307660070557,
+      "mae": 0.06403849452015407,
+      "seconds": 0.5687606250867248,
+      "mstop": 490,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:4a5d5659b55de74a6fc8ac28e7f68e98592050b8ad3bc46f3ef20bf009eb507d",
+        "measured_at": "2026-10-24T05:10:11.946257+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:5584816c64efffeff11b7ac15e59cf1e053f45005ed7cd78c808c4428f280d3f",
+        "output_digest": "sha256:29f9aa7341870e839816986a2eee99a57e07234820e25a774f31ec3fc2ee758b",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "generating quantile",
+      "pinball": 0.13825132968225096,
+      "mae": 0.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:3c209ec289ba425332116812d63421038caaef4143d6bf01bf5f13a5cec6dc26",
+        "measured_at": "2026-10-24T05:10:13.400899+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cfb00d9a91445b39a27e2a9a12020b90ff94505843448bf69780b70d33c59184",
+        "output_digest": "sha256:7ec2d27dc4374986f149ea3404adaff9f1cb0fc082405facf09cea4e0338867d",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "statsmodels QuantReg",
+      "pinball": 0.13841841566068913,
+      "mae": 0.03856364288245268,
+      "seconds": 0.007742582820355892,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:6d2d516a3ea47aba2c5bed4ff1f414631732e98619d4c53b055ddb13cc8b7e58",
+        "measured_at": "2026-10-24T05:10:13.401084+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cfb00d9a91445b39a27e2a9a12020b90ff94505843448bf69780b70d33c59184",
+        "output_digest": "sha256:c00bd8cbc7464356273e265089275493d9bb290d2ecbd563d4e31230ab7f0651",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "statsmodels QuantReg spline",
+      "pinball": 0.13954637909713835,
+      "mae": 0.07148196485682483,
+      "seconds": 0.011902709025889635,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:8573a5a0b55ab5c8bfa5e26722b025195900babd4718a1b88c67836a98cde58e",
+        "measured_at": "2026-10-24T05:10:13.401229+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cfb00d9a91445b39a27e2a9a12020b90ff94505843448bf69780b70d33c59184",
+        "output_digest": "sha256:5582fa202504b1195c69aff7c7364887bf5071c23b6f1f73c02cc85defeb37d7",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "sklearn QuantileRegressor",
+      "pinball": 0.13841842331782403,
+      "mae": 0.03856407886645071,
+      "seconds": 0.06786191696301103,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:7aa851d3b9a07eb38fd3fd67cf17aea540ec4368e09dc2a4e127c6dc4e9385bb",
+        "measured_at": "2026-10-24T05:10:13.401345+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cfb00d9a91445b39a27e2a9a12020b90ff94505843448bf69780b70d33c59184",
+        "output_digest": "sha256:71a50cdd59e6cd39ea79ac7bbee0a80026cbfaa71febec3e766973f412c93c19",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "mboostrs glmboost Quantile",
+      "pinball": 0.13865580508207387,
+      "mae": 0.049680924730944355,
+      "seconds": 0.10324962483718991,
+      "mstop": 356,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:53de4a628606559004d94a66a806181238bb47b96a9e308f8e98885db1af8a58",
+        "measured_at": "2026-10-24T05:10:13.401455+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cfb00d9a91445b39a27e2a9a12020b90ff94505843448bf69780b70d33c59184",
+        "output_digest": "sha256:19b1487643db339ef58dee2d7a985011e3fafc4e9b6fb4de9630172d827961c3",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "mboostrs glmboost Quantile qoffset=tau",
+      "pinball": 0.13859743445138542,
+      "mae": 0.04579157216005765,
+      "seconds": 0.10145666706375778,
+      "mstop": 599,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:44bb5f7aedda8335c3b72de79ec432a18f2265f3f4e6350416487d50ff463d30",
+        "measured_at": "2026-10-24T05:10:13.401565+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cfb00d9a91445b39a27e2a9a12020b90ff94505843448bf69780b70d33c59184",
+        "output_digest": "sha256:273389064bf42a5481c96ebc53dc1d49cfeeca8748da2c8aa341060c29bb1fa5",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "mboostrs gamboost Quantile",
+      "pinball": 0.13947651207913095,
+      "mae": 0.07094247384179467,
+      "seconds": 0.5803601250518113,
+      "mstop": 179,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:eac5cd8d75b7fd4a6d0a2d846e6857323f080127b9f436e89e36c2b0f1ad7d8e",
+        "measured_at": "2026-10-24T05:10:13.401671+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cfb00d9a91445b39a27e2a9a12020b90ff94505843448bf69780b70d33c59184",
+        "output_digest": "sha256:274739b88bf5a97eae1dfe8adba2e6ca50d13656d1149c9f3b53fb33bb860048",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 1,
+      "method": "mboostrs gamboost Quantile qoffset=tau",
+      "pinball": 0.13951685233774294,
+      "mae": 0.07102953427385551,
+      "seconds": 0.5649484158493578,
+      "mstop": 327,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:c052f48a1bfd4d5467ce5ba10779439efbc6224f291cd23c85b47bd04d2b6039",
+        "measured_at": "2026-10-24T05:10:13.401778+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:cfb00d9a91445b39a27e2a9a12020b90ff94505843448bf69780b70d33c59184",
+        "output_digest": "sha256:a6db932fdedecd3f46cf351c485cc88cdc0d08577f0864542d66c75be2c59562",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "generating quantile",
+      "pinball": 0.13825132968225096,
+      "mae": 0.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:646e5b90b2dc5a8e1d508684c1902332c997f800bbd674dd2a60074ca9651e43",
+        "measured_at": "2026-10-24T05:10:14.805078+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:070c1a81c9d0124871fdc1a73fae684b18a525a41b5af356953870699cabd082",
+        "output_digest": "sha256:de0c3d2900639d5d8f997c940bb255688d8a1518b3eb92900572a595e71c8541",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "statsmodels QuantReg",
+      "pinball": 0.13909206256792195,
+      "mae": 0.056481818594842796,
+      "seconds": 0.006033541867509484,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:6f8d36b043dd02195207570fbaaccc6e75ea9ed0a43509403b94aaaf88871090",
+        "measured_at": "2026-10-24T05:10:14.805238+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:070c1a81c9d0124871fdc1a73fae684b18a525a41b5af356953870699cabd082",
+        "output_digest": "sha256:46ab15e1f4ce2c9559c4876ace65a3d1187f8dafc5dde9faaadbd6886f17278b",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "statsmodels QuantReg spline",
+      "pinball": 0.13864131658765103,
+      "mae": 0.09067652243869688,
+      "seconds": 0.014425041852518916,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:72d203662b1b41834205ad90de0a5ab8a06f88474b80d38e8b08d21f756aef8c",
+        "measured_at": "2026-10-24T05:10:14.805381+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:070c1a81c9d0124871fdc1a73fae684b18a525a41b5af356953870699cabd082",
+        "output_digest": "sha256:223abef31f380132f456f3f19adacfd679a0cce14cb724a28c81d30796ff07bb",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "sklearn QuantileRegressor",
+      "pinball": 0.13909205886918716,
+      "mae": 0.05648163205489169,
+      "seconds": 0.06191520905122161,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:a0383436daa6805cd36935566034df4e3fc6db4e58a4ab2216dc40ec280156b5",
+        "measured_at": "2026-10-24T05:10:14.805485+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:070c1a81c9d0124871fdc1a73fae684b18a525a41b5af356953870699cabd082",
+        "output_digest": "sha256:3d04acfe43d08a11922f43788038e01bb8dbffda72192d9807d8ef6b403ce87e",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "mboostrs glmboost Quantile",
+      "pinball": 0.13905610475654942,
+      "mae": 0.05402592876805181,
+      "seconds": 0.10167970811016858,
+      "mstop": 850,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:47463c5bc6b212ccd7abcea6a504b0f04e66b659a02afda126af52b1deecde97",
+        "measured_at": "2026-10-24T05:10:14.805585+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:070c1a81c9d0124871fdc1a73fae684b18a525a41b5af356953870699cabd082",
+        "output_digest": "sha256:09335c2008eced74dccc3ea74b33db56bc6e7943c601f7a5e4417991e8a005db",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "mboostrs glmboost Quantile qoffset=tau",
+      "pinball": 0.139182939411033,
+      "mae": 0.061549673479296275,
+      "seconds": 0.10129704209975898,
+      "mstop": 1956,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:07b0abf201fba70a4ac13e1b7281f107319819403eacf6783244e0d471ed1988",
+        "measured_at": "2026-10-24T05:10:14.805684+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:070c1a81c9d0124871fdc1a73fae684b18a525a41b5af356953870699cabd082",
+        "output_digest": "sha256:0cb255d420a0b58eb2fd2145a9ebdb2688b82b8147b62d6967f3df983247b35c",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "mboostrs gamboost Quantile",
+      "pinball": 0.13972040188858365,
+      "mae": 0.08097198058727113,
+      "seconds": 0.545665374957025,
+      "mstop": 692,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:efe53afe3d5742b2c23d98c41ecbf5fcb872ed32d0e64f6ac151e2ca151c6637",
+        "measured_at": "2026-10-24T05:10:14.805780+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:070c1a81c9d0124871fdc1a73fae684b18a525a41b5af356953870699cabd082",
+        "output_digest": "sha256:1861aa9c66f8a1a22270766e864984a81e5116d60b0c7e808e21976c44a52832",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 2,
+      "method": "mboostrs gamboost Quantile qoffset=tau",
+      "pinball": 0.13969859999656947,
+      "mae": 0.08053632830360896,
+      "seconds": 0.5642113329377025,
+      "mstop": 791,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:93f34a9aaa9b04de67716670e2ac20cc0878bb1c1340a7bb003a2ac70941b699",
+        "measured_at": "2026-10-24T05:10:14.805886+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:070c1a81c9d0124871fdc1a73fae684b18a525a41b5af356953870699cabd082",
+        "output_digest": "sha256:5295caa61cca3109e7d7f2f72c6c8ad325e7d489537971334533f9bf562745bc",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "generating quantile",
+      "pinball": 0.13825132968225096,
+      "mae": 0.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:8c104500021243135c1ac08c8297d4474ded4bb4889364e3e35634565dd5c6b2",
+        "measured_at": "2026-10-24T05:10:16.171837+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:137b15bf3a5c252fa8f245d55eac4d3b9ee1f477ed50c06fa601f185e4e6cc3a",
+        "output_digest": "sha256:73d5d015ab984354623f3df828158d773badb152288810d443150f0722a40dd4",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "statsmodels QuantReg",
+      "pinball": 0.138948819857343,
+      "mae": 0.06397988923740132,
+      "seconds": 0.006283166818320751,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:ed4a060c6e8ccbbc7d6d8989d4a03663caf9c4613a1a5ea29afd71ff072c6a4e",
+        "measured_at": "2026-10-24T05:10:16.172041+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:137b15bf3a5c252fa8f245d55eac4d3b9ee1f477ed50c06fa601f185e4e6cc3a",
+        "output_digest": "sha256:75cb4299e2300b146e0b9a8d86b38c314caad5090e0effb7f830e0de500a5743",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "statsmodels QuantReg spline",
+      "pinball": 0.13885261396611284,
+      "mae": 0.08867364551883268,
+      "seconds": 0.007816416909918189,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:41ff2095c4f2f1d642a6f470901f5258a2b93dc9d7cfb9d61de02ac77ce5f1eb",
+        "measured_at": "2026-10-24T05:10:16.172192+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:137b15bf3a5c252fa8f245d55eac4d3b9ee1f477ed50c06fa601f185e4e6cc3a",
+        "output_digest": "sha256:b3a2ef08043181a4655b5ce4761ee3c59b686c46de453ab04f7823a9bb70224c",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "sklearn QuantileRegressor",
+      "pinball": 0.13894874134000235,
+      "mae": 0.06397816831700752,
+      "seconds": 0.06083408300764859,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:a3efd61d72536d0f88a6f23ee6d847437aedc0f7f534cfee6d33067ecddb5694",
+        "measured_at": "2026-10-24T05:10:16.172300+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:137b15bf3a5c252fa8f245d55eac4d3b9ee1f477ed50c06fa601f185e4e6cc3a",
+        "output_digest": "sha256:bef2a99df7baa84d730e06562f46cce45fa5b7947b39dddb6a75c713057b41fa",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "mboostrs glmboost Quantile",
+      "pinball": 0.13899500052214941,
+      "mae": 0.06352856828070938,
+      "seconds": 0.09773004101589322,
+      "mstop": 779,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:16d6d424235ceddc1b0cf292a8bea84fd1ae4fca6914e4b1afda1f24ce0fab5e",
+        "measured_at": "2026-10-24T05:10:16.172402+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:137b15bf3a5c252fa8f245d55eac4d3b9ee1f477ed50c06fa601f185e4e6cc3a",
+        "output_digest": "sha256:529680365bfa221186a1c45d213dccfbeb1a9e9aa012adba3e79e430b7d2dfd8",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "mboostrs glmboost Quantile qoffset=tau",
+      "pinball": 0.13892674586275058,
+      "mae": 0.060691186568758805,
+      "seconds": 0.09605437493883073,
+      "mstop": 761,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:975783cd7998c809a1c8e36ca07d3e7fa7417828d489561294401d51ce2b0943",
+        "measured_at": "2026-10-24T05:10:16.172502+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:137b15bf3a5c252fa8f245d55eac4d3b9ee1f477ed50c06fa601f185e4e6cc3a",
+        "output_digest": "sha256:6bb6dc1ed5d3c50915841ec06967478e7f92ae01f632b21ecbd48b4e45d4ade1",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "mboostrs gamboost Quantile",
+      "pinball": 0.13893923854163212,
+      "mae": 0.04682293825703634,
+      "seconds": 0.5440742499195039,
+      "mstop": 251,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:971d087a9730947c39718aaeccb623f1304e0b81bae70b3d39e78cde6e725d24",
+        "measured_at": "2026-10-24T05:10:16.172599+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:137b15bf3a5c252fa8f245d55eac4d3b9ee1f477ed50c06fa601f185e4e6cc3a",
+        "output_digest": "sha256:1750c20835b2aad971f8f860b182a4a973c23b35589b75573269c7f1b3347b7d",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "linear",
+      "seed": 3,
+      "method": "mboostrs gamboost Quantile qoffset=tau",
+      "pinball": 0.13907891080742987,
+      "mae": 0.0504613811587102,
+      "seconds": 0.5452898750081658,
+      "mstop": 346,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:d30cf95191ab7ab020af624265a60ea8ec8963735e06f8ac8463513a9795211f",
+        "measured_at": "2026-10-24T05:10:16.172695+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:137b15bf3a5c252fa8f245d55eac4d3b9ee1f477ed50c06fa601f185e4e6cc3a",
+        "output_digest": "sha256:788f6352521e4755f01798a86eea6f1f36cfdd3b6acd3109161f2fcbadec5f1a",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "generating quantile",
+      "pinball": 0.12313212279861413,
+      "mae": 0.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:7d0e226cc5e0fff68f0646c231eaf32c6226cd6e451b3925305fc19a981c5cd8",
+        "measured_at": "2026-10-24T05:10:17.172547+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:663a90481b8a7ffa56869443c914f901ebb9946082d1d26eaab3a897447a3b68",
+        "output_digest": "sha256:e7424f30acf83e35e3473ebc501bff8718754f368a64d907336a2850cec3c4ce",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "statsmodels QuantReg",
+      "pinball": 0.15202109647525394,
+      "mae": 0.42929019441895455,
+      "seconds": 0.017132124863564968,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:000fabe6e704832100f9c352b7b5cffa024d0b031c0eb8532ee750de1cfbc501",
+        "measured_at": "2026-10-24T05:10:17.172736+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:663a90481b8a7ffa56869443c914f901ebb9946082d1d26eaab3a897447a3b68",
+        "output_digest": "sha256:55947551accc58f29bcd833f385fe4d7d15093290a715d21e2ccb3ff6e85e3fa",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "statsmodels QuantReg spline",
+      "pinball": 0.12418825827626631,
+      "mae": 0.05988795665825023,
+      "seconds": 0.034217749955132604,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:04742320f01ed0b37caf8c1b3c8406f21457abb6dfd6cddc05476afbbdc40eaa",
+        "measured_at": "2026-10-24T05:10:17.172884+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:663a90481b8a7ffa56869443c914f901ebb9946082d1d26eaab3a897447a3b68",
+        "output_digest": "sha256:e0f37baa1fd266742f4ab0b6497f28cdb177cebc355cdc3788b52705673ecaef",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "sklearn QuantileRegressor",
+      "pinball": 0.1520209173013989,
+      "mae": 0.4292988075925614,
+      "seconds": 0.05754041695035994,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:5ed1600aed170ab7df33d233e1a7c75f7c093899ac01958c3399411d2845d198",
+        "measured_at": "2026-10-24T05:10:17.172992+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:663a90481b8a7ffa56869443c914f901ebb9946082d1d26eaab3a897447a3b68",
+        "output_digest": "sha256:e48bc56ab759f18d0336c11abe768bcf8a512059767081f3d33677d289453a9d",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "mboostrs glmboost Quantile",
+      "pinball": 0.1520340621413332,
+      "mae": 0.42888596116080524,
+      "seconds": 0.10188004188239574,
+      "mstop": 973,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:b4f06e9fc0832c2d4cd8db7693f9dca53e635fea8da0a0e707d3cbb0c1ebee6d",
+        "measured_at": "2026-10-24T05:10:17.173094+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:663a90481b8a7ffa56869443c914f901ebb9946082d1d26eaab3a897447a3b68",
+        "output_digest": "sha256:7e9d256c6b9a34915e6c1dfe3666eb49a7cfced8685c4433527d9047a407b202",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "mboostrs glmboost Quantile qoffset=tau",
+      "pinball": 0.1516137285061487,
+      "mae": 0.437229373361826,
+      "seconds": 0.09980154200457036,
+      "mstop": 611,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:4303cc4cb46ed1b7f84d711ad51dec4ef74eca12f0d2d600990bebc3a2cfa6bf",
+        "measured_at": "2026-10-24T05:10:17.173207+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:663a90481b8a7ffa56869443c914f901ebb9946082d1d26eaab3a897447a3b68",
+        "output_digest": "sha256:4a6e7448f5d7dbcbf543b22d7e388930a4cf281e79eb403ae2fefbf6b6fad8f9",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "mboostrs gamboost Quantile",
+      "pinball": 0.12449688672196516,
+      "mae": 0.057954372308124474,
+      "seconds": 0.3373909171205014,
+      "mstop": 530,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:a82b0ef6d973955c64f93bc7a853f2f28cc8c8fd7a3ab35519c6c1c670ce21d5",
+        "measured_at": "2026-10-24T05:10:17.173304+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:663a90481b8a7ffa56869443c914f901ebb9946082d1d26eaab3a897447a3b68",
+        "output_digest": "sha256:bbda28e0a96870dfa86a0290659d35ee60fbf9400492d9d3d671a8482ef25b5c",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 0,
+      "method": "mboostrs gamboost Quantile qoffset=tau",
+      "pinball": 0.12451401331351328,
+      "mae": 0.057673940151789,
+      "seconds": 0.3442671250086278,
+      "mstop": 623,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:e2e8470737feafa14497a348872605694ee9ec7e191b3df8f035e7475d9e24e5",
+        "measured_at": "2026-10-24T05:10:17.173400+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:663a90481b8a7ffa56869443c914f901ebb9946082d1d26eaab3a897447a3b68",
+        "output_digest": "sha256:8942ebed1fcb1280a418086cfb0caa61d70d729a018961ef2ece4ff48d41113b",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "generating quantile",
+      "pinball": 0.12313212279861413,
+      "mae": 0.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:22c711cef6da07a154383ac622afbc2a19313709ce1a673d8444b0617a44eff3",
+        "measured_at": "2026-10-24T05:10:18.138128+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:bc8f18fc374199eff88513207fbbd439646b59831c1382a9614225c07b7de5ec",
+        "output_digest": "sha256:05ea400f2ed5297f18055bb12a69a4150e860c63a427bd01efbda696e31dc847",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "statsmodels QuantReg",
+      "pinball": 0.15275206721798645,
+      "mae": 0.47178051556884837,
+      "seconds": 0.011834583012387156,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:715deafc34edaed347542b45363ab1d67f17d20ea1cd8d91ece22e07ceeebadd",
+        "measured_at": "2026-10-24T05:10:18.138301+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:bc8f18fc374199eff88513207fbbd439646b59831c1382a9614225c07b7de5ec",
+        "output_digest": "sha256:9b1a06516c9186f346aba195ab0ed46d922e2c682d025f4af0fac03fc15ba69f",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "statsmodels QuantReg spline",
+      "pinball": 0.12385651717828668,
+      "mae": 0.06382172960275045,
+      "seconds": 0.009089499944821,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:d512eca512f6309207a23176bba1c49d1d82a9c0f71c12593ad8602d4200afdc",
+        "measured_at": "2026-10-24T05:10:18.138440+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:bc8f18fc374199eff88513207fbbd439646b59831c1382a9614225c07b7de5ec",
+        "output_digest": "sha256:b43ff602e8c70c13ee5934cb5e976942cc41fa67a7c294447c2825bd0d441c34",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "sklearn QuantileRegressor",
+      "pinball": 0.1527522914361392,
+      "mae": 0.47178258395301387,
+      "seconds": 0.05750633287243545,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:3878ed392336de0e217ba22d72fd7d23a164de6a1658a13ca4b07e050a2cde27",
+        "measured_at": "2026-10-24T05:10:18.138543+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:bc8f18fc374199eff88513207fbbd439646b59831c1382a9614225c07b7de5ec",
+        "output_digest": "sha256:76f873d20637c40fc139e999b811257e3e304caf4065b1f3887ee27e04b05a60",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "mboostrs glmboost Quantile",
+      "pinball": 0.15270996129837391,
+      "mae": 0.4714307720272194,
+      "seconds": 0.10097324987873435,
+      "mstop": 1913,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:45a4fbabbc677854dff3a339248c14dab766baa503d397b59e78d011a78a7262",
+        "measured_at": "2026-10-24T05:10:18.138643+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:bc8f18fc374199eff88513207fbbd439646b59831c1382a9614225c07b7de5ec",
+        "output_digest": "sha256:b219a5e7066e7e5019266b76be693072efb95faa42b7314016adcbad8850787e",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "mboostrs glmboost Quantile qoffset=tau",
+      "pinball": 0.15261398129731188,
+      "mae": 0.470572125772406,
+      "seconds": 0.10146854189224541,
+      "mstop": 766,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:ed7112459403432f403209ae6d003e0ee91a84b4ba131f89872d296cd3b874a2",
+        "measured_at": "2026-10-24T05:10:18.138741+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:bc8f18fc374199eff88513207fbbd439646b59831c1382a9614225c07b7de5ec",
+        "output_digest": "sha256:6ac92f42f17b2d37c441c2f6f8ac465e752402e65993d597302403f800f189fd",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "mboostrs gamboost Quantile",
+      "pinball": 0.12372513929589805,
+      "mae": 0.047349599862236705,
+      "seconds": 0.33807641617022455,
+      "mstop": 594,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:a3ab39c4969653af016b5007650f5bfe14a535e38b9bf0dab4494726a1e41bf9",
+        "measured_at": "2026-10-24T05:10:18.138838+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:bc8f18fc374199eff88513207fbbd439646b59831c1382a9614225c07b7de5ec",
+        "output_digest": "sha256:9fd742ded3dcbd64f13d2b4bf888123af666b5e173120cbb2dbdeedbbae7781c",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 1,
+      "method": "mboostrs gamboost Quantile qoffset=tau",
+      "pinball": 0.12368805388791596,
+      "mae": 0.04543539829181141,
+      "seconds": 0.3380683339200914,
+      "mstop": 695,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:bdeacb3e1e23a0fb00bdf76256797a3144bc5af957b7d97c9dcfed8693416996",
+        "measured_at": "2026-10-24T05:10:18.138934+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:bc8f18fc374199eff88513207fbbd439646b59831c1382a9614225c07b7de5ec",
+        "output_digest": "sha256:d2f8b2f3ffefc5d1c7a6fcfe3bf56fdca88162d7d78ffd14800127514f830d37",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "generating quantile",
+      "pinball": 0.12313212279861413,
+      "mae": 0.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:ae2af6d9b198f1828c2f0cd3b3666cf8ab9034c1030cfc6155610e9d67a1e191",
+        "measured_at": "2026-10-24T05:10:19.424950+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:d9f31397385121f312af4277828bbe21dd30043cc58081fc9f3cf43697700bb1",
+        "output_digest": "sha256:664d71f948ed81a818d657dcda65e5b56884d04e61356e6a9af2867ee6bbcf3c",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "statsmodels QuantReg",
+      "pinball": 0.15089193187902963,
+      "mae": 0.43682041833646373,
+      "seconds": 0.006693999981507659,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:90673031c497a5c20e81e99b6d0b5e412f527edda7b70efd66cd90eec9ca5fb1",
+        "measured_at": "2026-10-24T05:10:19.425145+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:d9f31397385121f312af4277828bbe21dd30043cc58081fc9f3cf43697700bb1",
+        "output_digest": "sha256:70497a405a75b164c4339a9b51860565c3f330e1f65c177f9a4ab756ed50b326",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "statsmodels QuantReg spline",
+      "pinball": 0.12333053890622558,
+      "mae": 0.07743707351330135,
+      "seconds": 0.3299152909312397,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:d8c25ce56e19008a4fbf726a40a5c75d37b861a555a3766d15561c48d5429858",
+        "measured_at": "2026-10-24T05:10:19.425298+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:d9f31397385121f312af4277828bbe21dd30043cc58081fc9f3cf43697700bb1",
+        "output_digest": "sha256:93aeea5233cd925fb02aa6cf6e9bfb9d0d564b40da24525e8648925ee7e8e8ce",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "sklearn QuantileRegressor",
+      "pinball": 0.15089192960504727,
+      "mae": 0.43682040549908707,
+      "seconds": 0.05990466591902077,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:4dcc6b946a20f53d7bed086fce233cd2acfd7528da8ceaad284b6fa18edfe07f",
+        "measured_at": "2026-10-24T05:10:19.425412+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:d9f31397385121f312af4277828bbe21dd30043cc58081fc9f3cf43697700bb1",
+        "output_digest": "sha256:5d7568d82b3e4e5cb4b89e0dcb4fc0a2172aa3af5bd4124dc9a1acd64c4941a0",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "mboostrs glmboost Quantile",
+      "pinball": 0.15079396538035575,
+      "mae": 0.435310232733048,
+      "seconds": 0.09937562514096498,
+      "mstop": 493,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:f6bf17cfb6e9dc26ecbfa80916856183e051b4285b44b626dbbd0bbb07c73c28",
+        "measured_at": "2026-10-24T05:10:19.425523+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:d9f31397385121f312af4277828bbe21dd30043cc58081fc9f3cf43697700bb1",
+        "output_digest": "sha256:98bdebd68217ea8cf18829644143203809ed62ec787426c58f1a3dd54737ef7c",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "mboostrs glmboost Quantile qoffset=tau",
+      "pinball": 0.15094465252760902,
+      "mae": 0.44064393203217933,
+      "seconds": 0.09800445893779397,
+      "mstop": 637,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:b821d7e30817a83b7443b90bac4ceeef4f120a843c92a14c036873d209e3cff3",
+        "measured_at": "2026-10-24T05:10:19.425633+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:d9f31397385121f312af4277828bbe21dd30043cc58081fc9f3cf43697700bb1",
+        "output_digest": "sha256:9bf3f17bbe947f19242e8abe5623621722c8b602439841f3429b589b6fa68bea",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "mboostrs gamboost Quantile",
+      "pinball": 0.12319112756044175,
+      "mae": 0.057121914298196116,
+      "seconds": 0.33846916700713336,
+      "mstop": 949,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:538e3a9967f8727a74459fe179d16901dab8a7f68aadc48f6f93cc6cd6005ffa",
+        "measured_at": "2026-10-24T05:10:19.425740+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:d9f31397385121f312af4277828bbe21dd30043cc58081fc9f3cf43697700bb1",
+        "output_digest": "sha256:e2cbca6678a4a4b32063954e851205ebefa1c5063de9abb259aac735fbc2df7d",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 2,
+      "method": "mboostrs gamboost Quantile qoffset=tau",
+      "pinball": 0.12319808450152572,
+      "mae": 0.05764740436677488,
+      "seconds": 0.34561658278107643,
+      "mstop": 962,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:da56dbce6bda151c026723294ad883ed0f5de022cede2716efe84afc1a34e6da",
+        "measured_at": "2026-10-24T05:10:19.425846+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:d9f31397385121f312af4277828bbe21dd30043cc58081fc9f3cf43697700bb1",
+        "output_digest": "sha256:e8d3cd58932c8205accea33be65c32fb1f6329fdbf0c2c284f696db10ca7126c",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "generating quantile",
+      "pinball": 0.12313212279861413,
+      "mae": 0.0,
+      "seconds": 0.0,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:e2ba29a85bba7359c7e4152ae89f259d7a20053f92134a0b6e70fc7078ac3cc9",
+        "measured_at": "2026-10-24T05:10:20.418134+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e0f87a514acc182ed03d72a50d6c37b05b872bac21419599074b2cbf8dcf3aa4",
+        "output_digest": "sha256:351a6c5ecc5b316e5405b97aebcf65b06ab7d69eb4977533f2a46e74db57174b",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "statsmodels QuantReg",
+      "pinball": 0.15090558213378336,
+      "mae": 0.42954239273536154,
+      "seconds": 0.008860500063747168,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:e3a5e534757e8b8acc6bb511b231065e89fa7be04be36706581422f5e7c5fead",
+        "measured_at": "2026-10-24T05:10:20.418356+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e0f87a514acc182ed03d72a50d6c37b05b872bac21419599074b2cbf8dcf3aa4",
+        "output_digest": "sha256:c73226b2ea2626403aec6e8feb7a8bbfd94f7a35f2454560638e8c772bc680a5",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "statsmodels QuantReg spline",
+      "pinball": 0.12426680284960304,
+      "mae": 0.07531976321182358,
+      "seconds": 0.01103879208676517,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:b9d5cb09e0d8a24c04ca9f8de5acc3e82b0f573bfd43f10c8b33997e55e16dd0",
+        "measured_at": "2026-10-24T05:10:20.418488+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e0f87a514acc182ed03d72a50d6c37b05b872bac21419599074b2cbf8dcf3aa4",
+        "output_digest": "sha256:e3fd6a0600fcaa1493e314efcb2e2e547e987254d3be9d68cb98509a0f2874e9",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "sklearn QuantileRegressor",
+      "pinball": 0.150905629517724,
+      "mae": 0.4295424529656566,
+      "seconds": 0.06012475001625717,
+      "mstop": null,
+      "at_boundary": null,
+      "_identity": {
+        "fingerprint": "sha256:16fdb4c92f3d5cae75348fe19a0fcbfdd1335a9784d91846026a4ad9f84c5c60",
+        "measured_at": "2026-10-24T05:10:20.418602+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e0f87a514acc182ed03d72a50d6c37b05b872bac21419599074b2cbf8dcf3aa4",
+        "output_digest": "sha256:7f826b0137a440104712cffbf61f0ecc91aebd8528d69c61488cc8eb7fc79315",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "mboostrs glmboost Quantile",
+      "pinball": 0.15085195096425855,
+      "mae": 0.4315647872416465,
+      "seconds": 0.10118300002068281,
+      "mstop": 523,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:7e730bbc704e07036bfbf597a6d55d9479a0064be68fcde3fa03bd97d5447afa",
+        "measured_at": "2026-10-24T05:10:20.418712+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e0f87a514acc182ed03d72a50d6c37b05b872bac21419599074b2cbf8dcf3aa4",
+        "output_digest": "sha256:af47f9dfb91516581790aa4d0325054c6660f5a8a9b733bd0dc9d3f7e9bbc949",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "mboostrs glmboost Quantile qoffset=tau",
+      "pinball": 0.15087621916132707,
+      "mae": 0.4312429030382381,
+      "seconds": 0.10125812492333353,
+      "mstop": 2485,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:291651cf438e64d0961368143f39ba078d3cd515a95adad2e59efb55ebcdbecc",
+        "measured_at": "2026-10-24T05:10:20.418822+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e0f87a514acc182ed03d72a50d6c37b05b872bac21419599074b2cbf8dcf3aa4",
+        "output_digest": "sha256:176dcdd2e5853858a4e1b1ab018964e4d6024665e90f6fd3551b606e168d20c3",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "mboostrs gamboost Quantile",
+      "pinball": 0.12400786789987399,
+      "mae": 0.07029193674682623,
+      "seconds": 0.3451683330349624,
+      "mstop": 2234,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:ed24cb5fe5e6f856cae4f071ea29c5081b4c81289f119033c5125d2471f5fbe0",
+        "measured_at": "2026-10-24T05:10:20.418928+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e0f87a514acc182ed03d72a50d6c37b05b872bac21419599074b2cbf8dcf3aa4",
+        "output_digest": "sha256:68483c37d7a7aa26e8c04080fc5a42650b19ff915c7ed8582aaf81a7e29ce44f",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    },
+    {
+      "task": "smooth",
+      "seed": 3,
+      "method": "mboostrs gamboost Quantile qoffset=tau",
+      "pinball": 0.12392073392409694,
+      "mae": 0.07033642278372179,
+      "seconds": 0.35659962496720254,
+      "mstop": 2494,
+      "at_boundary": false,
+      "_identity": {
+        "fingerprint": "sha256:ab295a99caea07c5e9b70f8edbfc59caca7dd49019a2a940c724e85dba87cdee",
+        "measured_at": "2026-10-24T05:10:20.419033+00:00",
+        "time_scope": "completion of the scored result row, after its timed operation",
+        "input_digest": "sha256:e0f87a514acc182ed03d72a50d6c37b05b872bac21419599074b2cbf8dcf3aa4",
+        "output_digest": "sha256:2133576cf806185be2c20d3563509d7df4b0fa3917a0010c93654535eef3d9f7",
+        "native_build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+      }
+    }
+  ],
+  "recovery": {
+    "true_intercept": 1.3252412524356805,
+    "true_x1": 0.55,
+    "true_x2": -0.35,
+    "z": 1.2815515655446004,
+    "statsmodels_params": {
+      "Intercept": 1.3407910279800426,
+      "x1": 0.6341232726851644,
+      "x2": -0.33433216441786406,
+      "noise": -0.01763335118895526
+    },
+    "statsmodels_iteration_limit": false,
+    "sklearn_intercept": 1.3407936824815307,
+    "sklearn_coef": {
+      "x1": 0.6341274827481822,
+      "x2": -0.33434171136401514,
+      "noise": -0.017607842641090526
+    },
+    "glmboost_coef": {
+      "(Intercept)": 1.340615672918912,
+      "x1": 0.6337618713651738,
+      "x2": -0.33356041182291013,
+      "noise": -0.019688087642754083
+    },
+    "glmboost_qoffset_tau_coef": {
+      "(Intercept)": 1.3423579196205466,
+      "x1": 0.6293561918445325,
+      "x2": -0.3330800038177236,
+      "noise": -0.018187304308016992
+    },
+    "glmboost_mstop": 2405,
+    "glmboost_qoffset_tau_mstop": 858,
+    "glmboost_offset": 0.32003342300593374,
+    "glmboost_qoffset_tau_offset": 1.6780730881698482,
+    "sample_median": 0.3200334230059337,
+    "sample_quantile": 1.678073088169848
+  },
+  "usability": {
+    "probes": [
+      {
+        "label": "default offset is the median, not the fitted quantile",
+        "ok": true,
+        "detail": "predict(mstop=0) = 0.320033. The sample median is 0.320033. The sample 0.9 quantile is 1.678073. qoffset defaults to 0.5."
+      },
+      {
+        "label": "qoffset equal to tau starts at that quantile",
+        "ok": true,
+        "detail": "qoffset=0.9 starts at 1.678073."
+      },
+      {
+        "label": "predict default is the quantile",
+        "ok": true,
+        "detail": "type='link' matches type='response' to 0.00e+00. The default type is 'link'."
+      },
+      {
+        "label": "Quantile logLik",
+        "ok": false,
+        "error": "NotImplementedError",
+        "detail": "logLik is not available for Quantile: the check loss is not a log-likelihood: it targets a conditional quantile with no distributional assumption behind it. Compare fits by cross-validated risk (cvrisk) at the same tau. Use negative_risk() if the value you want is the quantity the fit minimised, negated."
+      },
+      {
+        "label": "Quantile nuisance()",
+        "ok": true,
+        "detail": "returned None."
+      },
+      {
+        "label": "Quantile rejects tau outside (0, 1)",
+        "ok": false,
+        "error": "ValueError",
+        "detail": "tau must be in (0, 1), got 1.2"
+      },
+      {
+        "label": "autospec without a budget",
+        "ok": true,
+        "detail": "family=Gaussian(), defaulted=('family', 'shapes', 'interactions', 'mstop')"
+      }
+    ]
+  },
+  "provenance": {
+    "commit": "f54f1531831e3f14a2db0bd238cf36238683d5ed",
+    "working_tree": {
+      "dirty": false,
+      "status_digest": null,
+      "commit_source": "working directory"
+    },
+    "native_build": {
+      "package_version": "0.1.3",
+      "source_digest": "sha256:a771766f1a4820a76b9d908fbc12ed53123e648afcb8583181708b5273ca6b49",
+      "git_revision": "e9c670d73f2aff2d153b2c02b4cf8a71aa2c46e2",
+      "git_dirty": false,
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14) | binary: rustc | commit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860 | commit-date: 2026-04-14 | host: aarch64-apple-darwin | release: 1.95.0 | LLVM version: 22.1.2",
+      "target": "aarch64-apple-darwin",
+      "profile": "release",
+      "target_features": "aes,crc,dit,dotprod,dpb,dpb2,fcma,fhm,flagm,fp16,frintts,jsconv,lor,lse,neon,paca,pacg,pan,pmuv3,ras,rcpc,rcpc2,rdm,sb,sha2,sha3,ssbs,vh",
+      "crate_features": "",
+      "abi_version": 1,
+      "build_id": "sha256:c54e14030a8b9f4312980db5614bccf5e3fcad401afd2aaecbf7a3812c6e80c9"
+    },
+    "platform": {
+      "system": "Darwin",
+      "release": "25.3.0",
+      "machine": "arm64",
+      "cpu": "arm",
+      "python": "3.12.11"
+    },
+    "versions": {
+      "mboostrs": "0.1.3",
+      "numpy": "2.4.6",
+      "rpy2": "3.6.7",
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "R": "4.5.1",
+      "mboost": "2.9.11",
+      "scipy": "1.16.3",
+      "statsmodels": "0.15.0",
+      "scikit-learn": "1.9.0",
+      "polars": "1.41.0",
+      "patsy": "1.0.3"
+    },
+    "compiler_flags": {
+      "RUSTFLAGS": null,
+      "CARGO_PROFILE": "release"
+    },
+    "threads": {
+      "logical_cpus": 10,
+      "r_mclapply_default_cores": "2",
+      "RAYON_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+    },
+    "created_at": "2026-10-24T05:10:09.668639+00:00",
+    "runner": "benches/bench_quantile.py",
+    "runner_sha256": "35f2b589d9b1923f0aaeb80d8248a85de0ab08a445e35b158186244e8c009dfc",
+    "protocol": {
+      "kind": "seeded predictive-method comparison",
+      "design": {
+        "n_train": 1500,
+        "n_test": 4000,
+        "seeds": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "tau": 0.9,
+        "nu": 0.1,
+        "folds": 5,
+        "mstop": {
+          "glm": 2500,
+          "gam": 2500
+        },
+        "linear": "mu = 0.30 + 0.55 x1 - 0.35 x2, scale 0.8",
+        "smooth": "mu = 0.15 + sin(1.5 x1) + 0.35 x2, scale 0.7",
+        "quantile": "mu + scale * Phi^{-1}(0.9)",
+        "qoffset_default": 0.5,
+        "sklearn_alpha": 0.0
+      },
+      "timing": "runner perf_counter regions; method-specific fit/tuning/prediction work",
+      "order": "sequential task, seed, method order in the recorded runner",
+      "timing_claim": "descriptive elapsed times; no paired equal-work speedup or timing interval",
+      "warmup": "no dedicated warmup; imports and provenance collection excluded from timers"
+    },
+    "repeats": {
+      "training_seeds": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "test": "one independently generated test sample per task, shared across methods and seeds"
+    },
+    "uncertainty": {
+      "scope": "descriptive timing spread across training seeds, not repeated identical-input trials",
+      "groups": [
+        {
+          "task": "linear",
+          "method": "generating quantile",
+          "n": 4,
+          "seconds_sd": 0.0,
+          "seconds_se": 0.0
+        },
+        {
+          "task": "linear",
+          "method": "statsmodels QuantReg",
+          "n": 4,
+          "seconds_sd": 0.013683621871373857,
+          "seconds_se": 0.006841810935686928
+        },
+        {
+          "task": "linear",
+          "method": "statsmodels QuantReg spline",
+          "n": 4,
+          "seconds_sd": 0.002731665525925103,
+          "seconds_se": 0.0013658327629625514
+        },
+        {
+          "task": "linear",
+          "method": "sklearn QuantileRegressor",
+          "n": 4,
+          "seconds_sd": 0.00336996943160323,
+          "seconds_se": 0.001684984715801615
+        },
+        {
+          "task": "linear",
+          "method": "mboostrs glmboost Quantile",
+          "n": 4,
+          "seconds_sd": 0.002326125754715192,
+          "seconds_se": 0.001163062877357596
+        },
+        {
+          "task": "linear",
+          "method": "mboostrs glmboost Quantile qoffset=tau",
+          "n": 4,
+          "seconds_sd": 0.002517582546659547,
+          "seconds_se": 0.0012587912733297735
+        },
+        {
+          "task": "linear",
+          "method": "mboostrs gamboost Quantile",
+          "n": 4,
+          "seconds_sd": 0.017056443915057177,
+          "seconds_se": 0.008528221957528588
+        },
+        {
+          "task": "linear",
+          "method": "mboostrs gamboost Quantile qoffset=tau",
+          "n": 4,
+          "seconds_sd": 0.01053220536014613,
+          "seconds_se": 0.005266102680073065
+        },
+        {
+          "task": "smooth",
+          "method": "generating quantile",
+          "n": 4,
+          "seconds_sd": 0.0,
+          "seconds_se": 0.0
+        },
+        {
+          "task": "smooth",
+          "method": "statsmodels QuantReg",
+          "n": 4,
+          "seconds_sd": 0.004522192162329999,
+          "seconds_se": 0.0022610960811649994
+        },
+        {
+          "task": "smooth",
+          "method": "statsmodels QuantReg spline",
+          "n": 4,
+          "seconds_sd": 0.1563172357187425,
+          "seconds_se": 0.07815861785937125
+        },
+        {
+          "task": "smooth",
+          "method": "sklearn QuantileRegressor",
+          "n": 4,
+          "seconds_sd": 0.0014412424922305345,
+          "seconds_se": 0.0007206212461152672
+        },
+        {
+          "task": "smooth",
+          "method": "mboostrs glmboost Quantile",
+          "n": 4,
+          "seconds_sd": 0.001058428323437563,
+          "seconds_se": 0.0005292141617187815
+        },
+        {
+          "task": "smooth",
+          "method": "mboostrs glmboost Quantile qoffset=tau",
+          "n": 4,
+          "seconds_sd": 0.001601054817279842,
+          "seconds_se": 0.000800527408639921
+        },
+        {
+          "task": "smooth",
+          "method": "mboostrs gamboost Quantile",
+          "n": 4,
+          "seconds_sd": 0.0036222586597357723,
+          "seconds_se": 0.0018111293298678861
+        },
+        {
+          "task": "smooth",
+          "method": "mboostrs gamboost Quantile qoffset=tau",
+          "n": 4,
+          "seconds_sd": 0.007710104986690717,
+          "seconds_se": 0.0038550524933453584
+        }
+      ]
+    }
+  }
+}
