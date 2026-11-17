@@ -91,7 +91,7 @@ def _mboostrs_identity():
 
 _PACKAGES = ("numpy", "polars", "pandas", "scipy", "scikit-learn", "lightgbm", "xgboost",
              "catboost", "interpret", "shap", "aplr", "pygam", "ngboost",
-             "statsmodels", "econml", "doubleml")
+             "statsmodels", "econml", "doubleml", "structured-data-models", "torch")
 _R_PACKAGES = ("mgcv", "gamlss", "glmnet", "knockoff", "Boruta", "grf", "scam",
                "mboost", "survival")
 
