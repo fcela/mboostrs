@@ -62,9 +62,12 @@ jobs:
           done
       - name: Build the extension into the source tree
         # The generated-file checks in tools/ import `mboostrs._rust` from
-        # python/, so the compiled module must sit beside the sources. The
-        # dependencies are already installed from the wheel above.
-        run: maturin develop --release
+        # python/, so the compiled module must sit beside the sources. It is
+        # copied from the wheel installed above; the lookup runs outside the
+        # checkout so that the installed package, not python/, is imported.
+        run: |
+          module="$(cd "$RUNNER_TEMP" && python -c 'import mboostrs._rust as m; print(m.__file__)')"
+          cp "$module" python/mboostrs/
       - name: Verify source, bindings, generated contracts, and examples
         run: |
           cargo fmt --check --all
