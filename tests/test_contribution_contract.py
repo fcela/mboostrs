@@ -99,7 +99,7 @@ def test_the_interface_map_no_longer_calls_brad_unimplemented():
     page = ROOT / "docs" / "book" / "usage" / "interface_map.ipynb"
     body = "".join("".join(cell["source"])
                    for cell in json.loads(page.read_text())["cells"])
-    claim = re.search(r"- The upstream `blackboost`[^\n]*", body).group(0)
+    claim = re.search(r"- `Btree` is available inside `gamboost`[^\n]*", body).group(0)
     assert "`brad` is implemented" in claim
-    assert "withdrawn upstream" in claim
+    assert "`mboost::bss()` was withdrawn" in claim
     assert "squared error" in claim

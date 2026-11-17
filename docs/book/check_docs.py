@@ -13,6 +13,12 @@ Benchmark artifacts (`bench_*.json` under docs/book) are checked for staleness
 against the commit they record. An artifact whose commit is missing, not an
 ancestor of HEAD, or followed by commits that changed `python/mboostrs` or
 `crates/mboostrs-core` is listed with the pages that load it.
+An artifact whose recorded commit is not an object of this repository at all
+was produced before the public history began (the public repository starts
+from a single snapshot commit); its staleness cannot be measured here, so it
+is listed as a warning, whatever its policy class, until its benchmark is rerun
+and records a commit of this history. `--strict-artifacts` turns that warning
+into a failure.
 `artifact_policy.json` classifies every artifact. A stale `read_by_page`
 artifact (a page, notebook or release claim reads a number from it) is a
 failure. A stale `historical` artifact (a log of a past run that nothing reads)
@@ -480,6 +486,7 @@ PAGE_GLOBS = ("docs/book/**/*.ipynb", "docs/book/**/*.md")
 ARTIFACT_CLASSES = (
     "older than code changes",
     "commit not in history",
+    "predates public history",
     "no commit recorded",
 )
 
@@ -528,6 +535,16 @@ def artifact_status(sha: str | None) -> tuple[str, str] | None:
         return ("no commit recorded", "")
     if not re.fullmatch(r"[0-9a-f]{4,40}", sha):
         return ("commit not in history", f"malformed commit {sha!r}")
+    known = subprocess.run(
+        ["git", "cat-file", "-e", f"{sha}^{{commit}}"],
+        cwd=ROOT, capture_output=True, text=True, check=False,
+    )
+    if known.returncode != 0:
+        return (
+            "predates public history",
+            f"{sha[:12]} is not a commit of this repository; rerun the benchmark "
+            "to record one",
+        )
     ancestor = subprocess.run(
         ["git", "merge-base", "--is-ancestor", sha, "HEAD"],
         cwd=ROOT, capture_output=True, text=True, check=False,
@@ -826,8 +843,21 @@ def main(argv: list[str] | None = None) -> int:
     read_by_page, historical, policy_problems = load_artifact_policy()
     errors.extend(policy_problems)
     errors.extend(historical_artifacts_read_by_notebooks(historical))
-    stale_read = [line for key, line in artifact_lines if key not in historical]
-    stale_historical = [line for key, line in artifact_lines if key in historical]
+    pre_public = [line for _, line in artifact_lines if "predates public history" in line.split(";")[0]]
+    pre_public_keys = {key for key, line in artifact_lines if line in pre_public}
+    stale_read = [line for key, line in artifact_lines
+                  if key not in historical and key not in pre_public_keys]
+    stale_historical = [line for key, line in artifact_lines
+                        if key in historical and key not in pre_public_keys]
+    if pre_public:
+        print(
+            f"{len(pre_public)} benchmark artifact(s) record a commit from before the public "
+            "history, so their staleness cannot be measured here; rerun them to record a "
+            "commit of this history (--strict-artifacts makes them fail):",
+            file=sys.stderr,
+        )
+        for line in pre_public:
+            print(f"- {line}", file=sys.stderr)
     if stale_historical:
         print(
             f"Historical benchmark artifacts, allowed to be stale ({ARTIFACT_POLICY_NAME} lists "
@@ -844,6 +874,11 @@ def main(argv: list[str] | None = None) -> int:
         errors.append(
             f"{len(stale_historical)} historical benchmark artifact(s) are stale or record no "
             "commit (--strict-artifacts); see the list above"
+        )
+    if pre_public and arguments.strict_artifacts:
+        errors.append(
+            f"{len(pre_public)} benchmark artifact(s) predate the public history "
+            "(--strict-artifacts); see the list above"
         )
 
     if errors:

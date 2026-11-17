@@ -13,7 +13,7 @@ Poisson-inverse-Gaussian family: `mu` (log link, mean), `sigma`
 (log link, dispersion). Matches R `gamboostLSS::PIGLSS()` (wrapping
 gamlss.dist `PIG`). Requires non-negative integer counts.
 
-Source: [`python/mboostrs/gamlss.py` lines 2315-2335](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2315-L2335)
+Source: [`python/mboostrs/gamlss.py` lines 2317-2337](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2317-L2337)
 
 ## Members
 
@@ -39,7 +39,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `IndexError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2327-2331](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2327-L2331)
+Source: [`python/mboostrs/gamlss.py` lines 2329-2333](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2329-L2333)
 
 (piglss-mean)=
 ## `PIGLSS.mean`
@@ -52,4 +52,4 @@ PIGLSS.mean(params) -> ndarray
 
 Conditional count mean `mu`.
 
-Source: [`python/mboostrs/gamlss.py` lines 2333-2335](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2333-L2335)
+Source: [`python/mboostrs/gamlss.py` lines 2335-2337](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2335-L2337)

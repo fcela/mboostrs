@@ -2,7 +2,8 @@
 
 The fixture is a three-commit git repository with one artifact per outcome:
 current, older than the code it describes, recorded against a commit that is
-not in history, and recorded with no commit at all. Each test writes its own
+not an object of the repository (it predates the public history), and
+recorded with no commit at all. Each test writes its own
 `artifact_policy.json`: a stale `read_by_page` artifact fails the check, a
 stale `historical` artifact is a warning unless `--strict-artifacts` is set.
 """
@@ -104,7 +105,8 @@ def test_each_artifact_is_classified_by_its_commit(repo):
     assert counts == {
         "up to date": 1,
         "older than code changes": 1,
-        "commit not in history": 1,
+        "commit not in history": 0,
+        "predates public history": 1,
         "no commit recorded": 1,
     }
     assert sorted(key for key, _ in lines) == [
@@ -112,7 +114,7 @@ def test_each_artifact_is_classified_by_its_commit(repo):
     listed = "\n".join(line for _, line in lines)
     assert "bench_current.json" not in listed
     assert "bench_old.json: older than code changes (2 commit(s) changed" in listed
-    assert "bench_missing.json: commit not in history" in listed
+    assert "bench_missing.json: predates public history" in listed
     assert "bench_none.json: no commit recorded" in listed
 
 
@@ -136,7 +138,39 @@ def test_stale_historical_artifacts_are_warnings(repo, capsys):
 def test_strict_flag_makes_stale_historical_artifacts_fail(repo, capsys):
     _policy(repo, ["bench_current.json"], ALL_HISTORICAL)
     assert check_docs.main(["--strict-artifacts"]) == 1
-    assert "3 historical benchmark artifact(s) are stale" in capsys.readouterr().err
+    err = capsys.readouterr().err
+    assert "2 historical benchmark artifact(s) are stale" in err
+    assert "1 benchmark artifact(s) predate the public history" in err
+
+
+def test_artifact_from_an_unmerged_branch_is_not_in_history(repo):
+    """A commit the repository holds but HEAD does not contain is reported as
+    not in history, distinct from one the repository has never seen."""
+    _git(repo, "checkout", "-q", "-b", "side")
+    _write(repo / "python/mboostrs/side.py", "side\n")
+    side = _commit(repo, "side branch work")
+    _git(repo, "checkout", "-q", "-")
+    _write(repo / "docs/book/cases/bench_side.json", _artifact(side))
+    _commit(repo, "record an artifact from the side branch")
+    lines, counts = check_docs.stale_artifact_report()
+    assert counts["commit not in history"] == 1
+    assert counts["predates public history"] == 1
+    listed = "\n".join(line for _, line in lines)
+    assert "bench_side.json: commit not in history" in listed
+
+
+def test_predating_artifacts_warn_even_when_a_page_reads_them(repo, capsys):
+    """Their staleness cannot be measured, so a read_by_page artifact whose
+    commit predates the history is a warning, not a failure; the policy still
+    classifies it, and --strict-artifacts fails it."""
+    _policy(repo, ["bench_current.json", "bench_missing.json"],
+            ["bench_old.json", "bench_none.json"])
+    assert check_docs.main([]) == 0
+    err = capsys.readouterr().err
+    assert "bench_missing.json: predates public history" in err
+    assert "is not current" not in err
+    assert check_docs.main(["--strict-artifacts"]) == 1
+    assert "1 benchmark artifact(s) predate the public history" in capsys.readouterr().err
 
 
 def test_stale_read_by_page_artifact_fails_and_is_named(repo, capsys):

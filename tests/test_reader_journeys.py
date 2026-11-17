@@ -236,7 +236,7 @@ FRONT_DOOR = (
 #: names and every one of them is documented somewhere, so the question is not
 #: whether a name is written down but whether the path a reader takes reaches
 #: it. This is a ratchet: the front door may cover more, never less.
-FRONT_DOOR_NAMES = 83
+FRONT_DOOR_NAMES = 104
 
 
 def front_door_text():

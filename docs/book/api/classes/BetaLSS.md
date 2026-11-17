@@ -13,7 +13,7 @@ Beta location-precision family: `mu` (logit link, mean in (0,1)),
 `phi` (log link, precision). Matches R `gamboostLSS::BetaLSS()`. Requires
 `0 < y < 1`.
 
-Source: [`python/mboostrs/gamlss.py` lines 1281-1345](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1281-L1345)
+Source: [`python/mboostrs/gamlss.py` lines 1283-1347](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1283-L1347)
 
 ## Members
 
@@ -44,7 +44,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `IndexError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1291-1297](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1291-L1297)
+Source: [`python/mboostrs/gamlss.py` lines 1293-1299](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1293-L1299)
 
 (betalss-mean)=
 ## `BetaLSS.mean`
@@ -57,7 +57,7 @@ BetaLSS.mean(params) -> ndarray
 
 Conditional response mean.
 
-Source: [`python/mboostrs/gamlss.py` lines 1299-1301](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1299-L1301)
+Source: [`python/mboostrs/gamlss.py` lines 1301-1303](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1301-L1303)
 
 (betalss-pdf)=
 ## `BetaLSS.pdf`
@@ -76,7 +76,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1303-1319](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1303-L1319)
+Source: [`python/mboostrs/gamlss.py` lines 1305-1321](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1305-L1321)
 
 (betalss-cdf)=
 ## `BetaLSS.cdf`
@@ -95,7 +95,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1321-1328](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1321-L1328)
+Source: [`python/mboostrs/gamlss.py` lines 1323-1330](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1323-L1330)
 
 (betalss-quantile)=
 ## `BetaLSS.quantile`
@@ -108,7 +108,7 @@ BetaLSS.quantile(p, params) -> ndarray
 
 Beta quantile, obtained by inverting `cdf` on (0, 1).
 
-Source: [`python/mboostrs/gamlss.py` lines 1330-1332](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1330-L1332)
+Source: [`python/mboostrs/gamlss.py` lines 1332-1334](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1332-L1334)
 
 (betalss-simulate)=
 ## `BetaLSS.simulate`
@@ -127,7 +127,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1334-1341](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1334-L1341)
+Source: [`python/mboostrs/gamlss.py` lines 1336-1343](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1336-L1343)
 
 (betalss-deviance_increment)=
 ## `BetaLSS.deviance_increment`
@@ -140,4 +140,4 @@ BetaLSS.deviance_increment(y, params) -> ndarray
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 1343-1345](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1343-L1345)
+Source: [`python/mboostrs/gamlss.py` lines 1345-1347](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1345-L1347)

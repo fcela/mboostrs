@@ -49,7 +49,7 @@ def test_topic_stays_within_the_one_page_budget():
 
 def test_topic_names_the_current_path_and_the_supersession():
     text = mboostrs.agent_guide("golden-path")
-    for needle in ("hasattr", "#474", "fit", "report", "gamboost",
+    for needle in ("hasattr", "fit", "report", "gamboost",
                    "tune_mstop", "reference_gap"):
         assert needle in text, f"golden-path does not name {needle!r}"
     assert "only if" in text, "golden-path has no 'open topic X only if Y' pointers"

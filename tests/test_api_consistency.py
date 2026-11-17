@@ -90,7 +90,7 @@ def test_the_distributional_family_argument_has_one_documented_spelling(data):
     with pytest.raises(TypeError, match="not both"):
         mb.glmboostLSS("y ~ x", data, families=mb.GaussianLSS(),
                        family=mb.GaussianLSS(), control=control)
-    assert "documented spelling" in mb.glmboostLSS.__doc__
+    assert "Alias for ``families=``" in mb.glmboostLSS.__doc__
 
 
 # ─── the control record ────────────────────────────────────────────

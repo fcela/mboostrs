@@ -3527,6 +3527,7 @@ def probe_nu_search(data, response, formula, family, *, folds, incumbent, nu,
     on a measured gain, not on a flat-curve tie.
     """
     from mboostrs._errors import MboostrsRuntimeError
+    from mboostrs._workflow import BudgetExhausted
 
     n_folds = int(np.asarray(folds).shape[1])
     largest = len(incumbent.risk) - 1
@@ -3547,6 +3548,8 @@ def probe_nu_search(data, response, formula, family, *, folds, incumbent, nu,
             row = probe_mstop(data, response, formula, family, folds=folds,
                               largest=largest, nu=candidate, env=env, extend=0,
                               fold_scheme=fold_scheme)
+        except BudgetExhausted:
+            raise
         except MboostrsRuntimeError:
             # A long fixed step can push the linear predictor far enough
             # that the inverse link overflows (Poisson at nu = 1.0 does).

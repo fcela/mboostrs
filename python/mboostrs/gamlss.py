@@ -1112,7 +1112,9 @@ class GaussianKnownVarLSS(_StabilizedNGradient):
     :meth:`pdf`, :meth:`cdf`, and :meth:`quantile` compute when given ``s2``.
 
     This family is available in both the Python and R frontends as
-    ``GaussianKnownVarLSS()``.
+    ``GaussianKnownVarLSS()``. It has no upstream ``gamboostLSS``
+    counterpart: it is an mboostrs addition, so there is no upstream
+    implementation to match or to check results against.
     """
 
     n_params = 2

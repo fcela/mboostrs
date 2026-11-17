@@ -13,7 +13,7 @@ Zero-inflated Poisson family: `mu` (log link, Poisson mean), `sigma`
 (logit link, zero-inflation probability). Matches R `gamboostLSS::ZIPoLSS()`
 (wrapping gamlss.dist `ZIP`). Requires non-negative integer counts.
 
-Source: [`python/mboostrs/gamlss.py` lines 1433-1516](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1433-L1516)
+Source: [`python/mboostrs/gamlss.py` lines 1435-1518](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1435-L1518)
 
 ## Members
 
@@ -45,7 +45,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `IndexError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1447-1454](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1447-L1454)
+Source: [`python/mboostrs/gamlss.py` lines 1449-1456](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1449-L1456)
 
 (zipolss-mean)=
 ## `ZIPoLSS.mean`
@@ -58,7 +58,7 @@ ZIPoLSS.mean(params) -> ndarray
 
 Mixture mean `(1 - sigma) * mu`.
 
-Source: [`python/mboostrs/gamlss.py` lines 1456-1458](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1456-L1458)
+Source: [`python/mboostrs/gamlss.py` lines 1458-1460](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1458-L1460)
 
 (zipolss-pmf)=
 ## `ZIPoLSS.pmf`
@@ -78,7 +78,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1460-1472](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1460-L1472)
+Source: [`python/mboostrs/gamlss.py` lines 1462-1474](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1462-L1474)
 
 (zipolss-cdf)=
 ## `ZIPoLSS.cdf`
@@ -97,7 +97,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1474-1483](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1474-L1483)
+Source: [`python/mboostrs/gamlss.py` lines 1476-1485](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1476-L1485)
 
 (zipolss-quantile)=
 ## `ZIPoLSS.quantile`
@@ -110,7 +110,7 @@ ZIPoLSS.quantile(p, params) -> ndarray
 
 ZIP quantile: smallest k with CDF(k) >= p.
 
-Source: [`python/mboostrs/gamlss.py` lines 1485-1487](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1485-L1487)
+Source: [`python/mboostrs/gamlss.py` lines 1487-1489](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1487-L1489)
 
 (zipolss-simulate)=
 ## `ZIPoLSS.simulate`
@@ -129,7 +129,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1489-1498](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1489-L1498)
+Source: [`python/mboostrs/gamlss.py` lines 1491-1500](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1491-L1500)
 
 (zipolss-deviance_increment)=
 ## `ZIPoLSS.deviance_increment`
@@ -142,7 +142,7 @@ ZIPoLSS.deviance_increment(y, params) -> ndarray
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 1500-1502](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1500-L1502)
+Source: [`python/mboostrs/gamlss.py` lines 1502-1504](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1502-L1504)
 
 (zipolss-pdf)=
 ## `ZIPoLSS.pdf`
@@ -162,4 +162,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1504-1516](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1504-L1516)
+Source: [`python/mboostrs/gamlss.py` lines 1506-1518](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1506-L1518)

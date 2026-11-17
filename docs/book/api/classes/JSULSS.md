@@ -14,7 +14,7 @@ Johnson's SU family: `mu` (identity link, location), `sigma`
 kurtosis). Matches R `gamboostLSS::JSULSS()` (wrapping gamlss.dist
 `JSU`).
 
-Source: [`python/mboostrs/gamlss.py` lines 2419-2488](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2419-L2488)
+Source: [`python/mboostrs/gamlss.py` lines 2421-2490](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2421-L2490)
 
 ## Members
 
@@ -43,7 +43,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `IndexError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2430-2436](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2430-L2436)
+Source: [`python/mboostrs/gamlss.py` lines 2432-2438](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2432-L2438)
 
 (jsulss-mean)=
 ## `JSULSS.mean`
@@ -56,7 +56,7 @@ JSULSS.mean(params) -> ndarray
 
 Conditional mean `mu` under the centered JSU parameterization.
 
-Source: [`python/mboostrs/gamlss.py` lines 2438-2440](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2438-L2440)
+Source: [`python/mboostrs/gamlss.py` lines 2440-2442](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2440-L2442)
 
 (jsulss-cdf)=
 ## `JSULSS.cdf`
@@ -70,7 +70,7 @@ JSULSS.cdf(y, params) -> ndarray
 Johnson SU CDF in the centered parameterization. Matches
 `gamlss.dist::pJSU`.
 
-Source: [`python/mboostrs/gamlss.py` lines 2460-2469](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2460-L2469)
+Source: [`python/mboostrs/gamlss.py` lines 2462-2471](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2462-L2471)
 
 (jsulss-quantile)=
 ## `JSULSS.quantile`
@@ -83,7 +83,7 @@ JSULSS.quantile(p, params) -> ndarray
 
 Johnson SU quantile. Matches `gamlss.dist::qJSU`.
 
-Source: [`python/mboostrs/gamlss.py` lines 2471-2473](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2471-L2473)
+Source: [`python/mboostrs/gamlss.py` lines 2473-2475](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2473-L2475)
 
 (jsulss-pdf)=
 ## `JSULSS.pdf`
@@ -97,4 +97,4 @@ JSULSS.pdf(y, params) -> ndarray
 Johnson SU density in the centered parameterization. Matches
 `gamlss.dist::dJSU`.
 
-Source: [`python/mboostrs/gamlss.py` lines 2475-2488](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2475-L2488)
+Source: [`python/mboostrs/gamlss.py` lines 2477-2490](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2477-L2490)

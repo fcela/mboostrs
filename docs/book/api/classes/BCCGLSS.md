@@ -14,7 +14,7 @@ Box-Cox-Cole-Green family: `mu` (log link, median), `sigma`
 Matches R `gamboostLSS::BCCGLSS()` (wrapping gamlss.dist `BCCG`).
 Requires `y > 0`.
 
-Source: [`python/mboostrs/gamlss.py` lines 2338-2416](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2338-L2416)
+Source: [`python/mboostrs/gamlss.py` lines 2340-2418](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2340-L2418)
 
 ## Members
 
@@ -42,7 +42,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `IndexError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2349-2356](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2349-L2356)
+Source: [`python/mboostrs/gamlss.py` lines 2351-2358](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2351-L2358)
 
 (bccglss-cdf)=
 ## `BCCGLSS.cdf`
@@ -64,7 +64,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2358-2379](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2358-L2379)
+Source: [`python/mboostrs/gamlss.py` lines 2360-2381](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2360-L2381)
 
 (bccglss-quantile)=
 ## `BCCGLSS.quantile`
@@ -77,7 +77,7 @@ BCCGLSS.quantile(p, params) -> ndarray
 
 Box-Cox-Cole-Green quantile. Matches `gamlss.dist::qBCCG`.
 
-Source: [`python/mboostrs/gamlss.py` lines 2381-2383](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2381-L2383)
+Source: [`python/mboostrs/gamlss.py` lines 2383-2385](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2383-L2385)
 
 (bccglss-pdf)=
 ## `BCCGLSS.pdf`
@@ -99,4 +99,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2385-2416](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2385-L2416)
+Source: [`python/mboostrs/gamlss.py` lines 2387-2418](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2387-L2418)

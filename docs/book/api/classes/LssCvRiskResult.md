@@ -20,7 +20,7 @@ LssCvRiskResult(
 
 Cross-validated LSS risk over a per-parameter mstop grid.
 
-Source: [`python/mboostrs/gamlss.py` lines 5614-5774](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5614-L5774)
+Source: [`python/mboostrs/gamlss.py` lines 5616-5776](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5616-L5776)
 
 ## Members
 
@@ -51,7 +51,7 @@ fold count. It describes variation across these folds; because the
 folds share training rows, it is not a confidence bound for variation
 across datasets.
 
-Source: [`python/mboostrs/gamlss.py` lines 5644-5656](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5644-L5656)
+Source: [`python/mboostrs/gamlss.py` lines 5646-5658](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5646-L5658)
 
 (lsscvriskresult-mstop_1se)=
 ## `LssCvRiskResult.mstop_1se`
@@ -68,7 +68,7 @@ Adds the standard error at the minimum to the minimum risk, then
 returns the grid point with the smallest total budget whose risk is
 within that threshold.
 
-Source: [`python/mboostrs/gamlss.py` lines 5658-5674](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5658-L5674)
+Source: [`python/mboostrs/gamlss.py` lines 5660-5676](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5660-L5676)
 
 (lsscvriskresult-report)=
 ## `LssCvRiskResult.report`
@@ -83,7 +83,7 @@ Fold design, grid, optimum, held-out score and boundary flag as a
 `mboostrs.cvrisk.CvReport`, the shape a standard result reports
 too; the optimum is `{parameter: steps}`.
 
-Source: [`python/mboostrs/gamlss.py` lines 5676-5692](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5676-L5692)
+Source: [`python/mboostrs/gamlss.py` lines 5678-5694](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5678-L5694)
 
 (lsscvriskresult-at_boundary)=
 ## `LssCvRiskResult.at_boundary`
@@ -99,7 +99,7 @@ Whether the best grid point is the largest budget searched.
 The minimum lies at a grid point with the largest total budget.
 Extend the grid to check whether risk declines further.
 
-Source: [`python/mboostrs/gamlss.py` lines 5694-5704](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5694-L5704)
+Source: [`python/mboostrs/gamlss.py` lines 5696-5706](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5696-L5706)
 
 (lsscvriskresult-grid_cost)=
 ## `LssCvRiskResult.grid_cost`
@@ -124,7 +124,7 @@ So a grid of ten diagonal points costs one path per fold, and a
 10 x 10 product grid costs a hundred. That is the difference this
 reports.
 
-Source: [`python/mboostrs/gamlss.py` lines 5706-5731](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5706-L5731)
+Source: [`python/mboostrs/gamlss.py` lines 5708-5733](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5708-L5733)
 
 (lsscvriskresult-to_frame)=
 ## `LssCvRiskResult.to_frame`
@@ -137,7 +137,7 @@ LssCvRiskResult.to_frame(output='auto')
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 5733-5750](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5733-L5750)
+Source: [`python/mboostrs/gamlss.py` lines 5735-5752](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5735-L5752)
 
 (lsscvriskresult-plot)=
 ## `LssCvRiskResult.plot`
@@ -150,7 +150,7 @@ LssCvRiskResult.plot()
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 5753-5756](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5753-L5756)
+Source: [`python/mboostrs/gamlss.py` lines 5755-5758](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5755-L5758)
 
 (lsscvriskresult-to_dict)=
 ## `LssCvRiskResult.to_dict`
@@ -163,4 +163,4 @@ LssCvRiskResult.to_dict(*, include_arrays=False)
 
 A JSON-safe record; the raw fold-risk matrix only on request.
 
-Source: [`python/mboostrs/gamlss.py` lines 5764-5774](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5764-L5774)
+Source: [`python/mboostrs/gamlss.py` lines 5766-5776](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5766-L5776)

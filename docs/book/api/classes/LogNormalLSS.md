@@ -16,7 +16,7 @@ A plain positive response is treated as uncensored (every status 1). Its
 risk is the negative log-likelihood of the response on its own scale,
 comparable with the other `realplus` families.
 
-Source: [`python/mboostrs/gamlss.py` lines 2840-2866](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2840-L2866)
+Source: [`python/mboostrs/gamlss.py` lines 2842-2868](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2842-L2868)
 
 ## Members
 
@@ -41,4 +41,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2850-2856](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2850-L2856)
+Source: [`python/mboostrs/gamlss.py` lines 2852-2858](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2852-L2858)
