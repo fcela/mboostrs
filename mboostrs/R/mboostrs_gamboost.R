@@ -321,11 +321,14 @@ gamboost <- function(formula, data, family = Gaussian(), control = boost_control
     control$step %||% "fixed", as.integer(control$step_iterations %||% 4L),
     PACKAGE = "mboostrs"
   )
-  # Block and scalar bols learners centre on the fit weights inside the core;
-  # the binding returns the constants it used, which replace the parse-time
-  # values. A Multinomial fit wraps its learners and returns none.
+  # Block, scalar, brandom and bmrf learners centre on the fit weights inside
+  # the core (brandom and bmrf are block learners there); the binding returns
+  # the constants it used, which replace the parse-time values. Keeping the
+  # parse-time zeros of a `center = TRUE` brandom or bmrf left
+  # `predict(newdata =)` without the centering shift. A Multinomial fit wraps
+  # its learners and returns none.
   for (i in seq_along(learner_specs)) {
-    if (learner_specs[[i]]$type %in% c("block", "scalar") &&
+    if (learner_specs[[i]]$type %in% c("block", "scalar", "brandom", "bmrf") &&
         !is.null(result$learner_centering) &&
         length(result$learner_centering[[i]]) > 0L) {
       learner_centering[[i]] <- result$learner_centering[[i]]

@@ -47,7 +47,7 @@ jobs:
           working-directory: mboostrs
           extra-packages: |
             any::rcmdcheck
-            any::mboost
+            mboost@2.9-11
             any::gamboostLSS
             any::stabs
             any::survival
@@ -63,11 +63,8 @@ jobs:
       - name: Build the extension into the source tree
         # The generated-file checks in tools/ import `mboostrs._rust` from
         # python/, so the compiled module must sit beside the sources. It is
-        # copied from the wheel installed above; the lookup runs outside the
-        # checkout so that the installed package, not python/, is imported.
-        run: |
-          module="$(cd "$RUNNER_TEMP" && python -c 'import mboostrs._rust as m; print(m.__file__)')"
-          cp "$module" python/mboostrs/
+        # copied from the wheel installed above.
+        run: python tools/install_extension_in_source.py
       - name: Verify source, bindings, generated contracts, and examples
         run: |
           cargo fmt --check --all

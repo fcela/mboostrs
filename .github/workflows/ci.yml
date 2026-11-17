@@ -25,6 +25,12 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      # The PyO3 crate builds against the Python on PATH, and the runner's
+      # default is newer than the PyO3 version supports.
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
@@ -226,6 +232,10 @@ jobs:
         if: ${{ !matrix.run }}
         run: pip install "mboostrs[dev,sklearn]" --find-links dist
 
+      - name: Place the compiled module beside the sources
+        # The generated-file checks below import `mboostrs` from `python/`.
+        run: python tools/install_extension_in_source.py
+
       - name: Validate generated capability contract
         run: python tools/generate_capabilities.py --check
 
@@ -309,6 +319,7 @@ jobs:
           python -m pip install -r docs/book/requirements.txt maturin
           maturin build --release --out dist
           python -m pip install dist/*.whl
+          python tools/install_extension_in_source.py
 
       - name: Validate documentation sources
         run: |
@@ -491,7 +502,7 @@ jobs:
           working-directory: mboostrs
           extra-packages: |
             any::rcmdcheck
-            any::mboost
+            mboost@2.9-11
             any::gamboostLSS
             any::stabs
             any::survival

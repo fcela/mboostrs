@@ -552,6 +552,22 @@ Rust (`mboostrs-core`):
 
 ### Fixed
 
+- R `gamboost()` stores the centering constants the core used for `brandom`
+  and `bmrf` learners fitted with `center = TRUE`. It kept zeros, so
+  `predict(newdata =)` omitted the centering shift and returned values
+  shifted by `sum_j c_j b_j` relative to `fitted()`. R `partial_effects()`
+  for these learners uses the stored centering, the same vector `predict`
+  subtracts.
+
+- `mboostrs.sklearn` estimators compare the column names of a Polars frame
+  at `predict` where scikit-learn cannot read them (scikit-learn before
+  1.9). A reordered or renamed frame raises `ValueError` instead of being
+  matched to the training columns by position.
+
+- `autospec()` skips a step length in its bounded step-length search when
+  the fixed-step fit at that length overflows the link (Poisson at
+  `nu = 1.0`), instead of raising.
+
 - R `partial_effects()` for `brandom` and `bmrf` subtracts the shared
   centering shift from every level, matching a centered indicator design
   instead of multiplying each coefficient by its own centering fraction

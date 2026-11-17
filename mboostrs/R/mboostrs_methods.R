@@ -1023,12 +1023,31 @@ partial_effects.mboostrs_gamboost <- function(object, which = NULL, n_points = 1
       result[[nm]] <- data.frame(x = x_seq, effect = effect)
     } else if (sp$type %in% c("brandom", "bmrf")) {
       # One value per group: b_g - sum_j c_j b_j, with the column centering
-      # c the core applied to the fit (nonzero for center = TRUE).
-      effect <- .Call("wrap__gamboost_group_effect_r", object$rust_specs,
-                      as.double(object$weights),
-                      as.integer(object$multinomial_n_classes %||% 0L),
-                      as.integer(i), as.integer(sp$ncol), steps, coefs,
-                      as.double(object$nu), PACKAGE = "mboostrs")
+      # c the core applied to the fit (nonzero for center = TRUE). When the
+      # object stores a centering with one entry per group, that stored vector
+      # is the one `predict(newdata =)` subtracts, so the effect uses it too;
+      # otherwise the core rebuilds the learner from the fit's specification.
+      stored <- object$learner_centering[[i]]
+      if (length(stored) == sp$ncol && any(stored != 0)) {
+        b <- numeric(sp$ncol)
+        usable <- TRUE
+        for (k in which(steps == i)) {
+          if (length(coefs[[k]]) != sp$ncol) { usable <- FALSE; break }
+          b <- b + as.double(object$nu) * coefs[[k]]
+        }
+        effect <- if (usable) {
+          .Call("wrap__r_centered_group_effects", b, as.double(stored),
+                PACKAGE = "mboostrs")
+        } else {
+          NULL
+        }
+      } else {
+        effect <- .Call("wrap__gamboost_group_effect_r", object$rust_specs,
+                        as.double(object$weights),
+                        as.integer(object$multinomial_n_classes %||% 0L),
+                        as.integer(i), as.integer(sp$ncol), steps, coefs,
+                        as.double(object$nu), PACKAGE = "mboostrs")
+      }
       if (is.null(effect)) {
         no_curve(nm, sp$ncol)
         next

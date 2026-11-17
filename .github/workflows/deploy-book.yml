@@ -68,6 +68,7 @@ jobs:
         run: |
           maturin build --release --out dist
           python -m pip install dist/*.whl
+          python tools/install_extension_in_source.py
 
       - name: Build validated HTML and PDF
         run: bash build-html.sh
