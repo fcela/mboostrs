@@ -283,8 +283,8 @@ jobs:
           skip-existing: true
 
   # ── Linux wheels added to an existing PyPI release ────────────────────
-  pypi-linux-wheels:
-    name: Add Linux wheels of an existing tag to PyPI — ${{ matrix.target }}
+  tag-linux-wheels:
+    name: Build Linux wheels of an existing tag — ${{ matrix.target }}
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.linux_wheels_for_tag != '' }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -295,10 +295,8 @@ jobs:
             target: x86_64-unknown-linux-gnu
           - os: ubuntu-24.04-arm
             target: aarch64-unknown-linux-gnu
-    environment: pypi
     permissions:
       contents: read
-      id-token: write
     steps:
       - uses: actions/checkout@v7
         with:
@@ -329,6 +327,31 @@ jobs:
           ls dist
           python -m pip install --force-reinstall --find-links dist mboostrs
           python -c "import mboostrs as mb; d={'x':[0.,1.,2.],'y':[0.,1.,2.]}; m=mb.glmboost('y ~ x',d,control=mb.boost_control(2)); assert m.predict().shape == (3,)"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: tag-wheels-${{ matrix.target }}
+          path: dist/
+
+  # The publish action is an x86_64 container image, so the upload runs on an
+  # x86_64 runner for wheels of every architecture.
+  pypi-linux-wheels:
+    name: Add Linux wheels of an existing tag to PyPI
+    needs: tag-linux-wheels
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: tag-wheels-*
+          merge-multiple: true
+          path: dist/
+
+      - name: List artifacts
+        run: ls -la dist/
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
