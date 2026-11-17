@@ -26,7 +26,7 @@ Source: [`python/mboostrs/policy.py` lines 80-109](https://github.com/fcela/mboo
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#costbudget-to_dict) | Method | The limits, as a JSON-safe record. |
+| `to_dict` | Method | The limits, as a JSON-safe record. |
 
 (costbudget-to_dict)=
 ## `CostBudget.to_dict`

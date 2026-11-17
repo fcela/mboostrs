@@ -33,8 +33,8 @@ Source: [`python/mboostrs/split_refit.py` lines 117-189](https://github.com/fcel
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#splitrefitresult-to_dict) | Method | A JSON-safe record. ``include_arrays=True`` adds one entry per repeat |
-| [`summary`](#splitrefitresult-summary) | Method | Selection frequencies and contrast intervals, one line each. |
+| `to_dict` | Method | A JSON-safe record. ``include_arrays=True`` adds one entry per repeat |
+| `summary` | Method | Selection frequencies and contrast intervals, one line each. |
 
 (splitrefitresult-to_dict)=
 ## `SplitRefitResult.to_dict`

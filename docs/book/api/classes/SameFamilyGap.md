@@ -39,8 +39,8 @@ Source: [`python/mboostrs/_same_family.py` lines 39-116](https://github.com/fcel
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#samefamilygap-to_dict) | Method |  |
-| [`to_frame`](#samefamilygap-to_frame) | Method | One row. ``mstop`` is written as text when it is not a single step. |
+| `to_dict` | Method |  |
+| `to_frame` | Method | One row. ``mstop`` is written as text when it is not a single step. |
 
 (samefamilygap-to_dict)=
 ## `SameFamilyGap.to_dict`

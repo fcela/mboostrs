@@ -24,8 +24,8 @@ Source: [`python/mboostrs/_procedure/_fit.py` lines 16-45](https://github.com/fc
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`predict`](#fit-predict) | Method | Predict with the wrapped model. See ``model.predict``. |
-| [`to_dict`](#fit-to_dict) | Method | The wrapping record: the decision trail as a JSON-safe dict. |
+| `predict` | Method | Predict with the wrapped model. See ``model.predict``. |
+| `to_dict` | Method | The wrapping record: the decision trail as a JSON-safe dict. |
 
 (fit-predict)=
 ## `Fit.predict`

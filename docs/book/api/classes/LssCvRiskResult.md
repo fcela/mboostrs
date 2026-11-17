@@ -26,14 +26,14 @@ Source: [`python/mboostrs/gamlss.py` lines 5616-5776](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`standard_error`](#lsscvriskresult-standard_error) | Property | Standard error of the mean risk at each grid point. |
-| [`mstop_1se`](#lsscvriskresult-mstop_1se) | Property | The one-standard-error rule over the grid. |
-| [`report`](#lsscvriskresult-report) | Method | Fold design, grid, optimum, held-out score and boundary flag as a |
-| [`at_boundary`](#lsscvriskresult-at_boundary) | Method | Whether the best grid point is the largest budget searched. |
-| [`grid_cost`](#lsscvriskresult-grid_cost) | Method | How many fits this grid actually cost, per fold. |
-| [`to_frame`](#lsscvriskresult-to_frame) | Method |  |
-| [`plot`](#lsscvriskresult-plot) | Method |  |
-| [`to_dict`](#lsscvriskresult-to_dict) | Method | A JSON-safe record; the raw fold-risk matrix only on request. |
+| `standard_error` | Property | Standard error of the mean risk at each grid point. |
+| `mstop_1se` | Property | The one-standard-error rule over the grid. |
+| `report` | Method | Fold design, grid, optimum, held-out score and boundary flag as a |
+| `at_boundary` | Method | Whether the best grid point is the largest budget searched. |
+| `grid_cost` | Method | How many fits this grid actually cost, per fold. |
+| `to_frame` | Method |  |
+| `plot` | Method |  |
+| `to_dict` | Method | A JSON-safe record; the raw fold-risk matrix only on request. |
 
 (lsscvriskresult-standard_error)=
 ## `LssCvRiskResult.standard_error`

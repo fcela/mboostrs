@@ -19,14 +19,14 @@ Source: [`python/mboostrs/gamlss.py` lines 1435-1518](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#zipolss-response) | Method |  |
-| [`mean`](#zipolss-mean) | Method | Mixture mean ``(1 - sigma) * mu``. |
-| [`pmf`](#zipolss-pmf) | Method | ZIP mass: P(y=0) = sigma + (1-sigma)*exp(-mu); |
-| [`cdf`](#zipolss-cdf) | Method | ZIP CDF. |
-| [`quantile`](#zipolss-quantile) | Method | ZIP quantile: smallest k with CDF(k) >= p. |
-| [`simulate`](#zipolss-simulate) | Method | Draw ZIP samples: with probability sigma, y=0; else Poisson(mu). |
-| [`deviance_increment`](#zipolss-deviance_increment) | Method |  |
-| [`pdf`](#zipolss-pdf) | Method | Zero-inflated Poisson mass: ``sigma`` is the extra-zero probability, |
+| `response` | Method |  |
+| `mean` | Method | Mixture mean ``(1 - sigma) * mu``. |
+| `pmf` | Method | ZIP mass: P(y=0) = sigma + (1-sigma)*exp(-mu); |
+| `cdf` | Method | ZIP CDF. |
+| `quantile` | Method | ZIP quantile: smallest k with CDF(k) >= p. |
+| `simulate` | Method | Draw ZIP samples: with probability sigma, y=0; else Poisson(mu). |
+| `deviance_increment` | Method |  |
+| `pdf` | Method | Zero-inflated Poisson mass: ``sigma`` is the extra-zero probability, |
 
 (zipolss-response)=
 ## `ZIPoLSS.response`

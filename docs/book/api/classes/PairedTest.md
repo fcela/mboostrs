@@ -32,7 +32,7 @@ Source: [`python/mboostrs/policy.py` lines 280-320](https://github.com/fcela/mbo
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#pairedtest-to_dict) | Method | A JSON-safe record of the decision. |
+| `to_dict` | Method | A JSON-safe record of the decision. |
 
 (pairedtest-to_dict)=
 ## `PairedTest.to_dict`

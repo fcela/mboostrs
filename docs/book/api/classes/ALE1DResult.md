@@ -33,10 +33,10 @@ Source: [`python/mboostrs/effects.py` lines 793-881](https://github.com/fcela/mb
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_frame`](#ale1dresult-to_frame) | Method | One row per local interval with its effect and empirical support. |
-| [`to_dict`](#ale1dresult-to_dict) | Method | A JSON-safe record; per-bin curves always, per-row evidence on request. |
-| [`observation_frame`](#ale1dresult-observation_frame) | Method | One row per standardization observation and its assigned ALE value. |
-| [`describe`](#ale1dresult-describe) | Method | State scale, population, centering and the sparsest local interval. |
+| `to_frame` | Method | One row per local interval with its effect and empirical support. |
+| `to_dict` | Method | A JSON-safe record; per-bin curves always, per-row evidence on request. |
+| `observation_frame` | Method | One row per standardization observation and its assigned ALE value. |
+| `describe` | Method | State scale, population, centering and the sparsest local interval. |
 
 (ale1dresult-to_frame)=
 ## `ALE1DResult.to_frame`

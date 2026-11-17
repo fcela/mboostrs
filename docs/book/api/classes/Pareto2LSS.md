@@ -24,11 +24,11 @@ Source: [`python/mboostrs/gamlss.py` lines 2189-2249](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#pareto2lss-response) | Method |  |
-| [`mean`](#pareto2lss-mean) | Method | Lomax mean ``mu / (sigma - 1)``, defined only for ``sigma > 1``. |
-| [`cdf`](#pareto2lss-cdf) | Method | Pareto-II (Lomax) CDF, ``1 - (mu / (y + mu))**sigma``. |
-| [`quantile`](#pareto2lss-quantile) | Method | Pareto-II quantile, ``mu * ((1 - p)**(-1 / sigma) - 1)``. |
-| [`pdf`](#pareto2lss-pdf) | Method | Pareto-II (Lomax) density, ``sigma * mu**sigma / (y + mu)**(sigma+1)``. |
+| `response` | Method |  |
+| `mean` | Method | Lomax mean ``mu / (sigma - 1)``, defined only for ``sigma > 1``. |
+| `cdf` | Method | Pareto-II (Lomax) CDF, ``1 - (mu / (y + mu))**sigma``. |
+| `quantile` | Method | Pareto-II quantile, ``mu * ((1 - p)**(-1 / sigma) - 1)``. |
+| `pdf` | Method | Pareto-II (Lomax) density, ``sigma * mu**sigma / (y + mu)**(sigma+1)``. |
 
 (pareto2lss-response)=
 ## `Pareto2LSS.response`

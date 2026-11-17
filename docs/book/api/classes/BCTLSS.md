@@ -27,12 +27,12 @@ Source: [`python/mboostrs/gamlss.py` lines 2493-2590](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#bctlss-response) | Method |  |
-| [`mean`](#bctlss-mean) | Method |  |
-| [`pdf`](#bctlss-pdf) | Method |  |
-| [`cdf`](#bctlss-cdf) | Method |  |
-| [`quantile`](#bctlss-quantile) | Method |  |
-| [`simulate`](#bctlss-simulate) | Method |  |
+| `response` | Method |  |
+| `mean` | Method |  |
+| `pdf` | Method |  |
+| `cdf` | Method |  |
+| `quantile` | Method |  |
+| `simulate` | Method |  |
 
 (bctlss-response)=
 ## `BCTLSS.response`

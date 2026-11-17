@@ -150,6 +150,7 @@ A smooth-times-step interaction, `2 sin(x1) 1(x2 > 0)`: the tensor of
 the `+tensors` rung cannot make the step in its `x2` margin, the
 joint tree makes it in two splits, so the tree rung is the one that pays:
 
+```python
 >>> import numpy as np, polars as pl, mboostrs as mb
 >>> rng = np.random.default_rng(3)
 >>> n = 800
@@ -162,15 +163,18 @@ joint tree makes it in two splits, so the tree rung is the one that pays:
 ...                           mstop=300)
 >>> pick.selected
 '+tree'
+```
 
 A smooth response, where the extra capacity does not pay and the base is
 kept:
 
+```python
 >>> y = np.sin(data["x1"].to_numpy()) + data["x2"].to_numpy() ** 2
 >>> smooth = data.with_columns(y=y + 0.4 * rng.normal(size=n))
 >>> pick = mb.select_capacity("y ~ bbs(x1, df=8) + bbs(x2, df=6) + bbs(x3)",
 ...                           smooth, mstop=300)
 >>> pick.selected
 'base'
+```
 
 Source: [`python/mboostrs/capacity.py` lines 274-638](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/capacity.py#L274-L638)

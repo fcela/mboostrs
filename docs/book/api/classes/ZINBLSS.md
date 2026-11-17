@@ -20,14 +20,14 @@ Source: [`python/mboostrs/gamlss.py` lines 1521-1615](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#zinblss-response) | Method |  |
-| [`mean`](#zinblss-mean) | Method | Mixture mean ``(1 - nu) * mu``. |
-| [`pmf`](#zinblss-pmf) | Method | Return the ZINBI probability mass using the family parameterization. |
-| [`cdf`](#zinblss-cdf) | Method | ZINB CDF. |
-| [`quantile`](#zinblss-quantile) | Method | ZINBI quantile: smallest k with nu + (1 - nu) * NBI_CDF(k) >= p (size 1/sigma). |
-| [`simulate`](#zinblss-simulate) | Method | Draw ZINBI samples: with probability nu, y=0; else NBI with dispersion sigma. |
-| [`deviance_increment`](#zinblss-deviance_increment) | Method |  |
-| [`pdf`](#zinblss-pdf) | Method | Zero-inflated negative-binomial mass. |
+| `response` | Method |  |
+| `mean` | Method | Mixture mean ``(1 - nu) * mu``. |
+| `pmf` | Method | Return the ZINBI probability mass using the family parameterization. |
+| `cdf` | Method | ZINB CDF. |
+| `quantile` | Method | ZINBI quantile: smallest k with nu + (1 - nu) * NBI_CDF(k) >= p (size 1/sigma). |
+| `simulate` | Method | Draw ZINBI samples: with probability nu, y=0; else NBI with dispersion sigma. |
+| `deviance_increment` | Method |  |
+| `pdf` | Method | Zero-inflated negative-binomial mass. |
 
 (zinblss-response)=
 ## `ZINBLSS.response`

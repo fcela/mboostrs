@@ -61,10 +61,10 @@ Source: [`python/mboostrs/report.py` lines 180-307](https://github.com/fcela/mbo
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`from_mapping`](#executionreport-from_mapping) | Method |  |
-| [`to_dict`](#executionreport-to_dict) | Method | Return a JSON-serializable dictionary. |
-| [`for_mstop`](#executionreport-for_mstop) | Method | Return report metadata adjusted for a sliced model. |
-| [`format_text`](#executionreport-format_text) | Method | Render a compact, human-readable view of the stable report fields. |
+| `from_mapping` | Method |  |
+| `to_dict` | Method | Return a JSON-serializable dictionary. |
+| `for_mstop` | Method | Return report metadata adjusted for a sliced model. |
+| `format_text` | Method | Render a compact, human-readable view of the stable report fields. |
 
 (executionreport-from_mapping)=
 ## `ExecutionReport.from_mapping`

@@ -19,13 +19,13 @@ Source: [`python/mboostrs/gamlss.py` lines 1031-1088](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#gaussianlss-response) | Method |  |
-| [`mean`](#gaussianlss-mean) | Method | Conditional response mean. |
-| [`pdf`](#gaussianlss-pdf) | Method | Normal density at ``y`` for response-scale ``mu`` and ``sigma``. |
-| [`cdf`](#gaussianlss-cdf) | Method | Normal CDF at ``y`` for response-scale ``mu`` and ``sigma``. |
-| [`quantile`](#gaussianlss-quantile) | Method | Normal quantile for probabilities ``p``. |
-| [`simulate`](#gaussianlss-simulate) | Method | Draw Normal samples for response-scale ``mu`` and ``sigma``. |
-| [`deviance_increment`](#gaussianlss-deviance_increment) | Method | Per-observation deviance contribution, ``-2 * log(pdf(y))``. |
+| `response` | Method |  |
+| `mean` | Method | Conditional response mean. |
+| `pdf` | Method | Normal density at ``y`` for response-scale ``mu`` and ``sigma``. |
+| `cdf` | Method | Normal CDF at ``y`` for response-scale ``mu`` and ``sigma``. |
+| `quantile` | Method | Normal quantile for probabilities ``p``. |
+| `simulate` | Method | Draw Normal samples for response-scale ``mu`` and ``sigma``. |
+| `deviance_increment` | Method | Per-observation deviance contribution, ``-2 * log(pdf(y))``. |
 
 (gaussianlss-response)=
 ## `GaussianLSS.response`

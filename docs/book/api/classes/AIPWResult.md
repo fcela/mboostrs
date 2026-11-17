@@ -41,15 +41,15 @@ Source: [`python/mboostrs/causal.py` lines 453-880](https://github.com/fcela/mbo
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_frame`](#aipwresult-to_frame) | Method | One row per observation, sufficient to reconstruct the estimate. |
-| [`to_dict`](#aipwresult-to_dict) | Method | A JSON-safe record; the per-row contribution tracks only on request. |
-| [`predict_propensity`](#aipwresult-predict_propensity) | Method | Estimated P(treatment = treated \| covariates) of each row of ``newdata``. |
-| [`subgroup_effect`](#aipwresult-subgroup_effect) | Method | Average treatment effect within subgroups, with a standard error and interval. |
-| [`effect_surface`](#aipwresult-effect_surface) | Method | Doubly robust second stage: regress the augmented scores on covariates. |
-| [`balance_frame`](#aipwresult-balance_frame) | Method | Standardized mean differences before and after treatment weighting. |
-| [`overlap_frame`](#aipwresult-overlap_frame) | Method | Row-level propensity support and estimand-specific analysis weights. |
-| [`target`](#aipwresult-target) | Property | The population the estimate describes: ``"all"`` (every row, or |
-| [`describe`](#aipwresult-describe) | Method | Estimate, target, interval, overlap and the assumptions it depends on. |
+| `to_frame` | Method | One row per observation, sufficient to reconstruct the estimate. |
+| `to_dict` | Method | A JSON-safe record; the per-row contribution tracks only on request. |
+| `predict_propensity` | Method | Estimated P(treatment = treated \| covariates) of each row of ``newdata``. |
+| `subgroup_effect` | Method | Average treatment effect within subgroups, with a standard error and interval. |
+| `effect_surface` | Method | Doubly robust second stage: regress the augmented scores on covariates. |
+| `balance_frame` | Method | Standardized mean differences before and after treatment weighting. |
+| `overlap_frame` | Method | Row-level propensity support and estimand-specific analysis weights. |
+| `target` | Property | The population the estimate describes: ``"all"`` (every row, or |
+| `describe` | Method | Estimate, target, interval, overlap and the assumptions it depends on. |
 
 (aipwresult-to_frame)=
 ## `AIPWResult.to_frame`

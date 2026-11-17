@@ -34,9 +34,9 @@ Source: [`python/mboostrs/effects.py` lines 710-790](https://github.com/fcela/mb
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_frame`](#elasticityresult-to_frame) | Method | One row per finite elasticity or semi-elasticity. |
-| [`to_dict`](#elasticityresult-to_dict) | Method | A JSON-safe record; the per-row evidence only on request. |
-| [`describe`](#elasticityresult-describe) | Method | State the logarithmic derivative, averaging population, and limits. |
+| `to_frame` | Method | One row per finite elasticity or semi-elasticity. |
+| `to_dict` | Method | A JSON-safe record; the per-row evidence only on request. |
+| `describe` | Method | State the logarithmic derivative, averaging population, and limits. |
 
 (elasticityresult-to_frame)=
 ## `ElasticityResult.to_frame`

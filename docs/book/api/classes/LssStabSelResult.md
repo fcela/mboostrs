@@ -30,11 +30,11 @@ Source: [`python/mboostrs/gamlss.py` lines 5779-5871](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`max`](#lssstabselresult-max) | Property |  |
-| [`names`](#lssstabselresult-names) | Property |  |
-| [`to_frame`](#lssstabselresult-to_frame) | Method |  |
-| [`plot`](#lssstabselresult-plot) | Method |  |
-| [`to_dict`](#lssstabselresult-to_dict) | Method | A JSON-safe record; the selection-probability paths only on request. |
+| `max` | Property |  |
+| `names` | Property |  |
+| `to_frame` | Method |  |
+| `plot` | Method |  |
+| `to_dict` | Method | A JSON-safe record; the selection-probability paths only on request. |
 
 (lssstabselresult-max)=
 ## `LssStabSelResult.max`

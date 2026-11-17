@@ -41,10 +41,10 @@ Source: [`python/mboostrs/survival_evaluation.py` lines 26-120](https://github.c
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#survivalevaluationresult-to_dict) | Method | A JSON-safe record; per-subject arrays only on request. |
-| [`horizon_frame`](#survivalevaluationresult-horizon_frame) | Method | One row per horizon: IPCW Brier score, AUC, censoring survival and counts. |
-| [`survival_frame`](#survivalevaluationresult-survival_frame) | Method | One row per subject and horizon with the predicted ``S(t \| x)``. |
-| [`describe`](#survivalevaluationresult-describe) | Method | State the horizons, scores, censoring floor and data role. |
+| `to_dict` | Method | A JSON-safe record; per-subject arrays only on request. |
+| `horizon_frame` | Method | One row per horizon: IPCW Brier score, AUC, censoring survival and counts. |
+| `survival_frame` | Method | One row per subject and horizon with the predicted ``S(t \| x)``. |
+| `describe` | Method | State the horizons, scores, censoring floor and data role. |
 
 (survivalevaluationresult-to_dict)=
 ## `SurvivalEvaluationResult.to_dict`

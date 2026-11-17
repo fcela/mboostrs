@@ -19,14 +19,14 @@ Source: [`python/mboostrs/gamlss.py` lines 1763-1839](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#binomiallss-response) | Method |  |
-| [`mean`](#binomiallss-mean) | Method | Single-trial response mean, the success probability ``mu``. |
-| [`pmf`](#binomiallss-pmf) | Method | Binomial mass for ``size`` trials and response-scale probability ``mu``. |
-| [`cdf`](#binomiallss-cdf) | Method | Binomial CDF with ``size`` trials (R's ``pbinom``). |
-| [`quantile`](#binomiallss-quantile) | Method | Binomial quantile: smallest ``k`` with ``CDF(k) >= p``. |
-| [`simulate`](#binomiallss-simulate) | Method | Draw binomial samples with ``n_trials`` and response-scale ``mu``. |
-| [`deviance_increment`](#binomiallss-deviance_increment) | Method |  |
-| [`pdf`](#binomiallss-pdf) | Method | Bernoulli mass for a response in ``{0, 1}``. |
+| `response` | Method |  |
+| `mean` | Method | Single-trial response mean, the success probability ``mu``. |
+| `pmf` | Method | Binomial mass for ``size`` trials and response-scale probability ``mu``. |
+| `cdf` | Method | Binomial CDF with ``size`` trials (R's ``pbinom``). |
+| `quantile` | Method | Binomial quantile: smallest ``k`` with ``CDF(k) >= p``. |
+| `simulate` | Method | Draw binomial samples with ``n_trials`` and response-scale ``mu``. |
+| `deviance_increment` | Method |  |
+| `pdf` | Method | Bernoulli mass for a response in ``{0, 1}``. |
 
 (binomiallss-response)=
 ## `BinomialLSS.response`

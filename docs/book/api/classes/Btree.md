@@ -62,6 +62,7 @@ linearly associated with the gradient. When the true effect is sharp but
 non-monotone, that association can be near zero at the first split, and
 `"ctree"` spends the split on a decoy column:
 
+```python
 >>> import numpy as np, mboostrs as mb
 >>> from mboostrs.learners import Btree
 >>> rng = np.random.default_rng(1)
@@ -82,6 +83,7 @@ non-monotone, that association can be near zero at the first split, and
 array([0.482, 0.553])
 >>> np.round(np.asarray(ctree.predict(grid)), 3)  # split x2: missed it
 array([0.484, 0.484])
+```
 
 When to prefer which: keep the `"sse"` default when the predictors are
 mostly numeric and the response may jump -- spatial discontinuities,
@@ -101,7 +103,7 @@ Source: [`python/mboostrs/learners.py` lines 600-706](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`name`](#btree-name) | Property |  |
+| `name` | Property |  |
 
 (btree-name)=
 ## `Btree.name`

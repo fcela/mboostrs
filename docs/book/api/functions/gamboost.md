@@ -128,12 +128,14 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 **Examples**
 
+```python
 >>> import mboostrs as mb
 >>> data = mb.datasets.bodyfat()
 >>> fit = mb.gamboost("DEXfat ~ bbs(age, df=4) + bbs(hipcirc, df=4)",
 ...                   data=data, family=mb.Gaussian(),
 ...                   control=mb.boost_control(200, 0.1))
 >>> effects = fit.partial_effects()
+```
 
 **See Also**
 

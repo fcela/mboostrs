@@ -34,11 +34,11 @@ Source: [`python/mboostrs/distribution_evaluation.py` lines 34-129](https://gith
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#distributionevaluationresult-to_dict) | Method | A JSON-safe record; the per-row score arrays and distribution |
-| [`to_frame`](#distributionevaluationresult-to_frame) | Method | One row per evaluated outcome with parameters and scores. |
-| [`interval_frame`](#distributionevaluationresult-interval_frame) | Method | One row per requested central interval level. |
-| [`exceedance_frame`](#distributionevaluationresult-exceedance_frame) | Method | One row per requested strict exceedance threshold. |
-| [`describe`](#distributionevaluationresult-describe) | Method | State the evaluated distribution, data role, scores, and scope. |
+| `to_dict` | Method | A JSON-safe record; the per-row score arrays and distribution |
+| `to_frame` | Method | One row per evaluated outcome with parameters and scores. |
+| `interval_frame` | Method | One row per requested central interval level. |
+| `exceedance_frame` | Method | One row per requested strict exceedance threshold. |
+| `describe` | Method | State the evaluated distribution, data role, scores, and scope. |
 
 (distributionevaluationresult-to_dict)=
 ## `DistributionEvaluationResult.to_dict`

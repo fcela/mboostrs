@@ -17,7 +17,7 @@ Source: [`python/mboostrs/modeler.py` lines 91-98](https://github.com/fcela/mboo
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`log`](#transcript-log) | Method |  |
+| `log` | Method |  |
 
 (transcript-log)=
 ## `Transcript.log`

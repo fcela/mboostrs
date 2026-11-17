@@ -27,9 +27,9 @@ Source: [`python/mboostrs/_results.py` lines 182-236](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#aicresult-to_dict) | Method | A JSON-safe record; the criterion and df paths only on request. |
-| [`plot`](#aicresult-plot) | Method |  |
-| [`to_frame`](#aicresult-to_frame) | Method | One row per iteration: the criterion and its degrees of freedom. |
+| `to_dict` | Method | A JSON-safe record; the criterion and df paths only on request. |
+| `plot` | Method |  |
+| `to_frame` | Method | One row per iteration: the criterion and its degrees of freedom. |
 
 (aicresult-to_dict)=
 ## `AicResult.to_dict`

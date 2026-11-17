@@ -20,10 +20,10 @@ Source: [`python/mboostrs/gamlss.py` lines 2340-2418](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#bccglss-response) | Method | Return response-scale parameters: log-linked mu and sigma, identity nu. |
-| [`cdf`](#bccglss-cdf) | Method | Box-Cox-Cole-Green CDF. Matches ``gamlss.dist::pBCCG``. |
-| [`quantile`](#bccglss-quantile) | Method | Box-Cox-Cole-Green quantile. Matches ``gamlss.dist::qBCCG``. |
-| [`pdf`](#bccglss-pdf) | Method | Box-Cox-Cole-Green density. Matches ``gamlss.dist::dBCCG``. |
+| `response` | Method | Return response-scale parameters: log-linked mu and sigma, identity nu. |
+| `cdf` | Method | Box-Cox-Cole-Green CDF. Matches ``gamlss.dist::pBCCG``. |
+| `quantile` | Method | Box-Cox-Cole-Green quantile. Matches ``gamlss.dist::qBCCG``. |
+| `pdf` | Method | Box-Cox-Cole-Green density. Matches ``gamlss.dist::dBCCG``. |
 
 (bccglss-response)=
 ## `BCCGLSS.response`

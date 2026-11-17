@@ -79,9 +79,11 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 **Examples**
 
+```python
 >>> fit.llm_describe(                                  # doctest: +SKIP
 ...     dataset_description="Body fat of 71 women; covariates in cm.",
 ...     reasoning=True,
 ... )
+```
 
 Source: [`python/mboostrs/explain.py` lines 1319-1453](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explain.py#L1319-L1453)

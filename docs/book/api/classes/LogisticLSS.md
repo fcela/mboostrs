@@ -22,11 +22,11 @@ Source: [`python/mboostrs/gamlss.py` lines 2084-2132](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#logisticlss-response) | Method |  |
-| [`mean`](#logisticlss-mean) | Method | Conditional response mean. |
-| [`pdf`](#logisticlss-pdf) | Method |  |
-| [`cdf`](#logisticlss-cdf) | Method | Logistic CDF, ``1 / (1 + exp(-(y - mu) / sigma))``. |
-| [`quantile`](#logisticlss-quantile) | Method | Logistic quantile, ``mu + sigma * log(p / (1 - p))``. |
+| `response` | Method |  |
+| `mean` | Method | Conditional response mean. |
+| `pdf` | Method |  |
+| `cdf` | Method | Logistic CDF, ``1 / (1 + exp(-(y - mu) / sigma))``. |
+| `quantile` | Method | Logistic quantile, ``mu + sigma * log(p / (1 - p))``. |
 
 (logisticlss-response)=
 ## `LogisticLSS.response`

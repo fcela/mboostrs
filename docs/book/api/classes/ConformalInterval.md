@@ -41,13 +41,13 @@ Source: [`python/mboostrs/conformal.py` lines 64-228](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`width`](#conformalinterval-width) | Property |  |
-| [`count_size`](#conformalinterval-count_size) | Property | Number of nonnegative integers covered, including zero for empty sets. |
-| [`to_dict`](#conformalinterval-to_dict) | Method | A plain-Python record; lower, upper and predicted arrays only on request. |
-| [`to_json`](#conformalinterval-to_json) | Method | Strict JSON preserving infinities, NaN and genuine missing values. |
-| [`contains`](#conformalinterval-contains) | Method |  |
-| [`empirical_coverage`](#conformalinterval-empirical_coverage) | Method |  |
-| [`to_frame`](#conformalinterval-to_frame) | Method | The interval as a table with one row per interval row. |
+| `width` | Property |  |
+| `count_size` | Property | Number of nonnegative integers covered, including zero for empty sets. |
+| `to_dict` | Method | A plain-Python record; lower, upper and predicted arrays only on request. |
+| `to_json` | Method | Strict JSON preserving infinities, NaN and genuine missing values. |
+| `contains` | Method |  |
+| `empirical_coverage` | Method |  |
+| `to_frame` | Method | The interval as a table with one row per interval row. |
 
 (conformalinterval-width)=
 ## `ConformalInterval.width`

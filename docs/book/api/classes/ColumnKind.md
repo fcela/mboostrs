@@ -37,7 +37,7 @@ Source: [`python/mboostrs/terms.py` lines 286-339](https://github.com/fcela/mboo
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`explain`](#columnkind-explain) | Method | The recommendation, its reason, and the alternatives, as text. |
+| `explain` | Method | The recommendation, its reason, and the alternatives, as text. |
 
 (columnkind-explain)=
 ## `ColumnKind.explain`

@@ -37,40 +37,40 @@ Source: [`python/mboostrs/glmboost.py` lines 97-1728](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`path_frame`](#glmboostmodel-path_frame) | Method | Return one structured row per boosting iteration. |
-| [`family`](#glmboostmodel-family) | Property | The response family the model was fitted with. |
-| [`formula`](#glmboostmodel-formula) | Property | The formula as it was written. |
-| [`fitted_`](#glmboostmodel-fitted_) | Property | The fitted linear predictor. |
-| [`fitted`](#glmboostmodel-fitted) | Method | Fitted values, optionally at a given mstop. |
-| [`coefficients_`](#glmboostmodel-coefficients_) | Property |  |
-| [`concurvity`](#glmboostmodel-concurvity) | Method | Concurvity of the fitted terms, as mgcv's ``concurvity`` measures |
-| [`variable_names`](#glmboostmodel-variable_names) | Method | Names of all variables used in the model (response + predictors). |
-| [`base_learner_names`](#glmboostmodel-base_learner_names) | Method | Names of all base-learners (including intercept if present). |
-| [`model_matrix`](#glmboostmodel-model_matrix) | Method | Return the design matrix (n × p) for the specified predictors. |
-| [`nuisance`](#glmboostmodel-nuisance) | Method | The family's nuisance parameter at the model's step count, as R's |
-| [`predict`](#glmboostmodel-predict) | Method | Predicted values, optionally decomposed by learner. |
-| [`extrapolation_report`](#glmboostmodel-extrapolation_report) | Method | Predictors with rows of `newdata` outside their training range. |
-| [`predict_path`](#glmboostmodel-predict_path) | Method | Predicted values at every `mstop` in `grid`, in one pass. |
-| [`prediction_contributions`](#glmboostmodel-prediction_contributions) | Method | Per-learner prediction contributions. |
-| [`cvrisk`](#glmboostmodel-cvrisk) | Method | Cross-validated risk along the path. |
-| [`coef`](#glmboostmodel-coef) | Method | Extract coefficients per predictor. |
-| [`residuals`](#glmboostmodel-residuals) | Method | Residuals of the named kind, or a refusal saying why there are none. |
-| [`residual_kinds`](#glmboostmodel-residual_kinds) | Method | The residual kinds defined for this model's family. |
-| [`extract`](#glmboostmodel-extract) | Method | Extract model components, matching R's extract.glmboost. |
-| [`varimp`](#glmboostmodel-varimp) | Method | Variable importance based on in-bag risk reduction per predictor. |
-| [`coef_path`](#glmboostmodel-coef_path) | Method | Compute cumulative coefficient paths over boosting iterations. |
-| [`plot_coef_path`](#glmboostmodel-plot_coef_path) | Method | Plot coefficient paths. |
-| [`plot`](#glmboostmodel-plot) | Method | Plot coefficient paths. |
-| [`confint`](#glmboostmodel-confint) | Method | Bootstrap confidence intervals for coefficients. |
-| [`aic`](#glmboostmodel-aic) | Method | Compute AIC for each boosting iteration. |
-| [`hatvalues`](#glmboostmodel-hatvalues) | Method | Per-observation leverage: the hat-matrix diagonal at the current |
-| [`logLik`](#glmboostmodel-loglik) | Method | The fitted model's log-likelihood, or a refusal naming the reason. |
-| [`negative_risk`](#glmboostmodel-negative_risk) | Method | The negated empirical risk at the current mstop. |
-| [`likelihood_contract`](#glmboostmodel-likelihood_contract) | Method | What this family's risk is: a likelihood, a loss, or neither. |
-| [`to_dict`](#glmboostmodel-to_dict) | Method | The ``summary(as_dict=True)`` record plus a ``"provenance"`` entry: |
-| [`summary`](#glmboostmodel-summary) | Method | Summarise the fitted model. |
-| [`update`](#glmboostmodel-update) | Method | Update the model by changing mstop or other parameters. |
-| [`continue_to`](#glmboostmodel-continue_to) | Method | Return the model grown to a larger ``mstop``. |
+| `path_frame` | Method | Return one structured row per boosting iteration. |
+| `family` | Property | The response family the model was fitted with. |
+| `formula` | Property | The formula as it was written. |
+| `fitted_` | Property | The fitted linear predictor. |
+| `fitted` | Method | Fitted values, optionally at a given mstop. |
+| `coefficients_` | Property |  |
+| `concurvity` | Method | Concurvity of the fitted terms, as mgcv's ``concurvity`` measures |
+| `variable_names` | Method | Names of all variables used in the model (response + predictors). |
+| `base_learner_names` | Method | Names of all base-learners (including intercept if present). |
+| `model_matrix` | Method | Return the design matrix (n × p) for the specified predictors. |
+| `nuisance` | Method | The family's nuisance parameter at the model's step count, as R's |
+| `predict` | Method | Predicted values, optionally decomposed by learner. |
+| `extrapolation_report` | Method | Predictors with rows of `newdata` outside their training range. |
+| `predict_path` | Method | Predicted values at every `mstop` in `grid`, in one pass. |
+| `prediction_contributions` | Method | Per-learner prediction contributions. |
+| `cvrisk` | Method | Cross-validated risk along the path. |
+| `coef` | Method | Extract coefficients per predictor. |
+| `residuals` | Method | Residuals of the named kind, or a refusal saying why there are none. |
+| `residual_kinds` | Method | The residual kinds defined for this model's family. |
+| `extract` | Method | Extract model components, matching R's extract.glmboost. |
+| `varimp` | Method | Variable importance based on in-bag risk reduction per predictor. |
+| `coef_path` | Method | Compute cumulative coefficient paths over boosting iterations. |
+| `plot_coef_path` | Method | Plot coefficient paths. |
+| `plot` | Method | Plot coefficient paths. |
+| `confint` | Method | Bootstrap confidence intervals for coefficients. |
+| `aic` | Method | Compute AIC for each boosting iteration. |
+| `hatvalues` | Method | Per-observation leverage: the hat-matrix diagonal at the current |
+| `logLik` | Method | The fitted model's log-likelihood, or a refusal naming the reason. |
+| `negative_risk` | Method | The negated empirical risk at the current mstop. |
+| `likelihood_contract` | Method | What this family's risk is: a likelihood, a loss, or neither. |
+| `to_dict` | Method | The ``summary(as_dict=True)`` record plus a ``"provenance"`` entry: |
+| `summary` | Method | Summarise the fitted model. |
+| `update` | Method | Update the model by changing mstop or other parameters. |
+| `continue_to` | Method | Return the model grown to a larger ``mstop``. |
 
 (glmboostmodel-path_frame)=
 ## `GLMBoostModel.path_frame`

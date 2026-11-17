@@ -102,6 +102,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 **Examples**
 
+```python
 >>> import mboostrs as mb
 >>> data = mb.datasets.bodyfat()
 >>> fit = mb.glmboost("DEXfat ~ age + waistcirc + hipcirc", data=data,
@@ -109,6 +110,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 ...                   control=mb.boost_control(100, 0.1))
 >>> cv = fit.cvrisk(B=10)
 >>> tuned = fit[:cv.optimal_mstop]
+```
 
 **See Also**
 

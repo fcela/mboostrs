@@ -66,6 +66,7 @@ measures them separately.
 
 Scoring the candidates of an `autospec` recommendation:
 
+```python
 >>> import numpy as np, polars as pl, mboostrs as mb
 >>> rng = np.random.default_rng(0)
 >>> x = rng.uniform(-2, 2, 200)
@@ -75,5 +76,6 @@ Scoring the candidates of an `autospec` recommendation:
 >>> curve = mb.specification_curve(rec, data, "y", budget=200)
 >>> sum(row["role"] == "selected" for row in curve.records)
 1
+```
 
 Source: [`python/mboostrs/specification_curve.py` lines 263-381](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/specification_curve.py#L263-L381)

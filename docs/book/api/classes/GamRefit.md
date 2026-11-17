@@ -42,20 +42,20 @@ Source: [`python/mboostrs/selection.py` lines 750-1312](https://github.com/fcela
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`tests`](#gamrefit-tests) | Property | ``{term: {"edf", "ref_df", "statistic", "p_value"}}``: each term's |
-| [`summary`](#gamrefit-summary) | Method | A table of the terms, as mgcv's ``summary.gam`` gives it. |
-| [`concurvity`](#gamrefit-concurvity) | Method | mgcv's concurvity of each term against the rest of the model. |
-| [`loglik`](#gamrefit-loglik) | Property | Log-likelihood of the refit, as mgcv's ``logLik.gam`` computes it: |
-| [`df`](#gamrefit-df) | Property | Effective degrees of freedom of the fit, plus one for an estimated |
-| [`aic`](#gamrefit-aic) | Method | Conditional AIC, ``-2 loglik + 2 df``. mgcv's ``AIC(gam)`` counts |
-| [`vcov`](#gamrefit-vcov) | Method | Covariance matrix of the coefficients, as a square NumPy array. |
-| [`coef`](#gamrefit-coef) | Method | The refit's coefficients as a table, with pointwise intervals. |
-| [`term_coefficients`](#gamrefit-term_coefficients) | Method | The rows of :meth:`coef` that belong to one formula term. |
-| [`effects`](#gamrefit-effects) | Method | ``{term: (estimate, lower, upper)}`` at the rows of `newdata`. |
-| [`contrast`](#gamrefit-contrast) | Method | The average change in the link-scale prediction when covariates move. |
-| [`predict`](#gamrefit-predict) | Method | The refit's prediction at the rows of `newdata`, on the link scale |
-| [`bootstrap`](#gamrefit-bootstrap) | Method | Refit this Gaussian refit on each bootstrap draw of its rows. |
-| [`to_dict`](#gamrefit-to_dict) | Method | A JSON-safe record of the terms, their edf, smoothing parameters, |
+| `tests` | Property | ``{term: {"edf", "ref_df", "statistic", "p_value"}}``: each term's |
+| `summary` | Method | A table of the terms, as mgcv's ``summary.gam`` gives it. |
+| `concurvity` | Method | mgcv's concurvity of each term against the rest of the model. |
+| `loglik` | Property | Log-likelihood of the refit, as mgcv's ``logLik.gam`` computes it: |
+| `df` | Property | Effective degrees of freedom of the fit, plus one for an estimated |
+| `aic` | Method | Conditional AIC, ``-2 loglik + 2 df``. mgcv's ``AIC(gam)`` counts |
+| `vcov` | Method | Covariance matrix of the coefficients, as a square NumPy array. |
+| `coef` | Method | The refit's coefficients as a table, with pointwise intervals. |
+| `term_coefficients` | Method | The rows of :meth:`coef` that belong to one formula term. |
+| `effects` | Method | ``{term: (estimate, lower, upper)}`` at the rows of `newdata`. |
+| `contrast` | Method | The average change in the link-scale prediction when covariates move. |
+| `predict` | Method | The refit's prediction at the rows of `newdata`, on the link scale |
+| `bootstrap` | Method | Refit this Gaussian refit on each bootstrap draw of its rows. |
+| `to_dict` | Method | A JSON-safe record of the terms, their edf, smoothing parameters, |
 
 (gamrefit-tests)=
 ## `GamRefit.tests`

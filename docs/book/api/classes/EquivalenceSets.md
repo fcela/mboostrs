@@ -28,8 +28,8 @@ Source: [`python/mboostrs/equivalence.py` lines 47-90](https://github.com/fcela/
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`group_of`](#equivalencesets-group_of) | Method | The group containing ``name``, or None when it has no equivalent. |
-| [`to_dict`](#equivalencesets-to_dict) | Method | A JSON-safe record. ``include_arrays`` is accepted for the shared |
+| `group_of` | Method | The group containing ``name``, or None when it has no equivalent. |
+| `to_dict` | Method | A JSON-safe record. ``include_arrays`` is accepted for the shared |
 
 (equivalencesets-group_of)=
 ## `EquivalenceSets.group_of`

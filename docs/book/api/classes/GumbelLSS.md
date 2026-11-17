@@ -25,11 +25,11 @@ Source: [`python/mboostrs/gamlss.py` lines 2135-2186](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#gumbellss-response) | Method |  |
-| [`mean`](#gumbellss-mean) | Method | Conditional response mean, ``mu + EulerGamma * sigma``. |
-| [`cdf`](#gumbellss-cdf) | Method | CDF of the extreme-value distribution for maxima, |
-| [`quantile`](#gumbellss-quantile) | Method | Gumbel (maxima) quantile, ``mu - sigma * log(-log(p))``. |
-| [`pdf`](#gumbellss-pdf) | Method | Density of the extreme-value distribution for maxima. Matches |
+| `response` | Method |  |
+| `mean` | Method | Conditional response mean, ``mu + EulerGamma * sigma``. |
+| `cdf` | Method | CDF of the extreme-value distribution for maxima, |
+| `quantile` | Method | Gumbel (maxima) quantile, ``mu - sigma * log(-log(p))``. |
+| `pdf` | Method | Density of the extreme-value distribution for maxima. Matches |
 
 (gumbellss-response)=
 ## `GumbelLSS.response`

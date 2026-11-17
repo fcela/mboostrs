@@ -41,49 +41,49 @@ Source: [`python/mboostrs/gamboost.py` lines 883-4872](https://github.com/fcela/
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`path_frame`](#gamboostmodel-path_frame) | Method | Return one structured row per boosting iteration. |
-| [`penalty_drift`](#gamboostmodel-penalty_drift) | Method | Each penalized learner's degrees of freedom along the fitted path. |
-| [`concurvity`](#gamboostmodel-concurvity) | Method | Concurvity of the fitted terms, as mgcv's ``concurvity`` measures it. |
-| [`family`](#gamboostmodel-family) | Property | The response family the model was fitted with. |
-| [`formula`](#gamboostmodel-formula) | Property | The formula as it was written (``y ~ .`` stays ``y ~ .``). |
-| [`fitted_`](#gamboostmodel-fitted_) | Property | The fitted linear predictor. |
-| [`fitted`](#gamboostmodel-fitted) | Method | Fitted values, optionally at a given mstop. |
-| [`aic`](#gamboostmodel-aic) | Method | Compute AIC for each boosting iteration. |
-| [`hatvalues`](#gamboostmodel-hatvalues) | Method | Per-observation leverage: the hat-matrix diagonal at the current |
-| [`range_report`](#gamboostmodel-range_report) | Method | Each learner's training range against `newdata`. |
-| [`extrapolation_report`](#gamboostmodel-extrapolation_report) | Method | Terms and covariates with rows outside their training range. |
-| [`variable_names`](#gamboostmodel-variable_names) | Method | Names of all variables used in the model (response + predictors). |
-| [`base_learner_names`](#gamboostmodel-base_learner_names) | Method | Names of all base learners. |
-| [`selection_counts`](#gamboostmodel-selection_counts) | Method | One row per base learner with the boosting updates it received. |
-| [`model_matrix`](#gamboostmodel-model_matrix) | Method | Return the design matrix for the specified base-learner(s). |
-| [`nuisance`](#gamboostmodel-nuisance) | Method | Return nuisance parameters (family-specific). |
-| [`predict`](#gamboostmodel-predict) | Method | Predicted values, optionally decomposed by learner. |
-| [`predict_over_mstop`](#gamboostmodel-predict_over_mstop) | Method | Predictions at several path positions, in one pass over the basis. |
-| [`predict_over_grid`](#gamboostmodel-predict_over_grid) | Method | Predictions at each value of one variable, other columns held per row. |
-| [`prediction_contributions`](#gamboostmodel-prediction_contributions) | Method | Per-learner prediction contributions. |
-| [`binning_report`](#gamboostmodel-binning_report) | Method | What binning each learner actually got, and what it cost. |
-| [`check_binning`](#gamboostmodel-check_binning) | Method | Refit one subsample with binning on and off. |
-| [`cvrisk`](#gamboostmodel-cvrisk) | Method | Cross-validate the fitted model's risk path. |
-| [`coef`](#gamboostmodel-coef) | Method | Extract coefficients per base-learner. |
-| [`btree_splits`](#gamboostmodel-btree_splits) | Method | The cutpoints the fitted btree learners actually used. |
-| [`btree_partition_table`](#gamboostmodel-btree_partition_table) | Method | The fitted btree partition as a Polars frame, one row per region. |
-| [`plot_btree_partition`](#gamboostmodel-plot_btree_partition) | Method | Plot a btree term's fitted partition. |
-| [`residuals`](#gamboostmodel-residuals) | Method | Residuals of the named kind, or a refusal saying why there are none. |
-| [`residual_kinds`](#gamboostmodel-residual_kinds) | Method | The residual kinds defined for this model's family. |
-| [`extract`](#gamboostmodel-extract) | Method | Extract model components, matching R's extract.mboost/glmboost. |
-| [`varimp`](#gamboostmodel-varimp) | Method | Variable importance based on in-bag risk reduction per base-learner. |
-| [`learner_index`](#gamboostmodel-learner_index) | Method | Index of a base learner, disambiguating learners that share a name. |
-| [`partial_effects`](#gamboostmodel-partial_effects) | Method | Compute per-learner partial effects (contribution to the additive predictor). |
-| [`plot_partial_effects`](#gamboostmodel-plot_partial_effects) | Method | Plot partial effects. |
-| [`plot`](#gamboostmodel-plot) | Method | Plot partial effects. |
-| [`confint`](#gamboostmodel-confint) | Method | Confidence intervals for partial effects. |
-| [`logLik`](#gamboostmodel-loglik) | Method | The fitted model's log-likelihood, or a refusal naming the reason. |
-| [`negative_risk`](#gamboostmodel-negative_risk) | Method | The negated empirical risk at the current mstop. |
-| [`likelihood_contract`](#gamboostmodel-likelihood_contract) | Method | What this family's risk is: a likelihood, a loss, or neither. |
-| [`to_dict`](#gamboostmodel-to_dict) | Method | The ``summary(as_dict=True)`` record plus a ``"provenance"`` entry: |
-| [`summary`](#gamboostmodel-summary) | Method | Summarise the fitted model. |
-| [`update`](#gamboostmodel-update) | Method | Update the model by changing mstop or other parameters. |
-| [`continue_to`](#gamboostmodel-continue_to) | Method | Return the model grown to a larger ``mstop``. |
+| `path_frame` | Method | Return one structured row per boosting iteration. |
+| `penalty_drift` | Method | Each penalized learner's degrees of freedom along the fitted path. |
+| `concurvity` | Method | Concurvity of the fitted terms, as mgcv's ``concurvity`` measures it. |
+| `family` | Property | The response family the model was fitted with. |
+| `formula` | Property | The formula as it was written (``y ~ .`` stays ``y ~ .``). |
+| `fitted_` | Property | The fitted linear predictor. |
+| `fitted` | Method | Fitted values, optionally at a given mstop. |
+| `aic` | Method | Compute AIC for each boosting iteration. |
+| `hatvalues` | Method | Per-observation leverage: the hat-matrix diagonal at the current |
+| `range_report` | Method | Each learner's training range against `newdata`. |
+| `extrapolation_report` | Method | Terms and covariates with rows outside their training range. |
+| `variable_names` | Method | Names of all variables used in the model (response + predictors). |
+| `base_learner_names` | Method | Names of all base learners. |
+| `selection_counts` | Method | One row per base learner with the boosting updates it received. |
+| `model_matrix` | Method | Return the design matrix for the specified base-learner(s). |
+| `nuisance` | Method | Return nuisance parameters (family-specific). |
+| `predict` | Method | Predicted values, optionally decomposed by learner. |
+| `predict_over_mstop` | Method | Predictions at several path positions, in one pass over the basis. |
+| `predict_over_grid` | Method | Predictions at each value of one variable, other columns held per row. |
+| `prediction_contributions` | Method | Per-learner prediction contributions. |
+| `binning_report` | Method | What binning each learner actually got, and what it cost. |
+| `check_binning` | Method | Refit one subsample with binning on and off. |
+| `cvrisk` | Method | Cross-validate the fitted model's risk path. |
+| `coef` | Method | Extract coefficients per base-learner. |
+| `btree_splits` | Method | The cutpoints the fitted btree learners actually used. |
+| `btree_partition_table` | Method | The fitted btree partition as a Polars frame, one row per region. |
+| `plot_btree_partition` | Method | Plot a btree term's fitted partition. |
+| `residuals` | Method | Residuals of the named kind, or a refusal saying why there are none. |
+| `residual_kinds` | Method | The residual kinds defined for this model's family. |
+| `extract` | Method | Extract model components, matching R's extract.mboost/glmboost. |
+| `varimp` | Method | Variable importance based on in-bag risk reduction per base-learner. |
+| `learner_index` | Method | Index of a base learner, disambiguating learners that share a name. |
+| `partial_effects` | Method | Compute per-learner partial effects (contribution to the additive predictor). |
+| `plot_partial_effects` | Method | Plot partial effects. |
+| `plot` | Method | Plot partial effects. |
+| `confint` | Method | Confidence intervals for partial effects. |
+| `logLik` | Method | The fitted model's log-likelihood, or a refusal naming the reason. |
+| `negative_risk` | Method | The negated empirical risk at the current mstop. |
+| `likelihood_contract` | Method | What this family's risk is: a likelihood, a loss, or neither. |
+| `to_dict` | Method | The ``summary(as_dict=True)`` record plus a ``"provenance"`` entry: |
+| `summary` | Method | Summarise the fitted model. |
+| `update` | Method | Update the model by changing mstop or other parameters. |
+| `continue_to` | Method | Return the model grown to a larger ``mstop``. |
 
 (gamboostmodel-path_frame)=
 ## `GAMBoostModel.path_frame`

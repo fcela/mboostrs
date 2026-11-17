@@ -39,9 +39,9 @@ Source: [`python/mboostrs/compare.py` lines 39-107](https://github.com/fcela/mbo
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#comparespec-to_dict) | Method | The specification as a JSON-safe mapping (it holds no arrays). |
-| [`from_dict`](#comparespec-from_dict) | Method |  |
-| [`to_json`](#comparespec-to_json) | Method |  |
+| `to_dict` | Method | The specification as a JSON-safe mapping (it holds no arrays). |
+| `from_dict` | Method |  |
+| `to_json` | Method |  |
 
 (comparespec-to_dict)=
 ## `CompareSpec.to_dict`

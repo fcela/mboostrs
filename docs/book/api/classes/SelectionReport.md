@@ -29,7 +29,7 @@ Source: [`python/mboostrs/equivalence.py` lines 156-182](https://github.com/fcel
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#selectionreport-to_dict) | Method | A JSON-safe record. ``include_arrays`` is accepted for the shared |
+| `to_dict` | Method | A JSON-safe record. ``include_arrays`` is accepted for the shared |
 
 (selectionreport-to_dict)=
 ## `SelectionReport.to_dict`

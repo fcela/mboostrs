@@ -32,11 +32,11 @@ Source: [`python/mboostrs/explore.py` lines 1296-1415](https://github.com/fcela/
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`total_fits`](#mstoptuning-total_fits) | Property | Fold fits plus the preparation/final fits performed by the tuner. |
-| [`to_dict`](#mstoptuning-to_dict) | Method | A JSON-safe record. The full risk path is exported only on request. |
-| [`extended`](#mstoptuning-extended) | Property |  |
-| [`model`](#mstoptuning-model) | Property | The full-data fit at the chosen step count, ready to predict. |
-| [`sentence`](#mstoptuning-sentence) | Property |  |
+| `total_fits` | Property | Fold fits plus the preparation/final fits performed by the tuner. |
+| `to_dict` | Method | A JSON-safe record. The full risk path is exported only on request. |
+| `extended` | Property |  |
+| `model` | Property | The full-data fit at the chosen step count, ready to predict. |
+| `sentence` | Property |  |
 
 (mstoptuning-total_fits)=
 ## `MstopTuning.total_fits`

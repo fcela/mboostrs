@@ -61,11 +61,11 @@ Source: [`python/mboostrs/causal.py` lines 3240-3567](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`predict`](#effectmodel-predict) | Method | ``tau(x)`` for new rows. |
-| [`ate_plugin`](#effectmodel-ate_plugin) | Property | The unweighted mean of the fitted ``tau(x)`` over the fitting rows. |
-| [`overlap_report`](#effectmodel-overlap_report) | Method | The overlap summary of the fitting rows; see :func:`overlap_report`. |
-| [`to_dict`](#effectmodel-to_dict) | Method | A JSON-safe record; per-row arrays only on request. |
-| [`describe`](#effectmodel-describe) | Method | The fitted effect, how it was chosen, and what it assumes. |
+| `predict` | Method | ``tau(x)`` for new rows. |
+| `ate_plugin` | Property | The unweighted mean of the fitted ``tau(x)`` over the fitting rows. |
+| `overlap_report` | Method | The overlap summary of the fitting rows; see :func:`overlap_report`. |
+| `to_dict` | Method | A JSON-safe record; per-row arrays only on request. |
+| `describe` | Method | The fitted effect, how it was chosen, and what it assumes. |
 
 (effectmodel-predict)=
 ## `EffectModel.predict`

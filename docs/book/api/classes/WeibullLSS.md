@@ -24,7 +24,7 @@ Source: [`python/mboostrs/gamlss.py` lines 2906-2935](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`mean`](#weibulllss-mean) | Method | Uncensored AFT Weibull mean ``exp(mu) * Gamma(1 + sigma)``. |
+| `mean` | Method | Uncensored AFT Weibull mean ``exp(mu) * Gamma(1 + sigma)``. |
 
 (weibulllss-mean)=
 ## `WeibullLSS.mean`

@@ -22,11 +22,11 @@ Source: [`python/mboostrs/gamlss.py` lines 2024-2081](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#inversegaussianlss-response) | Method |  |
-| [`mean`](#inversegaussianlss-mean) | Method | Conditional response mean. |
-| [`pdf`](#inversegaussianlss-pdf) | Method |  |
-| [`cdf`](#inversegaussianlss-cdf) | Method | Inverse-Gaussian CDF. Matches ``gamlss.dist::pIG``. |
-| [`quantile`](#inversegaussianlss-quantile) | Method | Inverse-Gaussian quantile, obtained by inverting :meth:`cdf`. |
+| `response` | Method |  |
+| `mean` | Method | Conditional response mean. |
+| `pdf` | Method |  |
+| `cdf` | Method | Inverse-Gaussian CDF. Matches ``gamlss.dist::pIG``. |
+| `quantile` | Method | Inverse-Gaussian quantile, obtained by inverting :meth:`cdf`. |
 
 (inversegaussianlss-response)=
 ## `InverseGaussianLSS.response`

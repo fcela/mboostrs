@@ -169,6 +169,7 @@ names the family; every prediction is then the mean of the response.
 
 **Examples**
 
+```python
 >>> import numpy as np, polars as pl, mboostrs as mb
 >>> rng = np.random.default_rng(0)
 >>> x = rng.uniform(-2, 2, 300)
@@ -177,5 +178,6 @@ names the family; every prediction is then the mean of the response.
 >>> result = mb.discover(pl.DataFrame({"x": x, "junk": junk, "y": y}), "y", seed=0)
 >>> [e["variables"] for e in result.mean_effects]
 [['x']]
+```
 
 Source: [`python/mboostrs/discover.py` lines 546-793](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/discover.py#L546-L793)

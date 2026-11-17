@@ -28,12 +28,12 @@ Source: [`python/mboostrs/gamlss.py` lines 1931-2021](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#zeroadjustedgammalss-response) | Method |  |
-| [`mean`](#zeroadjustedgammalss-mean) | Method | Unconditional response mean, ``(1 - nu) * mu``. |
-| [`pdf`](#zeroadjustedgammalss-pdf) | Method | Mixture density: ``nu`` at zero, ``(1-nu) * Gamma`` above it. |
-| [`cdf`](#zeroadjustedgammalss-cdf) | Method | Zero-adjusted gamma CDF: ``nu`` at zero, then ``nu + (1 - nu) * F_gamma``. |
-| [`cdf_left`](#zeroadjustedgammalss-cdf_left) | Method | Left CDF limit: zero at the atom, ordinary CDF above zero. |
-| [`quantile`](#zeroadjustedgammalss-quantile) | Method | Zero-adjusted gamma quantile; zero for ``p <= nu``. |
+| `response` | Method |  |
+| `mean` | Method | Unconditional response mean, ``(1 - nu) * mu``. |
+| `pdf` | Method | Mixture density: ``nu`` at zero, ``(1-nu) * Gamma`` above it. |
+| `cdf` | Method | Zero-adjusted gamma CDF: ``nu`` at zero, then ``nu + (1 - nu) * F_gamma``. |
+| `cdf_left` | Method | Left CDF limit: zero at the atom, ordinary CDF above zero. |
+| `quantile` | Method | Zero-adjusted gamma quantile; zero for ``p <= nu``. |
 
 (zeroadjustedgammalss-response)=
 ## `ZeroAdjustedGammaLSS.response`

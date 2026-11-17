@@ -34,10 +34,10 @@ Source: [`python/mboostrs/effects.py` lines 524-611](https://github.com/fcela/mb
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`interval`](#contrastresult-interval) | Property | ``(lower, upper)`` of the cluster-bootstrap interval, or None. |
-| [`to_frame`](#contrastresult-to_frame) | Method | One row per standardized prediction contrast. |
-| [`to_dict`](#contrastresult-to_dict) | Method | A JSON-safe record; the per-row evidence only on request. |
-| [`describe`](#contrastresult-describe) | Method | State the estimand, scale, averaging population and uncertainty limit. |
+| `interval` | Property | ``(lower, upper)`` of the cluster-bootstrap interval, or None. |
+| `to_frame` | Method | One row per standardized prediction contrast. |
+| `to_dict` | Method | A JSON-safe record; the per-row evidence only on request. |
+| `describe` | Method | State the estimand, scale, averaging population and uncertainty limit. |
 
 (contrastresult-interval)=
 ## `ContrastResult.interval`

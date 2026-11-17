@@ -43,14 +43,14 @@ Source: [`python/mboostrs/search_session.py` lines 135-1707](https://github.com/
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`constraints`](#searchsession-constraints) | Property | The search-wide rule in force: heredity, forbidden pairs, mandatory terms. |
-| [`available_actions`](#searchsession-available_actions) | Method | Operations available now, with a short statement of their purpose. |
-| [`state`](#searchsession-state) | Method | Bounded, JSON-safe view for an analyst or an external agent. |
-| [`checkpoint`](#searchsession-checkpoint) | Method | Export a training-only search for replay in another Python process. |
-| [`export_transcript`](#searchsession-export_transcript) | Method | Export a JSON-safe decision record, including after freeze. |
-| [`resume`](#searchsession-resume) | Method | Restore the exact fold/evidence boundary, requiring the same data. |
-| [`drive`](#searchsession-drive) | Method | Let a bounded judge choose successive public actions. |
-| [`run`](#searchsession-run) | Method | Run one chosen operation and return its evidence and native value. |
+| `constraints` | Property | The search-wide rule in force: heredity, forbidden pairs, mandatory terms. |
+| `available_actions` | Method | Operations available now, with a short statement of their purpose. |
+| `state` | Method | Bounded, JSON-safe view for an analyst or an external agent. |
+| `checkpoint` | Method | Export a training-only search for replay in another Python process. |
+| `export_transcript` | Method | Export a JSON-safe decision record, including after freeze. |
+| `resume` | Method | Restore the exact fold/evidence boundary, requiring the same data. |
+| `drive` | Method | Let a bounded judge choose successive public actions. |
+| `run` | Method | Run one chosen operation and return its evidence and native value. |
 
 (searchsession-constraints)=
 ## `SearchSession.constraints`

@@ -34,7 +34,7 @@ Source: [`python/mboostrs/modeler.py` lines 676-719](https://github.com/fcela/mb
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#modelerresult-to_dict) | Method | Editable specification and audit trail, excluding model internals. |
+| `to_dict` | Method | Editable specification and audit trail, excluding model internals. |
 
 (modelerresult-to_dict)=
 ## `ModelerResult.to_dict`

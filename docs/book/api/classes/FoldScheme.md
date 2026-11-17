@@ -66,15 +66,15 @@ Source: [`python/mboostrs/folds.py` lines 79-546](https://github.com/fcela/mboos
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`shape`](#foldscheme-shape) | Property |  |
-| [`n_folds`](#foldscheme-n_folds) | Property |  |
-| [`to_dict`](#foldscheme-to_dict) | Method | A JSON-safe record with the weight evidence only on request. |
-| [`fold`](#foldscheme-fold) | Method | The row indices fold ``b`` holds out. |
-| [`fold_sizes`](#foldscheme-fold_sizes) | Method | How many rows each fold holds out. |
-| [`take`](#foldscheme-take) | Method | The same scheme restricted to `rows` (positions or boolean mask). |
-| [`check_leakage`](#foldscheme-check_leakage) | Method | Report rows that a fold both trains on and is judged by. |
-| [`describe`](#foldscheme-describe) | Method | A short text summary: scheme name, fold count, held-out sizes. |
-| [`to_frame`](#foldscheme-to_frame) | Method | One row per (row, fold): whether the row is in-bag and its weight. |
+| `shape` | Property |  |
+| `n_folds` | Property |  |
+| `to_dict` | Method | A JSON-safe record with the weight evidence only on request. |
+| `fold` | Method | The row indices fold ``b`` holds out. |
+| `fold_sizes` | Method | How many rows each fold holds out. |
+| `take` | Method | The same scheme restricted to `rows` (positions or boolean mask). |
+| `check_leakage` | Method | Report rows that a fold both trains on and is judged by. |
+| `describe` | Method | A short text summary: scheme name, fold count, held-out sizes. |
+| `to_frame` | Method | One row per (row, fold): whether the row is in-bag and its weight. |
 
 (foldscheme-shape)=
 ## `FoldScheme.shape`

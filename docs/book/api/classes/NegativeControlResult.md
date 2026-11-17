@@ -22,9 +22,9 @@ Source: [`python/mboostrs/causal.py` lines 883-952](https://github.com/fcela/mbo
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`interval_excludes_expected`](#negativecontrolresult-interval_excludes_expected) | Property | Whether the reported interval excludes the prespecified null. |
-| [`to_dict`](#negativecontrolresult-to_dict) | Method | The falsification verdict and its expected-null justification. |
-| [`describe`](#negativecontrolresult-describe) | Method | Interpret the falsification result without treating a null as proof. |
+| `interval_excludes_expected` | Property | Whether the reported interval excludes the prespecified null. |
+| `to_dict` | Method | The falsification verdict and its expected-null justification. |
+| `describe` | Method | Interpret the falsification result without treating a null as proof. |
 
 (negativecontrolresult-interval_excludes_expected)=
 ## `NegativeControlResult.interval_excludes_expected`

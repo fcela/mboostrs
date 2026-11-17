@@ -40,8 +40,8 @@ Source: [`python/mboostrs/causal.py` lines 4871-4935](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#citest-to_dict) | Method |  |
-| [`describe`](#citest-describe) | Method |  |
+| `to_dict` | Method |  |
+| `describe` | Method |  |
 
 (citest-to_dict)=
 ## `CITest.to_dict`

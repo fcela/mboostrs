@@ -20,10 +20,10 @@ Source: [`python/mboostrs/causal.py` lines 105-145](https://github.com/fcela/mbo
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`blocking`](#trapreport-blocking) | Property | Findings that leave the estimand unidentified. |
-| [`advisory`](#trapreport-advisory) | Property | Findings that change which population the estimate describes. |
-| [`clean`](#trapreport-clean) | Property | True when the design raises no finding at all. |
-| [`to_dict`](#trapreport-to_dict) | Method | A JSON-safe record of the findings. |
+| `blocking` | Property | Findings that leave the estimand unidentified. |
+| `advisory` | Property | Findings that change which population the estimate describes. |
+| `clean` | Property | True when the design raises no finding at all. |
+| `to_dict` | Method | A JSON-safe record of the findings. |
 
 (trapreport-blocking)=
 ## `TrapReport.blocking`

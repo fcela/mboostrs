@@ -23,7 +23,7 @@ Source: [`python/mboostrs/gamlss.py` lines 2871-2903](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`mean`](#logloglss-mean) | Method | Uncensored log-logistic mean, defined for ``0 < sigma < 1``. |
+| `mean` | Method | Uncensored log-logistic mean, defined for ``0 < sigma < 1``. |
 
 (logloglss-mean)=
 ## `LogLogLSS.mean`

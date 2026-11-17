@@ -22,7 +22,7 @@ Source: [`python/mboostrs/interactions.py` lines 93-113](https://github.com/fcel
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`transform`](#learnerdesign-transform) | Method | Evaluate the fitted design on ``data`` without refitting its basis. |
+| `transform` | Method | Evaluate the fitted design on ``data`` without refitting its basis. |
 
 (learnerdesign-transform)=
 ## `LearnerDesign.transform`

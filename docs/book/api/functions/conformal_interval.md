@@ -203,6 +203,7 @@ calibration and reported as `n_set_aside`.
 
 **Examples**
 
+```python
 >>> import numpy as np, mboostrs as mb
 >>> rng = np.random.default_rng(0)
 >>> x = rng.uniform(-2, 2, 500)
@@ -212,5 +213,6 @@ calibration and reported as `n_set_aside`.
 >>> ci = mb.conformal_interval(fit, level=0.9, seed=1)
 >>> ci.lower.shape == ci.upper.shape == (500,)
 True
+```
 
 Source: [`python/mboostrs/conformal.py` lines 1380-1676](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/conformal.py#L1380-L1676)

@@ -41,9 +41,9 @@ Source: [`python/mboostrs/causal.py` lines 4648-4711](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`table`](#overlapranking-table) | Method | One row per row of ``newdata``; see the ``rows`` field. The |
-| [`to_dict`](#overlapranking-to_dict) | Method | A JSON-safe record; the per-row records only on request. |
-| [`describe`](#overlapranking-describe) | Method | The top group, its gain, and the rows left out for lack of overlap. |
+| `table` | Method | One row per row of ``newdata``; see the ``rows`` field. The |
+| `to_dict` | Method | A JSON-safe record; the per-row records only on request. |
+| `describe` | Method | The top group, its gain, and the rows left out for lack of overlap. |
 
 (overlapranking-table)=
 ## `OverlapRanking.table`

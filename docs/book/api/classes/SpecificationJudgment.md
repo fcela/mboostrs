@@ -32,8 +32,8 @@ Source: [`python/mboostrs/modeler.py` lines 186-285](https://github.com/fcela/mb
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#specificationjudgment-to_dict) | Method | The editable JSON proposal accepted by the judgment interface. |
-| [`from_mapping`](#specificationjudgment-from_mapping) | Method |  |
+| `to_dict` | Method | The editable JSON proposal accepted by the judgment interface. |
+| `from_mapping` | Method |  |
 
 (specificationjudgment-to_dict)=
 ## `SpecificationJudgment.to_dict`

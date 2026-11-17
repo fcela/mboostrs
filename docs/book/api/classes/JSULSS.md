@@ -20,11 +20,11 @@ Source: [`python/mboostrs/gamlss.py` lines 2421-2490](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#jsulss-response) | Method |  |
-| [`mean`](#jsulss-mean) | Method | Conditional mean ``mu`` under the centered JSU parameterization. |
-| [`cdf`](#jsulss-cdf) | Method | Johnson SU CDF in the centered parameterization. Matches |
-| [`quantile`](#jsulss-quantile) | Method | Johnson SU quantile. Matches ``gamlss.dist::qJSU``. |
-| [`pdf`](#jsulss-pdf) | Method | Johnson SU density in the centered parameterization. Matches |
+| `response` | Method |  |
+| `mean` | Method | Conditional mean ``mu`` under the centered JSU parameterization. |
+| `cdf` | Method | Johnson SU CDF in the centered parameterization. Matches |
+| `quantile` | Method | Johnson SU quantile. Matches ``gamlss.dist::qJSU``. |
+| `pdf` | Method | Johnson SU density in the centered parameterization. Matches |
 
 (jsulss-response)=
 ## `JSULSS.response`

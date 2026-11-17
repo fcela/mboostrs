@@ -48,8 +48,8 @@ Source: [`python/mboostrs/capacity.py` lines 204-271](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`variables`](#capacityselection-variables) | Property | The data columns the selected formula reads, in first-seen order. |
-| [`to_dict`](#capacityselection-to_dict) | Method | A JSON-safe record; the model itself is not exported. |
+| `variables` | Property | The data columns the selected formula reads, in first-seen order. |
+| `to_dict` | Method | A JSON-safe record; the model itself is not exported. |
 
 (capacityselection-variables)=
 ## `CapacitySelection.variables`

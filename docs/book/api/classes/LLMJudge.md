@@ -42,7 +42,7 @@ Source: [`python/mboostrs/modeler.py` lines 370-485](https://github.com/fcela/mb
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`tokens_used`](#llmjudge-tokens_used) | Property | Provider-reported tokens, or None when usage is unavailable. |
+| `tokens_used` | Property | Provider-reported tokens, or None when usage is unavailable. |
 
 (llmjudge-tokens_used)=
 ## `LLMJudge.tokens_used`

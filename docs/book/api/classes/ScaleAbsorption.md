@@ -61,7 +61,7 @@ Source: [`python/mboostrs/absorption.py` lines 55-122](https://github.com/fcela/
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#scaleabsorption-to_dict) | Method | The result as plain dicts, lists and floats, for JSON or a report. |
+| `to_dict` | Method | The result as plain dicts, lists and floats, for JSON or a report. |
 
 (scaleabsorption-to_dict)=
 ## `ScaleAbsorption.to_dict`

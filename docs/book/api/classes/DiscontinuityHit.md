@@ -69,8 +69,8 @@ Source: [`python/mboostrs/terms.py` lines 919-1007](https://github.com/fcela/mbo
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`flagged`](#discontinuityhit-flagged) | Property | The screen's decision rule: ``\|z\| >= 2`` with a positive gain. |
-| [`typed_jump`](#discontinuityhit-typed_jump) | Property | A flagged row with a genuine discontinuity: ``flagged``, a |
+| `flagged` | Property | The screen's decision rule: ``\|z\| >= 2`` with a positive gain. |
+| `typed_jump` | Property | A flagged row with a genuine discontinuity: ``flagged``, a |
 
 (discontinuityhit-flagged)=
 ## `DiscontinuityHit.flagged`

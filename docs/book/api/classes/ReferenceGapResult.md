@@ -99,8 +99,8 @@ Source: [`python/mboostrs/reference_gap.py` lines 48-270](https://github.com/fce
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`describe`](#referencegapresult-describe) | Method | Plain-text summary: the gap, its source and what to try next. |
-| [`to_dict`](#referencegapresult-to_dict) | Method | The result as JSON-ready data. The fitted models are not included. |
+| `describe` | Method | Plain-text summary: the gap, its source and what to try next. |
+| `to_dict` | Method | The result as JSON-ready data. The fitted models are not included. |
 
 (referencegapresult-describe)=
 ## `ReferenceGapResult.describe`

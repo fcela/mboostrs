@@ -20,10 +20,10 @@ Source: [`python/mboostrs/gamlss.py` lines 2697-2743](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#dirichletlss-response) | Method |  |
-| [`pdf`](#dirichletlss-pdf) | Method | Dirichlet density for a K-column compositional response. |
-| [`simulate`](#dirichletlss-simulate) | Method | Draw Dirichlet samples with concentration ``alpha_k``. |
-| [`deviance_increment`](#dirichletlss-deviance_increment) | Method |  |
+| `response` | Method |  |
+| `pdf` | Method | Dirichlet density for a K-column compositional response. |
+| `simulate` | Method | Draw Dirichlet samples with concentration ``alpha_k``. |
+| `deviance_increment` | Method |  |
 
 (dirichletlss-response)=
 ## `DirichletLSS.response`

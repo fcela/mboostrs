@@ -49,21 +49,23 @@ Example:
     A planted kink at `x = 0.5`; the hinge learns the bend while a
     P-spline smooths across it:
 
-    >>> import numpy as np, mboostrs as mb
-    >>> from mboostrs.learners import Hinge
-    >>> rng = np.random.default_rng(1)
-    >>> n = 600
-    >>> x = rng.uniform(-2, 2, n)
-    >>> y = np.maximum(0.0, x - 0.5) + 0.1 * rng.normal(size=n)
-    >>> data = {"x": x, "y": y}
-    >>> kw = dict(family=mb.Gaussian(), control=mb.boost_control(200, 0.1))
-    >>> hinge = mb.gamboost("y ~ hinge(x, df=4)", data, **kw)
-    >>> smooth = mb.gamboost("y ~ bbs(x, df=4)", data, **kw)
-    >>> grid = {"x": np.linspace(-2, 2, 9)}
-    >>> truth = np.maximum(0.0, grid["x"] - 0.5)
-    >>> rmse = lambda m: float(np.sqrt(np.mean(
-    ...     (np.asarray(m.predict(grid)).ravel() - truth) ** 2)))
-    >>> rmse(hinge) < rmse(smooth)
-    True
+```python
+>>> import numpy as np, mboostrs as mb
+>>> from mboostrs.learners import Hinge
+>>> rng = np.random.default_rng(1)
+>>> n = 600
+>>> x = rng.uniform(-2, 2, n)
+>>> y = np.maximum(0.0, x - 0.5) + 0.1 * rng.normal(size=n)
+>>> data = {"x": x, "y": y}
+>>> kw = dict(family=mb.Gaussian(), control=mb.boost_control(200, 0.1))
+>>> hinge = mb.gamboost("y ~ hinge(x, df=4)", data, **kw)
+>>> smooth = mb.gamboost("y ~ bbs(x, df=4)", data, **kw)
+>>> grid = {"x": np.linspace(-2, 2, 9)}
+>>> truth = np.maximum(0.0, grid["x"] - 0.5)
+>>> rmse = lambda m: float(np.sqrt(np.mean(
+...     (np.asarray(m.predict(grid)).ravel() - truth) ** 2)))
+>>> rmse(hinge) < rmse(smooth)
+True
+```
 
 Source: [`python/mboostrs/learners.py` lines 1174-1245](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L1174-L1245)

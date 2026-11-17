@@ -18,13 +18,13 @@ Source: [`python/mboostrs/gamlss.py` lines 1218-1280](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#studenttlss-response) | Method |  |
-| [`mean`](#studenttlss-mean) | Method | Conditional response mean, defined only for df > 1. |
-| [`pdf`](#studenttlss-pdf) | Method | Student-t density: location ``mu``, scale ``sigma``, df ``df``. |
-| [`cdf`](#studenttlss-cdf) | Method | Student-t CDF for location ``mu``, scale ``sigma``, and ``df``. |
-| [`quantile`](#studenttlss-quantile) | Method | Student-t quantile, obtained by inverting the standardized CDF. |
-| [`simulate`](#studenttlss-simulate) | Method | Draw Student-t samples: mu + sigma * standard_t(df). |
-| [`deviance_increment`](#studenttlss-deviance_increment) | Method |  |
+| `response` | Method |  |
+| `mean` | Method | Conditional response mean, defined only for df > 1. |
+| `pdf` | Method | Student-t density: location ``mu``, scale ``sigma``, df ``df``. |
+| `cdf` | Method | Student-t CDF for location ``mu``, scale ``sigma``, and ``df``. |
+| `quantile` | Method | Student-t quantile, obtained by inverting the standardized CDF. |
+| `simulate` | Method | Draw Student-t samples: mu + sigma * standard_t(df). |
+| `deviance_increment` | Method |  |
 
 (studenttlss-response)=
 ## `StudentTLSS.response`

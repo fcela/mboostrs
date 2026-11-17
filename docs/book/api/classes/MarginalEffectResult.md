@@ -35,10 +35,10 @@ Source: [`python/mboostrs/effects.py` lines 614-707](https://github.com/fcela/mb
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`interval`](#marginaleffectresult-interval) | Property | ``(lower, upper)`` of the cluster-bootstrap interval, or None. |
-| [`to_frame`](#marginaleffectresult-to_frame) | Method | One row per local finite derivative. |
-| [`to_dict`](#marginaleffectresult-to_dict) | Method | A JSON-safe record; the per-row evidence only on request. |
-| [`describe`](#marginaleffectresult-describe) | Method | State the derivative target, scale, step, population, and limits. |
+| `interval` | Property | ``(lower, upper)`` of the cluster-bootstrap interval, or None. |
+| `to_frame` | Method | One row per local finite derivative. |
+| `to_dict` | Method | A JSON-safe record; the per-row evidence only on request. |
+| `describe` | Method | State the derivative target, scale, step, population, and limits. |
 
 (marginaleffectresult-interval)=
 ## `MarginalEffectResult.interval`

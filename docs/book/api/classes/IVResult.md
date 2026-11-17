@@ -40,9 +40,9 @@ Source: [`python/mboostrs/causal.py` lines 5832-5937](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#ivresult-to_dict) | Method | A JSON-safe record; the per-row residuals and influence values only on request. |
-| [`to_frame`](#ivresult-to_frame) | Method | One row per observation: its fold, its three residuals and its influence value. |
-| [`describe`](#ivresult-describe) | Method | The estimand, the estimate with its interval, the first stage and the assumptions. |
+| `to_dict` | Method | A JSON-safe record; the per-row residuals and influence values only on request. |
+| `to_frame` | Method | One row per observation: its fold, its three residuals and its influence value. |
+| `describe` | Method | The estimand, the estimate with its interval, the first stage and the assumptions. |
 
 (ivresult-to_dict)=
 ## `IVResult.to_dict`

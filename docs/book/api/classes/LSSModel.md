@@ -36,75 +36,75 @@ Source: [`python/mboostrs/gamlss.py` lines 3034-5613](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`fit_warnings`](#lssmodel-fit_warnings) | Property | Warnings the fit showed, as ``warnings.WarningMessage`` objects. |
-| [`execution_report`](#lssmodel-execution_report) | Method | Return aggregate numerical-route metadata for this LSS fit. |
-| [`path_frame`](#lssmodel-path_frame) | Method | Return globally ordered parameter-update rows for this LSS fit. |
-| [`risk_`](#lssmodel-risk_) | Property | The joint risk after each iteration. |
-| [`mstop`](#lssmodel-mstop) | Property |  |
-| [`stopping_report`](#lssmodel-stopping_report) | Method | Where the boosting path stopped, and whether that looks finished. |
-| [`stopping_budget`](#lssmodel-stopping_budget) | Method | How far this model was boosted, as |
-| [`selected_terms`](#lssmodel-selected_terms) | Method | One row per boosting update, in the order the fit made them: |
-| [`predict_parameters`](#lssmodel-predict_parameters) | Method | Return response-scale predictions by distribution parameter. |
-| [`selected`](#lssmodel-selected) | Property | Selected base-learners at each iteration, as ``{parameter: path}``. |
-| [`fitted`](#lssmodel-fitted) | Method | In-sample fitted values, mirroring ``predict(newdata=None, ...)``. |
-| [`params`](#lssmodel-params) | Method | Predicted LSS parameters for all family parameters. |
-| [`predict_all`](#lssmodel-predict_all) | Method | All-parameter prediction table, analogous to GAMLSS ``predictAll``. |
-| [`coef_all`](#lssmodel-coef_all) | Method | All-parameter coefficient table, analogous to GAMLSS ``coefAll``. |
-| [`risk`](#lssmodel-risk) | Property | The joint risk after each iteration (each full cycle for a cyclic |
-| [`parameter_risk`](#lssmodel-parameter_risk) | Method | The joint risk after each parameter's own updates, as |
-| [`model_weights`](#lssmodel-model_weights) | Method | Observation weights used for fitting. |
-| [`deviance_increment`](#lssmodel-deviance_increment) | Method | Per-observation deviance contribution for supported LSS families. |
-| [`centiles`](#lssmodel-centiles) | Method | Distribution centile table for fitted LSS parameters. |
-| [`prediction_interval`](#lssmodel-prediction_interval) | Method | Central prediction interval table for the fitted LSS distribution. |
-| [`predint`](#lssmodel-predint) | Method | Alias for :meth:`prediction_interval`, matching R ``predint`` naming. |
-| [`PI`](#lssmodel-pi) | Method | Alias for :meth:`prediction_interval`, matching R ``PI`` naming. |
-| [`pit`](#lssmodel-pit) | Method | Probability integral transform values for fitted LSS distributions. |
-| [`quantile_residuals`](#lssmodel-quantile_residuals) | Method | Randomized quantile residuals for fitted LSS distributions. |
-| [`residual_frame`](#lssmodel-residual_frame) | Method | Diagnostic residual table for LSS models. |
-| [`worm_data`](#lssmodel-worm_data) | Method | Worm-plot data. See :func:`mboostrs.worm_data`. |
-| [`calibration_frame`](#lssmodel-calibration_frame) | Method | Calibration table. See :func:`mboostrs.calibration_frame`. |
-| [`q_stats`](#lssmodel-q_stats) | Method | Binned quantile-residual moment summaries. |
-| [`density_overlay_data`](#lssmodel-density_overlay_data) | Method | Observed and fitted marginal-distribution curves as a table. |
-| [`centile_fan_data`](#lssmodel-centile_fan_data) | Method | Observed responses and fitted centiles ordered by ``xvar``. |
-| [`deviance_profile`](#lssmodel-deviance_profile) | Method | Binned joint deviance contributions along a numeric covariate. |
-| [`worm_plot`](#lssmodel-worm_plot) | Method | Worm plot(s) of (randomized) quantile residuals (R's ``gamlss::wp``). |
-| [`logLik`](#lssmodel-loglik) | Method | Joint log-likelihood at the current LSS fit. |
-| [`negative_risk`](#lssmodel-negative_risk) | Method | The negated joint risk at the current fit. |
-| [`parity_notes`](#lssmodel-parity_notes) | Method | Where this fit differs from what its names refer to. |
-| [`likelihood_contract`](#lssmodel-likelihood_contract) | Method | What this family's risk is: a likelihood, a loss, or neither. |
-| [`gaic`](#lssmodel-gaic) | Method | Update-count penalized likelihood heuristic for LSS models. |
-| [`llm_explain_prompt`](#lssmodel-llm_explain_prompt) | Method | Render this fit as a prompt for a language model. |
-| [`llm_describe`](#lssmodel-llm_describe) | Method | Send this fit's description to a language model and return the reply. |
-| [`to_dict`](#lssmodel-to_dict) | Method | The ``summary(as_dict=True)`` record plus a ``"provenance"`` entry: |
-| [`summary`](#lssmodel-summary) | Method | Summarise the fitted LSS model. |
-| [`cvrisk`](#lssmodel-cvrisk) | Method | Cross-validated risk for this model's own specification. |
-| [`stabsel`](#lssmodel-stabsel) | Method | Stability selection for this model's own specification. |
-| [`profile_mstop`](#lssmodel-profile_mstop) | Method | Refit over a grid of stopping points and report `metric` at each. |
-| [`control`](#lssmodel-control) | Property | The `boost_control` this model was fitted with. |
-| [`offset`](#lssmodel-offset) | Property | Per-parameter offsets, as ``{parameter: value}``. |
-| [`plot_risk`](#lssmodel-plot_risk) | Method | Plot the joint risk path. |
-| [`plot_selected`](#lssmodel-plot_selected) | Method | Plot selection frequency per base learner and parameter. |
-| [`plot_density`](#lssmodel-plot_density) | Method | Overlay the observed and average fitted response distributions. |
-| [`plot_centile_fan`](#lssmodel-plot_centile_fan) | Method | Plot nested fitted centile bands against ``xvar``. |
-| [`plot_deviance_profile`](#lssmodel-plot_deviance_profile) | Method | Plot binned joint deviance along a covariate or row order. |
-| [`continue_to`](#lssmodel-continue_to) | Method | Return the model grown to a larger `mstop`, per parameter. |
-| [`varimp`](#lssmodel-varimp) | Method | Variable importance from in-bag risk reduction, per parameter. |
-| [`base_learner_names`](#lssmodel-base_learner_names) | Method | Base-learner names, as a `{parameter: [name, ...]}` mapping. |
-| [`bnames`](#lssmodel-bnames) | Method | Alias for :meth:`base_learner_names`. |
-| [`variable_names`](#lssmodel-variable_names) | Method | Distinct predictor names, in formula order. |
-| [`selected_which`](#lssmodel-selected_which) | Method | Selected learner names per parameter, optionally filtered. |
-| [`fitted_`](#lssmodel-fitted_) | Property | Fitted link-scale values per parameter, as a mapping. |
-| [`offset_`](#lssmodel-offset_) | Property | Per-parameter offsets, as a mapping. See also :attr:`offset`. |
-| [`save`](#lssmodel-save) | Method | Write a portable JSON artifact. See :func:`mboostrs.save_model`. |
-| [`with_mstop`](#lssmodel-with_mstop) | Method | Return a copy refit to ``k`` boosting iterations. |
-| [`update`](#lssmodel-update) | Method | Refit the stored LSS model specification. |
-| [`extrapolation_report`](#lssmodel-extrapolation_report) | Method | Terms and covariates with rows outside their training range, by parameter. |
-| [`mean`](#lssmodel-mean) | Method | Expected response under the fitted distribution. |
-| [`predict`](#lssmodel-predict) | Method | Predictions for one distribution parameter, or for all of them. |
-| [`partial_effects`](#lssmodel-partial_effects) | Method | Return formula-ordered learner contributions for one LSS parameter. |
-| [`coef`](#lssmodel-coef) | Method | Per-parameter aggregated coefficients (sum of nu*coef per learner). |
-| [`residual_kinds`](#lssmodel-residual_kinds) | Method | Residual kinds defined for the fitted LSS family. |
-| [`residuals`](#lssmodel-residuals) | Method | Residuals of the named kind for an LSS parameter, or a refusal. |
+| `fit_warnings` | Property | Warnings the fit showed, as ``warnings.WarningMessage`` objects. |
+| `execution_report` | Method | Return aggregate numerical-route metadata for this LSS fit. |
+| `path_frame` | Method | Return globally ordered parameter-update rows for this LSS fit. |
+| `risk_` | Property | The joint risk after each iteration. |
+| `mstop` | Property |  |
+| `stopping_report` | Method | Where the boosting path stopped, and whether that looks finished. |
+| `stopping_budget` | Method | How far this model was boosted, as |
+| `selected_terms` | Method | One row per boosting update, in the order the fit made them: |
+| `predict_parameters` | Method | Return response-scale predictions by distribution parameter. |
+| `selected` | Property | Selected base-learners at each iteration, as ``{parameter: path}``. |
+| `fitted` | Method | In-sample fitted values, mirroring ``predict(newdata=None, ...)``. |
+| `params` | Method | Predicted LSS parameters for all family parameters. |
+| `predict_all` | Method | All-parameter prediction table, analogous to GAMLSS ``predictAll``. |
+| `coef_all` | Method | All-parameter coefficient table, analogous to GAMLSS ``coefAll``. |
+| `risk` | Property | The joint risk after each iteration (each full cycle for a cyclic |
+| `parameter_risk` | Method | The joint risk after each parameter's own updates, as |
+| `model_weights` | Method | Observation weights used for fitting. |
+| `deviance_increment` | Method | Per-observation deviance contribution for supported LSS families. |
+| `centiles` | Method | Distribution centile table for fitted LSS parameters. |
+| `prediction_interval` | Method | Central prediction interval table for the fitted LSS distribution. |
+| `predint` | Method | Alias for :meth:`prediction_interval`, matching R ``predint`` naming. |
+| `PI` | Method | Alias for :meth:`prediction_interval`, matching R ``PI`` naming. |
+| `pit` | Method | Probability integral transform values for fitted LSS distributions. |
+| `quantile_residuals` | Method | Randomized quantile residuals for fitted LSS distributions. |
+| `residual_frame` | Method | Diagnostic residual table for LSS models. |
+| `worm_data` | Method | Worm-plot data. See :func:`mboostrs.worm_data`. |
+| `calibration_frame` | Method | Calibration table. See :func:`mboostrs.calibration_frame`. |
+| `q_stats` | Method | Binned quantile-residual moment summaries. |
+| `density_overlay_data` | Method | Observed and fitted marginal-distribution curves as a table. |
+| `centile_fan_data` | Method | Observed responses and fitted centiles ordered by ``xvar``. |
+| `deviance_profile` | Method | Binned joint deviance contributions along a numeric covariate. |
+| `worm_plot` | Method | Worm plot(s) of (randomized) quantile residuals (R's ``gamlss::wp``). |
+| `logLik` | Method | Joint log-likelihood at the current LSS fit. |
+| `negative_risk` | Method | The negated joint risk at the current fit. |
+| `parity_notes` | Method | Where this fit differs from what its names refer to. |
+| `likelihood_contract` | Method | What this family's risk is: a likelihood, a loss, or neither. |
+| `gaic` | Method | Update-count penalized likelihood heuristic for LSS models. |
+| `llm_explain_prompt` | Method | Render this fit as a prompt for a language model. |
+| `llm_describe` | Method | Send this fit's description to a language model and return the reply. |
+| `to_dict` | Method | The ``summary(as_dict=True)`` record plus a ``"provenance"`` entry: |
+| `summary` | Method | Summarise the fitted LSS model. |
+| `cvrisk` | Method | Cross-validated risk for this model's own specification. |
+| `stabsel` | Method | Stability selection for this model's own specification. |
+| `profile_mstop` | Method | Refit over a grid of stopping points and report `metric` at each. |
+| `control` | Property | The `boost_control` this model was fitted with. |
+| `offset` | Property | Per-parameter offsets, as ``{parameter: value}``. |
+| `plot_risk` | Method | Plot the joint risk path. |
+| `plot_selected` | Method | Plot selection frequency per base learner and parameter. |
+| `plot_density` | Method | Overlay the observed and average fitted response distributions. |
+| `plot_centile_fan` | Method | Plot nested fitted centile bands against ``xvar``. |
+| `plot_deviance_profile` | Method | Plot binned joint deviance along a covariate or row order. |
+| `continue_to` | Method | Return the model grown to a larger `mstop`, per parameter. |
+| `varimp` | Method | Variable importance from in-bag risk reduction, per parameter. |
+| `base_learner_names` | Method | Base-learner names, as a `{parameter: [name, ...]}` mapping. |
+| `bnames` | Method | Alias for :meth:`base_learner_names`. |
+| `variable_names` | Method | Distinct predictor names, in formula order. |
+| `selected_which` | Method | Selected learner names per parameter, optionally filtered. |
+| `fitted_` | Property | Fitted link-scale values per parameter, as a mapping. |
+| `offset_` | Property | Per-parameter offsets, as a mapping. See also :attr:`offset`. |
+| `save` | Method | Write a portable JSON artifact. See :func:`mboostrs.save_model`. |
+| `with_mstop` | Method | Return a copy refit to ``k`` boosting iterations. |
+| `update` | Method | Refit the stored LSS model specification. |
+| `extrapolation_report` | Method | Terms and covariates with rows outside their training range, by parameter. |
+| `mean` | Method | Expected response under the fitted distribution. |
+| `predict` | Method | Predictions for one distribution parameter, or for all of them. |
+| `partial_effects` | Method | Return formula-ordered learner contributions for one LSS parameter. |
+| `coef` | Method | Per-parameter aggregated coefficients (sum of nu*coef per learner). |
+| `residual_kinds` | Method | Residual kinds defined for the fitted LSS family. |
+| `residuals` | Method | Residuals of the named kind for an LSS parameter, or a refusal. |
 
 (lssmodel-fit_warnings)=
 ## `LSSModel.fit_warnings`

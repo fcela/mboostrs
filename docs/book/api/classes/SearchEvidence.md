@@ -26,7 +26,7 @@ Source: [`python/mboostrs/search_session.py` lines 48-68](https://github.com/fce
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#searchevidence-to_dict) | Method | Audit metadata; the arbitrary action value is retrieved separately. |
+| `to_dict` | Method | Audit metadata; the arbitrary action value is retrieved separately. |
 
 (searchevidence-to_dict)=
 ## `SearchEvidence.to_dict`

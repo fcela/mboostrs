@@ -33,7 +33,7 @@ Source: [`python/mboostrs/explore.py` lines 2621-2654](https://github.com/fcela/
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#suggestion-to_dict) | Method | A JSON-safe record of the change and the evidence for it. |
+| `to_dict` | Method | A JSON-safe record of the change and the evidence for it. |
 
 (suggestion-to_dict)=
 ## `Suggestion.to_dict`

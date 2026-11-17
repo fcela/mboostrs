@@ -29,10 +29,10 @@ Source: [`python/mboostrs/effects.py` lines 884-983](https://github.com/fcela/mb
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_frame`](#predictionprofileresult-to_frame) | Method | One row per grid value with its average and support diagnostic. |
-| [`to_dict`](#predictionprofileresult-to_dict) | Method | A JSON-safe record; the curve always, ICE rows only on request. |
-| [`ice_frame`](#predictionprofileresult-ice_frame) | Method | One row per observation-grid prediction when ICE was retained. |
-| [`describe`](#predictionprofileresult-describe) | Method | State scale, population, retained rows, and support diagnostic. |
+| `to_frame` | Method | One row per grid value with its average and support diagnostic. |
+| `to_dict` | Method | A JSON-safe record; the curve always, ICE rows only on request. |
+| `ice_frame` | Method | One row per observation-grid prediction when ICE was retained. |
+| `describe` | Method | State scale, population, retained rows, and support diagnostic. |
 
 (predictionprofileresult-to_frame)=
 ## `PredictionProfileResult.to_frame`

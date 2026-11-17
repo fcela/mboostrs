@@ -31,8 +31,8 @@ Source: [`python/mboostrs/equivalence.py` lines 106-153](https://github.com/fcel
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`group_of`](#substitutionsets-group_of) | Method | The substitution group containing ``name``, or None. |
-| [`to_dict`](#substitutionsets-to_dict) | Method | A JSON-safe record. ``include_arrays`` is accepted for the shared |
+| `group_of` | Method | The substitution group containing ``name``, or None. |
+| `to_dict` | Method | A JSON-safe record. ``include_arrays`` is accepted for the shared |
 
 (substitutionsets-group_of)=
 ## `SubstitutionSets.group_of`

@@ -45,8 +45,10 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 **Examples**
 
+```python
 >>> response, learners = parse_gamboost_formula("y ~ bbs(a, df=4) + bols(b)")
 >>> response, [type(l).__name__ for l in learners]
 ('y', ['Bbs', 'Bols'])
+```
 
 Source: [`python/mboostrs/formula.py` lines 1106-1284](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/formula.py#L1106-L1284)

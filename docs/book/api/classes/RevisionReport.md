@@ -20,9 +20,9 @@ Source: [`python/mboostrs/residual_checks.py` lines 125-156](https://github.com/
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`flagged`](#revisionreport-flagged) | Property | The findings whose pattern is present at ``alpha``. |
-| [`revisions`](#revisionreport-revisions) | Property | The revision of each flagged finding, in finding order. |
-| [`summary`](#revisionreport-summary) | Property | Every finding, one block each. |
+| `flagged` | Property | The findings whose pattern is present at ``alpha``. |
+| `revisions` | Property | The revision of each flagged finding, in finding order. |
+| `summary` | Property | Every finding, one block each. |
 
 (revisionreport-flagged)=
 ## `RevisionReport.flagged`

@@ -22,9 +22,9 @@ Source: [`python/mboostrs/modeler.py` lines 125-155](https://github.com/fcela/mb
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`add`](#assumptionledger-add) | Method |  |
-| [`confirm`](#assumptionledger-confirm) | Method | Mark the first matching unconfirmed LLM proposal as confirmed. |
-| [`to_list`](#assumptionledger-to_list) | Method |  |
+| `add` | Method |  |
+| `confirm` | Method | Mark the first matching unconfirmed LLM proposal as confirmed. |
+| `to_list` | Method |  |
 
 (assumptionledger-add)=
 ## `AssumptionLedger.add`

@@ -34,7 +34,7 @@ Source: [`python/mboostrs/effect_modifiers.py` lines 287-325](https://github.com
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`predict`](#blpprojection-predict) | Method | The projected effect of each row of ``newdata``, one value per row. |
+| `predict` | Method | The projected effect of each row of ``newdata``, one value per row. |
 
 (blpprojection-predict)=
 ## `BLPProjection.predict`

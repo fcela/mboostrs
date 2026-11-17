@@ -75,10 +75,12 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 **Examples**
 
+```python
 >>> prompt = fit.llm_explain_prompt(          # doctest: +SKIP
 ...     dataset_description="Body fat, 71 men, DEXA reference measurement.",
 ...     top=5,
 ... )
 >>> fit.llm_describe(dataset_description="...")   # doctest: +SKIP
+```
 
 Source: [`python/mboostrs/explain.py` lines 1060-1207](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explain.py#L1060-L1207)

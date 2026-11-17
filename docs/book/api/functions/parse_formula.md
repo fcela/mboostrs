@@ -24,7 +24,9 @@ tuple
 
 **Examples**
 
+```python
 >>> parse_formula("y ~ a + b")
 ('y', ['a', 'b'])
+```
 
 Source: [`python/mboostrs/formula.py` lines 157-180](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/formula.py#L157-L180)

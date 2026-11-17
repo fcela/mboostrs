@@ -22,14 +22,14 @@ Source: [`python/mboostrs/gamlss.py` lines 1842-1928](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#negativebinomiallss-response) | Method |  |
-| [`mean`](#negativebinomiallss-mean) | Method | Conditional count mean ``mu``. |
-| [`pmf`](#negativebinomiallss-pmf) | Method | NBI probability mass with mean ``mu`` and variance ``mu + sigma * mu**2``. |
-| [`cdf`](#negativebinomiallss-cdf) | Method | NBI CDF with mean ``mu`` and dispersion ``sigma`` (size ``1/sigma``). |
-| [`quantile`](#negativebinomiallss-quantile) | Method | NBI quantile for probabilities ``p`` (size ``1/sigma``). |
-| [`simulate`](#negativebinomiallss-simulate) | Method | Draw NBI samples with mean ``mu`` and dispersion ``sigma`` (size ``1/sigma``). |
-| [`deviance_increment`](#negativebinomiallss-deviance_increment) | Method |  |
-| [`pdf`](#negativebinomiallss-pdf) | Method | NBI probability mass, variance ``mu + sigma * mu**2``. |
+| `response` | Method |  |
+| `mean` | Method | Conditional count mean ``mu``. |
+| `pmf` | Method | NBI probability mass with mean ``mu`` and variance ``mu + sigma * mu**2``. |
+| `cdf` | Method | NBI CDF with mean ``mu`` and dispersion ``sigma`` (size ``1/sigma``). |
+| `quantile` | Method | NBI quantile for probabilities ``p`` (size ``1/sigma``). |
+| `simulate` | Method | Draw NBI samples with mean ``mu`` and dispersion ``sigma`` (size ``1/sigma``). |
+| `deviance_increment` | Method |  |
+| `pdf` | Method | NBI probability mass, variance ``mu + sigma * mu**2``. |
 
 (negativebinomiallss-response)=
 ## `NegativeBinomialLSS.response`

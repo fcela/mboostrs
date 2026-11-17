@@ -31,7 +31,7 @@ Source: [`python/mboostrs/declarations.py` lines 92-123](https://github.com/fcel
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#declarationcheck-to_dict) | Method | A JSON-safe record. The average curve of a shape test is an array; |
+| `to_dict` | Method | A JSON-safe record. The average curve of a shape test is an array; |
 
 (declarationcheck-to_dict)=
 ## `DeclarationCheck.to_dict`

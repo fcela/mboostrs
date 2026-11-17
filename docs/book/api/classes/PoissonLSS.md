@@ -19,14 +19,14 @@ Source: [`python/mboostrs/gamlss.py` lines 1618-1682](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#poissonlss-response) | Method |  |
-| [`mean`](#poissonlss-mean) | Method | Conditional count mean ``mu``. |
-| [`pmf`](#poissonlss-pmf) | Method | Poisson mass with response-scale mean ``mu``. |
-| [`cdf`](#poissonlss-cdf) | Method | Poisson CDF with response-scale mean ``mu``. |
-| [`quantile`](#poissonlss-quantile) | Method | Poisson quantile for probabilities ``p``. |
-| [`simulate`](#poissonlss-simulate) | Method | Draw Poisson samples with response-scale mean ``mu``. |
-| [`deviance_increment`](#poissonlss-deviance_increment) | Method |  |
-| [`pdf`](#poissonlss-pdf) | Method | Poisson probability mass at the integer counts ``y``. |
+| `response` | Method |  |
+| `mean` | Method | Conditional count mean ``mu``. |
+| `pmf` | Method | Poisson mass with response-scale mean ``mu``. |
+| `cdf` | Method | Poisson CDF with response-scale mean ``mu``. |
+| `quantile` | Method | Poisson quantile for probabilities ``p``. |
+| `simulate` | Method | Draw Poisson samples with response-scale mean ``mu``. |
+| `deviance_increment` | Method |  |
+| `pdf` | Method | Poisson probability mass at the integer counts ``y``. |
 
 (poissonlss-response)=
 ## `PoissonLSS.response`

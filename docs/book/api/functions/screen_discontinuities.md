@@ -126,6 +126,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 A diagonal jump that no single-column step can express:
 
+```python
 >>> import numpy as np, polars as pl, mboostrs as mb
 >>> rng = np.random.default_rng(0)
 >>> n = 800
@@ -137,5 +138,6 @@ A diagonal jump that no single-column step can express:
 >>> hits = mb.screen_discontinuities(data, data["y"].to_numpy(), seed=0)
 >>> hits[0].typed_jump, hits[0].columns
 (True, ('s0', 's1'))
+```
 
 Source: [`python/mboostrs/terms.py` lines 1018-1454](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L1018-L1454)

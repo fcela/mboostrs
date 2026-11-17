@@ -46,7 +46,7 @@ Source: [`python/mboostrs/rearrange.py` lines 63-124](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#rearrangedquantiles-to_dict) | Method | A plain-Python record of the crossing report. |
+| `to_dict` | Method | A plain-Python record of the crossing report. |
 
 (rearrangedquantiles-to_dict)=
 ## `RearrangedQuantiles.to_dict`

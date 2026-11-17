@@ -36,7 +36,7 @@ Source: [`python/mboostrs/report.py` lines 14-46](https://github.com/fcela/mboos
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#pathrow-to_dict) | Method | Return a row mapping suitable for JSON or a data frame. |
+| `to_dict` | Method | Return a row mapping suitable for JSON or a data frame. |
 
 (pathrow-to_dict)=
 ## `PathRow.to_dict`

@@ -46,14 +46,14 @@ Source: [`python/mboostrs/selection.py` lines 1967-2256](https://github.com/fcel
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`parameters`](#gamlssrefit-parameters) | Property | The distribution parameters, in family order. |
-| [`vcov`](#gamlssrefit-vcov) | Method | Covariance of the joint coefficients (each parameter's intercept, |
-| [`effects`](#gamlssrefit-effects) | Method | ``{parameter: {term: (estimate, lower, upper)}}`` at the rows of |
-| [`predict`](#gamlssrefit-predict) | Method | Each parameter's linear predictor (``type="link"``) or its value on |
-| [`contrast`](#gamlssrefit-contrast) | Method | The average change in each parameter's linear predictor when covariates move. |
-| [`draws`](#gamlssrefit-draws) | Method | Draws of every distribution parameter, on its natural scale, at the |
-| [`summary`](#gamlssrefit-summary) | Method | Each distribution parameter's terms, with their effective degrees of freedom. |
-| [`to_dict`](#gamlssrefit-to_dict) | Method | A JSON-safe record of the terms, edf and smoothing parameters per |
+| `parameters` | Property | The distribution parameters, in family order. |
+| `vcov` | Method | Covariance of the joint coefficients (each parameter's intercept, |
+| `effects` | Method | ``{parameter: {term: (estimate, lower, upper)}}`` at the rows of |
+| `predict` | Method | Each parameter's linear predictor (``type="link"``) or its value on |
+| `contrast` | Method | The average change in each parameter's linear predictor when covariates move. |
+| `draws` | Method | Draws of every distribution parameter, on its natural scale, at the |
+| `summary` | Method | Each distribution parameter's terms, with their effective degrees of freedom. |
+| `to_dict` | Method | A JSON-safe record of the terms, edf and smoothing parameters per |
 
 (gamlssrefit-parameters)=
 ## `GamlssRefit.parameters`

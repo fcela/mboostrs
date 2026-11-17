@@ -28,9 +28,9 @@ Source: [`python/mboostrs/compare.py` lines 110-167](https://github.com/fcela/mb
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#comparereport-to_dict) | Method | The report as a mapping. ``diffs`` holds per-quantity summary |
-| [`to_json`](#comparereport-to_json) | Method |  |
-| [`summary`](#comparereport-summary) | Method | One-line summary string. |
+| `to_dict` | Method | The report as a mapping. ``diffs`` holds per-quantity summary |
+| `to_json` | Method |  |
+| `summary` | Method | One-line summary string. |
 
 (comparereport-to_dict)=
 ## `CompareReport.to_dict`

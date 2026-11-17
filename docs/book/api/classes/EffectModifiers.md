@@ -67,12 +67,12 @@ Source: [`python/mboostrs/effect_modifiers.py` lines 328-475](https://github.com
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`table`](#effectmodifiers-table) | Method | One row per covariate; see the ``records`` description. |
-| [`joint_table`](#effectmodifiers-joint_table) | Method | One row per design column of the joint regression on all covariates. |
-| [`selected`](#effectmodifiers-selected) | Method | The covariates whose decision is True, in the order given. |
-| [`projection`](#effectmodifiers-projection) | Method | The joint projection on ``"all"`` covariates, on the ``"passing"`` ones |
-| [`to_dict`](#effectmodifiers-to_dict) | Method | A JSON-safe record of the tests and the joint regression. |
-| [`describe`](#effectmodifiers-describe) | Method | Each covariate's point estimate, adjusted p-value and decision. |
+| `table` | Method | One row per covariate; see the ``records`` description. |
+| `joint_table` | Method | One row per design column of the joint regression on all covariates. |
+| `selected` | Method | The covariates whose decision is True, in the order given. |
+| `projection` | Method | The joint projection on ``"all"`` covariates, on the ``"passing"`` ones |
+| `to_dict` | Method | A JSON-safe record of the tests and the joint regression. |
+| `describe` | Method | Each covariate's point estimate, adjusted p-value and decision. |
 
 (effectmodifiers-table)=
 ## `EffectModifiers.table`

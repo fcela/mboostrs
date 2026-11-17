@@ -49,7 +49,7 @@ Source: [`python/mboostrs/_control.py` lines 25-78](https://github.com/fcela/mbo
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`describe`](#boostcontrol-describe) | Method | One-line text description of the control. |
+| `describe` | Method | One-line text description of the control. |
 
 (boostcontrol-describe)=
 ## `BoostControl.describe`

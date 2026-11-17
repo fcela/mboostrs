@@ -73,15 +73,15 @@ Source: [`python/mboostrs/cvrisk.py` lines 97-415](https://github.com/fcela/mboo
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`data_identity`](#cvriskresult-data_identity) | Property | SHA-256 digest of the observation IDs, response and weights of the |
-| [`to_dict`](#cvriskresult-to_dict) | Method | A JSON-safe record; the raw fold-risk matrix only on request. |
-| [`standard_error`](#cvriskresult-standard_error) | Property | Standard error of the mean risk at each grid point. |
-| [`mstop_1se`](#cvriskresult-mstop_1se) | Property | The one-standard-error rule: the smallest `mstop` whose risk is |
-| [`at_boundary`](#cvriskresult-at_boundary) | Method | Whether the curve is still falling at the last grid point. |
-| [`report`](#cvriskresult-report) | Method | Fold design, grid, optimum, held-out score and boundary flag as a |
-| [`compare_to`](#cvriskresult-compare_to) | Method | Compare two models fold by fold, on the folds they share. |
-| [`plot`](#cvriskresult-plot) | Method | Plot cross-validated risk. |
-| [`to_frame`](#cvriskresult-to_frame) | Method | Long-format table: one row per (fold, mstop) with its risk. |
+| `data_identity` | Property | SHA-256 digest of the observation IDs, response and weights of the |
+| `to_dict` | Method | A JSON-safe record; the raw fold-risk matrix only on request. |
+| `standard_error` | Property | Standard error of the mean risk at each grid point. |
+| `mstop_1se` | Property | The one-standard-error rule: the smallest `mstop` whose risk is |
+| `at_boundary` | Method | Whether the curve is still falling at the last grid point. |
+| `report` | Method | Fold design, grid, optimum, held-out score and boundary flag as a |
+| `compare_to` | Method | Compare two models fold by fold, on the folds they share. |
+| `plot` | Method | Plot cross-validated risk. |
+| `to_frame` | Method | Long-format table: one row per (fold, mstop) with its risk. |
 
 (cvriskresult-data_identity)=
 ## `CvRiskResult.data_identity`

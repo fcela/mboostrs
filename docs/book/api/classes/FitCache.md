@@ -25,10 +25,10 @@ Source: [`python/mboostrs/policy.py` lines 217-277](https://github.com/fcela/mbo
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`key`](#fitcache-key) | Method | Key the full computation, or return ``None`` to bypass caching. |
-| [`get_or_run`](#fitcache-get_or_run) | Method | Return the cached value for `key`, computing it on a miss. |
-| [`clear`](#fitcache-clear) | Method | Drop every entry and reset the counters. |
-| [`to_dict`](#fitcache-to_dict) | Method | Cache size and hit/miss counts, as a JSON-safe record. |
+| `key` | Method | Key the full computation, or return ``None`` to bypass caching. |
+| `get_or_run` | Method | Return the cached value for `key`, computing it on a miss. |
+| `clear` | Method | Drop every entry and reset the counters. |
+| `to_dict` | Method | Cache size and hit/miss counts, as a JSON-safe record. |
 
 (fitcache-key)=
 ## `FitCache.key`

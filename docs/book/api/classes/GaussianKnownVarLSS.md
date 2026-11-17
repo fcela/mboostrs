@@ -42,12 +42,12 @@ Source: [`python/mboostrs/gamlss.py` lines 1091-1158](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#gaussianknownvarlss-response) | Method | Link-scale to natural-scale: ``mu`` identity, ``sigma`` the excess |
-| [`mean`](#gaussianknownvarlss-mean) | Method | Conditional response mean; known and excess variance do not shift it. |
-| [`total_sd`](#gaussianknownvarlss-total_sd) | Method | Total standard deviation ``sqrt(s2 + excess variance)``. |
-| [`pdf`](#gaussianknownvarlss-pdf) | Method | Normal density at ``y`` under the total variance. |
-| [`cdf`](#gaussianknownvarlss-cdf) | Method |  |
-| [`quantile`](#gaussianknownvarlss-quantile) | Method |  |
+| `response` | Method | Link-scale to natural-scale: ``mu`` identity, ``sigma`` the excess |
+| `mean` | Method | Conditional response mean; known and excess variance do not shift it. |
+| `total_sd` | Method | Total standard deviation ``sqrt(s2 + excess variance)``. |
+| `pdf` | Method | Normal density at ``y`` under the total variance. |
+| `cdf` | Method |  |
+| `quantile` | Method |  |
 
 (gaussianknownvarlss-response)=
 ## `GaussianKnownVarLSS.response`

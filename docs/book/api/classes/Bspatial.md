@@ -51,7 +51,7 @@ Source: [`python/mboostrs/learners.py` lines 496-553](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`name`](#bspatial-name) | Property |  |
+| `name` | Property |  |
 
 (bspatial-name)=
 ## `Bspatial.name`

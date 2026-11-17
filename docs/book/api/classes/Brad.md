@@ -60,9 +60,9 @@ Source: [`python/mboostrs/learners.py` lines 948-1047](https://github.com/fcela/
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`design`](#brad-design) | Method | Whitened design at new locations, using the retained training recipe. |
-| [`name`](#brad-name) | Property |  |
-| [`as_buser`](#brad-as_buser) | Method | Equivalent user design with a retained radial prediction recipe. |
+| `design` | Method | Whitened design at new locations, using the retained training recipe. |
+| `name` | Property |  |
+| `as_buser` | Method | Equivalent user design with a retained radial prediction recipe. |
 
 (brad-design)=
 ## `Brad.design`

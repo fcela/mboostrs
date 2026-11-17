@@ -117,6 +117,18 @@ def rst_to_md(text: str) -> str:
             out.append("```")
             out.append("")
             continue
+        if line.lstrip().startswith(">>>"):
+            # A doctest block runs to the next blank line. Left as text,
+            # Markdown reads each `>>>` as three nested block quotes, which
+            # the book's framed quote environment cannot nest in LaTeX.
+            block = []
+            while i < len(lines) and lines[i].strip():
+                block.append(lines[i])
+                i += 1
+            out.append("```python")
+            out.extend(textwrap.dedent("\n".join(block)).splitlines())
+            out.append("```")
+            continue
         out.append(line)
         i += 1
     return "\n".join(out)
@@ -316,7 +328,10 @@ def page_for(name: str, obj) -> str:
         for mname, m, mk in members:
             d = (m.__doc__ if isinstance(m, property) else inspect.getdoc(m)) or ""
             summary = d.strip().splitlines()[0].replace("|", "\\|") if d.strip() else ""
-            out.append(f"| [`{mname}`](#{name.lower()}-{mname.lower()}) | {mk} | {summary} |")
+            # Plain code, not a same-page link: MyST's LaTeX export writes a
+            # same-page reference's text unescaped, and the `_` in names such
+            # as `to_dict` stops pdflatex. Each member's section follows.
+            out.append(f"| `{mname}` | {mk} | {summary} |")
         out.append("")
         for mname, m, mk in members:
             out += render_entry(2, f"{name}.{mname}", m, kind=mk,

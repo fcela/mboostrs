@@ -41,7 +41,7 @@ Source: [`python/mboostrs/residual_checks.py` lines 39-104](https://github.com/f
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`summary`](#revisionfinding-summary) | Property | The finding as a readable block: pattern, evidence, guide. |
+| `summary` | Property | The finding as a readable block: pattern, evidence, guide. |
 
 (revisionfinding-summary)=
 ## `RevisionFinding.summary`

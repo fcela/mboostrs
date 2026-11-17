@@ -65,10 +65,12 @@ is non-cyclic or from `glmboostLSS`.
 
 **Examples**
 
+```python
 >>> fit = mb.gamboostLSS({"mu": "y ~ bols(x)", "sigma": "y ~ bbs(x)"},
 ...                      data=data, families=mb.GaussianLSS())
 >>> result = mb.scale_absorption(fit, folds=5, seed=0)
 >>> result.verdict  # doctest: +SKIP
 'scale effect absorbs mean misspecification'
+```
 
 Source: [`python/mboostrs/absorption.py` lines 125-283](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/absorption.py#L125-L283)

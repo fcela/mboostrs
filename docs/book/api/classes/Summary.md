@@ -20,9 +20,9 @@ Source: [`python/mboostrs/summary.py` lines 151-238](https://github.com/fcela/mb
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`as_text`](#summary-as_text) | Method |  |
-| [`as_html`](#summary-as_html) | Method |  |
-| [`as_dict`](#summary-as_dict) | Method |  |
+| `as_text` | Method |  |
+| `as_html` | Method |  |
+| `as_dict` | Method |  |
 
 (summary-as_text)=
 ## `Summary.as_text`

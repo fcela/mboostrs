@@ -34,8 +34,8 @@ Source: [`python/mboostrs/causal.py` lines 348-438](https://github.com/fcela/mbo
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#causalspec-to_dict) | Method | A JSON-safe record; every field is a small scalar or tuple. |
-| [`describe`](#causalspec-describe) | Method | The intervention and identification claim in plain text. |
+| `to_dict` | Method | A JSON-safe record; every field is a small scalar or tuple. |
+| `describe` | Method | The intervention and identification claim in plain text. |
 
 (causalspec-to_dict)=
 ## `CausalSpec.to_dict`

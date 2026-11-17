@@ -33,7 +33,7 @@ Source: [`python/mboostrs/terms.py` lines 124-178](https://github.com/fcela/mboo
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`sentence`](#labelevidence-sentence) | Property |  |
+| `sentence` | Property |  |
 
 (labelevidence-sentence)=
 ## `LabelEvidence.sentence`

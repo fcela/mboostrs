@@ -96,8 +96,8 @@ Source: [`python/mboostrs/discover.py` lines 312-543](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`contrast`](#discoveryresult-contrast) | Method | The average change in the prediction when ``variable`` moves. |
-| [`to_dict`](#discoveryresult-to_dict) | Method | The result as JSON-ready data (``json.dumps`` accepts it). |
+| `contrast` | Method | The average change in the prediction when ``variable`` moves. |
+| `to_dict` | Method | The result as JSON-ready data (``json.dumps`` accepts it). |
 
 (discoveryresult-contrast)=
 ## `DiscoveryResult.contrast`

@@ -40,10 +40,10 @@ Source: [`python/mboostrs/causal.py` lines 3035-3102](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`n_outside`](#overlapreport-n_outside) | Property |  |
-| [`share_outside`](#overlapreport-share_outside) | Property |  |
-| [`to_dict`](#overlapreport-to_dict) | Method | A JSON-safe record of the counts, regions and estimates. |
-| [`describe`](#overlapreport-describe) | Method | The share outside the bounds, the flagged regions and both estimates. |
+| `n_outside` | Property |  |
+| `share_outside` | Property |  |
+| `to_dict` | Method | A JSON-safe record of the counts, regions and estimates. |
+| `describe` | Method | The share outside the bounds, the flagged regions and both estimates. |
 
 (overlapreport-n_outside)=
 ## `OverlapReport.n_outside`

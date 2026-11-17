@@ -31,7 +31,7 @@ Source: [`python/mboostrs/insights.py` lines 50-75](https://github.com/fcela/mbo
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#finding-to_dict) | Method | A JSON-safe record of the finding and its evidence. |
+| `to_dict` | Method | A JSON-safe record of the finding and its evidence. |
 
 (finding-to_dict)=
 ## `Finding.to_dict`

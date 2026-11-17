@@ -19,13 +19,13 @@ Source: [`python/mboostrs/gamlss.py` lines 1283-1347](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#betalss-response) | Method |  |
-| [`mean`](#betalss-mean) | Method | Conditional response mean. |
-| [`pdf`](#betalss-pdf) | Method | Beta density with response-scale ``mu`` and precision ``phi``. |
-| [`cdf`](#betalss-cdf) | Method | Beta CDF with shapes ``mu * phi`` and ``(1 - mu) * phi``. |
-| [`quantile`](#betalss-quantile) | Method | Beta quantile, obtained by inverting :meth:`cdf` on (0, 1). |
-| [`simulate`](#betalss-simulate) | Method | Draw Beta samples with response-scale ``mu`` and precision ``phi``. |
-| [`deviance_increment`](#betalss-deviance_increment) | Method |  |
+| `response` | Method |  |
+| `mean` | Method | Conditional response mean. |
+| `pdf` | Method | Beta density with response-scale ``mu`` and precision ``phi``. |
+| `cdf` | Method | Beta CDF with shapes ``mu * phi`` and ``(1 - mu) * phi``. |
+| `quantile` | Method | Beta quantile, obtained by inverting :meth:`cdf` on (0, 1). |
+| `simulate` | Method | Draw Beta samples with response-scale ``mu`` and precision ``phi``. |
+| `deviance_increment` | Method |  |
 
 (betalss-response)=
 ## `BetaLSS.response`

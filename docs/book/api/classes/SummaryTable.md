@@ -22,10 +22,10 @@ Source: [`python/mboostrs/summary.py` lines 69-148](https://github.com/fcela/mbo
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`widths`](#summarytable-widths) | Method |  |
-| [`as_text`](#summarytable-as_text) | Method |  |
-| [`as_html`](#summarytable-as_html) | Method |  |
-| [`as_dict`](#summarytable-as_dict) | Method |  |
+| `widths` | Method |  |
+| `as_text` | Method |  |
+| `as_html` | Method |  |
+| `as_dict` | Method |  |
 
 (summarytable-widths)=
 ## `SummaryTable.widths`

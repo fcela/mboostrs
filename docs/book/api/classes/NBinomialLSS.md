@@ -19,14 +19,14 @@ Source: [`python/mboostrs/gamlss.py` lines 1350-1432](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#nbinomiallss-response) | Method |  |
-| [`mean`](#nbinomiallss-mean) | Method | Conditional count mean ``mu``. |
-| [`pmf`](#nbinomiallss-pmf) | Method | Negative-binomial mass with response-scale mean ``mu`` and size ``sigma``. |
-| [`cdf`](#nbinomiallss-cdf) | Method | Negative-binomial CDF with response-scale mean ``mu`` and size ``sigma``. |
-| [`quantile`](#nbinomiallss-quantile) | Method | Negative-binomial quantile for probabilities ``p``. |
-| [`simulate`](#nbinomiallss-simulate) | Method | Draw negative-binomial samples with response-scale mean and size. |
-| [`deviance_increment`](#nbinomiallss-deviance_increment) | Method |  |
-| [`pdf`](#nbinomiallss-pdf) | Method | Negative-binomial probability mass with ``sigma`` naming the size, |
+| `response` | Method |  |
+| `mean` | Method | Conditional count mean ``mu``. |
+| `pmf` | Method | Negative-binomial mass with response-scale mean ``mu`` and size ``sigma``. |
+| `cdf` | Method | Negative-binomial CDF with response-scale mean ``mu`` and size ``sigma``. |
+| `quantile` | Method | Negative-binomial quantile for probabilities ``p``. |
+| `simulate` | Method | Draw negative-binomial samples with response-scale mean and size. |
+| `deviance_increment` | Method |  |
+| `pdf` | Method | Negative-binomial probability mass with ``sigma`` naming the size, |
 
 (nbinomiallss-response)=
 ## `NBinomialLSS.response`

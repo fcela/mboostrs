@@ -23,10 +23,10 @@ Source: [`python/mboostrs/policy.py` lines 112-169](https://github.com/fcela/mbo
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`record`](#spent-record) | Method | Add one stage's cost, and return ``self`` for chaining. |
-| [`exceeded`](#spent-exceeded) | Method | The name of the limit passed, or ``None`` while inside budget. |
-| [`remaining`](#spent-remaining) | Method | Remaining allowance for each budget limit; ``None`` where unlimited. |
-| [`to_dict`](#spent-to_dict) | Method | Spent against budget, with the stage log. |
+| `record` | Method | Add one stage's cost, and return ``self`` for chaining. |
+| `exceeded` | Method | The name of the limit passed, or ``None`` while inside budget. |
+| `remaining` | Method | Remaining allowance for each budget limit; ``None`` where unlimited. |
+| `to_dict` | Method | Spent against budget, with the stage log. |
 
 (spent-record)=
 ## `Spent.record`

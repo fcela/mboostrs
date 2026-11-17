@@ -28,7 +28,7 @@ Source: [`python/mboostrs/explore.py` lines 2072-2119](https://github.com/fcela/
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`to_dict`](#termreport-to_dict) | Method | A JSON-safe record of what each term is worth, and in what shape. |
+| `to_dict` | Method | A JSON-safe record of what each term is worth, and in what shape. |
 
 (termreport-to_dict)=
 ## `TermReport.to_dict`

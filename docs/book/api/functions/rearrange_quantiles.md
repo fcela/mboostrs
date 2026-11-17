@@ -58,9 +58,11 @@ the predictions differ in length or contain NaN.
 
 **Examples**
 
+```python
 >>> fits = [mb.glmboost("y ~ bols(x)", data=d, family=mb.Quantile(tau=t))
 ...         for t in (0.1, 0.5, 0.9)]                      # doctest: +SKIP
 >>> r = mb.rearrange_quantiles(fits, d)                    # doctest: +SKIP
 >>> r.crossing_share, r.predictions                        # doctest: +SKIP
+```
 
 Source: [`python/mboostrs/rearrange.py` lines 157-297](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/rearrange.py#L157-L297)

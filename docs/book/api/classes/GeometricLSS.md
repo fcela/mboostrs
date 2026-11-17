@@ -19,14 +19,14 @@ Source: [`python/mboostrs/gamlss.py` lines 1685-1760](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#geometriclss-response) | Method |  |
-| [`mean`](#geometriclss-mean) | Method | Mean failures before the first success, ``mu``. |
-| [`pmf`](#geometriclss-pmf) | Method | Geometric mass with response-scale mean ``mu`` (number of failures |
-| [`cdf`](#geometriclss-cdf) | Method | Geometric CDF: :math:`1 - (1-\pi)^{\lfloor y \rfloor + 1}`. |
-| [`quantile`](#geometriclss-quantile) | Method | Geometric quantile: smallest ``k`` with ``CDF(k) >= p``. |
-| [`simulate`](#geometriclss-simulate) | Method | Draw geometric samples (number of failures before first success). |
-| [`deviance_increment`](#geometriclss-deviance_increment) | Method |  |
-| [`pdf`](#geometriclss-pdf) | Method | Geometric probability mass. Matches ``gamlss.dist::dGEOM``, whose |
+| `response` | Method |  |
+| `mean` | Method | Mean failures before the first success, ``mu``. |
+| `pmf` | Method | Geometric mass with response-scale mean ``mu`` (number of failures |
+| `cdf` | Method | Geometric CDF: :math:`1 - (1-\pi)^{\lfloor y \rfloor + 1}`. |
+| `quantile` | Method | Geometric quantile: smallest ``k`` with ``CDF(k) >= p``. |
+| `simulate` | Method | Draw geometric samples (number of failures before first success). |
+| `deviance_increment` | Method |  |
+| `pdf` | Method | Geometric probability mass. Matches ``gamlss.dist::dGEOM``, whose |
 
 (geometriclss-response)=
 ## `GeometricLSS.response`

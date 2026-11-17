@@ -19,8 +19,8 @@ Source: [`python/mboostrs/gamlss.py` lines 2317-2337](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#piglss-response) | Method |  |
-| [`mean`](#piglss-mean) | Method | Conditional count mean ``mu``. |
+| `response` | Method |  |
+| `mean` | Method | Conditional count mean ``mu``. |
 
 (piglss-response)=
 ## `PIGLSS.response`

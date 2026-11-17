@@ -23,12 +23,12 @@ Source: [`python/mboostrs/gamlss.py` lines 2593-2694](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#bcpelss-response) | Method |  |
-| [`mean`](#bcpelss-mean) | Method |  |
-| [`pdf`](#bcpelss-pdf) | Method |  |
-| [`cdf`](#bcpelss-cdf) | Method |  |
-| [`quantile`](#bcpelss-quantile) | Method |  |
-| [`simulate`](#bcpelss-simulate) | Method |  |
+| `response` | Method |  |
+| `mean` | Method |  |
+| `pdf` | Method |  |
+| `cdf` | Method |  |
+| `quantile` | Method |  |
+| `simulate` | Method |  |
 
 (bcpelss-response)=
 ## `BCPELSS.response`

@@ -48,27 +48,27 @@ Source: [`python/mboostrs/evaluation.py` lines 49-807](https://github.com/fcela/
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`aggregate`](#evaluationresult-aggregate) | Property | The equal-fold mean score, the number `cv_risk` returns without |
-| [`to_dict`](#evaluationresult-to_dict) | Method | A JSON-safe record; fold scores and row evidence only on request. |
-| [`to_frame`](#evaluationresult-to_frame) | Method | One row per held-out prediction, or an empty frame if arrays were omitted. |
-| [`fold_frame`](#evaluationresult-fold_frame) | Method | One row per fold with its score, sample sizes, weights and stopping point. |
-| [`residual_frame`](#evaluationresult-residual_frame) | Method | Held-out response residuals aligned with record and fold identity. |
-| [`calibration_frame`](#evaluationresult-calibration_frame) | Method | Equal-count reliability bins from held-out probability predictions. |
-| [`classification_metrics`](#evaluationresult-classification_metrics) | Method | Weighted held-out probability and threshold metrics. |
-| [`roc_frame`](#evaluationresult-roc_frame) | Method | Weighted empirical ROC curve and trapezoidal AUC. |
-| [`precision_recall_frame`](#evaluationresult-precision_recall_frame) | Method | Weighted precision–recall curve and step-integrated average precision. |
-| [`auc_interval`](#evaluationresult-auc_interval) | Method | Weighted AUC with a DeLong standard error and a normal interval. |
-| [`auc_difference`](#evaluationresult-auc_difference) | Method | Paired AUC difference ``self - other`` with a DeLong interval. |
-| [`threshold_frame`](#evaluationresult-threshold_frame) | Method | Weighted threshold metrics and average decision utility. |
-| [`count_metrics`](#evaluationresult-count_metrics) | Method | Weighted held-out count, rate, Poisson deviance, and log-score metrics. |
-| [`multiclass_metrics`](#evaluationresult-multiclass_metrics) | Method | Weighted held-out categorical log loss, Brier score, and class summaries. |
-| [`multiclass_confusion_frame`](#evaluationresult-multiclass_confusion_frame) | Method | Weighted observed-by-predicted confusion cells for every class pair. |
-| [`multiclass_calibration_frame`](#evaluationresult-multiclass_calibration_frame) | Method | One-vs-rest reliability bins for every retained probability column. |
-| [`observation_weighted_score`](#evaluationresult-observation_weighted_score) | Property | The held-out loss averaged over observations rather than folds. |
-| [`failed_folds`](#evaluationresult-failed_folds) | Property | The fold records of folds that could not be fitted or scored. |
-| [`describe`](#evaluationresult-describe) | Method | A compact statement of the evaluated quantity and population. |
-| [`comparison_issues`](#evaluationresult-comparison_issues) | Method | Reasons the two results do not estimate a common scoring target. |
-| [`assert_comparable`](#evaluationresult-assert_comparable) | Method | Raise when a score comparison would change its target or pairing. |
+| `aggregate` | Property | The equal-fold mean score, the number `cv_risk` returns without |
+| `to_dict` | Method | A JSON-safe record; fold scores and row evidence only on request. |
+| `to_frame` | Method | One row per held-out prediction, or an empty frame if arrays were omitted. |
+| `fold_frame` | Method | One row per fold with its score, sample sizes, weights and stopping point. |
+| `residual_frame` | Method | Held-out response residuals aligned with record and fold identity. |
+| `calibration_frame` | Method | Equal-count reliability bins from held-out probability predictions. |
+| `classification_metrics` | Method | Weighted held-out probability and threshold metrics. |
+| `roc_frame` | Method | Weighted empirical ROC curve and trapezoidal AUC. |
+| `precision_recall_frame` | Method | Weighted precision–recall curve and step-integrated average precision. |
+| `auc_interval` | Method | Weighted AUC with a DeLong standard error and a normal interval. |
+| `auc_difference` | Method | Paired AUC difference ``self - other`` with a DeLong interval. |
+| `threshold_frame` | Method | Weighted threshold metrics and average decision utility. |
+| `count_metrics` | Method | Weighted held-out count, rate, Poisson deviance, and log-score metrics. |
+| `multiclass_metrics` | Method | Weighted held-out categorical log loss, Brier score, and class summaries. |
+| `multiclass_confusion_frame` | Method | Weighted observed-by-predicted confusion cells for every class pair. |
+| `multiclass_calibration_frame` | Method | One-vs-rest reliability bins for every retained probability column. |
+| `observation_weighted_score` | Property | The held-out loss averaged over observations rather than folds. |
+| `failed_folds` | Property | The fold records of folds that could not be fitted or scored. |
+| `describe` | Method | A compact statement of the evaluated quantity and population. |
+| `comparison_issues` | Method | Reasons the two results do not estimate a common scoring target. |
+| `assert_comparable` | Method | Raise when a score comparison would change its target or pairing. |
 
 (evaluationresult-aggregate)=
 ## `EvaluationResult.aggregate`

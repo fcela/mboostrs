@@ -18,13 +18,13 @@ Source: [`python/mboostrs/gamlss.py` lines 1161-1215](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#gammalss-response) | Method |  |
-| [`mean`](#gammalss-mean) | Method | Conditional response mean. |
-| [`pdf`](#gammalss-pdf) | Method | Gamma density with response-scale ``mu`` (mean) and ``sigma`` (shape). |
-| [`cdf`](#gammalss-cdf) | Method | Gamma CDF with shape ``sigma`` and scale ``mu / sigma``. |
-| [`quantile`](#gammalss-quantile) | Method | Gamma quantile, obtained by inverting :meth:`cdf`. |
-| [`simulate`](#gammalss-simulate) | Method | Draw Gamma samples with response-scale ``mu`` and ``sigma``. |
-| [`deviance_increment`](#gammalss-deviance_increment) | Method |  |
+| `response` | Method |  |
+| `mean` | Method | Conditional response mean. |
+| `pdf` | Method | Gamma density with response-scale ``mu`` (mean) and ``sigma`` (shape). |
+| `cdf` | Method | Gamma CDF with shape ``sigma`` and scale ``mu / sigma``. |
+| `quantile` | Method | Gamma quantile, obtained by inverting :meth:`cdf`. |
+| `simulate` | Method | Draw Gamma samples with response-scale ``mu`` and ``sigma``. |
+| `deviance_increment` | Method |  |
 
 (gammalss-response)=
 ## `GammaLSS.response`

@@ -23,8 +23,8 @@ Source: [`python/mboostrs/selection.py` lines 90-115](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`variables`](#probing-variables) | Property | The data columns the selected terms read, in formula order. |
-| [`to_dict`](#probing-to_dict) | Method | A JSON-safe record (the model itself is not exported). |
+| `variables` | Property | The data columns the selected terms read, in formula order. |
+| `to_dict` | Method | A JSON-safe record (the model itself is not exported). |
 
 (probing-variables)=
 ## `Probing.variables`

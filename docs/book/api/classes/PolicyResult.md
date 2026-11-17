@@ -38,9 +38,9 @@ Source: [`python/mboostrs/policy.py` lines 901-963](https://github.com/fcela/mbo
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`adopted`](#policyresult-adopted) | Property | The rungs the ladder climbed, in order. |
-| [`fits`](#policyresult-fits) | Property | Model fits the whole procedure spent. |
-| [`to_dict`](#policyresult-to_dict) | Method | A JSON-safe record: the specification, the trail and the cost. |
+| `adopted` | Property | The rungs the ladder climbed, in order. |
+| `fits` | Property | Model fits the whole procedure spent. |
+| `to_dict` | Method | A JSON-safe record: the specification, the trail and the cost. |
 
 (policyresult-adopted)=
 ## `PolicyResult.adopted`

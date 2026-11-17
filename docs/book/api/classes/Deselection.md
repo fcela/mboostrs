@@ -24,8 +24,8 @@ Source: [`python/mboostrs/selection.py` lines 47-87](https://github.com/fcela/mb
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`variables`](#deselection-variables) | Property | The data columns the kept terms read, in formula order; for a |
-| [`to_dict`](#deselection-to_dict) | Method | A JSON-safe record (the model itself is not exported). |
+| `variables` | Property | The data columns the kept terms read, in formula order; for a |
+| `to_dict` | Method | A JSON-safe record (the model itself is not exported). |
 
 (deselection-variables)=
 ## `Deselection.variables`

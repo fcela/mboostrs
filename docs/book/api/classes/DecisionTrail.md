@@ -27,15 +27,15 @@ Source: [`python/mboostrs/_procedure/_trail.py` lines 191-357](https://github.co
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`start`](#decisiontrail-start) | Method | Open a trail with the data, folds and provenance. |
-| [`add_step`](#decisiontrail-add_step) | Method | Append one decision. Extra keyword arguments become its fields. |
-| [`set_final`](#decisiontrail-set_final) | Method |  |
-| [`set_uncertainty`](#decisiontrail-set_uncertainty) | Method |  |
-| [`set_budget`](#decisiontrail-set_budget) | Method |  |
-| [`to_dict`](#decisiontrail-to_dict) | Method | The trail as plain Python types, JSON-safe (NaN/inf become null). |
-| [`to_json`](#decisiontrail-to_json) | Method |  |
-| [`from_dict`](#decisiontrail-from_dict) | Method | Rebuild a trail from :meth:`to_dict` output or a JSON string. |
-| [`validate`](#decisiontrail-validate) | Method | Check the record against the schema, raising on failure. |
+| `start` | Method | Open a trail with the data, folds and provenance. |
+| `add_step` | Method | Append one decision. Extra keyword arguments become its fields. |
+| `set_final` | Method |  |
+| `set_uncertainty` | Method |  |
+| `set_budget` | Method |  |
+| `to_dict` | Method | The trail as plain Python types, JSON-safe (NaN/inf become null). |
+| `to_json` | Method |  |
+| `from_dict` | Method | Rebuild a trail from :meth:`to_dict` output or a JSON string. |
+| `validate` | Method | Check the record against the schema, raising on failure. |
 
 (decisiontrail-start)=
 ## `DecisionTrail.start`

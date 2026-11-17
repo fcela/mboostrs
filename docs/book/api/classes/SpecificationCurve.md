@@ -54,9 +54,9 @@ Source: [`python/mboostrs/specification_curve.py` lines 187-260](https://github.
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`rows`](#specificationcurve-rows) | Property | The records as a frame, or a list of dicts for ``output="records"``. |
-| [`to_dict`](#specificationcurve-to_dict) | Method | The whole result as plain Python types, for JSON. |
-| [`plot`](#specificationcurve-plot) | Method | The curve as an Altair chart: each gap with its +/- 2 paired SE interval. |
+| `rows` | Property | The records as a frame, or a list of dicts for ``output="records"``. |
+| `to_dict` | Method | The whole result as plain Python types, for JSON. |
+| `plot` | Method | The curve as an Altair chart: each gap with its +/- 2 paired SE interval. |
 
 (specificationcurve-rows)=
 ## `SpecificationCurve.rows`

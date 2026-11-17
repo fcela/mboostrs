@@ -22,7 +22,7 @@ Source: [`python/mboostrs/gamlss.py` lines 2842-2868](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`mean`](#lognormallss-mean) | Method | Uncensored survival-time mean ``exp(mu + sigma**2 / 2)``. |
+| `mean` | Method | Uncensored survival-time mean ``exp(mu + sigma**2 / 2)``. |
 
 (lognormallss-mean)=
 ## `LogNormalLSS.mean`

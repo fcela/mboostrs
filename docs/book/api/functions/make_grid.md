@@ -46,7 +46,9 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 **Examples**
 
+```python
 >>> make_grid(100, length_out=6)
 [1, 3, 6, 16, 40, 100]
+```
 
 Source: [`python/mboostrs/cvrisk.py` lines 1012-1105](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/cvrisk.py#L1012-L1105)

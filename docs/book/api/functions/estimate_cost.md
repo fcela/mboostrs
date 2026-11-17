@@ -62,6 +62,7 @@ more. `CostEstimate.stages` gives the first-pass count of each stage, and
 
 **Examples**
 
+```python
 >>> import numpy as np, mboostrs as mb
 >>> rng = np.random.default_rng(0)
 >>> x = rng.uniform(-2, 2, 300)
@@ -69,5 +70,6 @@ more. `CostEstimate.stages` gives the first-pass count of each stage, and
 >>> cost = mb.estimate_cost("tune_mstop", "y ~ bbs(x, df=4)", data, folds=5)
 >>> cost.fits
 6
+```
 
 Source: [`python/mboostrs/cost.py` lines 45-112](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/cost.py#L45-L112)

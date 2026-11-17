@@ -20,11 +20,11 @@ Source: [`python/mboostrs/gamlss.py` lines 2252-2314](https://github.com/fcela/m
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`response`](#zeroadjustedpoissonlss-response) | Method |  |
-| [`mean`](#zeroadjustedpoissonlss-mean) | Method | Mixture mean ``(1-sigma) * mu / (1-exp(-mu))``. |
-| [`cdf`](#zeroadjustedpoissonlss-cdf) | Method | Zero-adjusted Poisson CDF: ``sigma`` at zero, then the |
-| [`quantile`](#zeroadjustedpoissonlss-quantile) | Method | Zero-adjusted Poisson quantile; zero for ``p <= sigma``. |
-| [`pdf`](#zeroadjustedpoissonlss-pdf) | Method | Zero-adjusted Poisson mass: ``sigma`` at zero, the zero-truncated |
+| `response` | Method |  |
+| `mean` | Method | Mixture mean ``(1-sigma) * mu / (1-exp(-mu))``. |
+| `cdf` | Method | Zero-adjusted Poisson CDF: ``sigma`` at zero, then the |
+| `quantile` | Method | Zero-adjusted Poisson quantile; zero for ``p <= sigma``. |
+| `pdf` | Method | Zero-adjusted Poisson mass: ``sigma`` at zero, the zero-truncated |
 
 (zeroadjustedpoissonlss-response)=
 ## `ZeroAdjustedPoissonLSS.response`

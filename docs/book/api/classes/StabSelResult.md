@@ -38,13 +38,13 @@ Source: [`python/mboostrs/stabsel.py` lines 175-290](https://github.com/fcela/mb
 
 | Member | Kind | Summary |
 |---|---|---|
-| [`max`](#stabselresult-max) | Property | Each learner's largest ``phat``, keyed by name. |
-| [`names`](#stabselresult-names) | Property |  |
-| [`selected_names`](#stabselresult-selected_names) | Property | The selected learners by name (``selected`` holds their indices). |
-| [`variables`](#stabselresult-variables) | Property | The data columns the selected learners read, in learner order. |
-| [`to_dict`](#stabselresult-to_dict) | Method | A JSON-safe record; the selection-probability paths only on request. |
-| [`plot`](#stabselresult-plot) | Method |  |
-| [`to_frame`](#stabselresult-to_frame) | Method | One row per candidate learner: name, max selection probability |
+| `max` | Property | Each learner's largest ``phat``, keyed by name. |
+| `names` | Property |  |
+| `selected_names` | Property | The selected learners by name (``selected`` holds their indices). |
+| `variables` | Property | The data columns the selected learners read, in learner order. |
+| `to_dict` | Method | A JSON-safe record; the selection-probability paths only on request. |
+| `plot` | Method |  |
+| `to_frame` | Method | One row per candidate learner: name, max selection probability |
 
 (stabselresult-max)=
 ## `StabSelResult.max`
