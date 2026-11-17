@@ -4,7 +4,7 @@
 # Creates a GitHub release, publishes mboostrs-core to crates.io, and
 # publishes wheels to PyPI for:
 #   - macOS arm64 + x86_64 (universal2)
-#   - Linux x86_64 (manylinux)
+#   - Linux x86_64 and aarch64 (manylinux)
 #   - Windows x86_64
 # across Python 3.11, 3.12, 3.13.
 #
@@ -121,6 +121,14 @@ jobs:
             arch: x86_64
             manylinux: manylinux2014
             rust_targets: x86_64-unknown-linux-gnu
+          # Linux aarch64: built natively on an Arm runner, so the smoke test
+          # below runs the wheel it built.
+          - label: Linux aarch64
+            os: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+            arch: aarch64
+            manylinux: manylinux2014
+            rust_targets: aarch64-unknown-linux-gnu
           # Windows x86_64
           - label: Windows x86_64
             os: windows-latest
@@ -276,9 +284,17 @@ jobs:
 
   # ── Linux wheels added to an existing PyPI release ────────────────────
   pypi-linux-wheels:
-    name: Add Linux wheels of an existing tag to PyPI
+    name: Add Linux wheels of an existing tag to PyPI — ${{ matrix.target }}
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.linux_wheels_for_tag != '' }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+          - os: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
     environment: pypi
     permissions:
       contents: read
@@ -291,16 +307,16 @@ jobs:
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
-          targets: x86_64-unknown-linux-gnu
+          targets: ${{ matrix.target }}
 
       - uses: Swatinem/rust-cache@v2
         with:
-          key: x86_64-unknown-linux-gnu
+          key: ${{ matrix.target }}
 
       - name: Build Linux wheels
         uses: PyO3/maturin-action@v1
         with:
-          target: x86_64-unknown-linux-gnu
+          target: ${{ matrix.target }}
           args: --release --out dist -i python3.11 python3.12 python3.13
           manylinux: manylinux2014
 
