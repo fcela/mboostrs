@@ -56,6 +56,23 @@ def test_each_wheel_is_installed_and_exercised_before_upload():
     assert "mb.glmboost" in commands and "m.predict" in commands
 
 
+def test_tag_release_builds_wheels_for_every_supported_platform():
+    jobs = yaml.safe_load((ROOT / ".github/workflows/release.yml").read_text())["jobs"]
+    matrix = jobs["build-wheels"]["strategy"]["matrix"]["include"]
+    targets = {entry["target"]: entry for entry in matrix}
+    assert set(targets) == {"universal2-apple-darwin", "x86_64-unknown-linux-gnu",
+                            "aarch64-unknown-linux-gnu", "x86_64-pc-windows-msvc"}
+    # Native Arm runner, so the smoke test runs the aarch64 wheel it built.
+    assert targets["aarch64-unknown-linux-gnu"]["os"] == "ubuntu-24.04-arm"
+    # Artifact names must differ per target, or one upload replaces another.
+    upload = next(step for step in jobs["build-wheels"]["steps"]
+                  if step.get("uses", "").startswith("actions/upload-artifact"))
+    assert "matrix.target" in upload["with"]["name"]
+    # The PyPI publish action is an x86_64 container image.
+    assert jobs["pypi"]["runs-on"] == "ubuntu-latest"
+    assert jobs["pypi-linux-wheels"]["runs-on"] == "ubuntu-latest"
+
+
 def test_parity_triggers_cover_statistical_helper_boundaries():
     paths = yaml.safe_load((ROOT / ".github/workflows/parity.yml").read_text())[True]["pull_request"]["paths"]
     for path in (
