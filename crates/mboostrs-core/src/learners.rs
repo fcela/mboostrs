@@ -4548,11 +4548,11 @@ fn block_bols_matvec_into(
 /// `penalty + XᵀWX`, accumulated over blocks of rows so that no weighted
 /// copy of the whole design is formed.
 /// Parallelism for one-time setup kernels: weighted Grams, the df→λ spectrum
-/// products, and factorizations inside learner preparation. faer's parallel
-/// execution is deterministic — identical results at any thread count — and
-/// these O(n·p²)/O(p³) kernels are paid once per prepared learner, so they
-/// use the whole rayon pool. Per-iteration boosting kernels keep passing
-/// `Parallelism::None` explicitly (#276).
+/// products, and factorizations inside learner preparation. These
+/// O(n·p²)/O(p³) kernels are paid once per prepared learner, so they run in
+/// parallel, with the fixed task count of [`crate::linalg::FAER_TASKS`] so
+/// that the result does not depend on the thread count. Per-iteration
+/// boosting kernels keep passing `Parallelism::None` explicitly (#276).
 fn setup_parallelism() -> faer::Parallelism<'static> {
     // Learner preparation runs on rayon's pool (mboostrs-py lib.rs `par_iter`);
     // nested faer parallelism there risks stack overflow in recursive algorithms
@@ -4561,7 +4561,7 @@ fn setup_parallelism() -> faer::Parallelism<'static> {
     if rayon::current_thread_index().is_some() {
         faer::Parallelism::None
     } else {
-        faer::Parallelism::Rayon(0)
+        crate::linalg::faer_parallelism()
     }
 }
 

@@ -5955,6 +5955,7 @@ extendr_module! {
 #[no_mangle]
 #[allow(non_snake_case)]
 pub extern "C" fn R_init_mboostrs(info: *mut extendr_api::DllInfo) {
+    mboostrs_core::linalg::configure_faer();
     unsafe {
         extendr_api::register_call_methods(info, get_mboostrs_metadata());
     }

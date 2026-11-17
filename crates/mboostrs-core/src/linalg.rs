@@ -8,6 +8,29 @@ use faer::linalg::solvers::Cholesky;
 use faer::prelude::SpSolver;
 use faer::{Conj, Mat, Parallelism, Side};
 
+/// Number of tasks faer's parallel kernels divide their work into.
+///
+/// faer's eigendecomposition and SVD sum partial results per task. With
+/// `Parallelism::Rayon(0)` the task count is the rayon pool size, so a fit's
+/// last bits depended on the core count and `RAYON_NUM_THREADS`. A fixed
+/// count gives the same bits at any thread count. The tasks run on up to
+/// this many threads; on a 10-core machine, 8 tasks are about 2% slower
+/// than one task per core.
+pub const FAER_TASKS: usize = 8;
+
+/// The parallelism every parallel faer call in mboostrs passes.
+pub fn faer_parallelism() -> Parallelism<'static> {
+    Parallelism::Rayon(FAER_TASKS)
+}
+
+/// Sets faer's global parallelism, which its high-level decompositions
+/// (`selfadjoint_eigendecomposition`, `thin_svd`, ...) read, to
+/// [`faer_parallelism`]. The Python and R bindings call it when they load;
+/// a Rust program that uses mboostrs-core directly calls it once at startup.
+pub fn configure_faer() {
+    faer::set_global_parallelism(faer_parallelism());
+}
+
 /// Solve `a · x = b` for square positive-definite `a` via Cholesky.
 pub fn cho_solve(
     a: &ndarray::Array2<f64>,
