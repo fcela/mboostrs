@@ -4,7 +4,7 @@
 //! stopping step with the maximum of the same log-likelihood over the same
 //! linear predictor: the unpenalized GLM on the boost's design, the
 //! proportional-odds model for `PropOdds`, and the beta regression for a
-//! linear `BetaLSS`. [`fit_same_family`] computes that maximum.
+//! linear `BetaLSS`. [`fit_same_family`](crate::same_family::fit_same_family) computes that maximum.
 //!
 //! The objective is the family's own risk from [`crate::families`] or
 //! [`crate::lss`], the quantity `logLik` negates, so the maximum and the

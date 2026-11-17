@@ -142,8 +142,9 @@ impl Breslow {
     /// Survival curves at every event time, one column per subject.
     ///
     /// With `linpred_new = None` the single column is the baseline curve
-    /// `exp(-H0(t))`. Otherwise column `j` is `exp(-H0(t) * exp(linpred_new[j]
-    /// - center))`. The result has shape `(n_event_times, n_curves)`.
+    /// `exp(-H0(t))`. Otherwise column `j` is
+    /// `exp(-H0(t) * exp(linpred_new[j] - center))`. The result has shape
+    /// `(n_event_times, n_curves)`.
     pub fn curves(&self, linpred_new: Option<&[f64]>) -> Result<Array2<f64>, MboostrsError> {
         match linpred_new {
             None => Ok(Array2::from_shape_fn((self.len(), 1), |(i, _)| {

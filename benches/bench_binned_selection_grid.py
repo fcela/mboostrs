@@ -120,6 +120,12 @@ def build() -> dict:
     }
 
 
+def _platform(grid: dict) -> tuple:
+    """The operating system and CPU architecture a grid was generated on."""
+    platform = grid.get("metadata", {}).get("platform", {})
+    return (platform.get("system"), platform.get("machine"))
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true",
@@ -133,7 +139,25 @@ def main() -> int:
             return 1
         committed = json.loads(OUTPUT.read_text(encoding="utf-8"))
         # The machine metadata differs by design; the findings must not.
-        if committed["cells"] != grid["cells"]:
+        # Which learner wins a near-tie depends on the order the CPU adds
+        # floating-point terms, so the exact selection sequences and fitted
+        # differences are reproducible only on the platform the grid was
+        # generated on. On another platform the cells must cover the same
+        # design and show the same finding: binning changes the selection
+        # in some cells and not in others.
+        if _platform(committed) == _platform(grid):
+            matches = committed["cells"] == grid["cells"]
+        else:
+            design = ("n", "learners", "bins", "mstop", "family")
+            matches = (
+                [[cell[key] for key in design] for cell in committed["cells"]]
+                == [[cell[key] for key in design] for cell in grid["cells"]]
+                and 0 < grid["summary"]["sequence_identical"] < grid["summary"]["cells"]
+            )
+            print(f"fresh run on {_platform(grid)}, committed grid from "
+                  f"{_platform(committed)}: compared the design and the "
+                  f"finding, not the per-cell values", file=sys.stderr)
+        if not matches:
             print(f"{OUTPUT.name} no longer matches a fresh run. Binning's "
                   f"effect on selection changed; regenerate and read the "
                   f"diff before treating it as noise.", file=sys.stderr)

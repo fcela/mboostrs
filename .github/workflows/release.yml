@@ -28,6 +28,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          # The capability ledger's review-date rule and the benchmark
+          # artifact report read the commit history; a shallow clone makes
+          # every file look changed by the newest commit.
+          fetch-depth: 0
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
@@ -48,6 +53,7 @@ jobs:
           extra-packages: |
             any::rcmdcheck
             mboost@2.9-11
+            gamlss.dist@6.1-1
             any::gamboostLSS
             any::stabs
             any::survival

@@ -376,7 +376,7 @@ fn reduce_constant(design: &Array2<f64>) -> (Array2<f64>, Vec<usize>) {
 /// are excluded -- trees, whose stored design is their raw covariates, and
 /// `%O%` Kronecker learners, whose design is a placeholder -- and so are
 /// their steps. Every measured term is first reduced by the constant
-/// direction (see [`reduce_constant`]), as mgcv measures its constrained
+/// direction (see `reduce_constant`), as mgcv measures its constrained
 /// smooths; a term that is constant after the reduction (an intercept
 /// column) has no function space left and reports NaN. Returns the store
 /// indices that were measured alongside the measures, in store order.

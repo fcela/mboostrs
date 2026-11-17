@@ -56,7 +56,7 @@ pub fn fit<F: Family + ?Sized>(
     fit_with(learners, y, weights, family, control, offset_override, true)
 }
 
-/// Fallible version of [`fit`](fn.fit.html) that returns a typed error instead
+/// Fallible version of [`fit`] that returns a typed error instead
 /// of panicking on invalid input.
 pub fn try_fit<F: Family + ?Sized>(
     learners: &mut [PreparedLearner],
@@ -760,7 +760,7 @@ pub fn try_fit_with_oob_weights<F: Family + ?Sized>(
     )
 }
 
-/// Fallible version of [`fit_with`](fn.fit_with.html) that returns a typed
+/// Fallible version of [`fit_with`] that returns a typed
 /// error instead of panicking on invalid input.
 pub fn try_fit_with<F: Family + ?Sized>(
     learners: &mut [PreparedLearner],
@@ -857,7 +857,7 @@ pub fn fit_selected<F: Family + ?Sized>(
     .selected
 }
 
-/// Fallible version of [`fit_selected`](fn.fit_selected.html).
+/// Fallible version of [`fit_selected`].
 pub fn try_fit_selected<F: Family + ?Sized>(
     learners: &mut [PreparedLearner],
     y: ArrayView1<f64>,

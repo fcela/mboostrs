@@ -4315,8 +4315,8 @@ const SPARSE_ROWS_MAX_DENSITY: f64 = 0.35;
 /// The dense `design` `D = S − 1 cᵀ` stays the learner's source of truth;
 /// this is a derived cache built before centering is subtracted, and the
 /// centered products are recovered algebraically — `Dᵀ v = Sᵀ v − c·sum(v)`
-/// and `D β = S β − (c∙β)·1` — by [`block_bols_crossprod_into`] and
-/// [`block_bols_matvec_into`]. Reading `Sᵀ(w∘u)` and `S β` from the sparse
+/// and `D β = S β − (c∙β)·1` — by `block_bols_crossprod_into` and
+/// `block_bols_matvec_into`. Reading `Sᵀ(w∘u)` and `S β` from the sparse
 /// arrays costs O(nnz) per step instead of a dense O(n·p) faer product,
 /// which profiling put at over half of LSS/Binomial fit time.
 ///
@@ -4342,7 +4342,7 @@ pub struct SparseRows {
 
 impl SparseRows {
     /// Exact column-compressed copy of `d`, or `None` when it is too small
-    /// (`n <` [`SPARSE_ROWS_MIN_ROWS`]) or too dense
+    /// (`n <` `SPARSE_ROWS_MIN_ROWS`) or too dense
     /// (`nnz > max_density · n · p`) for the sparse products to pay. A value
     /// is a non-zero iff it is not exactly `0.0`, the same support
     /// [`crate::linalg::CsrMatrix::try_from_dense`] discovers.
@@ -9519,10 +9519,10 @@ pub fn prepare_block_bols(
 /// sharing one `X'WX` between the df→λ calibration and the solver.
 ///
 /// This is the tensor-spatial preparation core. `X'WX` is computed once
-/// ([`weighted_gram_blocked`]); the smoothing parameter is calibrated from it
+/// (`weighted_gram_blocked`); the smoothing parameter is calibrated from it
 /// ([`df_to_lambda_from_gram`], unless `lambda_override` is set); and the solver
 /// Gram is assembled as `X'WX + λK`, skipping the second O(n·p²) pass that a
-/// λK-seeded [`penalized_weighted_gram`] would pay. The unpenalized Gram is
+/// λK-seeded `penalized_weighted_gram` would pay. The unpenalized Gram is
 /// retained as an exact CSR copy for the Gaussian Gram route's self-block.
 ///
 /// `design` must already be the final (centered) design and `penalty` the
