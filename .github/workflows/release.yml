@@ -17,7 +17,15 @@ on:
   push:
     tags: ["v*"]
   # Build and verify artifacts without publishing or creating a release.
+  # With `linux_wheels_for_tag` set, only the Linux wheels of that existing tag
+  # are built and added to its PyPI release (files already on PyPI are skipped).
   workflow_dispatch:
+    inputs:
+      linux_wheels_for_tag:
+        description: "Existing tag (for example v0.2.0) whose Linux wheels are built and uploaded to PyPI; nothing else runs"
+        required: false
+        default: ""
+        type: string
 
 permissions:
   contents: write
@@ -25,6 +33,7 @@ permissions:
 jobs:
   verify:
     name: Verify release revision
+    if: ${{ inputs.linux_wheels_for_tag == '' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -157,7 +166,7 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: wheels-${{ matrix.arch }}
+          name: wheels-${{ matrix.target }}
           path: dist/
 
   # ── Build sdist ───────────────────────────────────────────────────────
@@ -258,6 +267,52 @@ jobs:
 
       - name: List artifacts
         run: ls -la dist/
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
+          skip-existing: true
+
+  # ── Linux wheels added to an existing PyPI release ────────────────────
+  pypi-linux-wheels:
+    name: Add Linux wheels of an existing tag to PyPI
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.linux_wheels_for_tag != '' }}
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: refs/tags/${{ inputs.linux_wheels_for_tag }}
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-unknown-linux-gnu
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: x86_64-unknown-linux-gnu
+
+      - name: Build Linux wheels
+        uses: PyO3/maturin-action@v1
+        with:
+          target: x86_64-unknown-linux-gnu
+          args: --release --out dist -i python3.11 python3.12 python3.13
+          manylinux: manylinux2014
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install and smoke-test the built wheel
+        run: |
+          ls dist
+          python -m pip install --force-reinstall --find-links dist mboostrs
+          python -c "import mboostrs as mb; d={'x':[0.,1.,2.],'y':[0.,1.,2.]}; m=mb.glmboost('y ~ x',d,control=mb.boost_control(2)); assert m.predict().shape == (3,)"
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
