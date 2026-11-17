@@ -159,7 +159,11 @@ def platform_libm():
     # Python's math module calls the C library's exp/log/pow, the same
     # functions Rust's f64::exp/ln/powf call: glibc, Apple libm or the MSVC CRT.
     import math
-    xs = np.random.default_rng(0).uniform(-30, 30, 200_000)
+    # Inputs from integers with separate ufunc operations: numpy's own uniform()
+    # is compiled with fused multiply-add on some targets and differs there.
+    ints = np.random.default_rng(0).integers(0, 2**53, 200_000)
+    xs = (ints.astype(float) / float(2**53)) * 60.0 - 30.0
+    put("libm.inputs", xs)
     put("libm.exp", [math.exp(v) for v in xs])
     put("libm.log", [math.log(abs(v) + 1e-3) for v in xs])
     put("libm.pow", [math.pow(abs(v) + 0.5, 1.37) for v in xs])
@@ -177,11 +181,13 @@ except Exception as exc:
 cpu = platform.processor()
 try:
     with open("/proc/cpuinfo") as fh:
-        cpu = next(line.split(":", 1)[1].strip() for line in fh if line.startswith("model name"))
+        cpu = next((line.split(":", 1)[1].strip() for line in fh
+                    if line.startswith(("model name", "CPU part"))), cpu)
 except OSError:
     pass
 facts["_platform"] = {"machine": platform.machine(), "system": platform.system(), "cpu": cpu,
                       "threads_env": os.environ.get("RAYON_NUM_THREADS", ""),
+                      "faer": os.environ.get("MBOOSTRS_FAER_TASKS", "default"),
                       "cpu_count": os.cpu_count(), "python": platform.python_version(),
                       "numpy": np.__version__, "build": info}
 out = sys.argv[1]

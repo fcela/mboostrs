@@ -15,14 +15,16 @@ jobs:
         n: [1]
         faer: [default, "8"]
         include:
-          - {os: ubuntu-latest, n: 2, faer: default}
-          - {os: ubuntu-latest, n: 3, faer: default}
-          - {os: ubuntu-latest, n: 4, faer: default}
-          - {os: ubuntu-latest, n: 5, faer: default}
           - {os: ubuntu-latest, n: 2, faer: "8"}
           - {os: ubuntu-latest, n: 3, faer: "8"}
           - {os: ubuntu-latest, n: 4, faer: "8"}
           - {os: ubuntu-latest, n: 5, faer: "8"}
+          - {os: ubuntu-latest, n: 6, faer: "8"}
+          - {os: ubuntu-latest, n: 7, faer: "8"}
+          - {os: ubuntu-latest, n: 8, faer: "8"}
+          - {os: ubuntu-latest, n: 9, faer: "8"}
+          - {os: ubuntu-latest, n: 2, faer: default}
+          - {os: ubuntu-latest, n: 3, faer: default}
     steps:
       - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
