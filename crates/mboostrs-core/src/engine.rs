@@ -5669,7 +5669,7 @@ mod tests {
         )
         .unwrap();
         assert_eq!(gram.report.route, EngineRoute::GaussianGram);
-        assert!(gram.selected.iter().any(|&j| j == 1));
+        assert!(gram.selected.contains(&1));
         assert_eq!(general.selected, gram.selected);
         let mut max_coef_d = 0.0f64;
         for (a, b) in general.coefs.iter().zip(&gram.coefs) {

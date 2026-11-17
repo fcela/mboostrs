@@ -587,7 +587,7 @@ pub fn lss_mean(family: &str, columns: &[Vec<f64>]) -> Result<Vec<f64>, Mboostrs
 }
 
 /// Euler's constant, `-digamma(1)`.
-const EULER_GAMMA: f64 = 0.577_215_664_901_532_9;
+const EULER_GAMMA: f64 = std::f64::consts::EULER_GAMMA;
 
 /// Box-Cox standardized value `((y/mu)^nu - 1) / (nu sigma)`, with its
 /// `log(y/mu) / sigma` limit for `|nu| < 1e-10`.
@@ -831,9 +831,9 @@ mod tests {
         )
         .unwrap();
         let r = [
-            0.44444444444444448,
+            0.444_444_444_444_444_5,
             0.15422145534598675,
-            0.0083727109263469334,
+            0.008_372_710_926_346_933,
         ];
         for (v, e) in out.values.iter().zip(r) {
             assert!(rel(*v, e) < 1e-12, "{v} vs {e}");

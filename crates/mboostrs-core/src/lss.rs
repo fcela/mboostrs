@@ -8473,7 +8473,7 @@ mod tests {
         // Reference values from R's digamma(); implementation is accurate to ~1e-11
         // due to the recurrence+asymptotic expansion.
         assert!(
-            (digamma(1.0) - (-0.5772156649015329)).abs() < 1e-10,
+            (digamma(1.0) - (-std::f64::consts::EULER_GAMMA)).abs() < 1e-10,
             "digamma(1) = -gamma"
         );
         assert!(

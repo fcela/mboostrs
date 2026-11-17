@@ -4392,15 +4392,15 @@ impl SparseRows {
             let rows = &self.row_idx[lo..hi];
             let vals = &self.col_vals[lo..hi];
             let mut acc = [0.0f64; 4];
-            let mut row_chunks = rows.chunks_exact(4);
-            let mut val_chunks = vals.chunks_exact(4);
-            for (r4, x4) in (&mut row_chunks).zip(&mut val_chunks) {
+            let (row_chunks, row_rem) = rows.as_chunks::<4>();
+            let (val_chunks, val_rem) = vals.as_chunks::<4>();
+            for (r4, x4) in row_chunks.iter().zip(val_chunks) {
                 for lane in 0..4 {
                     acc[lane] += x4[lane] * v[r4[lane] as usize];
                 }
             }
             let mut tail = 0.0f64;
-            for (&r, &x) in row_chunks.remainder().iter().zip(val_chunks.remainder()) {
+            for (&r, &x) in row_rem.iter().zip(val_rem) {
                 tail += x * v[r as usize];
             }
             *slot = (acc[0] + acc[1]) + (acc[2] + acc[3]) + tail;
@@ -16967,7 +16967,8 @@ mod nystrom_kernel {
     #[test]
     fn the_blueprint_refuses_what_the_preparation_refuses() {
         let (x, _) = fixture(10);
-        for landmarks in [0usize] {
+        {
+            let landmarks = 0usize;
             match LearnerBlueprint::bkernel_nystrom(
                 x.to_owned(),
                 "k",
