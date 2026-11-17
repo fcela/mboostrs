@@ -28,7 +28,7 @@ def test_pair_form_replays_its_own_measured_stopping_path(monkeypatch, kind):
     monkeypatch.setattr(evidence_module, "score_coordinate_candidates", record)
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        rec = mb.autospec(data, "y", family=mb.Gaussian(), budget=150, seed=0,
+        rec = mb.autospec(data, "y", family=mb.Gaussian(), budget=150, seed=0, nu=0.3,
                           interactions="adopt", preexploration="off")
     scores, fits = comparisons[-1]
     form = next(row for key, row in rec.evidence.items() if key.startswith("pair_form_"))

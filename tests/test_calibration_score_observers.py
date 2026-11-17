@@ -1,6 +1,7 @@
 """Diagnostic observers preserve predictions and restore the original methods."""
 
 import numpy as np
+import pytest
 
 from mboostrs import _rust
 from benches.observe_calibration_scores import native_calls, control_predictions
@@ -19,6 +20,8 @@ def test_native_inputs_and_outputs_are_observed_without_changing_them():
 
 
 def test_control_prediction_calls_keep_the_same_outputs_and_model_identity():
+    pytest.importorskip("catboost")
+    pytest.importorskip("lightgbm")
     from catboost import CatBoostRegressor
     from lightgbm import LGBMRegressor
     from sklearn.ensemble import GradientBoostingRegressor
@@ -45,6 +48,8 @@ def test_control_prediction_calls_keep_the_same_outputs_and_model_identity():
 
 
 def test_frozen_controls_expose_only_the_expected_calibration_and_query_calls():
+    pytest.importorskip("catboost")
+    pytest.importorskip("lightgbm")
     from benches.study_poisson_tuning_consistency import draw
     from benches.study_discovery_calibration import fit_band
 

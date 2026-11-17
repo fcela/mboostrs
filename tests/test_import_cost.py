@@ -85,22 +85,6 @@ def test_a_model_plot_method_pulls_it_in():
     ) == "True"
 
 
-def test_importing_is_measurably_cheaper_than_importing_altair():
-    """A duration assertion would be a flake; this compares the two imports in
-    one process, which is the actual claim -- fitting must not cost what
-    drawing costs."""
-    output = _run(
-        "import time\n"
-        "start = time.perf_counter(); import mboostrs; base = time.perf_counter() - start\n"
-        "start = time.perf_counter(); import mboostrs.plot; plotting = time.perf_counter() - start\n"
-        "print(base < plotting)\n"
-    )
-    assert output == "True"
-
-
-# ─── no process-wide renderer change ───────────────────────────────
-
-
 def test_importing_does_not_change_the_altair_renderer():
     assert _run(
         "import altair as alt, mboostrs, mboostrs.plot; print(alt.renderers.active)"

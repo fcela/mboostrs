@@ -3526,6 +3526,8 @@ def probe_nu_search(data, response, formula, family, *, folds, incumbent, nu,
     the incumbent is returned, so the search changes the step length only
     on a measured gain, not on a flat-curve tie.
     """
+    from mboostrs._errors import MboostrsRuntimeError
+
     n_folds = int(np.asarray(folds).shape[1])
     largest = len(incumbent.risk) - 1
     records = [{"nu": float(nu), "mstop": int(incumbent.chosen),
@@ -3541,9 +3543,17 @@ def probe_nu_search(data, response, formula, family, *, folds, incumbent, nu,
             continue
         if max_fits is not None and spent + n_folds > max_fits:
             break
-        row = probe_mstop(data, response, formula, family, folds=folds,
-                          largest=largest, nu=candidate, env=env, extend=0,
-                          fold_scheme=fold_scheme)
+        try:
+            row = probe_mstop(data, response, formula, family, folds=folds,
+                              largest=largest, nu=candidate, env=env, extend=0,
+                              fold_scheme=fold_scheme)
+        except MboostrsRuntimeError:
+            # A long fixed step can push the linear predictor far enough
+            # that the inverse link overflows (Poisson at nu = 1.0 does).
+            # That step length cannot be fitted, so it is not a candidate;
+            # the sweep it aborted is charged as a full sweep of folds.
+            spent += n_folds
+            continue
         if row is None:
             continue
         spent += row.fits
