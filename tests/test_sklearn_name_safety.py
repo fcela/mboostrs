@@ -120,6 +120,26 @@ def test_a_polars_frame_is_name_checked_too(frame):
         model.predict(frame_pl.select(["b", "a"]))
 
 
+def test_a_polars_frame_is_name_checked_when_scikit_learn_cannot_read_its_names(
+        frame, monkeypatch):
+    """Before scikit-learn 1.9 a Polars frame reaches `validate_data` without
+    names, so scikit-learn compares nothing and a reordered frame predicted
+    with the columns swapped. The check made here must catch it."""
+    import sklearn.utils.validation as validation
+
+    monkeypatch.setattr(validation, "_get_feature_names", lambda X: None)
+    X, y = frame
+    frame_pl = pl.DataFrame({"a": X["a"].to_numpy(), "b": X["b"].to_numpy()})
+    model = GLMBoostRegressor(mstop=50).fit(frame_pl, y)
+    assert np.all(np.isfinite(model.predict(frame_pl)))
+    with pytest.raises(ValueError, match="same order"):
+        model.predict(frame_pl.select(["b", "a"]))
+    with pytest.raises(ValueError, match="unseen at fit"):
+        model.predict(frame_pl.rename({"a": "z"}))
+    refit = model.fit(X.to_numpy(), y)
+    assert np.all(np.isfinite(refit.predict(frame_pl.select(["b", "a"]))))
+
+
 @pytest.mark.parametrize("estimator", [
     GLMBoostRegressor, GAMBoostRegressor, TreeBoostRegressor,
 ])

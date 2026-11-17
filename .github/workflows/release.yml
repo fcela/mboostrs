@@ -52,12 +52,19 @@ jobs:
             any::stabs
             any::survival
       - name: Build and install the exact Python artifact
+        # `plot` is needed by tests/test_plot.py at collection.
         run: |
           python -m pip install maturin
           maturin build --release --out dist
           for wheel in dist/*.whl; do
             python -m pip install --force-reinstall "${wheel}[dev,sklearn]"
+            python -m pip install "${wheel}[plot]"
           done
+      - name: Build the extension into the source tree
+        # The generated-file checks in tools/ import `mboostrs._rust` from
+        # python/, so the compiled module must sit beside the sources. The
+        # dependencies are already installed from the wheel above.
+        run: maturin develop --release
       - name: Verify source, bindings, generated contracts, and examples
         run: |
           cargo fmt --check --all

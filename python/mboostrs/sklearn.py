@@ -210,11 +210,55 @@ def _validate(est, X, y="no_validation", *, reset, **check_params):
     is gone in 1.9. The package supports >= 1.3, so both are reached here.
     """
     _refuse_non_numeric(X)
+    # A frame whose column names scikit-learn cannot read (a Polars frame
+    # before scikit-learn 1.9) reaches `validate_data` as a bare array, so
+    # scikit-learn compares nothing. Its names are kept and compared here.
+    unread = _names_scikit_learn_cannot_read(X)
+    if not reset and unread is not None:
+        _check_unread_names(getattr(est, "_unread_fit_names_", None), unread)
     try:
         from sklearn.utils.validation import validate_data
     except ImportError:                                    # scikit-learn < 1.6
-        return est._validate_data(X, y, reset=reset, **check_params)
-    return validate_data(est, X, y, reset=reset, **check_params)
+        result = est._validate_data(X, y, reset=reset, **check_params)
+    else:
+        result = validate_data(est, X, y, reset=reset, **check_params)
+    if reset:
+        if unread is not None:
+            est._unread_fit_names_ = unread
+        elif hasattr(est, "_unread_fit_names_"):
+            del est._unread_fit_names_
+    return result
+
+
+def _names_scikit_learn_cannot_read(X):
+    """The column names of a frame that scikit-learn's own name check ignores,
+    else None (not a frame, or one scikit-learn reads itself, such as pandas)."""
+    names = _capture_columns(X)
+    if names is None:
+        return None
+    try:
+        from sklearn.utils.validation import _get_feature_names
+    except ImportError:
+        return None
+    return names if _get_feature_names(X) is None else None
+
+
+def _check_unread_names(fitted, given):
+    """Raise the `ValueError` scikit-learn raises for a frame whose columns
+    differ from the fit's: other names, or the same names in another order."""
+    if fitted is None or list(fitted) == list(given):
+        return
+    unseen = [name for name in given if name not in fitted]
+    missing = [name for name in fitted if name not in given]
+    message = "The feature names should match those that were passed during fit.\n"
+    if unseen:
+        message += "Feature names unseen at fit time:\n" + "".join(f"- {n}\n" for n in unseen)
+    if missing:
+        message += ("Feature names seen at fit time, yet now missing:\n"
+                    + "".join(f"- {n}\n" for n in missing))
+    if not unseen and not missing:
+        message += "- Feature names must be in the same order as they were in fit.\n"
+    raise ValueError(message)
 
 
 def _type_of_target(y, input_name="y"):
