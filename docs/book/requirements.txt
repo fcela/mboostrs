@@ -11,9 +11,12 @@ jupyter-server
 nbconvert
 numpy
 polars
-pandas
+# scikit-learn 1.9 with pandas 3 fails to parse OpenML ARFF files
+# (`fetch_openml`, used by the library-comparison pages), so both stay on the
+# versions the committed benchmark artifacts were recorded with.
+pandas>=2.3,<3
 matplotlib
-scikit-learn
+scikit-learn>=1.8,<1.9
 scipy
 altair
 # Result tables: every benchmark and case-study table is rendered with

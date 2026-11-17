@@ -47,12 +47,15 @@ check(m, "brandom(center = TRUE)",
         0.5709169924806738, 0.9188812928605415, 0.9188812928605415, -0.7509064871757845,
         -0.034793424589192656, 0.23881229730501083, 0.5709169924806738, -0.7509064871757845),
       c(0.9188812928605415, -0.7509064871757845, 0.23881229730501083, 0.5709169924806738))
-# At mstop = 30 the expected values are a Python fit with mstop = 30.
+# At mstop = 30 the expected values are a Python fit with mstop = 30 recorded
+# on arm64 macOS. Thirty boosting steps accumulate floating-point rounding
+# differently on other CPUs (3.3e-8 relative on x86_64 Linux), so this
+# comparison uses 1e-6 where the one-step comparisons above use 1e-8.
 close(predict(m, which = 2, mstop = 30)[1:12, 1],
       c(-0.6062962275272437, -0.6062962275272437, -0.6062962275272437, 0.464152042981799,
         0.464152042981799, 0.7191852034855635, 0.7191852034855635, -0.6062962275272437,
         0.0008217228756568718, 0.19983287884403755, 0.464152042981799, -0.6062962275272437),
-      "brandom(center = TRUE) mstop = 30")
+      "brandom(center = TRUE) mstop = 30", tol = 1e-6)
 # The value before the fix was the uncentered coefficient b_g.
 b <- predict(m, which = 2)[c(1, 4, 6, 9, 10), 1]
 share <- as.numeric(table(d$g)) / n
@@ -82,6 +85,6 @@ close(predict(m, which = 2, mstop = 30)[1:12, 1],
       c(-0.6958916391801755, -0.6958916391801755, -0.6958916391801755, 0.30150769719114684,
         0.30150769719114684, 0.5507592856816633, 0.5507592856816633, -0.6958916391801755,
         -0.08685799831229224, -0.06951734538034238, 0.30150769719114684, -0.6958916391801755),
-      "bmrf(center = TRUE) mstop = 30")
+      "bmrf(center = TRUE) mstop = 30", tol = 1e-6)
 
 cat("test_predict_which_centred.R: OK\n")
