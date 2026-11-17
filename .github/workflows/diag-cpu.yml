@@ -39,12 +39,24 @@ jobs:
           PY
           MBOOSTRS_TRACE_REML=1 python /tmp/d.py 2>&1 | tail -40
           cat > /tmp/e.py <<'PY'
-          import sys
+          import sys, warnings
           sys.path.insert(0, "tests")
           import numpy as np
-          import test_direct_reml_gam as t
-          import polars as pl
           import mboostrs as mb
-          from mboostrs.direct_gam import gam as dg
+          from mboostrs import direct_gam
+          from mboostrs.selection import gam_refit
+          import test_direct_reml_gam as t
+          data = t._data()
+          f = t.FORMULA
+          warnings.simplefilter("ignore")
+          boosted = mb.gamboost(f, data=data, family=mb.Gaussian(), control=mb.boost_control(mstop=5, nu=0.1))
+          refit = gam_refit(boosted, which="all")
+          direct = direct_gam.gam(f, data)
+          d = np.abs(direct.coef()["estimate"].to_numpy() - refit.coef()["estimate"].to_numpy())
+          print("T1 maxdiff", d.max(), "reml", direct.reml_score, refit.reml_score)
+          print("T1 direct conv", direct.convergence)
+          print("T1 refit conv", refit.convergence)
+          print("T1 lambda direct", {k: v for k, v in direct.lambda_.items()} if hasattr(direct, "lambda_") else "n/a")
           PY
+          MBOOSTRS_TRACE_REML=1 python /tmp/e.py 2>&1 | grep -E "^T1|reml stop|reml start" | cut -c1-300
           python -m pytest tests/test_direct_reml_gam.py::test_direct_fit_matches_gam_refit_on_the_same_terms "tests/test_gamlss_refit_small_n.py::test_refit_converges_and_shrinks_the_null_smooth" -q -p no:cacheprovider 2>&1 | tail -4

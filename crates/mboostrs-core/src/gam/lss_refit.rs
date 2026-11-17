@@ -787,9 +787,35 @@ pub fn try_gamlss_refit(
                 })?;
             Ok((opt, restarted, restart_iterations, final_eval, floored))
         };
-    let (opt, restarted, restart_iterations, final_eval, floored) = match pass(false) {
-        Ok(done) => done,
-        Err(_) => pass(true)?,
+    // The default pass is final only when it converged. A default pass that
+    // stops short (for example `no_descent`) can instead end at a point whose
+    // re-evaluation succeeds on one CPU and fails on another, because the
+    // criterion is evaluated at the edge of what the inner solve can resolve;
+    // which of the two happened then decided whether the strict pass ran at
+    // all. The strict pass now runs whenever the default pass did not
+    // converge, and the converged (or else lower-criterion) result is kept.
+    let default_pass = pass(false);
+    let (opt, restarted, restart_iterations, final_eval, floored) = match default_pass {
+        Ok(done) if done.0.converged => done,
+        other => match (other, pass(true)) {
+            (Ok(default), Ok(strict)) => {
+                if strict.0.converged || strict.3.value < default.3.value {
+                    strict
+                } else {
+                    joint
+                        .strict
+                        .store(false, std::sync::atomic::Ordering::Relaxed);
+                    default
+                }
+            }
+            (Ok(default), Err(_)) => {
+                joint
+                    .strict
+                    .store(false, std::sync::atomic::Ordering::Relaxed);
+                default
+            }
+            (Err(_), strict) => strict?,
+        },
     };
 
     // Hessian of V in rho by central differences of the gradient.

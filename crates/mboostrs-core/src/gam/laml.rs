@@ -373,6 +373,9 @@ pub(crate) fn optimize(
     // number of line-search trials, so a slow refit shows where it spends
     // its evaluations.
     let trace = std::env::var_os("MBOOSTRS_TRACE_REML").is_some();
+    if trace {
+        eprintln!("reml start rho {:?}", rho.to_vec());
+    }
     let started = std::time::Instant::now();
     while !converged && iterations < max_iter {
         iterations += 1;
@@ -453,6 +456,13 @@ pub(crate) fn optimize(
             converged = true;
             stop = "stationary";
         }
+    }
+    if trace {
+        eprintln!(
+            "reml stop {stop} rho {:?} bound {bound} V {:.6}",
+            rho.to_vec(),
+            eval.value
+        );
     }
     let hessian = if m > 0 {
         let (vals, vecs) = symmetric_eigen(&hinv);
