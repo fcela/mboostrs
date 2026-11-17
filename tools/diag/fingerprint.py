@@ -188,6 +188,7 @@ except OSError:
 facts["_platform"] = {"machine": platform.machine(), "system": platform.system(), "cpu": cpu,
                       "threads_env": os.environ.get("RAYON_NUM_THREADS", ""),
                       "faer": os.environ.get("MBOOSTRS_FAER_TASKS", "default"),
+                      "npy": os.environ.get("FP_NPY", "native"),
                       "cpu_count": os.cpu_count(), "python": platform.python_version(),
                       "numpy": np.__version__, "build": info}
 out = sys.argv[1]

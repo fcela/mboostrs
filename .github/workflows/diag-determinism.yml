@@ -6,25 +6,15 @@ permissions:
   contents: read
 jobs:
   fingerprint:
-    name: ${{ matrix.os }} ${{ matrix.n }} faer=${{ matrix.faer }}
+    name: ${{ matrix.os }} ${{ matrix.n }} faer=${{ matrix.faer }} npy=${{ matrix.npy }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-15-intel, windows-latest]
-        n: [1]
-        faer: [default, "8"]
-        include:
-          - {os: ubuntu-latest, n: 2, faer: "8"}
-          - {os: ubuntu-latest, n: 3, faer: "8"}
-          - {os: ubuntu-latest, n: 4, faer: "8"}
-          - {os: ubuntu-latest, n: 5, faer: "8"}
-          - {os: ubuntu-latest, n: 6, faer: "8"}
-          - {os: ubuntu-latest, n: 7, faer: "8"}
-          - {os: ubuntu-latest, n: 8, faer: "8"}
-          - {os: ubuntu-latest, n: 9, faer: "8"}
-          - {os: ubuntu-latest, n: 2, faer: default}
-          - {os: ubuntu-latest, n: 3, faer: default}
+        os: [ubuntu-latest]
+        n: [1, 2, 3, 4, 5, 6]
+        faer: ["8"]
+        npy: [native, avx2]
     steps:
       - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
@@ -50,8 +40,14 @@ jobs:
         shell: bash
         run: |
           if [ "${{ matrix.faer }}" != default ]; then export MBOOSTRS_FAER_TASKS=${{ matrix.faer }}; fi
-          python tools/diag/fingerprint.py "fp-${{ matrix.os }}-${{ matrix.n }}-${{ matrix.faer }}"
+          if [ "${{ matrix.npy }}" = avx2 ]; then
+            export NPY_DISABLE_CPU_FEATURES="AVX512F AVX512CD AVX512_KNL AVX512_KNM AVX512_SKX AVX512_CLX AVX512_CNL AVX512_ICL AVX512_SPR AVX512_SPR"
+            export OPENBLAS_CORETYPE=Haswell
+          fi
+          export FP_NPY=${{ matrix.npy }}
+          python -c "import numpy; numpy.show_runtime()" 2>&1 | grep -iE "found|not_found|avx512|architecture|threading" | head -8
+          python tools/diag/fingerprint.py "fp-${{ matrix.os }}-${{ matrix.n }}-${{ matrix.faer }}-${{ matrix.npy }}"
       - uses: actions/upload-artifact@v7
         with:
-          name: fp-${{ matrix.os }}-${{ matrix.n }}-${{ matrix.faer }}
+          name: fp-${{ matrix.os }}-${{ matrix.n }}-${{ matrix.faer }}-${{ matrix.npy }}
           path: fp-*
