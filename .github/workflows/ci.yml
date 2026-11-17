@@ -91,7 +91,7 @@ jobs:
       matrix:
         include:
           - label: macOS arm64
-            os: macos-14
+            os: macos-latest
           - label: Linux x86_64
             os: ubuntu-latest
           - label: Windows x86_64
@@ -127,7 +127,7 @@ jobs:
     # Repeats a dense tensor fit on a debug build. The debug profile is opt-level 1
     # (Cargo.toml); opt-level 0 crashed about a third of runs on arm64 macOS (#237).
     name: Debug build — repeated dense fit (macOS arm64)
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v7
 
