@@ -41,11 +41,11 @@ jobs:
         run: |
           if [ "${{ matrix.faer }}" != default ]; then export MBOOSTRS_FAER_TASKS=${{ matrix.faer }}; fi
           if [ "${{ matrix.npy }}" = avx2 ]; then
-            export NPY_DISABLE_CPU_FEATURES="AVX512F AVX512CD AVX512_KNL AVX512_KNM AVX512_SKX AVX512_CLX AVX512_CNL AVX512_ICL AVX512_SPR AVX512_SPR"
+            export NPY_DISABLE_CPU_FEATURES="AVX512_SPR AVX512_ICL X86_V4"
             export OPENBLAS_CORETYPE=Haswell
           fi
           export FP_NPY=${{ matrix.npy }}
-          python -c "import numpy; numpy.show_runtime()" 2>&1 | grep -iE "found|not_found|avx512|architecture|threading" | head -8
+          python -c "import numpy; numpy.show_runtime()" 2>&1 | grep -iE "found|not_found|disabled|prefix|architecture" | head -12
           python tools/diag/fingerprint.py "fp-${{ matrix.os }}-${{ matrix.n }}-${{ matrix.faer }}-${{ matrix.npy }}"
       - uses: actions/upload-artifact@v7
         with:
