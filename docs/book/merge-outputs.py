@@ -22,10 +22,26 @@ removes ``text/plain`` from MIME bundles that already have ``image/svg+xml``.
 """
 
 import json
+import os
 import re
 from pathlib import Path
 
 BUILD_DIR = Path("_build")
+
+
+def asset_file(html_dir, url_path, base_url=None):
+    """The file under ``html_dir`` that an asset URL path points to.
+
+    With ``BASE_URL=/mboostrs`` (GitHub Pages project site) MyST writes asset
+    paths as ``/mboostrs/build/<hash>.svg``, while the file is at
+    ``<html_dir>/build/<hash>.svg``: the prefix is the URL the site is served
+    under, not a directory of the build.
+    """
+    base = (os.environ.get("BASE_URL", "") if base_url is None else base_url).strip("/")
+    relative = url_path.lstrip("/")
+    if base and relative.startswith(base + "/"):
+        relative = relative[len(base) + 1:]
+    return html_dir / relative
 
 
 def inline_svg_refs(node, html_dir):
@@ -43,7 +59,7 @@ def inline_svg_refs(node, html_dir):
             data = jd.get("data", {})
             svg = data.get("image/svg+xml")
             if isinstance(svg, dict) and "path" in svg and "content" not in svg:
-                svg_path = html_dir / svg["path"].lstrip("/")
+                svg_path = asset_file(html_dir, svg["path"])
                 if svg_path.exists():
                     content = svg_path.read_text(encoding="utf-8")
                     data["image/svg+xml"] = {

@@ -4,6 +4,21 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- `gamlss_refit` returned a non-converged fit (`stop_reason="no_descent"`, the
+  null smooth left unshrunk, REML criterion 389 instead of 168 on the
+  regression test) on some x86-64 CPUs. The default smoothing-parameter pass
+  stopped early on every platform, but the strict second pass that recovers the
+  fit ran only when the final re-evaluation at that point failed, which happens
+  on some CPUs and not others. The strict pass now runs whenever the default
+  pass does not converge, and the converged (otherwise lower-criterion) result
+  is kept.
+- The README links to the documentation and to repository files are absolute,
+  so they resolve on the PyPI project page.
+
 ## [0.2.0] - 2026-11-16
 
 Changes since the 0.1.3 release candidate (commit `16889c63`). The summary

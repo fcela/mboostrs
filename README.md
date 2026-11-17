@@ -31,8 +31,8 @@ The Python API includes:
   and structured results for interactive or agent-assisted analysis.
 
 Support varies by model, operation and language interface. The
-[capability contract](docs/book/appendix/capabilities.ipynb) records that
-coverage; the [release limitations](docs/release-limitations.md) describe
+[capability contract](https://github.com/fcela/mboostrs/blob/main/docs/book/appendix/capabilities.ipynb) records that
+coverage; the [release limitations](https://github.com/fcela/mboostrs/blob/main/docs/release-limitations.md) describe
 current limits of automated search, causal intervals and cross-language
 inference.
 
@@ -163,7 +163,7 @@ values at prediction time. Missing values raise an error by default;
 boosting a fitted model up to a larger `mstop`, `N`. When a model has many
 candidate terms, `subsample=f` evaluates a random fraction `f` of the base
 learners at each iteration. The
-[**Working with real data**](docs/book/usage/real_data.ipynb) chapter covers
+[**Working with real data**](https://github.com/fcela/mboostrs/blob/main/docs/book/usage/real_data.ipynb) chapter covers
 these options.
 
 A fitted model exposes:
@@ -187,7 +187,7 @@ A fitted model exposes:
 ### Base learners
 
 Base learners are specified inside the formula. Common choices are listed
-below; the [capability contract](docs/book/appendix/capabilities.ipynb)
+below; the [capability contract](https://github.com/fcela/mboostrs/blob/main/docs/book/appendix/capabilities.ipynb)
 records the supported learners and their operations.
 
 | Learner | Role |
@@ -217,17 +217,17 @@ proba = clf.predict(newdata=binary, type="response")  # P(hit = 1)
 
 ## Specification search and refitting
 
-[`autospec`](docs/book/api/functions/autospec.md) proposes a family, formula
+[`autospec`](https://github.com/fcela/mboostrs/blob/main/docs/book/api/functions/autospec.md) proposes a family, formula
 and stopping iteration from the data and the supplied validation design.
 The recommendation can be inspected and fitted with `recommendation.fit(data)`.
-[`open_search`](docs/book/api/functions/open_search.md) supports an interactive
+[`open_search`](https://github.com/fcela/mboostrs/blob/main/docs/book/api/functions/open_search.md) supports an interactive
 search with retained comparisons and fit accounting. Separate evaluation
 rows are needed to assess the selected procedure's predictive performance.
 
-[`gam`](docs/book/api/functions/gam.md) fits a penalized additive model
+[`gam`](https://github.com/fcela/mboostrs/blob/main/docs/book/api/functions/gam.md) fits a penalized additive model
 with REML smoothing directly. After boosting,
-[`gam_refit`](docs/book/api/functions/gam_refit.md) jointly refits selected
-terms; [`gamlss_refit`](docs/book/api/functions/gamlss_refit.md) provides
+[`gam_refit`](https://github.com/fcela/mboostrs/blob/main/docs/book/api/functions/gam_refit.md) jointly refits selected
+terms; [`gamlss_refit`](https://github.com/fcela/mboostrs/blob/main/docs/book/api/functions/gamlss_refit.md) provides
 refitting for supported distributional models. Refit intervals are
 conditional on the selected specification; they do not account for the
 whole preceding search.
@@ -239,7 +239,7 @@ of a response distribution, such as its location and scale. Formulas can
 differ between parameters. The fitted model provides distribution-based
 prediction intervals and centiles; quantile residuals, probability integral
 transforms and worm-plot data support checking the fitted distribution.
-See the [distributional modeling guide](docs/book/usage/gamboostlss.ipynb).
+See the [distributional modeling guide](https://github.com/fcela/mboostrs/blob/main/docs/book/usage/gamboostlss.ipynb).
 
 ## Model selection: `cvrisk`
 
@@ -268,17 +268,17 @@ fit.extract("design")            # design matrices / penalties / etc.
 
 ## Effects and causal analysis
 
-[`prediction_contrast`](docs/book/api/functions/prediction_contrast.md)
+[`prediction_contrast`](https://github.com/fcela/mboostrs/blob/main/docs/book/api/functions/prediction_contrast.md)
 compares model predictions under specified changes in predictors.
-[`average_marginal_effect`](docs/book/api/functions/average_marginal_effect.md)
+[`average_marginal_effect`](https://github.com/fcela/mboostrs/blob/main/docs/book/api/functions/average_marginal_effect.md)
 summarizes prediction derivatives over observations. These describe the
 fitted model; a causal interpretation requires additional assumptions.
 
-[`aipw`](docs/book/api/functions/aipw.md) estimates average treatment effects
+[`aipw`](https://github.com/fcela/mboostrs/blob/main/docs/book/api/functions/aipw.md) estimates average treatment effects
 using cross-fitted outcome and propensity models.
-[`effect_model`](docs/book/api/functions/effect_model.md) estimates how a
+[`effect_model`](https://github.com/fcela/mboostrs/blob/main/docs/book/api/functions/effect_model.md) estimates how a
 treatment effect varies with covariates, and
-[`iv_effect`](docs/book/api/functions/iv_effect.md) provides
+[`iv_effect`](https://github.com/fcela/mboostrs/blob/main/docs/book/api/functions/iv_effect.md) provides
 instrumental-variable estimation. These functions require an explicit causal
 specification. Overlap diagnostics and sensitivity analyses help assess the
 conditions on which their estimates depend.
@@ -325,7 +325,7 @@ The regressors take a `family`, including `quantile` and `expectile` with a
 constructor for per-term control, and `clone` and `GridSearchCV` carry it.
 `LSSRegressor.predict_interval` returns an interval whose width adapts to the
 predictors. `SurvivalBoost` takes the scikit-survival structured `y`.
-[`docs/sklearn.md`](docs/sklearn.md) explains how the formula and matrix
+[`docs/sklearn.md`](https://github.com/fcela/mboostrs/blob/main/docs/sklearn.md) explains how the formula and matrix
 interfaces are reconciled.
 
 ## Serialization
@@ -419,7 +419,7 @@ risk. A non-cyclic LSS path records the joint risk after every update.
 
 ## Documentation
 
-The [Jupyter Book](docs/book/) has the full documentation, tutorials and case
+The [Jupyter Book](https://fcela.github.io/mboostrs/) has the full documentation, tutorials and case
 studies:
 
 - **Usage guides**: GLMBoost, GAMBoost, GAMLSS, Multinomial, base learners, families,
@@ -428,7 +428,7 @@ studies:
 - **Implementation**: architecture, engine internals, linear algebra kernels, parity notes
 - **API reference**: compact function-by-function reference
 
-Build the [HTML and PDF documentation](docs/book/README.md) with
+Build the [HTML and PDF documentation](https://github.com/fcela/mboostrs/blob/main/docs/book/README.md) with
 `cd docs/book && bash build-html.sh` or `bash build-pdf.sh`. The rendered HTML,
 the PDF and the notebook download bundle are build outputs and are not tracked
 in git. The documentation workflow builds them on every push to `main`,
@@ -438,24 +438,24 @@ obsolete `jupyter-book` build command. For a local preview that executes the
 code, run `cd docs/book && bash start.sh`; it activates the matching Python
 environment before MyST starts Jupyter.
 
-Example notebooks are in [`examples/python/`](examples/python/):
+Example notebooks are in [`examples/python/`](https://github.com/fcela/mboostrs/tree/main/examples/python/):
 
 | Notebook | Description |
 |----------|-------------|
-| [`01_package_tour.ipynb`](examples/python/01_package_tour.ipynb) | Walk through glmboost, cvrisk, gamboost, families, predict |
-| [`02_r_parity.ipynb`](examples/python/02_r_parity.ipynb) | R parity test results across families and learners |
-| [`03_performance.ipynb`](examples/python/03_performance.ipynb) | Benchmarks comparing mboostrs to R mboost |
-| [`04_families.ipynb`](examples/python/04_families.ipynb) | 18 of the 22 families |
-| [`05_base_learners.ipynb`](examples/python/05_base_learners.ipynb) | All 10+ base learners |
-| [`06_model_selection.ipynb`](examples/python/06_model_selection.ipynb) | CV, AIC, stability selection, model comparison, grid search |
-| [`07_sklearn_api.ipynb`](examples/python/07_sklearn_api.ipynb) | scikit-learn wrappers, `cross_val_score`, `GridSearchCV`, `Pipeline` |
-| [`08_gamboostlss.ipynb`](examples/python/08_gamboostlss.ipynb) | Distributional (GAMLSS) boosting: `GaussianLSS`, `GammaLSS`, etc. |
+| [`01_package_tour.ipynb`](https://github.com/fcela/mboostrs/blob/main/examples/python/01_package_tour.ipynb) | Walk through glmboost, cvrisk, gamboost, families, predict |
+| [`02_r_parity.ipynb`](https://github.com/fcela/mboostrs/blob/main/examples/python/02_r_parity.ipynb) | R parity test results across families and learners |
+| [`03_performance.ipynb`](https://github.com/fcela/mboostrs/blob/main/examples/python/03_performance.ipynb) | Benchmarks comparing mboostrs to R mboost |
+| [`04_families.ipynb`](https://github.com/fcela/mboostrs/blob/main/examples/python/04_families.ipynb) | 18 of the 22 families |
+| [`05_base_learners.ipynb`](https://github.com/fcela/mboostrs/blob/main/examples/python/05_base_learners.ipynb) | All 10+ base learners |
+| [`06_model_selection.ipynb`](https://github.com/fcela/mboostrs/blob/main/examples/python/06_model_selection.ipynb) | CV, AIC, stability selection, model comparison, grid search |
+| [`07_sklearn_api.ipynb`](https://github.com/fcela/mboostrs/blob/main/examples/python/07_sklearn_api.ipynb) | scikit-learn wrappers, `cross_val_score`, `GridSearchCV`, `Pipeline` |
+| [`08_gamboostlss.ipynb`](https://github.com/fcela/mboostrs/blob/main/examples/python/08_gamboostlss.ipynb) | Distributional (GAMLSS) boosting: `GaussianLSS`, `GammaLSS`, etc. |
 
 ### For AI agents
 
 - `mboostrs.agent_guide()` returns the analysis workflow written for coding
   agents. It is the same text as
-  [`docs/skills/analyzing-data-with-mboostrs/SKILL.md`](docs/skills/analyzing-data-with-mboostrs/SKILL.md);
+  [`docs/skills/analyzing-data-with-mboostrs/SKILL.md`](https://github.com/fcela/mboostrs/blob/main/docs/skills/analyzing-data-with-mboostrs/SKILL.md);
   installed as an agent skill, that file is picked up automatically.
 - `mboostrs.insights(df, response)` proposes ranked candidate findings, each
   marked as either measured on held-out folds or only detected, for the agent
@@ -464,9 +464,9 @@ Example notebooks are in [`examples/python/`](examples/python/):
 ## Performance
 
 Each benchmark is a scenario in the catalog
-[`benches/scenarios.json`](benches/scenarios.json), which declares the timed
+[`benches/scenarios.json`](https://github.com/fcela/mboostrs/blob/main/benches/scenarios.json), which declares the timed
 boundary (what the timer includes), the seed, the dimensions and the thread
-mode. [`benches/bench_all.py`](benches/bench_all.py) writes the raw
+mode. [`benches/bench_all.py`](https://github.com/fcela/mboostrs/blob/main/benches/bench_all.py) writes the raw
 repetitions, robust dispersion and confidence intervals, digests of the inputs
 and outputs, dependency, compiler and machine metadata, and whether memory and
 allocations were measured. A cross-language speed ratio is reported only when
@@ -495,12 +495,12 @@ CV, sums the parent and fork-worker profiles. The two profilers count different
 events, so the artifact records each scope, and allocation counts are compared
 within one implementation and never as a ratio between profilers.
 
-[`benches/profile_memory.py`](benches/profile_memory.py) measures engine stages
+[`benches/profile_memory.py`](https://github.com/fcela/mboostrs/blob/main/benches/profile_memory.py) measures engine stages
 and memory separately. Each point runs in a fresh process and records exclusive
 stage shares (each stage's time as a fraction of the total, without overlap),
 normalized process peak RSS (resident memory), and the exact bytes held by the
 retained factor and cross-Gram caches. The core
-[`allocation_probe`](crates/mboostrs-core/examples/allocation_probe.rs) example
+[`allocation_probe`](https://github.com/fcela/mboostrs/blob/main/crates/mboostrs-core/examples/allocation_probe.rs) example
 uses a counting allocator to report the allocation events of a complete fit
 after warm-up.
 
@@ -523,7 +523,7 @@ instrumentation, both cached solver routes, stability selection at serial and
 default settings, and an explicit 1/2/4/8-thread scaling sweep. The scaling
 runner runs each configuration in a fresh process and rejects the artifact
 unless all result digests match exactly. The performance chapter shows the
-checked [raw development scaling artifact](docs/book/data/thread-scaling-2026-07-15.json)
+checked [raw development scaling artifact](https://github.com/fcela/mboostrs/blob/main/docs/book/data/thread-scaling-2026-07-15.json)
 but does not treat its timings, taken on a working tree with uncommitted
 changes, as a release claim.
 
@@ -547,7 +547,7 @@ On verified paths, fitted values and risk paths match the reference to about
 1e-6 or better; tolerances and deviations are specified per operation.
 `bss`, `blackboost`, `FP` and `RCG` are not implemented. Known deviations, such as the `Laplace` offset and
 the scale of weighted `risk_`, are documented in
-[`docs/book/implementation/parity_and_bugs.ipynb`](docs/book/implementation/parity_and_bugs.ipynb).
+[`docs/book/implementation/parity_and_bugs.ipynb`](https://github.com/fcela/mboostrs/blob/main/docs/book/implementation/parity_and_bugs.ipynb).
 
 The [R parity evidence workflow](https://github.com/fcela/mboostrs/actions/workflows/parity.yml)
 runs all 232 marked tests weekly and on demand; pull requests that change
@@ -568,12 +568,12 @@ python tools/run_parity.py --scope focused --output parity-results.json
 
 ## Evaluation scorecard
 
-[The consolidated mboostrs status](docs/scorecard/status.md) summarizes the
+[The consolidated mboostrs status](https://github.com/fcela/mboostrs/blob/main/docs/scorecard/status.md) summarizes the
 project's recorded strengths, gaps and priorities. All new evaluations use the
-single [canonical scorecard](docs/scorecard/scorecard.md),
+single [canonical scorecard](https://github.com/fcela/mboostrs/blob/main/docs/scorecard/scorecard.md),
 `mboostrs-scorecard/2.1`. Its twelve dimensions score predictive validity
 (D11), iteration speed (D5), effect uncertainty (D4) and prediction-interval
-calibration (D9) separately. The [migration crosswalk](docs/scorecard/migration.md)
+calibration (D9) separately. The [migration crosswalk](https://github.com/fcela/mboostrs/blob/main/docs/scorecard/migration.md)
 identifies historical rubrics and grades.
 
 ## License

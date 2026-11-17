@@ -68,3 +68,29 @@ def test_a_remaining_chart_fallback_is_reported():
     problems = _module().unresolved_chart_outputs(node)
 
     assert problems == ["root: Altair text fallback remains"]
+
+
+def test_svg_path_under_a_pages_base_url_resolves_to_the_build_directory(
+    tmp_path, monkeypatch
+):
+    """With BASE_URL=/mboostrs, MyST writes /mboostrs/build/<hash>.svg; the file
+    is at <html>/build/<hash>.svg."""
+    svg = tmp_path / "build" / "chart.svg"
+    svg.parent.mkdir()
+    svg.write_text("<svg><title>Rendered chart</title></svg>")
+    monkeypatch.setenv("BASE_URL", "/mboostrs")
+    node = {
+        "jupyter_data": {
+            "output_type": "display_data",
+            "data": {
+                "image/svg+xml": {"path": "/mboostrs/build/chart.svg", "hash": "abc"},
+                "text/plain": {"content": "alt.Chart(...)"},
+            },
+        }
+    }
+
+    _module().inline_svg_refs(node, tmp_path)
+
+    data = node["jupyter_data"]["data"]
+    assert data["image/svg+xml"]["content"].startswith("<svg>")
+    assert "text/plain" not in data

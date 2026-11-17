@@ -63,9 +63,14 @@ def test_direct_fit_matches_gam_refit_on_the_same_terms(data):
     assert refit.terms == direct.terms
     # mb.gam forms X'WX once and factors it (the Gram path); gam_refit factors
     # the design by QR. The Gram squares the condition number, so the two agree
-    # to about 1e-7 here, not to rounding: the tolerances say so.
+    # to about 1e-7 here, not to rounding. The REML criterion is flat at its
+    # optimum, so how far each path's smoothing-parameter search gets depends on
+    # rounding in the criterion: on AMD EPYC 7763 (AVX2 without AVX-512) the QR
+    # path stops on the "flat" rule with a gradient of 9e-4 instead of 1e-7 and
+    # its coefficients differ by 1.7e-5, while the two criterion values still
+    # agree to 3e-9. The coefficient tolerance covers that spread.
     np.testing.assert_allclose(direct.coef()["estimate"].to_numpy(),
-                               refit.coef()["estimate"].to_numpy(), rtol=0, atol=1e-6)
+                               refit.coef()["estimate"].to_numpy(), rtol=0, atol=1e-4)
     np.testing.assert_allclose(direct.vcov(), refit.vcov(), rtol=1e-3, atol=1e-8)
     assert direct.reml_score == pytest.approx(refit.reml_score, abs=1e-5)
     for term in direct.terms:
