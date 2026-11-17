@@ -11,12 +11,12 @@ jupyter-server
 nbconvert
 numpy
 polars
-# scikit-learn 1.9 with pandas 3 fails to parse OpenML ARFF files
-# (`fetch_openml`, used by the library-comparison pages), so both stay on the
-# versions the committed benchmark artifacts were recorded with.
+# `fetch_openml` (the library-comparison pages) fails to parse ARFF files with
+# pandas 3, so pandas stays below 3. scikit-learn 1.9 is the first release whose
+# ColumnTransformer reads polars frames (usage/sklearn.ipynb passes one).
 pandas>=2.3,<3
 matplotlib
-scikit-learn>=1.8,<1.9
+scikit-learn>=1.9
 scipy
 altair
 # Result tables: every benchmark and case-study table is rendered with
@@ -31,9 +31,12 @@ hypothesis
 # Comparator libraries executed by the case studies under case_studies/
 # (bike_sharing_hourly, california_housing): GLM/GAM and tree baselines.
 statsmodels
-pygam
+# pygam before 0.10 calls `np.int`, which numpy 2 removed; 0.12 limits scipy below 1.17.
+pygam>=0.12
 lightgbm
 xgboost
 catboost
 # Comparator executed by case_studies/kdd_scorecard_benchmark (EBM booster).
 hessboost
+# polars to_pandas() in benchmarks/claims_discovery.
+pyarrow
