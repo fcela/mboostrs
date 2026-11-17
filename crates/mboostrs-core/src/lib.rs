@@ -178,3 +178,15 @@ pub enum MboostrsError {
         observation: usize,
     },
 }
+
+/// TEMPORARY experiment: faer parallelism from MBOOSTRS_FAER_TASKS ("none" or a count).
+pub fn experiment_faer_par() -> faer::Parallelism<'static> {
+    match std::env::var("MBOOSTRS_FAER_TASKS").ok().as_deref() {
+        Some("none") => faer::Parallelism::None,
+        Some(n) => faer::Parallelism::Rayon(n.parse().unwrap()),
+        None => faer::Parallelism::Rayon(0),
+    }
+}
+pub fn experiment_init() {
+    faer::set_global_parallelism(experiment_faer_par());
+}

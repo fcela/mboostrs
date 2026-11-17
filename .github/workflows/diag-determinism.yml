@@ -1,0 +1,55 @@
+name: Diagnose cross-CPU determinism
+on:
+  push:
+    branches: [diag/cpu-determinism]
+permissions:
+  contents: read
+jobs:
+  fingerprint:
+    name: ${{ matrix.os }} ${{ matrix.n }} faer=${{ matrix.faer }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-15-intel, windows-latest]
+        n: [1]
+        faer: [default, "8"]
+        include:
+          - {os: ubuntu-latest, n: 2, faer: default}
+          - {os: ubuntu-latest, n: 3, faer: default}
+          - {os: ubuntu-latest, n: 4, faer: default}
+          - {os: ubuntu-latest, n: 5, faer: default}
+          - {os: ubuntu-latest, n: 2, faer: "8"}
+          - {os: ubuntu-latest, n: 3, faer: "8"}
+          - {os: ubuntu-latest, n: 4, faer: "8"}
+          - {os: ubuntu-latest, n: 5, faer: "8"}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - uses: Swatinem/rust-cache@v2
+      - name: Build and install
+        shell: bash
+        run: |
+          python -m pip install maturin
+          maturin build --release --out dist
+          python -m pip install "$(ls dist/*.whl)[dev]"
+      - name: Describe the machine
+        shell: bash
+        run: |
+          (lscpu 2>/dev/null | grep -E "Model name|^CPU\(s\)|L1d|L2|L3|Flags" | sed -E 's/(Flags:).*/\1 .../') || true
+          (grep -o -m1 -w "avx512f" /proc/cpuinfo || true)
+          (ldd --version 2>/dev/null | head -1) || true
+          (sysctl -n machdep.cpu.brand_string hw.l1dcachesize hw.l2cachesize hw.ncpu 2>/dev/null) || true
+          python -c "import os; print('cpus', os.cpu_count())"
+      - name: Fingerprint
+        shell: bash
+        run: |
+          if [ "${{ matrix.faer }}" != default ]; then export MBOOSTRS_FAER_TASKS=${{ matrix.faer }}; fi
+          python tools/diag/fingerprint.py "fp-${{ matrix.os }}-${{ matrix.n }}-${{ matrix.faer }}"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: fp-${{ matrix.os }}-${{ matrix.n }}-${{ matrix.faer }}
+          path: fp-*

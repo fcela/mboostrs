@@ -10183,6 +10183,7 @@ fn centered_group_effects(coef: Vec<f64>, centering: Vec<f64>) -> PyResult<Vec<f
 
 #[pymodule]
 fn _rust(m: &Bound<'_, PyModule>) -> PyResult<()> {
+    mboostrs_core::experiment_init();
     m.add_function(wrap_pyfunction!(student_t_pdf, m)?)?;
     m.add_function(wrap_pyfunction!(centered_group_effects, m)?)?;
     selection_bindings::register(m)?;

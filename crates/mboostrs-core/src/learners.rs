@@ -4561,7 +4561,7 @@ fn setup_parallelism() -> faer::Parallelism<'static> {
     if rayon::current_thread_index().is_some() {
         faer::Parallelism::None
     } else {
-        faer::Parallelism::Rayon(0)
+        crate::experiment_faer_par()
     }
 }
 

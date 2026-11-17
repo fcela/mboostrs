@@ -52,7 +52,7 @@ pub(crate) fn weighted_gram(x: ArrayView2<f64>, w: ArrayView1<f64>) -> Array2<f6
             wxb.as_ref(),
             Some(1.0),
             1.0,
-            faer::Parallelism::Rayon(0),
+            crate::experiment_faer_par(),
         );
         start = end;
     }
@@ -82,7 +82,7 @@ pub(crate) fn weighted_cross(
             bw.as_ref(),
             Some(1.0),
             1.0,
-            faer::Parallelism::Rayon(0),
+            crate::experiment_faer_par(),
         );
         start = end;
     }
@@ -123,7 +123,7 @@ pub(crate) fn matmul(a: ArrayView2<f64>, b: ArrayView2<f64>) -> Array2<f64> {
         fb.as_ref(),
         Some(1.0),
         1.0,
-        faer::Parallelism::Rayon(0),
+        crate::experiment_faer_par(),
     );
     from_faer(&out)
 }
@@ -499,7 +499,7 @@ impl Problem<'_> {
                     rinv.transpose(),
                     Some(1.0),
                     1.0,
-                    faer::Parallelism::Rayon(0),
+                    crate::experiment_faer_par(),
                 );
                 from_faer(&out)
             }
