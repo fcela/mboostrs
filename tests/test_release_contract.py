@@ -50,7 +50,9 @@ def test_each_wheel_is_installed_and_exercised_before_upload():
     jobs = yaml.safe_load((ROOT / ".github/workflows/release.yml").read_text())["jobs"]
     commands = "\n".join(step.get("run", "") for step in jobs["build-wheels"]["steps"]
                           if isinstance(step, dict))
-    assert "pip install --force-reinstall dist/*.whl" in commands
+    # Wheels are built for several interpreters, so the smoke test lets pip
+    # pick the one that matches the runner's Python from the built directory.
+    assert "pip install --force-reinstall --find-links dist mboostrs" in commands
     assert "mb.glmboost" in commands and "m.predict" in commands
 
 

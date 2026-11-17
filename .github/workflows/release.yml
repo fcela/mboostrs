@@ -130,21 +130,28 @@ jobs:
         with:
           key: ${{ matrix.target }}
 
+      # The extension is built per interpreter (no abi3), so the wheels for
+      # every supported minor version are built here. The manylinux container
+      # carries its own interpreters; the other runners need them on PATH.
+      - uses: actions/setup-python@v7
+        with:
+          python-version: |
+            3.11
+            3.12
+            3.13
+
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
           target: ${{ matrix.target }}
-          args: --release --out dist
+          args: --release --out dist -i python3.11 python3.12 python3.13
           manylinux: ${{ matrix.manylinux || 'auto' }}
-
-      - uses: actions/setup-python@v7
-        with:
-          python-version: "3.12"
 
       - name: Install and smoke-test the built wheel
         shell: bash
         run: |
-          python -m pip install --force-reinstall dist/*.whl
+          ls dist
+          python -m pip install --force-reinstall --find-links dist mboostrs
           python -c "import mboostrs as mb; d={'x':[0.,1.,2.],'y':[0.,1.,2.]}; m=mb.glmboost('y ~ x',d,control=mb.boost_control(2)); assert m.predict().shape == (3,)"
 
       - name: Upload build artifacts
