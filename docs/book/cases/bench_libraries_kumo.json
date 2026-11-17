@@ -1,0 +1,1034 @@
+{
+ "provenance": {
+  "created_at": "2026-11-17T02:01:23+00:00",
+  "commit": {
+   "sha": "1c4d9112e2b938360e805405c91e272af3c2ff8f",
+   "dirty": true
+  },
+  "platform": {
+   "system": "Darwin",
+   "release": "25.3.0",
+   "machine": "arm64",
+   "python": "3.13.7"
+  },
+  "versions": {
+   "structured-data-models": "0.2.1",
+   "torch": "2.10.0",
+   "numpy": "2.3.5",
+   "pandas": "2.3.3",
+   "scikit-learn": "1.8.0"
+  },
+  "threads": {
+   "per_fit": 1,
+   "torch_interop": 1
+  },
+  "protocol": {
+   "repeats": 3,
+   "max_rows": 5000,
+   "seed": 20240811,
+   "test_size": 0.25,
+   "mode": "pretrained",
+   "n_configs": 1,
+   "model": "nvidia/Kumo-Tabular",
+   "revision": "v1.0.1",
+   "size": "small",
+   "num_estimators": 8,
+   "device": "cpu",
+   "regression_point": "mean of q001 through q999",
+   "timing": "training-only encoding, table conversion, forward pass and scoring; weights loaded separately",
+   "warmup": "none; one forward pass per split",
+   "datasets": [
+    "diabetes",
+    "cpu_act",
+    "california",
+    "breast_cancer",
+    "credit_g",
+    "electricity"
+   ]
+  },
+  "repeats": {
+   "outer_splits": 3
+  },
+  "uncertainty": "per-split scores; report mean and sample standard deviation"
+ },
+ "protocol": {
+  "repeats": 3,
+  "max_rows": 5000,
+  "seed": 20240811,
+  "test_size": 0.25,
+  "mode": "pretrained",
+  "n_configs": 1,
+  "model": "nvidia/Kumo-Tabular",
+  "revision": "v1.0.1",
+  "size": "small",
+  "num_estimators": 8,
+  "device": "cpu",
+  "regression_point": "mean of q001 through q999",
+  "timing": "training-only encoding, table conversion, forward pass and scoring; weights loaded separately",
+  "warmup": "none; one forward pass per split",
+  "datasets": [
+   "diabetes",
+   "cpu_act",
+   "california",
+   "breast_cancer",
+   "credit_g",
+   "electricity"
+  ]
+ },
+ "results": [
+  {
+   "dataset": "diabetes",
+   "repeat": 0,
+   "task": "regression",
+   "n": 442,
+   "p": 10,
+   "library": "NVIDIA Kumo Tabular (small)",
+   "family": "pretrained interactions",
+   "mode": "pretrained",
+   "score": 0.41619426381576274,
+   "score_unclipped": 0.41619426381576274,
+   "load_seconds": 0.44279154198011383,
+   "total_seconds": 1.0520802089886274,
+   "input_digest": "0970e0ca4bc7871e742f6bf74951259b4862d0cb801d6e5737c7183d8364a069",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "d1ac64788ac402260c53dbd0a5df73107883947f1ac0dc93aabca2c057a8a39c",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_libraries",
+      "bench_libraries_kumo",
+      "benchmark_contract"
+     ],
+     "runner_hash": "3bac2e60e86a5b3b996901f9cf563c8aaf4c7f51aad5bd4e782588fc649c6fc1",
+     "environment": {
+      "python": "3.13.7",
+      "executable": "/private/tmp/mboostrs-kumo-venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.3.5",
+       "polars": "1.38.1",
+       "pandas": "2.3.3",
+       "scipy": "1.17.0",
+       "scikit-learn": "1.8.0",
+       "statsmodels": "0.14.6",
+       "structured-data-models": "0.2.1",
+       "torch": "2.10.0"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": null,
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     }
+    },
+    "measured_at": "2026-11-17T01:55:54+00:00",
+    "wall_seconds": 3.176759958267212
+   }
+  },
+  {
+   "dataset": "diabetes",
+   "repeat": 1,
+   "task": "regression",
+   "n": 442,
+   "p": 10,
+   "library": "NVIDIA Kumo Tabular (small)",
+   "family": "pretrained interactions",
+   "mode": "pretrained",
+   "score": 0.5442386020747009,
+   "score_unclipped": 0.5442386020747009,
+   "load_seconds": 0.32946312497369945,
+   "total_seconds": 1.060855374991661,
+   "input_digest": "345786325e5468a2030a63c62e51f3f5c8ac892d2ff486abdbd2aa0fd8c342dd",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "63da6079a50426a0927d5a23c1cc77f17ecf93a040595e3b36cb0f3a71f89381",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_libraries",
+      "bench_libraries_kumo",
+      "benchmark_contract"
+     ],
+     "runner_hash": "3bac2e60e86a5b3b996901f9cf563c8aaf4c7f51aad5bd4e782588fc649c6fc1",
+     "environment": {
+      "python": "3.13.7",
+      "executable": "/private/tmp/mboostrs-kumo-venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.3.5",
+       "polars": "1.38.1",
+       "pandas": "2.3.3",
+       "scipy": "1.17.0",
+       "scikit-learn": "1.8.0",
+       "statsmodels": "0.14.6",
+       "structured-data-models": "0.2.1",
+       "torch": "2.10.0"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": null,
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     }
+    },
+    "measured_at": "2026-11-17T01:55:57+00:00",
+    "wall_seconds": 2.953665018081665
+   }
+  },
+  {
+   "dataset": "diabetes",
+   "repeat": 2,
+   "task": "regression",
+   "n": 442,
+   "p": 10,
+   "library": "NVIDIA Kumo Tabular (small)",
+   "family": "pretrained interactions",
+   "mode": "pretrained",
+   "score": 0.5469384166799929,
+   "score_unclipped": 0.5469384166799929,
+   "load_seconds": 0.3280007499852218,
+   "total_seconds": 1.0384010420239065,
+   "input_digest": "9f5d9ac27bd1d44ac5589c54114a33ffaa51e718ada858e7e884b18d8148ff33",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "95dee48f53fa150939327d6579c0f8d598a58338d0ab4d8c2db049ab82a13f9e",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_libraries",
+      "bench_libraries_kumo",
+      "benchmark_contract"
+     ],
+     "runner_hash": "3bac2e60e86a5b3b996901f9cf563c8aaf4c7f51aad5bd4e782588fc649c6fc1",
+     "environment": {
+      "python": "3.13.7",
+      "executable": "/private/tmp/mboostrs-kumo-venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.3.5",
+       "polars": "1.38.1",
+       "pandas": "2.3.3",
+       "scipy": "1.17.0",
+       "scikit-learn": "1.8.0",
+       "statsmodels": "0.14.6",
+       "structured-data-models": "0.2.1",
+       "torch": "2.10.0"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": null,
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     }
+    },
+    "measured_at": "2026-11-17T01:56:00+00:00",
+    "wall_seconds": 2.9192917346954346
+   }
+  },
+  {
+   "dataset": "cpu_act",
+   "repeat": 0,
+   "task": "regression",
+   "n": 5000,
+   "p": 21,
+   "library": "NVIDIA Kumo Tabular (small)",
+   "family": "pretrained interactions",
+   "mode": "pretrained",
+   "score": 0.9882477085486602,
+   "score_unclipped": 0.9882476582577298,
+   "load_seconds": 0.3294133330055047,
+   "total_seconds": 30.6350972080254,
+   "input_digest": "32927c9d7d86a3165b56b530a8c4c8dfcc10f07d95fefe19a21ec21db5558edd",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "98703b8af32f492f9b821812d11e37bb1f8bb31f58701cdba966eec16dbf27e6",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_libraries",
+      "bench_libraries_kumo",
+      "benchmark_contract"
+     ],
+     "runner_hash": "3bac2e60e86a5b3b996901f9cf563c8aaf4c7f51aad5bd4e782588fc649c6fc1",
+     "environment": {
+      "python": "3.13.7",
+      "executable": "/private/tmp/mboostrs-kumo-venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.3.5",
+       "polars": "1.38.1",
+       "pandas": "2.3.3",
+       "scipy": "1.17.0",
+       "scikit-learn": "1.8.0",
+       "statsmodels": "0.14.6",
+       "structured-data-models": "0.2.1",
+       "torch": "2.10.0"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": null,
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     }
+    },
+    "measured_at": "2026-11-17T01:56:03+00:00",
+    "wall_seconds": 32.533875942230225
+   }
+  },
+  {
+   "dataset": "cpu_act",
+   "repeat": 1,
+   "task": "regression",
+   "n": 5000,
+   "p": 21,
+   "library": "NVIDIA Kumo Tabular (small)",
+   "family": "pretrained interactions",
+   "mode": "pretrained",
+   "score": 0.9890983384965739,
+   "score_unclipped": 0.9890983235946704,
+   "load_seconds": 0.4604055410018191,
+   "total_seconds": 30.752237957989564,
+   "input_digest": "8513ee034c6c62769bb0cb6fd977e58e65af86dc2db6cb9e64f86bb203a45a27",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "27274e848dda992f89300663c080d2475ad9b8ba1ea0ef4f378717cfba601ef7",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_libraries",
+      "bench_libraries_kumo",
+      "benchmark_contract"
+     ],
+     "runner_hash": "3bac2e60e86a5b3b996901f9cf563c8aaf4c7f51aad5bd4e782588fc649c6fc1",
+     "environment": {
+      "python": "3.13.7",
+      "executable": "/private/tmp/mboostrs-kumo-venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.3.5",
+       "polars": "1.38.1",
+       "pandas": "2.3.3",
+       "scipy": "1.17.0",
+       "scikit-learn": "1.8.0",
+       "statsmodels": "0.14.6",
+       "structured-data-models": "0.2.1",
+       "torch": "2.10.0"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": null,
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     }
+    },
+    "measured_at": "2026-11-17T01:56:35+00:00",
+    "wall_seconds": 33.112905979156494
+   }
+  },
+  {
+   "dataset": "cpu_act",
+   "repeat": 2,
+   "task": "regression",
+   "n": 5000,
+   "p": 21,
+   "library": "NVIDIA Kumo Tabular (small)",
+   "family": "pretrained interactions",
+   "mode": "pretrained",
+   "score": 0.9883177586187473,
+   "score_unclipped": 0.98831775763319,
+   "load_seconds": 0.348106417019153,
+   "total_seconds": 30.492699374997756,
+   "input_digest": "1128d76fa9d6f8700954cac8e86713ed81d9253716c6566d60f75d17615b4e96",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "5ced6791757b1ec64be14235fdfd449e8955c83cc7c07d7de548dc18936a4ebc",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_libraries",
+      "bench_libraries_kumo",
+      "benchmark_contract"
+     ],
+     "runner_hash": "3bac2e60e86a5b3b996901f9cf563c8aaf4c7f51aad5bd4e782588fc649c6fc1",
+     "environment": {
+      "python": "3.13.7",
+      "executable": "/private/tmp/mboostrs-kumo-venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.3.5",
+       "polars": "1.38.1",
+       "pandas": "2.3.3",
+       "scipy": "1.17.0",
+       "scikit-learn": "1.8.0",
+       "statsmodels": "0.14.6",
+       "structured-data-models": "0.2.1",
+       "torch": "2.10.0"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": null,
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     }
+    },
+    "measured_at": "2026-11-17T01:57:08+00:00",
+    "wall_seconds": 32.41920185089111
+   }
+  },
+  {
+   "dataset": "california",
+   "repeat": 0,
+   "task": "regression",
+   "n": 5000,
+   "p": 8,
+   "library": "NVIDIA Kumo Tabular (small)",
+   "family": "pretrained interactions",
+   "mode": "pretrained",
+   "score": 0.8760802323743069,
+   "score_unclipped": 0.8760802321787016,
+   "load_seconds": 0.3410151249845512,
+   "total_seconds": 21.418243833992165,
+   "input_digest": "8c3f3a7c661aa07ca41a1e34ee1d868cbcee7b3c99d72f10d161bb45aa86be98",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "04c745b6c6f904eabbb0694451f3be52f57cbae13aada94c152e24b1e20e4d9b",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_libraries",
+      "bench_libraries_kumo",
+      "benchmark_contract"
+     ],
+     "runner_hash": "3bac2e60e86a5b3b996901f9cf563c8aaf4c7f51aad5bd4e782588fc649c6fc1",
+     "environment": {
+      "python": "3.13.7",
+      "executable": "/private/tmp/mboostrs-kumo-venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.3.5",
+       "polars": "1.38.1",
+       "pandas": "2.3.3",
+       "scipy": "1.17.0",
+       "scikit-learn": "1.8.0",
+       "statsmodels": "0.14.6",
+       "structured-data-models": "0.2.1",
+       "torch": "2.10.0"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": null,
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     }
+    },
+    "measured_at": "2026-11-17T01:57:41+00:00",
+    "wall_seconds": 23.348124742507935
+   }
+  },
+  {
+   "dataset": "california",
+   "repeat": 1,
+   "task": "regression",
+   "n": 5000,
+   "p": 8,
+   "library": "NVIDIA Kumo Tabular (small)",
+   "family": "pretrained interactions",
+   "mode": "pretrained",
+   "score": 0.8757588157151956,
+   "score_unclipped": 0.8757588157151376,
+   "load_seconds": 0.33291587501298636,
+   "total_seconds": 21.364863499999046,
+   "input_digest": "65dc9df94ccf358ac7fe4f9cde5bf4e50b68e6bccb995e624e9e037f8acd5f6f",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "56fd44f3abe69e511af6edcb9d5f6dfdda7f538634c2e2737e703ae8db10194b",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_libraries",
+      "bench_libraries_kumo",
+      "benchmark_contract"
+     ],
+     "runner_hash": "3bac2e60e86a5b3b996901f9cf563c8aaf4c7f51aad5bd4e782588fc649c6fc1",
+     "environment": {
+      "python": "3.13.7",
+      "executable": "/private/tmp/mboostrs-kumo-venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.3.5",
+       "polars": "1.38.1",
+       "pandas": "2.3.3",
+       "scipy": "1.17.0",
+       "scikit-learn": "1.8.0",
+       "statsmodels": "0.14.6",
+       "structured-data-models": "0.2.1",
+       "torch": "2.10.0"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": null,
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     }
+    },
+    "measured_at": "2026-11-17T01:58:04+00:00",
+    "wall_seconds": 23.28254199028015
+   }
+  },
+  {
+   "dataset": "california",
+   "repeat": 2,
+   "task": "regression",
+   "n": 5000,
+   "p": 8,
+   "library": "NVIDIA Kumo Tabular (small)",
+   "family": "pretrained interactions",
+   "mode": "pretrained",
+   "score": 0.8608701611282639,
+   "score_unclipped": 0.8608701611282639,
+   "load_seconds": 0.33771241700742394,
+   "total_seconds": 21.97043937499984,
+   "input_digest": "b7ba9280e221e131ed6f2f7b504c630cc8ccbb1d5619534374d94efa1710d7c2",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "8dbdf38400d1ce76cf16b1e821ada23b822dba47cc25c4125a396d980d5d09aa",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_libraries",
+      "bench_libraries_kumo",
+      "benchmark_contract"
+     ],
+     "runner_hash": "3bac2e60e86a5b3b996901f9cf563c8aaf4c7f51aad5bd4e782588fc649c6fc1",
+     "environment": {
+      "python": "3.13.7",
+      "executable": "/private/tmp/mboostrs-kumo-venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.3.5",
+       "polars": "1.38.1",
+       "pandas": "2.3.3",
+       "scipy": "1.17.0",
+       "scikit-learn": "1.8.0",
+       "statsmodels": "0.14.6",
+       "structured-data-models": "0.2.1",
+       "torch": "2.10.0"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": null,
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     }
+    },
+    "measured_at": "2026-11-17T01:58:27+00:00",
+    "wall_seconds": 24.315295934677124
+   }
+  },
+  {
+   "dataset": "breast_cancer",
+   "repeat": 0,
+   "task": "classification",
+   "n": 569,
+   "p": 30,
+   "library": "NVIDIA Kumo Tabular (small)",
+   "family": "pretrained interactions",
+   "mode": "pretrained",
+   "score": 0.9964360587002097,
+   "score_unclipped": 0.9964360587002097,
+   "load_seconds": 18.501343582989648,
+   "total_seconds": 2.972589999990305,
+   "input_digest": "00bbbe22457a022da626a34668a7db9d05e0684e088c83c3149bb33c7a098b81",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "fb9286ce1ec7bf81e531b760438d515c1abcedb5a593a78d7a2028f6b08b13aa",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_libraries",
+      "bench_libraries_kumo",
+      "benchmark_contract"
+     ],
+     "runner_hash": "3bac2e60e86a5b3b996901f9cf563c8aaf4c7f51aad5bd4e782588fc649c6fc1",
+     "environment": {
+      "python": "3.13.7",
+      "executable": "/private/tmp/mboostrs-kumo-venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.3.5",
+       "polars": "1.38.1",
+       "pandas": "2.3.3",
+       "scipy": "1.17.0",
+       "scikit-learn": "1.8.0",
+       "statsmodels": "0.14.6",
+       "structured-data-models": "0.2.1",
+       "torch": "2.10.0"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": null,
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     }
+    },
+    "measured_at": "2026-11-17T01:58:52+00:00",
+    "wall_seconds": 24.599046230316162
+   }
+  },
+  {
+   "dataset": "breast_cancer",
+   "repeat": 1,
+   "task": "classification",
+   "n": 569,
+   "p": 30,
+   "library": "NVIDIA Kumo Tabular (small)",
+   "family": "pretrained interactions",
+   "mode": "pretrained",
+   "score": 0.9991614255765199,
+   "score_unclipped": 0.9991614255765199,
+   "load_seconds": 0.3468909169896506,
+   "total_seconds": 2.9622022080002353,
+   "input_digest": "fcf82f5fbdc08b2f69e639951768a1c41d7065447d083715a7769e1d9ee0dc26",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "5ffdec34e1235b9d6714715ff110bbc6b1a55083cbf3303245b110ab4b3fab9b",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_libraries",
+      "bench_libraries_kumo",
+      "benchmark_contract"
+     ],
+     "runner_hash": "3bac2e60e86a5b3b996901f9cf563c8aaf4c7f51aad5bd4e782588fc649c6fc1",
+     "environment": {
+      "python": "3.13.7",
+      "executable": "/private/tmp/mboostrs-kumo-venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.3.5",
+       "polars": "1.38.1",
+       "pandas": "2.3.3",
+       "scipy": "1.17.0",
+       "scikit-learn": "1.8.0",
+       "statsmodels": "0.14.6",
+       "structured-data-models": "0.2.1",
+       "torch": "2.10.0"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": null,
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     }
+    },
+    "measured_at": "2026-11-17T01:59:16+00:00",
+    "wall_seconds": 4.91471791267395
+   }
+  },
+  {
+   "dataset": "breast_cancer",
+   "repeat": 2,
+   "task": "classification",
+   "n": 569,
+   "p": 30,
+   "library": "NVIDIA Kumo Tabular (small)",
+   "family": "pretrained interactions",
+   "mode": "pretrained",
+   "score": 0.9983228511530399,
+   "score_unclipped": 0.9983228511530399,
+   "load_seconds": 0.3491397089965176,
+   "total_seconds": 2.931982792011695,
+   "input_digest": "95b753c10a03bf02872eab9f8a120f847e395df915589118a60ffa80dbe1396a",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "81b3118c0030cb6f0220c8a0f23c393c685618d84d96083f2f6c99bba70b4d1f",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_libraries",
+      "bench_libraries_kumo",
+      "benchmark_contract"
+     ],
+     "runner_hash": "3bac2e60e86a5b3b996901f9cf563c8aaf4c7f51aad5bd4e782588fc649c6fc1",
+     "environment": {
+      "python": "3.13.7",
+      "executable": "/private/tmp/mboostrs-kumo-venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.3.5",
+       "polars": "1.38.1",
+       "pandas": "2.3.3",
+       "scipy": "1.17.0",
+       "scikit-learn": "1.8.0",
+       "statsmodels": "0.14.6",
+       "structured-data-models": "0.2.1",
+       "torch": "2.10.0"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": null,
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     }
+    },
+    "measured_at": "2026-11-17T01:59:21+00:00",
+    "wall_seconds": 4.8648362159729
+   }
+  },
+  {
+   "dataset": "credit_g",
+   "repeat": 0,
+   "task": "classification",
+   "n": 1000,
+   "p": 58,
+   "library": "NVIDIA Kumo Tabular (small)",
+   "family": "pretrained interactions",
+   "mode": "pretrained",
+   "score": 0.7949714285714287,
+   "score_unclipped": 0.7949714285714287,
+   "load_seconds": 0.34280212500016205,
+   "total_seconds": 9.176973832974909,
+   "input_digest": "139a0c15aa5c7f42ad80005af032cdbccdf2d0b9dd08d3947664e313e5059c21",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "c0d4261899799d9012fbfbe9b6e61f166436a9c41780eb3ca2086f0e7b5e9b00",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_libraries",
+      "bench_libraries_kumo",
+      "benchmark_contract"
+     ],
+     "runner_hash": "3bac2e60e86a5b3b996901f9cf563c8aaf4c7f51aad5bd4e782588fc649c6fc1",
+     "environment": {
+      "python": "3.13.7",
+      "executable": "/private/tmp/mboostrs-kumo-venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.3.5",
+       "polars": "1.38.1",
+       "pandas": "2.3.3",
+       "scipy": "1.17.0",
+       "scikit-learn": "1.8.0",
+       "statsmodels": "0.14.6",
+       "structured-data-models": "0.2.1",
+       "torch": "2.10.0"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": null,
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     }
+    },
+    "measured_at": "2026-11-17T01:59:26+00:00",
+    "wall_seconds": 11.089722156524658
+   }
+  },
+  {
+   "dataset": "credit_g",
+   "repeat": 1,
+   "task": "classification",
+   "n": 1000,
+   "p": 59,
+   "library": "NVIDIA Kumo Tabular (small)",
+   "family": "pretrained interactions",
+   "mode": "pretrained",
+   "score": 0.7991619047619047,
+   "score_unclipped": 0.7991619047619047,
+   "load_seconds": 0.34188766599982046,
+   "total_seconds": 9.256087416986702,
+   "input_digest": "23252e8302568545d4a914126518c48d3f1e2354ef92b3e3a3a1feb4841b6bcf",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "469848e03901ae81196ce24d276b918687551f0186eed2b067b31a346d5417aa",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_libraries",
+      "bench_libraries_kumo",
+      "benchmark_contract"
+     ],
+     "runner_hash": "3bac2e60e86a5b3b996901f9cf563c8aaf4c7f51aad5bd4e782588fc649c6fc1",
+     "environment": {
+      "python": "3.13.7",
+      "executable": "/private/tmp/mboostrs-kumo-venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.3.5",
+       "polars": "1.38.1",
+       "pandas": "2.3.3",
+       "scipy": "1.17.0",
+       "scikit-learn": "1.8.0",
+       "statsmodels": "0.14.6",
+       "structured-data-models": "0.2.1",
+       "torch": "2.10.0"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": null,
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     }
+    },
+    "measured_at": "2026-11-17T01:59:37+00:00",
+    "wall_seconds": 11.161866188049316
+   }
+  },
+  {
+   "dataset": "credit_g",
+   "repeat": 2,
+   "task": "classification",
+   "n": 1000,
+   "p": 59,
+   "library": "NVIDIA Kumo Tabular (small)",
+   "family": "pretrained interactions",
+   "mode": "pretrained",
+   "score": 0.7921523809523809,
+   "score_unclipped": 0.7921523809523809,
+   "load_seconds": 0.33759141599875875,
+   "total_seconds": 9.251721834007185,
+   "input_digest": "9aae4afad46295639cf656127a62564dbebe7b15d8567da8b5d2b67825c31a34",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "61f9510ca6dc3388e2d1affbbb47ca26a1666dd4cb74591e67bd8063251d4805",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_libraries",
+      "bench_libraries_kumo",
+      "benchmark_contract"
+     ],
+     "runner_hash": "3bac2e60e86a5b3b996901f9cf563c8aaf4c7f51aad5bd4e782588fc649c6fc1",
+     "environment": {
+      "python": "3.13.7",
+      "executable": "/private/tmp/mboostrs-kumo-venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.3.5",
+       "polars": "1.38.1",
+       "pandas": "2.3.3",
+       "scipy": "1.17.0",
+       "scikit-learn": "1.8.0",
+       "statsmodels": "0.14.6",
+       "structured-data-models": "0.2.1",
+       "torch": "2.10.0"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": null,
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     }
+    },
+    "measured_at": "2026-11-17T01:59:48+00:00",
+    "wall_seconds": 11.167670011520386
+   }
+  },
+  {
+   "dataset": "electricity",
+   "repeat": 0,
+   "task": "classification",
+   "n": 5000,
+   "p": 14,
+   "library": "NVIDIA Kumo Tabular (small)",
+   "family": "pretrained interactions",
+   "mode": "pretrained",
+   "score": 0.9477847108992852,
+   "score_unclipped": 0.9477847108992852,
+   "load_seconds": 0.34782245798851363,
+   "total_seconds": 25.87677554099355,
+   "input_digest": "2c0cf95dec12439047bfad57d8059a04d1c1b22d5a0cccdfd085d7eb9e6c1057",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "efffd26595ed9e577cc53da8f7153c57b61d9403f817850850d93c5438aeb646",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_libraries",
+      "bench_libraries_kumo",
+      "benchmark_contract"
+     ],
+     "runner_hash": "3bac2e60e86a5b3b996901f9cf563c8aaf4c7f51aad5bd4e782588fc649c6fc1",
+     "environment": {
+      "python": "3.13.7",
+      "executable": "/private/tmp/mboostrs-kumo-venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.3.5",
+       "polars": "1.38.1",
+       "pandas": "2.3.3",
+       "scipy": "1.17.0",
+       "scikit-learn": "1.8.0",
+       "statsmodels": "0.14.6",
+       "structured-data-models": "0.2.1",
+       "torch": "2.10.0"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": null,
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     }
+    },
+    "measured_at": "2026-11-17T02:00:00+00:00",
+    "wall_seconds": 27.80892014503479
+   }
+  },
+  {
+   "dataset": "electricity",
+   "repeat": 1,
+   "task": "classification",
+   "n": 5000,
+   "p": 14,
+   "library": "NVIDIA Kumo Tabular (small)",
+   "family": "pretrained interactions",
+   "mode": "pretrained",
+   "score": 0.9302071574898616,
+   "score_unclipped": 0.9302071574898616,
+   "load_seconds": 0.33709108299808577,
+   "total_seconds": 25.654990459006513,
+   "input_digest": "9cff3fce77e8d6d26e80737f147774faa2e2a8bb013536ccc3cff1aed50d0328",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "7b1d9bb601bd8dd0287958bc18814c8ccf7fde2f522363c9c716ed21fc6b56f9",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_libraries",
+      "bench_libraries_kumo",
+      "benchmark_contract"
+     ],
+     "runner_hash": "3bac2e60e86a5b3b996901f9cf563c8aaf4c7f51aad5bd4e782588fc649c6fc1",
+     "environment": {
+      "python": "3.13.7",
+      "executable": "/private/tmp/mboostrs-kumo-venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.3.5",
+       "polars": "1.38.1",
+       "pandas": "2.3.3",
+       "scipy": "1.17.0",
+       "scikit-learn": "1.8.0",
+       "statsmodels": "0.14.6",
+       "structured-data-models": "0.2.1",
+       "torch": "2.10.0"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": null,
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     }
+    },
+    "measured_at": "2026-11-17T02:00:27+00:00",
+    "wall_seconds": 27.565537929534912
+   }
+  },
+  {
+   "dataset": "electricity",
+   "repeat": 2,
+   "task": "classification",
+   "n": 5000,
+   "p": 14,
+   "library": "NVIDIA Kumo Tabular (small)",
+   "family": "pretrained interactions",
+   "mode": "pretrained",
+   "score": 0.9415057067603161,
+   "score_unclipped": 0.9415057067603161,
+   "load_seconds": 0.3394942920131143,
+   "total_seconds": 25.819073041988304,
+   "input_digest": "dc3cc655305d3a0ec4349b306a2f6764af45a7fc511ce958c15dea4c917ab3c6",
+   "_status": "success",
+   "_identity": {
+    "fingerprint": "851df7a29e8c0ea43ca6ad1ed94d3a638460a91e097eddba2960a2de38a97ee8",
+    "components": {
+     "runner_modules": [
+      "_jobs",
+      "bench_libraries",
+      "bench_libraries_kumo",
+      "benchmark_contract"
+     ],
+     "runner_hash": "3bac2e60e86a5b3b996901f9cf563c8aaf4c7f51aad5bd4e782588fc649c6fc1",
+     "environment": {
+      "python": "3.13.7",
+      "executable": "/private/tmp/mboostrs-kumo-venv/bin/python",
+      "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "packages": {
+       "numpy": "2.3.5",
+       "polars": "1.38.1",
+       "pandas": "2.3.3",
+       "scipy": "1.17.0",
+       "scikit-learn": "1.8.0",
+       "statsmodels": "0.14.6",
+       "structured-data-models": "0.2.1",
+       "torch": "2.10.0"
+      },
+      "r": "R version 4.5.1 (2025-06-13) \nmgcv 1.9.3 \ngamlss 5.5.0 \nglmnet 5.0 \nknockoff 0.3.6 \nBoruta 10.0.0 \ngrf 2.6.1 \nscam 1.2.22 \nmboost 2.9.11 \nsurvival 3.8.3",
+      "threads": {
+       "OMP_NUM_THREADS": "1",
+       "RAYON_NUM_THREADS": null,
+       "OPENBLAS_NUM_THREADS": "1",
+       "VECLIB_MAXIMUM_THREADS": "1"
+      }
+     }
+    },
+    "measured_at": "2026-11-17T02:00:55+00:00",
+    "wall_seconds": 27.738638877868652
+   }
+  }
+ ]
+}
