@@ -16,7 +16,7 @@
         "cutpoint": 2023.0,
         "term": "btree(year, by=log1p(brokered_share), maxdepth=1)",
         "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, by=log1p(brokered_share), maxdepth=1)",
-        "screen_r2": 0.04366419915432361,
+        "screen_r2": 0.04357857401542932,
         "interpretation": "typed basis interaction; the tree learns the cutpoint; compare before adoption",
         "screens_positive": true
       },
@@ -28,7 +28,7 @@
         "cutpoint": 2023.0,
         "term": "btree(year, by=log1p(log_assets), maxdepth=1)",
         "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, by=log1p(log_assets), maxdepth=1)",
-        "screen_r2": 0.03839246560889126,
+        "screen_r2": 0.03845278024855982,
         "interpretation": "typed basis interaction; the tree learns the cutpoint; compare before adoption",
         "screens_positive": true
       },
@@ -37,7 +37,7 @@
         "column": "brokered_share",
         "term": "bols(log1p(brokered_share))",
         "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bols(log1p(brokered_share))",
-        "screen_r2": 0.010981759380191443,
+        "screen_r2": 0.011047620646911716,
         "interpretation": "typed structure lead; compare before adoption",
         "screens_positive": true
       },
@@ -47,7 +47,7 @@
         "cutpoint": 0.5284910617686447,
         "term": "bols(pmax(loan_ratio, 0.528491))",
         "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bols(pmax(loan_ratio, 0.528491))",
-        "screen_r2": 0.010776827039414577,
+        "screen_r2": 0.0109982089174265,
         "interpretation": "typed structure lead; compare before adoption",
         "screens_positive": true
       },
@@ -57,7 +57,7 @@
         "cutpoint": 0.6601367307688093,
         "term": "btree(loan_ratio, maxdepth=1)",
         "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(loan_ratio, maxdepth=1)",
-        "screen_r2": 0.007334376606535572,
+        "screen_r2": 0.007411695962440054,
         "interpretation": "typed structure lead; compare before adoption",
         "screens_positive": false
       },
@@ -69,7 +69,7 @@
         "cutpoint": 0.6601367307688093,
         "term": "btree(loan_ratio, by=log1p(brokered_share), maxdepth=1)",
         "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(loan_ratio, by=log1p(brokered_share), maxdepth=1)",
-        "screen_r2": 0.004893173021649179,
+        "screen_r2": 0.005011811699001493,
         "interpretation": "typed basis interaction; the tree learns the cutpoint; compare before adoption",
         "screens_positive": false
       },
@@ -79,7 +79,7 @@
         "cutpoint": 0.7722766391159495,
         "term": "btree(ib_share, maxdepth=1)",
         "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(ib_share, maxdepth=1)",
-        "screen_r2": 0.003878046645834435,
+        "screen_r2": 0.0038649856295760606,
         "interpretation": "typed structure lead; compare before adoption",
         "screens_positive": false
       },
@@ -89,7 +89,7 @@
         "cutpoint": 0.702336555770108,
         "term": "bols(pmax(ib_share, 0.702337))",
         "candidate_rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bols(pmax(ib_share, 0.702337))",
-        "screen_r2": 0.002328836569829679,
+        "screen_r2": 0.002331443977265701,
         "interpretation": "typed structure lead; compare before adoption",
         "screens_positive": false
       }
@@ -101,7 +101,7 @@
       {
         "specification": "current",
         "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding)",
-        "out-of-fold risk": 0.24360130742968747,
+        "out-of-fold risk": 0.24360130700142182,
         "change": 0.0,
         "change se": 0.0
       },
@@ -109,81 +109,93 @@
         "specification": "tree soak",
         "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse)",
         "out-of-fold risk": 0.22055918683354364,
-        "change": -0.023042120596143828,
-        "change se": 0.0065127809628704155
+        "change": -0.023042120167878183,
+        "change se": 0.006512780809794734
       },
       {
         "specification": "brokered regime",
         "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, by=log1p(brokered_share), maxdepth=1)",
-        "out-of-fold risk": 0.23557635807699376,
-        "change": -0.008024949352693711,
-        "change se": 0.0025045889263006797
+        "out-of-fold risk": 0.23138043799120597,
+        "change": -0.012220869010215851,
+        "change se": 0.0029650981341445225
       },
       {
         "specification": "assets regime",
         "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, by=log1p(log_assets), maxdepth=1)",
-        "out-of-fold risk": 0.24360130742968747,
-        "change": 0.0,
-        "change se": 0.0
+        "out-of-fold risk": 0.23602289937879725,
+        "change": -0.007578407622624572,
+        "change se": 0.0010098229651158447
       },
       {
         "specification": "year x brokered",
         "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(brokered_share, df=2.5, knots=5)",
-        "out-of-fold risk": 0.23881691694109308,
-        "change": -0.004784390488594387,
-        "change se": 0.0014662892443814742
+        "out-of-fold risk": 0.23881691693355622,
+        "change": -0.0047843900678656015,
+        "change se": 0.0014662890315731275
       },
       {
         "specification": "year x assets",
         "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(log_assets, df=2.5, knots=5)",
-        "out-of-fold risk": 0.23810148300447354,
-        "change": -0.005499824425213934,
-        "change se": 0.0006307357033017581
+        "out-of-fold risk": 0.2381014780889507,
+        "change": -0.005499828912471111,
+        "change se": 0.0006307377707259771
       }
     ],
     "two_se_candidates": [
       {
         "candidate": "tree soak",
         "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, log_assets, loan_ratio, brokered_share, deposit_funding, ib_share, offices, maxdepth=5, selection=sse)",
-        "change": -0.023042120596143828,
-        "change_se": 0.0065127809628704155
+        "change": -0.023042120167878183,
+        "change_se": 0.006512780809794734
       },
       {
         "candidate": "brokered regime",
         "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, by=log1p(brokered_share), maxdepth=1)",
-        "change": -0.008024949352693711,
-        "change_se": 0.0025045889263006797
+        "change": -0.012220869010215851,
+        "change_se": 0.0029650981341445225
+      },
+      {
+        "candidate": "assets regime",
+        "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + btree(year, by=log1p(log_assets), maxdepth=1)",
+        "change": -0.007578407622624572,
+        "change_se": 0.0010098229651158447
       },
       {
         "candidate": "year x assets",
         "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(log_assets, df=2.5, knots=5)",
-        "change": -0.005499824425213934,
-        "change_se": 0.0006307357033017581
+        "change": -0.005499828912471111,
+        "change_se": 0.0006307377707259771
       },
       {
         "candidate": "year x brokered",
         "rhs": "bbs(year, df=4) + bols(brokered_share) + bbs(offices, df=4) + bbs(log_assets, df=4) + bols(loan_ratio) + bols(ib_share) + bols(deposit_funding) + bbs(year, df=2.5, knots=5) %X% bbs(brokered_share, df=2.5, knots=5)",
-        "change": -0.004784390488594387,
-        "change_se": 0.0014662892443814742
+        "change": -0.0047843900678656015,
+        "change_se": 0.0014662890315731275
       }
     ],
     "winner_gaps": [
       {
         "candidate": "brokered regime",
-        "gap_vs_best": 0.015017171243450117,
-        "paired_se": 0.0052573010059327446,
+        "gap_vs_best": 0.010821251157662332,
+        "paired_se": 0.004985072334016245,
+        "within_two_se": false
+      },
+      {
+        "candidate": "assets regime",
+        "gap_vs_best": 0.01546371254525361,
+        "paired_se": 0.00572690984492041,
         "within_two_se": false
       },
       {
         "candidate": "year x assets",
-        "gap_vs_best": 0.017542296170929894,
-        "paired_se": 0.006707129286876817,
+        "gap_vs_best": 0.017542291255407072,
+        "paired_se": 0.006707131576015925,
         "within_two_se": false
       },
       {
         "candidate": "year x brokered",
-        "gap_vs_best": 0.01825773010754944,
-        "paired_se": 0.0056574995928336275,
+        "gap_vs_best": 0.01825773010001258,
+        "paired_se": 0.005657499624248919,
         "within_two_se": false
       }
     ]
@@ -339,44 +351,8 @@
     "top_pairs": [
       {
         "left": "year",
-        "right": "loan_ratio",
-        "removed": -0.00020825157331168243,
-        "thresholded_sibling_suggested": false,
-        "threshold_column": null,
-        "sibling_term": null,
-        "next_action": null
-      },
-      {
-        "left": "loan_ratio",
-        "right": "deposit_funding",
-        "removed": -0.0002420833117111748,
-        "thresholded_sibling_suggested": false,
-        "threshold_column": null,
-        "sibling_term": null,
-        "next_action": null
-      },
-      {
-        "left": "year",
         "right": "log_assets",
-        "removed": -0.0003550584264293416,
-        "thresholded_sibling_suggested": false,
-        "threshold_column": null,
-        "sibling_term": null,
-        "next_action": null
-      },
-      {
-        "left": "log_assets",
-        "right": "loan_ratio",
-        "removed": -0.0003948368026887583,
-        "thresholded_sibling_suggested": false,
-        "threshold_column": null,
-        "sibling_term": null,
-        "next_action": null
-      },
-      {
-        "left": "year",
-        "right": "ib_share",
-        "removed": -0.00041128417521194005,
+        "removed": -0.00027450551499560993,
         "thresholded_sibling_suggested": false,
         "threshold_column": null,
         "sibling_term": null,
@@ -385,7 +361,43 @@
       {
         "left": "log_assets",
         "right": "brokered_share",
-        "removed": -0.00045321071363702004,
+        "removed": -0.0002827888698636316,
+        "thresholded_sibling_suggested": false,
+        "threshold_column": null,
+        "sibling_term": null,
+        "next_action": null
+      },
+      {
+        "left": "year",
+        "right": "brokered_share",
+        "removed": -0.00033395128967683707,
+        "thresholded_sibling_suggested": false,
+        "threshold_column": null,
+        "sibling_term": null,
+        "next_action": null
+      },
+      {
+        "left": "year",
+        "right": "deposit_funding",
+        "removed": -0.0004732145307842217,
+        "thresholded_sibling_suggested": false,
+        "threshold_column": null,
+        "sibling_term": null,
+        "next_action": null
+      },
+      {
+        "left": "brokered_share",
+        "right": "offices",
+        "removed": -0.0005705577691563213,
+        "thresholded_sibling_suggested": false,
+        "threshold_column": null,
+        "sibling_term": null,
+        "next_action": null
+      },
+      {
+        "left": "log_assets",
+        "right": "offices",
+        "removed": -0.0006322983560255735,
         "thresholded_sibling_suggested": false,
         "threshold_column": null,
         "sibling_term": null,
@@ -399,7 +411,7 @@
     "n_test": 1126,
     "task": "one-time untouched-test evaluation"
   },
-  "elapsed_seconds": 1.5949935410171747,
+  "elapsed_seconds": 1.5290482500276994,
   "budget": {
     "budget": {
       "seconds": null,
@@ -407,8 +419,8 @@
       "memory_mb": null
     },
     "fit_charges": 32,
-    "elapsed_seconds": 1.5688743330538273,
-    "peak_memory_mb": 192.265625,
+    "elapsed_seconds": 1.5109353339939844,
+    "peak_memory_mb": 222.703125,
     "memory_scope": "absolute process-lifetime high-water RSS, MiB",
     "limits": "fit admission is hard; time and memory checked between native calls",
     "failed_fit_accounting": "failed native batches retain their full reserved charge; actual completed folds unknown",
@@ -421,73 +433,73 @@
         "fit_charges": 1,
         "status": "returned",
         "cumulative_fit_charges": 25,
-        "seconds": 0.01188925001770258,
-        "peak_memory_mb": 189.484375
+        "seconds": 0.011358375020790845,
+        "peak_memory_mb": 209.671875
       },
       {
         "operation": "fit_gamboost_specs",
         "fit_charges": 1,
         "status": "returned",
         "cumulative_fit_charges": 26,
-        "seconds": 0.011757291969843209,
-        "peak_memory_mb": 189.8125
+        "seconds": 0.01127183300559409,
+        "peak_memory_mb": 210.359375
       },
       {
         "operation": "fit_gamboost_specs",
         "fit_charges": 1,
         "status": "returned",
         "cumulative_fit_charges": 27,
-        "seconds": 0.06316008302383125,
-        "peak_memory_mb": 190.796875
+        "seconds": 0.059610750002320856,
+        "peak_memory_mb": 212.640625
       },
       {
         "operation": "fit_gamboost_specs",
         "fit_charges": 1,
         "status": "returned",
         "cumulative_fit_charges": 28,
-        "seconds": 0.06319141597487032,
-        "peak_memory_mb": 191.484375
+        "seconds": 0.06138683299650438,
+        "peak_memory_mb": 212.78125
       },
       {
         "operation": "fit_gamboost_specs",
         "fit_charges": 1,
         "status": "returned",
         "cumulative_fit_charges": 29,
-        "seconds": 0.06287741602864116,
-        "peak_memory_mb": 191.578125
+        "seconds": 0.06003820800106041,
+        "peak_memory_mb": 213.296875
       },
       {
         "operation": "fit_gamboost_specs",
         "fit_charges": 1,
         "status": "returned",
         "cumulative_fit_charges": 30,
-        "seconds": 0.06311858294066042,
-        "peak_memory_mb": 191.59375
+        "seconds": 0.06041366598219611,
+        "peak_memory_mb": 216.625
       },
       {
         "operation": "fit_gamboost_specs",
         "fit_charges": 1,
         "status": "returned",
         "cumulative_fit_charges": 31,
-        "seconds": 0.08422812493517995,
-        "peak_memory_mb": 191.59375
+        "seconds": 0.07759362499928102,
+        "peak_memory_mb": 221.8125
       },
       {
         "operation": "preexplore_json",
         "fit_charges": 1,
         "status": "returned",
         "cumulative_fit_charges": 32,
-        "seconds": 0.262226999970153,
-        "peak_memory_mb": 191.65625
+        "seconds": 0.27314141698298045,
+        "peak_memory_mb": 222.0625
       }
     ]
   },
   "provenance": {
-    "created_at": "2026-10-01T03:36:36+00:00",
+    "created_at": "2026-11-17T12:08:24+00:00",
     "commit": {
-      "sha": "701a4057f298d066c7ed09702d095bc3f8c5749a",
-      "dirty": true,
-      "status_digest": "sha256:dbf93bd35a532bcd553bed3a856322d72bef8ed0c123c097c4af0164a0463e38",
+      "sha": "3e4d3732025d696cb68e1b3822a0ab6a8fbef545",
+      "dirty": false,
+      "status_digest": null,
       "commit_source": "working directory"
     },
     "platform": {
@@ -498,10 +510,10 @@
       "python": "3.12.11"
     },
     "versions": {
-      "mboostrs": "0.1.3",
+      "mboostrs": "0.2.0",
       "numpy": "2.4.6",
       "rpy2": "3.6.7",
-      "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "rustc": "rustc 1.100.0 (0ef1bc386 2026-11-09)",
       "R": "4.5.1",
       "mboost": "2.9.11"
     },
