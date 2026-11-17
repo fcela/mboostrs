@@ -404,7 +404,10 @@ def local_link_target(page: Path, raw_target: str) -> Path | None:
     path = unquote(parsed.path)
     if not path:
         return None
-    resolved = (page.parent / path).resolve()
+    # A leading slash is relative to the site root, which serves the book
+    # directory; MyST adds the deployment's base path to such links.
+    base = BOOK if path.startswith("/") else page.parent
+    resolved = (base / path.lstrip("/")).resolve()
     if not resolved.suffix and not resolved.exists():
         notebook_target = resolved.with_suffix(".ipynb")
         if notebook_target.exists():
