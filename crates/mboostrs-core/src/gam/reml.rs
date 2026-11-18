@@ -767,7 +767,10 @@ pub(crate) fn optimize(
         }
     }
     if trace {
-        eprintln!("newton stop {stop} V {:.15e} |g| {gradient_norm:.3e}", eval.value);
+        eprintln!(
+            "newton stop {stop} V {:.15e} |g| {gradient_norm:.3e}",
+            eval.value
+        );
     }
     Some(Optimum {
         rho,

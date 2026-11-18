@@ -424,7 +424,10 @@ pub(crate) fn optimize(
                 if slope0 < 0.0 && e.value - eval.value <= criterion_resolution(eval.value) {
                     let test = approximate_wolfe(slope0, e.grad.dot(&s));
                     if trace {
-                        eprintln!("reml   alpha {alpha:.3e} dV {:.3e}: {test:?}", e.value - eval.value);
+                        eprintln!(
+                            "reml   alpha {alpha:.3e} dV {:.3e}: {test:?}",
+                            e.value - eval.value
+                        );
                     }
                     match test {
                         SlopeTest::Accept => {

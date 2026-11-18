@@ -186,8 +186,20 @@ fn parallel_candidate_reduction_has_no_loser_beta_allocations() {
     );
 }
 
+/// Starts the global Rayon pool and returns once every worker thread has run
+/// and made its first allocation. Learner preparation runs faer's setup
+/// kernels in parallel, and whether that starts the pool, and when, depends
+/// on faer's dispatch: a pool started just before the measured rounds spawns
+/// workers whose first allocations (thread-local malloc arenas) land in those
+/// rounds. `broadcast` runs the closure on every worker and waits for all of
+/// them, so after it no worker is still starting.
+fn settle_rayon_pool() {
+    rayon::broadcast(|_| black_box(Vec::<u8>::with_capacity(64)));
+}
+
 /// Serial candidate-solve allocations per learner kind (release build;
-/// attributable because the Rayon pool is never started on this path).
+/// attributable because the measured solves run on this thread and the Rayon
+/// workers are idle, settled by [`settle_rayon_pool`]).
 ///
 /// Every row of a piecewise-parallel gamboostLSS candidate scan funnels
 /// through this same call, so a per-candidate allocation here is per
@@ -254,11 +266,13 @@ fn btree_fixture(weights: &Array1<f64>) -> PreparedLearner {
 }
 
 /// The bmono and btree candidate solves are serialised here so the per-round
-/// count is attributable (no Rayon pool). P3.4 item 2 closed the block-bols
+/// count is attributable (they run on the test thread, with the Rayon pool
+/// settled first). P3.4 item 2 closed the block-bols
 /// path at zero and this pins the remaining learner kinds.
 #[test]
 fn candidate_solve_allocations_by_learner_kind() {
     let _measurement_guard = SERIALIZE_MEASUREMENTS.lock().unwrap();
+    settle_rayon_pool();
     let n = 256;
     let weights = Array1::ones(n);
     let residual = Array1::from_shape_fn(n, |row| ((row * 37) % n) as f64 / n as f64 - 0.5);
