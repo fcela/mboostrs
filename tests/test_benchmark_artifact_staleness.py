@@ -241,3 +241,30 @@ def test_committed_policy_classifies_every_book_artifact():
     assert set(policy["read_by_page"]) | set(policy["historical"]) == tracked
     assert all(reason.strip() for reason in
                [*policy["read_by_page"].values(), *policy["historical"].values()])
+
+
+def _artifact_with_rows(commit, components):
+    """An artifact whose results carry the given cache-identity components."""
+    rows = [{"score": 1.0, "_identity": {"fingerprint": "f", "components": c}}
+            if c is not None else {"score": 1.0} for c in components]
+    return json.dumps({"provenance": {"commit": {"sha": commit, "dirty": False}},
+                       "results": rows}) + "\n"
+
+
+def test_artifact_measuring_no_mboostrs_code_stays_current(repo):
+    """A competitor-only baseline records identities without an `mboostrs`
+    component; commits to the mboostrs sources since its run do not make it
+    stale. One row that depends on mboostrs, or that records no identity,
+    makes the code-change check apply again."""
+    old = _git(repo, "rev-list", "--max-parents=0", "HEAD")
+    competitor = {"runner_hash": "r", "environment": {}}
+    with_mboostrs = {**competitor, "mboostrs": {"version": "0.1.3"}}
+    cases = repo / "docs/book/cases"
+    _write(cases / "bench_competitor.json", _artifact_with_rows(old, [competitor, competitor]))
+    _write(cases / "bench_mixed.json", _artifact_with_rows(old, [competitor, with_mboostrs]))
+    _write(cases / "bench_unrecorded.json", _artifact_with_rows(old, [competitor, None]))
+    _commit(repo, "record artifacts against the first commit")
+    listed = "\n".join(line for _, line in check_docs.stale_artifact_report()[0])
+    assert "bench_competitor.json" not in listed
+    assert "bench_mixed.json: older than code changes" in listed
+    assert "bench_unrecorded.json: older than code changes" in listed

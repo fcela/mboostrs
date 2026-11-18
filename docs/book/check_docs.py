@@ -527,12 +527,38 @@ def artifact_commit(path: Path) -> str | None:
     return None
 
 
-def artifact_status(sha: str | None) -> tuple[str, str] | None:
+def artifact_uses_mboostrs(path: Path) -> bool:
+    """Whether any result in a saved benchmark depends on the mboostrs build.
+
+    `benches/_jobs.py` records each job's cache identity in `_identity`, and
+    adds an `mboostrs` component only for jobs that import mboostrs (the
+    runner's `uses_mboostrs`). An artifact whose every result carries an
+    identity without that component, such as a competitor-only baseline,
+    measures no mboostrs code, so mboostrs commits cannot make it stale. A
+    result without a recorded identity counts as depending on mboostrs.
+    """
+    try:
+        document = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return True
+    results = document.get("results") if isinstance(document, dict) else None
+    if not isinstance(results, list) or not results:
+        return True
+    for row in results:
+        identity = row.get("_identity") if isinstance(row, dict) else None
+        components = identity.get("components") if isinstance(identity, dict) else None
+        if not isinstance(components, dict) or "mboostrs" in components:
+            return True
+    return False
+
+
+def artifact_status(sha: str | None, uses_mboostrs: bool = True) -> tuple[str, str] | None:
     """`(class, detail)` for an artifact that is stale, None when it is current.
 
     Each git call runs once per artifact. A commit that is not an ancestor of
     HEAD is reported as such, not as stale, because the numbers may come from
-    a branch that was never merged here.
+    a branch that was never merged here. With `uses_mboostrs` false, changes
+    to the mboostrs sources do not make the artifact stale.
     """
     if sha is None:
         return ("no commit recorded", "")
@@ -554,6 +580,8 @@ def artifact_status(sha: str | None) -> tuple[str, str] | None:
     )
     if ancestor.returncode != 0:
         return ("commit not in history", f"{sha[:12]} is not an ancestor of HEAD")
+    if not uses_mboostrs:
+        return None
     log = subprocess.run(
         ["git", "log", "--oneline", f"{sha}..HEAD", "--", *ARTIFACT_CODE_PATHS],
         cwd=ROOT, capture_output=True, text=True, check=False,
@@ -581,7 +609,7 @@ def stale_artifact_report() -> tuple[list[tuple[str, str]], dict[str, int]]:
     lines: list[tuple[str, str]] = []
     for relative in tracked_files(ARTIFACT_GLOB):
         path = ROOT / relative
-        status = artifact_status(artifact_commit(path))
+        status = artifact_status(artifact_commit(path), artifact_uses_mboostrs(path))
         if status is None:
             counts["up to date"] += 1
             continue
