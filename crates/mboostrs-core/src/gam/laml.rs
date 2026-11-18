@@ -32,7 +32,7 @@
 use ndarray::{Array1, Array2, ArrayView1};
 
 use super::reml::{add_penalty, matmul, penalty_logdet, symmetric_eigen, weighted_gram};
-use super::Model;
+use super::{approximate_wolfe, criterion_resolution, Model, SlopeTest};
 
 /// A known-scale log-likelihood with the derivatives the LAML needs.
 #[derive(Clone, Copy, Debug)]
@@ -416,6 +416,24 @@ pub(crate) fn optimize(
                 if e.value <= eval.value + 1e-4 * alpha * step.dot(&g_free) {
                     accepted = Some((trial, e));
                     break;
+                }
+                // A rise smaller than the criterion's rounding does not show
+                // that the step failed; the slope at the trial point decides.
+                let s = &trial - &rho;
+                let slope0 = g_free.dot(&s);
+                if slope0 < 0.0 && e.value - eval.value <= criterion_resolution(eval.value) {
+                    let test = approximate_wolfe(slope0, e.grad.dot(&s));
+                    if trace {
+                        eprintln!("reml   alpha {alpha:.3e} dV {:.3e}: {test:?}", e.value - eval.value);
+                    }
+                    match test {
+                        SlopeTest::Accept => {
+                            accepted = Some((trial, e));
+                            break;
+                        }
+                        SlopeTest::TooShort => break,
+                        SlopeTest::Overshoot => {}
+                    }
                 }
             }
             alpha *= 0.5;

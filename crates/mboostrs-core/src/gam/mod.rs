@@ -134,6 +134,58 @@ pub const STOP_REASONS: [&str; 8] = [
     "outer_iteration_limit",
 ];
 
+/// Relative size of the smallest change in a REML or LAML criterion that the
+/// line searches treat as a real change. The computed criterion carries
+/// rounding error well above machine precision: on the 400-row Gaussian
+/// model of `tests/test_direct_reml_gam.py`, near its optimum with one
+/// smoothing parameter close to its bound, the criterion (about 1496) moved
+/// by up to 6.6e-6 (4.4e-9 relative) between trial points 1e-6 apart, while
+/// the Newton step predicted a decrease of 1.4e-7. Whether the value test
+/// accepted that step then depended on the CPU. The resolution is about 20
+/// times the measured noise.
+const CRITERION_RESOLUTION: f64 = 1e-7;
+
+/// Changes in a criterion of size `v` smaller than this are rounding.
+pub(crate) fn criterion_resolution(v: f64) -> f64 {
+    CRITERION_RESOLUTION * (1.0 + v.abs())
+}
+
+/// Outcome of the slope test a line search applies when a trial point's
+/// criterion value is within [`criterion_resolution`] of the current one.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum SlopeTest {
+    /// The slope along the step has fallen to near zero: accept the point.
+    Accept,
+    /// The slope has turned strongly positive: the step went past the
+    /// minimum along the line, so try a shorter one.
+    Overshoot,
+    /// The slope is still nearly the starting slope: the step is too short
+    /// to make progress, and shorter ones would make less.
+    TooShort,
+}
+
+/// The approximate Wolfe conditions of Hager and Zhang (2005). When two
+/// criterion values cannot be ordered because they differ by less than the
+/// rounding in them, the directional derivative can still be compared: a
+/// step along `s` from slope `slope0 = g0's < 0` is accepted when the slope
+/// at the new point satisfies `SIGMA slope0 <= g1's <= (2 DELTA - 1) slope0`,
+/// that is, it has risen from the starting slope by at least a tenth and is
+/// not more positive than 0.8 of the starting slope's magnitude. The value
+/// test cannot decide this near an optimum; the slope test can, because the
+/// gradient is computed with a relative error far smaller than the change
+/// in the criterion it measures.
+pub(crate) fn approximate_wolfe(slope0: f64, slope1: f64) -> SlopeTest {
+    const DELTA: f64 = 0.1;
+    const SIGMA: f64 = 0.9;
+    if slope1 < SIGMA * slope0 {
+        SlopeTest::TooShort
+    } else if slope1 > (2.0 * DELTA - 1.0) * slope0 {
+        SlopeTest::Overshoot
+    } else {
+        SlopeTest::Accept
+    }
+}
+
 /// Iteration limits and tolerances.
 #[derive(Clone, Debug)]
 pub struct RefitControl {

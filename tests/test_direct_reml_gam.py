@@ -63,14 +63,18 @@ def test_direct_fit_matches_gam_refit_on_the_same_terms(data):
     assert refit.terms == direct.terms
     # mb.gam forms X'WX once and factors it (the Gram path); gam_refit factors
     # the design by QR. The Gram squares the condition number, so the two agree
-    # to about 1e-7 here, not to rounding. The REML criterion is flat at its
-    # optimum, so how far each path's smoothing-parameter search gets depends on
-    # rounding in the criterion: on AMD EPYC 7763 (AVX2 without AVX-512) the QR
-    # path stops on the "flat" rule with a gradient of 9e-4 instead of 1e-7 and
-    # its coefficients differ by 1.7e-5, while the two criterion values still
-    # agree to 3e-9. The coefficient tolerance covers that spread.
+    # to about 1e-7 here, not to rounding. Near the optimum the Newton step's
+    # predicted decrease (1.4e-7) is below the rounding in the criterion (up to
+    # 6.6e-6 on a value of 1496); the line search then accepts or rejects the
+    # step by its slope, so both paths reach the gradient tolerance on every
+    # CI CPU. Measured on ten GitHub runners (AMD EPYC 7763 and 9V74, Intel
+    # Xeon 6973P-C, 6975P-C and 8573C), coefficients agreed to 3.1e-7 and vcov
+    # to 4.9e-8. Before the slope test, the QR path stopped on the "flat" rule
+    # with a gradient of 9e-4 on the EPYC 7763 and its coefficients differed
+    # by 1.7e-5.
     np.testing.assert_allclose(direct.coef()["estimate"].to_numpy(),
-                               refit.coef()["estimate"].to_numpy(), rtol=0, atol=1e-4)
+                               refit.coef()["estimate"].to_numpy(), rtol=0, atol=3e-6)
+    assert direct.convergence["stop_reason"] == refit.convergence["stop_reason"] == "gradient"
     np.testing.assert_allclose(direct.vcov(), refit.vcov(), rtol=1e-3, atol=1e-8)
     assert direct.reml_score == pytest.approx(refit.reml_score, abs=1e-5)
     for term in direct.terms:

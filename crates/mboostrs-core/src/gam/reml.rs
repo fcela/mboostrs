@@ -32,7 +32,7 @@ use faer::prelude::{SolverCore, SpSolver};
 use faer::{Mat, Side};
 use ndarray::{s, Array1, Array2, ArrayView1, ArrayView2};
 
-use super::{Model, RefitControl};
+use super::{approximate_wolfe, criterion_resolution, Model, RefitControl, SlopeTest};
 
 /// `X'WX`, accumulated over blocks of 4,096 rows with faer's parallel
 /// product, so no weighted copy of the whole design is formed.
@@ -647,6 +647,10 @@ pub(crate) fn optimize(
     let mut converged = false;
     let mut gradient_norm = f64::INFINITY;
     let mut stop = "iteration_limit";
+    // MBOOSTRS_TRACE_REML=1 prints, per Newton iteration, the criterion, the
+    // free-gradient norm and the directional derivative g'd, then each
+    // line-search trial's step length and change in the criterion.
+    let trace = std::env::var_os("MBOOSTRS_TRACE_REML").is_some();
     while iterations < control.max_newton {
         iterations += 1;
         let free: Vec<usize> = (0..m)
@@ -662,6 +666,14 @@ pub(crate) fn optimize(
             break;
         }
         let step = newton_step(&eval, &free, m);
+        if trace {
+            eprintln!(
+                "newton iter {iterations:3} V {:.15e} |g| {gradient_norm:.3e} g'd {:.3e} rho {:?}",
+                eval.value,
+                eval.grad.dot(&step),
+                rho.to_vec()
+            );
+        }
         let mut alpha = 1.0;
         let mut accepted = None;
         // A smoothing parameter heading to 0 or infinity sits on an
@@ -683,8 +695,11 @@ pub(crate) fn optimize(
                 trial[k] = if eval.grad[k] < 0.0 { bound } else { -bound };
             }
             if let Some(e) = problem.evaluate(&trial, false) {
+                if trace {
+                    eprintln!("  tail {tail:?} to bounds dV {:.3e}", e.value - eval.value);
+                }
                 if e.value <= eval.value {
-                    accepted = Some(trial);
+                    accepted = Some((trial, None));
                 }
             }
         }
@@ -693,15 +708,43 @@ pub(crate) fn optimize(
                 break;
             }
             let trial = (&rho + &(&step * alpha)).mapv(|v| v.clamp(-bound, bound));
-            if let Some(e) = problem.evaluate(&trial, false) {
+            let e = problem.evaluate(&trial, false);
+            if trace {
+                match &e {
+                    Some(e) => eprintln!("  alpha {alpha:.3e} dV {:.3e}", e.value - eval.value),
+                    None => eprintln!("  alpha {alpha:.3e} not evaluable"),
+                }
+            }
+            if let Some(e) = e {
                 if e.value <= eval.value {
-                    accepted = Some(trial);
+                    accepted = Some((trial, None));
                     break;
+                }
+                // A rise smaller than the criterion's rounding does not show
+                // that the step failed; the slope at the trial point decides.
+                let s = &trial - &rho;
+                let slope0 = eval.grad.dot(&s);
+                if slope0 < 0.0 && e.value - eval.value <= criterion_resolution(eval.value) {
+                    if let Some(at_trial) = problem.evaluate(&trial, true) {
+                        let slope1 = at_trial.grad.dot(&s);
+                        let test = approximate_wolfe(slope0, slope1);
+                        if trace {
+                            eprintln!("    slope {slope0:.3e} -> {slope1:.3e}: {test:?}");
+                        }
+                        match test {
+                            SlopeTest::Accept => {
+                                accepted = Some((trial, Some(at_trial)));
+                                break;
+                            }
+                            SlopeTest::TooShort => break,
+                            SlopeTest::Overshoot => {}
+                        }
+                    }
                 }
             }
             alpha *= 0.5;
         }
-        let Some(trial) = accepted else {
+        let Some((trial, at_trial)) = accepted else {
             // No descent along the Newton direction: the criterion is flat to
             // rounding here, which is convergence in all but name.
             converged = gradient_norm < 1e-4 * (1.0 + eval.value.abs());
@@ -713,12 +756,18 @@ pub(crate) fn optimize(
             .iter()
             .fold(0.0f64, |acc, v| acc.max(v.abs()));
         rho = trial;
-        eval = problem.evaluate(&rho, true)?;
+        eval = match at_trial {
+            Some(e) => e,
+            None => problem.evaluate(&rho, true)?,
+        };
         if moved < 1e-10 && (previous - eval.value).abs() < 1e-12 * (1.0 + previous.abs()) {
             converged = true;
             stop = "stationary";
             break;
         }
+    }
+    if trace {
+        eprintln!("newton stop {stop} V {:.15e} |g| {gradient_norm:.3e}", eval.value);
     }
     Some(Optimum {
         rho,

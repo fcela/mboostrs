@@ -18,6 +18,24 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   is kept.
 - The README links to the documentation and to repository files are absolute,
   so they resolve on the PyPI project page.
+- The smoothing-parameter searches of `gam`, `gam_refit`, `gamlss` and
+  `gamlss_refit` stopped at different points on different CPUs. Near the
+  optimum a step's predicted decrease in the REML/LAML criterion can be smaller
+  than the rounding error in the computed criterion (1.4e-7 against up to
+  6.6e-6 on a criterion of 1496 in the regression test), so the value test
+  accepted the step on some CPUs and rejected it on others, and the rejected
+  runs stopped on the `flat` rule with a gradient of 9e-4. When a trial point's
+  criterion is within 1e-7 (relative) of the current value, the line search
+  now decides by the slope along the step (the approximate Wolfe conditions of
+  Hager and Zhang, 2005). On ten GitHub runners covering five CPU models, the
+  direct and refit fits of that test now both stop on the gradient rule and
+  agree to 3.1e-7 in the coefficients, where the EPYC 7763 runs differed by
+  1.7e-5 before.
+- Fits that use faer's parallel eigendecomposition and SVD (direct REML
+  GAMs, refits and learner setup) gave results that differed in the last bits
+  with the number of threads. faer's parallel kernels now always use 8 tasks,
+  so results are bit-identical at any thread count. On 10 cores this costs
+  about 2% of speed.
 
 ## [0.2.0] - 2026-11-16
 
