@@ -6,6 +6,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-11-18
+
 ### Fixed
 
 - `gamlss_refit` returned a non-converged fit (`stop_reason="no_descent"`, the
