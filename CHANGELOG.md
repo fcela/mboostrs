@@ -6,6 +6,14 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Fixed
+
+- Rewrote the bundled agent guide around the installed API: runnable held-out
+  prediction and save/reload examples, boosting versus REML routing, actual
+  result fields, task-appropriate folds, and optional diagnostic workflows.
+  Documented the convenience wrapper's implementation limits and tightened the guide's
+  API check so version gates cannot hide references to nonexistent functions.
+
 ## [0.2.1] - 2026-11-18
 
 ### Fixed

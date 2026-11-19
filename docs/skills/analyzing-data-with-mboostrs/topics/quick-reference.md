@@ -1,49 +1,77 @@
-# Quick reference: the workflow in one runnable block
+# Calls, formulas, and returned objects
 
-Learners (`bbs`, `bols`, `brandom`, `btree`, ...) are written inside formula
-strings, not imported. The field names below are the ones agents most often
-guess wrong: a `ColumnKind`'s column is `.name`; an `autospec` result's
-formula is `.formula`.
+Use `mb.api_card("name")` or `python -m mboostrs sig NAME` before an
+unfamiliar call. These conventions differ from sklearn and from R's mboost.
+
+| Operation | Call / returned value |
+|---|---|
+| Input data | Polars/Pandas DataFrame or dict of equal-length columns; new data supplies the predictors with training-compatible types |
+| Smooth boosting | `mb.gamboost(formula, data, family=..., control=mb.boost_control(mstop=...))` returns `GAMBoostModel` |
+| CV stopping search | `mb.tune_mstop(formula, data, family=..., folds=..., seed=...)` returns `MstopTuning`: `.mstop`, `.at_boundary`, `.risk`, `.model` |
+| Direct REML | `mb.gam(formula, data, family="gaussian")` returns `GamRefit`; inspect `.convergence` and `.summary()` |
+| Draft specification | `mb.autospec(data, "y")`: `.formula`, `.family`, `.report()` |
+| Classify columns | `mb.classify_columns(data, "y")` returns a list; column name is `.name`, not `.column` |
+| Screen columns | `mb.column_screen(data, "y")` returns a Polars frame; screening is exploratory, not a test of adjusted effects |
+| Predict means/probabilities | `model.predict(newdata=rows, type="response")` for boosted models returns a NumPy array |
+| Term contribution | `model.predict(newdata=rows, which=learner_name, type="link")`; choose a name from `model.base_learner_names()` |
+| Persist boosted models | `mb.save_model(model, path)` returns a path; `mb.load_model(path)` returns a fitted model |
+
+## Family starting points
+
+| Response | Boosting family | Response prediction |
+|---|---|---|
+| Real-valued continuous | `mb.Gaussian()` | conditional mean |
+| Binary, encoded 0/1 | `mb.Binomial()` | probability of 1 |
+| Nonnegative integer counts | `mb.Poisson()` | expected count; check dispersion |
+| Strictly positive continuous | `mb.GammaReg()` | conditional mean; zeros need another model |
+
+Support narrows the candidates; it does not establish the correct distribution.
+Read "distributional-branch" when variance, tails, zero mass, or multiple
+distribution parameters matter. Do not pass class labels as an arbitrary
+numeric regression response. Check the signature for `family=` versus
+`families=` on the chosen fitting function.
+
+## Formula rules
+
+Write learners inside a string; do not import `bbs` or `bols` from Python.
+`"y ~ bols(x)"` is linear, `"y ~ bbs(x, df=4)"` smooth,
+`"y ~ bols(category)"` an unpenalized categorical effect, and
+`"y ~ brandom(site, df=4)"` a penalized group effect. A bare numeric name
+in `gamboost` is a smooth; in `glmboost` it is a linear learner. Be explicit.
+`"bbs(x, df=4) %X% bbs(z, df=4)"` builds a tensor interaction; read
+"pitfalls" about its df floor and cost before comparing it to main effects.
+In boosting, matching learner df helps comparisons; in direct REML,
+smoothing parameters are estimated and `knots=` controls basis capacity.
+
+## Binary prediction and saving a model
+
+This is an API smoke example with a deliberately fixed stop count, not a
+tuned performance estimate. Use "golden-path" to tune and evaluate a model.
 
 ```python
-import numpy as np, polars as pl
+import tempfile
+from pathlib import Path
+import numpy as np
 import mboostrs as mb
 
-rng = np.random.default_rng(0)
-n = 400
-df = pl.DataFrame({
-    "x1": rng.uniform(-2, 2, n),
-    "x2": rng.uniform(0, 1, n),
-    "g": rng.choice(["a", "b", "c"], n),
-})
-df = df.with_columns(y=np.sin(df["x1"].to_numpy()) + 2 * df["x2"].to_numpy() + rng.normal(0, 0.3, n))
-
-screen = mb.column_screen(df, "y")          # polars frame, one row per column
-print(screen.columns)                        # 'column', 'curve_r2', 'linear_r2', 'hint', ...
-kinds = mb.classify_columns(df, "y")        # list[ColumnKind]
-for k in kinds:
-    print(k.name, k.kind, k.term, k.reason)  # the column name is .name
-rhs = mb.suggest_terms(df, "y")              # e.g. "bbs(x1, df=4.0) + bbs(x2, df=4.0) + bols(g)"
-rec = mb.autospec(df, "y")                   # SpecRecommendation
-print(rec.formula, rec.family)               # rec.report() explains measured vs defaulted
-formula = f"y ~ {rhs}"
-tuned = mb.tune_mstop(formula, df)           # .mstop = CV-chosen stopping iteration
-model = mb.gamboost(formula, df, control=mb.boost_control(mstop=tuned.mstop))
-report = mb.term_report(formula, df, response="y", mstop=tuned.mstop)
-for c in report.contributions:               # what each term earns on held-out folds
-    print(c)
-stab = mb.stabsel(model, q=2, PFER=1)        # which inputs carry signal (recommended; the only selector with an error-rate guarantee; q must stay below the number of effects)
-print(stab.selected_names)                   # the stable set
-print(mb.heteroscedasticity(model))          # dict: slope, t, spread_ratio (Gaussian fits only)
-for f in mb.insights(df, "y"):              # ranked candidate findings
-    print(f.finding, f.effect_size, f.uncertainty, f.basis, f.next_action)
-print(mb.family_set("realplus"))             # candidate LSS families for a positive response (step 8)
+rng = np.random.default_rng(3)
+x = rng.normal(size=200)
+y = rng.binomial(1, 1 / (1 + np.exp(-2 * x)))
+model = mb.gamboost("y ~ bols(x)", {"x": x, "y": y},
+                    family=mb.Binomial(), control=mb.boost_control(mstop=40))
+new = {"x": np.array([-1.0, 0.0, 1.0])}
+probability = model.predict(newdata=new, type="response")
+assert probability.shape == (3,)
+assert np.all((probability >= 0) & (probability <= 1))
+with tempfile.TemporaryDirectory() as directory:
+    path = mb.save_model(model, Path(directory) / "model.json")
+    restored = mb.load_model(path)
+    np.testing.assert_allclose(restored.predict(newdata=new, type="response"), probability)
+print(probability)
 ```
 
-Steps 5-7 are a loop: compare, adopt at most a few changes, refit, and re-run
-the screen before believing the new model is done. Steps 8-9 branch on what
-the earlier steps found. Step 10 always runs last.
-
-Signatures on demand: `mb.api_card(mb.tune_mstop)` (or
-`python -m mboostrs sig tune_mstop`) prints a ≤20-line card: signature, return
-type, and a minimal example.
+For distributional models use parameter-specific prediction; read
+"distributional-branch" and the model's signature. For direct REML intervals,
+read "direct-reml-gam": an effect interval, a mean-response interval, and a
+new-observation interval are different outputs. Do not assume every model
+class accepts the same prediction or persistence options.

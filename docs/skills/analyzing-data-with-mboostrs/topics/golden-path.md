@@ -1,77 +1,85 @@
-# First analysis workflow
+# First analysis: tune, predict, evaluate
 
-The first analysis uses `fit()` to fit a model and `report()` to summarize
-its specification, criterion and decision trail. Open a follow-up topic when
-the report identifies a question that needs further analysis.
-
-The example uses `fit()` and `report()` when they are available. Otherwise it
-uses `tune_mstop`, `gamboost`, `term_report` and `reference_gap` to fit and
-inspect the model.
+This example runs on the installed package with only its required dependencies.
+It uses independent synthetic rows and Gaussian regression. For your data,
+choose the response, allowed predictors, response family, missing-data policy,
+and evaluation unit first. A formula is not a sklearn estimator: pass the
+formula and training data together.
 
 ```python
-import numpy as np, polars as pl
+import numpy as np
+import polars as pl
 import mboostrs as mb
 
-rng = np.random.default_rng(0)
-n = 300
-df = pl.DataFrame({"x1": rng.uniform(-2, 2, n),
-                   "g": rng.choice(["a", "b", "c"], n)})
-df = df.with_columns(y=np.sin(df["x1"].to_numpy()) + rng.normal(0, 0.3, n))
+rng = np.random.default_rng(7)
+x = rng.uniform(-2, 2, 400)
+data = pl.DataFrame({"x": x, "y": np.sin(x) + rng.normal(0, 0.3, x.size)})
+search, test = mb.holdout(data, fraction=0.2, seed=7)
+formula = "y ~ bbs(x, df=4)"
+family = mb.Gaussian()
 
-formula = "y ~ bbs(x1, df=4.0) + bols(g)"    # or mb.autospec(df, "y").formula
+tuned = mb.tune_mstop(
+    formula, search, family=family, folds=5, seed=7,
+    start=100, max_mstop=1600,
+)
+print("mstop:", tuned.mstop, "at_boundary:", tuned.at_boundary)
+if tuned.at_boundary:
+    raise RuntimeError("Stopping search hit its budget; extend max_mstop before evaluation")
+model = tuned.model  # already fitted on search rows at the selected mstop
 
-if hasattr(mb, "fit"):
-    fit = mb.fit(df, "y")                     # data, then the response column
-    print(mb.report(fit))                     # specification, criterion, decision trail
-else:                                         # same path, current primitives
-    tuned = mb.tune_mstop(formula, df)
-    fit = mb.gamboost(formula, df, control=mb.boost_control(mstop=tuned.mstop))
-    report = mb.term_report(formula, df, response="y", mstop=tuned.mstop)
-    print(mb.reference_gap(formula, df))      # does the fit still leave structure?
-    for c in report.contributions:            # what each term earns, with its SE
-        print(c)
+# Use the test response only after the specification and tuning are fixed.
+prediction = model.predict(newdata=test, type="response")
+y_test = test["y"].to_numpy()
+assert prediction.shape == y_test.shape
+assert np.isfinite(prediction).all()
+mse = float(np.mean((y_test - prediction) ** 2))
+baseline = float(np.mean((y_test - search["y"].mean()) ** 2))
+print({"test_mse": mse, "intercept_only_test_mse": baseline})
+assert mse < baseline  # a sanity check for this synthetic signal, not all data
 ```
 
-Each follow-up call addresses a question raised by the report.
+`tuned` is an `MstopTuning`, not a fitted model. Its `.model` is the fitted
+model at `.mstop`; `.risk` is the CV risk path and `.at_boundary` says whether
+the search observed the minimum turn. Reusing `.model` avoids an extra refit.
+If you fit directly with `mb.gamboost`, use
+`control=mb.boost_control(mstop=chosen_count)`; its default count is not CV tuning.
 
-## The three common follow-ups
+`mb.fit(data, "y")` is also available, with `mb.report(result)` and
+`result.model`. It currently delegates to `autospec`; its budget labels do
+not change compute, and time handling and selection-aware uncertainty options
+are not implemented. The explicit path above exposes the folds, stopping
+search, and evaluation rather than implying those optional stages ran.
 
-1. **The fit may leave structure.** `reference_gap` compares the tuned formula
-   with a flexible tree booster on the same held-out rows. A gap above about
-   two SE means the formula misses structure: open `modeling-tactics`. If a
-   term's contribution is flat, or two variables plausibly interact, open
-   `interactions-and-terms`.
+## Adapt the example before running on real data
 
-2. **You must state an interval or test an effect.** A `term_report` gain
-   inside two SE of zero is noise on these folds. To report an interval or a
-   test, open `uncertainty`; if the same rows chose the terms, open
-   `uncertainty-selection` first so the intervals account for that search.
+- **Binary response:** encode 0/1, pass `family=mb.Binomial()`, and predict
+  with `type="response"` for probabilities. Choose a binary evaluation score;
+  a Gaussian MSE baseline does not specify a classification analysis.
+- **New groups:** use `mb.holdout(data, groups="site")`, then create
+  `mb.grouped_folds(search["site"].to_numpy(), B=5)` for `folds=`. Decide
+  how to predict levels absent from training; set `unseen_levels=` consistently
+  in tuning and prediction. To predict new rows in known groups, read
+  `mb.known_group_folds` instead. Group membership itself does not dictate the
+  deployment target.
+- **Future observations:** use a time holdout and `mb.rolling_folds` within
+  the search data. Random or ordinary blocked folds do not measure forecasting.
+- **Missing data:** the default refuses missing formula values. Read
+  "missing-data" before choosing `na_action="omit"` or `"impute"`.
+- **Effect intervals without boosting selection:** start with `mb.gam` and
+  "direct-reml-gam". For intervals after selecting terms, read
+  "uncertainty-selection". For treatment effects, read "causal".
 
-3. **A residual pattern names a cause.** Clusters of residuals point at a
-   grouping (`brandom`); a trend in time points at a smooth or lag; one or two
-   rows dominating point at those rows. Open `diagnostics` for the
-   pattern-to-revision guide, and `pitfalls` if a fit failed or a level was
-   unseen.
+## Follow up when the task needs it
 
-## Topics by trigger
+Open "fit-and-tune" only if the stopping search needs attention or a different
+fold/score contract. Open "diagnostics" for residual patterns, and
+"modeling-tactics" for a weak validation score or a `reference_gap` worth
+investigating. Open "uncertainty" before interpreting an interval or a test.
+Use "task-map-interpret-export" to save and reload the model.
 
-- `before-the-first-fit`: only before the first fit, to fix the target, the
-  evaluation rows, the variable roles and the missing-data policy.
-- `screen-and-draft`: only if `formula` was written by hand; `autospec` and
-  `suggest_terms` draft it from the screen.
-- `fit-and-tune`: only if `tune_mstop` is flagged `at_boundary` (unfinished).
-- `modeling-tactics`: only if `reference_gap` is above about two SE.
-- `interactions-and-terms`: only if a term is flat or a pair is plausible.
-- `distributional-branch`: only if the spread depends on covariates
-  (`heteroscedasticity` flags it).
-- `sensitivity-and-contrasts`: only if the report must compare scenarios or
-  rows as well as reporting effects.
-- `uncertainty` / `uncertainty-selection`: only if an interval or test is
-  required; use the selection-aware one when the terms were chosen.
-- `diagnostics` / `reading-a-fit`: only if a residual pattern needs a revision,
-  or someone must read the effects.
-- `closing-the-analysis`: only when writing the final report.
-- `causal`: only if the question is a treatment effect from observational data;
-  do not follow this path then.
-
-Do not read the other topics up front. The report says which question is live.
+For model revision, work on search rows with shared validation folds;
+`mb.term_report` and `mb.compare_specifications` can measure candidate gains.
+Do not repeatedly inspect the final test response to choose revisions.
+No model is required to beat a flexible reference or select a nonempty set of
+terms: a null result can be the right result. Stop at the requested scope and
+state unresolved diagnostics or budget limits.

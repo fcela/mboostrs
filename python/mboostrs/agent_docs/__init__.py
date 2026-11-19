@@ -1,8 +1,8 @@
 """Agent-facing documentation shipped with the package.
 
 ``agent_guide()`` returns the entry point of the "analyzing data with
-mboostrs" skill: what the library is, the first five steps of the
-measured-decision workflow, and the topic index. ``agent_guide("<topic>")``
+mboostrs" skill: API discovery, fitting-route choices, essential
+correctness decisions, and task-based references. ``agent_guide("<topic>")``
 returns one topic (the workflow steps 6 to 10, the pitfalls, the uncertainty
 and causal guides, and so on), and ``agent_guide("index")`` lists them, so an
 agent reads only the part it needs. Each file stays under about 8,000
@@ -27,10 +27,10 @@ _SKILL_NAME = "analyzing-data-with-mboostrs"
 #: Topic name -> (file, one-line description). The order is the index order.
 TOPICS = {
     "golden-path": ("golden-path.md",
-                    "start here: data -> fit() -> report() and three follow-ups, "
+                    "start here: reserve test rows, tune boosting, predict and evaluate; "
                     "each with the topic to open only when it is needed"),
     "quick-reference": ("quick-reference.md",
-                        "one runnable block that runs the workflow on simulated data"),
+                        "call/return conventions, formula syntax, binary prediction and save/reload"),
     "insights": ("insights.md",
                  "insights(): an optional screen, fit, diagnose and propose pass whose "
                  "findings are hypotheses to confirm"),

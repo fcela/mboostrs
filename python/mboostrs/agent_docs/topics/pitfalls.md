@@ -17,11 +17,14 @@
   (`y - predict(type="response")`) to `screen_interactions`. For a
   non-identity link, subtracting the link-scale predictor from the response
   can make pairs of signal columns appear to interact.
-- **Group folds.** A `brandom` term whose groups straddle a fold boundary is
-  fitted to rows it is scored on; the held-out score partly rewards memorized
-  level effects. `mboostrs` warns but still computes the requested score. Use
-  `grouped_folds(...)` for any fold-based number on a group-carrying model,
-  and say in the report which claim the folds measure.
+- **Group folds.** Choose the target before the split. Use
+  `grouped_folds(...)` to measure prediction for new groups and
+  `known_group_folds(...)` for new observations in groups already seen.
+  Random row folds can be optimistic when the claim is about new groups;
+  holding out whole groups answers a different question from predicting in
+  known groups. Apply the chosen scheme to every fold-based comparison and
+  state that claim in the report. For forecasting use `rolling_folds(...)`;
+  merely blocking rows does not ensure training precedes evaluation.
 - **Unseen levels.** What a prediction does with a group level the fit never
   saw is a policy, not a detail: `unseen_levels="error"` refuses;
   `"average"` predicts the row as a member of an average group (for

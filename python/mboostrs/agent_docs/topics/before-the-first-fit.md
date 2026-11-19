@@ -27,6 +27,6 @@ number inherits them:
   has the details.
 
 A predictive association does not identify an intervention effect. If the
-analyst's question is causal, that is a different contract (see the
-`mboostrs-model-search` skill's causal route); this path reports
-associations and must say so.
+analyst's question is causal, read the bundled `causal` topic
+(`python -m mboostrs guide causal`) before choosing an estimator. A
+predictive fit alone reports associations and must say so.

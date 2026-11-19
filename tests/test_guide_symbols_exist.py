@@ -33,11 +33,8 @@ _FENCED_CODE = re.compile(r"```[a-zA-Z0-9_+.-]*\n(.*?)```", re.S)
 _CALL = re.compile(r"(?<![\w.])(?:(mb|mboostrs)\.)?([A-Za-z_][A-Za-z0-9_]*)\s*\(")
 #: The same call, restricted to an explicit module receiver.
 _PREFIXED_CALL = re.compile(r"(?<![\w.])(?:mb|mboostrs)\.([A-Za-z_][A-Za-z0-9_]*)\s*\(")
-#: ``hasattr(mb, "fit")`` in prose or code: a version gate on a future name.
-_HASATTR = re.compile(r"hasattr\(\s*(?:mb|mboostrs)\s*,\s*[\"']([A-Za-z_][A-Za-z0-9_]*)[\"']\s*\)")
-
 #: Python builtins the guide happens to spell as calls.
-PYTHON_BUILTINS = frozenset({"hasattr", "repr", "round", "sum"})
+PYTHON_BUILTINS = frozenset({"hasattr", "help", "repr", "round", "sum"})
 #: Math and transform spellings used inside formulas or expressions.
 MATH_SPELLINGS = frozenset({"exp", "log", "log10", "log1p", "sin", "sqrt", "floor"})
 #: Formula term constructors: read from the formula string, never imported.
@@ -82,22 +79,11 @@ def _referenced(text: str) -> set[tuple[bool, str]]:
     return refs
 
 
-def _version_gated(texts) -> set[str]:
-    """Names the guide mentions only behind ``hasattr(mb, "name")`` (#474)."""
-    gated: set[str] = set()
-    for text in texts.values():
-        gated.update(_HASATTR.findall(text))
-    return gated
-
-
 def _missing(texts: dict[str, str]) -> dict[str, list[str]]:
     """Missing names -> the guide files that name them, empty when in step."""
-    gated = _version_gated(texts)
     missing: dict[str, set[str]] = {}
     for filename, text in texts.items():
         for prefixed, name in _referenced(text):
-            if name in gated:
-                continue
             if not prefixed and name in _ALLOWED:
                 continue
             if not hasattr(mb, name):
@@ -111,8 +97,8 @@ def test_every_guide_called_symbol_exists_on_the_shipped_package():
     assert missing == {}, (
         "the guide names symbols the installed mboostrs does not export: "
         + "; ".join(f"{name} ({', '.join(files)})" for name, files in missing.items())
-        + " -- fix the guide to the shipped spelling, gate the name behind "
-        "hasattr prose, or record it in the documented allowlist."
+        + " -- fix the guide to the shipped spelling or record a non-API token "
+        "in the documented allowlist."
     )
 
 
@@ -122,10 +108,10 @@ def test_the_check_would_catch_a_guide_name_that_is_not_shipped():
     assert list(missing) == ["definitely_not_an_export"]
 
 
-def test_hasattr_prose_and_documented_tokens_are_not_required():
-    text = ('Run `fit(data)` when `hasattr(mb, "fit")`; otherwise use '
+def test_future_api_gates_do_not_hide_unshipped_calls():
+    text = ('Run `mb.not_a_shipped_api(data)` when `hasattr(mb, "not_a_shipped_api")`; otherwise use '
             '`grouped_folds(groups)` and `bbs(x, df=4)`.')
-    assert _missing({"guide.md": text}) == {}
+    assert _missing({"guide.md": text}) == {"not_a_shipped_api": ["guide.md"]}
 
 
 def test_reference_gap_is_importable_and_callable_on_a_tiny_frame():

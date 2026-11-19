@@ -1,9 +1,7 @@
 """The golden-path topic leads ``agent_guide()`` and stays short (#504).
 
-D5 (experimental iteration speed) found that agents read many guide topics
-before their first fit. The fix is one default topic, ``golden-path``, that is
-the whole workflow on one page: data -> ``fit()`` -> ``report()`` -> three
-follow-ups, pointing at a topic only when its evidence appears.
+The first example must use the installed API directly and exercise the full
+train/tune/predict contract. Future API branches can mask broken examples.
 """
 
 from pathlib import Path
@@ -31,7 +29,7 @@ def test_golden_path_is_registered_and_installable(tmp_path):
 def test_default_agent_guide_leads_with_the_golden_path():
     head = mboostrs.agent_guide()[:2000]
     assert "golden-path" in head
-    assert "fit()" in head or "report()" in head
+    assert "tune_mstop" in head
     assert '"golden-path"' in mboostrs.agent_guide()
 
 
@@ -47,12 +45,13 @@ def test_topic_stays_within_the_one_page_budget():
     assert len(text) <= 8000, "golden-path climbed over 8,000 characters"
 
 
-def test_topic_names_the_current_path_and_the_supersession():
+def test_first_analysis_uses_current_api_without_future_fallbacks():
     text = mboostrs.agent_guide("golden-path")
-    for needle in ("hasattr", "fit", "report", "gamboost",
-                   "tune_mstop", "reference_gap"):
-        assert needle in text, f"golden-path does not name {needle!r}"
-    assert "only if" in text, "golden-path has no 'open topic X only if Y' pointers"
+    for needle in ("mb.holdout", "mb.tune_mstop", "tuned.model",
+                   "at_boundary", 'type="response"'):
+        assert needle in text
+    assert "hasattr" not in text
+    assert "only if" in text
 
 
 def test_skill_and_agent_docs_trees_stay_in_sync():

@@ -37,19 +37,24 @@ What the output looks like: an `MstopTuning` with `mstop` (the selected
 count), the risk curve, and `at_boundary` — true when the risk was still
 falling when the grid stopped.
 
-What you decide: refit at the returned `mstop`, or distrust it.
+Use `tuned.model` to obtain the full-training-data model at the returned
+`tuned.mstop` without fitting again. Inspect `tuned.at_boundary` before
+accepting that stopping count.
 `at_boundary=True` means the number is where the grid stopped, not where the
 data turned: raise `max_mstop`, or give `extensions` room, or pass `patience`
 to stop early once the curve is flat. A fit reported at a boundary `mstop`
 is unfinished, and every later number (term earnings, screens, contrasts) is
 computed at an arbitrary depth.
 
-Branches: with grouped data (a `brandom` term on district, say), pass
-`folds=grouped_folds(district, B=...)` — random folds split groups across
-the train/held-out line and the held-out score partly rewards memorized
-level effects; the library warns when it sees this, but still computes the requested score. A grouped tune measures prediction in new groups,
-which is usually the claim worth making; a row-random tune of a
-group-carrying model measures mostly memory. Also choose the `score`:
+Branches: choose folds for the prediction task. To predict entirely new
+subjects or sites, pass `folds=grouped_folds(groups, B=...)` on the training
+rows and declare the unseen-level policy. To predict new rows in groups
+already observed, use `known_group_folds` instead. Neither claim is implied
+just by including a `brandom` term. For future observations, use
+`rolling_folds`; ordinary blocked folds can train on later rows and do not
+measure forecasting. Use these same evaluation units when comparing terms.
+
+Also choose the `score`:
 `"family"` (default, negative log-likelihood on the link scale) or a
 response-scale score (`"mse"`, `"brier"`, `"pinball"` with
 `score_parameter=`, ...). Response scores need `unseen_levels=` set for
