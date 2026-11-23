@@ -6,6 +6,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.2.3] - 2026-11-23
+
 ### Changed
 
 - `fit(budget=...)` now gives the specification search a number of model
