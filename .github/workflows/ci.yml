@@ -327,7 +327,10 @@ jobs:
         run: |
           python -m pip install -r docs/book/requirements.txt maturin
           maturin build --release --out dist
-          python -m pip install dist/*.whl
+          for wheel in dist/*.whl; do
+            python -m pip install "${wheel}[dev,sklearn]"
+            python -m pip install "${wheel}[plot]"
+          done
           python tools/install_extension_in_source.py
 
       - name: Validate documentation sources
