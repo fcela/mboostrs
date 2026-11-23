@@ -8,7 +8,7 @@
     "unsupported",
     "unverified"
   ],
-  "last_reviewed": "2026-11-16",
+  "last_reviewed": "2026-11-23",
   "reference_packages": {
     "mboost": "2.9-11",
     "gamboostLSS": "2.2.0"
@@ -5172,7 +5172,7 @@
         "stabsel": "yes",
         "extract_design": "partial",
         "penalty": "n/a",
-        "notes": "Adaptive hinge (kink) learner of issue #279: one boosting selection adds one hinge at an interior-quantile knot the fit places where the data bends. Each selection stores a ridge-penalized hinge with knot, direction, coefficient and centering (a 4-coefficient vector, hence extract_design is partial). Python replays each selected hinge - applying centre=TRUE centering and the by multiplier - in the in-sample, grouped-newdata and grid-newdata paths, and predicting on the training rows reproduces fitted() to 1e-15. The R frontend accepts hinge() in gamboost and gamboostLSS formulas, rejects factor/character by for the term, and folds by_values at fit and predict.",
+        "notes": "Adaptive hinge (kink) learner: one boosting selection adds one hinge at an interior-quantile knot the fit places where the data bends. Each selection stores a ridge-penalized hinge with knot, direction, coefficient and centering (a 4-coefficient vector, hence extract_design is partial). Python replays each selected hinge - applying centre=TRUE centering and the by multiplier - in the in-sample, grouped-newdata and grid-newdata paths, and predicting on the training rows reproduces fitted() to 1e-15. The R frontend accepts hinge() in gamboost and gamboostLSS formulas, rejects factor/character by for the term, and folds by_values at fit and predict.",
         "support": {
           "python": {
             "operations": {

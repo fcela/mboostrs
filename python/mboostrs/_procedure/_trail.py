@@ -289,10 +289,14 @@ class DecisionTrail:
 
     def set_budget(
         self, setting: str = "standard", spent: float = 0.0,
-        degradations: Any = (),
+        degradations: Any = (), limit: int | None = None,
+        seconds_limit: float | None = None,
     ) -> DecisionTrail:
+        """Record the budget setting, its fit and time limits and the fits spent."""
         self.budget = {
             "setting": setting,
+            "limit": None if limit is None else int(limit),
+            "seconds_limit": None if seconds_limit is None else float(seconds_limit),
             "spent": float(spent),
             "degradations": [str(item) for item in degradations],
         }

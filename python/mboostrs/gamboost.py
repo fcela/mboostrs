@@ -3077,7 +3077,11 @@ class GAMBoostModel(ModelAPIMixin):
 
         preprocessing = check_preprocessing(preprocessing)
         if preprocessing == "refit" and _extend is not None:
-            raise NotImplementedError("CV grid extension with refitted preprocessing is tracked in #189")
+            raise NotImplementedError(
+                "Automatic CV grid extension is not yet supported with "
+                "preprocessing='refit'; fit with a larger mstop or use "
+                "preprocessing='fixed'"
+            )
         if not _HAS_RUST_ENGINE:
             raise RuntimeError("Rust engine not available")
         is_multinomial = isinstance(self._family, Multinomial)

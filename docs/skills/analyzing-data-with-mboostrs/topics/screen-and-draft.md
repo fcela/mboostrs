@@ -38,7 +38,7 @@ numeric gets `bbs` (P-spline) by default, or `btree` / `"menu"` via
 `smooth=`; a whole-number column that reads as a count — non-negative
 whole numbers from 0 or 1, at least three of them, covering at least half
 the range they span or named like a count (`kid5`, `visits`, `age`) — gets
-`bols`/`bbs` (#313): one effect that extends to a count the fit never saw,
+`bols`/`bbs`: one effect that extends to a count the fit never saw,
 where `brandom` would have no coefficient for it and `predict()` would
 raise; categorical with few levels gets `bols`/`brandom` by level
 structure; a many-levelled whole-number column that is not a count is read

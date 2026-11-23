@@ -473,6 +473,7 @@ class ModelAPIMixin(WeightPolicyMixin):
         mstop=None,
         calibration=None,
         extrapolation="warn",
+        unseen_levels="error",
     ):
         """Distribution-free prediction interval. See :func:`mboostrs.conformal_interval`."""
         from mboostrs.conformal import conformal_interval
@@ -481,6 +482,7 @@ class ModelAPIMixin(WeightPolicyMixin):
             self, newdata, level=level, method=method, seed=seed,
             calib_fraction=calib_fraction, n_folds=n_folds, mstop=mstop,
             calibration=calibration, extrapolation=extrapolation,
+            unseen_levels=unseen_levels,
         )
 
     # ── serialization ─────────────────────────────────────────────────

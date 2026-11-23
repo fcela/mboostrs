@@ -26,10 +26,11 @@ unfamiliar call. These conventions differ from sklearn and from R's mboost.
 | Strictly positive continuous | `mb.GammaReg()` | conditional mean; zeros need another model |
 
 Support narrows the candidates; it does not establish the correct distribution.
-Read "distributional-branch" when variance, tails, zero mass, or multiple
-distribution parameters matter. Do not pass class labels as an arbitrary
-numeric regression response. Check the signature for `family=` versus
-`families=` on the chosen fitting function.
+Use `mb.family_set("realplus")` (or `mb.FAMILY_SETS`) to list candidate LSS
+families for a given support, and read "distributional-branch" when variance,
+tails, zero mass, or multiple distribution parameters matter. Do not pass class
+labels as an arbitrary numeric regression response. Check the signature for
+`family=` versus `families=` on the chosen fitting function.
 
 ## Formula rules
 

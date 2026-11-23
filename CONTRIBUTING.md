@@ -7,8 +7,8 @@ documentation.
 ## Quick start
 
 ```bash
-git clone https://github.com/fcela/mboostrs-dev.git
-cd mboostrs-dev
+git clone https://github.com/fcela/mboostrs.git
+cd mboostrs
 
 # Python development install
 pip install maturin
@@ -105,6 +105,7 @@ R through rpy2 or against pre-computed R fixtures under `tests/fixtures/`.
 
 ## Documentation
 
+All public documentation follows [docs/WRITING_GUIDE.md](docs/WRITING_GUIDE.md).
 The book is a MyST project in `docs/book/`. It needs `mystmd`
 (`npm install -g mystmd`), the Python dependencies in `requirements.txt`, and
 an installed `mboostrs` built from the same source. To build the website
@@ -121,17 +122,18 @@ also builds the PDF. `docs/book/README.md` describes the preview and
 source-check commands.
 
 Usage pages go in `docs/book/usage/`, methodology in `docs/book/methodology/`,
-and implementation details in `docs/book/implementation/`.
+case studies in `docs/book/cases/` or `docs/book/case_studies/`,
+implementation details in `docs/book/implementation/`, and benchmarks in
+`docs/book/benchmarks/`.
 
 ## Notebooks
 
-- Commit every Jupyter notebook **executed**, with its cell outputs (tables,
-  figures, printed results) in place, so the results can be read on GitHub
-  without running anything.
-- Do not commit a notebook that presents results with its outputs cleared.
-- The only exception is a notebook that is intentionally output-free, such as
-  a code template with no results to display. Say so in a markdown cell at the
-  top so reviewers know the empty outputs are deliberate.
+- Standalone examples in `examples/python/` are committed **without** stored
+  cell outputs; CI executes them via `docs/book/execute_examples.sh` and
+  `tools/check_examples.py` rejects stale stored outputs.
+- Book notebooks under `docs/book/` are executed during the book build
+  (`docs/book/build-html.sh`) and checked by `docs/book/check_cells.py` and
+  `docs/book/check_docs.py`.
 
 ## CI
 

@@ -548,11 +548,30 @@ def _lss_summary(model, cv=None):
     families = getattr(model, "_families", None) or getattr(model, "_family", None)
     risk = np.asarray(model._risk, dtype=float)
     start = float(risk[0]) if risk.size else float("nan")
-    end = float(risk[min(model.mstop, risk.size - 1)]) if risk.size else float("nan")
+    mstop_val = model.mstop
+    if isinstance(mstop_val, dict):
+        step_idx = (
+            sum(int(v) for v in mstop_val.values())
+            if getattr(model, "_method", None) == "noncyclic"
+            else max((int(v) for v in mstop_val.values()), default=0)
+        )
+        mstop_display = ", ".join(f"{k}={v}" for k, v in mstop_val.items())
+    else:
+        step_idx = int(mstop_val)
+        mstop_display = mstop_val
+    end = float(risk[min(step_idx, risk.size - 1)]) if risk.size else float("nan")
     reduction = (start - end) / abs(start) if risk.size and start != 0 else float("nan")
+    nu_per_param = getattr(model, "_nu_per_param", None)
+    if nu_per_param is not None and len(set(nu_per_param)) > 1:
+        nu_display = ", ".join(
+            f"{name}={float(rate):.4g}"
+            for name, rate in zip(model.param_names, nu_per_param, strict=False)
+        )
+    else:
+        nu_display = float(model._nu)
 
     header = [
-        ("Model", "gamboostLSS"),
+        ("Model", getattr(model, "_model_kind", "gamboostLSS")),
         ("Family", _family_name(families)),
         _predict_scale_row(model),
         ("Parameters", ", ".join(model.param_names)),
@@ -564,8 +583,8 @@ def _lss_summary(model, cv=None):
         # `fitted()`; the guard here read as though it might not.
         ("No. observations",
          len(np.asarray(model.fitted()[model.param_names[0]]))),
-        ("Iterations (mstop)", model.mstop),
-        ("Step length (nu)", float(model._nu)),
+        ("Iterations (mstop)", mstop_display),
+        ("Step length (nu)", nu_display),
         ("Risk at mstop", end),
         ("Risk at offset", start),
         ("Risk reduction", f"{reduction:.1%}" if reduction == reduction else ""),
@@ -575,15 +594,19 @@ def _lss_summary(model, cv=None):
     tables = []
     for k, pname in enumerate(model.param_names):
         params = model._params[k]
-        names = [ln.name for ln in params["learners"]]
+        if "learners" in params:
+            names = [ln.name for ln in params["learners"]]
+        else:
+            names = ["(Intercept)", *params.get("predictor_names", ())]
         counts, first = {}, {}
         for iteration, index in enumerate(params["selected"], start=1):
             name = names[index]
             counts[name] = counts.get(name, 0) + 1
             first.setdefault(name, iteration)
-        total = len(params["selected"]) or 1
+        n_updates = len(params["selected"])
+        denom = n_updates or 1
         rows = [
-            [name, count, f"{100.0 * count / total:.1f}%", first[name]]
+            [name, count, f"{100.0 * count / denom:.1f}%", first[name]]
             for name, count in sorted(counts.items(), key=lambda kv: -kv[1])
         ]
         never = [n for n in names if n not in counts]
@@ -592,7 +615,7 @@ def _lss_summary(model, cv=None):
             if never else None
         )
         tables.append(SummaryTable(
-            f"Parameter {pname} — {total} updates",
+            f"Parameter {pname} — {n_updates} updates",
             ["learner", "updates", "% of parameter's path", "first iter"],
             rows, note=note,
         ))

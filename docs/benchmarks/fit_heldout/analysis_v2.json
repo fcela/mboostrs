@@ -1,0 +1,511 @@
+{
+ "new": {
+  "A_all": {
+   "n": 60,
+   "mean_r": -1.8206,
+   "ci95": [
+    -4.4444,
+    -0.3548
+   ],
+   "wilcoxon_p": 6.056248947584331e-06,
+   "better": 39,
+   "worse": 16,
+   "median_ratio": 0.9733,
+   "geometric_mean_ratio": 0.1619,
+   "failures_arm": 78,
+   "failures_old": 90,
+   "holds": true
+  },
+  "B_tier": {
+   "n": 13,
+   "mean_r": -0.4617,
+   "ci95": [
+    -1.0891,
+    -0.063
+   ],
+   "wilcoxon_p": 0.26611328125,
+   "better": 6,
+   "worse": 6,
+   "median_ratio": 1.0,
+   "geometric_mean_ratio": 0.6302,
+   "holds": false
+  },
+  "C_known_effects": {
+   "recovered_arm": 76,
+   "recovered_old": 71,
+   "pairs": 77,
+   "rate_arm": 0.987,
+   "rate_old": 0.9221,
+   "holds": true
+  },
+  "secondary": {
+   "uci_only": {
+    "n": 29,
+    "mean_r": -0.308,
+    "ci95": [
+     -0.5801,
+     -0.0954
+    ],
+    "wilcoxon_p": 0.0009149575215593383,
+    "better": 19,
+    "worse": 8,
+    "median_ratio": 0.9755,
+    "geometric_mean_ratio": 0.7349
+   },
+   "openml_only": {
+    "n": 28,
+    "mean_r": -3.4311,
+    "ci95": [
+     -8.8993,
+     -0.369
+    ],
+    "wilcoxon_p": 0.004162380625543503,
+    "better": 18,
+    "worse": 7,
+    "median_ratio": 0.9664,
+    "geometric_mean_ratio": 0.0324
+   },
+   "onceover_flagged": {
+    "n": 7,
+    "mean_r": -11.4196,
+    "ci95": [
+     -32.0501,
+     -0.188
+    ],
+    "wilcoxon_p": 0.21875,
+    "better": 4,
+    "worse": 2,
+    "median_ratio": 0.9755,
+    "geometric_mean_ratio": 0.0
+   },
+   "onceover_unflagged": {
+    "n": 53,
+    "mean_r": -0.5528,
+    "ci95": [
+     -0.9613,
+     -0.2308
+    ],
+    "wilcoxon_p": 1.3493733270227955e-05,
+    "better": 35,
+    "worse": 14,
+    "median_ratio": 0.971,
+    "geometric_mean_ratio": 0.5754
+   },
+   "more_than_2pct_worse": {
+    "44967 student_performance_por": 2.6823,
+    "100052 uci:Ionosphere": 1.1233,
+    "44965 geographical_origin_of_music": 1.0223,
+    "44971 white_wine": 1.0215
+   },
+   "median_time_ratio": 51.6,
+   "median_seconds": [
+    0.09,
+    5.31
+   ],
+   "p95_seconds": 69.92099999999998,
+   "failures_only_arm": [],
+   "failures_only_old": [
+    [
+     44962,
+     2000
+    ],
+    [
+     44962,
+     2002
+    ],
+    [
+     44978,
+     2001
+    ],
+    [
+     100060,
+     2000
+    ],
+    [
+     100060,
+     2002
+    ],
+    [
+     100073,
+     2000
+    ],
+    [
+     100073,
+     2001
+    ],
+    [
+     100073,
+     2002
+    ],
+    [
+     100183,
+     2000
+    ],
+    [
+     100183,
+     2002
+    ],
+    [
+     100225,
+     2002
+    ],
+    [
+     100759,
+     2000
+    ]
+   ],
+   "missed_effects_arm": [
+    [
+     "uci:Real Estate Valuation",
+     2000,
+     "X4 number of convenience stores",
+     0.0
+    ]
+   ],
+   "missed_effects_old": [
+    [
+     "uci:Real Estate Valuation",
+     2000,
+     "X3 distance to the nearest MRT station",
+     39.908638
+    ],
+    [
+     "uci:Real Estate Valuation",
+     2000,
+     "X4 number of convenience stores",
+     0.0
+    ],
+    [
+     "uci:Real Estate Valuation",
+     2001,
+     "X4 number of convenience stores",
+     0.0
+    ],
+    [
+     "uci:Real Estate Valuation",
+     2002,
+     "X4 number of convenience stores",
+     0.0
+    ],
+    [
+     "mb:bodyfat",
+     2000,
+     "waistcirc",
+     -0.518234
+    ],
+    [
+     "mb:bodyfat",
+     2001,
+     "waistcirc",
+     0.0
+    ]
+   ]
+  },
+  "per_dataset": {
+   "44968 synchronous_machine": 0.0,
+   "44975 wave_energy": 0.0002,
+   "44960 energy_efficiency": 0.0021,
+   "44969 naval_propulsion_plant": 0.0224,
+   "200003 mb:bodyfat": 0.0261,
+   "100267 uci:Banknote Authentication": 0.0582,
+   "100101 uci:Tic-Tac-Toe Endgame": 0.1456,
+   "100560 uci:Seoul Bike Sharing Demand": 0.1916,
+   "44983 miami_housing": 0.2369,
+   "44994 cars": 0.2567,
+   "44987 socmob": 0.343,
+   "100477 uci:Real Estate Valuation": 0.4089,
+   "44977 california_housing": 0.4094,
+   "44970 QSAR_fish_toxicity": 0.4466,
+   "200001 mb:munich_rent": 0.5572,
+   "44980 kin8nm": 0.5743,
+   "100022 uci:Chess (King-Rook vs. King-Pawn)": 0.5809,
+   "100563 uci:Iranian Churn": 0.7627,
+   "574 house_16H": 0.795,
+   "100722 uci:NATICUSdroid (Android Permissions)": 0.7965,
+   "100094 uci:Spambase": 0.8013,
+   "100327 uci:Phishing Websites": 0.8688,
+   "100264 uci:EEG Eye State": 0.8823,
+   "44985 space_ga": 0.8962,
+   "100372 uci:HTRU2": 0.9278,
+   "44993 health_insurance": 0.9436,
+   "1120 MagicTelescope": 0.9462,
+   "100572 uci:Taiwanese Bankruptcy Prediction": 0.9576,
+   "100043 uci:Haberman's Survival": 0.9681,
+   "100850 uci:Raisin": 0.971,
+   "100070 uci:MONK's Problems": 0.9755,
+   "44961 sgemm_gpu_kernel_performance": 0.987,
+   "287 wine_quality": 0.9902,
+   "100176 uci:Blood Transfusion Service Center": 0.991,
+   "100277 uci:Thoracic Surgery Data": 0.9915,
+   "100915 uci:Differentiated Thyroid Cancer Recurrence": 0.9921,
+   "100381 uci:Beijing PM2.5": 0.9924,
+   "44981 pumadyn32nh": 0.9941,
+   "44973 grid_stability": 0.9988,
+   "44957 airfoil_self_noise": 1.0,
+   "44976 sarcos": 1.0,
+   "44988 QSAR_TID_11": 1.0,
+   "100075 uci:Musk (Version 2)": 1.0,
+   "100294 uci:Combined Cycle Power Plant": 1.0,
+   "100827 uci:Sepsis Survival Minimal Clinical Records": 1.0001,
+   "200002 mb:india": 1.0003,
+   "100887 uci:National Health and Nutrition Health Survey 2013-2014 (NHANES) Age Prediction Subset": 1.0014,
+   "100545 uci:Rice (Cammeo and Osmancik)": 1.0015,
+   "44984 cps88wages": 1.0036,
+   "100890 uci:AIDS Clinical Trials Group Study 175": 1.0043,
+   "100891 uci:CDC Diabetes Health Indicators": 1.0062,
+   "37 diabetes": 1.0063,
+   "100367 uci:Dota2 Games Results": 1.0081,
+   "44972 red_wine": 1.0124,
+   "44956 abalone": 1.0127,
+   "100468 uci:Online Shoppers Purchasing Intention Dataset": 1.0136,
+   "44971 white_wine": 1.0215,
+   "44965 geographical_origin_of_music": 1.0223,
+   "100052 uci:Ionosphere": 1.1233,
+   "44967 student_performance_por": 2.6823
+  }
+ },
+ "quick": {
+  "A_all": {
+   "n": 60,
+   "mean_r": -1.5748,
+   "ci95": [
+    -4.162,
+    -0.1872
+   ],
+   "wilcoxon_p": 4.397236427770173e-05,
+   "better": 35,
+   "worse": 18,
+   "median_ratio": 0.9918,
+   "geometric_mean_ratio": 0.207,
+   "failures_arm": 83,
+   "failures_old": 90,
+   "holds": true
+  },
+  "B_tier": {
+   "n": 13,
+   "mean_r": -0.4757,
+   "ci95": [
+    -1.1146,
+    -0.0675
+   ],
+   "wilcoxon_p": 0.17626953125,
+   "better": 7,
+   "worse": 5,
+   "median_ratio": 0.9987,
+   "geometric_mean_ratio": 0.6214,
+   "holds": false
+  },
+  "C_known_effects": {
+   "recovered_arm": 76,
+   "recovered_old": 71,
+   "pairs": 77,
+   "rate_arm": 0.987,
+   "rate_old": 0.9221,
+   "holds": true
+  },
+  "secondary": {
+   "uci_only": {
+    "n": 29,
+    "mean_r": -0.1471,
+    "ci95": [
+     -0.2501,
+     -0.062
+    ],
+    "wilcoxon_p": 0.0006361513664445838,
+    "better": 20,
+    "worse": 8,
+    "median_ratio": 0.9756,
+    "geometric_mean_ratio": 0.8632
+   },
+   "openml_only": {
+    "n": 28,
+    "mean_r": -3.068,
+    "ci95": [
+     -8.4682,
+     -0.1592
+    ],
+    "wilcoxon_p": 0.07157001770872025,
+    "better": 13,
+    "worse": 9,
+    "median_ratio": 1.0,
+    "geometric_mean_ratio": 0.0465
+   },
+   "onceover_flagged": {
+    "n": 7,
+    "mean_r": -11.4793,
+    "ci95": [
+     -32.2326,
+     -0.0521
+    ],
+    "wilcoxon_p": 0.21875,
+    "better": 4,
+    "worse": 2,
+    "median_ratio": 0.9766,
+    "geometric_mean_ratio": 0.0
+   },
+   "onceover_unflagged": {
+    "n": 53,
+    "mean_r": -0.2667,
+    "ci95": [
+     -0.4568,
+     -0.1245
+    ],
+    "wilcoxon_p": 9.4296884188792e-05,
+    "better": 31,
+    "worse": 16,
+    "median_ratio": 0.992,
+    "geometric_mean_ratio": 0.7659
+   },
+   "more_than_2pct_worse": {
+    "100052 uci:Ionosphere": 1.1372,
+    "44993 health_insurance": 1.0648,
+    "44971 white_wine": 1.023
+   },
+   "median_time_ratio": 13.2,
+   "median_seconds": [
+    0.09,
+    1.29
+   ],
+   "p95_seconds": 15.898999999999997,
+   "failures_only_arm": [],
+   "failures_only_old": [
+    [
+     44962,
+     2000
+    ],
+    [
+     44962,
+     2002
+    ],
+    [
+     44974,
+     2001
+    ],
+    [
+     44974,
+     2002
+    ],
+    [
+     44978,
+     2001
+    ],
+    [
+     100060,
+     2000
+    ],
+    [
+     100225,
+     2002
+    ]
+   ],
+   "missed_effects_arm": [
+    [
+     "uci:Real Estate Valuation",
+     2001,
+     "X4 number of convenience stores",
+     0.0
+    ]
+   ],
+   "missed_effects_old": [
+    [
+     "uci:Real Estate Valuation",
+     2000,
+     "X3 distance to the nearest MRT station",
+     39.908638
+    ],
+    [
+     "uci:Real Estate Valuation",
+     2000,
+     "X4 number of convenience stores",
+     0.0
+    ],
+    [
+     "uci:Real Estate Valuation",
+     2001,
+     "X4 number of convenience stores",
+     0.0
+    ],
+    [
+     "uci:Real Estate Valuation",
+     2002,
+     "X4 number of convenience stores",
+     0.0
+    ],
+    [
+     "mb:bodyfat",
+     2000,
+     "waistcirc",
+     -0.518234
+    ],
+    [
+     "mb:bodyfat",
+     2001,
+     "waistcirc",
+     0.0
+    ]
+   ]
+  },
+  "per_dataset": {
+   "44968 synchronous_machine": 0.0,
+   "44960 energy_efficiency": 0.0008,
+   "200003 mb:bodyfat": 0.0245,
+   "44983 miami_housing": 0.1678,
+   "44994 cars": 0.2264,
+   "44977 california_housing": 0.3842,
+   "100477 uci:Real Estate Valuation": 0.4002,
+   "100267 uci:Banknote Authentication": 0.4294,
+   "44970 QSAR_fish_toxicity": 0.4473,
+   "100560 uci:Seoul Bike Sharing Demand": 0.4773,
+   "44969 naval_propulsion_plant": 0.516,
+   "200001 mb:munich_rent": 0.5427,
+   "44980 kin8nm": 0.5742,
+   "100101 uci:Tic-Tac-Toe Endgame": 0.6482,
+   "100075 uci:Musk (Version 2)": 0.7048,
+   "100022 uci:Chess (King-Rook vs. King-Pawn)": 0.7348,
+   "100722 uci:NATICUSdroid (Android Permissions)": 0.8424,
+   "100094 uci:Spambase": 0.8453,
+   "100327 uci:Phishing Websites": 0.8958,
+   "100563 uci:Iranian Churn": 0.9017,
+   "100264 uci:EEG Eye State": 0.9442,
+   "100372 uci:HTRU2": 0.9472,
+   "100572 uci:Taiwanese Bankruptcy Prediction": 0.9512,
+   "1120 MagicTelescope": 0.9578,
+   "100043 uci:Haberman's Survival": 0.971,
+   "100381 uci:Beijing PM2.5": 0.9756,
+   "100070 uci:MONK's Problems": 0.9766,
+   "100850 uci:Raisin": 0.9777,
+   "44961 sgemm_gpu_kernel_performance": 0.987,
+   "100277 uci:Thoracic Surgery Data": 0.9915,
+   "100176 uci:Blood Transfusion Service Center": 0.992,
+   "100915 uci:Differentiated Thyroid Cancer Recurrence": 0.9933,
+   "44981 pumadyn32nh": 0.9936,
+   "44956 abalone": 0.9987,
+   "44973 grid_stability": 0.9992,
+   "574 house_16H": 1.0,
+   "44967 student_performance_por": 1.0,
+   "44975 wave_energy": 1.0,
+   "44976 sarcos": 1.0,
+   "44985 space_ga": 1.0,
+   "44988 QSAR_TID_11": 1.0,
+   "100294 uci:Combined Cycle Power Plant": 1.0,
+   "100827 uci:Sepsis Survival Minimal Clinical Records": 1.0001,
+   "200002 mb:india": 1.0003,
+   "100887 uci:National Health and Nutrition Health Survey 2013-2014 (NHANES) Age Prediction Subset": 1.0014,
+   "100545 uci:Rice (Cammeo and Osmancik)": 1.0018,
+   "44984 cps88wages": 1.0039,
+   "100890 uci:AIDS Clinical Trials Group Study 175": 1.0043,
+   "44957 airfoil_self_noise": 1.0054,
+   "287 wine_quality": 1.0057,
+   "44987 socmob": 1.0059,
+   "100891 uci:CDC Diabetes Health Indicators": 1.0062,
+   "37 diabetes": 1.0063,
+   "100367 uci:Dota2 Games Results": 1.0081,
+   "44972 red_wine": 1.013,
+   "100468 uci:Online Shoppers Purchasing Intention Dataset": 1.014,
+   "44965 geographical_origin_of_music": 1.0154,
+   "44971 white_wine": 1.023,
+   "44993 health_insurance": 1.0648,
+   "100052 uci:Ionosphere": 1.1372
+  }
+ }
+}

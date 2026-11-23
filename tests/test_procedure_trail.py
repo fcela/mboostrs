@@ -242,7 +242,48 @@ def test_invalid_budget_setting_raises_value_error():
         mb.fit(data, "y", seed=0, budget="exhaustive")
 
 
-def test_reports_renders_all_formats_without_fitting():
+def test_budget_setting_sets_the_autospec_fit_limit_and_is_recorded():
+    data = _gaussian_data()
+    quick = mb.fit(data, "y", seed=0, budget="quick").trail.to_dict()
+    standard = mb.fit(data, "y", seed=0, budget="standard").trail.to_dict()
+    assert quick["budget"]["limit"] == 16 and standard["budget"]["limit"] == 32
+    for record in (quick, standard):
+        spent = record["budget"]["spent"]
+        assert spent > 0
+        assert record["steps"][1]["fits"] == spent
+        stopped = spent >= record["budget"]["limit"]
+        assert bool(record["budget"]["degradations"]) == stopped
+    assert standard["budget"]["spent"] > quick["budget"]["spent"]
+
+
+def test_time_limit_falls_back_to_the_budget_zero_specification(monkeypatch):
+    from mboostrs._procedure import _fit
+
+    monkeypatch.setitem(_fit._BUDGET_SECONDS, "standard", 1e-9)
+    data = _gaussian_data()
+    record = mb.fit(data, "y", seed=0).trail.to_dict()
+    assert record["budget"]["seconds_limit"] == 1e-9
+    reasons = " ".join(record["budget"]["degradations"])
+    # The first fit is refused before any probe can keep a result, so the
+    # search falls back to autospec's budget-0 specification.
+    assert "could not keep a partial result" in reasons
+    baseline = mb.autospec(data, "y", seed=0, budget=0)
+    assert record["final"]["formula"] == str(baseline.formula)
+    assert record["budget"]["spent"] == 0
+
+
+def test_time_limit_defers_to_an_outer_workflow():
+    from mboostrs._workflow import Workflow
+
+    with Workflow(mb.CostBudget(fits=10_000)):
+        record = mb.fit(_gaussian_data(), "y", seed=0).trail.to_dict()
+    assert not any("s limit" in d for d in record["budget"]["degradations"])
+
+
+def test_integer_budget_points_to_autospec():
+    with pytest.raises(ValueError, match="autospec"):
+        mb.fit(_gaussian_data(), "y", seed=0, budget=8)
+
     data = _gaussian_data()
     fitted = mb.fit(data, "y", seed=0)
 

@@ -30,4 +30,4 @@ Start on the diagonal to find the scale, then search a small product grid
 around the winner if the parameters plainly want different budgets --
 which shows up as the diagonal optimum sitting at one end of its range.
 
-Source: [`python/mboostrs/gamlss.py` lines 6691-6714](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L6691-L6714)
+Source: [`python/mboostrs/gamlss.py` lines 6704-6727](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L6704-L6727)

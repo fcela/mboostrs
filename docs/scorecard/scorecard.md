@@ -40,12 +40,12 @@ second set of grading rules.
   competitor selected by test loss is an oracle comparison, not a prospectively
   chosen baseline.
 
-## Information contracts for discovery (#511)
+## Information contracts for discovery
 
-D1a and D1b are the same construct — finding true structure and avoiding false
-structure — measured under different information contracts. Issue #511 fixes
-the accounting so that a library is not credited for structure it was handed
-and not penalized for structure it was never asked to find.
+D1a and D1b evaluate the same construct — finding true structure and avoiding
+false structure — under different information contracts so that a library is
+neither credited for structure it was handed nor penalized for structure it was
+never asked to find.
 
 - **Track A — prescribed specification (D1a).** The analyst receives partial
   DGP knowledge: a rough formula naming family/link, candidate predictors and
@@ -272,7 +272,7 @@ preprocessing, screening and tuning inside the permitted training data. Use
 splits appropriate to dependence, timing and deployment. Report per-task loss,
 paired differences with uncertainty, comparator selection and budgets, sample
 sizes, failures and test-use history. On real data the prespecified reference is
-not an oracle; use the paired excess/gap accounting in the #511 contracts. Keep
+not an oracle; use the paired excess/gap accounting defined above. Keep
 classification, mean prediction, distribution prediction and causal-effect
 prediction targets explicit; their scores cannot be pooled indiscriminately. Use
 D9 for prediction-interval coverage and D4 for effect-interval coverage in

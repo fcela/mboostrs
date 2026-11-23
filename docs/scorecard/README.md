@@ -1,14 +1,10 @@
-# Project scorecard
+# Project Scorecard
 
-The single authoritative instrument is [Knowledge Discovery Scorecard 2.1](scorecard.md),
-identifier `mboostrs-scorecard/2.1`. Every new evaluation uses its twelve
-dimension names, anchored grades and evidence rules.
+The canonical evaluation instrument for `mboostrs` is the [Knowledge Discovery Scorecard 2.1](scorecard.md) (`mboostrs-scorecard/2.1`). Every new benchmark evaluation uses its twelve dimension definitions, 1–5 anchored rubrics, and evidence-reporting rules.
 
-**Start with [mboostrs status](status.md)** for the consolidated view of where
-we are strong, where we lag, and what needs measuring. This is an evidence-led
-assessment; it does not invent a composite score from incompatible studies.
+Start with [status.md](status.md) for the consolidated assessment of measured strengths, known weaknesses, and open measurement gaps across all twelve dimensions.
 
-| Dimension | Name |
+| Code | Dimension |
 |---|---|
 | D1a | Relationship recovery under a prescribed specification |
 | D1b | Relationship discovery from data alone |
@@ -23,21 +19,14 @@ assessment; it does not invent a composite score from incompatible studies.
 | D10 | Reproducibility and auditability |
 | D11 | Predictive validity |
 
-D1a and D1b share one discovery construct under the [#511 information
-contracts](https://github.com/fcela/mboostrs/issues/511): D1a measures recovery
-of structure a prescribed specification left open, D1b measures discovery from
-data alone. Predictive accuracy/generalization is D11. Effect-interval validity
-is D4; prediction-interval calibration is D9. D5 always refers to iteration
-speed.
+D1a and D1b separate the same discovery construct by information contract: D1a evaluates recovery of structure left open by a prescribed specification, whereas D1b evaluates discovery from data alone. Predictive generalization is evaluated under D11, effect-interval calibration under D4, prediction-interval calibration under D9, and iteration latency under D5.
 
-The [migration crosswalk](migration.md) identifies historical numbering and
-explains which evidence can be reused. The [working paper](paper.md) is
-background; it delegates current grading definitions to the canonical card.
-Frozen historical protocols and numerical grades remain unchanged.
+## Supporting Documents
 
-Use [report-template.json](report-template.json) for new evidence records.
-Record the scorecard content hash when freezing a protocol.
+- [scorecard.md](scorecard.md) — Normative definitions, 1–5 anchors, information contracts, and mode weights.
+- [status.md](status.md) — Current evidence-backed profile of `mboostrs` across all twelve dimensions.
+- [paper.md](paper.md) — Literature background and design rationale for the framework.
+- [migration.md](migration.md) — Crosswalk for earlier benchmark rubrics and version history.
+- [dimensions.json](dimensions.json) and [report-template.json](report-template.json) — Machine-readable dimension registry and blank report template for new studies.
 
-Run `python tools/check_scorecard.py` to check canonical dimension names,
-metadata and document links. Scores without sufficient evidence remain
-unmeasured. Historical score aggregates are not aggregates under version 2.1.
+Run `python tools/check_scorecard.py` to verify dimension names, template hashes, mode weights, and document links. Dimensions without supporting evidence remain explicitly `unmeasured`; historical aggregates are not carried forward onto version 2.1.

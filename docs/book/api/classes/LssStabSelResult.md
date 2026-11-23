@@ -24,7 +24,7 @@ LssStabSelResult(
 
 Stability-selection result for combined LSS learner/parameter effects.
 
-Source: [`python/mboostrs/gamlss.py` lines 5779-5871](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5779-L5871)
+Source: [`python/mboostrs/gamlss.py` lines 5792-5884](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5792-L5884)
 
 ## Members
 
@@ -47,7 +47,7 @@ LssStabSelResult.max
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 5821-5823](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5821-L5823)
+Source: [`python/mboostrs/gamlss.py` lines 5834-5836](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5834-L5836)
 
 (lssstabselresult-names)=
 ## `LssStabSelResult.names`
@@ -60,7 +60,7 @@ LssStabSelResult.names
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 5825-5827](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5825-L5827)
+Source: [`python/mboostrs/gamlss.py` lines 5838-5840](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5838-L5840)
 
 (lssstabselresult-to_frame)=
 ## `LssStabSelResult.to_frame`
@@ -73,7 +73,7 @@ LssStabSelResult.to_frame(output='auto')
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 5829-5849](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5829-L5849)
+Source: [`python/mboostrs/gamlss.py` lines 5842-5862](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5842-L5862)
 
 (lssstabselresult-plot)=
 ## `LssStabSelResult.plot`
@@ -86,7 +86,7 @@ LssStabSelResult.plot()
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 5851-5854](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5851-L5854)
+Source: [`python/mboostrs/gamlss.py` lines 5864-5867](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5864-L5867)
 
 (lssstabselresult-to_dict)=
 ## `LssStabSelResult.to_dict`
@@ -99,4 +99,4 @@ LssStabSelResult.to_dict(*, include_arrays=False)
 
 A JSON-safe record; the selection-probability paths only on request.
 
-Source: [`python/mboostrs/gamlss.py` lines 5864-5871](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5864-L5871)
+Source: [`python/mboostrs/gamlss.py` lines 5877-5884](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5877-L5884)

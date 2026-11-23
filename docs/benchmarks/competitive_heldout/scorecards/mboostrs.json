@@ -1,0 +1,125 @@
+{
+ "scorecard_id": "mboostrs-scorecard/2.1",
+ "scorecard_sha256": "12d0ea339b4894ca3821ba9a0a3394c89572f962d022420c36d485ee3aa3daec",
+ "library": "mboostrs",
+ "model_revision": "working tree on 12c87a3 (fit budget, time limit, autospec step rule)",
+ "benchmark_protocol_id": "competitive_heldout/PROTOCOL.md (2026-11-21)",
+ "mode": "fully_automated",
+ "dimensions": [
+  {
+   "id": "D1a",
+   "name": "Relationship recovery under a prescribed specification",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": "Not measured by this protocol."
+  },
+  {
+   "id": "D1b",
+   "name": "Relationship discovery from data alone",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "docs/benchmarks/competitive_heldout/analysis.json",
+    "docs/benchmarks/2026-11-21-competitive-heldout.md"
+   ],
+   "justification": "Structured screening and adoption with recorded decision rules (autospec stages, fit trail). Planted tasks, common permutation rule: TPR 0.875 (linear 30/30, nonlinear 40/40, interaction 0/10), FDR 0.014, silent on 5/5 null tasks. Its own formula, the library's claim, keeps noise terms: FDR 0.645 and 0/5 null tasks silent, so false-discovery behaviour of what the library reports is not controlled; anchor 4 not met."
+  },
+  {
+   "id": "D2",
+   "name": "Causal humility and support",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": "Not measured by this protocol."
+  },
+  {
+   "id": "D3",
+   "name": "Explanation quality",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": "Not measured by this protocol."
+  },
+  {
+   "id": "D4",
+   "name": "Importance quantification",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": "Not measured by this protocol."
+  },
+  {
+   "id": "D5",
+   "name": "Experimental iteration speed",
+   "score": 2,
+   "status": "scored",
+   "evidence": [
+    "docs/benchmarks/competitive_heldout/analysis.json",
+    "docs/benchmarks/2026-11-21-competitive-heldout.md"
+   ],
+   "justification": "Scorecard session, 50,000 x 20, ten follow-up fits with diagnostics: median 34.4 s, p90 59.9 s per follow-up (anchor 2: tens of seconds per fit). Median fit-plus-predict on the real battery 5.3 s."
+  },
+  {
+   "id": "D6",
+   "name": "Robustness across conditions",
+   "score": 2,
+   "status": "scored",
+   "evidence": [
+    "docs/benchmarks/competitive_heldout/analysis.json",
+    "docs/benchmarks/2026-11-21-competitive-heldout.md"
+   ],
+   "justification": "Completes 202 of 285 real-data runs (70.9%). Failures: missing values in prediction rows, unseen factor levels, tables where every row has a missing value; training drops incomplete rows. Mixed types are handled. Small-n real tasks: median 1.3% below the reference; best on S5 (n=200). Messy-data degradation is a hard failure, not graceful, so anchor 3 is not met."
+  },
+  {
+   "id": "D7",
+   "name": "Human-friendliness",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": "Not measured by this protocol."
+  },
+  {
+   "id": "D8",
+   "name": "Agent-friendliness",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": "Not measured by this protocol."
+  },
+  {
+   "id": "D9",
+   "name": "Uncertainty honesty (calibration)",
+   "score": 4,
+   "status": "scored",
+   "evidence": [
+    "docs/benchmarks/competitive_heldout/analysis.json",
+    "docs/benchmarks/2026-11-21-competitive-heldout.md"
+   ],
+   "justification": "Split-conformal 90% intervals: median coverage 0.900, 96.3% of 134 runs within 0.85-0.95, none below 0.85. On the heteroscedastic task S3 coverage by tercile of the scale variable is 0.892/0.906/0.908, so the intervals adapt (anchor 4). No demonstrated warning when the interval itself is unreliable (anchor 5). Binary median ECE 0.027."
+  },
+  {
+   "id": "D10",
+   "name": "Reproducibility and auditability",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "docs/benchmarks/competitive_heldout/analysis.json",
+    "docs/benchmarks/2026-11-21-competitive-heldout.md"
+   ],
+   "justification": "Predictions identical on rerun for 10/10 datasets. fit returns a decision trail with provenance (version, git sha, seed, BLAS threads), and autospec's report lists candidates with adoption reasons; stages 1-12 are recorded as one delegate step in the trail itself. One-command reproduction of a discovery report is not demonstrated (anchor 4)."
+  },
+  {
+   "id": "D11",
+   "name": "Predictive validity",
+   "score": 3,
+   "status": "scored",
+   "evidence": [
+    "docs/benchmarks/competitive_heldout/analysis.json",
+    "docs/benchmarks/2026-11-21-competitive-heldout.md"
+   ],
+   "justification": "Beats the prespecified ridge/logistic reference: regression 27 of 33 paired tasks (Wilcoxon p = 3e-4), binary 23 of 30 (p = 3e-4). Not competitive: median gap to the best complete arm 35.3% (regression) and 12.6% (binary); within 5% of best on 8/33 and 13/30. Against CatBoost: worse on 24 of 33 regression tasks (median ratio 1.278, p = 0.004). Best on additive planted tasks S1, S3, S5, S6, S7; fails the interaction task S2 (MSE 9.32 against 0.43 for CatBoost). 29% of real runs fail and are not scored."
+  }
+ ],
+ "aggregate": null
+}

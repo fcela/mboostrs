@@ -47,8 +47,12 @@ and `.report()`; it is not evidence that every proposed term matters.
 `mb.fit(data, "y")` and `mb.report(result)` are available. Currently `fit`
 delegates specification choice to `autospec` and wraps its fitted model and
 decision trail; it does not implement every proposed search stage. Its
-`budget="quick"/"standard"/"thorough"` setting is validated but does not
-change compute. `time=` and `uncertainty="stability"/"bootstrap"` raise
+`budget="quick"/"standard"/"thorough"` setting gives the search 16, 32 or
+512 model fits, which a stage in progress can exceed, and 60, 120 or 1200
+seconds. `"standard"` is the default. `result.trail.budget` records both
+limits and the fits spent; its `degradations` say when a limit stopped the
+search and what was returned instead.
+`time=` and `uncertainty="stability"/"bootstrap"` raise
 `NotImplementedError`. Use the explicit tuning path below when you need to
 control validation and stopping, and the dedicated uncertainty or time-fold
 APIs for those tasks. Read `result.trail` and `mb.report(result)` as a record

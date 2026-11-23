@@ -3114,6 +3114,56 @@ coefAll.mboostrs_gamboostLSS <- function(object, output = c("data.frame", "list"
   x
 }
 
+#' Slice a gamboostLSS model at iteration k
+#'
+#' @param x A fitted \code{mboostrs_gamboostLSS} object.
+#' @param k Iteration number (scalar applied to all parameters, named vector for
+#'   cyclic fits, or scalar global step count for noncyclic fits).
+#' @return A sliced LSS model object containing only the first \code{k} iterations.
+#' @examples
+#' set.seed(42)
+#' n <- 100
+#' dat <- data.frame(y = rnorm(n), x1 = rnorm(n), x2 = rnorm(n))
+#' mod <- gamboostLSS(y ~ bbs(x1, df = 4) + bbs(x2, df = 4), data = dat,
+#'                    families = GaussianLSS(),
+#'                    control = boost_control(mstop = 50))
+#' mod20 <- mod[20]
+#' @export
+`[.mboostrs_gamboostLSS` <- function(x, k) {
+  steps <- .gamboostlss_prediction_steps(x, k)
+  fitted_map <- predict(x, type = "link", mstop = k)
+  if (identical(x$method, "noncyclic")) {
+    global_steps <- min(as.integer(k), length(x$selection_order))
+    x$selection_order <- x$selection_order[seq_len(global_steps)]
+  } else if (!is.null(x$selection_order)) {
+    seen <- integer(length(x$param_names))
+    keep <- logical(length(x$selection_order))
+    for (step in seq_along(x$selection_order)) {
+      parameter <- x$selection_order[step]
+      seen[parameter] <- seen[parameter] + 1L
+      keep[step] <- seen[parameter] <= steps[[x$param_names[parameter]]]
+    }
+    x$selection_order <- x$selection_order[keep]
+  }
+  for (pn in x$param_names) {
+    ki <- as.integer(steps[[pn]])
+    p <- x$params[[pn]]
+    p$selected <- p$selected[seq_len(ki)]
+    p$coefs <- p$coefs[seq_len(ki)]
+    p$mstop <- ki
+    p$fitted <- fitted_map[[pn]]
+    x$params[[pn]] <- p
+  }
+  if (!is.null(x$execution_report)) {
+    x$execution_report$completed_mstop <- if (!is.null(x$selection_order)) {
+      length(x$selection_order)
+    } else {
+      sum(vapply(x$params, function(param) length(param$selected), integer(1)))
+    }
+  }
+  x
+}
+
 #' @rdname execution_report
 #' @export
 execution_report.mboostrs_glmboostLSS <- function(object, ...) object$execution_report

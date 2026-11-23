@@ -2,24 +2,16 @@
 
 ## Study objective
 
-Issue #898: the automated search tunes exactly one numeric parameter
-by measurement — `mstop`, read off the cross-validated risk curve of
-one boosting path per fold — and never searches the step length
-`nu`, which is fixed at 0.3. dlib's global optimizer
-(`find_min_global`) is parameter-free and treats its budget as a
-maximum number of function calls, which makes it a natural oracle for
-the question: at the same total fit count, does a black-box search
-over `(nu, mstop)` beat the path read-off? The benchmark runs the
+The autospec route tunes one numeric parameter by measurement: `mstop`, the number of boosting steps, read off the cross-validated risk curve of one boosting path per fold (the path read-off). It never searches the step length `nu`, which is fixed at 0.3. dlib, a C++ optimization library, provides a global optimizer (`find_min_global`) that is parameter-free and treats its budget as a maximum number of function calls. That makes it a candidate oracle for the question: at the same total fit count, does a black-box search over `(nu, mstop)`, meaning a search that uses only the objective's values, beat the path read-off? The benchmark runs the
 existing Python binding as an oracle only (dlib is Boost Software
-License; it is not a dependency). A Rust reimplementation was to be
-proposed only if dlib won a majority of the panels under the win rule
-below.
+License; it is not a dependency). Under the win rule below, a Rust
+reimplementation is proposed only if dlib wins a majority of the panels.
 
 ## Protocol in brief
 
 Seven frozen shootout panels (the stopping study's default list),
 seed 0; data is each payload's fit + validation partitions, response
-`y`. Arm 1 is the shipped route: `autospec` at budget 200 on a shared
+`y`. Arm 1 is the autospec route: `autospec` at budget 200 on a shared
 5-fold matrix; its result is the selected specification at
 `(0.3, route mstop)`, and its budget B is the fits the run spent. Arm 2
 is dlib over `(nu, mstop)` on that specification, same folds, same
@@ -28,8 +20,8 @@ at most `B // 5` evaluations; `nu` in [0.02, 1.0], `mstop` up to the
 end of the grid the route's own probe evaluated. dlib wins a panel
 when its best risk beats the route's by more than the paired standard
 error of the per-fold risk difference at the two chosen
-configurations. The full protocol, the anytime curves and the
-per-evaluation traces are in the dated record,
+configurations. The full protocol, the anytime curves (the best risk found against the number of evaluations used) and the
+per-evaluation traces are in
 `docs/benchmarks/2026-11-14-dlib-tuning-benchmark.md`.
 
 ## Results
@@ -58,7 +50,7 @@ wins come through the step length the route never searches (winning
 `nu` 0.990, 0.609, 0.258 against the fixed 0.3); where 0.3 is already
 about right, the black box only matches the read-off. On the three
 panels where the route's chosen `mstop` sits in the boundary band of
-the 10,000-step cap, dlib landed near the cap too: both searches are
+the 10,000-step cap, dlib's best setting also sat near the cap: both searches are
 grid-bound there, and `nu` decides.
 
 ## Verdict

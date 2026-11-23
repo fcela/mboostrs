@@ -189,8 +189,9 @@ project:
         - file: implementation/performance.ipynb
     - title: "Part V — Benchmarks"
       children:
-        - file: benchmarks/where_we_stand.ipynb
         - file: benchmarks/overview.ipynb
+        - file: benchmarks/where_we_stand.ipynb
+        - file: benchmarks/heldout_competition.ipynb
         - file: benchmarks/pair_form_stopping.ipynb
         - file: benchmarks/competitive_refresh.ipynb
         - file: benchmarks/public_count.ipynb
@@ -207,6 +208,8 @@ project:
         - file: benchmarks/public_scaling.ipynb
         - file: benchmarks/claims_discovery.ipynb
         - file: benchmarks/causal_discovery.ipynb
+        - file: benchmarks/pm25_forecast_competition.ipynb
+        - file: benchmarks/blind_agent_five_libraries.md
         - file: benchmarks/kdd_scorecard_study.ipynb
         - file: benchmarks/competitive_shootout.ipynb
         - file: benchmarks/chooser_shootout.ipynb
@@ -237,6 +240,25 @@ project:
         - file: appendix/notation.ipynb
         - file: appendix/glossary.ipynb
         - file: appendix/benchmark_findings.ipynb
+        - file: appendix/benchmark_records.md
+          children:
+            - file: appendix/records/heldout_fit.md
+            - file: appendix/records/competitive_shootout.md
+            - file: appendix/records/stopping_rules.md
+            - file: appendix/records/adoption_rules.md
+            - file: appendix/records/count_models.md
+            - file: appendix/records/spread_and_distributional.md
+            - file: appendix/records/encoding_and_factors.md
+            - file: appendix/records/engine_and_estimation.md
+            - file: appendix/records/agent_benchmarks.md
+            - title: "Supplemental benchmark notebooks"
+              children:
+                - file: case_studies/beijing_pm25.ipynb
+                  title: "Beijing PM2.5: three-round competition"
+                - file: case_studies/kdd_scorecard_expansion.ipynb
+                  title: "KDD scorecard expansion"
+                - file: cases/diagnostics_and_limitations.ipynb
+                  title: "Diagnostics and limitations"
         - file: appendix/api_reference.ipynb
         - file: api/index.md
           children:

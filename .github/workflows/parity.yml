@@ -103,7 +103,10 @@ jobs:
         run: |
           python -m pip install maturin pytest rpy2 jsonschema pandas scikit-learn
           maturin build --release --out dist
-          python -m pip install --force-reinstall dist/*.whl
+          for wheel in dist/*.whl; do
+            python -m pip install --force-reinstall "${wheel}[dev,sklearn]"
+            python -m pip install "${wheel}[plot]"
+          done
 
       - name: Validate capability and focused-node contracts
         run: |

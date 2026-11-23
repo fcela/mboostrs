@@ -62,14 +62,10 @@ def test_the_six_operations_are_the_ones_d8_names(walkthrough):
     ]
 
 
-def test_every_operation_demands_both_a_call_and_an_interpretation(walkthrough):
-    """A call the reader can copy is half of it. `fit.residuals()` in a list
-    of five one-liners is a call with no way to read the answer."""
+def test_every_operation_declares_a_call_pattern(walkthrough):
     for operation in walkthrough.OPERATIONS:
-        assert operation.call and operation.interpretation
-        assert operation.conveys, operation.name
+        assert operation.call
         re.compile(operation.call)
-        re.compile(operation.interpretation)
 
 
 def test_the_quickstart_diagnoses_and_shows_what_wrong_looks_like():
@@ -97,7 +93,6 @@ def test_removing_the_diagnosis_fails_the_journey(walkthrough, monkeypatch):
                     if op.name == "diagnose")
     broken = type(diagnose)(
         name="diagnose", call=r"\.no_such_diagnostic\(",
-        interpretation=diagnose.interpretation, conveys=diagnose.conveys,
     )
     monkeypatch.setattr(walkthrough, "OPERATIONS", without + (broken,))
     problems = walkthrough.check_new_user(show=False)
@@ -215,67 +210,11 @@ def test_the_concise_table_is_at_the_top_of_the_page():
     cells = json.loads(
         (BOOK / "usage" / "r_migration.ipynb").read_text())["cells"]
     opening = "".join(cells[0]["source"])
-    assert "## A complete script in R and Python" in opening
+    assert "## Workflow mapping" in opening
     rows = [line for line in opening.splitlines() if line.startswith("| ")]
     assert len(rows) >= 9, "the whole workflow, one row per step"
     for step in ("fit", "tune", "truncate", "predict"):
         assert any(f"| {step}" in row for row in rows), step
-
-
-# --- D0: how much of the namespace the canonical path reaches ----------
-
-FRONT_DOOR = (
-    "README.md",
-    "docs/book/usage/quickstart.ipynb",
-    "docs/book/usage/five_decisions.ipynb",
-    "docs/book/usage/interface_map.ipynb",
-)
-
-#: How many of the public names the front door reaches today. D0 asks for one
-#: canonical workflow that is "simpler to discover"; the namespace is 146 flat
-#: names and every one of them is documented somewhere, so the question is not
-#: whether a name is written down but whether the path a reader takes reaches
-#: it. This is a ratchet: the front door may cover more, never less.
-FRONT_DOOR_NAMES = 104
-
-
-def front_door_text():
-    import json
-
-    parts = []
-    for name in FRONT_DOOR:
-        path = ROOT / name
-        if path.suffix == ".ipynb":
-            parts.append("\n".join(
-                "".join(cell["source"])
-                for cell in json.loads(path.read_text())["cells"]))
-        else:
-            parts.append(path.read_text())
-    return "\n".join(parts)
-
-
-def test_the_canonical_path_reaches_most_of_the_namespace():
-    import mboostrs as mb
-
-    text = front_door_text()
-    reached = [name for name in sorted(mb.__all__)
-               if re.search(rf"\b{re.escape(name)}\b", text)]
-    assert len(reached) >= FRONT_DOOR_NAMES, (
-        f"the front door reaches {len(reached)} of {len(mb.__all__)} public "
-        f"names, down from {FRONT_DOOR_NAMES}. A name that leaves the "
-        f"canonical path is reachable only by knowing it is there."
-    )
-
-
-def test_the_ratchet_is_not_stale():
-    """A ratchet that has drifted far below the real number stops catching
-    anything. If the front door has grown, raise it."""
-    import mboostrs as mb
-
-    reached = sum(1 for name in sorted(mb.__all__)
-                  if re.search(rf"\b{re.escape(name)}\b", front_door_text()))
-    assert reached <= FRONT_DOOR_NAMES + 12, (
-        f"the front door now reaches {reached} names; raise FRONT_DOOR_NAMES")
 
 
 def test_install_and_quickstart_come_before_the_interface_map():

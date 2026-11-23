@@ -34,7 +34,8 @@ autospec(
     forbid=None,
     mandatory=None,
     joint_tree=True,
-    exposure=None
+    exposure=None,
+    na_action=None
 )
 ```
 
@@ -355,4 +356,4 @@ declared both a group and a measurement, or `treatment`
 names the response, a column the frame does not hold, or a
 `CausalSpec` whose outcome is not this call's response.
 
-Source: [`python/mboostrs/autospec.py` lines 141-572](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/autospec.py#L141-L572)
+Source: [`python/mboostrs/autospec.py` lines 141-589](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/autospec.py#L141-L589)

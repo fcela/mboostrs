@@ -27,7 +27,8 @@ discover(
     mandatory_terms=(),
     candidates: collections.abc.Mapping | None = None,
     max_mstop: int | None = None,
-    extrapolation: str = 'warn'
+    extrapolation: str = 'warn',
+    unseen_levels: str = 'error'
 ) -> DiscoveryResult
 ```
 
@@ -136,6 +137,9 @@ Workflow, pitfalls and worked analyses: `mboostrs.agent_guide()`, or
   `discover(extrapolation=...)`, and it is issued once per call, with
   the number of fold predictions it covers. The final `newdata`
   predictions always use `"clip"`.
+- `unseen_levels` ({"error", "average", "zero_effect"}, default "error"): Policy for factor or group levels present in `newdata` or
+  `calibration` that were absent from training, passed to final
+  prediction and conformal interval calibration.
 - `A bare value of ``heredity`` or ``forbidden_pairs`` applies to the mean`
 - `model (``"mu"``), since interactions are only searched there; a bare`
 - ```mandatory_terms`` or ``candidates`` applies to ``"mu"`` too. A mapping`
@@ -180,4 +184,4 @@ names the family; every prediction is then the mean of the response.
 [['x']]
 ```
 
-Source: [`python/mboostrs/discover.py` lines 546-793](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/discover.py#L546-L793)
+Source: [`python/mboostrs/discover.py` lines 546-803](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/discover.py#L546-L803)

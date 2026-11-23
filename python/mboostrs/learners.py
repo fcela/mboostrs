@@ -624,7 +624,7 @@ class Btree:
             squared error (CART): it favours columns with many split points
             and can find a column whose effect is not monotone at the first
             split, where ctree's linear association statistic is near zero
-            (e.g. California housing, #263: a joint tree scores 0.2638 with
+            (for example, on California housing a joint tree scores 0.2638 with
             ``"sse"`` vs 0.2705 with ``"ctree"`` at the same depth/budget).
             ``"ctree"`` is partykit's conditional inference tree as mboost's
             ``btree`` runs it (fitted values agree with mboost to 1e-15): the
@@ -666,7 +666,7 @@ class Btree:
 
     When to prefer which: keep the ``"sse"`` default when the predictors are
     mostly numeric and the response may jump -- spatial discontinuities,
-    thresholds, regime changes. On California housing (#263) a joint depth-6
+    thresholds, regime changes. On California housing, a joint depth-6
     tree reaches 0.2638 log-RMSE with ``"sse"`` against 0.2705 with
     ``"ctree"`` at the same depth and budget. Reach for ``"ctree"`` when the
     column set is a noisy mix and you want the association test to refuse

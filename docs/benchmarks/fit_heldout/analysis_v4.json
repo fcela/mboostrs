@@ -1,0 +1,488 @@
+{
+ "new": {
+  "A_all": {
+   "n": 62,
+   "mean_r": -1.8743,
+   "ci95": [
+    -4.5225,
+    -0.4025
+   ],
+   "wilcoxon_p": 8.251212228110371e-05,
+   "better": 38,
+   "worse": 20,
+   "median_ratio": 0.9901,
+   "geometric_mean_ratio": 0.1535,
+   "failures_arm": 79,
+   "failures_old": 88,
+   "holds": true
+  },
+  "B_tier": {
+   "n": 13,
+   "mean_r": -0.4789,
+   "ci95": [
+    -0.9582,
+    -0.0869
+   ],
+   "wilcoxon_p": 0.243896484375,
+   "better": 8,
+   "worse": 5,
+   "median_ratio": 0.9981,
+   "geometric_mean_ratio": 0.6195,
+   "holds": false
+  },
+  "C_known_effects": {
+   "recovered_arm": 76,
+   "recovered_old": 73,
+   "pairs": 77,
+   "rate_arm": 0.987,
+   "rate_old": 0.9481,
+   "holds": true
+  },
+  "secondary": {
+   "uci_only": {
+    "n": 30,
+    "mean_r": -0.3481,
+    "ci95": [
+     -0.6518,
+     -0.0987
+    ],
+    "wilcoxon_p": 0.05035926117792571,
+    "better": 17,
+    "worse": 12,
+    "median_ratio": 0.9944,
+    "geometric_mean_ratio": 0.706
+   },
+   "openml_only": {
+    "n": 29,
+    "mean_r": -3.556,
+    "ci95": [
+     -9.1064,
+     -0.4868
+    ],
+    "wilcoxon_p": 0.0012026870288842505,
+    "better": 19,
+    "worse": 7,
+    "median_ratio": 0.9482,
+    "geometric_mean_ratio": 0.0286
+   },
+   "onceover_flagged": {
+    "n": 7,
+    "mean_r": -11.7038,
+    "ci95": [
+     -33.2268,
+     -0.2234
+    ],
+    "wilcoxon_p": 0.21875,
+    "better": 4,
+    "worse": 2,
+    "median_ratio": 0.9877,
+    "geometric_mean_ratio": 0.0
+   },
+   "onceover_unflagged": {
+    "n": 55,
+    "mean_r": -0.6232,
+    "ci95": [
+     -1.0482,
+     -0.2878
+    ],
+    "wilcoxon_p": 0.00021013071199051176,
+    "better": 34,
+    "worse": 18,
+    "median_ratio": 0.9926,
+    "geometric_mean_ratio": 0.5362
+   },
+   "more_than_2pct_worse": {
+    "100052 uci:Ionosphere": 1.1183,
+    "100915 uci:Differentiated Thyroid Cancer Recurrence": 1.0596,
+    "44971 white_wine": 1.0507,
+    "100572 uci:Taiwanese Bankruptcy Prediction": 1.0435,
+    "100277 uci:Thoracic Surgery Data": 1.0375,
+    "100381 uci:Beijing PM2.5": 1.0374,
+    "100759 uci:Glioma Grading Clinical and Mutation Features": 1.0362
+   },
+   "median_time_ratio": 45.06,
+   "median_seconds": [
+    0.11,
+    5.875
+   ],
+   "p95_seconds": 82.18,
+   "failures_only_arm": [],
+   "failures_only_old": [
+    [
+     44978,
+     4001
+    ],
+    [
+     100073,
+     4000
+    ],
+    [
+     100073,
+     4001
+    ],
+    [
+     100073,
+     4002
+    ],
+    [
+     100225,
+     4001
+    ],
+    [
+     100332,
+     4000
+    ],
+    [
+     100332,
+     4001
+    ],
+    [
+     100603,
+     4001
+    ],
+    [
+     100891,
+     4002
+    ]
+   ],
+   "missed_effects_arm": [
+    [
+     "uci:Real Estate Valuation",
+     4000,
+     "X4 number of convenience stores",
+     0.0
+    ]
+   ],
+   "missed_effects_old": [
+    [
+     "uci:Auto MPG",
+     4000,
+     "model_year",
+     -0.620521
+    ],
+    [
+     "uci:Real Estate Valuation",
+     4000,
+     "X4 number of convenience stores",
+     0.0
+    ],
+    [
+     "uci:Real Estate Valuation",
+     4001,
+     "X4 number of convenience stores",
+     0.0
+    ],
+    [
+     "uci:Real Estate Valuation",
+     4002,
+     "X4 number of convenience stores",
+     0.0
+    ]
+   ]
+  },
+  "per_dataset": {
+   "44968 synchronous_machine": 0.0,
+   "44975 wave_energy": 0.0002,
+   "44960 energy_efficiency": 0.0082,
+   "44969 naval_propulsion_plant": 0.0155,
+   "44994 cars": 0.0188,
+   "100267 uci:Banknote Authentication": 0.0502,
+   "44983 miami_housing": 0.0969,
+   "100477 uci:Real Estate Valuation": 0.1089,
+   "100101 uci:Tic-Tac-Toe Endgame": 0.1247,
+   "200003 mb:bodyfat": 0.1287,
+   "100560 uci:Seoul Bike Sharing Demand": 0.1512,
+   "44977 california_housing": 0.2491,
+   "44970 QSAR_fish_toxicity": 0.3928,
+   "44987 socmob": 0.5437,
+   "200001 mb:munich_rent": 0.5549,
+   "100022 uci:Chess (King-Rook vs. King-Pawn)": 0.59,
+   "44980 kin8nm": 0.6483,
+   "100563 uci:Iranian Churn": 0.7599,
+   "574 house_16H": 0.7879,
+   "100094 uci:Spambase": 0.7973,
+   "44962 forest_fires": 0.8099,
+   "100722 uci:NATICUSdroid (Android Permissions)": 0.8196,
+   "100327 uci:Phishing Websites": 0.8498,
+   "44985 space_ga": 0.8979,
+   "100264 uci:EEG Eye State": 0.9176,
+   "100372 uci:HTRU2": 0.9362,
+   "1120 MagicTelescope": 0.9481,
+   "44993 health_insurance": 0.9482,
+   "100043 uci:Haberman's Survival": 0.9672,
+   "100294 uci:Combined Cycle Power Plant": 0.9856,
+   "100070 uci:MONK's Problems": 0.9877,
+   "100890 uci:AIDS Clinical Trials Group Study 175": 0.9926,
+   "44965 geographical_origin_of_music": 0.993,
+   "44981 pumadyn32nh": 0.9939,
+   "100545 uci:Rice (Cammeo and Osmancik)": 0.9963,
+   "37 diabetes": 0.9981,
+   "44973 grid_stability": 0.9983,
+   "100176 uci:Blood Transfusion Service Center": 0.9992,
+   "44957 airfoil_self_noise": 1.0,
+   "44976 sarcos": 1.0,
+   "44988 QSAR_TID_11": 1.0,
+   "100075 uci:Musk (Version 2)": 1.0,
+   "100827 uci:Sepsis Survival Minimal Clinical Records": 1.0003,
+   "44967 student_performance_por": 1.0006,
+   "44972 red_wine": 1.0019,
+   "100887 uci:National Health and Nutrition Health Survey 2013-2014 (NHANES) Age Prediction Subset": 1.002,
+   "200002 mb:india": 1.0021,
+   "44984 cps88wages": 1.0039,
+   "100374 uci:Appliances Energy Prediction": 1.0048,
+   "100850 uci:Raisin": 1.0053,
+   "100367 uci:Dota2 Games Results": 1.0081,
+   "100468 uci:Online Shoppers Purchasing Intention Dataset": 1.0089,
+   "287 wine_quality": 1.0106,
+   "44956 abalone": 1.0149,
+   "44961 sgemm_gpu_kernel_performance": 1.0174,
+   "100759 uci:Glioma Grading Clinical and Mutation Features": 1.0362,
+   "100381 uci:Beijing PM2.5": 1.0374,
+   "100277 uci:Thoracic Surgery Data": 1.0375,
+   "100572 uci:Taiwanese Bankruptcy Prediction": 1.0435,
+   "44971 white_wine": 1.0507,
+   "100915 uci:Differentiated Thyroid Cancer Recurrence": 1.0596,
+   "100052 uci:Ionosphere": 1.1183
+  }
+ },
+ "quick": {
+  "A_all": {
+   "n": 62,
+   "mean_r": -1.0386,
+   "ci95": [
+    -2.4754,
+    -0.2204
+   ],
+   "wilcoxon_p": 0.00038158257401394065,
+   "better": 35,
+   "worse": 20,
+   "median_ratio": 0.9956,
+   "geometric_mean_ratio": 0.3539,
+   "failures_arm": 82,
+   "failures_old": 88,
+   "holds": true
+  },
+  "B_tier": {
+   "n": 13,
+   "mean_r": -0.4768,
+   "ci95": [
+    -0.9413,
+    -0.0952
+   ],
+   "wilcoxon_p": 0.20361328125,
+   "better": 7,
+   "worse": 5,
+   "median_ratio": 0.9981,
+   "geometric_mean_ratio": 0.6208,
+   "holds": false
+  },
+  "C_known_effects": {
+   "recovered_arm": 75,
+   "recovered_old": 73,
+   "pairs": 77,
+   "rate_arm": 0.974,
+   "rate_old": 0.9481,
+   "holds": true
+  },
+  "secondary": {
+   "uci_only": {
+    "n": 30,
+    "mean_r": -0.1836,
+    "ci95": [
+     -0.3663,
+     -0.0515
+    ],
+    "wilcoxon_p": 0.01590941854608648,
+    "better": 18,
+    "worse": 11,
+    "median_ratio": 0.9872,
+    "geometric_mean_ratio": 0.8323
+   },
+   "openml_only": {
+    "n": 29,
+    "mean_r": -1.9449,
+    "ci95": [
+     -4.9992,
+     -0.2442
+    ],
+    "wilcoxon_p": 0.026398980713274563,
+    "better": 15,
+    "worse": 8,
+    "median_ratio": 0.9988,
+    "geometric_mean_ratio": 0.143
+   },
+   "onceover_flagged": {
+    "n": 7,
+    "mean_r": -6.6833,
+    "ci95": [
+     -18.2333,
+     -0.0597
+    ],
+    "wilcoxon_p": 0.21875,
+    "better": 4,
+    "worse": 2,
+    "median_ratio": 0.9933,
+    "geometric_mean_ratio": 0.0013
+   },
+   "onceover_unflagged": {
+    "n": 55,
+    "mean_r": -0.3202,
+    "ci95": [
+     -0.5462,
+     -0.1449
+    ],
+    "wilcoxon_p": 0.0008459130159729175,
+    "better": 31,
+    "worse": 18,
+    "median_ratio": 0.9976,
+    "geometric_mean_ratio": 0.726
+   },
+   "more_than_2pct_worse": {
+    "100052 uci:Ionosphere": 1.1299,
+    "100915 uci:Differentiated Thyroid Cancer Recurrence": 1.0587,
+    "100572 uci:Taiwanese Bankruptcy Prediction": 1.0424,
+    "44987 socmob": 1.0416,
+    "100759 uci:Glioma Grading Clinical and Mutation Features": 1.0362,
+    "44993 health_insurance": 1.0358,
+    "100277 uci:Thoracic Surgery Data": 1.0324
+   },
+   "median_time_ratio": 13.46,
+   "median_seconds": [
+    0.11,
+    1.51
+   ],
+   "p95_seconds": 20.579999999999988,
+   "failures_only_arm": [],
+   "failures_only_old": [
+    [
+     44974,
+     4000
+    ],
+    [
+     44978,
+     4001
+    ],
+    [
+     100225,
+     4001
+    ],
+    [
+     100332,
+     4000
+    ],
+    [
+     100603,
+     4001
+    ],
+    [
+     100891,
+     4002
+    ]
+   ],
+   "missed_effects_arm": [
+    [
+     "uci:Real Estate Valuation",
+     4000,
+     "X4 number of convenience stores",
+     0.0
+    ],
+    [
+     "uci:Real Estate Valuation",
+     4002,
+     "X4 number of convenience stores",
+     0.0
+    ]
+   ],
+   "missed_effects_old": [
+    [
+     "uci:Auto MPG",
+     4000,
+     "model_year",
+     -0.620521
+    ],
+    [
+     "uci:Real Estate Valuation",
+     4000,
+     "X4 number of convenience stores",
+     0.0
+    ],
+    [
+     "uci:Real Estate Valuation",
+     4001,
+     "X4 number of convenience stores",
+     0.0
+    ],
+    [
+     "uci:Real Estate Valuation",
+     4002,
+     "X4 number of convenience stores",
+     0.0
+    ]
+   ]
+  },
+  "per_dataset": {
+   "44968 synchronous_machine": 0.0,
+   "44960 energy_efficiency": 0.0034,
+   "44994 cars": 0.0191,
+   "44983 miami_housing": 0.0705,
+   "100477 uci:Real Estate Valuation": 0.1024,
+   "200003 mb:bodyfat": 0.153,
+   "44977 california_housing": 0.2421,
+   "44970 QSAR_fish_toxicity": 0.389,
+   "100267 uci:Banknote Authentication": 0.4097,
+   "100560 uci:Seoul Bike Sharing Demand": 0.4583,
+   "44969 naval_propulsion_plant": 0.5018,
+   "200001 mb:munich_rent": 0.5434,
+   "100101 uci:Tic-Tac-Toe Endgame": 0.6403,
+   "44980 kin8nm": 0.6423,
+   "100022 uci:Chess (King-Rook vs. King-Pawn)": 0.7136,
+   "100075 uci:Musk (Version 2)": 0.7157,
+   "44962 forest_fires": 0.7975,
+   "100094 uci:Spambase": 0.8437,
+   "100722 uci:NATICUSdroid (Android Permissions)": 0.8504,
+   "100327 uci:Phishing Websites": 0.8847,
+   "100563 uci:Iranian Churn": 0.8993,
+   "100264 uci:EEG Eye State": 0.9452,
+   "100372 uci:HTRU2": 0.9494,
+   "1120 MagicTelescope": 0.9554,
+   "100043 uci:Haberman's Survival": 0.9671,
+   "100374 uci:Appliances Energy Prediction": 0.9818,
+   "44965 geographical_origin_of_music": 0.9833,
+   "100890 uci:AIDS Clinical Trials Group Study 175": 0.9838,
+   "100381 uci:Beijing PM2.5": 0.9906,
+   "100070 uci:MONK's Problems": 0.9933,
+   "44981 pumadyn32nh": 0.9937,
+   "44956 abalone": 0.9976,
+   "37 diabetes": 0.9981,
+   "100887 uci:National Health and Nutrition Health Survey 2013-2014 (NHANES) Age Prediction Subset": 0.9983,
+   "44973 grid_stability": 0.9988,
+   "574 house_16H": 1.0,
+   "44957 airfoil_self_noise": 1.0,
+   "44975 wave_energy": 1.0,
+   "44976 sarcos": 1.0,
+   "44985 space_ga": 1.0,
+   "44988 QSAR_TID_11": 1.0,
+   "100294 uci:Combined Cycle Power Plant": 1.0,
+   "100827 uci:Sepsis Survival Minimal Clinical Records": 1.0003,
+   "44967 student_performance_por": 1.0006,
+   "100176 uci:Blood Transfusion Service Center": 1.0006,
+   "200002 mb:india": 1.0021,
+   "44972 red_wine": 1.0026,
+   "44984 cps88wages": 1.0039,
+   "100545 uci:Rice (Cammeo and Osmancik)": 1.0046,
+   "100850 uci:Raisin": 1.0057,
+   "100367 uci:Dota2 Games Results": 1.0081,
+   "100468 uci:Online Shoppers Purchasing Intention Dataset": 1.0089,
+   "287 wine_quality": 1.009,
+   "44971 white_wine": 1.014,
+   "44961 sgemm_gpu_kernel_performance": 1.0174,
+   "100277 uci:Thoracic Surgery Data": 1.0324,
+   "44993 health_insurance": 1.0358,
+   "100759 uci:Glioma Grading Clinical and Mutation Features": 1.0362,
+   "44987 socmob": 1.0416,
+   "100572 uci:Taiwanese Bankruptcy Prediction": 1.0424,
+   "100915 uci:Differentiated Thyroid Cancer Recurrence": 1.0587,
+   "100052 uci:Ionosphere": 1.1299
+  }
+ }
+}

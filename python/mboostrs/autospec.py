@@ -144,7 +144,7 @@ def autospec(data, response, *, family=None, mstop=100, df=4.0, smooth="bbs",
               groups=None, measurements=None, treatment=None, interactions="report",
               deselect=True, step=None, residual_tree=False, preexploration="native",
               heredity="none", forbid=None, mandatory=None, joint_tree=True,
-              exposure=None):
+              exposure=None, na_action=None):
     """Guess a complete boosting specification for ``data``.
 
     Parameters
@@ -549,6 +549,23 @@ def autospec(data, response, *, family=None, mstop=100, df=4.0, smooth="bbs",
             searched = autospec(**{**arguments, "nu": None if auto_nu else nu},
                                 step="line_search")
             fixed_risk, searched_risk = _cv_minimum(rec), _cv_minimum(searched)
+            if not np.isfinite(fixed_risk):
+                # The budget ran out before the stopping depth was measured, so
+                # no fit checked the fixed step: the same situation as budget 0.
+                # On a 30-column Poisson grade response (OpenML 44967, mean 12)
+                # the unchecked nu = 0.3 fixed step drove the fitted mean to
+                # 0.18 and test MSE from 7.2 to 138.9. The line-search run is
+                # taken even when it chose another family: the fixed-step
+                # run's own family probe used the unchecked step, and on
+                # another split of the same data it read a Pearson dispersion
+                # of 4631 off a diverged Poisson probe and adopted NBinomial.
+                searched.evidence["step"] = (
+                    f"line_search — with the fixed step the search chose "
+                    f"{type(rec.family).__name__}, but the budget ran out before "
+                    "the stopping depth was measured, so no fit checked the fixed "
+                    "step; every probe and rec.fit() use the line search for the "
+                    "step length")
+                return replace(searched, fits=searched.fits + rec.fits)
             if (type(searched.family) is type(rec.family)
                     and searched_risk < fixed_risk):
                 searched.evidence["step"] = (
@@ -576,7 +593,7 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
                    prior, monotone, coordinates, adjacency, basis, groups, measurements,
                    treatment, interactions, deselect, step, residual_tree=False,
                    auto_nu=False, preexploration="native", heredity="none", forbid=None,
-                   mandatory=None, joint_tree=True, exposure=None):
+                   mandatory=None, joint_tree=True, exposure=None, na_action=None):
     """The body of :func:`autospec` at one step rule."""
     if heredity not in ("none", "weak", "strong"):
         raise ValueError(f'heredity must be "none", "weak" or "strong", got {heredity!r}')
@@ -737,6 +754,13 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
     defaulted = (["family"] if family_was_inferred else []) + ["shapes", "interactions", "mstop"]
     spent = 0
 
+    if na_action is not None and na_action not in (
+        "impute", "impute_model", "impute_model_split", "omit", "error"
+    ):
+        raise ValueError(
+            "na_action must be None, 'impute', 'impute_model', "
+            f"'impute_model_split', 'omit', or 'error', got {na_action!r}"
+        )
     # The probes fit on complete rows. A missing value in the response or a
     # modelled column makes every fit refuse the row, so the rows are left out
     # once, here, and the report and `rec.fit` say so.
@@ -744,6 +768,11 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
     for column in modelled:
         complete &= np.isfinite(column.values)
     incomplete_rows = int((~complete).sum())
+    if incomplete_rows and na_action == "error":
+        raise ValueError(
+            f"{incomplete_rows} row(s) have missing values in the response or "
+            "a modelled predictor and na_action='error'"
+        )
     if incomplete_rows and not complete.any():
         raise ValueError("no row has the response and every modelled column present")
     if incomplete_rows:
@@ -1023,6 +1052,7 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
             groups=groups,
             folds_description=folds_description,
             incomplete_rows=incomplete_rows,
+            na_action=na_action,
             fits=spent,
             reused=cache.reused,
             treatment=treatment_columns,
@@ -2011,6 +2041,7 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
         measurements=tuple(measurements),
         folds_description=folds_description,
         incomplete_rows=incomplete_rows,
+        na_action=na_action,
         fits=spent,
         reused=reused,
         treatment=treatment_columns,

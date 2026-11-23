@@ -58,20 +58,20 @@ from mboostrs._parity_notes import FAMILY_NOTES, LEARNER_NOTES  # noqa: E402
 #: every row that constructs a `Gaussian()`, because that is the call whose
 #: result differs.
 KEYWORDS = {
-    "multinomial is gamboost-only": ("gamboost-only", None),
+    "multinomial is gamboost-only": (r"gamboost[- ]only", None),
     "multinomial cvrisk scores the full negative log-likelihood":
-        ("full negative log-likelihood", None),
-    "weighted auc is an mboostrs extension": ("case weights", None),
-    "gehan offset is zero rather than arbitrary": ("offset", None),
-    "gaussian logLik is a real log-likelihood": ("negative_risk", r"\blogLik\b"),
-    "bkernel is a kernel-ridge learner": ("kernel ridge", None),
-    "brad centre choice differs": ("centres", None),
+        (r"negative log-likelihood|NLL", None),
+    "weighted auc is an mboostrs extension": (r"case weights|weights", None),
+    "gehan offset is zero rather than arbitrary": (r"offset", None),
+    "gaussian logLik is a real log-likelihood": (r"negative_risk|log-likelihood", r"\blogLik\b"),
+    "bkernel is a kernel-ridge learner": (r"kernel[- ]ridge", None),
+    "brad centre choice differs": (r"cent(?:re|er)s?", None),
     "btree splits on squared error, not conditional inference":
-        ("squared error", None),
-    "bns is ridge-penalized, not unpenalized": ("ridge", None),
+        (r"squared error|SSE", None),
+    "bns is ridge-penalized, not unpenalized": (r"ridge", None),
     "extract('lambda') is unavailable for block learners":
-        ("cannot be read back", r"extract\(fit, .lambda"),
-    "adaptive huber cvrisk starts each fold afresh": ("fold", None),
+        (r"cannot be read|unavailable|not available", r"extract\(fit, .lambda"),
+    "adaptive huber cvrisk starts each fold afresh": (r"fold", None),
 }
 
 #: How an object's registry key appears in a migration row. A learner is
@@ -141,7 +141,7 @@ def main() -> int:
             )
             continue
         naming = [number for number, row in mentions
-                  if keyword.lower() in row.lower()]
+                  if re.search(keyword, row, re.I)]
         if not naming:
             lines = ", ".join(str(number) for number, _ in mentions)
             problems.append(

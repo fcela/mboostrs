@@ -6,6 +6,78 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- `fit(budget=...)` now gives the specification search a number of model
+  fits: 16 for `"quick"`, 32 for `"standard"` (the default) and 512 for
+  `"thorough"`. The count is checked before each stage starts, so a stage in
+  progress can exceed it. Before, `fit` passed no budget to `autospec`, so the search
+  measured no candidates and returned the dtype-driven default learner for
+  each column. On nine competitive-study panels (three seeds each) the
+  default specification's mean test loss was a median 7.8% and up to 63%
+  above that of the best budget tried; on a tenth, a time-ordered panel, it
+  kept a factor whose later levels never occur in training, so prediction
+  stopped with the default `unseen_levels` setting. `"standard"` is within
+  0.1% in median and 8.4% at worst on all ten, at a median 4.5 s per fit at
+  one thread. The trail's `budget` records the limit (`limit`), the
+  fits spent, and a degradation entry when the search stopped at the limit.
+- `fit` limits the specification search's wall-clock time to 60, 120 and
+  1200 seconds for `"quick"`, `"standard"` and `"thorough"`. When the time runs
+  out, the search keeps what it measured if the probe in progress allows it,
+  and otherwise falls back to the default specification `fit` returned
+  before (one default learner per column, nothing measured). The trail's
+  `budget` records `seconds_limit`, and `degradations` says which outcome
+  occurred. Without the limit, a 1,025-column table (OpenML 44988,
+  QSAR_TID_11) ran for more than 600 s; with it, `fit` returns in 121 s with
+  the default specification. Inside an outer workflow budget, such as a
+  `SearchSession`, that budget governs cost instead.
+
+### Documentation
+
+- The book has a page on `mb.fit` against CatBoost, LightGBM, XGBoost, EBM and
+  a ridge or logistic reference on held-out data, scored per dimension under
+  `mboostrs-scorecard/2.1`, with the comparison of `fit` against its previous
+  version (`benchmarks/heldout_competition.ipynb`). The benchmark status page
+  and `docs/scorecard/status.md` record the new D1b and D5 scores.
+- A new appendix, "Benchmark records", consolidates the benchmark suite's
+  protocols, validation and decision records, study reports, and agent-battery
+  outcomes into nine structured scientific appendix chapters under
+  `docs/book/appendix/records/` (with immutable pre-registrations and raw
+  transcripts retained under `docs/benchmarks/` for audit), alongside a new
+  canonical writing guide (`docs/WRITING_GUIDE.md`), a reconciled
+  `docs/scorecard/` status summary, and a new blind-agent five-library
+  heteroscedastic benchmark chapter (`benchmarks/blind_agent_five_libraries.md`)
+  comparing `mboostrs` against CatBoost, LightGBM, InterpretML EBM, and NGBoost.
+
+### Fixed
+
+- `LSSModel.summary()` crashed with `TypeError` on non-cyclic or per-parameter
+  dict `mstop` fits and with `KeyError`/`IndexError` on `glmboostLSS` fits.
+- `conformal_interval()`, `LSSModel.predict_parameters()`, `LSSModel.cvrisk()`,
+  and `discover()` now accept and propagate `unseen_levels=` (`"error"`,
+  `"average"`, `"zero_effect"`).
+- `fit()` and `autospec()` now accept `na_action=` and pass it through to model
+  fitting, and `autospec` hygiene checks no longer misreport string/categorical
+  or integer columns as `"discrete-under-float"`.
+- Added the missing `[.mboostrs_gamboostLSS` S3 subsetting method in the R
+  package (`mboostrs/R/mboostrs_gamlss.R`, exported in `NAMESPACE`).
+- Fixed the `R parity evidence` GitHub Actions workflow to install `[dev,sklearn]`
+  and `[plot]` extras alongside the built wheel, and restored the missing
+  `mb.family_set("realplus")` reference in the agent quick-reference topic.
+
+- `autospec` with a budget kept the fixed step for a Poisson, negative
+  binomial or Gamma family whenever the line search did not reach a lower
+  cross-validated risk, including when the budget ran out before the stopping
+  depth was measured and neither run had a risk to compare. In that case no
+  fit had checked the fixed step. On a 30-column Poisson grade response
+  (OpenML 44967, mean 12) the unchecked step of 0.3 drove the fitted mean to
+  0.18 and test MSE from 7.2 to 138.9. On another split of the same data the
+  fixed-step run's family probe read a Pearson dispersion of 4631 off a
+  diverged Poisson probe and adopted NBinomial (test MSE 20.0 against 7.7).
+  `autospec` now takes the line-search run, family included, when the fixed
+  step's risk was never measured, as it already did at budget 0, and records
+  the reason in `rec.evidence["step"]`.
+
 ## [0.2.2] - 2026-11-18
 
 ### Fixed

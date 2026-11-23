@@ -16,7 +16,7 @@ A term is kept only when removing it costs more than two standard errors of out-
 
 | Covariate | Shape | Evidence |
 |---|---|---|
-| Median income | Decreasing, flattening above about $50,000 | Mean changes by -0.93 from the 2nd to 98th percentile |
+| Median income | Decreasing, flattening above about \$50,000 | Mean changes by -0.93 from the 2nd to 98th percentile |
 | Housing median age | Flat up to about 28 years, rising to about 46, then flat | Rises by +0.33 across the range |
 | Average occupancy | Increasing, flattening at high values | +0.38 across the range; removal costs 0.020 (SE 0.001) |
 | Roof class | Categorical: B close to A, C +0.17, D +0.39 relative to A | Removal costs 0.040 (SE 0.002) |

@@ -1,0 +1,125 @@
+{
+ "scorecard_id": "mboostrs-scorecard/2.1",
+ "scorecard_sha256": "12d0ea339b4894ca3821ba9a0a3394c89572f962d022420c36d485ee3aa3daec",
+ "library": "ebm",
+ "model_revision": "interpret 0.7.8",
+ "benchmark_protocol_id": "competitive_heldout/PROTOCOL.md (2026-11-21)",
+ "mode": "fully_automated",
+ "dimensions": [
+  {
+   "id": "D1a",
+   "name": "Relationship recovery under a prescribed specification",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": "Not measured by this protocol."
+  },
+  {
+   "id": "D1b",
+   "name": "Relationship discovery from data alone",
+   "score": 2,
+   "status": "scored",
+   "evidence": [
+    "docs/benchmarks/competitive_heldout/analysis.json",
+    "docs/benchmarks/2026-11-21-competitive-heldout.md"
+   ],
+   "justification": "Per-term importances and automatic pairwise interaction detection, no false-discovery control. Planted tasks: TPR 1.0 (interactions 10/10), FDR 0.310, silent on 5/5 null tasks."
+  },
+  {
+   "id": "D2",
+   "name": "Causal humility and support",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": "Not measured by this protocol."
+  },
+  {
+   "id": "D3",
+   "name": "Explanation quality",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": "Not measured by this protocol."
+  },
+  {
+   "id": "D4",
+   "name": "Importance quantification",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": "Not measured by this protocol."
+  },
+  {
+   "id": "D5",
+   "name": "Experimental iteration speed",
+   "score": 1.5,
+   "status": "scored",
+   "evidence": [
+    "docs/benchmarks/competitive_heldout/analysis.json",
+    "docs/benchmarks/2026-11-21-competitive-heldout.md"
+   ],
+   "justification": "Session median 67.5 s, p90 90.3 s per follow-up; real battery median 50.5 s and p90 220 s. Half point: just over a minute per fit."
+  },
+  {
+   "id": "D6",
+   "name": "Robustness across conditions",
+   "score": 2.5,
+   "status": "scored",
+   "evidence": [
+    "docs/benchmarks/competitive_heldout/analysis.json",
+    "docs/benchmarks/2026-11-21-competitive-heldout.md"
+   ],
+   "justification": "Completes 260/285 real runs; all 25 failures are 900 s timeouts on wide tables. Native missing and categorical handling; small-n median 10.7% below the reference."
+  },
+  {
+   "id": "D7",
+   "name": "Human-friendliness",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": "Not measured by this protocol."
+  },
+  {
+   "id": "D8",
+   "name": "Agent-friendliness",
+   "score": null,
+   "status": "unmeasured",
+   "evidence": [],
+   "justification": "Not measured by this protocol."
+  },
+  {
+   "id": "D9",
+   "name": "Uncertainty honesty (calibration)",
+   "score": 1,
+   "status": "scored",
+   "evidence": [
+    "docs/benchmarks/competitive_heldout/analysis.json",
+    "docs/benchmarks/2026-11-21-competitive-heldout.md"
+   ],
+   "justification": "No prediction interval is offered for regression. Binary probabilities are well calibrated (median ECE 0.022, the lowest)."
+  },
+  {
+   "id": "D10",
+   "name": "Reproducibility and auditability",
+   "score": 2,
+   "status": "scored",
+   "evidence": [
+    "docs/benchmarks/competitive_heldout/analysis.json",
+    "docs/benchmarks/2026-11-21-competitive-heldout.md"
+   ],
+   "justification": "Identical on rerun 10/10; no decision trail."
+  },
+  {
+   "id": "D11",
+   "name": "Predictive validity",
+   "score": 3.5,
+   "status": "scored",
+   "evidence": [
+    "docs/benchmarks/competitive_heldout/analysis.json",
+    "docs/benchmarks/2026-11-21-competitive-heldout.md"
+   ],
+   "justification": "Binary: within 5% of best on 33/47, median gap 1.9% (the best binary arm). Regression: within 5% on 18/39, median gap 7.8%. Half point: competitive on classification, not on regression; 9% of runs time out."
+  }
+ ],
+ "aggregate": null
+}

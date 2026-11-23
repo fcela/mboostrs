@@ -49,7 +49,7 @@ OUTPUT = ROOT / "docs" / "book" / "appendix" / "r_reference.ipynb"
 #: things.
 GROUPS = (
     ("Fitting", (r"^(glm|gam)boost(LSS)?$", r"^boost_control$")),
-    ("Families", (r"LSS$", r"^(Gaussian|Binomial|Poisson|Laplace|Huber|"
+    ("Families", (r"^[A-Z][A-Za-z0-9]*LSS$", r"^(Gaussian|Binomial|Poisson|Laplace|Huber|"
                   r"Quantile|Expectile|AdaExp|NBinomial|Hurdle|PropOdds|CoxPH|"
                   r"Weibull|Loglog|Lognormal|Multinomial|GammaReg|GaussReg|"
                   r"AUC|Cindex|Gehan|HingeLoss)$")),
@@ -75,6 +75,35 @@ GROUPS = (
     ("Build identity", (r"^mboostrs_build_info$",)),
     ("Capabilities", (r"capabilit", r"^parity", r"^validation")),
 )
+
+
+#: One or two sentences under a group heading, where the entries use terms
+#: the titles do not explain.
+GROUP_NOTES = {
+    "Families": (
+        "Names ending in `LSS` are distributional families (location, scale "
+        "and shape) for `glmboostLSS` and `gamboostLSS`: each distribution "
+        "parameter has its own additive predictor. The others are families "
+        "for `glmboost` and `gamboost`."
+    ),
+    "REML refits": (
+        "A REML refit takes the terms a boosted model selected and refits "
+        "them as one penalized additive model, with smoothing parameters "
+        "chosen by restricted maximum likelihood (REML). The refit has a "
+        "coefficient covariance matrix (`vcov`), from which standard errors "
+        "and intervals follow."
+    ),
+    "Prediction intervals": (
+        "`conformal_interval` methods: `\"split\"` calibrates the interval "
+        "on a held-out share of the training rows (one refit); `\"cv+\"` "
+        "is the cross-validation-plus interval, which calibrates on the "
+        "out-of-fold residuals of K refits so every row is used; "
+        "`\"cqr\"` is conformalized quantile regression, which fits a lower "
+        "and an upper quantile model and calibrates their band, so the width "
+        "varies with the predictors; `\"distributional\"` calibrates the "
+        "central band of a fitted distributional model."
+    ),
+}
 
 
 def shown(path: pathlib.Path) -> str:
@@ -196,6 +225,10 @@ def first_line(usage: str) -> str:
         return ""
     joined = re.sub(r"\s+", " ", " ".join(line.strip()
                                           for line in usage.splitlines()))
+    # `\method{generic}{class}(...)` is Rd markup for an S3 method; the
+    # reader types the generic.
+    joined = re.sub(r"\\(?:S3)?method\{([^{}]*)\}\{[^{}]*\}", r"\1", joined)
+    joined = joined.replace("\\%", "%")
     start = joined.find("(")
     if start == -1:
         return joined.strip()
@@ -220,19 +253,24 @@ def render_markdown() -> str:
     parts = [
         "# R reference",
         "",
-        "`tools/generate_r_reference.py` reads exported names from `NAMESPACE` "
-        "and call signatures from the R help files in `man/*.Rd`. "
-        "Use `?name` in R for the corresponding argument descriptions.",
+        "Every exported function of the `mboostrs` R package that has a help "
+        "page, with its call signature and the title of its help page, and "
+        "the S3 generics the package extends. Type `?name` in R for the "
+        "argument descriptions.",
         "",
-        f"{len(pages)} exported entries with a help page, and "
-        f"{len(methods)} S3 generics. Internal helpers are left out: a page "
-        "marked `\\keyword{internal}` is documented for a maintainer rather "
-        "than offered to a user.",
+        f"{len(pages)} exported entries and {len(methods)} S3 generics. "
+        "Internal helpers are not listed.",
         "",
-        "The R frontend refuses `%X%`/`%O%` interactions, `bins=`, and "
-        "inline transforms. Support for `by=` depends on the learner and "
-        "modifier type; unsupported combinations raise an error. "
-        "[](../usage/r_migration.ipynb) maps the two.",
+        "The R frontend reads a narrower formula language than the Python "
+        "frontend. It refuses the `%X%` (tensor-product) and `%O%` "
+        "(Kronecker-product) operators, which combine two base learners into "
+        "one interaction learner; the `bins=` argument, which bins numeric "
+        "covariates to speed up fitting; and inline transforms such as "
+        "`bbs(log(x))`. Support for `by=` (a varying-coefficient modifier) "
+        "depends on the learner and the type of the modifier; an unsupported "
+        "combination stops with an error. The "
+        "[migration guide from R mboost](../usage/r_migration.ipynb) gives "
+        "the Python spelling of each refused feature.",
         "",
     ]
 
@@ -242,6 +280,8 @@ def render_markdown() -> str:
         if not entries:
             continue
         parts += [f"## {label}", ""]
+        if label in GROUP_NOTES:
+            parts += [GROUP_NOTES[label], ""]
         parts.append("| Call | What it is |")
         parts.append("|---|---|")
         for entry in sorted(entries, key=lambda item: item["name"]):
@@ -256,9 +296,11 @@ def render_markdown() -> str:
     parts += [
         "## S3 generics",
         "",
-        "Call the generic, such as `predict(fit)`, rather than "
-        "`predict.mboostrs_gamboost(fit)`. These are the generics the package "
-        "extends and the classes each dispatches on.",
+        "S3 is R's method-dispatch system: a generic function such as "
+        "`predict` calls the method written for the class of its first "
+        "argument. Call the generic, such as `predict(fit)`, rather than "
+        "`predict.mboostrs_gamboost(fit)`. The table lists the generics the "
+        "package extends and the classes each dispatches on.",
         "",
         "| Generic | Classes |",
         "|---|---|",

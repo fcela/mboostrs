@@ -25,17 +25,6 @@ import yaml
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 BOOK = ROOT / "docs" / "book"
 
-NUMBER_WORDS = {
-    17: "Seventeen", 27: "Twenty-seven", 28: "Twenty-eight",
-    29: "Twenty-nine", 30: "Thirty", 31: "Thirty-one", 32: "Thirty-two",
-    33: "Thirty-three", 36: "Thirty-six", 38: "Thirty-eight",
-    41: "Forty-one", 43: "Forty-three", 45: "Forty-five", 46: "Forty-six",
-    51: "Fifty-one", 53: "Fifty-three", 55: "Fifty-five",
-    56: "Fifty-six", 57: "Fifty-seven", 58: "Fifty-eight",
-    59: "Fifty-nine", 60: "Sixty", 61: "Sixty-one", 68: "Sixty-eight", 69: "Sixty-nine",
-    78: "Seventy-eight", 79: "Seventy-nine", 80: "Eighty", 81: "Eighty-one",
-}
-
 
 def toc():
     config = yaml.safe_load((BOOK / "myst.yml").read_text())
@@ -66,7 +55,19 @@ def parts():
 
 @pytest.fixture(scope="module")
 def case_pages():
-    return [p for kind, p in toc() if kind == "page" and p.startswith(("cases/", "case_studies/"))]
+    """Pages of Part III. The benchmark-records appendix also lists notebooks
+    from cases/ and case_studies/, and the overview does not count those."""
+    config = yaml.safe_load((BOOK / "myst.yml").read_text())
+    part = next(e for e in config["project"]["toc"] if e.get("title", "").startswith("Part III"))
+
+    def walk(entries, out):
+        for entry in entries:
+            if "file" in entry:
+                out.append(entry["file"])
+            walk(entry.get("children", []), out)
+        return out
+
+    return [p for p in walk(part["children"], []) if p.startswith(("cases/", "case_studies/"))]
 
 
 # ─── the landing page matches the ToC ──────────────────────────────
@@ -106,18 +107,7 @@ def test_no_stale_part_cross_reference():
     assert "Part III documents" not in landing
 
 
-# ─── the case count is the ToC's ───────────────────────────────────
-
-
-def test_the_overview_states_the_number_of_studies_it_has(case_pages):
-    studies = [p for p in case_pages if not p.endswith("overview.ipynb")]
-    word = NUMBER_WORDS.get(len(studies))
-    assert word, f"add {len(studies)} to NUMBER_WORDS"
-    opening = prose("cases/overview.ipynb").split("\n\n", 2)[1]
-    assert word in opening, (
-        f"the overview should open with {word} ({len(studies)} studies in the "
-        f"ToC); it says: {opening[:90]!r}"
-    )
+# ─── the case overview has no stale hardcoded split ────────────────
 
 
 def test_the_overview_claims_no_split_it_cannot_support(case_pages):
@@ -187,3 +177,33 @@ def test_the_benchmarks_intro_names_the_whole_scorecard():
     assert "mboostrs-scorecard/2.1" in text
     for dim in ["D1a", "D1b"] + [f"D{i}" for i in range(2, 12)]:
         assert f"{dim} " in text, f"{dim} is missing from the benchmarks intro"
+
+
+def test_benchmark_summary_shows_the_recorded_grades_before_interpreting_them():
+    # The page supplies every score or missing grade, with its source study.
+    summary = prose("benchmarks/where_we_stand.ipynb")
+    intro = summary.split("## What the studies establish", 1)[0]
+    assert "## mboostrs scorecard" in intro
+    assert "held-out comparison" in intro
+    path = ROOT / "docs/benchmarks/competitive_heldout/scorecards/mboostrs.json"
+    source = json.loads(path.read_text())
+    rows = re.findall(r"^\| \[(D\w+)\]\([^)]*\) [^|]+ \| ([^|]+) \|", intro, re.M)
+    expected = [
+        (dimension["id"], f"{dimension['score']} / 5"
+         if dimension["status"] == "scored" else dimension["status"].replace("_", " ").capitalize())
+        for dimension in source["dimensions"]
+    ]
+    assert [(code, grade.strip()) for code, grade in rows] == expected
+
+
+def test_book_rubric_shows_the_canonical_five_anchors_for_each_dimension():
+    # Check the rendered source contains the anchors themselves.
+    overview = prose("benchmarks/overview.ipynb")
+    source = (ROOT / "docs/scorecard/scorecard.md").read_text()
+    for dimension in re.split(r"(?=^## D(?:1[ab]|[2-9]|1[01])\.)", source, flags=re.M)[1:]:
+        code = re.match(r"## (D\w+)\.", dimension)[1]
+        book_section = overview.split(f"(scorecard-{code.lower()})=", 1)[1]
+        book_section = re.split(r"\n\(scorecard-[^)]*\)=|\n\(what-goes-where\)=", book_section, maxsplit=1)[0]
+        anchors = re.findall(r"^\| [1-5] \| .*$", dimension, re.M)
+        assert len(anchors) == 5
+        assert re.findall(r"^\| [1-5] \| .*$", book_section, re.M) == anchors

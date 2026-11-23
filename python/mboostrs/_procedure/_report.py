@@ -87,6 +87,8 @@ def _render_text(trail: DecisionTrail) -> str:
     budget = trail.budget
     degradations = budget.get("degradations", [])
     lines.append(f"budget: setting={budget.get('setting')}, "
+                 f"limit={budget.get('limit')}, "
+                 f"seconds_limit={budget.get('seconds_limit')}, "
                  f"spent={budget.get('spent')}, "
                  f"degradations={len(degradations)}")
     return "\n".join(lines)
@@ -129,6 +131,8 @@ def _render_markdown(trail: DecisionTrail) -> str:
         "## Budget",
         "",
         f"- setting: `{budget.get('setting')}`",
+        f"- model fits allowed: `{budget.get('limit')}`",
+        f"- seconds allowed: `{budget.get('seconds_limit')}`",
         f"- spent: `{budget.get('spent')}`",
         f"- degradations: {len(budget.get('degradations', []))}",
     ])

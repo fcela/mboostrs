@@ -1,0 +1,501 @@
+{
+ "new": {
+  "primary": {
+   "n_datasets": 28,
+   "mean_r": -3.5898527038124697,
+   "ci95": [
+    -9.15593461651023,
+    -0.48387809963397416
+   ],
+   "wilcoxon_p": 0.0007052632543947224,
+   "n_better": 20,
+   "n_worse": 7,
+   "failures_arm": 19,
+   "failures_old": 17,
+   "holds": false
+  },
+  "secondary": {
+   "datasets_more_than_2pct_worse": {
+    "44978 cpu_activity": 1.4346
+   },
+   "worst": [
+    "44978 cpu_activity",
+    1.4346
+   ],
+   "median_time_ratio": 38.21818181818182,
+   "median_seconds_arm": 3.52,
+   "median_seconds_old": 0.09,
+   "failures_arm": [
+    [
+     29,
+     1001,
+     "error: ValueError: sqrt(c13) produced 4 non-finite value(s); check the domain of 'c13' (log and sqrt need positive input)"
+    ],
+    [
+     29,
+     1002,
+     "error: ValueError: column 'c5' contains level(s) [None] not present when the model was fitted (levels: ['aa', 'c', 'cc', 'd', 'e', 'ff', 'i', 'j', 'k', 'm', 'q', 'r', 'w', 'x']). A level the model never saw has no estimated effect. Pass unseen_levels=\"average\" to predict them as an average group, or unseen_levels=\"zero_effect\" for a zero coefficient."
+    ],
+    [
+     1063,
+     1000,
+     "error: MboostrsValueError: Brandom level at observation 0 must be a finite integer; got 1.1"
+    ],
+    [
+     1063,
+     1002,
+     "error: MboostrsValueError: unknown Brandom level 59 at observation 30; the code was not observed during fitting. To predict a level the fit never saw as an average group (the mean of the term's level coefficients), pass unseen_levels=\"average\"; for a zero coefficient, the value the ridge penalty shrinks every level towards, pass unseen_levels=\"zero_effect\""
+    ],
+    [
+     1590,
+     1000,
+     "error: TypeError: '<' not supported between instances of 'str' and 'NoneType'"
+    ],
+    [
+     1590,
+     1001,
+     "error: ValueError: column 'c1' contains level(s) [None] not present when the model was fitted (levels: ['Federal-gov', 'Local-gov', 'Private', 'Self-emp-inc', 'Self-emp-not-inc', 'State-gov', 'Without-pay']). A level the model never saw has no estimated effect. Pass unseen_levels=\"average\" to predict them as an average group, or unseen_levels=\"zero_effect\" for a zero coefficient."
+    ],
+    [
+     1590,
+     1002,
+     "error: ValueError: column 'c1' contains level(s) [None] not present when the model was fitted (levels: ['Federal-gov', 'Local-gov', 'Private', 'Self-emp-inc', 'Self-emp-not-inc', 'State-gov', 'Without-pay']). A level the model never saw has no estimated effect. Pass unseen_levels=\"average\" to predict them as an average group, or unseen_levels=\"zero_effect\" for a zero coefficient."
+    ],
+    [
+     42165,
+     1000,
+     "error: ValueError: no row has the response and every modelled column present"
+    ],
+    [
+     42165,
+     1001,
+     "error: ValueError: no row has the response and every modelled column present"
+    ],
+    [
+     42165,
+     1002,
+     "error: ValueError: no row has the response and every modelled column present"
+    ],
+    [
+     44962,
+     1000,
+     "error: ValueError: column 'c2' contains level(s) ['nov'] not present when the model was fitted (levels: ['apr', 'aug', 'dec', 'feb', 'jan', 'jul', 'jun', 'mar', 'may', 'oct', 'sep']). A level the model never saw has no estimated effect. Pass unseen_levels=\"average\" to predict them as an average group, or unseen_levels=\"zero_effect\" for a zero coefficient."
+    ],
+    [
+     44974,
+     1001,
+     "error: MboostrsValueError: unknown Brandom level 131 at observation 1981; the code was not observed during fitting. To predict a level the fit never saw as an average group (the mean of the term's level coefficients), pass unseen_levels=\"average\"; for a zero coefficient, the value the ridge penalty shrinks every level towards, pass unseen_levels=\"zero_effect\""
+    ],
+    [
+     44974,
+     1002,
+     "error: MboostrsValueError: unknown Brandom level 2416 at observation 1997; the code was not observed during fitting. To predict a level the fit never saw as an average group (the mean of the term's level coefficients), pass unseen_levels=\"average\"; for a zero coefficient, the value the ridge penalty shrinks every level towards, pass unseen_levels=\"zero_effect\""
+    ],
+    [
+     44988,
+     1000,
+     "error: timeout 600 s"
+    ],
+    [
+     44988,
+     1001,
+     "error: timeout 600 s"
+    ],
+    [
+     44988,
+     1002,
+     "error: timeout 600 s"
+    ],
+    [
+     45012,
+     1000,
+     "error: ValueError: column 'c3' contains level(s) ['Armenia', 'Burundi', 'Equatorial Guinea', 'Eritrea', 'Faroe Islands', 'Gibraltar', 'Guatemala', 'Mozambique', 'Papua New Guinea', 'Philippines', 'Puerto Rico', 'Sudan'] not present when the model was fitted (levels: ['Albania', 'Algeria', 'Angola', 'Antigua and Barbuda', 'Argentina', 'Australia', 'Austria', 'Azerbaijan', 'Belarus', 'Belgium', 'Ben"
+    ],
+    [
+     45012,
+     1001,
+     "error: ValueError: column 'c3' contains level(s) ['Grenada', 'Jordan', 'Kyrgyzstan', 'Latvia', 'Lebanon', 'Liberia', 'Libya', 'Lithuania', 'Namibia', 'Sudan', 'Syria'] not present when the model was fitted (levels: ['Albania', 'Algeria', 'Angola', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Barbados', 'Belgium', 'Benin', 'Bermuda', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Brazil', 'Bul"
+    ],
+    [
+     45012,
+     1002,
+     "error: ValueError: column 'c3' contains level(s) ['Central African Republic', 'Cuba', 'Faroe Islands', 'Gibraltar', 'Haiti', 'Jordan', 'Mauritania', 'Puerto Rico', 'Zambia', 'Zimbabwe'] not present when the model was fitted (levels: ['Albania', 'Algeria', 'Andorra', 'Angola', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bolivia"
+    ]
+   ],
+   "failures_old": [
+    [
+     29,
+     1000,
+     "error: ValueError: column 'c0' contains level(s) [None] not present when the model was fitted (levels: ['a', 'b']). A level the model never saw has no estimated effect."
+    ],
+    [
+     29,
+     1001,
+     "error: ValueError: sqrt(c13) produced 4 non-finite value(s); check the domain of 'c13' (log and sqrt need positive input)"
+    ],
+    [
+     29,
+     1002,
+     "error: ValueError: column 'c0' contains level(s) [None] not present when the model was fitted (levels: ['a', 'b']). A level the model never saw has no estimated effect."
+    ],
+    [
+     1063,
+     1000,
+     "error: MboostrsValueError: Brandom level at observation 0 must be a finite integer; got 1.1"
+    ],
+    [
+     1063,
+     1002,
+     "error: MboostrsValueError: unknown Brandom level 59 at observation 30; the code was not observed during fitting. To predict a level the fit never saw as an average group (the mean of the term's level coefficients), pass unseen_levels=\"average\"; for a zero coefficient, the value the ridge penalty shrinks every level towards, pass unseen_levels=\"zero_effect\""
+    ],
+    [
+     1590,
+     1000,
+     "error: TypeError: '<' not supported between instances of 'str' and 'NoneType'"
+    ],
+    [
+     1590,
+     1001,
+     "error: ValueError: column 'c1' contains level(s) [None] not present when the model was fitted (levels: ['Federal-gov', 'Local-gov', 'Private', 'Self-emp-inc', 'Self-emp-not-inc', 'State-gov', 'Without-pay']). A level the model never saw has no estimated effect. Pass unseen_levels=\"average\" to predict them as an average group, or unseen_levels=\"zero_effect\" for a zero coefficient."
+    ],
+    [
+     1590,
+     1002,
+     "error: ValueError: column 'c1' contains level(s) [None] not present when the model was fitted (levels: ['Federal-gov', 'Local-gov', 'Private', 'Self-emp-inc', 'Self-emp-not-inc', 'State-gov', 'Without-pay']). A level the model never saw has no estimated effect. Pass unseen_levels=\"average\" to predict them as an average group, or unseen_levels=\"zero_effect\" for a zero coefficient."
+    ],
+    [
+     42165,
+     1000,
+     "error: ValueError: no row has the response and every modelled column present"
+    ],
+    [
+     42165,
+     1001,
+     "error: ValueError: no row has the response and every modelled column present"
+    ],
+    [
+     42165,
+     1002,
+     "error: ValueError: no row has the response and every modelled column present"
+    ],
+    [
+     44962,
+     1000,
+     "error: ValueError: column 'c2' contains level(s) ['nov'] not present when the model was fitted (levels: ['apr', 'aug', 'dec', 'feb', 'jan', 'jul', 'jun', 'mar', 'may', 'oct', 'sep']). A level the model never saw has no estimated effect. Pass unseen_levels=\"average\" to predict them as an average group, or unseen_levels=\"zero_effect\" for a zero coefficient."
+    ],
+    [
+     44974,
+     1001,
+     "error: MboostrsValueError: unknown Brandom level 131 at observation 1981; the code was not observed during fitting. To predict a level the fit never saw as an average group (the mean of the term's level coefficients), pass unseen_levels=\"average\"; for a zero coefficient, the value the ridge penalty shrinks every level towards, pass unseen_levels=\"zero_effect\""
+    ],
+    [
+     44974,
+     1002,
+     "error: MboostrsValueError: unknown Brandom level 2416 at observation 1997; the code was not observed during fitting. To predict a level the fit never saw as an average group (the mean of the term's level coefficients), pass unseen_levels=\"average\"; for a zero coefficient, the value the ridge penalty shrinks every level towards, pass unseen_levels=\"zero_effect\""
+    ],
+    [
+     45012,
+     1000,
+     "error: ValueError: column 'c3' contains level(s) ['Armenia', 'Burundi', 'Equatorial Guinea', 'Eritrea', 'Faroe Islands', 'Gibraltar', 'Guatemala', 'Mozambique', 'Papua New Guinea', 'Philippines', 'Puerto Rico', 'Sudan'] not present when the model was fitted (levels: ['Albania', 'Algeria', 'Angola', 'Antigua and Barbuda', 'Argentina', 'Australia', 'Austria', 'Azerbaijan', 'Belarus', 'Belgium', 'Ben"
+    ],
+    [
+     45012,
+     1001,
+     "error: ValueError: column 'c3' contains level(s) ['Grenada', 'Jordan', 'Kyrgyzstan', 'Latvia', 'Lebanon', 'Liberia', 'Libya', 'Lithuania', 'Namibia', 'Sudan', 'Syria'] not present when the model was fitted (levels: ['Albania', 'Algeria', 'Angola', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Barbados', 'Belgium', 'Benin', 'Bermuda', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Brazil', 'Bul"
+    ],
+    [
+     45012,
+     1002,
+     "error: ValueError: column 'c3' contains level(s) ['Central African Republic', 'Cuba', 'Faroe Islands', 'Gibraltar', 'Haiti', 'Jordan', 'Mauritania', 'Puerto Rico', 'Zambia', 'Zimbabwe'] not present when the model was fitted (levels: ['Albania', 'Algeria', 'Andorra', 'Angola', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bolivia"
+    ]
+   ]
+  },
+  "sensitivity_added_after_smoke_run": {
+   "median_ratio": 0.9616136394255004,
+   "geometric_mean_ratio": 0.027602395851506523,
+   "without_44968": {
+    "mean_r": -0.9923794701517851,
+    "ci95": [
+     -1.8063652747941654,
+     -0.33737330115274095
+    ],
+    "geometric_mean_ratio": 0.37069358645380934,
+    "wilcoxon_p": 0.0012026870288842505
+   }
+  },
+  "per_dataset": {
+   "44968 synchronous_machine": 0.0,
+   "44975 wave_energy": 0.0002,
+   "44960 energy_efficiency": 0.0078,
+   "44969 naval_propulsion_plant": 0.0174,
+   "44994 cars": 0.0634,
+   "44983 miami_housing": 0.1299,
+   "44987 socmob": 0.1381,
+   "44977 california_housing": 0.2858,
+   "44970 QSAR_fish_toxicity": 0.4698,
+   "44980 kin8nm": 0.623,
+   "44985 space_ga": 0.878,
+   "574 house_16H": 0.9334,
+   "1120 MagicTelescope": 0.9357,
+   "44993 health_insurance": 0.9431,
+   "44961 sgemm_gpu_kernel_performance": 0.9805,
+   "44981 pumadyn32nh": 0.9925,
+   "44957 airfoil_self_noise": 0.9933,
+   "44984 cps88wages": 0.9964,
+   "44973 grid_stability": 0.9971,
+   "44967 student_performance_por": 0.9976,
+   "44976 sarcos": 1.0,
+   "37 diabetes": 1.0007,
+   "44965 geographical_origin_of_music": 1.001,
+   "44972 red_wine": 1.0022,
+   "287 wine_quality": 1.0055,
+   "44971 white_wine": 1.0062,
+   "44956 abalone": 1.007,
+   "44978 cpu_activity": 1.4346
+  }
+ },
+ "quick": {
+  "primary": {
+   "n_datasets": 28,
+   "mean_r": -1.2297648032404829,
+   "ci95": [
+    -2.975804864509104,
+    -0.1540926914618787
+   ],
+   "wilcoxon_p": 0.19189788048905054,
+   "n_better": 13,
+   "n_worse": 12,
+   "failures_arm": 16,
+   "failures_old": 17,
+   "holds": false
+  },
+  "secondary": {
+   "datasets_more_than_2pct_worse": {
+    "44956 abalone": 1.0887,
+    "44967 student_performance_por": 1.5913,
+    "44978 cpu_activity": 1.9763,
+    "44987 socmob": 1.0204,
+    "44993 health_insurance": 1.0501
+   },
+   "worst": [
+    "44978 cpu_activity",
+    1.9763
+   ],
+   "median_time_ratio": 16.642857142857142,
+   "median_seconds_arm": 1.33,
+   "median_seconds_old": 0.09,
+   "failures_arm": [
+    [
+     29,
+     1001,
+     "error: ValueError: sqrt(c13) produced 4 non-finite value(s); check the domain of 'c13' (log and sqrt need positive input)"
+    ],
+    [
+     29,
+     1002,
+     "error: ValueError: column 'c5' contains level(s) [None] not present when the model was fitted (levels: ['aa', 'c', 'cc', 'd', 'e', 'ff', 'i', 'j', 'k', 'm', 'q', 'r', 'w', 'x']). A level the model never saw has no estimated effect. Pass unseen_levels=\"average\" to predict them as an average group, or unseen_levels=\"zero_effect\" for a zero coefficient."
+    ],
+    [
+     1063,
+     1000,
+     "error: MboostrsValueError: Brandom level at observation 0 must be a finite integer; got 1.1"
+    ],
+    [
+     1063,
+     1002,
+     "error: MboostrsValueError: unknown Brandom level 59 at observation 30; the code was not observed during fitting. To predict a level the fit never saw as an average group (the mean of the term's level coefficients), pass unseen_levels=\"average\"; for a zero coefficient, the value the ridge penalty shrinks every level towards, pass unseen_levels=\"zero_effect\""
+    ],
+    [
+     1590,
+     1000,
+     "error: TypeError: '<' not supported between instances of 'str' and 'NoneType'"
+    ],
+    [
+     1590,
+     1001,
+     "error: ValueError: column 'c1' contains level(s) [None] not present when the model was fitted (levels: ['Federal-gov', 'Local-gov', 'Private', 'Self-emp-inc', 'Self-emp-not-inc', 'State-gov', 'Without-pay']). A level the model never saw has no estimated effect. Pass unseen_levels=\"average\" to predict them as an average group, or unseen_levels=\"zero_effect\" for a zero coefficient."
+    ],
+    [
+     1590,
+     1002,
+     "error: ValueError: column 'c1' contains level(s) [None] not present when the model was fitted (levels: ['Federal-gov', 'Local-gov', 'Private', 'Self-emp-inc', 'Self-emp-not-inc', 'State-gov', 'Without-pay']). A level the model never saw has no estimated effect. Pass unseen_levels=\"average\" to predict them as an average group, or unseen_levels=\"zero_effect\" for a zero coefficient."
+    ],
+    [
+     42165,
+     1000,
+     "error: ValueError: no row has the response and every modelled column present"
+    ],
+    [
+     42165,
+     1001,
+     "error: ValueError: no row has the response and every modelled column present"
+    ],
+    [
+     42165,
+     1002,
+     "error: ValueError: no row has the response and every modelled column present"
+    ],
+    [
+     44962,
+     1000,
+     "error: ValueError: column 'c2' contains level(s) ['nov'] not present when the model was fitted (levels: ['apr', 'aug', 'dec', 'feb', 'jan', 'jul', 'jun', 'mar', 'may', 'oct', 'sep']). A level the model never saw has no estimated effect. Pass unseen_levels=\"average\" to predict them as an average group, or unseen_levels=\"zero_effect\" for a zero coefficient."
+    ],
+    [
+     44988,
+     1000,
+     "error: timeout 600 s"
+    ],
+    [
+     44988,
+     1001,
+     "error: timeout 600 s"
+    ],
+    [
+     45012,
+     1000,
+     "error: ValueError: column 'c3' contains level(s) ['Armenia', 'Burundi', 'Equatorial Guinea', 'Eritrea', 'Faroe Islands', 'Gibraltar', 'Guatemala', 'Mozambique', 'Papua New Guinea', 'Philippines', 'Puerto Rico', 'Sudan'] not present when the model was fitted (levels: ['Albania', 'Algeria', 'Angola', 'Antigua and Barbuda', 'Argentina', 'Australia', 'Austria', 'Azerbaijan', 'Belarus', 'Belgium', 'Ben"
+    ],
+    [
+     45012,
+     1001,
+     "error: ValueError: column 'c3' contains level(s) ['Grenada', 'Jordan', 'Kyrgyzstan', 'Latvia', 'Lebanon', 'Liberia', 'Libya', 'Lithuania', 'Namibia', 'Sudan', 'Syria'] not present when the model was fitted (levels: ['Albania', 'Algeria', 'Angola', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Barbados', 'Belgium', 'Benin', 'Bermuda', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Brazil', 'Bul"
+    ],
+    [
+     45012,
+     1002,
+     "error: ValueError: column 'c3' contains level(s) ['Central African Republic', 'Cuba', 'Faroe Islands', 'Gibraltar', 'Haiti', 'Jordan', 'Mauritania', 'Puerto Rico', 'Zambia', 'Zimbabwe'] not present when the model was fitted (levels: ['Albania', 'Algeria', 'Andorra', 'Angola', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bolivia"
+    ]
+   ],
+   "failures_old": [
+    [
+     29,
+     1000,
+     "error: ValueError: column 'c0' contains level(s) [None] not present when the model was fitted (levels: ['a', 'b']). A level the model never saw has no estimated effect."
+    ],
+    [
+     29,
+     1001,
+     "error: ValueError: sqrt(c13) produced 4 non-finite value(s); check the domain of 'c13' (log and sqrt need positive input)"
+    ],
+    [
+     29,
+     1002,
+     "error: ValueError: column 'c0' contains level(s) [None] not present when the model was fitted (levels: ['a', 'b']). A level the model never saw has no estimated effect."
+    ],
+    [
+     1063,
+     1000,
+     "error: MboostrsValueError: Brandom level at observation 0 must be a finite integer; got 1.1"
+    ],
+    [
+     1063,
+     1002,
+     "error: MboostrsValueError: unknown Brandom level 59 at observation 30; the code was not observed during fitting. To predict a level the fit never saw as an average group (the mean of the term's level coefficients), pass unseen_levels=\"average\"; for a zero coefficient, the value the ridge penalty shrinks every level towards, pass unseen_levels=\"zero_effect\""
+    ],
+    [
+     1590,
+     1000,
+     "error: TypeError: '<' not supported between instances of 'str' and 'NoneType'"
+    ],
+    [
+     1590,
+     1001,
+     "error: ValueError: column 'c1' contains level(s) [None] not present when the model was fitted (levels: ['Federal-gov', 'Local-gov', 'Private', 'Self-emp-inc', 'Self-emp-not-inc', 'State-gov', 'Without-pay']). A level the model never saw has no estimated effect. Pass unseen_levels=\"average\" to predict them as an average group, or unseen_levels=\"zero_effect\" for a zero coefficient."
+    ],
+    [
+     1590,
+     1002,
+     "error: ValueError: column 'c1' contains level(s) [None] not present when the model was fitted (levels: ['Federal-gov', 'Local-gov', 'Private', 'Self-emp-inc', 'Self-emp-not-inc', 'State-gov', 'Without-pay']). A level the model never saw has no estimated effect. Pass unseen_levels=\"average\" to predict them as an average group, or unseen_levels=\"zero_effect\" for a zero coefficient."
+    ],
+    [
+     42165,
+     1000,
+     "error: ValueError: no row has the response and every modelled column present"
+    ],
+    [
+     42165,
+     1001,
+     "error: ValueError: no row has the response and every modelled column present"
+    ],
+    [
+     42165,
+     1002,
+     "error: ValueError: no row has the response and every modelled column present"
+    ],
+    [
+     44962,
+     1000,
+     "error: ValueError: column 'c2' contains level(s) ['nov'] not present when the model was fitted (levels: ['apr', 'aug', 'dec', 'feb', 'jan', 'jul', 'jun', 'mar', 'may', 'oct', 'sep']). A level the model never saw has no estimated effect. Pass unseen_levels=\"average\" to predict them as an average group, or unseen_levels=\"zero_effect\" for a zero coefficient."
+    ],
+    [
+     44974,
+     1001,
+     "error: MboostrsValueError: unknown Brandom level 131 at observation 1981; the code was not observed during fitting. To predict a level the fit never saw as an average group (the mean of the term's level coefficients), pass unseen_levels=\"average\"; for a zero coefficient, the value the ridge penalty shrinks every level towards, pass unseen_levels=\"zero_effect\""
+    ],
+    [
+     44974,
+     1002,
+     "error: MboostrsValueError: unknown Brandom level 2416 at observation 1997; the code was not observed during fitting. To predict a level the fit never saw as an average group (the mean of the term's level coefficients), pass unseen_levels=\"average\"; for a zero coefficient, the value the ridge penalty shrinks every level towards, pass unseen_levels=\"zero_effect\""
+    ],
+    [
+     45012,
+     1000,
+     "error: ValueError: column 'c3' contains level(s) ['Armenia', 'Burundi', 'Equatorial Guinea', 'Eritrea', 'Faroe Islands', 'Gibraltar', 'Guatemala', 'Mozambique', 'Papua New Guinea', 'Philippines', 'Puerto Rico', 'Sudan'] not present when the model was fitted (levels: ['Albania', 'Algeria', 'Angola', 'Antigua and Barbuda', 'Argentina', 'Australia', 'Austria', 'Azerbaijan', 'Belarus', 'Belgium', 'Ben"
+    ],
+    [
+     45012,
+     1001,
+     "error: ValueError: column 'c3' contains level(s) ['Grenada', 'Jordan', 'Kyrgyzstan', 'Latvia', 'Lebanon', 'Liberia', 'Libya', 'Lithuania', 'Namibia', 'Sudan', 'Syria'] not present when the model was fitted (levels: ['Albania', 'Algeria', 'Angola', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Barbados', 'Belgium', 'Benin', 'Bermuda', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Brazil', 'Bul"
+    ],
+    [
+     45012,
+     1002,
+     "error: ValueError: column 'c3' contains level(s) ['Central African Republic', 'Cuba', 'Faroe Islands', 'Gibraltar', 'Haiti', 'Jordan', 'Mauritania', 'Puerto Rico', 'Zambia', 'Zimbabwe'] not present when the model was fitted (levels: ['Albania', 'Algeria', 'Andorra', 'Angola', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bolivia"
+    ]
+   ]
+  },
+  "sensitivity_added_after_smoke_run": {
+   "median_ratio": 1.0,
+   "geometric_mean_ratio": 0.2923613320330443,
+   "without_44968": {
+    "mean_r": -0.4747634463976291,
+    "ci95": [
+     -1.0056385543316497,
+     -0.06774598089002416
+    ],
+    "geometric_mean_ratio": 0.6220321830163593,
+    "wilcoxon_p": 0.3036811097223192
+   }
+  },
+  "per_dataset": {
+   "44968 synchronous_machine": 0.0,
+   "44960 energy_efficiency": 0.0037,
+   "44994 cars": 0.0579,
+   "44983 miami_housing": 0.0863,
+   "44977 california_housing": 0.2733,
+   "44970 QSAR_fish_toxicity": 0.464,
+   "44969 naval_propulsion_plant": 0.5177,
+   "44980 kin8nm": 0.6219,
+   "1120 MagicTelescope": 0.9533,
+   "44961 sgemm_gpu_kernel_performance": 0.9805,
+   "44981 pumadyn32nh": 0.9929,
+   "44984 cps88wages": 0.9964,
+   "44973 grid_stability": 0.9975,
+   "44975 wave_energy": 1.0,
+   "44976 sarcos": 1.0,
+   "44985 space_ga": 1.0,
+   "37 diabetes": 1.0007,
+   "44957 airfoil_self_noise": 1.002,
+   "44972 red_wine": 1.0024,
+   "574 house_16H": 1.0057,
+   "287 wine_quality": 1.007,
+   "44971 white_wine": 1.0118,
+   "44965 geographical_origin_of_music": 1.0166,
+   "44987 socmob": 1.0204,
+   "44993 health_insurance": 1.0501,
+   "44956 abalone": 1.0887,
+   "44967 student_performance_por": 1.5913,
+   "44978 cpu_activity": 1.9763
+  }
+ }
+}

@@ -581,7 +581,7 @@ def _response(model, data: dict[str, np.ndarray]) -> np.ndarray:
     return np.asarray(data[name], dtype=np.float64).ravel()
 
 
-def _encode(model, newdata):
+def _encode(model, newdata, unseen_levels="error"):
     """Rows as the training frame holds them: the model's predictor recipe
     (factor codes, imputation, derived columns) applied once.
 
@@ -591,10 +591,10 @@ def _encode(model, newdata):
     if newdata is None:
         return None
     if hasattr(model, "_replay_newdata"):
-        return model._replay_newdata(newdata)
+        return model._replay_newdata(newdata, unseen_levels=unseen_levels)
     from mboostrs.glmboost import _replay_transforms
 
-    return _replay_transforms(model, newdata)
+    return _replay_transforms(model, newdata, unseen_levels=unseen_levels)
 
 
 @contextmanager
@@ -611,22 +611,26 @@ def _recipe_bypassed(fit):
         fit._transform_recipe = saved
 
 
-def _policy_kwargs(model, extrapolation) -> dict:
-    """The ``extrapolation=`` keyword for `model.predict`, or nothing for a
-    linear model, whose predict has no training-range policy."""
+def _policy_kwargs(model, extrapolation, unseen_levels="error") -> dict:
+    """The ``extrapolation=`` and ``unseen_levels=`` keywords for `model.predict`
+    when the model accepts them."""
     import inspect
 
-    if "extrapolation" not in inspect.signature(model.predict).parameters:
-        return {}
-    return {"extrapolation": extrapolation}
+    params = inspect.signature(model.predict).parameters
+    out = {}
+    if "extrapolation" in params:
+        out["extrapolation"] = extrapolation
+    if "unseen_levels" in params:
+        out["unseen_levels"] = unseen_levels
+    return out
 
 
-def _predict(fit, newdata, mstop=None, extrapolation="warn") -> np.ndarray:
+def _predict(fit, newdata, mstop=None, extrapolation="warn", unseen_levels="error") -> np.ndarray:
     """Response-scale predictions at rows already in the training coding."""
     with _recipe_bypassed(fit):
         return np.asarray(
             fit.predict(newdata=newdata, mstop=mstop, type="response",
-                        **_policy_kwargs(fit, extrapolation)), dtype=np.float64
+                        **_policy_kwargs(fit, extrapolation, unseen_levels)), dtype=np.float64
         ).ravel()
 
 
@@ -875,7 +879,8 @@ def _calibrated_split_band(fit, y_cal, calibration_prediction, point, level, see
 
 
 def _split_conformal(model, newdata, level, seed, calib_fraction, mstop, extrapolation="warn",
-                     score="absolute", count_reference="zero_inflated_poisson"):
+                     score="absolute", count_reference="zero_inflated_poisson",
+                     unseen_levels="error"):
     data = _training_data(model)
     y = _response(model, data)
     n = y.size
@@ -899,12 +904,13 @@ def _split_conformal(model, newdata, level, seed, calib_fraction, mstop, extrapo
         # Replay that recipe on raw rows, never the original fit's coding.
         raw = _raw_refit_frame(model, n)
         calib_data = _subset(raw, calib_idx)
-        calib_pred = _predict_raw(fit, calib_data, mstop, extrapolation)
-        point = _predict_raw(fit, raw if newdata is None else newdata, mstop, extrapolation)
+        calib_pred = _predict_raw(fit, calib_data, mstop, extrapolation, unseen_levels)
+        point = _predict_raw(fit, raw if newdata is None else newdata, mstop,
+                             extrapolation, unseen_levels)
     else:
-        calib_pred = _predict(fit, calib_data, mstop, extrapolation)
-        target = _encode(model, newdata) if newdata is not None else data
-        point = _predict(fit, target, mstop, extrapolation)
+        calib_pred = _predict(fit, calib_data, mstop, extrapolation, unseen_levels)
+        target = _encode(model, newdata, unseen_levels) if newdata is not None else data
+        point = _predict(fit, target, mstop, extrapolation, unseen_levels)
     lower, upper, q, score, metadata = _calibrated_split_band(
         fit, _response(model, calib_data), calib_pred, point, level, seed,
         mstop, extrapolation, score, count_reference)
@@ -946,14 +952,15 @@ def _calibration_response(calibration, name, level):
 
 
 def _held_out_split(model, newdata, level, mstop, calibration, extrapolation="warn",
-                    score="absolute", count_reference="zero_inflated_poisson", seed=None):
+                    score="absolute", count_reference="zero_inflated_poisson", seed=None,
+                    unseen_levels="error"):
     """Split conformal with caller-held-out calibration rows and no refit."""
     _require_fitted_steps(model, mstop)
     y_cal = _calibration_response(calibration, _original_response_name(model), level)
     n_calib = y_cal.size
-    point = _predict_raw(model, newdata, mstop, extrapolation)
+    point = _predict_raw(model, newdata, mstop, extrapolation, unseen_levels)
     lower, upper, q, score, metadata = _calibrated_split_band(
-        model, y_cal, _predict_raw(model, calibration, mstop, extrapolation), point,
+        model, y_cal, _predict_raw(model, calibration, mstop, extrapolation, unseen_levels), point,
         level, seed, mstop, extrapolation, score, count_reference)
     steps = int(mstop) if mstop is not None else int(model._control.mstop)
     return ConformalInterval(
@@ -970,9 +977,10 @@ def _held_out_split(model, newdata, level, mstop, calibration, extrapolation="wa
     )
 
 
-def _distributional_band(model, rows, level, mstop, extrapolation):
+def _distributional_band(model, rows, level, mstop, extrapolation, unseen_levels="error"):
     """Original-response lower quantile, median and upper quantile."""
-    params = model.params(rows, type="response", mstop=mstop, extrapolation=extrapolation)
+    params = model.params(rows, type="response", mstop=mstop, extrapolation=extrapolation,
+                          unseen_levels=unseen_levels)
     shape = np.asarray(next(iter(params.values()))).shape
     quantiles = [model._family.quantile(np.full(shape, p), params)
                  for p in ((1-level)/2, .5, (1+level)/2)]
@@ -993,7 +1001,8 @@ def _normalized_distributional_band(calibration, query, response, level):
     return _vec(lower), _vec(query["mu"]), _vec(upper), q
 
 
-def _held_out_distributional(model, newdata, level, mstop, calibration, extrapolation, score="absolute"):
+def _held_out_distributional(model, newdata, level, mstop, calibration, extrapolation,
+                             score="absolute", unseen_levels="error"):
     """Calibrate an already selected LSS fit without refitting or splitting it."""
     family = model._family
     if (getattr(family, "_survival", False) or getattr(family, "_multivariate", False)
@@ -1010,13 +1019,19 @@ def _held_out_distributional(model, newdata, level, mstop, calibration, extrapol
     y = _calibration_response(calibration, name, level)
 
     if score == "gaussian_normalized":
-        calibration_params = model.params(calibration, type="response", mstop=mstop, extrapolation=extrapolation)
-        query_params = model.params(newdata, type="response", mstop=mstop, extrapolation=extrapolation)
+        calibration_params = model.params(calibration, type="response", mstop=mstop,
+                                          extrapolation=extrapolation,
+                                          unseen_levels=unseen_levels)
+        query_params = model.params(newdata, type="response", mstop=mstop,
+                                    extrapolation=extrapolation,
+                                    unseen_levels=unseen_levels)
         low, middle, high, q = _normalized_distributional_band(calibration_params, query_params, y, level)
     else:
-        low, _, high = _distributional_band(model, calibration, level, mstop, extrapolation)
+        low, _, high = _distributional_band(model, calibration, level, mstop, extrapolation,
+                                            unseen_levels)
         q = _conformal_quantile(_quantile_scores(low, high, y), level)
-        low, middle, high = _distributional_band(model, newdata, level, mstop, extrapolation)
+        low, middle, high = _distributional_band(model, newdata, level, mstop, extrapolation,
+                                                 unseen_levels)
         low, high = _widen(low, high, q)
     return ConformalInterval(
         low, high, _clip(middle, low, high), level, "distributional", y.size, quantile=q, score=score,
@@ -1045,14 +1060,14 @@ def _raw_refit_frame(model, n):
     return frame
 
 
-def _predict_raw(fit, rows, mstop=None, extrapolation="warn"):
+def _predict_raw(fit, rows, mstop=None, extrapolation="warn", unseen_levels="error"):
     """Original-response point function using this fit's own fitted recipes.
 
     Inverting a fitted transformed location defines a point function for
     calibration; it does not in general recover an original-response mean.
     """
     values = fit.predict(newdata=rows, mstop=mstop, type="response",
-                         **_policy_kwargs(fit, extrapolation))
+                         **_policy_kwargs(fit, extrapolation, unseen_levels))
     step = getattr(fit, "_response_transform", None)
     if step is not None:
         from mboostrs.transforms import response_inverse
@@ -1066,7 +1081,8 @@ def _predict_raw(fit, rows, mstop=None, extrapolation="warn"):
     return np.asarray(values, dtype=np.float64).ravel()
 
 
-def _cv_plus(model, newdata, level, seed, n_folds, mstop, extrapolation="warn"):
+def _cv_plus(model, newdata, level, seed, n_folds, mstop, extrapolation="warn",
+             unseen_levels="error"):
     data = _training_data(model)
     y = _response(model, data)
     n = y.size
@@ -1099,9 +1115,10 @@ def _cv_plus(model, newdata, level, seed, n_folds, mstop, extrapolation="warn"):
         # A step count beyond the model's own path needs a full-data refit to that
         # count; predicting the passed-in model there would clip to its last step.
         full = _refit(model, None, rows=np.arange(n), control=_refit_control(model, mstop))
-        point = _predict_raw(full, target, mstop, extrapolation)
+        point = _predict_raw(full, target, mstop, extrapolation, unseen_levels)
     else:
-        point = _predict_raw(model, target, None if mstop == "tune" else mstop, extrapolation)
+        point = _predict_raw(model, target, None if mstop == "tune" else mstop,
+                             extrapolation, unseen_levels)
     n_new = point.size
     tune = mstop == "tune"
     if tune:
@@ -1122,7 +1139,7 @@ def _cv_plus(model, newdata, level, seed, n_folds, mstop, extrapolation="warn"):
         fit = (_cv_tuned_refit(model, rows, seed) if tune
                else _refit(model, None, rows=rows, control=_refit_control(model, mstop)))
         held = _subset(raw, fold)
-        held_pred = _predict_raw(fit, _subset(raw, fold), mstop, extrapolation)
+        held_pred = _predict_raw(fit, _subset(raw, fold), mstop, extrapolation, unseen_levels)
         prediction_blocks.append(held_pred)
         residual_blocks.append(_absolute_residuals(_response(model, held), held_pred))
         fold_fits.append(fit)
@@ -1143,7 +1160,8 @@ def _cv_plus(model, newdata, level, seed, n_folds, mstop, extrapolation="warn"):
     for start in range(0, n_new, chunk):
         stop = min(start + chunk, n_new)
         fold_predictions = np.vstack([
-            _predict_raw(fit, _subset_columns(target, start, stop), mstop, extrapolation)
+            _predict_raw(fit, _subset_columns(target, start, stop), mstop,
+                         extrapolation, unseen_levels)
             for fit in fold_fits
         ])
         lo, hi = _rust.conformal_cv_plus_bounds(residuals, fold_of, fold_predictions, float(level))
@@ -1166,7 +1184,8 @@ def _cv_plus(model, newdata, level, seed, n_folds, mstop, extrapolation="warn"):
     )
 
 
-def _cqr(model, newdata, level, seed, calib_fraction, mstop, extrapolation="warn"):
+def _cqr(model, newdata, level, seed, calib_fraction, mstop, extrapolation="warn",
+         unseen_levels="error"):
     data = _training_data(model)
     y = _response(model, data)
     n = y.size
@@ -1189,16 +1208,16 @@ def _cqr(model, newdata, level, seed, calib_fraction, mstop, extrapolation="warn
 
     raw_calib = _subset(raw, calib_idx)
     y_calib = _response(model, raw_calib)
-    lo_calib, hi_calib = _ordered(_predict_raw(lo_fit, raw_calib, mstop, extrapolation),
-                                  _predict_raw(hi_fit, raw_calib, mstop, extrapolation))
+    lo_calib, hi_calib = _ordered(_predict_raw(lo_fit, raw_calib, mstop, extrapolation, unseen_levels),
+                                  _predict_raw(hi_fit, raw_calib, mstop, extrapolation, unseen_levels))
     # Romano et al.'s conformity score: how far outside the predicted band the
     # observation fell (negative when comfortably inside).
     scores = _quantile_scores(lo_calib, hi_calib, y_calib)
     q = _conformal_quantile(scores, level)
 
     target = raw if newdata is None else newdata
-    lo, hi = _ordered(_predict_raw(lo_fit, target, mstop, extrapolation),
-                      _predict_raw(hi_fit, target, mstop, extrapolation))
+    lo, hi = _ordered(_predict_raw(lo_fit, target, mstop, extrapolation, unseen_levels),
+                      _predict_raw(hi_fit, target, mstop, extrapolation, unseen_levels))
     # A negative correction narrows the band, and where the two quantiles are
     # closer than 2|q| it inverts it: the conformal set is then empty. The
     # core replaces an inverted row by its midpoint, which contains the empty
@@ -1263,7 +1282,8 @@ def _preprocessing_refit_spec(model, fitted):
                                    refit_preprocessing=True)
 
 
-def _distributional(model, newdata, level, seed, calib_fraction, mstop, extrapolation="warn", score="absolute"):
+def _distributional(model, newdata, level, seed, calib_fraction, mstop, extrapolation="warn",
+                    score="absolute", unseen_levels="error"):
     """Split conformal calibration of an LSS fit's own quantile band.
 
     The specification is refitted on the proper-training rows; at each
@@ -1336,8 +1356,11 @@ def _distributional(model, newdata, level, seed, calib_fraction, mstop, extrapol
     def band(target):
         def predict():
             if score == "gaussian_normalized":
-                return fit.params(target, type="response", mstop=mstop, extrapolation=extrapolation)
-            return _distributional_band(fit, target, level, mstop, extrapolation)
+                return fit.params(target, type="response", mstop=mstop,
+                                  extrapolation=extrapolation,
+                                  unseen_levels=unseen_levels)
+            return _distributional_band(fit, target, level, mstop, extrapolation,
+                                        unseen_levels)
         if fitted:
             return predict()
         with _recipe_bypassed(fit):
@@ -1345,7 +1368,8 @@ def _distributional(model, newdata, level, seed, calib_fraction, mstop, extrapol
 
     # Calibration rows and query rows use the same proper-training recipe.
     cal_target = calib_rows if fitted else _subset(data, calib_idx)
-    target = target_rows if fitted else (_encode(model, newdata) if newdata is not None else data)
+    target = (target_rows if fitted
+              else (_encode(model, newdata, unseen_levels) if newdata is not None else data))
     if score == "gaussian_normalized":
         lo, mid, hi, q = _normalized_distributional_band(band(cal_target), band(target), y_calib, level)
     else:
@@ -1391,6 +1415,7 @@ def conformal_interval(
     extrapolation="warn",
     score="auto",
     count_reference="zero_inflated_poisson",
+    unseen_levels="error",
 ):
     """Distribution-free prediction intervals for a fitted standard model.
     Usage::
@@ -1522,6 +1547,9 @@ def conformal_interval(
         probability on proper-training rows while retaining the fitted mean.
         The second fixes that probability at zero. Neither assumes that the
         reference distribution is correct for marginal conformal validity.
+    unseen_levels : {"error", "average", "zero_effect"}, default "error"
+        Policy for factor or group levels present in ``newdata`` or
+        ``calibration`` that were absent from training, as in ``predict``.
 
     Returns
     -------
@@ -1586,6 +1614,11 @@ def conformal_interval(
     True
     """
     _require_level(level)
+    if unseen_levels not in ("error", "average", "zero_effect"):
+        raise ValueError(
+            "unseen_levels must be 'error', 'average', or 'zero_effect', "
+            f"got {unseen_levels!r}"
+        )
     requested_score = score
     if count_reference not in ("zero_inflated_poisson", "poisson"):
         raise ValueError("count_reference must be 'zero_inflated_poisson' or 'poisson'")
@@ -1631,22 +1664,26 @@ def conformal_interval(
             _warn_if_weighted(model)
             with routine_warnings(stacklevel=2):
                 interval = _held_out_distributional(
-                    model, newdata, level, mstop, calibration, extrapolation, score)
+                    model, newdata, level, mstop, calibration, extrapolation, score,
+                    unseen_levels=unseen_levels)
                 return _with_fitted_mean(model, newdata,
-                    replace(interval, requested_score=requested_score), extrapolation)
+                    replace(interval, requested_score=requested_score), extrapolation,
+                    unseen_levels=unseen_levels)
         _check_supported_model(model)
         with routine_warnings(stacklevel=2):
             interval = _held_out_split(model, newdata, level, mstop, calibration, extrapolation,
-                                       score, count_reference, seed)
-            return _with_fitted_mean(model, newdata, replace(interval, requested_score=requested_score), extrapolation)
+                                       score, count_reference, seed, unseen_levels=unseen_levels)
+            return _with_fitted_mean(model, newdata, replace(interval, requested_score=requested_score),
+                                     extrapolation, unseen_levels=unseen_levels)
     if _is_lss(model) and method in ("split", "distributional"):
         # A distributional fit has one method: the default "split" means it.
         _warn_if_weighted(model)
         with routine_warnings(stacklevel=2):
             interval = _distributional(model, newdata, level, seed, calib_fraction, mstop,
-                                       extrapolation, score)
+                                       extrapolation, score, unseen_levels=unseen_levels)
             return _with_fitted_mean(model, newdata,
-                replace(interval, requested_score=requested_score), extrapolation)
+                replace(interval, requested_score=requested_score), extrapolation,
+                unseen_levels=unseen_levels)
     if method == "distributional":
         raise ValueError("method='distributional' is for glmboostLSS/gamboostLSS fits")
     _check_supported_model(model)
@@ -1659,11 +1696,14 @@ def conformal_interval(
     with routine_warnings(stacklevel=2), _tuning_warnings():
         if method == "split":
             result = _split_conformal(model, newdata, level, seed,
-                                      calib_fraction, mstop, extrapolation, score, count_reference)
+                                      calib_fraction, mstop, extrapolation, score,
+                                      count_reference, unseen_levels=unseen_levels)
         elif method in ("cv+", "cv_plus"):
-            result = _cv_plus(model, newdata, level, seed, n_folds, mstop, extrapolation)
+            result = _cv_plus(model, newdata, level, seed, n_folds, mstop, extrapolation,
+                              unseen_levels=unseen_levels)
         elif method == "cqr":
-            result = _cqr(model, newdata, level, seed, calib_fraction, mstop, extrapolation)
+            result = _cqr(model, newdata, level, seed, calib_fraction, mstop, extrapolation,
+                          unseen_levels=unseen_levels)
         else:
             raise ValueError(
                 f"method must be 'split', 'cv+', or 'cqr', got {method!r}"
@@ -1673,11 +1713,11 @@ def conformal_interval(
         return _with_fitted_mean(
             model, newdata, replace(result, mstop_source=_mstop_source(source_key, model),
                                     requested_score=requested_score),
-            extrapolation)
+            extrapolation, unseen_levels=unseen_levels)
 
 
 def _with_fitted_mean(model, newdata, interval: ConformalInterval,
-                      extrapolation="warn") -> ConformalInterval:
+                      extrapolation="warn", unseen_levels="error") -> ConformalInterval:
     """`interval` with the full model's prediction at the same rows attached.
 
     Callers run this inside :func:`routine_warnings`, so the full model's
@@ -1687,11 +1727,11 @@ def _with_fitted_mean(model, newdata, interval: ConformalInterval,
     if getattr(model, "_response_transform", None) is not None:
         return interval
     with routine_warnings(stacklevel=3):
-        mean = _full_model_mean(model, newdata, extrapolation)
+        mean = _full_model_mean(model, newdata, extrapolation, unseen_levels)
     return replace(interval, fitted_mean=mean)
 
 
-def _full_model_mean(model, newdata, extrapolation="warn") -> np.ndarray:
+def _full_model_mean(model, newdata, extrapolation="warn", unseen_levels="error") -> np.ndarray:
     """The full model's prediction at the interval rows, on the response scale.
 
     The rows are `newdata`, or the training rows when it is None. A
@@ -1700,10 +1740,11 @@ def _full_model_mean(model, newdata, extrapolation="warn") -> np.ndarray:
     own predictions are.
     """
     if _is_lss(model):
-        params = model.params(newdata=newdata, type="response", extrapolation=extrapolation)
+        params = model.params(newdata=newdata, type="response", extrapolation=extrapolation,
+                              unseen_levels=unseen_levels)
         key = "mu" if "mu" in params else next(iter(params))
         mean = params[key]
     else:
         mean = model.predict(newdata=newdata, type="response",
-                             **_policy_kwargs(model, extrapolation))
+                             **_policy_kwargs(model, extrapolation, unseen_levels))
     return np.asarray(mean, dtype=np.float64).ravel()

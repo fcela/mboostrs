@@ -3236,7 +3236,7 @@ class LSSModel(WeightPolicyMixin):
         return output_frame(rows, output)
 
     def predict_parameters(self, newdata=None, type=_TYPE_DEFAULT,
-                           extrapolation="warn") -> dict:
+                           extrapolation="warn", unseen_levels="error") -> dict:
         """Return response-scale predictions by distribution parameter.
 
         An LSS model returns ``{parameter: array}``. A standard model has
@@ -3248,12 +3248,14 @@ class LSSModel(WeightPolicyMixin):
         logit parameter a probability — and no link-scale warning fires for
         an omitted ``type``. Pass ``type="link"`` for the linear predictors;
         ``predict()`` keeps the link scale as its own (warning) default.
-        ``extrapolation`` is as in :meth:`predict`; pass ``"clip"`` to hold
-        covariates at the training range.
+        ``extrapolation`` and ``unseen_levels`` are as in :meth:`predict`;
+        pass ``extrapolation="clip"`` to hold covariates at the training range
+        and ``unseen_levels="average"`` to score categories absent from training.
         """
         if type is _TYPE_DEFAULT:
             type = "response"
-        out = self.predict(newdata=newdata, type=type, extrapolation=extrapolation)
+        out = self.predict(newdata=newdata, type=type, extrapolation=extrapolation,
+                           unseen_levels=unseen_levels)
         return {name: np.asarray(out[name]) for name in self.param_names}
 
     def _budget(self):
@@ -4289,7 +4291,7 @@ class LSSModel(WeightPolicyMixin):
                              **step_kwargs(self._control))
 
     def cvrisk(self, folds=None, grid=None, *, B=5, seed=42, length_out=10,
-               **kwargs):
+               unseen_levels="error", **kwargs):
         """Cross-validated risk for this model's own specification.
 
         Dispatches on the fitting function that produced the model, so
@@ -4322,6 +4324,9 @@ class LSSModel(WeightPolicyMixin):
             Seed for generated folds.
         length_out : int, default 10
             Number of diagonal grid points when ``grid`` is ``None``.
+        unseen_levels : {"error", "average", "zero_effect"}, default "error"
+            Policy for factor or group levels held out completely in a fold.
+            Passed to held-out prediction in non-cyclic cross-validation.
         **kwargs
             Overrides of the arguments the model is refitted with, passed to
             ``cvrisk_gamboostLSS`` or ``cvrisk_glmboostLSS``.
@@ -4334,8 +4339,14 @@ class LSSModel(WeightPolicyMixin):
         Raises
         ------
         ValueError
-            If ``folds`` is not a two-dimensional matrix.
+            If ``folds`` is not a two-dimensional matrix or ``unseen_levels``
+            is invalid.
         """
+        if unseen_levels not in ("error", "average", "zero_effect"):
+            raise ValueError(
+                "unseen_levels must be 'error', 'average', or 'zero_effect', "
+                f"got {unseen_levels!r}"
+            )
         n = len(np.asarray(self._params[0]["fitted"], dtype=np.float64))
         if folds is None:
             from mboostrs.cvrisk import cv_weights
@@ -4343,7 +4354,8 @@ class LSSModel(WeightPolicyMixin):
             folds = cv_weights(n, type="kfold", B=int(B), seed=int(seed),
                                weights=self.model_weights())
         if self._method == "noncyclic":
-            return self._cvrisk_noncyclic(folds, grid, length_out, kwargs)
+            return self._cvrisk_noncyclic(folds, grid, length_out, kwargs,
+                                          unseen_levels=unseen_levels)
         if grid is None:
             budget = self.mstop
             largest = max(budget.values()) if isinstance(budget, dict) else budget
@@ -4399,7 +4411,7 @@ class LSSModel(WeightPolicyMixin):
                      "boundary_share": float(boundary_share)},
             **arguments)
 
-    def _cvrisk_noncyclic(self, folds, grid, length_out, kwargs):
+    def _cvrisk_noncyclic(self, folds, grid, length_out, kwargs, *, unseen_levels="error"):
         """Cross-validate a non-cyclic fit over its total step count.
 
         A non-cyclic fit takes one budget and chooses, step by step, which
@@ -4464,7 +4476,8 @@ class LSSModel(WeightPolicyMixin):
             held_weights = np.where(held, base_weights, 0.0)
             fold_fit = self.update(mstop=largest, weights=column)
             for j, k in enumerate(totals):
-                risk[b, j] = fold_fit._weighted_risk(held_weights, mstop=k)
+                risk[b, j] = fold_fit._weighted_risk(held_weights, mstop=k,
+                                                     unseen_levels=unseen_levels)
         mean_risk = risk.mean(axis=0)
         best = totals[int(np.argmin(mean_risk))]
         result = LssCvRiskResult(
@@ -4496,14 +4509,14 @@ class LSSModel(WeightPolicyMixin):
             )
         return result
 
-    def _weighted_risk(self, weights, mstop=None):
+    def _weighted_risk(self, weights, mstop=None, *, unseen_levels="error"):
         """Weighted mean negative log-likelihood on the training rows."""
         from mboostrs._rust import lss_family_diagnostics
 
         data = self._data
         etas = [
             np.asarray(self.predict(newdata=data, parameter=name, type="link",
-                                    mstop=mstop), dtype=np.float64)
+                                    mstop=mstop, unseen_levels=unseen_levels), dtype=np.float64)
             for name in self.param_names
         ]
         if isinstance(self._response_name, tuple):

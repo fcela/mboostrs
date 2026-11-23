@@ -1,8 +1,8 @@
 # Grading Knowledge Discovery: A Literature-Grounded Scorecard for Evaluating Data Modeling Libraries
 
-## Working paper — DRAFT (research in progress)
+*Methodological Working Paper*
 
-**Purpose.** This paper develops a literature-grounded framework for evaluating how well data-modeling libraries support knowledge discovery by human analysts and autonomous agents. It surveys relevant research and proposes a grading scorecard applicable to mboostrs and alternative libraries, including scikit-learn, XGBoost, LightGBM, CatBoost and Explainable Boosting Machines.
+**Purpose.** This paper develops a literature-grounded framework for evaluating how well data-modeling libraries support knowledge discovery by human analysts and autonomous agents. It surveys prior work and motivates the twelve-dimension scorecard defined normatively in [scorecard.md](scorecard.md) (`mboostrs-scorecard/2.1`), applicable to `mboostrs` and alternative libraries including scikit-learn, XGBoost, LightGBM, CatBoost, and Explainable Boosting Machines.
 
 **Scope.** Much of the formal literature on automated modeling predates LLM agents. Research on causality and interpretability remains relevant, while agent usability, follow-up iteration speed and multi-finding explanations receive less direct coverage. The paper identifies which dimensions are grounded in prior literature and which extend beyond it. Gaps in earlier research are treated as subjects for evaluation.
 
@@ -39,7 +39,7 @@ Doshi-Velez & Kim (2017, arXiv:1702.08608) proposed the foundational taxonomy fo
 2. **Human-grounded**: real humans, simplified tasks — can people predict the model's behavior, or choose the better of two explanations?
 3. **Functionally-grounded**: no humans, proxy tasks — e.g., sparsity, fidelity of a surrogate.
 
-Murdoch et al. (2019, *PNAS* 116(44):22071–22080) added the PDR framework — **predictive accuracy, descriptive accuracy, relevancy** — and emphasized that relevancy is always relative to an audience. For agentic discovery, the "audience" is partly the agent itself, which reframes relevancy in a way the literature didn't anticipate (§4).
+Murdoch et al. (2019, *PNAS* 116(44):22071–22080) added the PDR framework — **predictive accuracy, descriptive accuracy, relevancy** — and emphasized that relevancy is always relative to an audience. For agentic discovery, the "audience" is partly the agent itself, which reframes relevancy in a way the earlier literature did not anticipate (§4).
 
 Rudin (2019, *Nature Machine Intelligence* 1:206–215) argued that for high-stakes decisions, post-hoc explanations of black boxes should be replaced by inherently interpretable models — because explanations can be unfaithful. This is directly relevant: a discovery scorecard should reward models whose *stated* relationships are the *actual* relationships (faithfulness), not plausible-sounding rationalizations.
 
@@ -125,7 +125,7 @@ normative source for the weights used in new evaluations.
 
 1. **The [N] dimensions need validation.** D5, D8, and D3-levels-4–5 are proposed from problem structure, not from validated literature. They should be treated as hypotheses until agent-benchmark results accumulate.
 2. **Causal discovery is graded as humility, not capability.** If the causal discovery literature produces genuinely reliable observational methods, D2 should be revised to grade capability.
-3. **Cost is out of scope.** The scorecard doesn't price compute, licenses, or engineering time. A separate cost-effectiveness analysis should accompany any adoption decision.
+3. **Cost is out of scope.** The scorecard does not price compute, licenses, or engineering time. A separate cost-effectiveness analysis should accompany any adoption decision.
 4. **Historical evaluations have limited coverage.** Existing batteries were designed under earlier local rubrics. Their preserved grades do not establish coverage of every version 2.1 dimension; see the [migration crosswalk](migration.md) before comparing them with new evaluations.
 
 ---

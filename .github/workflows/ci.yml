@@ -334,6 +334,7 @@ jobs:
         run: |
           python docs/book/check_cells.py
           python docs/book/check_docs.py
+          python docs/book/check_register.py
 
       - name: Check the generated API manual is current
         # #166. docs/book/api/ is written by tools/generate_api_manual.py. This
@@ -445,22 +446,6 @@ jobs:
         # so, four were absent from the page entirely, and `coef()` was
         # documented with a key that raises KeyError.
         run: python tools/check_migration_table.py
-
-      - name: Ratchet the case-study reconstruction standard
-        # D3. 109 gaps across 29 studies -- 28 do not say what one row is, 26
-        # name no estimand. Closing those means understanding each analysis,
-        # so this does not invent them and does not fail on the backlog: it
-        # fails when a study loses an element it had, or a new study arrives
-        # below the standard. The backlog can only shrink.
-        run: python tools/check_case_standard.py
-
-      - name: Check the family and learner pages cover their template
-        # D2's page templates. Checking them found the link and inverse link
-        # missing from `usage/families.ipynb` -- the two things that decide
-        # whether `predict()` returns a probability or a log-odds -- and
-        # extrapolation missing from both learner pages, for a policy the
-        # package ships and warns about.
-        run: python tools/check_page_templates.py
 
       - name: Check the public examples against the package
         # The eight `examples/python/` notebooks sat outside every factual

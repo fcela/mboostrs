@@ -46,4 +46,4 @@ The risks are comparable across models only when the family and the data
 are the same; a Gaussian risk and a Binomial risk are different losses.
 `cv` results must all come from the same folds.
 
-Source: [`python/mboostrs/summary.py` lines 674-793](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/summary.py#L674-L793)
+Source: [`python/mboostrs/summary.py` lines 697-816](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/summary.py#L697-L816)

@@ -550,7 +550,7 @@ def discover(data, response: str, *, newdata=None, calibration=None, family=None
              interactions: bool = True, heredity: str | Mapping = "none",
              forbidden_pairs=(), mandatory_terms=(),
              candidates: Mapping | None = None, max_mstop: int | None = None,
-             extrapolation: str = "warn") -> DiscoveryResult:
+             extrapolation: str = "warn", unseen_levels: str = "error") -> DiscoveryResult:
     """Run the rule-driven analysis of ``response`` on ``data``.
 
     Workflow, pitfalls and worked analyses: ``mboostrs.agent_guide()``, or
@@ -677,6 +677,10 @@ def discover(data, response: str, *, newdata=None, calibration=None, family=None
         ``discover(extrapolation=...)``, and it is issued once per call, with
         the number of fold predictions it covers. The final ``newdata``
         predictions always use ``"clip"``.
+    unseen_levels : {"error", "average", "zero_effect"}, default "error"
+        Policy for factor or group levels present in ``newdata`` or
+        ``calibration`` that were absent from training, passed to final
+        prediction and conformal interval calibration.
 
     A bare value of ``heredity`` or ``forbidden_pairs`` applies to the mean
     model (``"mu"``), since interactions are only searched there; a bare
@@ -742,6 +746,11 @@ def discover(data, response: str, *, newdata=None, calibration=None, family=None
     if extrapolation not in POLICIES:
         raise ValueError(f"extrapolation must be one of {POLICIES}, got {extrapolation!r}; "
                          "pass 'warn' (the default), 'allow', 'clip' or 'error'")
+    if unseen_levels not in ("error", "average", "zero_effect"):
+        raise ValueError(
+            "unseen_levels must be 'error', 'average', or 'zero_effect', "
+            f"got {unseen_levels!r}"
+        )
     if max_mstop is not None:
         max_mstop = check_int_at_least("max_mstop", max_mstop, 1, allow_none=False)
     if isinstance(family, type):
@@ -777,6 +786,7 @@ def discover(data, response: str, *, newdata=None, calibration=None, family=None
                                  mean_step=mean_step, mean_budget=mean_budget,
                                  interactions=interactions, rules=rules,
                                  max_mstop=max_mstop, extrapolation=extrapolation,
+                                 unseen_levels=unseen_levels,
                                  partition=partition)
             if fit_na != na_action:
                 analysis._note("setup", None, "no missing values in the data or newdata: fits "
@@ -899,7 +909,7 @@ class _Analysis:
     def __init__(self, frame, response, *, family, seed, level, folds, na_action,
                  budget_seconds, spread, interactions, rules, max_mstop=None, simplify_mean=True,
                  mean_step="fixed", mean_budget="fixed",
-                 extrapolation="warn", partition=None):
+                 extrapolation="warn", unseen_levels="error", partition=None):
         self.frame = frame
         self.response = response
         self.seed = seed
@@ -910,6 +920,7 @@ class _Analysis:
         self.max_mstop = max_mstop
         #: ``extrapolation=`` of the fold fits (the screens and the tuning).
         self.fold_extrapolation = extrapolation
+        self.unseen_levels = unseen_levels
         self.do_spread = spread
         self.do_simplify_mean = simplify_mean
         if not isinstance(mean_step, str) or mean_step not in ("auto", "fixed", "line_search"):
@@ -2059,10 +2070,12 @@ class _Analysis:
                 # column, so a caller scores the fit without rebuilding the
                 # scale from the interval band.
                 parameters = model.predict_parameters(new_frame, type="response",
-                                                      extrapolation="clip")
+                                                      extrapolation="clip",
+                                                      unseen_levels=self.unseen_levels)
                 mean = parameters["mu"]
             else:
-                mean = model.predict(new_frame, type="response", extrapolation="clip")
+                mean = model.predict(new_frame, type="response", extrapolation="clip",
+                                     unseen_levels=self.unseen_levels)
         except _EXCEPTIONS as exc:
             self._fail("predict", None, exc)
             return
@@ -2075,7 +2088,8 @@ class _Analysis:
             try:
                 interval = conformal_interval(model, new_frame, level=self.level,
                                               method=method, seed=self.seed,
-                                              calibration=calibration, extrapolation="clip")
+                                              calibration=calibration, extrapolation="clip",
+                                              unseen_levels=self.unseen_levels)
                 self.interval = interval
                 lower = np.asarray(interval.lower, dtype=float).ravel()
                 upper = np.asarray(interval.upper, dtype=float).ravel()

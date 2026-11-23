@@ -104,6 +104,8 @@
       "required": ["setting", "spent", "degradations"],
       "properties": {
         "setting": {"enum": ["quick", "standard", "thorough"]},
+        "limit": {"type": ["integer", "null"]},
+        "seconds_limit": {"type": ["number", "null"]},
         "spent": {"type": "number"},
         "degradations": {"type": "array", "items": {"type": "string"}}
       },

@@ -1,8 +1,8 @@
 # Building the mboostrs book
 
-The documentation is a [MyST / Jupyter Book](https://jupyterbook.org) with three
-parts: usage tutorials (executable), a methodology review, and implementation
-details. It renders to a website and to a single PDF.
+The documentation is a [MyST / Jupyter Book](https://jupyterbook.org) with five
+parts (usage tutorials, methodology, case studies, implementation, and
+benchmarks) plus an appendix. It renders to a website and to a single PDF.
 
 ## Setup
 
@@ -101,11 +101,17 @@ tlmgr install datetime fmtcount   # packages used by the default book template
 
 ## Authoring conventions
 
+Editorial, scientific reporting, and anti-AI-slop rules live in
+[docs/WRITING_GUIDE.md](../WRITING_GUIDE.md). Book-specific MyST rules:
+
 - Cross-references use notebook file links (`[](path.ipynb)`); citations use
   `{cite}` against `references.bib`.
-- Case studies explain the data, fitting choices, diagnostics and interpretation,
-  with one analytical step per code cell. Update examples when a public API
-  improvement replaces a workaround.
+- Use explicit `(label)=` anchors when linking across pages so LaTeX/PDF
+  cross-references resolve cleanly.
+- Use `display(...)` rather than `print(...)` for DataFrames so box-drawing
+  characters do not break `pdflatex`.
+- Raw pre-registrations, SHA-256 digests, and verbatim agent transcripts live
+  in `docs/benchmarks/` as audit artifacts rather than raw book chapters.
 
 ## Generated content
 

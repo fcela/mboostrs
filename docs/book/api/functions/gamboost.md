@@ -142,4 +142,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 glmboost : linear terms only, one coefficient each.
 gamboostLSS : one additive predictor per distribution parameter.
 
-Source: [`python/mboostrs/gamboost.py` lines 4913-5613](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4913-L5613)
+Source: [`python/mboostrs/gamboost.py` lines 4917-5617](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4917-L5617)

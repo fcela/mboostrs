@@ -35,7 +35,7 @@ GAMBoostModel(
 
 Fitted generalized additive boosting model.
 
-Source: [`python/mboostrs/gamboost.py` lines 883-4872](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L883-L4872)
+Source: [`python/mboostrs/gamboost.py` lines 883-4876](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L883-L4876)
 
 ## Members
 
@@ -829,7 +829,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `NotImplementedError`
 
-Source: [`python/mboostrs/gamboost.py` lines 3012-3197](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3012-L3197)
+Source: [`python/mboostrs/gamboost.py` lines 3012-3201](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3012-L3201)
 
 (gamboostmodel-coef)=
 ## `GAMBoostModel.coef`
@@ -849,7 +849,7 @@ aggregate: "sum" (default) sums per-step coefs; "none" returns raw per-step list
 Returns dict mapping learner name -> coefficient value or array.
 The offset is always included as result["(offset)"].
 
-Source: [`python/mboostrs/gamboost.py` lines 3198-3287](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3198-L3287)
+Source: [`python/mboostrs/gamboost.py` lines 3202-3291](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3202-L3291)
 
 (gamboostmodel-btree_splits)=
 ## `GAMBoostModel.btree_splits`
@@ -870,7 +870,7 @@ level sets. The variables follow the tree's own input order, so index
 are empirical cutpoints learned by the fit. Use them to propose
 hinge, threshold or other simpler candidate terms when examining a tree.
 
-Source: [`python/mboostrs/gamboost.py` lines 3319-3363](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3319-L3363)
+Source: [`python/mboostrs/gamboost.py` lines 3323-3367](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3323-L3367)
 
 (gamboostmodel-btree_partition_table)=
 ## `GAMBoostModel.btree_partition_table`
@@ -896,7 +896,7 @@ boundaries, and here they become the `<column>_lower` and
 
 polars.DataFrame
 
-Source: [`python/mboostrs/gamboost.py` lines 3365-3382](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3365-L3382)
+Source: [`python/mboostrs/gamboost.py` lines 3369-3386](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3369-L3386)
 
 (gamboostmodel-plot_btree_partition)=
 ## `GAMBoostModel.plot_btree_partition`
@@ -916,7 +916,7 @@ one-column term; see `mboostrs.plot.plot_btree_partition`.
 
 alt.Chart
 
-Source: [`python/mboostrs/gamboost.py` lines 3384-3397](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3384-L3397)
+Source: [`python/mboostrs/gamboost.py` lines 3388-3401](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3388-L3401)
 
 (gamboostmodel-residuals)=
 ## `GAMBoostModel.residuals`
@@ -945,7 +945,7 @@ Residuals of the named kind, or a refusal saying why there are none.
 - `:func:`mboostrs.quantile_residuals` for a kind that is comparable`
 - `across families because it is uniform under a correct fit.`
 
-Source: [`python/mboostrs/gamboost.py` lines 3399-3423](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3399-L3423)
+Source: [`python/mboostrs/gamboost.py` lines 3403-3427](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3403-L3427)
 
 (gamboostmodel-residual_kinds)=
 ## `GAMBoostModel.residual_kinds`
@@ -958,7 +958,7 @@ GAMBoostModel.residual_kinds()
 
 The residual kinds defined for this model's family.
 
-Source: [`python/mboostrs/gamboost.py` lines 3425-3429](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3425-L3429)
+Source: [`python/mboostrs/gamboost.py` lines 3429-3433](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3429-L3433)
 
 (gamboostmodel-extract)=
 ## `GAMBoostModel.extract`
@@ -992,7 +992,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `ValueError`
 - `TypeError`
 
-Source: [`python/mboostrs/gamboost.py` lines 3431-3564](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3431-L3564)
+Source: [`python/mboostrs/gamboost.py` lines 3435-3568](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3435-L3568)
 
 (gamboostmodel-varimp)=
 ## `GAMBoostModel.varimp`
@@ -1028,7 +1028,7 @@ to the columns the fitted trees actually split on (from
 inputs a model retains should use `split_columns`: a joint tree
 that never split on a column does not use it.
 
-Source: [`python/mboostrs/gamboost.py` lines 3580-3646](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3580-L3646)
+Source: [`python/mboostrs/gamboost.py` lines 3584-3650](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3584-L3650)
 
 (gamboostmodel-learner_index)=
 ## `GAMBoostModel.learner_index`
@@ -1064,7 +1064,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamboost.py` lines 3648-3721](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3648-L3721)
+Source: [`python/mboostrs/gamboost.py` lines 3652-3725](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3652-L3725)
 
 (gamboostmodel-partial_effects)=
 ## `GAMBoostModel.partial_effects`
@@ -1127,7 +1127,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamboost.py` lines 3723-4045](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3723-L4045)
+Source: [`python/mboostrs/gamboost.py` lines 3727-4049](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L3727-L4049)
 
 (gamboostmodel-plot_partial_effects)=
 ## `GAMBoostModel.plot_partial_effects`
@@ -1149,7 +1149,7 @@ Plot partial effects.
 
 alt.Chart | alt.ConcatChart
 
-Source: [`python/mboostrs/gamboost.py` lines 4047-4063](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4047-L4063)
+Source: [`python/mboostrs/gamboost.py` lines 4051-4067](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4051-L4067)
 
 (gamboostmodel-plot)=
 ## `GAMBoostModel.plot`
@@ -1171,7 +1171,7 @@ Plot partial effects.
 
 alt.Chart | alt.ConcatChart
 
-Source: [`python/mboostrs/gamboost.py` lines 4065-4079](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4065-L4079)
+Source: [`python/mboostrs/gamboost.py` lines 4069-4083](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4069-L4083)
 
 (gamboostmodel-confint)=
 ## `GAMBoostModel.confint`
@@ -1263,7 +1263,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `ValueError`
 - `TypeError`
 
-Source: [`python/mboostrs/gamboost.py` lines 4146-4372](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4146-L4372)
+Source: [`python/mboostrs/gamboost.py` lines 4150-4376](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4150-L4376)
 
 (gamboostmodel-loglik)=
 ## `GAMBoostModel.logLik`
@@ -1298,7 +1298,7 @@ family defines one. The Gaussian value includes the normalizing
 terms implied by its fitted variance. Use `negative_risk` for
 the negated empirical risk convention used by `mboost`.
 
-Source: [`python/mboostrs/gamboost.py` lines 4498-4525](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4498-L4525)
+Source: [`python/mboostrs/gamboost.py` lines 4502-4529](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4502-L4529)
 
 (gamboostmodel-negative_risk)=
 ## `GAMBoostModel.negative_risk`
@@ -1323,7 +1323,7 @@ them are not likelihood ratios. Use it to compare two fits of the *same
 family* on the *same data*, and `logLik` when a log-likelihood is
 what the calculation needs.
 
-Source: [`python/mboostrs/gamboost.py` lines 4527-4542](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4527-L4542)
+Source: [`python/mboostrs/gamboost.py` lines 4531-4546](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4531-L4546)
 
 (gamboostmodel-likelihood_contract)=
 ## `GAMBoostModel.likelihood_contract`
@@ -1341,7 +1341,7 @@ fields say whether the loss comes from a probability model, whether
 `-risk` is the complete log-likelihood, what measure that likelihood is
 taken with respect to, and which residual kinds are defined.
 
-Source: [`python/mboostrs/gamboost.py` lines 4544-4554](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4544-L4554)
+Source: [`python/mboostrs/gamboost.py` lines 4548-4558](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4548-L4558)
 
 (gamboostmodel-to_dict)=
 ## `GAMBoostModel.to_dict`
@@ -1357,7 +1357,7 @@ the library build and environment, and the fingerprint of the
 training data. `include_arrays` is accepted for the uniform export
 signature; the summary holds no per-row arrays.
 
-Source: [`python/mboostrs/gamboost.py` lines 4556-4563](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4556-L4563)
+Source: [`python/mboostrs/gamboost.py` lines 4560-4567](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4560-L4567)
 
 (gamboostmodel-summary)=
 ## `GAMBoostModel.summary`
@@ -1382,7 +1382,7 @@ fixed-width text and renders as a table in a notebook. Use
   cross-validation prefers. A model keeps no record of how it was
   tuned, so this is not inferred.
 
-Source: [`python/mboostrs/gamboost.py` lines 4565-4633](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4565-L4633)
+Source: [`python/mboostrs/gamboost.py` lines 4569-4637](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4569-L4637)
 
 (gamboostmodel-update)=
 ## `GAMBoostModel.update`
@@ -1416,7 +1416,7 @@ replaced and every other argument as the original fit had it.
 GAMBoostModel
     Updated model.
 
-Source: [`python/mboostrs/gamboost.py` lines 4635-4669](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4635-L4669)
+Source: [`python/mboostrs/gamboost.py` lines 4639-4673](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4639-L4673)
 
 (gamboostmodel-continue_to)=
 ## `GAMBoostModel.continue_to`
@@ -1459,4 +1459,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamboost.py` lines 4671-4734](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4671-L4734)
+Source: [`python/mboostrs/gamboost.py` lines 4675-4738](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamboost.py#L4675-L4738)

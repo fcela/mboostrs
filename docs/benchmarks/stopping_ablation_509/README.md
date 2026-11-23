@@ -19,9 +19,6 @@ seven panels with loss units, medians, ranges and marked best values.
 [Validation record](VALIDATION.md) includes the full-suite failures and the
 focused passing checks.
 
-[Research handoff](HANDOFF.md) records the remaining topology and tree-AIC
-experiments, their scope and promotion criteria.
-
 ## Experimental design
 
 The historical single-split fixed-budget rule uses refitted preprocessing.

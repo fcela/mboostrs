@@ -1611,3 +1611,24 @@ def test_column_screen_names_each_columns_marginal_shape():
     hints = {row["column"]: row["hint"] for row in mb.column_screen(data, "y", output="records")}
     assert hints == {"line": "line", "curve": "curve", "step": "step",
                      "g": "levels", "noise": "none"}
+
+
+def test_autospec_takes_the_line_search_when_no_fit_checked_the_fixed_step(monkeypatch):
+    # With a budget, a log-link family keeps the fixed step only when its
+    # cross-validated risk beats the line search's. When the budget ran out
+    # before the stopping depth was measured, neither run has a risk, and no
+    # fit checked the fixed step -- the budget-0 case, which takes the line
+    # search. Before the fix the unchecked fixed step was kept; on OpenML 44967
+    # it drove a Poisson fit's mean from 12 to 0.18.
+    import sys
+
+    autospec_module = sys.modules["mboostrs.autospec"]  # the package exports the function
+    monkeypatch.setattr(autospec_module, "_cv_minimum", lambda rec: float("inf"))
+    rng = np.random.default_rng(0)
+    n = 300
+    data = {f"x{i}": rng.normal(size=n) for i in range(4)}
+    data["y"] = rng.poisson(np.exp(1.0 + 0.3 * data["x0"])).astype(float)
+    rec = mb.autospec(data, "y", seed=0, budget=8)
+    assert type(rec.family).__name__ == "Poisson"
+    assert rec.control.step == "line_search"
+    assert "no fit checked the fixed step" in rec.evidence["step"]

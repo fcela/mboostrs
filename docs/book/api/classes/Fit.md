@@ -18,7 +18,7 @@ because selection-aware uncertainty is not yet supported.
 `predict` delegates to the model, so a `Fit` can stand in wherever the
 model itself was used.
 
-Source: [`python/mboostrs/_procedure/_fit.py` lines 16-45](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_fit.py#L16-L45)
+Source: [`python/mboostrs/_procedure/_fit.py` lines 29-58](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_fit.py#L29-L58)
 
 ## Members
 
@@ -38,7 +38,7 @@ Fit.predict(newdata: Any, **kwargs: Any) -> Any
 
 Predict with the wrapped model. See `model.predict`.
 
-Source: [`python/mboostrs/_procedure/_fit.py` lines 32-34](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_fit.py#L32-L34)
+Source: [`python/mboostrs/_procedure/_fit.py` lines 45-47](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_fit.py#L45-L47)
 
 (fit-to_dict)=
 ## `Fit.to_dict`
@@ -51,4 +51,4 @@ Fit.to_dict(*, include_arrays: bool = False) -> dict[str, Any]
 
 The wrapping record: the decision trail as a JSON-safe dict.
 
-Source: [`python/mboostrs/_procedure/_fit.py` lines 36-39](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_fit.py#L36-L39)
+Source: [`python/mboostrs/_procedure/_fit.py` lines 49-52](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_fit.py#L49-L52)

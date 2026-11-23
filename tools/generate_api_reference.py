@@ -41,9 +41,15 @@ import mboostrs as mb  # noqa: E402
 #: result, resample, diagnose. Anything not matched falls into "Other", which
 #: is a signal that a new export needs a home rather than a place to leave it.
 SECTIONS: list[tuple[str, str, Any]] = [
-    ("Fitting", "`fit(data, response, ...)` selects and fits a specification. "
-                "`glmboost`, `gamboost`, and the LSS entry points fit a supplied "
-                "formula. The signatures identify keyword-only arguments.",
+    ("Fitting", "`fit(data, response, ...)` selects and fits a specification "
+                "and returns a `Fit`: the fitted model plus its decision trail, a "
+                "JSON-serialisable record of the data, the folds, each candidate "
+                "change with its out-of-fold score, and the final specification. "
+                "`glmboost` and `gamboost` fit a supplied formula; `glmboostLSS` "
+                "and `gamboostLSS` fit distributional models (LSS: location, scale "
+                "and shape), in which each distribution parameter has its own "
+                "additive predictor. Arguments after `*` in a signature are "
+                "keyword-only.",
      lambda name, obj: name in ("fit", "glmboost", "gamboost", "glmboostLSS",
                                 "gamboostLSS", "gam", "gamlss")),
     ("Control", "Set the maximum iterations and update step length.",
@@ -51,7 +57,21 @@ SECTIONS: list[tuple[str, str, Any]] = [
     ("Fitted models", "Fitted-model classes and stopping budgets.",
      lambda name, obj: name in ("Fit", "GLMBoostModel", "GAMBoostModel",
                                 "LSSModel", "StoppingBudget")),
-    ("Families", "Each family defines the loss and response encoding used by the fit.",
+    ("Families", "Each family defines the loss and response encoding used by "
+                 "the fit. The *Python fit* and *R fit* columns give the evidence "
+                 "the capability manifest (`mb.family_capabilities()`) records for "
+                 "fitting in each frontend: `verified` means the fit is compared "
+                 "with a reference implementation or reference value within a "
+                 "stated tolerance; `smoke` means tests check that the fit runs "
+                 "and satisfies stated invariants, with no reference to compare "
+                 "against; `intentional-deviation` means the tested behaviour "
+                 "differs deliberately from the R `mboost` or `gamboostLSS` "
+                 "counterpart; `unverified` means the manifest makes no "
+                 "correctness claim. The same columns appear in the "
+                 "distributional-family and base-learner tables. The "
+                 "[capabilities](capabilities.ipynb) page lists every status "
+                 "value, and the [R parity matrix](r_parity_matrix.ipynb) lists "
+                 "the comparisons with R.",
      lambda name, obj: _is_family(name, obj) and not name.endswith("LSS")),
     ("Distributional families", "Each distribution parameter has its own additive predictor.",
      lambda name, obj: _is_family(name, obj) and name.endswith("LSS")
@@ -590,7 +610,7 @@ EXAMPLES: dict[str, str] = {
 #: reader gets wrong. `None` values carry a hand-written comment.
 _FAMILY_RESPONSE: dict[str, str] = {
     "Gaussian": "y: any real value",
-    "GaussReg": "y: any real value, known variance handled by the family",
+    "GaussReg": "y: any real value; the same model as Gaussian",
     "Binomial": "y in {0, 1} (or {-1, +1}, or [0, 1] proportions)",
     "Poisson": "y: counts, non-negative integers",
     "NBinomial": "y: counts; overdispersed relative to Poisson",
@@ -617,7 +637,7 @@ _FAMILY_RESPONSE: dict[str, str] = {
 #: comment names the response support.
 _LSS_RESPONSE: dict[str, str] = {
     "GaussianLSS": "y: any real value",
-    "GaussianKnownVarLSS": "y: (outcome, known variance) tuple response",
+    "GaussianKnownVarLSS": "cbind(y, s2): outcome and its known sampling variance",
     "GammaLSS": "y: strictly positive",
     "StudentTLSS": "y: any real value",
     "BetaLSS": "y: in (0, 1), proportions",
@@ -632,7 +652,7 @@ _LSS_RESPONSE: dict[str, str] = {
     "InverseGaussianLSS": "y: strictly positive",
     "LogisticLSS": "y: any real value",
     "GumbelLSS": "y: any real value",
-    "Pareto2LSS": "y: above a known minimum",
+    "Pareto2LSS": "y: strictly positive",
     "ZeroAdjustedPoissonLSS": "y: non-negative integers with zeros",
     "PIGLSS": "y: counts",
     "BCCGLSS": "y: strictly positive",
@@ -719,8 +739,12 @@ def summary_line(obj: Any) -> str:
     # reST roles read as noise in a markdown table: `:meth:`x`` becomes `x`.
     first = re.sub(r":[a-z]+:`~?([^`]+)`", r"`\1`", first)
     first = first.replace("``", "`")
-    if len(first) > 220:
-        first = first[:217].rsplit(" ", 1)[0] + "..."
+    # A reST literal-block marker (`Usage::`, `Example::`) introduces code
+    # that the summary does not carry, so the marker is dropped; any other
+    # trailing `::` becomes a full stop.
+    first = re.sub(r"\s*\b(Usage|Examples?)::$", "", first)
+    if first.endswith("::"):
+        first = first[:-2].rstrip() + "."
     return first.replace("|", "\\|")
 
 
@@ -833,9 +857,9 @@ def render_markdown() -> str:
     parts = [
         "# API reference",
         "",
-        "`tools/generate_api_reference.py` reads signatures, defaults, and "
-        "property or method declarations from the Python package. "
-        "Regenerate this page after changing the public API.",
+        "Every public name in the `mboostrs` Python package, grouped by task, "
+        "with its signature and defaults, a one-line description, and for "
+        "most entries a short copyable example.",
         "",
         "For argument descriptions, return values and raised errors, open the "
         "symbol's page in the [Python API manual](../api/index.md), for example "

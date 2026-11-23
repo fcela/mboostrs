@@ -115,8 +115,11 @@ class SpecRecommendation:
     #: How the probes' folds were built, in words, for the report.
     folds_description: str = ""
     #: Rows left out of every probe because the response or a modelled column
-    #: is missing there. `fit` drops the same rows.
+    #: is missing there. `fit` drops the same rows unless `na_action` is set.
     incomplete_rows: int = 0
+    #: Missing-value policy passed through to `fit()`. `None` falls back to
+    #: `"omit"` when `incomplete_rows > 0`.
+    na_action: str | None = None
     #: Model fits spent producing this recommendation.
     fits: int = 0
     #: Fits a later probe did not make because an earlier one had already
@@ -282,7 +285,9 @@ class SpecRecommendation:
 
             exposure = np.asarray(read_column(data, self.exposure).values, dtype=float)
             kwargs["offset"] = np.log(exposure)
-        if self.incomplete_rows:
+        if self.na_action is not None:
+            kwargs.setdefault("na_action", self.na_action)
+        elif self.incomplete_rows:
             kwargs.setdefault("na_action", "omit")
         if getattr(self.family, "param_names", None) is not None:
             # A distributional recommendation from the family probe (#228):
@@ -814,7 +819,15 @@ def hygiene_findings(data, response: str, columns, groups=(), *,
                     "the probes use the complete rows, and `rec.fit` leaves "
                     "the incomplete ones out (`na_action=\"omit\"`)"))
 
-        if (column.name != response and values.dtype.kind == "f"
+        is_float_source = (
+            column.kind == "numeric"
+            and (
+                "float" in column.origin.lower()
+                if column.origin
+                else values.dtype.kind == "f"
+            )
+        )
+        if (column.name != response and is_float_source
                 and len(np.unique(present)) <= _DISCRETE_UNDER_FLOAT_LEVELS):
             levels = np.unique(present)
             if column.name in measurements:

@@ -18,7 +18,8 @@ conformal_interval(
     calibration=None,
     extrapolation='warn',
     score='auto',
-    count_reference='zero_inflated_poisson'
+    count_reference='zero_inflated_poisson',
+    unseen_levels='error'
 )
 ```
 
@@ -143,6 +144,8 @@ ci.lower, ci.upper
   probability on proper-training rows while retaining the fitted mean.
   The second fixes that probability at zero. Neither assumes that the
   reference distribution is correct for marginal conformal validity.
+- `unseen_levels` ({"error", "average", "zero_effect"}, default "error"): Policy for factor or group levels present in `newdata` or
+  `calibration` that were absent from training, as in `predict`.
 
 **Returns**
 
@@ -215,4 +218,4 @@ calibration and reported as `n_set_aside`.
 True
 ```
 
-Source: [`python/mboostrs/conformal.py` lines 1380-1676](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/conformal.py#L1380-L1676)
+Source: [`python/mboostrs/conformal.py` lines 1404-1716](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/conformal.py#L1404-L1716)

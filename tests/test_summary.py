@@ -432,3 +432,46 @@ class TestLearnerIndex:
                                 data={"y": 2 * x, "x": x}, family=Gaussian(),
                                 control=mboost.boost_control(20, 0.1))
         assert model.learner_index("x") == 0
+
+
+class TestLSSSummaryModes:
+    """`LSSModel.summary()` handles dict `mstop` (noncyclic / per-parameter),
+    per-parameter `nu`, and `glmboostLSS` (which stores `predictor_names`)."""
+
+    @staticmethod
+    def _data():
+        rng = np.random.default_rng(7)
+        x = rng.normal(size=100)
+        y = x + rng.normal(scale=np.exp(0.3 * x), size=100)
+        return {"x": x, "y": y}
+
+    @pytest.mark.parametrize("kw", [
+        {"mstop": {"mu": 20, "sigma": 10}},
+        {"method": "noncyclic", "control": (30, 0.1)},
+        {"nu": {"mu": 0.1, "sigma": 0.05}, "control": (20, 0.1)},
+    ])
+    def test_gamboostlss_summary_variants(self, kw):
+        model = mboost.gamboostLSS(
+            {"mu": "y ~ bbs(x)", "sigma": "y ~ bbs(x)"},
+            self._data(),
+            families=mboost.GaussianLSS(),
+            **kw,
+        )
+        text = str(model.summary())
+        assert "gamboostLSS" in text
+        assert "Parameter mu" in text
+        assert "Parameter sigma" in text
+
+    @pytest.mark.parametrize("method", ["cyclic", "noncyclic"])
+    def test_glmboostlss_summary(self, method):
+        model = mboost.glmboostLSS(
+            {"mu": "y ~ x", "sigma": "y ~ x"},
+            self._data(),
+            families=mboost.GaussianLSS(),
+            method=method,
+            control=(20, 0.1),
+        )
+        text = str(model.summary())
+        assert "glmboostLSS" in text
+        assert "Parameter mu" in text
+        assert "Parameter sigma" in text

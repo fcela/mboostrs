@@ -1,0 +1,2390 @@
+{
+ "meta": {
+  "study": "autospec held-out loss and time by fit budget (mboostrs.fit budget mapping)",
+  "date": "2026-11-20",
+  "commit": "12c87a3edfce30071636e370a2dcbf3b9f0c083a",
+  "code_note": "measured autospec at this commit; the commit recording these results changes only mboostrs.fit and its trail, not autospec",
+  "mboostrs_version": "0.2.2",
+  "python": "3.12.11",
+  "numpy": "2.5.5",
+  "polars": "2.1.0",
+  "platform": "macOS-26.3-arm64-arm-64bit",
+  "machine": "arm64",
+  "threads": "RAYON_NUM_THREADS=OMP_NUM_THREADS=OPENBLAS_NUM_THREADS=1 per process; five processes ran concurrently",
+  "runner": "benches/bench_fit_budget.py",
+  "panels": [
+   "bike_future",
+   "bike_iid",
+   "cancer",
+   "concrete",
+   "credit",
+   "diamonds",
+   "housing_iid",
+   "joint_boundary",
+   "protein",
+   "smooth_sparse"
+  ],
+  "budgets": [
+   0,
+   8,
+   16,
+   32,
+   128,
+   512
+  ],
+  "seeds": [
+   0,
+   1,
+   2
+  ],
+  "splits": "benches/shootout_data.py payload(task, seed): fit+validation rows (capped at 4,000) for autospec, test rows (capped at 2,000) for scoring",
+  "loss": "test MSE (regression) or log loss (binary panels credit, cancer)",
+  "autospec_call": "mb.autospec(dev, 'y', family=Gaussian|Binomial, budget=b, seed=seed); rec.fit(dev)",
+  "warmup": "none; the first fit in each process includes module import time",
+  "reference": "docs/benchmarks/competitive_shootout_protocol.md"
+ },
+ "summary": [
+  {
+   "task": "bike_future",
+   "budget": 0,
+   "completed": 1,
+   "mean_loss": null,
+   "pct_above_best_budget": null,
+   "median_seconds": 0.05,
+   "median_fits": 0
+  },
+  {
+   "task": "bike_future",
+   "budget": 8,
+   "completed": 3,
+   "mean_loss": 0.5085231076784084,
+   "pct_above_best_budget": 15.26,
+   "median_seconds": 0.25,
+   "median_fits": 5
+  },
+  {
+   "task": "bike_future",
+   "budget": 16,
+   "completed": 1,
+   "mean_loss": null,
+   "pct_above_best_budget": null,
+   "median_seconds": 0.51,
+   "median_fits": 0
+  },
+  {
+   "task": "bike_future",
+   "budget": 32,
+   "completed": 3,
+   "mean_loss": 0.4411834431439609,
+   "pct_above_best_budget": 0.0,
+   "median_seconds": 11.54,
+   "median_fits": 31
+  },
+  {
+   "task": "bike_future",
+   "budget": 128,
+   "completed": 3,
+   "mean_loss": 0.4469999971675713,
+   "pct_above_best_budget": 1.32,
+   "median_seconds": 40.84,
+   "median_fits": 126
+  },
+  {
+   "task": "bike_future",
+   "budget": 512,
+   "completed": 3,
+   "mean_loss": 0.44542919320450775,
+   "pct_above_best_budget": 0.96,
+   "median_seconds": 43.69,
+   "median_fits": 156
+  },
+  {
+   "task": "bike_iid",
+   "budget": 0,
+   "completed": 3,
+   "mean_loss": 0.43489280944354,
+   "pct_above_best_budget": 26.31,
+   "median_seconds": 0.06,
+   "median_fits": 0
+  },
+  {
+   "task": "bike_iid",
+   "budget": 8,
+   "completed": 3,
+   "mean_loss": 0.3903580584037442,
+   "pct_above_best_budget": 13.38,
+   "median_seconds": 0.27,
+   "median_fits": 5
+  },
+  {
+   "task": "bike_iid",
+   "budget": 16,
+   "completed": 3,
+   "mean_loss": 0.3674969572109619,
+   "pct_above_best_budget": 6.74,
+   "median_seconds": 0.52,
+   "median_fits": 15
+  },
+  {
+   "task": "bike_iid",
+   "budget": 32,
+   "completed": 3,
+   "mean_loss": 0.3460798174581714,
+   "pct_above_best_budget": 0.52,
+   "median_seconds": 11.12,
+   "median_fits": 31
+  },
+  {
+   "task": "bike_iid",
+   "budget": 128,
+   "completed": 3,
+   "mean_loss": 0.34608637261782543,
+   "pct_above_best_budget": 0.52,
+   "median_seconds": 45.43,
+   "median_fits": 126
+  },
+  {
+   "task": "bike_iid",
+   "budget": 512,
+   "completed": 3,
+   "mean_loss": 0.3443021872321924,
+   "pct_above_best_budget": 0.0,
+   "median_seconds": 51.26,
+   "median_fits": 161
+  },
+  {
+   "task": "cancer",
+   "budget": 0,
+   "completed": 3,
+   "mean_loss": 0.1048907923043495,
+   "pct_above_best_budget": 5.95,
+   "median_seconds": 0.03,
+   "median_fits": 0
+  },
+  {
+   "task": "cancer",
+   "budget": 8,
+   "completed": 3,
+   "mean_loss": 0.09982250155912287,
+   "pct_above_best_budget": 0.83,
+   "median_seconds": 0.3,
+   "median_fits": 5
+  },
+  {
+   "task": "cancer",
+   "budget": 16,
+   "completed": 3,
+   "mean_loss": 0.09899998074883878,
+   "pct_above_best_budget": 0.0,
+   "median_seconds": 0.68,
+   "median_fits": 15
+  },
+  {
+   "task": "cancer",
+   "budget": 32,
+   "completed": 3,
+   "mean_loss": 0.09966328456266883,
+   "pct_above_best_budget": 0.67,
+   "median_seconds": 4.5,
+   "median_fits": 32
+  },
+  {
+   "task": "cancer",
+   "budget": 128,
+   "completed": 3,
+   "mean_loss": 0.11468772178127318,
+   "pct_above_best_budget": 15.85,
+   "median_seconds": 12.67,
+   "median_fits": 77
+  },
+  {
+   "task": "cancer",
+   "budget": 512,
+   "completed": 3,
+   "mean_loss": 0.11468772178127318,
+   "pct_above_best_budget": 15.85,
+   "median_seconds": 13.37,
+   "median_fits": 77
+  },
+  {
+   "task": "concrete",
+   "budget": 0,
+   "completed": 3,
+   "mean_loss": 45.18782754726234,
+   "pct_above_best_budget": 28.68,
+   "median_seconds": 0.01,
+   "median_fits": 0
+  },
+  {
+   "task": "concrete",
+   "budget": 8,
+   "completed": 3,
+   "mean_loss": 43.716265054263836,
+   "pct_above_best_budget": 24.48,
+   "median_seconds": 0.09,
+   "median_fits": 5
+  },
+  {
+   "task": "concrete",
+   "budget": 16,
+   "completed": 3,
+   "mean_loss": 40.7820605061347,
+   "pct_above_best_budget": 16.13,
+   "median_seconds": 0.18,
+   "median_fits": 15
+  },
+  {
+   "task": "concrete",
+   "budget": 32,
+   "completed": 3,
+   "mean_loss": 35.11773796294198,
+   "pct_above_best_budget": 0.0,
+   "median_seconds": 5.17,
+   "median_fits": 31
+  },
+  {
+   "task": "concrete",
+   "budget": 128,
+   "completed": 3,
+   "mean_loss": 36.04069808781823,
+   "pct_above_best_budget": 2.63,
+   "median_seconds": 23.45,
+   "median_fits": 76
+  },
+  {
+   "task": "concrete",
+   "budget": 512,
+   "completed": 3,
+   "mean_loss": 36.04069808781823,
+   "pct_above_best_budget": 2.63,
+   "median_seconds": 23.93,
+   "median_fits": 76
+  },
+  {
+   "task": "credit",
+   "budget": 0,
+   "completed": 3,
+   "mean_loss": 0.5016243763683894,
+   "pct_above_best_budget": 0.0,
+   "median_seconds": 0.03,
+   "median_fits": 0
+  },
+  {
+   "task": "credit",
+   "budget": 8,
+   "completed": 3,
+   "mean_loss": 0.5038421769986006,
+   "pct_above_best_budget": 0.44,
+   "median_seconds": 0.16,
+   "median_fits": 5
+  },
+  {
+   "task": "credit",
+   "budget": 16,
+   "completed": 3,
+   "mean_loss": 0.5023985961519324,
+   "pct_above_best_budget": 0.15,
+   "median_seconds": 0.24,
+   "median_fits": 15
+  },
+  {
+   "task": "credit",
+   "budget": 32,
+   "completed": 3,
+   "mean_loss": 0.5023985961519324,
+   "pct_above_best_budget": 0.15,
+   "median_seconds": 2.64,
+   "median_fits": 31
+  },
+  {
+   "task": "credit",
+   "budget": 128,
+   "completed": 3,
+   "mean_loss": 0.5023010798799046,
+   "pct_above_best_budget": 0.13,
+   "median_seconds": 3.02,
+   "median_fits": 126
+  },
+  {
+   "task": "credit",
+   "budget": 512,
+   "completed": 3,
+   "mean_loss": 0.5017075946022753,
+   "pct_above_best_budget": 0.02,
+   "median_seconds": 3.3,
+   "median_fits": 161
+  },
+  {
+   "task": "diamonds",
+   "budget": 0,
+   "completed": 3,
+   "mean_loss": 0.020431230835706776,
+   "pct_above_best_budget": 34.83,
+   "median_seconds": 0.04,
+   "median_fits": 0
+  },
+  {
+   "task": "diamonds",
+   "budget": 8,
+   "completed": 3,
+   "mean_loss": 0.017965863177707254,
+   "pct_above_best_budget": 18.56,
+   "median_seconds": 0.2,
+   "median_fits": 5
+  },
+  {
+   "task": "diamonds",
+   "budget": 16,
+   "completed": 3,
+   "mean_loss": 0.016077265837292475,
+   "pct_above_best_budget": 6.09,
+   "median_seconds": 0.44,
+   "median_fits": 15
+  },
+  {
+   "task": "diamonds",
+   "budget": 32,
+   "completed": 3,
+   "mean_loss": 0.016423166957548342,
+   "pct_above_best_budget": 8.38,
+   "median_seconds": 2.79,
+   "median_fits": 31
+  },
+  {
+   "task": "diamonds",
+   "budget": 128,
+   "completed": 3,
+   "mean_loss": 0.015153666631371753,
+   "pct_above_best_budget": 0.0,
+   "median_seconds": 37.93,
+   "median_fits": 81
+  },
+  {
+   "task": "diamonds",
+   "budget": 512,
+   "completed": 3,
+   "mean_loss": 0.015153666631371753,
+   "pct_above_best_budget": 0.0,
+   "median_seconds": 38.51,
+   "median_fits": 81
+  },
+  {
+   "task": "housing_iid",
+   "budget": 0,
+   "completed": 3,
+   "mean_loss": 0.09443296247843248,
+   "pct_above_best_budget": 62.96,
+   "median_seconds": 0.03,
+   "median_fits": 0
+  },
+  {
+   "task": "housing_iid",
+   "budget": 8,
+   "completed": 3,
+   "mean_loss": 0.08854397100661836,
+   "pct_above_best_budget": 52.8,
+   "median_seconds": 0.26,
+   "median_fits": 5
+  },
+  {
+   "task": "housing_iid",
+   "budget": 16,
+   "completed": 3,
+   "mean_loss": 0.08381612307256411,
+   "pct_above_best_budget": 44.64,
+   "median_seconds": 0.52,
+   "median_fits": 15
+  },
+  {
+   "task": "housing_iid",
+   "budget": 32,
+   "completed": 3,
+   "mean_loss": 0.059498583581980985,
+   "pct_above_best_budget": 2.67,
+   "median_seconds": 5.17,
+   "median_fits": 31
+  },
+  {
+   "task": "housing_iid",
+   "budget": 128,
+   "completed": 3,
+   "mean_loss": 0.05794930775323538,
+   "pct_above_best_budget": 0.0,
+   "median_seconds": 84.53,
+   "median_fits": 126
+  },
+  {
+   "task": "housing_iid",
+   "budget": 512,
+   "completed": 3,
+   "mean_loss": 0.05794930775323538,
+   "pct_above_best_budget": 0.0,
+   "median_seconds": 74.62,
+   "median_fits": 126
+  },
+  {
+   "task": "joint_boundary",
+   "budget": 0,
+   "completed": 3,
+   "mean_loss": 9.22850869434995,
+   "pct_above_best_budget": 0.6,
+   "median_seconds": 0.03,
+   "median_fits": 0
+  },
+  {
+   "task": "joint_boundary",
+   "budget": 8,
+   "completed": 3,
+   "mean_loss": 9.181979906623239,
+   "pct_above_best_budget": 0.09,
+   "median_seconds": 0.29,
+   "median_fits": 5
+  },
+  {
+   "task": "joint_boundary",
+   "budget": 16,
+   "completed": 3,
+   "mean_loss": 9.174067903994748,
+   "pct_above_best_budget": 0.0,
+   "median_seconds": 0.42,
+   "median_fits": 15
+  },
+  {
+   "task": "joint_boundary",
+   "budget": 32,
+   "completed": 3,
+   "mean_loss": 9.173832349155754,
+   "pct_above_best_budget": 0.0,
+   "median_seconds": 2.21,
+   "median_fits": 31
+  },
+  {
+   "task": "joint_boundary",
+   "budget": 128,
+   "completed": 3,
+   "mean_loss": 9.175807800073423,
+   "pct_above_best_budget": 0.02,
+   "median_seconds": 3.05,
+   "median_fits": 61
+  },
+  {
+   "task": "joint_boundary",
+   "budget": 512,
+   "completed": 3,
+   "mean_loss": 9.175807800073423,
+   "pct_above_best_budget": 0.02,
+   "median_seconds": 2.97,
+   "median_fits": 61
+  },
+  {
+   "task": "protein",
+   "budget": 0,
+   "completed": 3,
+   "mean_loss": 27.28161939086092,
+   "pct_above_best_budget": 7.78,
+   "median_seconds": 0.02,
+   "median_fits": 0
+  },
+  {
+   "task": "protein",
+   "budget": 8,
+   "completed": 3,
+   "mean_loss": 26.56705999276198,
+   "pct_above_best_budget": 4.96,
+   "median_seconds": 0.25,
+   "median_fits": 5
+  },
+  {
+   "task": "protein",
+   "budget": 16,
+   "completed": 3,
+   "mean_loss": 26.086467460483426,
+   "pct_above_best_budget": 3.06,
+   "median_seconds": 0.58,
+   "median_fits": 15
+  },
+  {
+   "task": "protein",
+   "budget": 32,
+   "completed": 3,
+   "mean_loss": 25.317691051338407,
+   "pct_above_best_budget": 0.02,
+   "median_seconds": 6.32,
+   "median_fits": 31
+  },
+  {
+   "task": "protein",
+   "budget": 128,
+   "completed": 3,
+   "mean_loss": 25.31142558380349,
+   "pct_above_best_budget": 0.0,
+   "median_seconds": 59.06,
+   "median_fits": 76
+  },
+  {
+   "task": "protein",
+   "budget": 512,
+   "completed": 3,
+   "mean_loss": 25.31142558380349,
+   "pct_above_best_budget": 0.0,
+   "median_seconds": 50.31,
+   "median_fits": 76
+  },
+  {
+   "task": "smooth_sparse",
+   "budget": 0,
+   "completed": 3,
+   "mean_loss": 0.2533824999931124,
+   "pct_above_best_budget": 0.62,
+   "median_seconds": 0.03,
+   "median_fits": 0
+  },
+  {
+   "task": "smooth_sparse",
+   "budget": 8,
+   "completed": 3,
+   "mean_loss": 0.2531806031251559,
+   "pct_above_best_budget": 0.54,
+   "median_seconds": 0.27,
+   "median_fits": 5
+  },
+  {
+   "task": "smooth_sparse",
+   "budget": 16,
+   "completed": 3,
+   "mean_loss": 0.25181837550708774,
+   "pct_above_best_budget": 0.0,
+   "median_seconds": 0.33,
+   "median_fits": 15
+  },
+  {
+   "task": "smooth_sparse",
+   "budget": 32,
+   "completed": 3,
+   "mean_loss": 0.25181837550708774,
+   "pct_above_best_budget": 0.0,
+   "median_seconds": 2.16,
+   "median_fits": 32
+  },
+  {
+   "task": "smooth_sparse",
+   "budget": 128,
+   "completed": 3,
+   "mean_loss": 0.25181837550708774,
+   "pct_above_best_budget": 0.0,
+   "median_seconds": 2.86,
+   "median_fits": 70
+  },
+  {
+   "task": "smooth_sparse",
+   "budget": 512,
+   "completed": 3,
+   "mean_loss": 0.25181837550708774,
+   "pct_above_best_budget": 0.0,
+   "median_seconds": 2.89,
+   "median_fits": 70
+  }
+ ],
+ "runs": [
+  {
+   "task": "concrete",
+   "seed": 0,
+   "budget": 0,
+   "status": "ok",
+   "loss": 42.24357836000176,
+   "seconds": 0.01,
+   "fits": 0,
+   "formula": "y ~ bbs(cement, df=4.0) + bbs(blast_furnace_slag, df=4.0) + bbs(fly_ash, df=4.0) + bbs(water, df=4.0) + bbs(superplasticizer, df=4.0) + bbs(coarse_aggregate, df=4.0) + bbs(fine_aggregate, df=4.0) + bbs(age, df=4.0)"
+  },
+  {
+   "task": "concrete",
+   "seed": 0,
+   "budget": 32,
+   "status": "ok",
+   "loss": 30.3889741251869,
+   "seconds": 4.51,
+   "fits": 31,
+   "formula": "y ~ bbs(cement, df=4.0) + bbs(blast_furnace_slag, df=4.0) + bbs(fly_ash, df=4.0) + bbs(water, df=4.0) + bbs(superplasticizer, df=4.0) + bbs(coarse_aggregate, df=4.0) + bbs(fine_aggregate, df=4.0) + bbs(age, df=4.0)"
+  },
+  {
+   "task": "concrete",
+   "seed": 0,
+   "budget": 128,
+   "status": "ok",
+   "loss": 29.6369046155492,
+   "seconds": 22.37,
+   "fits": 78,
+   "formula": "y ~ bbs(cement, df=4.0) + btree(blast_furnace_slag) + bbs(fly_ash, df=4.0) + btree(water) + bbs(superplasticizer, df=4.0) + bbs(coarse_aggregate, df=4.0) + bbs(fine_aggregate, df=4.0) + bbs(age, df=4.0)"
+  },
+  {
+   "task": "concrete",
+   "seed": 0,
+   "budget": 512,
+   "status": "ok",
+   "loss": 29.6369046155492,
+   "seconds": 22.71,
+   "fits": 78,
+   "formula": "y ~ bbs(cement, df=4.0) + btree(blast_furnace_slag) + bbs(fly_ash, df=4.0) + btree(water) + bbs(superplasticizer, df=4.0) + bbs(coarse_aggregate, df=4.0) + bbs(fine_aggregate, df=4.0) + bbs(age, df=4.0)"
+  },
+  {
+   "task": "concrete",
+   "seed": 1,
+   "budget": 0,
+   "status": "ok",
+   "loss": 50.12952121922114,
+   "seconds": 0.01,
+   "fits": 0,
+   "formula": "y ~ bbs(cement, df=4.0) + bbs(blast_furnace_slag, df=4.0) + bbs(fly_ash, df=4.0) + bbs(water, df=4.0) + bbs(superplasticizer, df=4.0) + bbs(coarse_aggregate, df=4.0) + bbs(fine_aggregate, df=4.0) + bbs(age, df=4.0)"
+  },
+  {
+   "task": "concrete",
+   "seed": 1,
+   "budget": 32,
+   "status": "ok",
+   "loss": 36.92129727329227,
+   "seconds": 5.17,
+   "fits": 31,
+   "formula": "y ~ bbs(cement, df=4.0) + bbs(blast_furnace_slag, df=4.0) + bbs(fly_ash, df=4.0) + bbs(water, df=4.0) + bbs(superplasticizer, df=4.0) + bbs(fine_aggregate, df=4.0) + bbs(age, df=4.0)"
+  },
+  {
+   "task": "concrete",
+   "seed": 1,
+   "budget": 128,
+   "status": "ok",
+   "loss": 40.36613401243588,
+   "seconds": 25.02,
+   "fits": 76,
+   "formula": "y ~ bbs(cement, df=4.0) + btree(blast_furnace_slag) + bbs(fly_ash, df=4.0) + btree(water) + btree(superplasticizer) + btree(coarse_aggregate) + bbs(fine_aggregate, df=4.0) + bbs(age, df=4.0)"
+  },
+  {
+   "task": "concrete",
+   "seed": 1,
+   "budget": 512,
+   "status": "ok",
+   "loss": 40.36613401243588,
+   "seconds": 26.28,
+   "fits": 76,
+   "formula": "y ~ bbs(cement, df=4.0) + btree(blast_furnace_slag) + bbs(fly_ash, df=4.0) + btree(water) + btree(superplasticizer) + btree(coarse_aggregate) + bbs(fine_aggregate, df=4.0) + bbs(age, df=4.0)"
+  },
+  {
+   "task": "concrete",
+   "seed": 2,
+   "budget": 0,
+   "status": "ok",
+   "loss": 43.190383062564116,
+   "seconds": 0.01,
+   "fits": 0,
+   "formula": "y ~ bbs(cement, df=4.0) + bbs(blast_furnace_slag, df=4.0) + bbs(fly_ash, df=4.0) + bbs(water, df=4.0) + bbs(superplasticizer, df=4.0) + bbs(coarse_aggregate, df=4.0) + bbs(fine_aggregate, df=4.0) + bbs(age, df=4.0)"
+  },
+  {
+   "task": "concrete",
+   "seed": 2,
+   "budget": 32,
+   "status": "ok",
+   "loss": 38.04294249034677,
+   "seconds": 5.23,
+   "fits": 31,
+   "formula": "y ~ bbs(cement, df=4.0) + bbs(blast_furnace_slag, df=4.0) + bbs(fly_ash, df=4.0) + bbs(water, df=4.0) + bbs(superplasticizer, df=4.0) + bbs(fine_aggregate, df=4.0) + bbs(age, df=4.0)"
+  },
+  {
+   "task": "concrete",
+   "seed": 2,
+   "budget": 128,
+   "status": "ok",
+   "loss": 38.119055635469614,
+   "seconds": 23.45,
+   "fits": 70,
+   "formula": "y ~ bbs(cement, df=4.0) + btree(blast_furnace_slag) + btree(fly_ash) + btree(water) + bbs(superplasticizer, df=4.0) + btree(coarse_aggregate) + bbs(fine_aggregate, df=4.0) + bbs(age, df=4.0)"
+  },
+  {
+   "task": "concrete",
+   "seed": 2,
+   "budget": 512,
+   "status": "ok",
+   "loss": 38.119055635469614,
+   "seconds": 23.93,
+   "fits": 70,
+   "formula": "y ~ bbs(cement, df=4.0) + btree(blast_furnace_slag) + btree(fly_ash) + btree(water) + bbs(superplasticizer, df=4.0) + btree(coarse_aggregate) + bbs(fine_aggregate, df=4.0) + bbs(age, df=4.0)"
+  },
+  {
+   "task": "cancer",
+   "seed": 0,
+   "budget": 0,
+   "status": "ok",
+   "loss": 0.10474891086359553,
+   "seconds": 0.03,
+   "fits": 0,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(x4, df=4.0) + bbs(x5, df=4.0) + bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(x8, df=4.0) + bbs(x9, df=4.0) + bbs(log(x10), df=4.0) + bbs(x11, df=4.0) + bbs(log(x12), df=4.0) + bbs(log(x13), df=4.0) + bbs(log(x14), df=4.0) + bbs(x15, df=4.0) + bbs(sqrt(x16), df=4.0) + bbs(x17, df=4.0) + bbs(log(x18), df=4.0) + bbs(log(x19), df=4.0) + bbs(x20, df=4.0) + bbs(x21, df=4.0) + bbs(x22, df=4.0) + bbs(x23, df=4.0) + bbs(x24, df=4.0) + bbs(x25, df=4.0) + bbs(x26, df=4.0) + bbs(x27, df=4.0) + bbs(x28, df=4.0) + bbs(x29, df=4.0)"
+  },
+  {
+   "task": "cancer",
+   "seed": 0,
+   "budget": 32,
+   "status": "ok",
+   "loss": 0.10649985196636674,
+   "seconds": 4.11,
+   "fits": 32,
+   "formula": "y ~ bbs(x1, df=4.0) + bbs(x7, df=4.0) + bbs(log(x13), df=4.0) + bbs(x20, df=4.0) + bbs(x21, df=4.0) + bbs(x22, df=4.0) + bbs(x24, df=4.0) + bbs(x26, df=4.0) + bbs(x27, df=4.0) + bbs(x28, df=4.0)"
+  },
+  {
+   "task": "cancer",
+   "seed": 0,
+   "budget": 128,
+   "status": "ok",
+   "loss": 0.11526673217302143,
+   "seconds": 10.18,
+   "fits": 77,
+   "formula": "y ~ bbs(x1, df=4.0) + btree(x3) + bbs(x4, df=4.0) + bbs(x7, df=4.0) + bbs(log(x10), df=4.0) + btree(x11) + bbs(x20, df=4.0) + bbs(x21, df=4.0) + bbs(x22, df=4.0) + bbs(x24, df=4.0) + bbs(x26, df=4.0) + bbs(x27, df=4.0) + bbs(x28, df=4.0)"
+  },
+  {
+   "task": "cancer",
+   "seed": 0,
+   "budget": 512,
+   "status": "ok",
+   "loss": 0.11526673217302143,
+   "seconds": 12.96,
+   "fits": 77,
+   "formula": "y ~ bbs(x1, df=4.0) + btree(x3) + bbs(x4, df=4.0) + bbs(x7, df=4.0) + bbs(log(x10), df=4.0) + btree(x11) + bbs(x20, df=4.0) + bbs(x21, df=4.0) + bbs(x22, df=4.0) + bbs(x24, df=4.0) + bbs(x26, df=4.0) + bbs(x27, df=4.0) + bbs(x28, df=4.0)"
+  },
+  {
+   "task": "cancer",
+   "seed": 1,
+   "budget": 0,
+   "status": "ok",
+   "loss": 0.08266451424957752,
+   "seconds": 0.03,
+   "fits": 0,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(x4, df=4.0) + bbs(x5, df=4.0) + bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(x8, df=4.0) + bbs(x9, df=4.0) + bbs(log(x10), df=4.0) + bbs(x11, df=4.0) + bbs(log(x12), df=4.0) + bbs(log(x13), df=4.0) + bbs(log(x14), df=4.0) + bbs(x15, df=4.0) + bbs(sqrt(x16), df=4.0) + bbs(x17, df=4.0) + bbs(log(x18), df=4.0) + bbs(log(x19), df=4.0) + bbs(x20, df=4.0) + bbs(x21, df=4.0) + bbs(x22, df=4.0) + bbs(log(x23), df=4.0) + bbs(x24, df=4.0) + bbs(x25, df=4.0) + bbs(x26, df=4.0) + bbs(x27, df=4.0) + bbs(x28, df=4.0) + bbs(x29, df=4.0)"
+  },
+  {
+   "task": "cancer",
+   "seed": 1,
+   "budget": 32,
+   "status": "ok",
+   "loss": 0.06938290887093063,
+   "seconds": 4.5,
+   "fits": 32,
+   "formula": "y ~ bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(log(x13), df=4.0) + bbs(log(x18), df=4.0) + bbs(x21, df=4.0) + bbs(x22, df=4.0) + bbs(log(x23), df=4.0) + bbs(x24, df=4.0) + bbs(x27, df=4.0) + bbs(x28, df=4.0)"
+  },
+  {
+   "task": "cancer",
+   "seed": 1,
+   "budget": 128,
+   "status": "ok",
+   "loss": 0.06896735325197208,
+   "seconds": 12.67,
+   "fits": 77,
+   "formula": "y ~ bbs(x1, df=4.0) + btree(x3) + btree(x5) + bbs(x7, df=4.0) + bbs(log(x10), df=4.0) + bbs(x21, df=4.0) + bbs(x22, df=4.0) + bbs(log(x23), df=4.0) + bbs(x24, df=4.0) + btree(x26) + bbs(x27, df=4.0) + bbs(x28, df=4.0)"
+  },
+  {
+   "task": "cancer",
+   "seed": 1,
+   "budget": 512,
+   "status": "ok",
+   "loss": 0.06896735325197208,
+   "seconds": 13.37,
+   "fits": 77,
+   "formula": "y ~ bbs(x1, df=4.0) + btree(x3) + btree(x5) + bbs(x7, df=4.0) + bbs(log(x10), df=4.0) + bbs(x21, df=4.0) + bbs(x22, df=4.0) + bbs(log(x23), df=4.0) + bbs(x24, df=4.0) + btree(x26) + bbs(x27, df=4.0) + bbs(x28, df=4.0)"
+  },
+  {
+   "task": "cancer",
+   "seed": 2,
+   "budget": 0,
+   "status": "ok",
+   "loss": 0.12725895179987545,
+   "seconds": 0.04,
+   "fits": 0,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(x4, df=4.0) + bbs(x5, df=4.0) + bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(x8, df=4.0) + bbs(x9, df=4.0) + bbs(x10, df=4.0) + bbs(x11, df=4.0) + bbs(x12, df=4.0) + bbs(log(x13), df=4.0) + bbs(log(x14), df=4.0) + bbs(log(x15), df=4.0) + bbs(sqrt(x16), df=4.0) + bbs(x17, df=4.0) + bbs(log(x18), df=4.0) + bbs(log(x19), df=4.0) + bbs(x20, df=4.0) + bbs(x21, df=4.0) + bbs(x22, df=4.0) + bbs(x23, df=4.0) + bbs(x24, df=4.0) + bbs(x25, df=4.0) + bbs(x26, df=4.0) + bbs(x27, df=4.0) + bbs(x28, df=4.0) + bbs(x29, df=4.0)"
+  },
+  {
+   "task": "cancer",
+   "seed": 2,
+   "budget": 32,
+   "status": "ok",
+   "loss": 0.12310709285070914,
+   "seconds": 4.7,
+   "fits": 32,
+   "formula": "y ~ bbs(x1, df=4.0) + bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(log(x13), df=4.0) + bbs(log(x18), df=4.0) + bbs(x20, df=4.0) + bbs(x21, df=4.0) + bbs(x22, df=4.0) + bbs(x23, df=4.0) + bbs(x24, df=4.0) + bbs(x27, df=4.0) + bbs(x28, df=4.0)"
+  },
+  {
+   "task": "cancer",
+   "seed": 2,
+   "budget": 128,
+   "status": "ok",
+   "loss": 0.15982907991882603,
+   "seconds": 19.3,
+   "fits": 77,
+   "formula": "y ~ bbs(x1, df=4.0) + bbs(x7, df=4.0) + bols(log(x13)) + btree(x15) + btree(x22) + btree(x24) + btree(x26) + bbs(x27, df=4.0) + bbs(x28, df=4.0)"
+  },
+  {
+   "task": "cancer",
+   "seed": 2,
+   "budget": 512,
+   "status": "ok",
+   "loss": 0.15982907991882603,
+   "seconds": 18.78,
+   "fits": 77,
+   "formula": "y ~ bbs(x1, df=4.0) + bbs(x7, df=4.0) + bols(log(x13)) + btree(x15) + btree(x22) + btree(x24) + btree(x26) + bbs(x27, df=4.0) + bbs(x28, df=4.0)"
+  },
+  {
+   "task": "housing_iid",
+   "seed": 0,
+   "budget": 0,
+   "status": "ok",
+   "loss": 0.09473832117465535,
+   "seconds": 0.03,
+   "fits": 0,
+   "formula": "y ~ bbs(longitude, df=4.0) + bbs(latitude, df=4.0) + bbs(age, df=4.0) + bbs(income, df=4.0) + bbs(log(rooms), df=4.0) + bbs(log(bedrooms), df=4.0) + bbs(log(population), df=4.0) + bbs(log(occupancy), df=4.0)"
+  },
+  {
+   "task": "housing_iid",
+   "seed": 0,
+   "budget": 32,
+   "status": "ok",
+   "loss": 0.054399394200109384,
+   "seconds": 5.17,
+   "fits": 31,
+   "formula": "y ~ btree(longitude, latitude, age, income, rooms, bedrooms, population, occupancy, maxdepth=6, selection=sse)"
+  },
+  {
+   "task": "housing_iid",
+   "seed": 0,
+   "budget": 128,
+   "status": "ok",
+   "loss": 0.05530293824632831,
+   "seconds": 84.53,
+   "fits": 127,
+   "formula": "y ~ bbs(age, df=4.0) + bbs(income, df=4.0) + bbs(log(rooms), df=4.0) + bbs(log(bedrooms), df=4.0) + bbs(log(occupancy), df=4.0) + btree(longitude, latitude, maxdepth=3)"
+  },
+  {
+   "task": "housing_iid",
+   "seed": 0,
+   "budget": 512,
+   "status": "ok",
+   "loss": 0.05530293824632831,
+   "seconds": 93.78,
+   "fits": 137,
+   "formula": "y ~ bbs(age, df=4.0) + bbs(income, df=4.0) + bbs(log(rooms), df=4.0) + bbs(log(bedrooms), df=4.0) + bbs(log(occupancy), df=4.0) + btree(longitude, latitude, maxdepth=3)"
+  },
+  {
+   "task": "housing_iid",
+   "seed": 1,
+   "budget": 0,
+   "status": "ok",
+   "loss": 0.0975639326907606,
+   "seconds": 0.04,
+   "fits": 0,
+   "formula": "y ~ bbs(longitude, df=4.0) + bbs(latitude, df=4.0) + bbs(age, df=4.0) + bbs(income, df=4.0) + bbs(log(rooms), df=4.0) + bbs(log(bedrooms), df=4.0) + bbs(log(population), df=4.0) + bbs(log(occupancy), df=4.0)"
+  },
+  {
+   "task": "housing_iid",
+   "seed": 1,
+   "budget": 32,
+   "status": "ok",
+   "loss": 0.06382498256971675,
+   "seconds": 5.57,
+   "fits": 31,
+   "formula": "y ~ btree(longitude, latitude, age, income, rooms, bedrooms, population, occupancy, maxdepth=3, selection=sse)"
+  },
+  {
+   "task": "housing_iid",
+   "seed": 1,
+   "budget": 128,
+   "status": "ok",
+   "loss": 0.062396828642565814,
+   "seconds": 91.15,
+   "fits": 126,
+   "formula": "y ~ bbs(income, df=4.0) + bbs(log(rooms), df=4.0) + bbs(log(occupancy), df=4.0) + btree(longitude, latitude, maxdepth=3)"
+  },
+  {
+   "task": "housing_iid",
+   "seed": 1,
+   "budget": 512,
+   "status": "ok",
+   "loss": 0.062396828642565814,
+   "seconds": 74.62,
+   "fits": 126,
+   "formula": "y ~ bbs(income, df=4.0) + bbs(log(rooms), df=4.0) + bbs(log(occupancy), df=4.0) + btree(longitude, latitude, maxdepth=3)"
+  },
+  {
+   "task": "housing_iid",
+   "seed": 2,
+   "budget": 0,
+   "status": "ok",
+   "loss": 0.09099663356988151,
+   "seconds": 0.02,
+   "fits": 0,
+   "formula": "y ~ bbs(longitude, df=4.0) + bbs(latitude, df=4.0) + bbs(age, df=4.0) + bbs(income, df=4.0) + bbs(log(rooms), df=4.0) + bbs(log(bedrooms), df=4.0) + bbs(log(population), df=4.0) + bbs(log(occupancy), df=4.0)"
+  },
+  {
+   "task": "housing_iid",
+   "seed": 2,
+   "budget": 32,
+   "status": "ok",
+   "loss": 0.06027137397611682,
+   "seconds": 3.82,
+   "fits": 31,
+   "formula": "y ~ btree(longitude, latitude, age, income, rooms, bedrooms, population, occupancy, maxdepth=3, selection=sse)"
+  },
+  {
+   "task": "housing_iid",
+   "seed": 2,
+   "budget": 128,
+   "status": "ok",
+   "loss": 0.05614815637081203,
+   "seconds": 24.06,
+   "fits": 126,
+   "formula": "y ~ bbs(income, df=4.0) + bbs(log(rooms), df=4.0) + bbs(log(occupancy), df=4.0) + btree(longitude, latitude, maxdepth=3)"
+  },
+  {
+   "task": "housing_iid",
+   "seed": 2,
+   "budget": 512,
+   "status": "ok",
+   "loss": 0.05614815637081203,
+   "seconds": 24.14,
+   "fits": 126,
+   "formula": "y ~ bbs(income, df=4.0) + bbs(log(rooms), df=4.0) + bbs(log(occupancy), df=4.0) + btree(longitude, latitude, maxdepth=3)"
+  },
+  {
+   "task": "credit",
+   "seed": 0,
+   "budget": 0,
+   "status": "ok",
+   "loss": 0.5121894576786438,
+   "seconds": 0.03,
+   "fits": 0,
+   "formula": "y ~ brandom(checking_status, df=4.0) + bbs(duration, df=4.0) + brandom(credit_history, df=4.0) + brandom(purpose, df=4.0) + bbs(log(credit_amount), df=4.0) + brandom(savings_status, df=4.0) + brandom(employment, df=4.0) + bols(installment_commitment) + brandom(personal_status, df=4.0) + brandom(other_parties, df=4.0) + bols(residence_since) + brandom(property_magnitude, df=4.0) + bbs(age, df=4.0) + brandom(other_payment_plans, df=4.0) + brandom(housing, df=4.0) + bols(existing_credits) + brandom(job, df=4.0) + bols(num_dependents) + bols(own_telephone) + bols(foreign_worker)"
+  },
+  {
+   "task": "credit",
+   "seed": 0,
+   "budget": 32,
+   "status": "ok",
+   "loss": 0.5114944553190874,
+   "seconds": 2.69,
+   "fits": 31,
+   "formula": "y ~ brandom(checking_status, df=4.0) + bbs(duration, df=4.0) + brandom(credit_history, df=4.0) + brandom(purpose, df=4.0) + bbs(log(credit_amount), df=4.0) + brandom(savings_status, df=4.0) + brandom(employment, df=4.0) + brandom(personal_status, df=4.0) + brandom(other_payment_plans, df=4.0)"
+  },
+  {
+   "task": "credit",
+   "seed": 0,
+   "budget": 128,
+   "status": "ok",
+   "loss": 0.5114944553190874,
+   "seconds": 3.02,
+   "fits": 126,
+   "formula": "y ~ brandom(checking_status, df=4.0) + bbs(duration, df=4.0) + brandom(credit_history, df=4.0) + brandom(purpose, df=4.0) + bbs(log(credit_amount), df=4.0) + brandom(savings_status, df=4.0) + brandom(employment, df=4.0) + brandom(personal_status, df=4.0) + brandom(other_payment_plans, df=4.0)"
+  },
+  {
+   "task": "credit",
+   "seed": 0,
+   "budget": 512,
+   "status": "ok",
+   "loss": 0.5106984260373209,
+   "seconds": 3.21,
+   "fits": 161,
+   "formula": "y ~ brandom(checking_status, df=4.0) + bbs(duration, df=4.0) + brandom(credit_history, df=4.0) + brandom(purpose, df=4.0) + bbs(log(credit_amount), df=4.0) + brandom(savings_status, df=4.0) + brandom(employment, df=4.0) + brandom(personal_status, df=4.0) + brandom(other_payment_plans, df=4.0)"
+  },
+  {
+   "task": "credit",
+   "seed": 1,
+   "budget": 0,
+   "status": "ok",
+   "loss": 0.4727912690016388,
+   "seconds": 0.03,
+   "fits": 0,
+   "formula": "y ~ brandom(checking_status, df=4.0) + bbs(duration, df=4.0) + brandom(credit_history, df=4.0) + brandom(purpose, df=4.0) + bbs(credit_amount, df=4.0) + brandom(savings_status, df=4.0) + brandom(employment, df=4.0) + bols(installment_commitment) + brandom(personal_status, df=4.0) + brandom(other_parties, df=4.0) + bols(residence_since) + brandom(property_magnitude, df=4.0) + bbs(age, df=4.0) + brandom(other_payment_plans, df=4.0) + brandom(housing, df=4.0) + bols(existing_credits) + brandom(job, df=4.0) + bols(num_dependents) + bols(own_telephone) + bols(foreign_worker)"
+  },
+  {
+   "task": "credit",
+   "seed": 1,
+   "budget": 32,
+   "status": "ok",
+   "loss": 0.46619841590028427,
+   "seconds": 2.64,
+   "fits": 31,
+   "formula": "y ~ brandom(checking_status, df=4.0) + bbs(duration, df=4.0) + brandom(credit_history, df=4.0) + brandom(purpose, df=4.0) + bbs(credit_amount, df=4.0) + brandom(savings_status, df=4.0) + brandom(employment, df=4.0) + bols(installment_commitment) + brandom(other_parties, df=4.0) + brandom(property_magnitude, df=4.0) + bbs(age, df=4.0) + brandom(other_payment_plans, df=4.0)"
+  },
+  {
+   "task": "credit",
+   "seed": 1,
+   "budget": 128,
+   "status": "ok",
+   "loss": 0.46619841590028427,
+   "seconds": 2.98,
+   "fits": 126,
+   "formula": "y ~ brandom(checking_status, df=4.0) + bbs(duration, df=4.0) + brandom(credit_history, df=4.0) + brandom(purpose, df=4.0) + bbs(credit_amount, df=4.0) + brandom(savings_status, df=4.0) + brandom(employment, df=4.0) + bols(installment_commitment) + brandom(other_parties, df=4.0) + brandom(property_magnitude, df=4.0) + bbs(age, df=4.0) + brandom(other_payment_plans, df=4.0)"
+  },
+  {
+   "task": "credit",
+   "seed": 1,
+   "budget": 512,
+   "status": "ok",
+   "loss": 0.4656648180074919,
+   "seconds": 3.3,
+   "fits": 161,
+   "formula": "y ~ brandom(checking_status, df=4.0) + bbs(duration, df=4.0) + brandom(credit_history, df=4.0) + brandom(purpose, df=4.0) + bbs(credit_amount, df=4.0) + brandom(savings_status, df=4.0) + brandom(employment, df=4.0) + bols(installment_commitment) + brandom(other_parties, df=4.0) + brandom(property_magnitude, df=4.0) + bbs(age, df=4.0) + brandom(other_payment_plans, df=4.0)"
+  },
+  {
+   "task": "credit",
+   "seed": 2,
+   "budget": 0,
+   "status": "ok",
+   "loss": 0.5198924024248857,
+   "seconds": 0.03,
+   "fits": 0,
+   "formula": "y ~ brandom(checking_status, df=4.0) + bbs(duration, df=4.0) + brandom(credit_history, df=4.0) + brandom(purpose, df=4.0) + bbs(credit_amount, df=4.0) + brandom(savings_status, df=4.0) + brandom(employment, df=4.0) + bols(installment_commitment) + brandom(personal_status, df=4.0) + brandom(other_parties, df=4.0) + bols(residence_since) + brandom(property_magnitude, df=4.0) + bbs(age, df=4.0) + brandom(other_payment_plans, df=4.0) + brandom(housing, df=4.0) + bols(existing_credits) + brandom(job, df=4.0) + bols(num_dependents) + bols(own_telephone) + bols(foreign_worker)"
+  },
+  {
+   "task": "credit",
+   "seed": 2,
+   "budget": 32,
+   "status": "ok",
+   "loss": 0.5295029172364254,
+   "seconds": 2.6,
+   "fits": 31,
+   "formula": "y ~ brandom(checking_status, df=4.0) + bbs(duration, df=4.0) + brandom(credit_history, df=4.0) + brandom(purpose, df=4.0) + bbs(credit_amount, df=4.0) + brandom(employment, df=4.0) + brandom(personal_status, df=4.0) + brandom(other_parties, df=4.0) + brandom(property_magnitude, df=4.0) + bbs(age, df=4.0) + brandom(other_payment_plans, df=4.0)"
+  },
+  {
+   "task": "credit",
+   "seed": 2,
+   "budget": 128,
+   "status": "ok",
+   "loss": 0.5292103684203421,
+   "seconds": 3.06,
+   "fits": 126,
+   "formula": "y ~ brandom(checking_status, df=4.0) + bbs(duration, df=4.0) + brandom(credit_history, df=4.0) + brandom(purpose, df=4.0) + bbs(credit_amount, df=4.0) + brandom(employment, df=4.0) + btree(installment_commitment) + brandom(personal_status, df=4.0) + brandom(other_parties, df=4.0) + brandom(property_magnitude, df=4.0) + bbs(age, df=4.0) + brandom(other_payment_plans, df=4.0)"
+  },
+  {
+   "task": "credit",
+   "seed": 2,
+   "budget": 512,
+   "status": "ok",
+   "loss": 0.5287595397620131,
+   "seconds": 3.31,
+   "fits": 166,
+   "formula": "y ~ brandom(checking_status, df=4.0) + bbs(duration, df=4.0) + brandom(credit_history, df=4.0) + brandom(purpose, df=4.0) + bbs(credit_amount, df=4.0) + brandom(employment, df=4.0) + btree(installment_commitment) + brandom(personal_status, df=4.0) + brandom(other_parties, df=4.0) + brandom(property_magnitude, df=4.0) + bbs(age, df=4.0) + brandom(other_payment_plans, df=4.0)"
+  },
+  {
+   "task": "bike_iid",
+   "seed": 0,
+   "budget": 0,
+   "status": "ok",
+   "loss": 0.44966972669155436,
+   "seconds": 0.04,
+   "fits": 0,
+   "formula": "y ~ brandom(season, df=4.0) + bols(holiday) + bols(workingday) + brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(mnth, df=4.0) + bols(yr) + bbs(temp, df=4.0) + bbs(hum, df=4.0) + bbs(windspeed, df=4.0)"
+  },
+  {
+   "task": "bike_iid",
+   "seed": 0,
+   "budget": 32,
+   "status": "ok",
+   "loss": 0.3547986897550243,
+   "seconds": 11.12,
+   "fits": 31,
+   "formula": "y ~ brandom(season, df=4.0) + brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bols(yr) + bbs(temp, df=4.0) + bbs(hum, df=4.0)"
+  },
+  {
+   "task": "bike_iid",
+   "seed": 0,
+   "budget": 128,
+   "status": "ok",
+   "loss": 0.3547986897550243,
+   "seconds": 45.43,
+   "fits": 126,
+   "formula": "y ~ brandom(season, df=4.0) + brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bols(yr) + bbs(temp, df=4.0) + bbs(hum, df=4.0)"
+  },
+  {
+   "task": "bike_iid",
+   "seed": 0,
+   "budget": 512,
+   "status": "ok",
+   "loss": 0.35440315444423515,
+   "seconds": 51.26,
+   "fits": 161,
+   "formula": "y ~ brandom(season, df=4.0) + bols(holiday) + bols(workingday) + brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(mnth, df=4.0) + bols(yr) + bbs(temp, df=4.0) + bbs(hum, df=4.0) + bbs(windspeed, df=4.0)"
+  },
+  {
+   "task": "bike_iid",
+   "seed": 1,
+   "budget": 0,
+   "status": "ok",
+   "loss": 0.4255962922016707,
+   "seconds": 0.06,
+   "fits": 0,
+   "formula": "y ~ brandom(season, df=4.0) + bols(holiday) + bols(workingday) + brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(mnth, df=4.0) + bols(yr) + bbs(temp, df=4.0) + bbs(hum, df=4.0) + bbs(windspeed, df=4.0)"
+  },
+  {
+   "task": "bike_iid",
+   "seed": 1,
+   "budget": 32,
+   "status": "ok",
+   "loss": 0.3345588874202294,
+   "seconds": 11.39,
+   "fits": 31,
+   "formula": "y ~ brandom(season, df=4.0) + brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bols(yr) + bbs(temp, df=4.0) + bbs(hum, df=4.0)"
+  },
+  {
+   "task": "bike_iid",
+   "seed": 1,
+   "budget": 128,
+   "status": "ok",
+   "loss": 0.3345588874202294,
+   "seconds": 48.34,
+   "fits": 126,
+   "formula": "y ~ brandom(season, df=4.0) + brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bols(yr) + bbs(temp, df=4.0) + bbs(hum, df=4.0)"
+  },
+  {
+   "task": "bike_iid",
+   "seed": 1,
+   "budget": 512,
+   "status": "ok",
+   "loss": 0.3341218058446192,
+   "seconds": 54.07,
+   "fits": 161,
+   "formula": "y ~ brandom(season, df=4.0) + bols(holiday) + bols(workingday) + brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(mnth, df=4.0) + bols(yr) + bbs(temp, df=4.0) + bbs(hum, df=4.0) + bbs(windspeed, df=4.0)"
+  },
+  {
+   "task": "bike_iid",
+   "seed": 2,
+   "budget": 0,
+   "status": "ok",
+   "loss": 0.4294124094373949,
+   "seconds": 0.06,
+   "fits": 0,
+   "formula": "y ~ brandom(season, df=4.0) + bols(holiday) + bols(workingday) + brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(mnth, df=4.0) + bols(yr) + bbs(temp, df=4.0) + bbs(hum, df=4.0) + bbs(windspeed, df=4.0)"
+  },
+  {
+   "task": "bike_iid",
+   "seed": 2,
+   "budget": 32,
+   "status": "ok",
+   "loss": 0.34888187519926045,
+   "seconds": 9.2,
+   "fits": 31,
+   "formula": "y ~ brandom(season, df=4.0) + brandom(weathersit, df=4.0) + bbs(hr, df=4.0) + bols(yr) + bbs(temp, df=4.0) + bbs(hum, df=4.0)"
+  },
+  {
+   "task": "bike_iid",
+   "seed": 2,
+   "budget": 128,
+   "status": "ok",
+   "loss": 0.34890154067822254,
+   "seconds": 32.3,
+   "fits": 126,
+   "formula": "y ~ brandom(season, df=4.0) + brandom(weathersit, df=4.0) + bbs(hr, df=4.0) + bols(yr) + bbs(temp, df=4.0) + bbs(hum, df=4.0)"
+  },
+  {
+   "task": "bike_iid",
+   "seed": 2,
+   "budget": 512,
+   "status": "ok",
+   "loss": 0.3443816014077229,
+   "seconds": 33.2,
+   "fits": 156,
+   "formula": "y ~ brandom(season, df=4.0) + bols(holiday) + bols(workingday) + brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(mnth, df=4.0) + bols(yr) + bbs(temp, df=4.0) + bbs(hum, df=4.0) + bbs(windspeed, df=4.0)"
+  },
+  {
+   "task": "smooth_sparse",
+   "seed": 0,
+   "budget": 0,
+   "status": "ok",
+   "loss": 0.2555698236743353,
+   "seconds": 0.03,
+   "fits": 0,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(x4, df=4.0) + bbs(x5, df=4.0) + bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(x8, df=4.0) + bbs(x9, df=4.0) + bbs(x10, df=4.0) + bbs(x11, df=4.0)"
+  },
+  {
+   "task": "smooth_sparse",
+   "seed": 0,
+   "budget": 32,
+   "status": "ok",
+   "loss": 0.25393456837621936,
+   "seconds": 2.2,
+   "fits": 32,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0)"
+  },
+  {
+   "task": "smooth_sparse",
+   "seed": 0,
+   "budget": 128,
+   "status": "ok",
+   "loss": 0.25393456837621936,
+   "seconds": 2.82,
+   "fits": 70,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0)"
+  },
+  {
+   "task": "smooth_sparse",
+   "seed": 0,
+   "budget": 512,
+   "status": "ok",
+   "loss": 0.25393456837621936,
+   "seconds": 2.89,
+   "fits": 70,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0)"
+  },
+  {
+   "task": "smooth_sparse",
+   "seed": 1,
+   "budget": 0,
+   "status": "ok",
+   "loss": 0.24536603169826665,
+   "seconds": 0.04,
+   "fits": 0,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(x4, df=4.0) + bbs(x5, df=4.0) + bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(x8, df=4.0) + bbs(x9, df=4.0) + bbs(x10, df=4.0) + bbs(x11, df=4.0)"
+  },
+  {
+   "task": "smooth_sparse",
+   "seed": 1,
+   "budget": 32,
+   "status": "ok",
+   "loss": 0.24295963270339244,
+   "seconds": 2.16,
+   "fits": 32,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0)"
+  },
+  {
+   "task": "smooth_sparse",
+   "seed": 1,
+   "budget": 128,
+   "status": "ok",
+   "loss": 0.24295963270339244,
+   "seconds": 2.86,
+   "fits": 70,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0)"
+  },
+  {
+   "task": "smooth_sparse",
+   "seed": 1,
+   "budget": 512,
+   "status": "ok",
+   "loss": 0.24295963270339244,
+   "seconds": 2.89,
+   "fits": 70,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0)"
+  },
+  {
+   "task": "smooth_sparse",
+   "seed": 2,
+   "budget": 0,
+   "status": "ok",
+   "loss": 0.2592116446067353,
+   "seconds": 0.03,
+   "fits": 0,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(x4, df=4.0) + bbs(x5, df=4.0) + bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(x8, df=4.0) + bbs(x9, df=4.0) + bbs(x10, df=4.0) + bbs(x11, df=4.0)"
+  },
+  {
+   "task": "smooth_sparse",
+   "seed": 2,
+   "budget": 32,
+   "status": "ok",
+   "loss": 0.25856092544165143,
+   "seconds": 2.14,
+   "fits": 32,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0)"
+  },
+  {
+   "task": "smooth_sparse",
+   "seed": 2,
+   "budget": 128,
+   "status": "ok",
+   "loss": 0.25856092544165143,
+   "seconds": 2.88,
+   "fits": 70,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0)"
+  },
+  {
+   "task": "smooth_sparse",
+   "seed": 2,
+   "budget": 512,
+   "status": "ok",
+   "loss": 0.25856092544165143,
+   "seconds": 2.95,
+   "fits": 70,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0)"
+  },
+  {
+   "task": "bike_future",
+   "seed": 0,
+   "budget": 0,
+   "status": "error: ValueError: column 'season' contains level(s) ['1'] not present when the model was fitted (levels: ['2', '3', '4']). A level the model never saw has no estimated effect. Pass unseen_levels=\"average\" to predict them as an average group, or unseen_levels=\"zero_effect\" for a zero coefficient.",
+   "loss": null,
+   "seconds": 0.04,
+   "fits": null,
+   "formula": null
+  },
+  {
+   "task": "bike_future",
+   "seed": 0,
+   "budget": 32,
+   "status": "ok",
+   "loss": 0.41419576581493844,
+   "seconds": 11.91,
+   "fits": 31,
+   "formula": "y ~ brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(temp, df=4.0) + bbs(hum, df=4.0)"
+  },
+  {
+   "task": "bike_future",
+   "seed": 0,
+   "budget": 128,
+   "status": "ok",
+   "loss": 0.4320805187908001,
+   "seconds": 25.43,
+   "fits": 126,
+   "formula": "y ~ brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(temp, df=4.0) + bbs(hum, df=4.0)"
+  },
+  {
+   "task": "bike_future",
+   "seed": 0,
+   "budget": 512,
+   "status": "ok",
+   "loss": 0.4320805187908001,
+   "seconds": 25.9,
+   "fits": 126,
+   "formula": "y ~ brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(temp, df=4.0) + bbs(hum, df=4.0)"
+  },
+  {
+   "task": "bike_future",
+   "seed": 1,
+   "budget": 0,
+   "status": "error: ValueError: column 'season' contains level(s) ['2'] not present when the model was fitted (levels: ['1', '3', '4']). A level the model never saw has no estimated effect. Pass unseen_levels=\"average\" to predict them as an average group, or unseen_levels=\"zero_effect\" for a zero coefficient.",
+   "loss": null,
+   "seconds": 0.05,
+   "fits": null,
+   "formula": null
+  },
+  {
+   "task": "bike_future",
+   "seed": 1,
+   "budget": 32,
+   "status": "ok",
+   "loss": 0.4189158287126693,
+   "seconds": 8.08,
+   "fits": 31,
+   "formula": "y ~ brandom(weathersit, df=4.0) + bbs(hr, df=4.0) + bbs(temp, df=4.0) + bbs(hum, df=4.0)"
+  },
+  {
+   "task": "bike_future",
+   "seed": 1,
+   "budget": 128,
+   "status": "ok",
+   "loss": 0.4192052559734246,
+   "seconds": 40.84,
+   "fits": 126,
+   "formula": "y ~ brandom(weathersit, df=4.0) + bbs(hr, df=4.0) + bbs(temp, df=4.0) + bbs(hum, df=4.0)"
+  },
+  {
+   "task": "bike_future",
+   "seed": 1,
+   "budget": 512,
+   "status": "ok",
+   "loss": 0.41930311554172156,
+   "seconds": 43.69,
+   "fits": 156,
+   "formula": "y ~ brandom(weathersit, df=4.0) + bbs(hr, df=4.0) + bbs(temp, df=4.0) + bbs(hum, df=4.0)"
+  },
+  {
+   "task": "bike_future",
+   "seed": 2,
+   "budget": 0,
+   "status": "ok",
+   "loss": 0.616553885547341,
+   "seconds": 0.05,
+   "fits": 0,
+   "formula": "y ~ brandom(season, df=4.0) + bols(holiday) + bols(workingday) + brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(mnth, df=4.0) + bols(yr) + bbs(temp, df=4.0) + bbs(hum, df=4.0) + bbs(windspeed, df=4.0)"
+  },
+  {
+   "task": "bike_future",
+   "seed": 2,
+   "budget": 32,
+   "status": "ok",
+   "loss": 0.490438734904275,
+   "seconds": 11.54,
+   "fits": 31,
+   "formula": "y ~ brandom(season, df=4.0) + brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(mnth, df=4.0) + bbs(temp, df=4.0) + bbs(hum, df=4.0)"
+  },
+  {
+   "task": "bike_future",
+   "seed": 2,
+   "budget": 128,
+   "status": "ok",
+   "loss": 0.4897142167384891,
+   "seconds": 55.01,
+   "fits": 126,
+   "formula": "y ~ brandom(season, df=4.0) + brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(mnth, df=4.0) + bbs(temp, df=4.0) + bbs(hum, df=4.0)"
+  },
+  {
+   "task": "bike_future",
+   "seed": 2,
+   "budget": 512,
+   "status": "ok",
+   "loss": 0.4849039452810016,
+   "seconds": 56.18,
+   "fits": 166,
+   "formula": "y ~ brandom(season, df=4.0) + bols(holiday) + bols(workingday) + brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(mnth, df=4.0) + bols(yr) + bbs(temp, df=4.0) + bbs(hum, df=4.0) + bbs(windspeed, df=4.0)"
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 0,
+   "budget": 0,
+   "status": "ok",
+   "loss": 9.25414423860276,
+   "seconds": 0.04,
+   "fits": 0,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(x4, df=4.0) + bbs(x5, df=4.0) + bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(x8, df=4.0) + bbs(x9, df=4.0) + bbs(x10, df=4.0) + bbs(x11, df=4.0)"
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 0,
+   "budget": 32,
+   "status": "ok",
+   "loss": 9.175137930706619,
+   "seconds": 2.16,
+   "fits": 31,
+   "formula": "y ~ bols(x0) + bols(x1) + bols(x2) + bols(x3) + bols(x4) + bols(x5) + bols(x6) + bols(x7) + bols(x8) + bols(x9) + bols(x10) + bols(x11)"
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 0,
+   "budget": 128,
+   "status": "ok",
+   "loss": 9.19345246767598,
+   "seconds": 3.05,
+   "fits": 61,
+   "formula": "y ~ bols(x0) + bols(x1) + bols(x2) + bols(x3) + bols(x4) + bols(x5) + bols(x6) + bols(x7) + bols(x8) + bols(x9) + bols(x10) + bols(x11)"
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 0,
+   "budget": 512,
+   "status": "ok",
+   "loss": 9.19345246767598,
+   "seconds": 2.97,
+   "fits": 61,
+   "formula": "y ~ bols(x0) + bols(x1) + bols(x2) + bols(x3) + bols(x4) + bols(x5) + bols(x6) + bols(x7) + bols(x8) + bols(x9) + bols(x10) + bols(x11)"
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 1,
+   "budget": 0,
+   "status": "ok",
+   "loss": 9.177464160405847,
+   "seconds": 0.03,
+   "fits": 0,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(x4, df=4.0) + bbs(x5, df=4.0) + bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(x8, df=4.0) + bbs(x9, df=4.0) + bbs(x10, df=4.0) + bbs(x11, df=4.0)"
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 1,
+   "budget": 32,
+   "status": "ok",
+   "loss": 9.123112730499757,
+   "seconds": 2.21,
+   "fits": 31,
+   "formula": "y ~ bols(x0) + bols(x1) + bols(x2) + bols(x3) + bols(x4) + bols(x5) + bols(x6) + bols(x7) + bols(x8) + bols(x9) + bols(x10) + bols(x11)"
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 1,
+   "budget": 128,
+   "status": "ok",
+   "loss": 9.109323273872088,
+   "seconds": 2.81,
+   "fits": 61,
+   "formula": "y ~ bols(x0) + bols(x1) + bols(x2) + bols(x3) + bols(x4) + bols(x5) + bols(x6) + bols(x7) + bols(x8) + bols(x9) + bols(x10) + bols(x11)"
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 1,
+   "budget": 512,
+   "status": "ok",
+   "loss": 9.109323273872088,
+   "seconds": 2.84,
+   "fits": 61,
+   "formula": "y ~ bols(x0) + bols(x1) + bols(x2) + bols(x3) + bols(x4) + bols(x5) + bols(x6) + bols(x7) + bols(x8) + bols(x9) + bols(x10) + bols(x11)"
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 2,
+   "budget": 0,
+   "status": "ok",
+   "loss": 9.25391768404124,
+   "seconds": 0.03,
+   "fits": 0,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(x4, df=4.0) + bbs(x5, df=4.0) + bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(x8, df=4.0) + bbs(x9, df=4.0) + bbs(x10, df=4.0) + bbs(x11, df=4.0)"
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 2,
+   "budget": 32,
+   "status": "ok",
+   "loss": 9.223246386260886,
+   "seconds": 2.67,
+   "fits": 31,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(x4, df=4.0) + bbs(x5, df=4.0) + bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(x8, df=4.0) + bbs(x9, df=4.0) + bbs(x10, df=4.0) + bbs(x11, df=4.0)"
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 2,
+   "budget": 128,
+   "status": "ok",
+   "loss": 9.224647658672202,
+   "seconds": 3.5,
+   "fits": 61,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(x4, df=4.0) + bbs(x5, df=4.0) + bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(x8, df=4.0) + bbs(x9, df=4.0) + bbs(x10, df=4.0) + bbs(x11, df=4.0)"
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 2,
+   "budget": 512,
+   "status": "ok",
+   "loss": 9.224647658672202,
+   "seconds": 3.62,
+   "fits": 61,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(x4, df=4.0) + bbs(x5, df=4.0) + bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(x8, df=4.0) + bbs(x9, df=4.0) + bbs(x10, df=4.0) + bbs(x11, df=4.0)"
+  },
+  {
+   "task": "diamonds",
+   "seed": 0,
+   "budget": 0,
+   "status": "ok",
+   "loss": 0.021523035317864113,
+   "seconds": 0.03,
+   "fits": 0,
+   "formula": "y ~ bbs(carat, df=4.0) + brandom(cut, df=4.0) + brandom(color, df=4.0) + brandom(clarity, df=4.0) + bbs(depth, df=4.0) + bbs(table, df=4.0) + bbs(x, df=4.0) + bbs(sqrt(z), df=4.0)"
+  },
+  {
+   "task": "diamonds",
+   "seed": 0,
+   "budget": 32,
+   "status": "ok",
+   "loss": 0.016410453200186963,
+   "seconds": 2.79,
+   "fits": 31,
+   "formula": "y ~ bbs(carat, df=4.0) + brandom(color, df=4.0) + brandom(clarity, df=4.0) + bbs(depth, df=4.0) + bbs(x, df=4.0)"
+  },
+  {
+   "task": "diamonds",
+   "seed": 0,
+   "budget": 128,
+   "status": "ok",
+   "loss": 0.015086996395323606,
+   "seconds": 55.64,
+   "fits": 81,
+   "formula": "y ~ btree(carat) + brandom(cut, df=4.0) + brandom(color, df=4.0) + brandom(clarity, df=4.0) + bbs(depth, df=4.0) + btree(x) + btree(z)"
+  },
+  {
+   "task": "diamonds",
+   "seed": 0,
+   "budget": 512,
+   "status": "ok",
+   "loss": 0.015086996395323606,
+   "seconds": 57.51,
+   "fits": 81,
+   "formula": "y ~ btree(carat) + brandom(cut, df=4.0) + brandom(color, df=4.0) + brandom(clarity, df=4.0) + bbs(depth, df=4.0) + btree(x) + btree(z)"
+  },
+  {
+   "task": "diamonds",
+   "seed": 1,
+   "budget": 0,
+   "status": "ok",
+   "loss": 0.0201463606872607,
+   "seconds": 0.04,
+   "fits": 0,
+   "formula": "y ~ bbs(carat, df=4.0) + brandom(cut, df=4.0) + brandom(color, df=4.0) + brandom(clarity, df=4.0) + bbs(depth, df=4.0) + bbs(table, df=4.0) + bbs(x, df=4.0) + bbs(z, df=4.0)"
+  },
+  {
+   "task": "diamonds",
+   "seed": 1,
+   "budget": 32,
+   "status": "ok",
+   "loss": 0.015642527546155548,
+   "seconds": 3.02,
+   "fits": 31,
+   "formula": "y ~ bbs(carat, df=4.0) + brandom(color, df=4.0) + brandom(clarity, df=4.0) + bbs(depth, df=4.0) + bbs(x, df=4.0)"
+  },
+  {
+   "task": "diamonds",
+   "seed": 1,
+   "budget": 128,
+   "status": "ok",
+   "loss": 0.014444008857775732,
+   "seconds": 10.3,
+   "fits": 80,
+   "formula": "y ~ bbs(carat, df=4.0) + brandom(cut, df=4.0) + brandom(color, df=4.0) + brandom(clarity, df=4.0) + bbs(depth, df=4.0) + btree(x)"
+  },
+  {
+   "task": "diamonds",
+   "seed": 1,
+   "budget": 512,
+   "status": "ok",
+   "loss": 0.014444008857775732,
+   "seconds": 10.42,
+   "fits": 80,
+   "formula": "y ~ bbs(carat, df=4.0) + brandom(cut, df=4.0) + brandom(color, df=4.0) + brandom(clarity, df=4.0) + bbs(depth, df=4.0) + btree(x)"
+  },
+  {
+   "task": "diamonds",
+   "seed": 2,
+   "budget": 0,
+   "status": "ok",
+   "loss": 0.01962429650199552,
+   "seconds": 0.04,
+   "fits": 0,
+   "formula": "y ~ bbs(carat, df=4.0) + brandom(cut, df=4.0) + brandom(color, df=4.0) + brandom(clarity, df=4.0) + bbs(depth, df=4.0) + bbs(table, df=4.0) + bbs(x, df=4.0) + bbs(z, df=4.0)"
+  },
+  {
+   "task": "diamonds",
+   "seed": 2,
+   "budget": 32,
+   "status": "ok",
+   "loss": 0.017216520126302513,
+   "seconds": 2.79,
+   "fits": 31,
+   "formula": "y ~ bbs(carat, df=4.0) + brandom(color, df=4.0) + brandom(clarity, df=4.0) + bbs(depth, df=4.0) + bbs(x, df=4.0)"
+  },
+  {
+   "task": "diamonds",
+   "seed": 2,
+   "budget": 128,
+   "status": "ok",
+   "loss": 0.015929994641015924,
+   "seconds": 37.93,
+   "fits": 81,
+   "formula": "y ~ btree(carat) + brandom(cut, df=4.0) + brandom(color, df=4.0) + brandom(clarity, df=4.0) + bbs(depth, df=4.0) + btree(x) + btree(z)"
+  },
+  {
+   "task": "diamonds",
+   "seed": 2,
+   "budget": 512,
+   "status": "ok",
+   "loss": 0.015929994641015924,
+   "seconds": 38.51,
+   "fits": 81,
+   "formula": "y ~ btree(carat) + brandom(cut, df=4.0) + brandom(color, df=4.0) + brandom(clarity, df=4.0) + bbs(depth, df=4.0) + btree(x) + btree(z)"
+  },
+  {
+   "task": "protein",
+   "seed": 0,
+   "budget": 0,
+   "status": "ok",
+   "loss": 27.682769588335972,
+   "seconds": 0.05,
+   "fits": 0,
+   "formula": "y ~ bbs(F1, df=4.0) + bbs(F2, df=4.0) + bbs(F3, df=4.0) + bbs(F4, df=4.0) + bbs(F5, df=4.0) + bbs(F6, df=4.0) + bbs(sqrt(F7), df=4.0) + bbs(F8, df=4.0) + bbs(F9, df=4.0)"
+  },
+  {
+   "task": "protein",
+   "seed": 0,
+   "budget": 32,
+   "status": "ok",
+   "loss": 25.107222556662446,
+   "seconds": 9.02,
+   "fits": 31,
+   "formula": "y ~ bbs(F1, df=4.0) + bbs(F2, df=4.0) + bbs(F3, df=4.0) + bbs(F4, df=4.0) + bbs(F5, df=4.0) + bbs(F6, df=4.0) + bbs(sqrt(F7), df=4.0) + bbs(F8, df=4.0) + bbs(F9, df=4.0)"
+  },
+  {
+   "task": "protein",
+   "seed": 0,
+   "budget": 128,
+   "status": "ok",
+   "loss": 25.165773159837332,
+   "seconds": 59.06,
+   "fits": 76,
+   "formula": "y ~ bbs(F1, df=4.0) + bbs(F2, df=4.0) + bbs(F3, df=4.0) + bbs(F4, df=4.0) + bbs(F6, df=4.0) + btree(F7) + bbs(F8, df=4.0) + btree(F9)"
+  },
+  {
+   "task": "protein",
+   "seed": 0,
+   "budget": 512,
+   "status": "ok",
+   "loss": 25.165773159837332,
+   "seconds": 50.31,
+   "fits": 76,
+   "formula": "y ~ bbs(F1, df=4.0) + bbs(F2, df=4.0) + bbs(F3, df=4.0) + bbs(F4, df=4.0) + bbs(F6, df=4.0) + btree(F7) + bbs(F8, df=4.0) + btree(F9)"
+  },
+  {
+   "task": "protein",
+   "seed": 1,
+   "budget": 0,
+   "status": "ok",
+   "loss": 27.165304565851983,
+   "seconds": 0.02,
+   "fits": 0,
+   "formula": "y ~ bbs(F1, df=4.0) + bbs(F2, df=4.0) + bbs(F3, df=4.0) + bbs(F4, df=4.0) + bbs(F5, df=4.0) + bbs(F6, df=4.0) + bbs(log(F7), df=4.0) + bbs(F8, df=4.0) + bbs(F9, df=4.0)"
+  },
+  {
+   "task": "protein",
+   "seed": 1,
+   "budget": 32,
+   "status": "ok",
+   "loss": 25.63140137076154,
+   "seconds": 6.32,
+   "fits": 31,
+   "formula": "y ~ bbs(F1, df=4.0) + bbs(F2, df=4.0) + bbs(F3, df=4.0) + bbs(F4, df=4.0) + bbs(F5, df=4.0) + bbs(F6, df=4.0) + bbs(log(F7), df=4.0) + bbs(F8, df=4.0) + bbs(F9, df=4.0)"
+  },
+  {
+   "task": "protein",
+   "seed": 1,
+   "budget": 128,
+   "status": "ok",
+   "loss": 25.555292682787517,
+   "seconds": 71.09,
+   "fits": 71,
+   "formula": "y ~ bbs(F1, df=4.0) + bbs(F2, df=4.0) + bbs(F3, df=4.0) + bbs(F4, df=4.0) + bbs(F5, df=4.0) + bbs(F6, df=4.0) + bbs(log(F7), df=4.0) + bbs(F8, df=4.0) + btree(F9)"
+  },
+  {
+   "task": "protein",
+   "seed": 1,
+   "budget": 512,
+   "status": "ok",
+   "loss": 25.555292682787517,
+   "seconds": 65.26,
+   "fits": 71,
+   "formula": "y ~ bbs(F1, df=4.0) + bbs(F2, df=4.0) + bbs(F3, df=4.0) + bbs(F4, df=4.0) + bbs(F5, df=4.0) + bbs(F6, df=4.0) + bbs(log(F7), df=4.0) + bbs(F8, df=4.0) + btree(F9)"
+  },
+  {
+   "task": "protein",
+   "seed": 2,
+   "budget": 0,
+   "status": "ok",
+   "loss": 26.996784018394813,
+   "seconds": 0.02,
+   "fits": 0,
+   "formula": "y ~ bbs(F1, df=4.0) + bbs(F2, df=4.0) + bbs(F3, df=4.0) + bbs(F4, df=4.0) + bbs(F5, df=4.0) + bbs(F6, df=4.0) + bbs(log(F7), df=4.0) + bbs(F8, df=4.0) + bbs(F9, df=4.0)"
+  },
+  {
+   "task": "protein",
+   "seed": 2,
+   "budget": 32,
+   "status": "ok",
+   "loss": 25.214449226591235,
+   "seconds": 5.86,
+   "fits": 31,
+   "formula": "y ~ bbs(F1, df=4.0) + bbs(F2, df=4.0) + bbs(F3, df=4.0) + bbs(F4, df=4.0) + bbs(F5, df=4.0) + bbs(F6, df=4.0) + bbs(log(F7), df=4.0) + bbs(F8, df=4.0) + bbs(F9, df=4.0)"
+  },
+  {
+   "task": "protein",
+   "seed": 2,
+   "budget": 128,
+   "status": "ok",
+   "loss": 25.21321090878562,
+   "seconds": 29.39,
+   "fits": 76,
+   "formula": "y ~ bbs(F1, df=4.0) + bbs(F2, df=4.0) + bbs(F3, df=4.0) + bbs(F4, df=4.0) + bbs(F6, df=4.0) + btree(F7) + bbs(F8, df=4.0)"
+  },
+  {
+   "task": "protein",
+   "seed": 2,
+   "budget": 512,
+   "status": "ok",
+   "loss": 25.21321090878562,
+   "seconds": 29.51,
+   "fits": 76,
+   "formula": "y ~ bbs(F1, df=4.0) + bbs(F2, df=4.0) + bbs(F3, df=4.0) + bbs(F4, df=4.0) + bbs(F6, df=4.0) + btree(F7) + bbs(F8, df=4.0)"
+  },
+  {
+   "task": "concrete",
+   "seed": 0,
+   "budget": 8,
+   "status": "ok",
+   "loss": 40.03701611370848,
+   "seconds": 0.09,
+   "fits": 5,
+   "formula": "y ~ bbs(cement, df=4.0) + bbs(blast_furnace_slag, df=4.0) + bbs(water, df=4.0) + bbs(superplasticizer, df=4.0) + bbs(fine_aggregate, df=4.0) + bbs(age, df=4.0)"
+  },
+  {
+   "task": "concrete",
+   "seed": 0,
+   "budget": 16,
+   "status": "ok",
+   "loss": 38.41233958382253,
+   "seconds": 0.18,
+   "fits": 15,
+   "formula": "y ~ bbs(cement, df=4.0) + bbs(blast_furnace_slag, df=4.0) + bbs(water, df=4.0) + bbs(superplasticizer, df=4.0) + bbs(fine_aggregate, df=4.0) + bbs(age, df=4.0)"
+  },
+  {
+   "task": "concrete",
+   "seed": 1,
+   "budget": 8,
+   "status": "ok",
+   "loss": 49.782443120934666,
+   "seconds": 0.07,
+   "fits": 5,
+   "formula": "y ~ bbs(cement, df=4.0) + bbs(blast_furnace_slag, df=4.0) + bbs(water, df=4.0) + bbs(superplasticizer, df=4.0) + bbs(age, df=4.0)"
+  },
+  {
+   "task": "concrete",
+   "seed": 1,
+   "budget": 16,
+   "status": "ok",
+   "loss": 43.69869395957519,
+   "seconds": 0.17,
+   "fits": 15,
+   "formula": "y ~ bbs(cement, df=4.0) + bbs(blast_furnace_slag, df=4.0) + bbs(water, df=4.0) + bbs(superplasticizer, df=4.0) + bbs(fine_aggregate, df=4.0) + bbs(age, df=4.0)"
+  },
+  {
+   "task": "concrete",
+   "seed": 2,
+   "budget": 8,
+   "status": "ok",
+   "loss": 41.32933592814837,
+   "seconds": 0.09,
+   "fits": 5,
+   "formula": "y ~ bbs(cement, df=4.0) + bbs(blast_furnace_slag, df=4.0) + bbs(water, df=4.0) + bbs(superplasticizer, df=4.0) + bbs(fine_aggregate, df=4.0) + bbs(age, df=4.0)"
+  },
+  {
+   "task": "concrete",
+   "seed": 2,
+   "budget": 16,
+   "status": "ok",
+   "loss": 40.23514797500637,
+   "seconds": 0.18,
+   "fits": 15,
+   "formula": "y ~ bbs(cement, df=4.0) + bbs(blast_furnace_slag, df=4.0) + bbs(water, df=4.0) + bbs(superplasticizer, df=4.0) + bbs(fine_aggregate, df=4.0) + bbs(age, df=4.0)"
+  },
+  {
+   "task": "cancer",
+   "seed": 0,
+   "budget": 8,
+   "status": "ok",
+   "loss": 0.10388105083265078,
+   "seconds": 0.3,
+   "fits": 5,
+   "formula": "y ~ bbs(x1, df=4.0) + bbs(x7, df=4.0) + bbs(log(x13), df=4.0) + bbs(x20, df=4.0) + bbs(x21, df=4.0) + bbs(x22, df=4.0) + bbs(x24, df=4.0) + bbs(x27, df=4.0) + bbs(x28, df=4.0)"
+  },
+  {
+   "task": "cancer",
+   "seed": 0,
+   "budget": 16,
+   "status": "ok",
+   "loss": 0.10649985196636674,
+   "seconds": 0.73,
+   "fits": 15,
+   "formula": "y ~ bbs(x1, df=4.0) + bbs(x7, df=4.0) + bbs(log(x13), df=4.0) + bbs(x20, df=4.0) + bbs(x21, df=4.0) + bbs(x22, df=4.0) + bbs(x24, df=4.0) + bbs(x26, df=4.0) + bbs(x27, df=4.0) + bbs(x28, df=4.0)"
+  },
+  {
+   "task": "cancer",
+   "seed": 1,
+   "budget": 8,
+   "status": "ok",
+   "loss": 0.07400309457824027,
+   "seconds": 0.28,
+   "fits": 5,
+   "formula": "y ~ bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(log(x13), df=4.0) + bbs(log(x18), df=4.0) + bbs(x21, df=4.0) + bbs(x22, df=4.0) + bbs(log(x23), df=4.0) + bbs(x24, df=4.0) + bbs(x27, df=4.0) + bbs(x28, df=4.0)"
+  },
+  {
+   "task": "cancer",
+   "seed": 1,
+   "budget": 16,
+   "status": "ok",
+   "loss": 0.06938290887093063,
+   "seconds": 0.66,
+   "fits": 15,
+   "formula": "y ~ bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(log(x13), df=4.0) + bbs(log(x18), df=4.0) + bbs(x21, df=4.0) + bbs(x22, df=4.0) + bbs(log(x23), df=4.0) + bbs(x24, df=4.0) + bbs(x27, df=4.0) + bbs(x28, df=4.0)"
+  },
+  {
+   "task": "cancer",
+   "seed": 2,
+   "budget": 8,
+   "status": "ok",
+   "loss": 0.12158335926647754,
+   "seconds": 0.33,
+   "fits": 5,
+   "formula": "y ~ bbs(x1, df=4.0) + bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(log(x13), df=4.0) + bbs(log(x18), df=4.0) + bbs(x20, df=4.0) + bbs(x21, df=4.0) + bbs(x22, df=4.0) + bbs(x23, df=4.0) + bbs(x24, df=4.0) + bbs(x27, df=4.0) + bbs(x28, df=4.0)"
+  },
+  {
+   "task": "cancer",
+   "seed": 2,
+   "budget": 16,
+   "status": "ok",
+   "loss": 0.12111718140921898,
+   "seconds": 0.68,
+   "fits": 15,
+   "formula": "y ~ bbs(x1, df=4.0) + bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(log(x13), df=4.0) + bbs(log(x18), df=4.0) + bbs(x20, df=4.0) + bbs(x21, df=4.0) + bbs(x22, df=4.0) + bbs(x23, df=4.0) + bbs(x24, df=4.0) + bbs(x27, df=4.0) + bbs(x28, df=4.0)"
+  },
+  {
+   "task": "housing_iid",
+   "seed": 0,
+   "budget": 8,
+   "status": "ok",
+   "loss": 0.0887026143076705,
+   "seconds": 0.3,
+   "fits": 5,
+   "formula": "y ~ bbs(longitude, df=4.0) + bbs(latitude, df=4.0) + bbs(income, df=4.0) + bbs(log(rooms), df=4.0) + bbs(log(occupancy), df=4.0)"
+  },
+  {
+   "task": "housing_iid",
+   "seed": 0,
+   "budget": 16,
+   "status": "ok",
+   "loss": 0.08423906919535963,
+   "seconds": 0.53,
+   "fits": 15,
+   "formula": "y ~ bbs(longitude, df=4.0) + bbs(latitude, df=4.0) + bbs(income, df=4.0) + bbs(log(rooms), df=4.0) + bbs(log(occupancy), df=4.0)"
+  },
+  {
+   "task": "housing_iid",
+   "seed": 1,
+   "budget": 8,
+   "status": "ok",
+   "loss": 0.09157173640023171,
+   "seconds": 0.23,
+   "fits": 5,
+   "formula": "y ~ bbs(longitude, df=4.0) + bbs(latitude, df=4.0) + bbs(income, df=4.0) + bbs(log(rooms), df=4.0) + bbs(log(occupancy), df=4.0)"
+  },
+  {
+   "task": "housing_iid",
+   "seed": 1,
+   "budget": 16,
+   "status": "ok",
+   "loss": 0.08754817491972687,
+   "seconds": 0.52,
+   "fits": 15,
+   "formula": "y ~ bbs(longitude, df=4.0) + bbs(latitude, df=4.0) + bbs(income, df=4.0) + bbs(log(rooms), df=4.0) + bbs(log(occupancy), df=4.0)"
+  },
+  {
+   "task": "housing_iid",
+   "seed": 2,
+   "budget": 8,
+   "status": "ok",
+   "loss": 0.08535756231195285,
+   "seconds": 0.26,
+   "fits": 5,
+   "formula": "y ~ bbs(longitude, df=4.0) + bbs(latitude, df=4.0) + bbs(income, df=4.0) + bbs(log(rooms), df=4.0) + bbs(log(occupancy), df=4.0)"
+  },
+  {
+   "task": "housing_iid",
+   "seed": 2,
+   "budget": 16,
+   "status": "ok",
+   "loss": 0.07966112510260585,
+   "seconds": 0.52,
+   "fits": 15,
+   "formula": "y ~ bbs(longitude, df=4.0) + bbs(latitude, df=4.0) + bbs(age, df=4.0) + bbs(income, df=4.0) + bbs(log(rooms), df=4.0) + bbs(log(bedrooms), df=4.0) + bbs(log(population), df=4.0) + bbs(log(occupancy), df=4.0)"
+  },
+  {
+   "task": "credit",
+   "seed": 0,
+   "budget": 8,
+   "status": "ok",
+   "loss": 0.5118727446155186,
+   "seconds": 0.16,
+   "fits": 5,
+   "formula": "y ~ brandom(checking_status, df=4.0) + bbs(duration, df=4.0) + brandom(credit_history, df=4.0) + brandom(purpose, df=4.0) + bbs(log(credit_amount), df=4.0) + brandom(savings_status, df=4.0) + brandom(employment, df=4.0) + brandom(personal_status, df=4.0) + brandom(other_payment_plans, df=4.0)"
+  },
+  {
+   "task": "credit",
+   "seed": 0,
+   "budget": 16,
+   "status": "ok",
+   "loss": 0.5114944553190874,
+   "seconds": 0.22,
+   "fits": 15,
+   "formula": "y ~ brandom(checking_status, df=4.0) + bbs(duration, df=4.0) + brandom(credit_history, df=4.0) + brandom(purpose, df=4.0) + bbs(log(credit_amount), df=4.0) + brandom(savings_status, df=4.0) + brandom(employment, df=4.0) + brandom(personal_status, df=4.0) + brandom(other_payment_plans, df=4.0)"
+  },
+  {
+   "task": "credit",
+   "seed": 1,
+   "budget": 8,
+   "status": "ok",
+   "loss": 0.46974794774115836,
+   "seconds": 0.16,
+   "fits": 5,
+   "formula": "y ~ brandom(checking_status, df=4.0) + bbs(duration, df=4.0) + brandom(credit_history, df=4.0) + brandom(purpose, df=4.0) + bbs(credit_amount, df=4.0) + brandom(savings_status, df=4.0) + brandom(employment, df=4.0) + bols(installment_commitment) + brandom(other_parties, df=4.0) + brandom(property_magnitude, df=4.0) + bbs(age, df=4.0) + brandom(other_payment_plans, df=4.0)"
+  },
+  {
+   "task": "credit",
+   "seed": 1,
+   "budget": 16,
+   "status": "ok",
+   "loss": 0.46619841590028427,
+   "seconds": 0.25,
+   "fits": 15,
+   "formula": "y ~ brandom(checking_status, df=4.0) + bbs(duration, df=4.0) + brandom(credit_history, df=4.0) + brandom(purpose, df=4.0) + bbs(credit_amount, df=4.0) + brandom(savings_status, df=4.0) + brandom(employment, df=4.0) + bols(installment_commitment) + brandom(other_parties, df=4.0) + brandom(property_magnitude, df=4.0) + bbs(age, df=4.0) + brandom(other_payment_plans, df=4.0)"
+  },
+  {
+   "task": "credit",
+   "seed": 2,
+   "budget": 8,
+   "status": "ok",
+   "loss": 0.5299058386391247,
+   "seconds": 0.17,
+   "fits": 5,
+   "formula": "y ~ brandom(checking_status, df=4.0) + bbs(duration, df=4.0) + brandom(credit_history, df=4.0) + brandom(purpose, df=4.0) + bbs(credit_amount, df=4.0) + brandom(employment, df=4.0) + brandom(personal_status, df=4.0) + brandom(other_parties, df=4.0) + brandom(property_magnitude, df=4.0) + bbs(age, df=4.0) + brandom(other_payment_plans, df=4.0)"
+  },
+  {
+   "task": "credit",
+   "seed": 2,
+   "budget": 16,
+   "status": "ok",
+   "loss": 0.5295029172364254,
+   "seconds": 0.24,
+   "fits": 15,
+   "formula": "y ~ brandom(checking_status, df=4.0) + bbs(duration, df=4.0) + brandom(credit_history, df=4.0) + brandom(purpose, df=4.0) + bbs(credit_amount, df=4.0) + brandom(employment, df=4.0) + brandom(personal_status, df=4.0) + brandom(other_parties, df=4.0) + brandom(property_magnitude, df=4.0) + bbs(age, df=4.0) + brandom(other_payment_plans, df=4.0)"
+  },
+  {
+   "task": "bike_iid",
+   "seed": 0,
+   "budget": 8,
+   "status": "ok",
+   "loss": 0.4037277605083673,
+   "seconds": 0.3,
+   "fits": 5,
+   "formula": "y ~ brandom(season, df=4.0) + brandom(weathersit, df=4.0) + bbs(hr, df=4.0) + bols(yr) + bbs(temp, df=4.0)"
+  },
+  {
+   "task": "bike_iid",
+   "seed": 0,
+   "budget": 16,
+   "status": "ok",
+   "loss": 0.3799356246269891,
+   "seconds": 0.52,
+   "fits": 15,
+   "formula": "y ~ brandom(season, df=4.0) + bols(holiday) + bols(workingday) + brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(mnth, df=4.0) + bols(yr) + bbs(temp, df=4.0) + bbs(hum, df=4.0) + bbs(windspeed, df=4.0)"
+  },
+  {
+   "task": "bike_iid",
+   "seed": 1,
+   "budget": 8,
+   "status": "ok",
+   "loss": 0.3797801094440465,
+   "seconds": 0.27,
+   "fits": 5,
+   "formula": "y ~ brandom(season, df=4.0) + brandom(weathersit, df=4.0) + bbs(hr, df=4.0) + bols(yr) + bbs(temp, df=4.0)"
+  },
+  {
+   "task": "bike_iid",
+   "seed": 1,
+   "budget": 16,
+   "status": "ok",
+   "loss": 0.3563170185733772,
+   "seconds": 0.52,
+   "fits": 15,
+   "formula": "y ~ brandom(season, df=4.0) + bols(holiday) + bols(workingday) + brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(mnth, df=4.0) + bols(yr) + bbs(temp, df=4.0) + bbs(hum, df=4.0) + bbs(windspeed, df=4.0)"
+  },
+  {
+   "task": "bike_iid",
+   "seed": 2,
+   "budget": 8,
+   "status": "ok",
+   "loss": 0.3875663052588188,
+   "seconds": 0.25,
+   "fits": 5,
+   "formula": "y ~ brandom(season, df=4.0) + brandom(weathersit, df=4.0) + bbs(hr, df=4.0) + bols(yr) + bbs(temp, df=4.0)"
+  },
+  {
+   "task": "bike_iid",
+   "seed": 2,
+   "budget": 16,
+   "status": "ok",
+   "loss": 0.36623822843251946,
+   "seconds": 0.51,
+   "fits": 15,
+   "formula": "y ~ brandom(season, df=4.0) + bols(holiday) + bols(workingday) + brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(mnth, df=4.0) + bols(yr) + bbs(temp, df=4.0) + bbs(hum, df=4.0) + bbs(windspeed, df=4.0)"
+  },
+  {
+   "task": "smooth_sparse",
+   "seed": 0,
+   "budget": 8,
+   "status": "ok",
+   "loss": 0.2560610899788263,
+   "seconds": 0.29,
+   "fits": 5,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0)"
+  },
+  {
+   "task": "smooth_sparse",
+   "seed": 0,
+   "budget": 16,
+   "status": "ok",
+   "loss": 0.25393456837621936,
+   "seconds": 0.32,
+   "fits": 15,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0)"
+  },
+  {
+   "task": "smooth_sparse",
+   "seed": 1,
+   "budget": 8,
+   "status": "ok",
+   "loss": 0.24462849597760233,
+   "seconds": 0.27,
+   "fits": 5,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0)"
+  },
+  {
+   "task": "smooth_sparse",
+   "seed": 1,
+   "budget": 16,
+   "status": "ok",
+   "loss": 0.24295963270339244,
+   "seconds": 0.33,
+   "fits": 15,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0)"
+  },
+  {
+   "task": "smooth_sparse",
+   "seed": 2,
+   "budget": 8,
+   "status": "ok",
+   "loss": 0.25885222341903896,
+   "seconds": 0.27,
+   "fits": 5,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0)"
+  },
+  {
+   "task": "smooth_sparse",
+   "seed": 2,
+   "budget": 16,
+   "status": "ok",
+   "loss": 0.25856092544165143,
+   "seconds": 0.33,
+   "fits": 15,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0)"
+  },
+  {
+   "task": "bike_future",
+   "seed": 0,
+   "budget": 8,
+   "status": "ok",
+   "loss": 0.47876542811143236,
+   "seconds": 0.25,
+   "fits": 5,
+   "formula": "y ~ brandom(weathersit, df=4.0) + bbs(hr, df=4.0) + bbs(temp, df=4.0) + bbs(hum, df=4.0)"
+  },
+  {
+   "task": "bike_future",
+   "seed": 0,
+   "budget": 16,
+   "status": "error: ValueError: column 'season' contains level(s) ['1'] not present when the model was fitted (levels: ['2', '3', '4']). A level the model never saw has no estimated effect. Pass unseen_levels=\"average\" to predict them as an average group, or unseen_levels=\"zero_effect\" for a zero coefficient.",
+   "loss": null,
+   "seconds": 0.46,
+   "fits": null,
+   "formula": null
+  },
+  {
+   "task": "bike_future",
+   "seed": 1,
+   "budget": 8,
+   "status": "ok",
+   "loss": 0.475345387148604,
+   "seconds": 0.24,
+   "fits": 5,
+   "formula": "y ~ brandom(weathersit, df=4.0) + bbs(hr, df=4.0) + bbs(temp, df=4.0)"
+  },
+  {
+   "task": "bike_future",
+   "seed": 1,
+   "budget": 16,
+   "status": "error: ValueError: column 'season' contains level(s) ['2'] not present when the model was fitted (levels: ['1', '3', '4']). A level the model never saw has no estimated effect. Pass unseen_levels=\"average\" to predict them as an average group, or unseen_levels=\"zero_effect\" for a zero coefficient.",
+   "loss": null,
+   "seconds": 0.51,
+   "fits": null,
+   "formula": null
+  },
+  {
+   "task": "bike_future",
+   "seed": 2,
+   "budget": 8,
+   "status": "ok",
+   "loss": 0.5714585077751886,
+   "seconds": 0.26,
+   "fits": 5,
+   "formula": "y ~ brandom(season, df=4.0) + brandom(weathersit, df=4.0) + bbs(hr, df=4.0) + bbs(temp, df=4.0)"
+  },
+  {
+   "task": "bike_future",
+   "seed": 2,
+   "budget": 16,
+   "status": "ok",
+   "loss": 0.5205188234874167,
+   "seconds": 0.53,
+   "fits": 15,
+   "formula": "y ~ brandom(season, df=4.0) + bols(holiday) + bols(workingday) + brandom(weathersit, df=4.0) + brandom(weekday, df=4.0) + bbs(hr, df=4.0) + bbs(mnth, df=4.0) + bols(yr) + bbs(temp, df=4.0) + bbs(hum, df=4.0) + bbs(windspeed, df=4.0)"
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 0,
+   "budget": 8,
+   "status": "ok",
+   "loss": 9.189287274008443,
+   "seconds": 0.31,
+   "fits": 5,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(x4, df=4.0) + bbs(x5, df=4.0) + bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(x8, df=4.0) + bbs(x9, df=4.0) + bbs(x10, df=4.0) + bbs(x11, df=4.0)"
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 0,
+   "budget": 16,
+   "status": "ok",
+   "loss": 9.175137930706619,
+   "seconds": 0.42,
+   "fits": 15,
+   "formula": "y ~ bols(x0) + bols(x1) + bols(x2) + bols(x3) + bols(x4) + bols(x5) + bols(x6) + bols(x7) + bols(x8) + bols(x9) + bols(x10) + bols(x11)"
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 1,
+   "budget": 8,
+   "status": "ok",
+   "loss": 9.132699395083405,
+   "seconds": 0.29,
+   "fits": 5,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(x4, df=4.0) + bbs(x5, df=4.0) + bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(x8, df=4.0) + bbs(x9, df=4.0) + bbs(x10, df=4.0) + bbs(x11, df=4.0)"
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 1,
+   "budget": 16,
+   "status": "ok",
+   "loss": 9.123112730499757,
+   "seconds": 0.43,
+   "fits": 15,
+   "formula": "y ~ bols(x0) + bols(x1) + bols(x2) + bols(x3) + bols(x4) + bols(x5) + bols(x6) + bols(x7) + bols(x8) + bols(x9) + bols(x10) + bols(x11)"
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 2,
+   "budget": 8,
+   "status": "ok",
+   "loss": 9.223953050777869,
+   "seconds": 0.28,
+   "fits": 5,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(x4, df=4.0) + bbs(x5, df=4.0) + bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(x8, df=4.0) + bbs(x9, df=4.0) + bbs(x10, df=4.0) + bbs(x11, df=4.0)"
+  },
+  {
+   "task": "joint_boundary",
+   "seed": 2,
+   "budget": 16,
+   "status": "ok",
+   "loss": 9.223953050777869,
+   "seconds": 0.39,
+   "fits": 15,
+   "formula": "y ~ bbs(x0, df=4.0) + bbs(x1, df=4.0) + bbs(x2, df=4.0) + bbs(x3, df=4.0) + bbs(x4, df=4.0) + bbs(x5, df=4.0) + bbs(x6, df=4.0) + bbs(x7, df=4.0) + bbs(x8, df=4.0) + bbs(x9, df=4.0) + bbs(x10, df=4.0) + bbs(x11, df=4.0)"
+  },
+  {
+   "task": "diamonds",
+   "seed": 0,
+   "budget": 8,
+   "status": "ok",
+   "loss": 0.018600584700115278,
+   "seconds": 0.24,
+   "fits": 5,
+   "formula": "y ~ bbs(carat, df=4.0) + brandom(color, df=4.0) + brandom(clarity, df=4.0) + bbs(x, df=4.0)"
+  },
+  {
+   "task": "diamonds",
+   "seed": 0,
+   "budget": 16,
+   "status": "ok",
+   "loss": 0.016130654632030908,
+   "seconds": 0.44,
+   "fits": 15,
+   "formula": "y ~ bbs(carat, df=4.0) + brandom(cut, df=4.0) + brandom(color, df=4.0) + brandom(clarity, df=4.0) + bbs(depth, df=4.0) + bbs(table, df=4.0) + bbs(x, df=4.0) + bbs(sqrt(z), df=4.0)"
+  },
+  {
+   "task": "diamonds",
+   "seed": 1,
+   "budget": 8,
+   "status": "ok",
+   "loss": 0.017062256381575887,
+   "seconds": 0.2,
+   "fits": 5,
+   "formula": "y ~ bbs(carat, df=4.0) + brandom(color, df=4.0) + brandom(clarity, df=4.0) + bbs(x, df=4.0)"
+  },
+  {
+   "task": "diamonds",
+   "seed": 1,
+   "budget": 16,
+   "status": "ok",
+   "loss": 0.015274965326359375,
+   "seconds": 0.44,
+   "fits": 15,
+   "formula": "y ~ bbs(carat, df=4.0) + brandom(cut, df=4.0) + brandom(color, df=4.0) + brandom(clarity, df=4.0) + bbs(depth, df=4.0) + bbs(table, df=4.0) + bbs(x, df=4.0) + bbs(z, df=4.0)"
+  },
+  {
+   "task": "diamonds",
+   "seed": 2,
+   "budget": 8,
+   "status": "ok",
+   "loss": 0.018234748451430593,
+   "seconds": 0.2,
+   "fits": 5,
+   "formula": "y ~ bbs(carat, df=4.0) + brandom(color, df=4.0) + brandom(clarity, df=4.0) + bbs(x, df=4.0)"
+  },
+  {
+   "task": "diamonds",
+   "seed": 2,
+   "budget": 16,
+   "status": "ok",
+   "loss": 0.016826177553487146,
+   "seconds": 0.42,
+   "fits": 15,
+   "formula": "y ~ bbs(carat, df=4.0) + brandom(cut, df=4.0) + brandom(color, df=4.0) + brandom(clarity, df=4.0) + bbs(depth, df=4.0) + bbs(table, df=4.0) + bbs(x, df=4.0) + bbs(z, df=4.0)"
+  },
+  {
+   "task": "protein",
+   "seed": 0,
+   "budget": 8,
+   "status": "ok",
+   "loss": 26.868076046692796,
+   "seconds": 0.44,
+   "fits": 5,
+   "formula": "y ~ bbs(F1, df=4.0) + bbs(F2, df=4.0) + bbs(F3, df=4.0) + bbs(F4, df=4.0) + bbs(F5, df=4.0) + bbs(F8, df=4.0)"
+  },
+  {
+   "task": "protein",
+   "seed": 0,
+   "budget": 16,
+   "status": "ok",
+   "loss": 26.214571291637544,
+   "seconds": 0.64,
+   "fits": 15,
+   "formula": "y ~ bbs(F1, df=4.0) + bbs(F2, df=4.0) + bbs(F3, df=4.0) + bbs(F4, df=4.0) + bbs(F5, df=4.0) + bbs(F6, df=4.0) + bbs(sqrt(F7), df=4.0) + bbs(F8, df=4.0)"
+  },
+  {
+   "task": "protein",
+   "seed": 1,
+   "budget": 8,
+   "status": "ok",
+   "loss": 26.590498001942702,
+   "seconds": 0.25,
+   "fits": 5,
+   "formula": "y ~ bbs(F1, df=4.0) + bbs(F2, df=4.0) + bbs(F3, df=4.0) + bbs(F4, df=4.0) + bbs(F5, df=4.0) + bbs(F8, df=4.0)"
+  },
+  {
+   "task": "protein",
+   "seed": 1,
+   "budget": 16,
+   "status": "ok",
+   "loss": 26.085198267066403,
+   "seconds": 0.58,
+   "fits": 15,
+   "formula": "y ~ bbs(F1, df=4.0) + bbs(F2, df=4.0) + bbs(F3, df=4.0) + bbs(F4, df=4.0) + bbs(F5, df=4.0) + bbs(F6, df=4.0) + bbs(log(F7), df=4.0) + bbs(F8, df=4.0)"
+  },
+  {
+   "task": "protein",
+   "seed": 2,
+   "budget": 8,
+   "status": "ok",
+   "loss": 26.242605929650438,
+   "seconds": 0.24,
+   "fits": 5,
+   "formula": "y ~ bbs(F1, df=4.0) + bbs(F2, df=4.0) + bbs(F3, df=4.0) + bbs(F4, df=4.0) + bbs(F8, df=4.0)"
+  },
+  {
+   "task": "protein",
+   "seed": 2,
+   "budget": 16,
+   "status": "ok",
+   "loss": 25.959632822746332,
+   "seconds": 0.48,
+   "fits": 15,
+   "formula": "y ~ bbs(F1, df=4.0) + bbs(F2, df=4.0) + bbs(F3, df=4.0) + bbs(F4, df=4.0) + bbs(F8, df=4.0)"
+  }
+ ]
+}
