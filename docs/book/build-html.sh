@@ -69,9 +69,14 @@ fi
 "$PYTHON_BIN" check_runtime.py
 "$PYTHON_BIN" generate_figures.py
 
-# Pre-warm shared scikit-learn datasets so parallel MyST kernels do not race
-# when downloading and unlinking the same archive (e.g. cal_housing.tgz).
-"$PYTHON_BIN" -c "from sklearn.datasets import fetch_california_housing; fetch_california_housing()" >/dev/null 2>&1 || true
+# Pre-warm shared scikit-learn / OpenML datasets so parallel MyST kernels do not
+# race when downloading and unlinking the same archive (e.g. cal_housing.tgz).
+"$PYTHON_BIN" -c "
+from sklearn.datasets import fetch_california_housing, fetch_openml
+fetch_california_housing()
+for data_id in (197, 31, 151):
+    fetch_openml(data_id=data_id, as_frame=True)
+" >/dev/null 2>&1 || true
 
 # ── HTML build ───────────────────────────────────────────────────────────────
 mkdir -p _build
@@ -90,8 +95,10 @@ fi
 "$PYTHON_BIN" merge-outputs.py
 
 # ── PDF build ────────────────────────────────────────────────────────────────
+# Reuse the _build/execute cache that the HTML step just populated on this
+# exact revision and interpreter instead of re-executing every notebook twice.
 echo ":: Building PDF..."
-bash ./build-pdf.sh
+MBOOSTRS_REUSE_EXEC_CACHE=1 bash ./build-pdf.sh
 
 # ── Stage outputs ────────────────────────────────────────────────────────────
 # The notebook bundle is regenerated here rather than committed stale. It was
