@@ -219,7 +219,18 @@ proba = clf.predict(newdata=binary, type="response")  # P(hit = 1)
 
 [`autospec`](https://github.com/fcela/mboostrs/blob/main/docs/book/api/functions/autospec.md) proposes a family, formula
 and stopping iteration from the data and the supplied validation design.
-The recommendation can be inspected and fitted with `recommendation.fit(data)`.
+Passing `search="fast"` runs a single-pass held-out screening radar (variable
+weeding, shape classification, interaction detection and residual-spread
+screening in one to three sweeps) while keeping shared-fold paired-SE adoption
+gates and interpretable formulas; `search="exhaustive"` (default) runs the
+step-by-step cross-validated probes. Multi-column `btree` terms support a
+contiguous histogram-subtraction engine (`split_method="histogram"`), adopted
+automatically by `autospec` on larger tables. The recommendation can be
+inspected and fitted with `recommendation.fit(data)`.
+[`fit`](https://github.com/fcela/mboostrs/blob/main/docs/book/api/functions/fit.md) wraps `autospec` with safe defaults
+(`na_action="impute"`, `unseen_levels="average"`, `interactions="adopt"`,
+`residual_tree="auto"`), a 64-fit standard budget, active-term formula pruning
+and a structured decision trail.
 [`open_search`](https://github.com/fcela/mboostrs/blob/main/docs/book/api/functions/open_search.md) supports an interactive
 search with retained comparisons and fit accounting. Separate evaluation
 rows are needed to assess the selected procedure's predictive performance.
@@ -236,10 +247,16 @@ whole preceding search.
 
 `glmboostLSS` and `gamboostLSS` fit an additive predictor for each parameter
 of a response distribution, such as its location and scale. Formulas can
-differ between parameters. The fitted model provides distribution-based
-prediction intervals and centiles; quantile residuals, probability integral
-transforms and worm-plot data support checking the fitted distribution.
-See the [distributional modeling guide](https://github.com/fcela/mboostrs/blob/main/docs/book/usage/gamboostlss.ipynb).
+differ between parameters. By default (`response_scale="auto"`), distributional
+families with response units (plus `Quantile` and `Laplace`) scale the response
+by its weighted standard deviation during boosting and map the fitted model
+back exactly so step lengths do not depend on units; pass `response_scale=None`
+for unscaled R `gamboostLSS` paths. `tune_mstop` tunes both cyclic and
+non-cyclic (`method="noncyclic"`) distributional specifications. The fitted
+model provides distribution-based prediction intervals and centiles; quantile
+residuals, probability integral transforms and worm-plot data support checking
+the fitted distribution. See the
+[distributional modeling guide](https://github.com/fcela/mboostrs/blob/main/docs/book/usage/gamboostlss.ipynb).
 
 ## Model selection: `cvrisk`
 
@@ -531,11 +548,21 @@ Gaussian fits use the covariance update that glmnet uses: the products of every
 base learner's design with every other's are computed once, and each iteration
 updates the learners' projections of the residual from them instead of
 recomputing the projections from the residual vector. `cvrisk` builds the same
-fast path in each fold for in-bag fits. Non-Gaussian families use the general
-path, which solves each learner's normal equations at every iteration, so
-their speedups are smaller but still material. Selection-only Gaussian smooth
-refits also use the Gram route, so stability selection does not build the
-coefficient, risk, increment, nuisance and fitted-value paths it would discard.
+fast path in each fold for in-bag fits. Multi-column `btree` terms also support
+a Rust histogram-subtraction engine (`split_method="histogram"`) that skips
+pre-sorting allocations and computes sibling histograms by subtraction from the
+parent node. Non-Gaussian families use the general path, which solves each
+learner's normal equations at every iteration, so their speedups are smaller
+but still material. Selection-only Gaussian smooth refits also use the Gram
+route, so stability selection does not build the coefficient, risk, increment,
+nuisance and fitted-value paths it would discard.
+
+Comparative benchmark suites are registered in
+[`benches/registry.json`](https://github.com/fcela/mboostrs/blob/main/benches/registry.json)
+and driven by [`benches/run.py`](https://github.com/fcela/mboostrs/blob/main/benches/run.py)
+(`list`, `status`, `run`, `update-book`). See the
+[benchmark summary](https://github.com/fcela/mboostrs/blob/main/docs/book/benchmarks/where_we_stand.ipynb)
+for current strengths, gaps and study links.
 
 ## Parity with R
 

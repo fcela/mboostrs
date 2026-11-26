@@ -35,6 +35,11 @@ The fit counts are:
 
 Ways to cut a run down:
 
+- Pass `search="fast"` to `autospec` on larger or wider tables to replace
+  multi-sweep per-column/per-pair CV probes with the single-pass held-out
+  screening radar (1–3 sweeps, keeping paired-SE adoption gates), and use
+  `split_method="histogram"` on multi-column `btree(...)` terms to avoid
+  pre-sorting allocations.
 - `bins=` on the fit (or per term) quantile-bins `bols`/`bbs`/`bspatial`/
   `brandom` designs. On large data it cuts the cost of every fit several
   fold with the same selected terms; on a few thousand rows it buys little.

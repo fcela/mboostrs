@@ -39,8 +39,9 @@ methods. Fitting takes a formula and data together; prediction is
 
 A supplied formula is a starting specification; do not replace it with an
 automatic search unless the task calls for that. `autospec` can draft a
-formula when one is needed. Its recommendation has `.formula`, `.family`,
-and `.report()`; it is not evidence that every proposed term matters.
+formula when one is needed (pass `search="fast"` for the single-pass radar).
+Its recommendation has `.formula`, `.family`, and `.report()`; it is not
+evidence that every proposed term matters.
 
 ## Limits of the convenience wrapper
 

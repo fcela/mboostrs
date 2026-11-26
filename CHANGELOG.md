@@ -92,7 +92,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `Fit.trail.final["formula"]` reports active terms (>= 1% of risk reduction
   or LSS partial-effect variance, or intercept-only when CV risk does not
   improve over step 0 by 1%).
-- `autospec` pre-exploration caps its screening table at 2,000 rows, skips
+- `autospec` pre-exploration caps its screening table at 10,000 rows, skips
   1D shape probing on near-zero-contribution columns on wider tables (> 8
   predictors), retains observed-response rows during search under impute
   modes, reuses `MstopEvidence.fold_scores` in the residual-tree gate, and
