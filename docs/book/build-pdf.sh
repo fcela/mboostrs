@@ -60,12 +60,18 @@ echo ":: Generating figures..."
 echo ":: Pre-rendering mermaid diagrams..."
 "$PYTHON_BIN" render_mermaid.py
 
-# Step 2: Clear stale execution cache and generate LaTeX via MyST.
+# Step 2: Clear stale execution cache (unless called right after build-html.sh
+# with MBOOSTRS_REUSE_EXEC_CACHE=1) and generate LaTeX via MyST.
 # `--tex` (not `--pdf`) so MyST only emits the LaTeX export defined in
 # myst.yml (project.exports, output: _build/tex/mboostrs.tex) and never
 # writes its own unpatched PDF render to exports/.
-echo ":: Clearing execution cache..."
-rm -rf _build/execute/ _build/temp/ _build/tex/
+if [ "${MBOOSTRS_REUSE_EXEC_CACHE:-0}" = "1" ]; then
+  echo ":: Reusing fresh execution cache from HTML build..."
+  rm -rf _build/temp/ _build/tex/
+else
+  echo ":: Clearing execution cache..."
+  rm -rf _build/execute/ _build/temp/ _build/tex/
+fi
 echo ":: Generating LaTeX via MyST..."
 mkdir -p _build
 if ! myst build --tex --execute --strict --ci > _build/pdf-myst.log 2>&1; then

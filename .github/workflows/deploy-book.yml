@@ -57,11 +57,22 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
+          cache-dependency-path: docs/book/requirements.txt
+
+      - name: Cache scikit-learn datasets
+        uses: actions/cache@v4
+        with:
+          path: ~/scikit_learn_data
+          key: sklearn-datasets-v1
 
       - name: Install Python dependencies
         run: python -m pip install -r requirements.txt maturin
 
       - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: documentation
 
       - name: Install mboostrs (from source, to execute tutorial cells)
         working-directory: .
