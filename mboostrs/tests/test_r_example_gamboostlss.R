@@ -3,6 +3,9 @@
 # (from the gamboostLSS Tutorial vignette), and per-parameter formulas.
 # Run after `R CMD INSTALL mboostrs` (needs gamboostLSS installed). Skips
 # cleanly if gamboostLSS is unavailable.
+# Compared with R mboost/gamboostLSS (or with values recorded from them), so
+# fitted on the raw response as R does (see ?gamboostLSS, response_scale).
+options(mboostrs.response_scale = "none")
 if (!requireNamespace("gamboostLSS", quietly = TRUE)) {
   message("gamboostLSS not installed; skipping gamboostLSS example parity")
   quit(save = "no")

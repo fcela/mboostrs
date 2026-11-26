@@ -12,7 +12,7 @@ GammaLSS(stabilization: str = 'none')
 Gamma location-shape family: `mu` (log link, mean), `sigma` (log link,
 shape). Matches R `gamboostLSS::GammaLSS()`. Requires `y > 0`.
 
-Source: [`python/mboostrs/gamlss.py` lines 1161-1215](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1161-L1215)
+Source: [`python/mboostrs/gamlss.py` lines 1206-1260](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1206-L1260)
 
 ## Members
 
@@ -43,7 +43,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `IndexError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1170-1174](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1170-L1174)
+Source: [`python/mboostrs/gamlss.py` lines 1215-1219](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1215-L1219)
 
 (gammalss-mean)=
 ## `GammaLSS.mean`
@@ -56,7 +56,7 @@ GammaLSS.mean(params) -> ndarray
 
 Conditional response mean.
 
-Source: [`python/mboostrs/gamlss.py` lines 1176-1178](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1176-L1178)
+Source: [`python/mboostrs/gamlss.py` lines 1221-1223](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1221-L1223)
 
 (gammalss-pdf)=
 ## `GammaLSS.pdf`
@@ -75,7 +75,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1180-1189](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1180-L1189)
+Source: [`python/mboostrs/gamlss.py` lines 1225-1234](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1225-L1234)
 
 (gammalss-cdf)=
 ## `GammaLSS.cdf`
@@ -94,7 +94,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1191-1198](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1191-L1198)
+Source: [`python/mboostrs/gamlss.py` lines 1236-1243](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1236-L1243)
 
 (gammalss-quantile)=
 ## `GammaLSS.quantile`
@@ -107,7 +107,7 @@ GammaLSS.quantile(p, params) -> ndarray
 
 Gamma quantile, obtained by inverting `cdf`.
 
-Source: [`python/mboostrs/gamlss.py` lines 1200-1202](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1200-L1202)
+Source: [`python/mboostrs/gamlss.py` lines 1245-1247](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1245-L1247)
 
 (gammalss-simulate)=
 ## `GammaLSS.simulate`
@@ -126,7 +126,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1204-1211](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1204-L1211)
+Source: [`python/mboostrs/gamlss.py` lines 1249-1256](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1249-L1256)
 
 (gammalss-deviance_increment)=
 ## `GammaLSS.deviance_increment`
@@ -139,4 +139,4 @@ GammaLSS.deviance_increment(y, params) -> ndarray
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 1213-1215](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1213-L1215)
+Source: [`python/mboostrs/gamlss.py` lines 1258-1260](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1258-L1260)

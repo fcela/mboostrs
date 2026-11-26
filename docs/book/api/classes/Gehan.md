@@ -23,4 +23,4 @@ fitted values consequently differ from R's by an additive constant
 exactly). See `crates/mboostrs-core/src/families.rs` (`Gehan`) for
 the full derivation.
 
-Source: [`python/mboostrs/families.py` lines 351-367](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L351-L367)
+Source: [`python/mboostrs/families.py` lines 416-432](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L416-L432)

@@ -172,7 +172,8 @@ def _plan_tune_mstop(args, kwargs):
     grids = len(_doubling_ends(start, a["max_mstop"], a["extensions"])) if response_route else 1
     fits = _tune_mstop_fits(a["folds"], grids=grids)
     family = Gaussian() if a["family"] is None else a["family"]
-    control = boost_control(start, a["nu"], step=a["step"])
+    nu = a["nu"] if a["nu"] is not None else getattr(family, "default_nu", 0.1)
+    control = boost_control(start, nu, step=a["step"])
     n_folds = _tune_mstop_fits(a["folds"]) - 1
     return fits, lambda: _fit_once(a["formula"], a["data"], family, control, extra), (
         f"{n_folds} fold fits, each resumed from grid to grid, plus one full-data fit; "

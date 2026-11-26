@@ -246,7 +246,7 @@ def test_budget_setting_sets_the_autospec_fit_limit_and_is_recorded():
     data = _gaussian_data()
     quick = mb.fit(data, "y", seed=0, budget="quick").trail.to_dict()
     standard = mb.fit(data, "y", seed=0, budget="standard").trail.to_dict()
-    assert quick["budget"]["limit"] == 16 and standard["budget"]["limit"] == 32
+    assert quick["budget"]["limit"] == 16 and standard["budget"]["limit"] == 64
     for record in (quick, standard):
         spent = record["budget"]["spent"]
         assert spent > 0

@@ -13,7 +13,7 @@ GeometricLSS(stabilization: str = 'none')
 mean). Matches R `gamboostLSS::GeometricLSS()` (wrapping gamlss.dist
 `GEOM`). Requires non-negative integer counts.
 
-Source: [`python/mboostrs/gamlss.py` lines 1685-1760](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1685-L1760)
+Source: [`python/mboostrs/gamlss.py` lines 1730-1805](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1730-L1805)
 
 ## Members
 
@@ -39,7 +39,7 @@ GeometricLSS.response(k: int, eta: numpy.ndarray) -> ndarray
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 1698-1699](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1698-L1699)
+Source: [`python/mboostrs/gamlss.py` lines 1743-1744](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1743-L1744)
 
 (geometriclss-mean)=
 ## `GeometricLSS.mean`
@@ -52,7 +52,7 @@ GeometricLSS.mean(params) -> ndarray
 
 Mean failures before the first success, `mu`.
 
-Source: [`python/mboostrs/gamlss.py` lines 1701-1703](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1701-L1703)
+Source: [`python/mboostrs/gamlss.py` lines 1746-1748](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1746-L1748)
 
 (geometriclss-pmf)=
 ## `GeometricLSS.pmf`
@@ -72,7 +72,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1705-1715](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1705-L1715)
+Source: [`python/mboostrs/gamlss.py` lines 1750-1760](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1750-L1760)
 
 (geometriclss-cdf)=
 ## `GeometricLSS.cdf`
@@ -91,7 +91,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1717-1729](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1717-L1729)
+Source: [`python/mboostrs/gamlss.py` lines 1762-1774](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1762-L1774)
 
 (geometriclss-quantile)=
 ## `GeometricLSS.quantile`
@@ -104,7 +104,7 @@ GeometricLSS.quantile(p, params) -> ndarray
 
 Geometric quantile: smallest `k` with `CDF(k) >= p`.
 
-Source: [`python/mboostrs/gamlss.py` lines 1731-1733](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1731-L1733)
+Source: [`python/mboostrs/gamlss.py` lines 1776-1778](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1776-L1778)
 
 (geometriclss-simulate)=
 ## `GeometricLSS.simulate`
@@ -123,7 +123,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1735-1742](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1735-L1742)
+Source: [`python/mboostrs/gamlss.py` lines 1780-1787](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1780-L1787)
 
 (geometriclss-deviance_increment)=
 ## `GeometricLSS.deviance_increment`
@@ -136,7 +136,7 @@ GeometricLSS.deviance_increment(y, params) -> ndarray
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 1744-1746](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1744-L1746)
+Source: [`python/mboostrs/gamlss.py` lines 1789-1791](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1789-L1791)
 
 (geometriclss-pdf)=
 ## `GeometricLSS.pdf`
@@ -156,4 +156,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1748-1760](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1748-L1760)
+Source: [`python/mboostrs/gamlss.py` lines 1793-1805](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1793-L1805)

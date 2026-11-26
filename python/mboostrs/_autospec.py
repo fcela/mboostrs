@@ -1927,6 +1927,30 @@ def _validate_against_gaussian(candidate, data, response, formula, folds, nu, en
 _LSS_LOGSCORE_MARGIN = _GAMMA_MSE_MARGIN
 
 
+def _unit_free_log_score(score, data, response, lss_family):
+    """A mean log score (nats per row) on the scale of ``y / sd(y)``.
+
+    The adoption bar is a share of the mean family's log score, and a log
+    score shifts by ``log(c)`` when the response is measured in units ``c``
+    times smaller: the same data in dollars and in thousands of dollars would
+    face different bars. Read on the response divided by its SD the score,
+    and so the bar, is the same in any units; differences between two scores
+    are unchanged. A family whose response has no units (proportions,
+    counts) is left as it is.
+    """
+    from mboostrs import _rust
+    from mboostrs._frame import read_column
+
+    y = np.asarray(read_column(data, response).values, dtype=float)
+    y = y[np.isfinite(y)]
+    if y.size < 2:
+        return score
+    scale = _rust.lss_auto_response_scale(
+        lss_family._rust_name, int(lss_family.n_params), np.ascontiguousarray(y),
+        np.ones(y.size))
+    return score if scale is None else score - float(np.log(scale))
+
+
 def _gaussian_fold_nll(fit, y, held, weights):
     """Held-out Gaussian log score at a sigma the fold's own rows estimate."""
     mu = np.asarray(fit.predict(type="response"), dtype=float)
@@ -2148,7 +2172,9 @@ def _validate_lss(lss_name, data, response, formula, folds, mstop, nu, env,
     adopt it only when it passes two held-out checks against the mean family.
 
     The log-score check: its held-out log score is better than the mean
-    family's by `_LSS_LOGSCORE_MARGIN` and two paired standard errors. The
+    family's by `_LSS_LOGSCORE_MARGIN` (a share of the mean family's score
+    read on the response divided by its SD, `_unit_free_log_score`) and two
+    paired standard errors. The
     mean check: its held-out squared error of the mean (mu on the response
     scale) is no worse than the mean family's by `_GAMMA_MSE_MARGIN` and two
     paired standard errors (the rule `_validate_against_gaussian` applies).
@@ -2239,9 +2265,11 @@ def _validate_lss(lss_name, data, response, formula, folds, mstop, nu, env,
     # be computed from these folds (one fold, or a non-finite fold
     # difference) is a refusal, never a waiver -- the rule
     # `_validate_against_gaussian`'s `require_better` path already applies.
+    bar_score = (_unit_free_log_score(float(np.mean(seconds)), data, response, lss_family)
+                 if paired else 0.0)
     better = bool(
         paired
-        and improvement > _LSS_LOGSCORE_MARGIN * abs(float(np.mean(seconds)))
+        and improvement > _LSS_LOGSCORE_MARGIN * abs(bar_score)
         and np.isfinite(se) and improvement > 2.0 * se)
     mean_score = float(np.mean(seconds)) if paired else float("nan")
     score_text = (
@@ -2323,6 +2351,113 @@ def _validate_lss(lss_name, data, response, formula, folds, mstop, nu, env,
             f"so {lss_name} carries both parameters"))
 
 
+#: The depths of the joint tree offered to every parameter of a
+#: distributional model: one that represents a product or a threshold of two
+#: predictors, and one that represents three-way structure.
+_LSS_TREE_DEPTHS = (3, 6)
+
+
+def lss_joint_tree_step(data, response, *, lss_family, formula, columns, folds,
+                        fold_scheme, mstop, nu, env, budget, judge=None):
+    """Offer a joint tree over the numeric predictors to every parameter of a
+    distributional model, and adopt the depth that wins on held-out rows.
+
+    An additive specification gives each parameter one term per predictor, so
+    it cannot represent a mean or a spread that depends on a product or a
+    threshold of two predictors (``x0 * x1``). A ``btree`` over all of them,
+    added to every parameter's formula, can: it is boosted with the additive
+    terms, and selected only where it reduces the risk more than they do. Each
+    depth in `_LSS_TREE_DEPTHS` is scored by the family's held-out log score on
+    the shared folds. The best is adopted when it beats the additive
+    specification by `_LSS_LOGSCORE_MARGIN` (read on the response divided by
+    its SD, `_unit_free_log_score`) and by two paired fold standard errors,
+    and its held-out squared error of the mean is not worse (`_mse_worse`) --
+    the gates the family choice applies.
+
+    The cost is one fit per fold for the additive specification and for each
+    depth (twice when the optimum is at the end of its path), plus one per
+    fold for each side of the mean check. A depth is not scored once `budget`
+    fits are spent. Returns a dict with ``adopted`` (the depth or ``None``),
+    ``formula`` (the per-parameter mapping to fit), ``optimal`` and ``score``
+    of the adopted specification, ``rows`` (one record per depth) and
+    ``fits``.
+    """
+    from mboostrs.explore import _paired_se, _partitions
+
+    names = tuple(lss_family.param_names)
+    base = dict(formula) if isinstance(formula, dict) else {name: formula for name in names}
+    numeric = [column.name for column in columns
+               if column.kind in ("numeric", "boolean")]
+    folds = np.asarray(folds, dtype=float)
+    n_folds = int(folds.shape[1])
+    result = {"adopted": None, "formula": base, "rows": [], "fits": 0}
+    if len(numeric) < 2:
+        result["reason"] = "fewer than two numeric predictors: no joint tree to offer"
+        return result
+    incumbent = _lss_fold_logscores(data, response, base, lss_family, folds,
+                                    fold_scheme, mstop, nu, env)
+    if incumbent is None:
+        result["reason"] = "the additive specification could not be scored on these folds"
+        return result
+    fits = incumbent[4]
+    base_score, base_scores = incumbent[0], np.asarray(incumbent[1], dtype=float)
+    bar = _LSS_LOGSCORE_MARGIN * abs(
+        _unit_free_log_score(base_score, data, response, lss_family))
+    tree_columns = ", ".join(quote_name(name) for name in numeric)
+    best = None
+    for depth in _LSS_TREE_DEPTHS:
+        if fits >= budget:
+            result["rows"].append({"depth": depth, "status": "not scored: budget spent"})
+            continue
+        tree = f"btree({tree_columns}, maxdepth={depth})"
+        candidate = {name: f"{f} + {tree}" for name, f in base.items()}
+        scored = _lss_fold_logscores(data, response, candidate, lss_family, folds,
+                                     fold_scheme, mstop, nu, env)
+        if scored is None:
+            fits += n_folds
+            result["rows"].append({"depth": depth, "status": "could not be fitted"})
+            continue
+        fits += scored[4]
+        scores = np.asarray(scored[1], dtype=float)
+        improvement = float(base_score - scored[0])
+        se = (float(_paired_se(scores, base_scores, _partitions(folds)))
+              if scores.size == base_scores.size else float("nan"))
+        passes = bool(improvement > bar and np.isfinite(se) and improvement > 2.0 * se)
+        result["rows"].append({
+            "depth": depth, "status": "scored", "score": float(scored[0]),
+            "additive_score": float(base_score), "improvement": improvement,
+            "se": se, "bar": float(bar), "passes": passes,
+            "at_boundary": bool(scored[5])})
+        if passes and (best is None or scored[0] < best[1][0]):
+            best = (depth, scored, candidate)
+    result["fits"] = fits
+    if best is None:
+        result["reason"] = ("no depth beat the additive specification by the margin "
+                            "and two paired standard errors")
+        return result
+    depth, scored, candidate = best
+    new = _lss_fold_mean_mse(data, response, candidate, lss_family, folds,
+                             max(scored[3]), nu, env, judge=judge)
+    current = _lss_fold_mean_mse(data, response, base, lss_family, folds,
+                                 max(incumbent[3]), nu, env, judge=judge)
+    fits += (new[1] if new is not None else n_folds) + (
+        current[1] if current is not None else n_folds)
+    result["fits"] = fits
+    if new is None or current is None or new[0].size != current[0].size:
+        result["reason"] = "the mean check could not be computed on these folds"
+        return result
+    mse_se = _paired_se(new[0], current[0], _partitions(folds))
+    if not np.isfinite(mse_se) or _mse_worse(float(new[0].mean()),
+                                             float(current[0].mean()), mse_se):
+        result["reason"] = (f"depth {depth} improves the log score but its squared "
+                            "error of the mean is worse")
+        return result
+    result.update(adopted=depth, formula=candidate, optimal=tuple(scored[3]),
+                  score=float(scored[0]))
+    result["reason"] = f"depth {depth} adopted"
+    return result
+
+
 def compare_finished_routes(data, response, *, mean_family, mean_formula,
                             mean_mstop, mean_nu, lss_family, lss_formula,
                             lss_nu, lss_largest, folds, fold_scheme, env,
@@ -2397,8 +2532,9 @@ def compare_finished_routes(data, response, *, mean_family, mean_formula,
     # computed from these folds (one fold, or a non-finite fold
     # difference) fails the check it belongs to -- a refusal, never a
     # waiver, as in `_validate_lss`.
+    bar_score = _unit_free_log_score(mean_score, data, response, lss_family)
     score_ok = bool(
-        improvement > _LSS_LOGSCORE_MARGIN * abs(mean_score)
+        improvement > _LSS_LOGSCORE_MARGIN * abs(bar_score)
         and np.isfinite(score_se) and improvement > 2.0 * score_se)
     mse_se = _paired_se(lss_mse_folds, mean_mse, partitions)
     lss_error, mean_error = float(np.mean(lss_mse_folds)), float(np.mean(mean_mse))
@@ -2498,7 +2634,8 @@ def _heteroscedasticity_screen(residual, columns, scored):
 
 def probe_heteroscedasticity(data, response, formula, column_names, terms, *,
                              folds, mstop, nu, env=None, validate=False,
-                             cache=None, judge=None, fold_scheme=None):
+                             cache=None, judge=None, fold_scheme=None,
+                             tree_scale=True):
     """Test whether the response's variance moves with a covariate, and -- when
     it does and the budget allows -- offer GaussianLSS a scale equation and
     score it held out (#322).
@@ -2552,7 +2689,28 @@ def probe_heteroscedasticity(data, response, formula, column_names, terms, *,
         spread_tracks_mean=float("nan"), n_scored=int(scored.sum()),
         fits=fits, sentence=sentence)
     if not significant:
-        return evidence
+        # The screen regresses log(residual^2) on each column linearly, so a
+        # spread that moves with a product or a threshold of the predictors
+        # (sd depending on x0 * x1), or that is U-shaped in one of them,
+        # leaves every slope near zero. A joint tree of depth 3 over the
+        # numeric predictors in the scale equation can represent those; the
+        # held-out log score decides, with the gates every distributional
+        # candidate passes, so a constant spread keeps the mean family.
+        numeric = [column.name for column in columns
+                   if column.kind in ("numeric", "boolean")]
+        if not validate or not tree_scale or not numeric:
+            return evidence
+        tree = ", ".join(quote_name(name) for name in numeric)
+        scale_formula = f"{quote_response(response)} ~ btree({tree}, maxdepth=3)"
+        lss_formula = {"mu": formula, "sigma": scale_formula}
+        evidence = replace(
+            evidence, lss_formula=lss_formula,
+            sentence=sentence + "; a joint tree of depth 3 over the numeric "
+            "covariates is offered to the scale equation instead")
+        return _validate_lss(
+            "GaussianLSS", data, response, formula, folds, mstop, nu, env,
+            evidence, mean_mstop=mstop, cache=cache, judge=judge,
+            fold_scheme=fold_scheme, lss_formula=lss_formula)
     term_by_column = {column.name: term
                       for column, term in zip(columns, terms, strict=True)}
     scale_formula = (f"{quote_response(response)} ~ "
@@ -3259,6 +3417,13 @@ def probe_shapes(data, response, columns, terms, family, *, folds, mstop, nu,
         priority = {name: i for i, name in enumerate(preexploration["priority"])}
         candidates.sort(key=lambda pair: priority.get(pair[0].name, len(priority)))
     for column, incumbent_term in candidates:
+        # On wider tables, skip probing shape alternatives on pure-noise columns
+        # whose share of the tuned additive fit's risk reduction is below 0.2%:
+        # probing 4-5 shapes on every noise column wastes fit budget and time.
+        if (term_shares is not None and len(columns) > 8
+                and column.name not in fixed_names
+                and term_shares.get(incumbent_term, 0.0) < 0.002):
+            continue
         variants = _shape_variants(column, df, incumbent_term)
         if type(family).__name__ == "Multinomial":
             # The Multinomial fit wraps bols, bbs and brandom per class; a
@@ -3458,6 +3623,9 @@ class MstopEvidence:
     #: instead of fitting the main-effect model again. Carried privately: it
     #: is an optimisation input, not part of the evidence.
     _fit: object = field(default=None, repr=False, compare=False)
+    #: Per-fold out-of-fold risk at `chosen`, carried so downstream comparisons
+    #: (such as the residual-tree gate) do not have to re-run the incumbent CV.
+    fold_scores: tuple[float, ...] = field(default=(), repr=False, compare=False)
 
 
 #: The mstop grid is never extended past this many iterations.
@@ -3499,7 +3667,8 @@ def probe_mstop(data, response, formula, family, *, folds, largest, nu,
     return MstopEvidence(
         chosen=tuning.mstop, grid=tuple(range(len(tuning.risk))), risk=tuning.risk,
         at_boundary=tuning.at_boundary, fits=tuning.fits, sentence=tuning.sentence,
-        _fit=getattr(tuning, "_fit", None))
+        _fit=getattr(tuning, "_fit", None),
+        fold_scores=tuple(float(v) for v in getattr(tuning, "fold_scores", ())))
 
 
 #: Step lengths the bounded step-length search probes, in addition to the
@@ -3877,6 +4046,12 @@ def probe_interactions(data, response, formula, family, columns, terms, *,
 #: steps, and on purely additive data those steps leave H^2 near 0.015.
 _SURROGATE_MIN_H2 = 0.05
 
+#: Maximum rows passed to the GBDT pre-exploration screen. Above this count
+#: a deterministic subsample keeps screening fast without changing the
+#: rough shape/interaction proposals.
+_PREEXPLORE_MAX_ROWS = 10_000
+
+
 def _preexploration(data, response, columns, terms=(), *, seed=0, engine="native", mstop=300):
     """Convert columns for the Rust exploration and restore their public names."""
     import json
@@ -3889,14 +4064,23 @@ def _preexploration(data, response, columns, terms=(), *, seed=0, engine="native
     if not names:
         return None
     raw = [read_column(data, name) for name in names]
+    y_vals = np.ascontiguousarray(read_column(data, response).values, dtype=float)
+    X_mat = np.ascontiguousarray(np.column_stack([c.values for c in raw]), dtype=float)
+    subsampled = X_mat.shape[0] > _PREEXPLORE_MAX_ROWS
+    if subsampled:
+        idx = np.sort(np.random.default_rng(seed).choice(
+            X_mat.shape[0], size=_PREEXPLORE_MAX_ROWS, replace=False))
+        X_mat = np.ascontiguousarray(X_mat[idx], dtype=float)
+        y_vals = np.ascontiguousarray(y_vals[idx], dtype=float)
     categories = [len(c.levels) if c.kind == "categorical" else 0 for c in raw]
     transforms = [1 if any(f"log({quote_name(name)})" in t for t in terms)
                   else 2 if any(f"sqrt({quote_name(name)})" in t for t in terms) else 0
                   for name in names]
+    rounds = min(int(mstop), 150) if subsampled else int(mstop)
     result = json.loads(call_fit(preexplore_json,
-        np.ascontiguousarray(np.column_stack([c.values for c in raw]), dtype=float),
-        np.ascontiguousarray(read_column(data, response).values, dtype=float),
-        categories, transforms, engine=engine, seed=seed, rounds=mstop,
+        X_mat,
+        y_vals,
+        categories, transforms, engine=engine, seed=seed, rounds=rounds,
         pairs=len(names) > 1, _fit_count=2 if engine == "dual" else 1))
     for row in result["columns"]:
         row["column"] = names[row["index"]]

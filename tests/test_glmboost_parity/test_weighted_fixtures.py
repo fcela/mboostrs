@@ -19,13 +19,13 @@ FAMILY_MAP = {
     "Poisson": lambda d: mboost.Poisson(),
     "Binomial": lambda d: mboost.Binomial(),
     "AdaExp": lambda d: mboost.AdaExp(),
-    "Laplace": lambda d: mboost.Laplace(),
+    "Laplace": lambda d: mboost.Laplace(response_scale=None),
     "GammaReg": lambda d: mboost.GammaReg(),
     "Huber": lambda d: mboost.Huber(),
     "NBinomial": lambda d: mboost.NBinomial(),
     "PropOdds": lambda d: mboost.PropOdds(n_levels=d.get("nlevels", 3)),
     "ExpectReg": lambda d: mboost.Expectile(tau=d["tau"]),
-    "QuantReg": lambda d: mboost.Quantile(tau=d["tau"]),
+    "QuantReg": lambda d: mboost.Quantile(tau=d["tau"], qoffset=0.5, response_scale=None),
 }
 
 GLM_FIXTURES = sorted(FIXTURE_DIR.glob("glmboost_*.json"))

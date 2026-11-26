@@ -53,8 +53,9 @@ def test_gaussian_lss_matches_the_pre_change_fit(data):
     wage = {k: v for k, v in data.items() if k != "y_bin"}
     wage["log_wage"] = wage.pop("y_gauss")
     spec = {"mu": "log_wage ~ " + RHS, "sigma": "log_wage ~ " + RHS}
+    # The reference values were recorded on R's raw-units path.
     fit = mb.gamboostLSS(spec, wage, family=mb.GaussianLSS(),
-                         control=mb.boost_control(mstop=MSTOP))
+                         control=mb.boost_control(mstop=MSTOP), response_scale=None)
 
     assert list(fit.selected["mu"])[:6] == ["x", "x", "x", "z", "x", "z"]
     assert list(fit.selected["sigma"])[:6] == ["x", "bols(g)", "bols(g)", "bols(g)", "x", "bols(g)"]

@@ -14,7 +14,7 @@ Zero-inflated negative-binomial (type I) family: `mu` (log link, mean),
 probability). Matches R `gamboostLSS::ZINBLSS()` (wrapping gamlss.dist
 `ZINBI`). Requires non-negative integer counts.
 
-Source: [`python/mboostrs/gamlss.py` lines 1521-1615](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1521-L1615)
+Source: [`python/mboostrs/gamlss.py` lines 1566-1660](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1566-L1660)
 
 ## Members
 
@@ -46,7 +46,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `IndexError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1536-1543](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1536-L1543)
+Source: [`python/mboostrs/gamlss.py` lines 1581-1588](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1581-L1588)
 
 (zinblss-mean)=
 ## `ZINBLSS.mean`
@@ -59,7 +59,7 @@ ZINBLSS.mean(params) -> ndarray
 
 Mixture mean `(1 - nu) * mu`.
 
-Source: [`python/mboostrs/gamlss.py` lines 1545-1547](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1545-L1547)
+Source: [`python/mboostrs/gamlss.py` lines 1590-1592](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1590-L1592)
 
 (zinblss-pmf)=
 ## `ZINBLSS.pmf`
@@ -74,7 +74,7 @@ Return the ZINBI probability mass using the family parameterization.
 
 This is the same response-scale distribution used by `pdf`.
 
-Source: [`python/mboostrs/gamlss.py` lines 1549-1554](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1549-L1554)
+Source: [`python/mboostrs/gamlss.py` lines 1594-1599](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1594-L1599)
 
 (zinblss-cdf)=
 ## `ZINBLSS.cdf`
@@ -93,7 +93,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1556-1566](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1556-L1566)
+Source: [`python/mboostrs/gamlss.py` lines 1601-1611](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1601-L1611)
 
 (zinblss-quantile)=
 ## `ZINBLSS.quantile`
@@ -106,7 +106,7 @@ ZINBLSS.quantile(p, params) -> ndarray
 
 ZINBI quantile: smallest k with nu + (1 - nu) * NBI_CDF(k) >= p (size 1/sigma).
 
-Source: [`python/mboostrs/gamlss.py` lines 1568-1570](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1568-L1570)
+Source: [`python/mboostrs/gamlss.py` lines 1613-1615](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1613-L1615)
 
 (zinblss-simulate)=
 ## `ZINBLSS.simulate`
@@ -125,7 +125,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1572-1583](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1572-L1583)
+Source: [`python/mboostrs/gamlss.py` lines 1617-1628](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1617-L1628)
 
 (zinblss-deviance_increment)=
 ## `ZINBLSS.deviance_increment`
@@ -138,7 +138,7 @@ ZINBLSS.deviance_increment(y, params) -> ndarray
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 1585-1587](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1585-L1587)
+Source: [`python/mboostrs/gamlss.py` lines 1630-1632](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1630-L1632)
 
 (zinblss-pdf)=
 ## `ZINBLSS.pdf`
@@ -161,4 +161,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1589-1615](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1589-L1615)
+Source: [`python/mboostrs/gamlss.py` lines 1634-1660](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1634-L1660)

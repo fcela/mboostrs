@@ -1422,7 +1422,7 @@ FLAT_CURVE_TOLERANCE = 0.01
 
 
 @one_summary
-def tune_mstop(formula, data, family=None, *, folds=5, start=100, nu=0.1,
+def tune_mstop(formula, data, family=None, *, folds=5, start=100, nu=None,
                extensions=None, max_mstop=10_000, seed=0, step="fixed",
                score="family", score_parameter=None, unseen_levels="average",
                fold_local=False, patience=None, fit_budget=None,
@@ -1471,6 +1471,9 @@ def tune_mstop(formula, data, family=None, *, folds=5, start=100, nu=0.1,
         `grouped_folds` for prediction in new groups.
     start : int
         The first grid's largest iteration.
+    nu : float, optional
+        Step length. ``None`` (default) is the family's own default where it
+        sets one (``Quantile``: 0.3), else 0.1.
     extensions : int, optional
         How many times the grid may double; ``None`` (default) doubles until
         the risk turns or ``max_mstop`` is reached.
@@ -1537,6 +1540,10 @@ def tune_mstop(formula, data, family=None, *, folds=5, start=100, nu=0.1,
     start = check_int_at_least("start", start, 1, allow_none=False)
     max_mstop = check_int_at_least("max_mstop", max_mstop, 1, allow_none=False)
     start = min(start, max_mstop)
+    # The family's own default step length when it sets one (Quantile: 0.3),
+    # else mboost's 0.1.
+    if nu is None:
+        nu = getattr(family, "default_nu", 0.1)
     extensions = check_int_at_least("extensions", extensions, 0, allow_none=True)
     patience = check_int_at_least("patience", patience, 1, allow_none=True)
     if patience is not None and (score != "family" or fold_local or isinstance(formula, dict)):
@@ -1781,7 +1788,9 @@ def _tune_mstop_lss(formulas, data, family, *, folds, start, nu, extensions,
     """`tune_mstop` for a distributional specification.
 
     The same doubling grid, read off the LSS diagonal: every parameter moves
-    by the same step count. The core fits each fold once and resumes its path
+    by the same step count. With ``method="noncyclic"`` (passed through
+    ``fit_kwargs``) a step updates one parameter, so the grid counts total
+    steps. The core fits each fold once and resumes its path
     from one grid to the next, so a search that doubles k times still costs one
     fit per fold. The one full-data fit supplies the refit arguments of the
     specification. `formulas` is the mapping `gamboostLSS` itself takes, full
@@ -1937,10 +1946,12 @@ def _tuned_lss(model, seed, inner, *, start, max_mstop):
     from mboostrs.gamlss import diagonal_grid
 
     n_params = len(model.param_names)
+    # A non-cyclic fit takes one total step count, and its grid is of totals.
+    noncyclic = getattr(model, "_method", "cyclic") == "noncyclic"
     fits_per_grid = inner.n_folds if inner is not None else 5
     largest, grids_run, fits = int(start), 0, 0
     while True:
-        grid = diagonal_grid(largest, n_params, length_out=10)
+        grid = diagonal_grid(largest, 1 if noncyclic else n_params, length_out=10)
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", RuntimeWarning)
             tuned = model.cvrisk(folds=inner, B=5, seed=seed, grid=grid)

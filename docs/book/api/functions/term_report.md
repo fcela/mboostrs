@@ -70,4 +70,4 @@ in `cv_risk`: `"warn"` (default) reports the fold rows outside their
 training range in one warning, `"clip"` holds the spline flat at the
 range edge, `"error"` refuses, and `"allow"` predicts silently.
 
-Source: [`python/mboostrs/explore.py` lines 2267-2392](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L2267-L2392)
+Source: [`python/mboostrs/explore.py` lines 2278-2403](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L2278-L2403)

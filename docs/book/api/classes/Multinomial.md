@@ -27,4 +27,4 @@ multi-class fit.
 - `n_classes` (int, optional): Number of classes, at least 3. Inferred from the response when
   omitted, on the `gamboost` path.
 
-Source: [`python/mboostrs/families.py` lines 312-337](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L312-L337)
+Source: [`python/mboostrs/families.py` lines 377-402](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L377-L402)

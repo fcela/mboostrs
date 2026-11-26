@@ -45,6 +45,7 @@ from mboostrs._model_api import capture_fit_warnings
 from mboostrs._names import partition_tilde, quote_name
 from mboostrs._output import export_result
 from mboostrs._results import MappingResultMixin, Provenance
+from mboostrs._validate import _model_unseen_levels
 from mboostrs._weights import (
     WeightPolicyMixin,
     normalize_weights,
@@ -961,6 +962,50 @@ class _StabilizedNGradient:
             if not key.startswith("_") and value is not None
             and not (key == "stabilization" and value == "none"))
         return f"{type(self).__name__}({args})"
+
+
+def _check_response_scale(value):
+    """A valid ``response_scale`` in its stored form: ``"auto"``, ``"none"``
+    (also spelled ``None``) or a positive number.
+
+    Boosted LSS fitting is not unit-free: once gradients are stabilized each
+    step moves a location parameter by about ``nu`` in response units, so a
+    response in dollars barely leaves its offset while the same response in
+    thousands of dollars fits. A scaled fit divides the response by ``s`` and
+    maps the model back, so it is the same in any units and reports
+    everything in the original units. ``"auto"`` takes ``s`` as the weighted
+    SD of the response each fit sees -- a cross-validation fold, a weighted
+    refit and a fit on the same rows agree -- and leaves families with no
+    units to change (counts, proportions, compositions) unscaled. ``None``
+    fits the raw response, the path R gamboostLSS takes; it is stored as
+    ``"none"`` so that a refit that drops unset arguments keeps it.
+    """
+    if value is None:
+        return "none"
+    if isinstance(value, str):
+        if value not in ("auto", "none"):
+            raise ValueError(
+                f'response_scale must be "auto", "none" (or None) or a positive number, '
+                f'got {value!r}')
+        return value
+    scale = float(value)
+    if not np.isfinite(scale) or scale <= 0.0:
+        raise ValueError(f"response_scale must be finite and positive, got {value!r}")
+    return scale
+
+
+def _response_scale_used(value, family, y, w):
+    """The scale a fit with ``response_scale=value`` divided ``y`` by, or ``None``."""
+    if value is None or value == "none":
+        return None
+    if isinstance(value, str):
+        from mboostrs import _rust
+
+        return _rust.lss_auto_response_scale(
+            family._rust_name, int(family.n_params),
+            np.ascontiguousarray(y, dtype=np.float64),
+            np.ascontiguousarray(w, dtype=np.float64))
+    return float(value)
 
 
 def _resolve_stabilization(fit_level, family):
@@ -3236,7 +3281,7 @@ class LSSModel(WeightPolicyMixin):
         return output_frame(rows, output)
 
     def predict_parameters(self, newdata=None, type=_TYPE_DEFAULT,
-                           extrapolation="warn", unseen_levels="error") -> dict:
+                           extrapolation="warn", unseen_levels=None) -> dict:
         """Return response-scale predictions by distribution parameter.
 
         An LSS model returns ``{parameter: array}``. A standard model has
@@ -3252,6 +3297,7 @@ class LSSModel(WeightPolicyMixin):
         pass ``extrapolation="clip"`` to hold covariates at the training range
         and ``unseen_levels="average"`` to score categories absent from training.
         """
+        unseen_levels = _model_unseen_levels(self, unseen_levels)
         if type is _TYPE_DEFAULT:
             type = "response"
         out = self.predict(newdata=newdata, type=type, extrapolation=extrapolation,
@@ -3389,8 +3435,15 @@ class LSSModel(WeightPolicyMixin):
 
                 learners = [spec for parameter in getattr(self, "_params", None) or ()
                             for spec in parameter.get("learners") or ()]
-                columns = _brandom_only_columns(learners)
-            return apply_recipe(recipe, newdata, unseen_level_columns=columns)
+                allowed = set(_brandom_only_columns(learners))
+                for parameter in getattr(self, "_params", None) or ():
+                    for interaction in parameter.get("interactions") or ():
+                        for margin in (interaction.left, interaction.right):
+                            if margin.kind in ("contrasts", "brandom", "byfactor"):
+                                allowed.add(margin.column)
+                columns = frozenset(allowed)
+            return apply_recipe(recipe, newdata, unseen_level_columns=columns,
+                                unseen_levels=unseen_levels)
         return newdata
 
     def _transformed_response(self, data):
@@ -3413,7 +3466,7 @@ class LSSModel(WeightPolicyMixin):
         return np.asarray(response_forward(step, y), dtype=np.float64)
 
     def params(self, newdata=None, type="response", mstop=None, buser_newdata=None,
-               unseen_levels="error", extrapolation="warn"):
+               unseen_levels=None, extrapolation="warn"):
         """Predicted LSS parameters for all family parameters.
 
         ``type="response"`` returns distribution parameters such as ``sigma`` on
@@ -3425,6 +3478,7 @@ class LSSModel(WeightPolicyMixin):
         :meth:`predict`; pass ``"clip"`` to hold covariates at the training
         range instead of continuing the spline edge slope.
         """
+        unseen_levels = _model_unseen_levels(self, unseen_levels)
         return self.predict(
             newdata=newdata,
             type=type,
@@ -3442,7 +3496,7 @@ class LSSModel(WeightPolicyMixin):
         output="auto",
         include_response=True,
         buser_newdata=None,
-        unseen_levels="error",
+        unseen_levels=None,
         extrapolation="warn",
     ):
         """All-parameter prediction table, analogous to GAMLSS ``predictAll``.
@@ -3457,6 +3511,7 @@ class LSSModel(WeightPolicyMixin):
         extrapolation : {"warn", "clip", "error", "allow"}, default "warn"
             As in :meth:`predict`, applied to every parameter's column.
         """
+        unseen_levels = _model_unseen_levels(self, unseen_levels)
         if output == "dataframe":
             output = "auto"
         params = self.params(
@@ -3732,7 +3787,7 @@ class LSSModel(WeightPolicyMixin):
         return terms[0], group_sd
 
     def prediction_interval(self, level=0.95, newdata=None, mstop=None,
-                            unseen_levels="error", group_sd=None):
+                            unseen_levels=None, group_sd=None):
         """Central prediction interval table for the fitted LSS distribution.
 
         ``unseen_levels`` is as in :meth:`predict`; the interval is for the
@@ -3750,6 +3805,7 @@ class LSSModel(WeightPolicyMixin):
         by design, and the model refuses to guess their dispersion.
         Rows whose group the fit saw keep their conditional interval.
         """
+        unseen_levels = _model_unseen_levels(self, unseen_levels)
         level = float(level)
         if not 0.0 < level < 1.0:
             raise ValueError("level must be in (0, 1)")
@@ -3858,19 +3914,22 @@ class LSSModel(WeightPolicyMixin):
         ]
         return _records_frame(rows)
 
-    def predint(self, level=0.95, newdata=None, mstop=None, unseen_levels="error"):
+    def predint(self, level=0.95, newdata=None, mstop=None, unseen_levels=None):
         """Alias for :meth:`prediction_interval`, matching R ``predint`` naming."""
+        unseen_levels = _model_unseen_levels(self, unseen_levels)
         return self.prediction_interval(level=level, newdata=newdata, mstop=mstop,
                                         unseen_levels=unseen_levels)
 
-    def PI(self, level=0.95, newdata=None, mstop=None, unseen_levels="error"):  # noqa: N802 - R parity alias
+    def PI(self, level=0.95, newdata=None, mstop=None, unseen_levels=None):  # noqa: N802 - R parity alias
         """Alias for :meth:`prediction_interval`, matching R ``PI`` naming."""
         return self.prediction_interval(level=level, newdata=newdata, mstop=mstop,
                                          unseen_levels=unseen_levels)
 
     def pit(self, newdata=None, mstop=None, randomized=True, random_state=None,
-            unseen_levels="error"):
+            unseen_levels=None):
         """Probability integral transform values for fitted LSS distributions."""
+        unseen_levels = _model_unseen_levels(self, unseen_levels)
+        unseen_levels = _model_unseen_levels(self, unseen_levels)
         if not hasattr(self._family, "cdf"):
             raise NotImplementedError(
                 f"{self._family.__class__.__name__} does not expose CDF diagnostics yet.{_CAPABILITY_HINT}"
@@ -3894,7 +3953,7 @@ class LSSModel(WeightPolicyMixin):
         return np.clip(u, eps, 1.0 - eps)
 
     def quantile_residuals(self, newdata=None, mstop=None, randomized=True,
-                           random_state=None, unseen_levels="error"):
+                           random_state=None, unseen_levels=None):
         """Randomized quantile residuals for fitted LSS distributions.
 
         For continuous families this is ``Phi^-1(F(y))``. For discrete
@@ -3902,6 +3961,7 @@ class LSSModel(WeightPolicyMixin):
         ``F(y - 1)`` and ``F(y)``; ``randomized=False`` uses the midpoint of
         that interval for deterministic diagnostics.
         """
+        unseen_levels = _model_unseen_levels(self, unseen_levels)
         if not hasattr(self._family, "cdf"):
             raise NotImplementedError(
                 f"{self._family.__class__.__name__} does not expose CDF diagnostics yet.{_CAPABILITY_HINT}"
@@ -3913,7 +3973,7 @@ class LSSModel(WeightPolicyMixin):
 
     def residual_frame(self, kind="quantile", newdata=None, mstop=None,
                        randomized=True, random_state=None, output="auto",
-                       unseen_levels="error"):
+                       unseen_levels=None):
         """Diagnostic residual table for LSS models.
 
         ``kind="quantile"`` returns randomized quantile residuals and requires a
@@ -3921,6 +3981,7 @@ class LSSModel(WeightPolicyMixin):
         ``y - mu`` and is refused for survival and multivariate responses,
         exactly as :meth:`residuals` refuses them.
         """
+        unseen_levels = _model_unseen_levels(self, unseen_levels)
         if kind not in ("quantile", "response"):
             raise ValueError("kind must be 'quantile' or 'response'")
         if kind == "response":
@@ -4282,6 +4343,11 @@ class LSSModel(WeightPolicyMixin):
         resolved = getattr(self, "_stabilization", None)
         if resolved is not None:
             arguments["stabilization"] = resolved
+        # The response scale as requested: an automatic scale is taken again
+        # from the rows each refit, fold or stability-selection subsample
+        # sees, as a fit on those rows would take it. A model saved before the
+        # option existed fitted the raw response.
+        arguments["response_scale"] = getattr(self, "_response_scale", "none")
         return arguments
 
     def _control_object(self):
@@ -4324,7 +4390,10 @@ class LSSModel(WeightPolicyMixin):
             Seed for generated folds.
         length_out : int, default 10
             Number of diagonal grid points when ``grid`` is ``None``.
-        unseen_levels : {"error", "average", "zero_effect"}, default "error"
+        unseen_levels : {"error", "average", "zero_effect"}, optional
+            ``None`` (default) uses the model's policy: ``"error"``, except
+            for a model returned by ``mb.fit``, which predicts an unseen
+            level as the average group.
             Policy for factor or group levels held out completely in a fold.
             Passed to held-out prediction in non-cyclic cross-validation.
         **kwargs
@@ -4395,9 +4464,9 @@ class LSSModel(WeightPolicyMixin):
         :func:`cvrisk_gamboostLSS` builds for a search (``risk``, ``curve``,
         ``grid``, ``mstop``, ``at_boundary``, ``ends``).
         """
-        if self._model_kind != "gamboostLSS" or self._method == "noncyclic":
+        if self._model_kind != "gamboostLSS":
             raise NotImplementedError(
-                "the doubling search resumes the paths of a cyclic gamboostLSS fit")
+                "the doubling search resumes the paths of a gamboostLSS fit")
         arguments = self._refit_arguments()
         if getattr(self, "_input_weights", None) is not None:
             arguments["weights"] = self.model_weights()
@@ -4408,7 +4477,8 @@ class LSSModel(WeightPolicyMixin):
             folds=folds if isinstance(folds, FoldScheme) else folds_matrix,
             grid=None,
             _search={"ends": list(ends), "grids": [list(g) for g in grids],
-                     "boundary_share": float(boundary_share)},
+                     "boundary_share": float(boundary_share),
+                     "method": self._method},
             **arguments)
 
     def _cvrisk_noncyclic(self, folds, grid, length_out, kwargs, *, unseen_levels="error"):
@@ -4953,6 +5023,7 @@ class LSSModel(WeightPolicyMixin):
                 env=self._env,
                 stabilization=self._stabilization,
                 nu=self._nu_per_param,
+                response_scale=getattr(self, "_response_scale", "none"),
             )
         else:
             refit = glmboostLSS(
@@ -4966,6 +5037,7 @@ class LSSModel(WeightPolicyMixin):
                 weights=weights,
                 stabilization=self._stabilization,
                 nu=self._nu_per_param,
+                response_scale=getattr(self, "_response_scale", "none"),
             )
         # The refit parsed rewritten formulas against the processed frame,
         # so it sees no transform to record; the carried contract belongs to
@@ -5173,7 +5245,7 @@ class LSSModel(WeightPolicyMixin):
         *,
         mstop=None,
         buser_newdata=None,
-        unseen_levels="error",
+        unseen_levels=None,
         extrapolation="warn",
     ):
         """Expected response under the fitted distribution.
@@ -5183,6 +5255,7 @@ class LSSModel(WeightPolicyMixin):
         ``ZINBLSS`` returns ``(1 - nu) * mu``. ``predict(type="response")``
         still returns the parameters themselves.
         """
+        unseen_levels = _model_unseen_levels(self, unseen_levels)
         if not hasattr(self._family, "mean"):
             raise TypeError(
                 f"{type(self._family).__name__} does not define a mean of the response"
@@ -5205,7 +5278,7 @@ class LSSModel(WeightPolicyMixin):
         type=_TYPE_DEFAULT,
         mstop=None,
         buser_newdata=None,
-        unseen_levels="error",
+        unseen_levels=None,
         extrapolation="warn",
     ):
         """Predictions for one distribution parameter, or for all of them.
@@ -5256,7 +5329,10 @@ class LSSModel(WeightPolicyMixin):
         buser_newdata : dict, optional
             Design matrices for ``buser`` learners, which cannot be rebuilt
             from a column of ``newdata``.
-        unseen_levels : {"error", "average", "zero_effect"}, default "error"
+        unseen_levels : {"error", "average", "zero_effect"}, optional
+            ``None`` (default) uses the model's policy: ``"error"``, except
+            for a model returned by ``mb.fit``, which predicts an unseen
+            level as the average group.
             Treatment of categorical levels absent from the fit, as in
             :meth:`GAMBoostModel.predict`.
         extrapolation : {"warn", "error", "allow", "clip"}, default "warn"
@@ -5275,6 +5351,7 @@ class LSSModel(WeightPolicyMixin):
             If ``type`` or ``extrapolation`` is not one of the listed values,
             or ``parameter`` is combined with ``type="mean"``.
         """
+        unseen_levels = _model_unseen_levels(self, unseen_levels)
         from mboostrs._extrapolation import POLICIES
         from mboostrs.gamboost import _check_unseen_levels
 
@@ -5889,7 +5966,7 @@ class LssStabSelResult(MappingResultMixin):
 def glmboostLSS(formula, data, *, families=None, family=None, control=None,
                 offset=None, mstop=None, method="cyclic", weights=None,
                 env=None, weight_policy="upstream", stabilization=None,
-                nu=None, na_action="error"):
+                nu=None, na_action="error", response_scale="auto"):
     """Fit a linear GAMLSS by component-wise boosting.
 
     Workflow, pitfalls and worked analyses: ``mboostrs.agent_guide()``, or
@@ -6051,13 +6128,14 @@ def glmboostLSS(formula, data, *, families=None, family=None, control=None,
         if blocks else np.empty((n, 0), dtype=np.float64)
     )
 
+    scale = _check_response_scale(response_scale)
     if method == "noncyclic":
         results, risk, selection_order, execution_report, param_risk = call_fit(
             _fit_glmboostlss_noncyclic,
             x_all, param_ncols, flat_names, y, w, mstop_val, nu_scalar,
             _family._rust_name, offset, trace=trace_bool,
             stabilization=stabilization, nu_per_param=nu_override,
-            **step_kwargs(control),
+            response_scale=scale, **step_kwargs(control),
         )
     elif method == "cyclic":
         results, risk, selection_order, execution_report, param_risk = call_fit(
@@ -6065,7 +6143,7 @@ def glmboostLSS(formula, data, *, families=None, family=None, control=None,
             x_all, param_ncols, flat_names, y, w, mstop_val, nu_scalar,
             _family._rust_name, offset, mstop_pp, trace=trace_bool,
             stabilization=stabilization, nu_per_param=nu_override,
-            **step_kwargs(control),
+            response_scale=scale, **step_kwargs(control),
         )
     else:
         raise ValueError(f"method must be 'cyclic' or 'noncyclic', got {method!r}")
@@ -6115,6 +6193,8 @@ def glmboostLSS(formula, data, *, families=None, family=None, control=None,
         nu_per_param=nu_override,
         stabilization=stabilization,
     )
+    model._response_scale = scale
+    model._response_scale_used = _response_scale_used(scale, _family, y, w)
     model._transform_recipe = _transform_recipe if _transform_recipe else None
     model._response_transform = _response_transform
     model._comparison_identity = comparison_identity
@@ -6434,6 +6514,7 @@ def gamboostLSS(
     stabilization=None,
     nu=None,
     na_action="error",
+    response_scale="auto",
 ):
     """Fit a distributional additive model with linear, spline, and structured learners.
 
@@ -6576,6 +6657,7 @@ def gamboostLSS(
         weights=w, weight_policy=normalized.policy, dropped=_na_dropped, family=_family)
 
     learner_specs = _gamboostlss_learner_specs(per_param_learners, data)
+    scale = _check_response_scale(response_scale)
     results, risk, selection_order, learner_stores, execution_report, param_risk = (
         call_fit(_fit_gamboostlss_mixed,
             learner_specs,
@@ -6590,6 +6672,7 @@ def gamboostLSS(
             trace=trace_bool,
             stabilization=stabilization,
             nu_per_param=nu_override,
+            response_scale=scale,
             **step_kwargs(control),
         )
     )
@@ -6634,6 +6717,8 @@ def gamboostLSS(
         env=env,
         stabilization=stabilization,
     )
+    model._response_scale = scale
+    model._response_scale_used = _response_scale_used(scale, _family, y, w)
     model._transform_recipe = _transform_recipe if _transform_recipe else None
     model._response_transform = _response_transform
     model._comparison_identity = comparison_identity
@@ -6741,7 +6826,7 @@ def _cv_data_identity(data, response_name, response_transform, weights, weight_p
 
 def cvrisk_glmboostLSS(formula, data, families=None, family=None, control=None, folds=None,
                        grid=None, weight_policy="upstream", nu=None, stabilization=None,
-                       weights=None):
+                       weights=None, response_scale="auto"):
     """Cross-validated risk for a linear GAMLSS over a grid of per-parameter
     mstop combinations (R's ``cvrisk.mboostLSS`` for ``glmboostLSS``).
 
@@ -6850,11 +6935,12 @@ def cvrisk_glmboostLSS(formula, data, families=None, family=None, control=None, 
 
     grid_list = _lss_grid_points(grid, k)
     folds = rescale_fold_weights(folds, weight_policy)
+    scale = _check_response_scale(response_scale)
     risk = np.asarray(call_fit(_cvrisk_glmboostlss,
         x_all, param_ncols, flat_names, y, w, mstop_val, nu_scalar,
         _family._rust_name, np.ascontiguousarray(folds, dtype=np.float64), grid_list,
         stabilization, nu_per_param=nu_override,
-        _fit_count=folds.shape[1],
+        _fit_count=folds.shape[1], response_scale=scale,
         **step_kwargs(control),
     ), dtype=np.float64)
     mean_risk = risk.mean(axis=0)
@@ -6881,7 +6967,8 @@ def cvrisk_glmboostLSS(formula, data, families=None, family=None, control=None, 
 
 def cvrisk_gamboostLSS(formula, data, families=None, family=None, control=None, folds=None,
                        grid=None, bins=None, env=None, weight_policy="upstream", nu=None,
-                       stabilization=None, weights=None, na_action="error", _search=None):
+                       stabilization=None, weights=None, na_action="error", _search=None,
+                       response_scale="auto"):
     """Cross-validated risk for a mixed structured ``gamboostLSS`` model.
 
     ``folds`` is an ``(n, B)`` matrix of in-bag weights, a
@@ -7017,6 +7104,7 @@ def cvrisk_gamboostLSS(formula, data, families=None, family=None, control=None, 
     grid_list = _lss_grid_points(grid, k)
     folds = rescale_fold_weights(folds, weight_policy)
     judge_arr = None if judge is None else np.ascontiguousarray(judge, dtype=bool)
+    scale = _check_response_scale(response_scale)
     if _search is not None:
         # The doubling search of tune_mstop: every fold is fitted once and its
         # path is resumed from one grid to the next (see _tune_mstop_lss).
@@ -7028,7 +7116,8 @@ def cvrisk_gamboostLSS(formula, data, families=None, family=None, control=None, 
             [[int(value) for value in g] for g in _search["grids"]],
             float(_search["boundary_share"]),
             judge_arr, stabilization, nu_per_param=nu_override,
-            _fit_count=folds.shape[1],
+            _fit_count=folds.shape[1], response_scale=scale,
+            method=_search.get("method", "cyclic"),
             **step_kwargs(control),
         )
         return {
@@ -7044,7 +7133,7 @@ def cvrisk_gamboostLSS(formula, data, families=None, family=None, control=None, 
         np.ascontiguousarray(folds, dtype=np.float64), grid_list,
         judge_arr,
         stabilization, nu_per_param=nu_override,
-        _fit_count=folds.shape[1],
+        _fit_count=folds.shape[1], response_scale=scale,
         **step_kwargs(control),
     ), dtype=np.float64)
     mean_risk = risk.mean(axis=0)
@@ -7219,7 +7308,7 @@ def stabsel_glmboostLSS(formula, data, families=None, family=None, control=None,
                         q=None, PFER=None, cutoff=None, B=50,
                         sampling_type="SS", assumption="unimodal", seed=42, weights=None,
                         weight_policy="upstream", nu=None, stabilization=None,
-                        fit_budget=None):
+                        fit_budget=None, response_scale="auto"):
     """Stability selection for a linear GAMLSS (R's stabsel.mboostLSS).
 
     Runs non-cyclic glmboostLSS on ``B`` half-samples, plus their exact
@@ -7346,10 +7435,11 @@ def stabsel_glmboostLSS(formula, data, families=None, family=None, control=None,
                               sampling_type=sampling_type, assumption=assumption)
     cutoff_val, q_val, PFER_val = par["cutoff"], par["q"], par["PFER"]
 
+    scale = _check_response_scale(response_scale)
     all_selected = _stabsel_selected_glmboostlss(
         x_all, param_ncols, y, np.ones(n, dtype=np.float64),
         mstop_val, nu_scalar, _family._rust_name, folds, q_val,
-        stabilization, nu_per_param=nu_override,
+        stabilization, nu_per_param=nu_override, response_scale=scale,
         **step_kwargs(control),
     )
     _warn_short_folds(all_selected, q_val, B=B, sampling_type=sampling_type)
@@ -7387,7 +7477,7 @@ def stabsel_gamboostLSS(formula, data, families=None, family=None, control=None,
                         q=None, PFER=None, cutoff=None, B=50,
                         sampling_type="SS", assumption="unimodal", seed=42, weights=None, bins=None,
                         env=None, weight_policy="upstream", nu=None, stabilization=None,
-                        fit_budget=None, na_action="error"):
+                        fit_budget=None, na_action="error", response_scale="auto"):
     """Stability selection for a mixed structured ``gamboostLSS`` model.
 
     ``na_action`` is the argument of :func:`gamboostLSS`, with the same values
@@ -7537,10 +7627,11 @@ def stabsel_gamboostLSS(formula, data, families=None, family=None, control=None,
                               sampling_type=sampling_type, assumption=assumption)
     cutoff_val, q_val, PFER_val = par["cutoff"], par["q"], par["PFER"]
 
+    scale = _check_response_scale(response_scale)
     all_selected = _stabsel_selected_gamboostlss_mixed(
         learner_specs, y, np.ones(n, dtype=np.float64), mstop_val, nu_scalar,
         _family._rust_name, folds, q_val,
-        stabilization, nu_per_param=nu_override,
+        stabilization, nu_per_param=nu_override, response_scale=scale,
         **step_kwargs(control),
     )
     _warn_short_folds(all_selected, q_val, B=B, sampling_type=sampling_type)

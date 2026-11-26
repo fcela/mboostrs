@@ -16,6 +16,9 @@
 #
 # The reference is `mboost` itself, so these numbers cannot go stale against a
 # hand-copied value.
+# Compared with R mboost/gamboostLSS (or with values recorded from them), so
+# fitted on the raw response as R does (see ?gamboostLSS, response_scale).
+options(mboostrs.response_scale = "none")
 if (!requireNamespace("mboost", quietly = TRUE)) {
   message("mboost not installed; skipping bols form parity check")
   quit(save = "no")

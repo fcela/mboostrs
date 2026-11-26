@@ -66,4 +66,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/explore.py` lines 2670-2759](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L2670-L2759)
+Source: [`python/mboostrs/explore.py` lines 2681-2770](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L2681-L2770)

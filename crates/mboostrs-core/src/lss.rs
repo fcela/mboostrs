@@ -16,7 +16,7 @@
 use ndarray::{Array1, ArrayView1};
 use std::time::Instant;
 
-use crate::control::{BoostControl, StepRule};
+use crate::control::{BoostControl, ResponseScale, StepRule};
 use crate::engine::observe_candidate;
 use crate::families::{golden_grid_min, minimize_brent, R_OPTIMIZE_TOL};
 use crate::grid_search::{search_grid, FoldRisks, GridSearch, GridStep};
@@ -316,6 +316,177 @@ pub fn make_family(name: &str, n_params: usize) -> Result<Box<dyn LssFamily>, Mb
     Ok(family)
 }
 
+/// How one distribution parameter's linear predictor changes when the
+/// response is divided by a scale `s`: the model fitted to `y / s` has
+/// predictor `eta_s`, and the same model for `y` has `eta = a * eta_s + b`.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum ParamScale {
+    /// `eta = s * eta_s`: an identity-link location or scale parameter.
+    Multiply,
+    /// `eta = eta_s + c * ln(s)`: a log-link parameter proportional to
+    /// `s^c` (a mean or scale, `c = 1`; a variance, `c = 2`), or an
+    /// identity-link location on the log scale of the response.
+    Shift(f64),
+    /// `eta = eta_s`: a shape parameter that does not depend on the units.
+    Invariant,
+}
+
+impl ParamScale {
+    /// The `(a, b)` of `eta = a * eta_s + b` for scale `s`.
+    pub fn affine(self, s: f64) -> (f64, f64) {
+        match self {
+            ParamScale::Multiply => (s, 0.0),
+            ParamScale::Shift(c) => (1.0, c * s.ln()),
+            ParamScale::Invariant => (1.0, 0.0),
+        }
+    }
+}
+
+/// A distributional fit run on `y / s` and mapped back (see
+/// [`BoostControl::response_scale`]).
+///
+/// The family's [`LssFamily::scale_map`] says how each parameter transforms;
+/// [`LssFamily::scale_jacobian_weight`] gives the risk shift
+/// `risk(y) = risk(y / s) + ln(s) * J`, the change of variables of every
+/// density on the response.
+#[derive(Clone, Debug)]
+pub struct ResponseScaling {
+    scale: f64,
+    affine: Vec<(f64, f64)>,
+}
+
+impl ResponseScaling {
+    /// The scaling `control` asks for on the response `y` with weights `w`,
+    /// or `None` when it asks for none, the family has no scale map (counts,
+    /// proportions, compositions), or an automatic scale finds no spread.
+    pub fn resolve(
+        family: &dyn LssFamily,
+        control: &BoostControl,
+        y: &[f64],
+        w: &[f64],
+    ) -> Result<Option<Self>, MboostrsError> {
+        let scale = match control.response_scale {
+            ResponseScale::Raw => return Ok(None),
+            ResponseScale::Fixed(s) => s,
+            ResponseScale::Auto => match auto_response_scale(family, y, w) {
+                Some(s) => s,
+                None => return Ok(None),
+            },
+        };
+        if !scale.is_finite() || scale <= 0.0 {
+            return Err(MboostrsError::Control(format!(
+                "response_scale must be finite and positive, got {scale}"
+            )));
+        }
+        let Some(map) = family.scale_map() else {
+            return Ok(None);
+        };
+        if map.len() != family.n_params() {
+            return Err(MboostrsError::Shape(format!(
+                "{} scale map has {} entries for {} parameters",
+                family.name(),
+                map.len(),
+                family.n_params()
+            )));
+        }
+        Ok(Some(Self {
+            scale,
+            affine: map.iter().map(|m| m.affine(scale)).collect(),
+        }))
+    }
+
+    /// The scale `s`.
+    pub fn scale(&self) -> f64 {
+        self.scale
+    }
+
+    /// The response the internal fit sees.
+    pub fn internal_response(&self, family: &dyn LssFamily, y: &[f64], n: usize) -> Vec<f64> {
+        family.scale_response(y, n, self.scale)
+    }
+
+    /// Caller-supplied offsets, converted to the internal units.
+    pub fn internal_offsets(&self, offsets: Option<&[f64]>) -> Option<Vec<f64>> {
+        offsets.map(|o| {
+            o.iter()
+                .zip(&self.affine)
+                .map(|(off, (a, b))| (off - b) / a)
+                .collect()
+        })
+    }
+
+    /// The risk shift `ln(s) * J` for the original response `y` and weights `w`.
+    pub fn risk_shift(&self, family: &dyn LssFamily, y: &[f64], w: &[f64]) -> f64 {
+        self.scale.ln() * family.scale_jacobian_weight(y, w)
+    }
+
+    /// Map internal predictors to the original units, in place.
+    pub fn restore_etas(&self, etas: &mut [Array1<f64>]) {
+        for (eta, (a, b)) in etas.iter_mut().zip(&self.affine) {
+            eta.mapv_inplace(|e| a * e + b);
+        }
+    }
+
+    /// Map a fitted path to the original units: offsets and fitted
+    /// predictors through `a * eta + b`, every stored coefficient through the
+    /// selected learner's [`PreparedLearner::scale_coef`] by `a`, and every
+    /// risk by `shift` (see [`ResponseScaling::risk_shift`]).
+    pub fn restore_path(
+        &self,
+        path: &mut LssPath,
+        learners_per_param: &[Vec<PreparedLearner>],
+        shift: f64,
+    ) {
+        for (p, bp) in path.per_param.iter_mut().enumerate() {
+            let (a, b) = self.affine[p];
+            bp.offset = a * bp.offset + b;
+            bp.fitted.mapv_inplace(|e| a * e + b);
+            if a != 1.0 {
+                for (coef, &idx) in bp.coefs.iter_mut().zip(&bp.selected) {
+                    *coef = learners_per_param[p][idx].scale_coef(coef, a);
+                }
+            }
+            for r in bp.risk.iter_mut() {
+                *r += shift;
+            }
+        }
+        for r in path.risk.iter_mut() {
+            *r += shift;
+        }
+    }
+}
+
+/// The weighted SD of the part of `y` a family's scale applies to, the
+/// automatic `response_scale` ([`ResponseScale::Auto`], `"auto"` in the
+/// Python and R interfaces): `sqrt(sum w (y - m)^2 / sum w)` with `m` the
+/// weighted mean. A fit sees the rows its weights give, so a fold, a weighted
+/// refit and a fit on the same rows as a subset take the same scale. `None`
+/// when the family has no scale map, or the SD is zero or not finite.
+pub fn auto_response_scale(family: &dyn LssFamily, y: &[f64], w: &[f64]) -> Option<f64> {
+    family.scale_map()?;
+    let n = w.len();
+    let source = family.scale_source(y, n);
+    let (mut sw, mut swy) = (0.0f64, 0.0f64);
+    for (&v, &wi) in source.iter().zip(w) {
+        if wi > 0.0 && v.is_finite() {
+            sw += wi;
+            swy += wi * v;
+        }
+    }
+    if sw <= 0.0 {
+        return None;
+    }
+    let mean = swy / sw;
+    let mut ss = 0.0f64;
+    for (&v, &wi) in source.iter().zip(w) {
+        if wi > 0.0 && v.is_finite() {
+            ss += wi * (v - mean) * (v - mean);
+        }
+    }
+    let sd = (ss / sw).sqrt();
+    (sd.is_finite() && sd > 0.0).then_some(sd)
+}
+
 /// A GAMLSS family: `K` distribution parameters, each with its own link,
 /// offset, partial negative gradient, and inverse link. The joint
 /// negative-log-likelihood is the boosting risk.
@@ -391,6 +562,36 @@ pub trait LssFamily: Send + Sync {
 
     /// Heap-allocated clone of this family as a trait object.
     fn clone_box(&self) -> Box<dyn LssFamily>;
+
+    /// How each parameter's predictor transforms when the response is divided
+    /// by a scale (see [`ParamScale`]), or `None` when the family's response
+    /// has no unit to change (counts, proportions, compositions). `None` by
+    /// default.
+    fn scale_map(&self) -> Option<&'static [ParamScale]> {
+        None
+    }
+
+    /// The response divided by `s`. `n` is the observation count; by default
+    /// every stored value is divided. Families whose response carries other
+    /// data (a censoring status, a known variance) override this.
+    fn scale_response(&self, y: &[f64], n: usize, s: f64) -> Vec<f64> {
+        let _ = n;
+        y.iter().map(|v| v / s).collect()
+    }
+
+    /// The values whose spread sets the automatic scale: the first `n` stored
+    /// values (the outcome, or the time of a survival response).
+    fn scale_source<'a>(&self, y: &'a [f64], n: usize) -> &'a [f64] {
+        &y[..n.min(y.len())]
+    }
+
+    /// The weight `J` of the rows whose likelihood is a density on the
+    /// response, so that `risk(y) = risk(y / s) + ln(s) * J` at matching
+    /// predictors. All rows by default.
+    fn scale_jacobian_weight(&self, y: &[f64], w: &[f64]) -> f64 {
+        let _ = y;
+        w.iter().sum()
+    }
 
     /// Negative Hessian of each observation's log-likelihood with respect to
     /// the `K` linear predictors, unweighted: `out[i*K*K + a*K + b] =
@@ -799,9 +1000,15 @@ fn check_lss_cycle_risk(
     if !step_risk.is_finite() {
         return Err(MboostrsError::Solver(format!(
             "{method} LSS risk became non-finite after cycle {}. An update \
-             pushed a predictor far enough that the risk overflowed; reduce \
-             `nu`, or rescale the response so its standard deviation is of \
-             order 1.",
+             pushed a predictor far enough that the risk overflowed. Without \
+             stabilization a step is proportional to the gradient, which \
+             GaussianLSS divides by sigma^2, so rows with a spread far below \
+             the response's overall spread take steps far larger than the \
+             others; set `stabilization=\"MAD\"` on the family, lower `nu`, or \
+             use a family for the response's shape (GammaLSS or LogNormalLSS \
+             for a positive, right-skewed response). Without \
+             `response_scale=\"auto\"` (the default), also express the \
+             response in units where its standard deviation is of order 1.",
             cycle + 1
         )));
     }
@@ -810,12 +1017,15 @@ fn check_lss_cycle_risk(
         return Err(MboostrsError::Solver(format!(
             "{method} LSS risk diverged after cycle {}: {:.6e} against a \
              running minimum of {:.6e}. Component-wise steps are proportional \
-             to the gradient, and this response's scale makes them overshoot: \
-             GaussianLSS, for example, updates `mu` along `(y - mu)/sigma^2`, \
-             so a response with sd << 1 multiplies every step by 1/sigma^2. \
-             Express the response in units where its standard deviation is of \
-             order 1 (per cent rather than decimal fractions for returns), or \
-             lower `nu`.",
+             to the gradient and overshoot: GaussianLSS, for example, updates \
+             `mu` along `(y - mu)/sigma^2`, so rows whose spread is far below \
+             the response's overall spread take steps far larger than the \
+             others. Set `stabilization=\"MAD\"` on the family, lower `nu`, or \
+             use a family for the response's shape (GammaLSS or LogNormalLSS \
+             for a positive, right-skewed response). Without \
+             `response_scale=\"auto\"` (the default), also express the \
+             response in units where its standard deviation is of order 1 \
+             (per cent rather than decimal fractions for returns).",
             cycle + 1,
             step_risk,
             *best_risk
@@ -902,8 +1112,69 @@ fn lss_line_search_rho(
     rho
 }
 
+/// The response and weights as contiguous slices.
+fn contiguous_response<'a>(
+    y: &'a ArrayView1<f64>,
+    weights: &'a ArrayView1<f64>,
+) -> Result<(&'a [f64], &'a [f64]), MboostrsError> {
+    let ys = y
+        .as_slice()
+        .ok_or_else(|| MboostrsError::Shape("LSS response must be contiguous".to_string()))?;
+    let ws = weights
+        .as_slice()
+        .ok_or_else(|| MboostrsError::Shape("LSS weights must be contiguous".to_string()))?;
+    Ok((ys, ws))
+}
+
 /// Fallible cyclic LSS fitting with typed validation errors.
+///
+/// With [`BoostControl::response_scale`] set (and a family with a
+/// [`LssFamily::scale_map`]), the fit runs on `y / s` and the returned path is
+/// mapped back to the original units: offsets, fitted predictors,
+/// coefficients and risks.
 pub fn try_fit_lss(
+    learners_per_param: &mut [Vec<PreparedLearner>],
+    y: ArrayView1<f64>,
+    weights: ArrayView1<f64>,
+    family: &dyn LssFamily,
+    control: &BoostControl,
+    mstop_per_param: Option<&[usize]>,
+    offsets: Option<&[f64]>,
+) -> Result<LssPath, MboostrsError> {
+    let (ys, ws) = contiguous_response(&y, &weights)?;
+    let Some(scaling) = ResponseScaling::resolve(family, control, ys, ws)? else {
+        return try_fit_lss_raw(
+            learners_per_param,
+            y,
+            weights,
+            family,
+            control,
+            mstop_per_param,
+            offsets,
+        );
+    };
+    let internal = scaling.internal_response(family, ys, ws.len());
+    let internal_offsets = scaling.internal_offsets(offsets);
+    let mut path = try_fit_lss_raw(
+        learners_per_param,
+        ArrayView1::from(&internal[..]),
+        weights,
+        family,
+        control,
+        mstop_per_param,
+        internal_offsets.as_deref(),
+    )?;
+    scaling.restore_path(
+        &mut path,
+        learners_per_param,
+        scaling.risk_shift(family, ys, ws),
+    );
+    Ok(path)
+}
+
+/// [`try_fit_lss`] on the response as given, without
+/// [`BoostControl::response_scale`].
+fn try_fit_lss_raw(
     learners_per_param: &mut [Vec<PreparedLearner>],
     y: ArrayView1<f64>,
     weights: ArrayView1<f64>,
@@ -1252,6 +1523,45 @@ pub fn try_fit_lss_diagonal_checkpoints(
     checkpoints: &[usize],
     offsets: Option<&[f64]>,
 ) -> Result<LssSnapshots, MboostrsError> {
+    let (ys, ws) = contiguous_response(&y, &weights)?;
+    let Some(scaling) = ResponseScaling::resolve(family, control, ys, ws)? else {
+        return try_fit_lss_diagonal_checkpoints_raw(
+            learners_per_param,
+            y,
+            weights,
+            family,
+            control,
+            checkpoints,
+            offsets,
+        );
+    };
+    let internal = scaling.internal_response(family, ys, ws.len());
+    let internal_offsets = scaling.internal_offsets(offsets);
+    let mut snapshots = try_fit_lss_diagonal_checkpoints_raw(
+        learners_per_param,
+        ArrayView1::from(&internal[..]),
+        weights,
+        family,
+        control,
+        checkpoints,
+        internal_offsets.as_deref(),
+    )?;
+    for (_, etas) in snapshots.iter_mut() {
+        scaling.restore_etas(etas);
+    }
+    Ok(snapshots)
+}
+
+/// [`try_fit_lss_diagonal_checkpoints`] on the response as given.
+fn try_fit_lss_diagonal_checkpoints_raw(
+    learners_per_param: &mut [Vec<PreparedLearner>],
+    y: ArrayView1<f64>,
+    weights: ArrayView1<f64>,
+    family: &dyn LssFamily,
+    control: &BoostControl,
+    checkpoints: &[usize],
+    offsets: Option<&[f64]>,
+) -> Result<LssSnapshots, MboostrsError> {
     let ys = match y.as_slice() {
         Some(ys) => ys,
         None => {
@@ -1589,12 +1899,61 @@ fn oob_risk(
 
 /// One fold of an LSS cross-validation search: its prepared learners, its
 /// diagonal path, and the out-of-bag weights its risk is scored with.
+/// A fold's path in a resumable search: cyclic (one step per parameter per
+/// iteration) or non-cyclic (one step in total per iteration).
+enum FoldPath {
+    Cyclic(LssDiagonalPath),
+    Noncyclic(LssNoncyclicPath),
+}
+
+impl FoldPath {
+    fn etas(&self) -> &[Array1<f64>] {
+        match self {
+            FoldPath::Cyclic(path) => &path.etas,
+            FoldPath::Noncyclic(path) => &path.etas,
+        }
+    }
+
+    /// Advance to iteration `to` (cycles, or total steps), calling
+    /// `after(iteration, etas)` after each.
+    #[allow(clippy::too_many_arguments)]
+    fn advance<F: FnMut(usize, &[Array1<f64>])>(
+        &mut self,
+        learners: &mut [Vec<PreparedLearner>],
+        ys: &[f64],
+        ws: &[f64],
+        weights: ArrayView1<f64>,
+        family: &dyn LssFamily,
+        stabilization: Stabilization,
+        to: usize,
+        mut after: F,
+    ) -> Result<(), MboostrsError> {
+        match self {
+            FoldPath::Cyclic(path) => {
+                path.advance(learners, ys, ws, weights, family, stabilization, to, after)
+            }
+            FoldPath::Noncyclic(path) => {
+                while path.steps < to {
+                    path.step(learners, ys, ws, weights, family)?;
+                    after(path.steps, &path.etas);
+                }
+                Ok(())
+            }
+        }
+    }
+}
+
 struct LssFoldSearch {
     learners: Vec<Vec<PreparedLearner>>,
     fold_w: Array1<f64>,
-    path: LssDiagonalPath,
+    path: FoldPath,
     oob_w: Vec<f64>,
     oob_sum: f64,
+    /// Added to every held-out risk: the change of units of a scaled fit,
+    /// per unit of out-of-bag weight (0 when the response is not scaled).
+    risk_shift: f64,
+    /// The response the fold's path fits, when it is scaled.
+    ys_fit: Option<Vec<f64>>,
     /// Whether iteration 0 has been recorded.
     started: bool,
 }
@@ -1616,13 +1975,17 @@ impl LssFoldSearch {
             path,
             oob_w,
             oob_sum,
+            risk_shift,
+            ys_fit,
             started,
         } = self;
+        let ys: &[f64] = ys_fit.as_deref().unwrap_or(ys);
         let oob: &[f64] = oob_w.as_slice();
         let oob_sum = *oob_sum;
+        let shift = *risk_shift;
         let mut fresh = Vec::new();
         if !*started {
-            fresh.push(oob_risk(family, ys, &path.etas, oob, oob_sum, needed, 0));
+            fresh.push(oob_risk(family, ys, path.etas(), oob, oob_sum, needed, 0) + shift);
             *started = true;
         }
         let ws = fold_w.as_slice().expect("fold weights are contiguous");
@@ -1634,7 +1997,7 @@ impl LssFoldSearch {
             family,
             stabilization,
             end,
-            |m, etas| fresh.push(oob_risk(family, ys, etas, oob, oob_sum, needed, m)),
+            |m, etas| fresh.push(oob_risk(family, ys, etas, oob, oob_sum, needed, m) + shift),
         )?;
         Ok(fresh)
     }
@@ -1672,6 +2035,10 @@ impl FoldRisks for LssFoldsSearch<'_> {
 /// cycles do not depend on how far it runs, the risks equal those of a fit
 /// refitted from zero to each grid's end.
 ///
+/// With `noncyclic`, each fold runs the non-cyclic algorithm and an
+/// iteration is one step in total (one parameter updated), so the grid counts
+/// total steps; its path is prefix-consistent in the same way.
+///
 /// The risk for a fold is the out-of-bag negative log-likelihood per unit of
 /// out-of-bag weight, as [`try_cvrisk_lss_with`] reports it.
 #[allow(clippy::too_many_arguments)]
@@ -1681,6 +2048,7 @@ pub fn try_cvrisk_lss_search<F>(
     weights: ArrayView1<f64>,
     family: &dyn LssFamily,
     control: &BoostControl,
+    noncyclic: bool,
     folds: ndarray::ArrayView2<f64>,
     judge: Option<&ndarray::Array2<bool>>,
     schedule: &[GridStep],
@@ -1711,6 +2079,12 @@ where
         }
     }
 
+    if noncyclic && !matches!(control.step, StepRule::Fixed) {
+        return Err(MboostrsError::Control(
+            "step='line_search' is implemented for the cyclic LSS methods only".into(),
+        ));
+    }
+
     let runs = (0..b)
         .into_par_iter()
         .map(|fold| {
@@ -1739,13 +2113,34 @@ where
             let fold_ws = fold_w.as_slice().expect("fold weights are contiguous");
             let learners = prepare(fold_w.view())?;
             validate_lss_inputs(&learners, y, ys, fold_ws, family, None, n, k)?;
-            let path = LssDiagonalPath::start(family, control, ys, fold_ws, None)?;
+            // A scaled fold fits `y / s`, with `s` from its own in-bag rows as a
+            // fit on those rows would take it, and reports each held-out risk
+            // in the original units (`risk(y) = risk(y / s) + ln(s) * J`).
+            let scaling = ResponseScaling::resolve(family, control, ys, fold_ws)?;
+            let ys_fit: Option<Vec<f64>> = scaling
+                .as_ref()
+                .map(|sc| sc.internal_response(family, ys, n));
+            let fit_y: &[f64] = ys_fit.as_deref().unwrap_or(ys);
+            let path = if noncyclic {
+                FoldPath::Noncyclic(
+                    LssNoncyclicPath::start(family, control, fit_y, fold_ws, None)?.0,
+                )
+            } else {
+                FoldPath::Cyclic(LssDiagonalPath::start(
+                    family, control, fit_y, fold_ws, None,
+                )?)
+            };
+            let risk_shift = scaling
+                .as_ref()
+                .map_or(0.0, |sc| sc.risk_shift(family, ys, &oob_w) / oob_sum);
             Ok(LssFoldSearch {
                 learners,
                 fold_w,
                 path,
                 oob_w,
                 oob_sum,
+                risk_shift,
+                ys_fit,
                 started: false,
             })
         })
@@ -1906,84 +2301,150 @@ pub fn try_fit_lss_noncyclic_capped(
     offsets: Option<&[f64]>,
     stop_after_distinct: Option<usize>,
 ) -> Result<LssPath, MboostrsError> {
-    let timing_enabled = control.instrumentation != InstrumentationLevel::Off;
-    let fit_started = timing_enabled.then(Instant::now);
-    let ys = y
-        .as_slice()
-        .ok_or_else(|| MboostrsError::Shape("LSS response must be contiguous".to_string()))?;
-    let ws = weights
-        .as_slice()
-        .ok_or_else(|| MboostrsError::Shape("LSS weights must be contiguous".to_string()))?;
-    let n = ws.len();
-    let k = family.n_params();
-    let nus = resolve_nu_per_param(control, k)?;
-    let mstop = control.mstop as usize;
-    validate_lss_inputs(learners_per_param, y, ys, ws, family, offsets, n, k)?;
-    if !matches!(control.step, StepRule::Fixed) {
-        return Err(MboostrsError::Control(
-            "step='line_search' is implemented for the cyclic LSS methods; \
-             the non-cyclic method already compares candidate updates by the \
-             joint risk they achieve, so a per-step search would change what \
-             it compares"
-                .into(),
-        ));
-    }
-
-    let mut offs: Vec<f64> = Vec::with_capacity(k);
-    let mut etas: Vec<Array1<f64>> = Vec::with_capacity(k);
-    for p in 0..k {
-        let off = offsets
-            .map(|o| o[p])
-            .unwrap_or_else(|| family.offset(p, ys, ws, &offs));
-        if !off.is_finite() {
-            return Err(MboostrsError::Solver(format!(
-                "LSS offset for parameter '{}' is non-finite",
-                family.param_names().get(p).copied().unwrap_or("?")
-            )));
-        }
-        offs.push(off);
-        etas.push(Array1::from_elem(n, off));
-    }
-
-    let mut selected: Vec<Vec<usize>> = (0..k).map(|_| Vec::new()).collect();
-    let mut coefs: Vec<Vec<Vec<f64>>> = (0..k).map(|_| Vec::new()).collect();
-    let mut risk_path = Vec::with_capacity(mstop + 1);
-    let initial_risk = family.risk(ys, &etas, ws);
-    if !initial_risk.is_finite() {
-        return Err(MboostrsError::Solver(
-            "LSS initial risk is non-finite".to_string(),
-        ));
-    }
-    risk_path.push(initial_risk);
-    let setup_ns = fit_started.map(|started| started.elapsed().as_nanos() as u64);
-    let iteration_started = timing_enabled.then(Instant::now);
-
-    let mut u = vec![0.0f64; n];
-    let mut selection_order: Vec<usize> = Vec::with_capacity(mstop);
-    // Per-parameter candidate update for this step.
-    let mut cand_pred: Vec<Vec<f64>> = (0..k).map(|_| vec![0.0; n]).collect();
-    let mut cand_beta: Vec<Vec<f64>> = (0..k).map(|_| Vec::new()).collect();
-    let mut cand_idx: Vec<usize> = vec![0; k];
-    let mut cand_tied: Vec<bool> = vec![false; k];
-    let mut tie_selection_counts = vec![0usize; k];
-    let mut best_cycle_risk = initial_risk;
-    // The parameter the previous step updated and its predictor before that
-    // update (see step 1).
-    let mut last_best: Option<usize> = None;
-    let mut prev_eta = Array1::<f64>::zeros(n);
-    // Distinct `(parameter, learner)` components seen so far, tracked only when
-    // a caller asked to stop at a count of them.
-    let mut distinct_seen: Vec<Vec<bool>> = if stop_after_distinct.is_some() {
-        learners_per_param
-            .iter()
-            .map(|learners| vec![false; learners.len()])
-            .collect()
-    } else {
-        Vec::new()
+    let (ys, ws) = contiguous_response(&y, &weights)?;
+    let Some(scaling) = ResponseScaling::resolve(family, control, ys, ws)? else {
+        return try_fit_lss_noncyclic_capped_raw(
+            learners_per_param,
+            y,
+            weights,
+            family,
+            control,
+            offsets,
+            stop_after_distinct,
+        );
     };
-    let mut distinct_count = 0usize;
+    let internal = scaling.internal_response(family, ys, ws.len());
+    let internal_offsets = scaling.internal_offsets(offsets);
+    let mut path = try_fit_lss_noncyclic_capped_raw(
+        learners_per_param,
+        ArrayView1::from(&internal[..]),
+        weights,
+        family,
+        control,
+        internal_offsets.as_deref(),
+        stop_after_distinct,
+    )?;
+    scaling.restore_path(
+        &mut path,
+        learners_per_param,
+        scaling.risk_shift(family, ys, ws),
+    );
+    Ok(path)
+}
 
-    for m in 0..mstop {
+/// The state of a non-cyclic LSS fit between steps: the predictors, the
+/// parameter the last step updated and its predictor before that update, and
+/// the candidate buffers. [`LssNoncyclicPath::step`] takes one step, so a fit
+/// can be run to any length and resumed: the first `m` steps do not depend on
+/// how far the fit runs. The fit and the resumable cross-validation search
+/// share it.
+pub(crate) struct LssNoncyclicPath {
+    pub(crate) etas: Vec<Array1<f64>>,
+    nus: Vec<f64>,
+    stabilization: Stabilization,
+    last_best: Option<usize>,
+    prev_eta: Array1<f64>,
+    best_cycle_risk: f64,
+    /// Steps taken.
+    pub(crate) steps: usize,
+    u: Vec<f64>,
+    cand_pred: Vec<Vec<f64>>,
+    pub(crate) cand_beta: Vec<Vec<f64>>,
+    pub(crate) cand_idx: Vec<usize>,
+    pub(crate) cand_tied: Vec<bool>,
+}
+
+/// What one non-cyclic step did.
+pub(crate) struct NoncyclicStep {
+    /// The parameter updated.
+    pub(crate) param: usize,
+    /// Whether another parameter's update reached the same joint risk.
+    pub(crate) multiple_best: bool,
+    /// The joint risk after the step.
+    pub(crate) risk: f64,
+}
+
+impl LssNoncyclicPath {
+    /// Start at the offsets (computed on `ys`/`ws` unless given), returning
+    /// the path, the offsets and the initial risk.
+    pub(crate) fn start(
+        family: &dyn LssFamily,
+        control: &BoostControl,
+        ys: &[f64],
+        ws: &[f64],
+        offsets: Option<&[f64]>,
+    ) -> Result<(Self, Vec<f64>, f64), MboostrsError> {
+        let n = ws.len();
+        let k = family.n_params();
+        let nus = resolve_nu_per_param(control, k)?;
+        let mut offs: Vec<f64> = Vec::with_capacity(k);
+        let mut etas: Vec<Array1<f64>> = Vec::with_capacity(k);
+        for p in 0..k {
+            let off = offsets
+                .map(|o| o[p])
+                .unwrap_or_else(|| family.offset(p, ys, ws, &offs));
+            if !off.is_finite() {
+                return Err(MboostrsError::Solver(format!(
+                    "LSS offset for parameter '{}' is non-finite",
+                    family.param_names().get(p).copied().unwrap_or("?")
+                )));
+            }
+            offs.push(off);
+            etas.push(Array1::from_elem(n, off));
+        }
+        let initial_risk = family.risk(ys, &etas, ws);
+        if !initial_risk.is_finite() {
+            return Err(MboostrsError::Solver(
+                "LSS initial risk is non-finite".to_string(),
+            ));
+        }
+        Ok((
+            Self {
+                etas,
+                nus,
+                stabilization: control.stabilization,
+                last_best: None,
+                prev_eta: Array1::<f64>::zeros(n),
+                best_cycle_risk: initial_risk,
+                steps: 0,
+                u: vec![0.0f64; n],
+                cand_pred: (0..k).map(|_| vec![0.0; n]).collect(),
+                cand_beta: (0..k).map(|_| Vec::new()).collect(),
+                cand_idx: vec![0; k],
+                cand_tied: vec![false; k],
+            },
+            offs,
+            initial_risk,
+        ))
+    }
+
+    /// Take one step: score every parameter's best base-learner update by the
+    /// joint risk it reaches and apply only the best.
+    pub(crate) fn step(
+        &mut self,
+        learners_per_param: &mut [Vec<PreparedLearner>],
+        ys: &[f64],
+        ws: &[f64],
+        weights: ArrayView1<f64>,
+        family: &dyn LssFamily,
+    ) -> Result<NoncyclicStep, MboostrsError> {
+        let LssNoncyclicPath {
+            etas,
+            nus,
+            stabilization,
+            last_best,
+            prev_eta,
+            best_cycle_risk,
+            steps,
+            u,
+            cand_pred,
+            cand_beta,
+            cand_idx,
+            cand_tied,
+        } = self;
+        let n = ws.len();
+        let k = family.n_params();
+        let m = *steps;
         // 1. Best base-learner update for each parameter. gamboostLSS
         // evaluates a parameter's candidate with the gradient its own model
         // last computed, which predates the previous step's update unless
@@ -1991,22 +2452,22 @@ pub fn try_fit_lss_noncyclic_capped(
         // parameter other than the last-updated one uses the gradient with
         // the last-updated parameter at its value before that update.
         for p in 0..k {
-            let stale = matches!(last_best, Some(lb) if lb != p);
+            let stale = matches!(*last_best, Some(lb) if lb != p);
             if stale {
                 let lb = last_best.expect("checked");
-                std::mem::swap(&mut etas[lb], &mut prev_eta);
-                family.ngradient(p, ys, &etas, ws, &mut u);
-                std::mem::swap(&mut etas[lb], &mut prev_eta);
+                std::mem::swap(&mut etas[lb], prev_eta);
+                family.ngradient(p, ys, etas, ws, u);
+                std::mem::swap(&mut etas[lb], prev_eta);
             } else {
-                family.ngradient(p, ys, &etas, ws, &mut u);
+                family.ngradient(p, ys, etas, ws, u);
             }
             // Put the parameters' gradients on comparable footing before
             // selection, so one `nu` does not take a large step on one and a
             // negligible one on another. A no-op under the default.
-            stabilize_ngradient(&mut u, ws, control.stabilization);
+            stabilize_ngradient(u, ws, *stabilization);
             cand_tied[p] = noncyclic_candidate(
                 &mut learners_per_param[p],
-                &u,
+                u,
                 ws,
                 weights,
                 n,
@@ -2026,7 +2487,7 @@ pub fn try_fit_lss_noncyclic_capped(
                     ep[i] += nus[p] * cand_pred[p][i];
                 }
             }
-            let r = family.risk(ys, &etas, ws);
+            let r = family.risk(ys, etas, ws);
             {
                 let ep = etas[p].as_slice_mut().expect("eta contiguous");
                 for i in 0..n {
@@ -2051,12 +2512,12 @@ pub fn try_fit_lss_noncyclic_capped(
         // 3. Apply only the winning update. gamboostLSS recomputes the
         // winner's gradient at the current values before taking its step, so
         // a candidate scored with the earlier gradient is refitted first.
-        if matches!(last_best, Some(lb) if lb != best_p) {
-            family.ngradient(best_p, ys, &etas, ws, &mut u);
-            stabilize_ngradient(&mut u, ws, control.stabilization);
+        if matches!(*last_best, Some(lb) if lb != best_p) {
+            family.ngradient(best_p, ys, etas, ws, u);
+            stabilize_ngradient(u, ws, *stabilization);
             cand_tied[best_p] = noncyclic_candidate(
                 &mut learners_per_param[best_p],
-                &u,
+                u,
                 ws,
                 weights,
                 n,
@@ -2066,23 +2527,90 @@ pub fn try_fit_lss_noncyclic_capped(
             );
         }
         prev_eta.assign(&etas[best_p]);
-        last_best = Some(best_p);
+        *last_best = Some(best_p);
         {
             let ep = etas[best_p].as_slice_mut().expect("eta contiguous");
             for i in 0..n {
                 ep[i] += nus[best_p] * cand_pred[best_p][i];
             }
         }
+        let step_risk = family.risk(ys, etas, ws);
+        check_lss_cycle_risk(step_risk, best_cycle_risk, m, "non-cyclic")?;
+        *steps += 1;
+        Ok(NoncyclicStep {
+            param: best_p,
+            multiple_best: best_param_multiplicity > 1,
+            risk: step_risk,
+        })
+    }
+}
+
+/// [`try_fit_lss_noncyclic_capped`] on the response as given.
+fn try_fit_lss_noncyclic_capped_raw(
+    learners_per_param: &mut [Vec<PreparedLearner>],
+    y: ArrayView1<f64>,
+    weights: ArrayView1<f64>,
+    family: &dyn LssFamily,
+    control: &BoostControl,
+    offsets: Option<&[f64]>,
+    stop_after_distinct: Option<usize>,
+) -> Result<LssPath, MboostrsError> {
+    let timing_enabled = control.instrumentation != InstrumentationLevel::Off;
+    let fit_started = timing_enabled.then(Instant::now);
+    let ys = y
+        .as_slice()
+        .ok_or_else(|| MboostrsError::Shape("LSS response must be contiguous".to_string()))?;
+    let ws = weights
+        .as_slice()
+        .ok_or_else(|| MboostrsError::Shape("LSS weights must be contiguous".to_string()))?;
+    let n = ws.len();
+    let k = family.n_params();
+    let mstop = control.mstop as usize;
+    validate_lss_inputs(learners_per_param, y, ys, ws, family, offsets, n, k)?;
+    if !matches!(control.step, StepRule::Fixed) {
+        return Err(MboostrsError::Control(
+            "step='line_search' is implemented for the cyclic LSS methods; \
+             the non-cyclic method already compares candidate updates by the \
+             joint risk they achieve, so a per-step search would change what \
+             it compares"
+                .into(),
+        ));
+    }
+
+    let (mut path, offs, initial_risk) = LssNoncyclicPath::start(family, control, ys, ws, offsets)?;
+
+    let mut selected: Vec<Vec<usize>> = (0..k).map(|_| Vec::new()).collect();
+    let mut coefs: Vec<Vec<Vec<f64>>> = (0..k).map(|_| Vec::new()).collect();
+    let mut risk_path = Vec::with_capacity(mstop + 1);
+    risk_path.push(initial_risk);
+    let setup_ns = fit_started.map(|started| started.elapsed().as_nanos() as u64);
+    let iteration_started = timing_enabled.then(Instant::now);
+
+    let mut selection_order: Vec<usize> = Vec::with_capacity(mstop);
+    let mut tie_selection_counts = vec![0usize; k];
+    // Distinct `(parameter, learner)` components seen so far, tracked only when
+    // a caller asked to stop at a count of them.
+    let mut distinct_seen: Vec<Vec<bool>> = if stop_after_distinct.is_some() {
+        learners_per_param
+            .iter()
+            .map(|learners| vec![false; learners.len()])
+            .collect()
+    } else {
+        Vec::new()
+    };
+    let mut distinct_count = 0usize;
+
+    for _ in 0..mstop {
+        let step = path.step(learners_per_param, ys, ws, weights, family)?;
+        let best_p = step.param;
         selection_order.push(best_p);
-        tie_selection_counts[best_p] += usize::from(cand_tied[best_p]);
-        tie_selection_counts[best_p] += usize::from(best_param_multiplicity > 1);
-        selected[best_p].push(cand_idx[best_p]);
-        coefs[best_p].push(cand_beta[best_p].clone());
-        let step_risk = family.risk(ys, &etas, ws);
-        check_lss_cycle_risk(step_risk, &mut best_cycle_risk, m, "non-cyclic")?;
-        risk_path.push(step_risk);
+        tie_selection_counts[best_p] += usize::from(path.cand_tied[best_p]);
+        tie_selection_counts[best_p] += usize::from(step.multiple_best);
+        selected[best_p].push(path.cand_idx[best_p]);
+        coefs[best_p].push(path.cand_beta[best_p].clone());
+        risk_path.push(step.risk);
         if let Some(limit) = stop_after_distinct {
-            let seen = &mut distinct_seen[best_p][cand_idx[best_p]];
+            let seen = &mut distinct_seen[best_p][path.cand_idx[best_p]];
             if !*seen {
                 *seen = true;
                 distinct_count += 1;
@@ -2092,6 +2620,7 @@ pub fn try_fit_lss_noncyclic_capped(
             }
         }
     }
+    let etas = path.etas;
 
     let iteration_ns = iteration_started.map(|started| started.elapsed().as_nanos() as u64);
     let total_ns = fit_started.map(|started| started.elapsed().as_nanos() as u64);
@@ -2440,6 +2969,11 @@ pub struct GaussianLSS;
 const GAUSSIAN_LSS_PARAMS: &[&str] = &["mu", "sigma"];
 
 impl LssFamily for GaussianLSS {
+    fn scale_map(&self) -> Option<&'static [ParamScale]> {
+        const MAP: &[ParamScale] = &[ParamScale::Multiply, ParamScale::Shift(1.0)];
+        Some(MAP)
+    }
+
     fn name(&self) -> &'static str {
         "GaussianLSS"
     }
@@ -2585,6 +3119,19 @@ pub struct GaussianKnownVarLSS;
 const GAUSSIAN_KNOWNVAR_PARAMS: &[&str] = &["mu", "sigma"];
 
 impl LssFamily for GaussianKnownVarLSS {
+    fn scale_map(&self) -> Option<&'static [ParamScale]> {
+        const MAP: &[ParamScale] = &[ParamScale::Multiply, ParamScale::Shift(2.0)];
+        Some(MAP)
+    }
+
+    fn scale_response(&self, y: &[f64], n: usize, s: f64) -> Vec<f64> {
+        // `[outcome.., s2..]`: the known sampling variance is in squared units.
+        y.iter()
+            .enumerate()
+            .map(|(i, v)| if i < n { v / s } else { v / (s * s) })
+            .collect()
+    }
+
     fn name(&self) -> &'static str {
         "GaussianKnownVarLSS"
     }
@@ -2731,6 +3278,11 @@ pub struct GammaLSS;
 const GAMMA_LSS_PARAMS: &[&str] = &["mu", "sigma"];
 
 impl LssFamily for GammaLSS {
+    fn scale_map(&self) -> Option<&'static [ParamScale]> {
+        const MAP: &[ParamScale] = &[ParamScale::Shift(1.0), ParamScale::Invariant];
+        Some(MAP)
+    }
+
     fn name(&self) -> &'static str {
         "GammaLSS"
     }
@@ -2776,7 +3328,16 @@ impl LssFamily for GammaLSS {
                         .map(|(yi, wi)| wi * gamma_plloss(sigma_mom, *yi, f_mu))
                         .sum()
                 };
-                minimize_brent(&risk, 0.0, y_max_sq, R_OPTIMIZE_TOL, 500)
+                // R searches [0, max(y^2)], which cannot reach a negative
+                // log-mean: a response whose mean is below 1 gets the boundary,
+                // a mean of 1. The lower end is opened only then, so every
+                // offset R can represent is unchanged.
+                let lower = if wmean > 0.0 && wmean < 1.0 {
+                    wmean.ln() - 1.0
+                } else {
+                    0.0
+                };
+                minimize_brent(&risk, lower, y_max_sq.max(lower + 1.0), R_OPTIMIZE_TOL, 500)
             }
             1 => {
                 // R: optimize sigma-risk over [0, max(y)] holding mu at the
@@ -2793,7 +3354,19 @@ impl LssFamily for GammaLSS {
                         .map(|(yi, wi)| wi * gamma_plloss(s, *yi, f_mu))
                         .sum()
                 };
-                minimize_brent(&risk, 0.0, y_max, R_OPTIMIZE_TOL, 500)
+                // R searches the log shape over [0, max(y)]: a shape below 1
+                // (a response more skewed than an exponential) is out of reach,
+                // and so is any shape when max(y) is small. Opened only when
+                // R's interval ends at the optimum's side of a boundary.
+                let (lower, upper) = (0.0, y_max);
+                let slope_at = |x: f64| risk(x + 1e-6) - risk(x - 1e-6);
+                let lower = if slope_at(lower) > 0.0 { -10.0 } else { lower };
+                let upper = if upper <= lower || slope_at(upper) < 0.0 {
+                    upper.max(lower) + 10.0
+                } else {
+                    upper
+                };
+                minimize_brent(&risk, lower, upper, R_OPTIMIZE_TOL, 500)
             }
             _ => unreachable!("GammaLSS has 2 parameters"),
         }
@@ -2919,6 +3492,15 @@ pub fn student_t_pdf(
 }
 
 impl LssFamily for StudentTLSS {
+    fn scale_map(&self) -> Option<&'static [ParamScale]> {
+        const MAP: &[ParamScale] = &[
+            ParamScale::Multiply,
+            ParamScale::Shift(1.0),
+            ParamScale::Invariant,
+        ];
+        Some(MAP)
+    }
+
     fn name(&self) -> &'static str {
         "StudentTLSS"
     }
@@ -4150,6 +4732,30 @@ impl SurvivalLSS {
 }
 
 impl LssFamily for SurvivalLSS {
+    fn scale_map(&self) -> Option<&'static [ParamScale]> {
+        const MAP: &[ParamScale] = &[ParamScale::Shift(1.0), ParamScale::Invariant];
+        Some(MAP)
+    }
+
+    fn scale_response(&self, y: &[f64], n: usize, s: f64) -> Vec<f64> {
+        // `[time.., status..]` for censored data: only the times have units.
+        y.iter()
+            .enumerate()
+            .map(|(i, v)| if i < n { v / s } else { *v })
+            .collect()
+    }
+
+    fn scale_jacobian_weight(&self, _y: &[f64], w: &[f64]) -> f64 {
+        // The censored likelihood is a density on log(T), which moves with
+        // the location and needs no Jacobian; the uncensored one is a density
+        // on T itself.
+        if self.uncensored {
+            w.iter().sum()
+        } else {
+            0.0
+        }
+    }
+
     fn name(&self) -> &'static str {
         match self.dist {
             SurvDist::LogNormal => "LogNormalLSS",
@@ -4644,6 +5250,11 @@ impl LssFamily for NegativeBinomialLSS {
 pub struct GumbelLSS;
 
 impl LssFamily for GumbelLSS {
+    fn scale_map(&self) -> Option<&'static [ParamScale]> {
+        const MAP: &[ParamScale] = &[ParamScale::Multiply, ParamScale::Shift(1.0)];
+        Some(MAP)
+    }
+
     fn name(&self) -> &'static str {
         "GumbelLSS"
     }
@@ -4755,6 +5366,11 @@ impl LssFamily for GumbelLSS {
 pub struct Pareto2LSS;
 
 impl LssFamily for Pareto2LSS {
+    fn scale_map(&self) -> Option<&'static [ParamScale]> {
+        const MAP: &[ParamScale] = &[ParamScale::Shift(1.0), ParamScale::Invariant];
+        Some(MAP)
+    }
+
     fn name(&self) -> &'static str {
         "Pareto2LSS"
     }
@@ -5192,6 +5808,15 @@ impl LssFamily for PIGLSS {
 pub struct BCCGLSS;
 
 impl LssFamily for BCCGLSS {
+    fn scale_map(&self) -> Option<&'static [ParamScale]> {
+        const MAP: &[ParamScale] = &[
+            ParamScale::Shift(1.0),
+            ParamScale::Invariant,
+            ParamScale::Invariant,
+        ];
+        Some(MAP)
+    }
+
     fn name(&self) -> &'static str {
         "BCCGLSS"
     }
@@ -5437,6 +6062,16 @@ impl JSULSS {
 }
 
 impl LssFamily for JSULSS {
+    fn scale_map(&self) -> Option<&'static [ParamScale]> {
+        const MAP: &[ParamScale] = &[
+            ParamScale::Multiply,
+            ParamScale::Shift(1.0),
+            ParamScale::Invariant,
+            ParamScale::Invariant,
+        ];
+        Some(MAP)
+    }
+
     fn name(&self) -> &'static str {
         "JSULSS"
     }
@@ -5712,6 +6347,16 @@ impl BCTLSS {
 }
 
 impl LssFamily for BCTLSS {
+    fn scale_map(&self) -> Option<&'static [ParamScale]> {
+        const MAP: &[ParamScale] = &[
+            ParamScale::Multiply,
+            ParamScale::Invariant,
+            ParamScale::Invariant,
+            ParamScale::Invariant,
+        ];
+        Some(MAP)
+    }
+
     fn name(&self) -> &'static str {
         "BCTLSS"
     }
@@ -5904,6 +6549,16 @@ impl BCPELSS {
 }
 
 impl LssFamily for BCPELSS {
+    fn scale_map(&self) -> Option<&'static [ParamScale]> {
+        const MAP: &[ParamScale] = &[
+            ParamScale::Multiply,
+            ParamScale::Invariant,
+            ParamScale::Invariant,
+            ParamScale::Invariant,
+        ];
+        Some(MAP)
+    }
+
     fn name(&self) -> &'static str {
         "BCPELSS"
     }
@@ -6102,6 +6757,11 @@ impl LssFamily for BCPELSS {
 pub struct InverseGaussianLSS;
 
 impl LssFamily for InverseGaussianLSS {
+    fn scale_map(&self) -> Option<&'static [ParamScale]> {
+        const MAP: &[ParamScale] = &[ParamScale::Shift(1.0), ParamScale::Shift(-0.5)];
+        Some(MAP)
+    }
+
     fn name(&self) -> &'static str {
         "InverseGaussianLSS"
     }
@@ -6202,6 +6862,11 @@ impl LssFamily for InverseGaussianLSS {
 pub struct LogisticLSS;
 
 impl LssFamily for LogisticLSS {
+    fn scale_map(&self) -> Option<&'static [ParamScale]> {
+        const MAP: &[ParamScale] = &[ParamScale::Multiply, ParamScale::Shift(1.0)];
+        Some(MAP)
+    }
+
     fn name(&self) -> &'static str {
         "LogisticLSS"
     }
@@ -6313,6 +6978,24 @@ impl LssFamily for LogisticLSS {
 pub struct ZeroAdjustedGammaLSS;
 
 impl LssFamily for ZeroAdjustedGammaLSS {
+    fn scale_map(&self) -> Option<&'static [ParamScale]> {
+        const MAP: &[ParamScale] = &[
+            ParamScale::Shift(1.0),
+            ParamScale::Invariant,
+            ParamScale::Invariant,
+        ];
+        Some(MAP)
+    }
+
+    fn scale_jacobian_weight(&self, y: &[f64], w: &[f64]) -> f64 {
+        // A zero is a probability mass, not a density on y.
+        y.iter()
+            .zip(w)
+            .filter(|(v, _)| **v > 0.0)
+            .map(|(_, wi)| wi)
+            .sum()
+    }
+
     fn name(&self) -> &'static str {
         "ZeroAdjustedGammaLSS"
     }
@@ -9189,5 +9872,461 @@ mod pig_contract {
         );
         let good = ndarray::array![0.0, 1.0, 7.0];
         assert!(family.check_y(good.view()).is_ok());
+    }
+}
+
+#[cfg(test)]
+mod response_scale_tests {
+    use super::*;
+
+    /// A deterministic pseudo-random stream in (0, 1).
+    fn uniforms(n: usize, seed: u64) -> Vec<f64> {
+        let mut state = seed
+            .wrapping_mul(6364136223846793005)
+            .wrapping_add(1442695040888963407);
+        (0..n)
+            .map(|_| {
+                state = state
+                    .wrapping_mul(6364136223846793005)
+                    .wrapping_add(1442695040888963407);
+                ((state >> 11) as f64 + 0.5) / (1u64 << 53) as f64
+            })
+            .collect()
+    }
+
+    /// Responses on each family's support, with the scaled part first.
+    fn response_for(family: &dyn LssFamily, n: usize) -> Vec<f64> {
+        let u = uniforms(2 * n, 7);
+        let positive: Vec<f64> = u[..n].iter().map(|v| 0.2 + 5.0 * v).collect();
+        match family.name() {
+            "GaussianLSS" | "StudentTLSS" | "GumbelLSS" | "LogisticLSS" | "JSULSS" => {
+                u[..n].iter().map(|v| 10.0 * (v - 0.5)).collect()
+            }
+            "GaussianKnownVarLSS" => {
+                let mut y: Vec<f64> = u[..n].iter().map(|v| 4.0 * (v - 0.5)).collect();
+                y.extend(u[n..].iter().map(|v| 0.05 + v));
+                y
+            }
+            "ZeroAdjustedGammaLSS" => positive
+                .iter()
+                .enumerate()
+                .map(|(i, v)| if i % 4 == 0 { 0.0 } else { *v })
+                .collect(),
+            _ => positive,
+        }
+    }
+
+    fn check_identity(family: &dyn LssFamily, y: &[f64], n: usize) {
+        let map = family.scale_map().expect("mapped family");
+        let k = family.n_params();
+        let w: Vec<f64> = uniforms(n, 11).iter().map(|v| 0.5 + v).collect();
+        let u = uniforms(n * k, 13);
+        // Internal predictors in a range every family evaluates finitely.
+        let etas_s: Vec<Array1<f64>> = (0..k)
+            .map(|p| {
+                Array1::from_iter((0..n).map(|i| {
+                    let base = 0.6 * (u[p * n + i] - 0.5);
+                    if family.name() == "StudentTLSS" && p == 2 {
+                        1.5 + base // df > 1
+                    } else if matches!(family.name(), "BCTLSS" | "BCPELSS") && p == 0 {
+                        2.0 + base // identity-link median, positive
+                    } else {
+                        base
+                    }
+                }))
+            })
+            .collect();
+        for s in [0.01, 3.7, 1.0e4] {
+            let y_s = family.scale_response(y, n, s);
+            let etas: Vec<Array1<f64>> = etas_s
+                .iter()
+                .zip(map)
+                .map(|(e, m)| {
+                    let (a, b) = m.affine(s);
+                    e.mapv(|v| a * v + b)
+                })
+                .collect();
+            let original = family.risk(y, &etas, &w);
+            let internal = family.risk(&y_s, &etas_s, &w);
+            let shift = s.ln() * family.scale_jacobian_weight(y, &w);
+            assert!(
+                original.is_finite() && internal.is_finite(),
+                "{} risk not finite at s={s}",
+                family.name()
+            );
+            let tol = 1e-9 * (1.0 + original.abs());
+            assert!(
+                (original - (internal + shift)).abs() < tol,
+                "{} at s={s}: risk(y)={original} but risk(y/s)+shift={}",
+                family.name(),
+                internal + shift
+            );
+        }
+    }
+
+    #[test]
+    fn every_scale_map_reproduces_the_likelihood_in_original_units() {
+        let n = 40;
+        let families: Vec<Box<dyn LssFamily>> = vec![
+            Box::new(GaussianLSS),
+            Box::new(GaussianKnownVarLSS),
+            Box::new(GammaLSS),
+            Box::new(StudentTLSS),
+            Box::new(BCCGLSS),
+            Box::new(GumbelLSS),
+            Box::new(InverseGaussianLSS),
+            Box::new(LogisticLSS),
+            Box::new(ZeroAdjustedGammaLSS),
+            Box::new(JSULSS),
+            Box::new(BCTLSS),
+            Box::new(BCPELSS),
+            Box::new(Pareto2LSS),
+            Box::new(SurvivalLSS::log_normal().uncensored()),
+            Box::new(SurvivalLSS::log_log().uncensored()),
+            Box::new(SurvivalLSS::weibull().uncensored()),
+        ];
+        for family in &families {
+            let y = response_for(family.as_ref(), n);
+            check_identity(family.as_ref(), &y, n);
+        }
+        // Censored survival: `[time.., status..]`.
+        for family in [
+            SurvivalLSS::log_normal(),
+            SurvivalLSS::log_log(),
+            SurvivalLSS::weibull(),
+        ] {
+            let mut y: Vec<f64> = uniforms(n, 5).iter().map(|v| 0.2 + 5.0 * v).collect();
+            y.extend((0..n).map(|i| if i % 3 == 0 { 0.0 } else { 1.0 }));
+            check_identity(&family, &y, n);
+        }
+    }
+
+    fn bols_learners(n: usize, w: ArrayView1<f64>) -> Vec<Vec<PreparedLearner>> {
+        let x = Array1::<f64>::linspace(-1.0, 1.0, n);
+        vec![
+            vec![crate::learners::prepare_scalar_bols(
+                x.view(),
+                w,
+                0.0,
+                true,
+                "mu",
+                None,
+            )],
+            vec![crate::learners::prepare_scalar_bols(
+                x.view(),
+                w,
+                0.0,
+                true,
+                "sigma",
+                None,
+            )],
+        ]
+    }
+
+    /// A heteroscedastic Gaussian response in units of `unit`.
+    fn response(n: usize, unit: f64) -> Array1<f64> {
+        let u = uniforms(n, 3);
+        Array1::from_iter((0..n).map(|i| {
+            let x = -1.0 + 2.0 * i as f64 / (n - 1) as f64;
+            let z = (u[i] - 0.5) * 3.4;
+            unit * (1.0 + 0.5 * x + (-1.0 + 0.5 * x).exp() * z)
+        }))
+    }
+
+    fn assert_close(a: f64, b: f64, what: &str) {
+        assert!(
+            (a - b).abs() <= 1e-9 * (1.0 + a.abs().max(b.abs())),
+            "{what}: {a} vs {b}"
+        );
+    }
+
+    /// Fitting `c * y` with scale `c * s` is the fit of `y` with scale `s`,
+    /// mapped: mu by `c`, log sigma by `ln c`, the risk by `n ln c`.
+    #[test]
+    fn a_scaled_fit_is_equivariant_in_the_response_units() {
+        let n = 120;
+        let c = 1.0e5;
+        let w = Array1::ones(n);
+        let y = response(n, 1.0);
+        let yc = response(n, c);
+        let s = auto_response_scale(&GaussianLSS, y.as_slice().unwrap(), w.as_slice().unwrap())
+            .unwrap();
+        for method in ["cyclic", "noncyclic"] {
+            let fit = |yv: &Array1<f64>, scale: f64| {
+                let control = BoostControl::new(60, 0.1)
+                    .unwrap()
+                    .with_response_scale(ResponseScale::Fixed(scale))
+                    .unwrap();
+                let mut learners = bols_learners(n, w.view());
+                if method == "cyclic" {
+                    try_fit_lss(
+                        &mut learners,
+                        yv.view(),
+                        w.view(),
+                        &GaussianLSS,
+                        &control,
+                        None,
+                        None,
+                    )
+                } else {
+                    try_fit_lss_noncyclic(
+                        &mut learners,
+                        yv.view(),
+                        w.view(),
+                        &GaussianLSS,
+                        &control,
+                        None,
+                    )
+                }
+                .unwrap()
+            };
+            let unit = fit(&y, s);
+            let big = fit(&yc, c * s);
+            assert_eq!(unit.selection_order, big.selection_order, "{method}");
+            for i in 0..n {
+                assert_close(
+                    big.per_param[0].fitted[i],
+                    c * unit.per_param[0].fitted[i],
+                    "mu",
+                );
+                assert_close(
+                    big.per_param[1].fitted[i],
+                    unit.per_param[1].fitted[i] + c.ln(),
+                    "log sigma",
+                );
+            }
+            assert_close(
+                big.per_param[0].offset,
+                c * unit.per_param[0].offset,
+                "mu offset",
+            );
+            for (a, b) in big.per_param[0].coefs.iter().zip(&unit.per_param[0].coefs) {
+                for (x, y) in a.iter().zip(b) {
+                    assert_close(*x, c * y, "mu coefficient");
+                }
+            }
+            for (a, b) in big.per_param[1].coefs.iter().zip(&unit.per_param[1].coefs) {
+                for (x, y) in a.iter().zip(b) {
+                    assert_close(*x, *y, "sigma coefficient");
+                }
+            }
+            for (a, b) in big.risk.iter().zip(&unit.risk) {
+                assert_close(*a, b + n as f64 * c.ln(), "risk");
+            }
+            // The reported risk is the likelihood of the mapped predictors.
+            let etas: Vec<Array1<f64>> = big.per_param.iter().map(|p| p.fitted.clone()).collect();
+            assert_close(
+                *big.risk.last().unwrap(),
+                GaussianLSS.risk(yc.as_slice().unwrap(), &etas, w.as_slice().unwrap()),
+                "final risk",
+            );
+        }
+    }
+
+    /// The same scaled fit through the checkpointed CV path reproduces the
+    /// mapped predictors of a plain fit at each checkpoint.
+    #[test]
+    fn checkpoint_snapshots_are_in_the_original_units() {
+        let n = 80;
+        let c = 250.0;
+        let w = Array1::ones(n);
+        let y = response(n, c);
+        let control = BoostControl::new(30, 0.1)
+            .unwrap()
+            .with_response_scale(ResponseScale::Fixed(c))
+            .unwrap();
+        let mut learners = bols_learners(n, w.view());
+        let snaps = try_fit_lss_diagonal_checkpoints(
+            &mut learners,
+            y.view(),
+            w.view(),
+            &GaussianLSS,
+            &control,
+            &[10, 30],
+            None,
+        )
+        .unwrap();
+        for (m, etas) in snaps {
+            let control_m = BoostControl::new(m as u32, 0.1)
+                .unwrap()
+                .with_response_scale(ResponseScale::Fixed(c))
+                .unwrap();
+            let mut learners = bols_learners(n, w.view());
+            let path = try_fit_lss(
+                &mut learners,
+                y.view(),
+                w.view(),
+                &GaussianLSS,
+                &control_m,
+                None,
+                None,
+            )
+            .unwrap();
+            for p in 0..2 {
+                for i in 0..n {
+                    assert_close(etas[p][i], path.per_param[p].fitted[i], "snapshot");
+                }
+            }
+        }
+    }
+
+    /// In large units the raw fit's mean hardly leaves its offset; the scaled
+    /// fit reaches the same mean it reaches in unit scale.
+    #[test]
+    fn the_raw_fit_stalls_in_large_units_and_the_scaled_fit_does_not() {
+        let n = 120;
+        let c = 1.0e5;
+        let w = Array1::ones(n);
+        let yc = response(n, c);
+        let offset = yc.mean().unwrap();
+        let spread = |path: &LssPath| {
+            let mu = &path.per_param[0].fitted;
+            mu.iter().map(|m| (m - offset).abs()).fold(0.0, f64::max) / c
+        };
+        let fit = |scale: ResponseScale| {
+            let control = BoostControl::new(200, 0.1)
+                .unwrap()
+                .with_response_scale(scale)
+                .unwrap();
+            let mut learners = bols_learners(n, w.view());
+            try_fit_lss(
+                &mut learners,
+                yc.view(),
+                w.view(),
+                &GaussianLSS,
+                &control,
+                None,
+                None,
+            )
+            .unwrap()
+        };
+        assert!(
+            spread(&fit(ResponseScale::Raw)) < 1e-6,
+            "the raw fit moved {}",
+            spread(&fit(ResponseScale::Raw))
+        );
+        assert!(
+            spread(&fit(ResponseScale::Auto)) > 0.3,
+            "the scaled fit moved {}",
+            spread(&fit(ResponseScale::Auto))
+        );
+    }
+
+    /// A non-cyclic fit to 10 steps is the first 10 steps of the fit to 25.
+    #[test]
+    fn a_noncyclic_fit_is_a_prefix_of_a_longer_one() {
+        let n = 90;
+        let w = Array1::ones(n);
+        let y = response(n, 1.0);
+        let fit = |m: u32| {
+            let control = BoostControl::new(m, 0.1).unwrap();
+            let mut learners = bols_learners(n, w.view());
+            try_fit_lss_noncyclic(
+                &mut learners,
+                y.view(),
+                w.view(),
+                &GaussianLSS,
+                &control,
+                None,
+            )
+            .unwrap()
+        };
+        let short = fit(10);
+        let long = fit(25);
+        assert_eq!(short.selection_order[..], long.selection_order[..10]);
+        assert_eq!(short.risk[..], long.risk[..11]);
+    }
+
+    /// The resumable non-cyclic search reads the same held-out risk as a fit
+    /// refitted from zero to each total, with and without a response scale.
+    #[test]
+    fn the_noncyclic_search_matches_refits_from_zero() {
+        use crate::grid_search::GridStep;
+        let n = 90;
+        let w = Array1::ones(n);
+        for (unit, scale) in [
+            (1.0, ResponseScale::Raw),
+            (300.0, ResponseScale::Fixed(300.0)),
+            (300.0, ResponseScale::Auto),
+        ] {
+            let y = response(n, unit);
+            let b = 3;
+            let mut folds = ndarray::Array2::<f64>::ones((n, b));
+            for i in 0..n {
+                folds[[i, i % b]] = 0.0;
+            }
+            let control = BoostControl::new(1, 0.1)
+                .unwrap()
+                .with_response_scale(scale)
+                .unwrap();
+            let schedule = vec![
+                GridStep {
+                    end: 8,
+                    grid: (1..=8).collect(),
+                },
+                GridStep {
+                    end: 16,
+                    grid: (1..=16).collect(),
+                },
+            ];
+            let found = try_cvrisk_lss_search(
+                |fw| Ok(bols_learners(n, fw)),
+                y.view(),
+                w.view(),
+                &GaussianLSS,
+                &control,
+                true,
+                folds.view(),
+                None,
+                &schedule,
+                0.05,
+            )
+            .unwrap();
+            for fold in 0..b {
+                let fold_w = folds.column(fold).to_owned();
+                let oob: Vec<f64> = (0..n).map(|i| 1.0 - fold_w[i]).collect();
+                let oob_sum: f64 = oob.iter().sum();
+                for (j, &m) in found.grid.iter().enumerate() {
+                    let control_m = BoostControl::new(m as u32, 0.1)
+                        .unwrap()
+                        .with_response_scale(scale)
+                        .unwrap();
+                    let mut learners = bols_learners(n, fold_w.view());
+                    let path = try_fit_lss_noncyclic(
+                        &mut learners,
+                        y.view(),
+                        fold_w.view(),
+                        &GaussianLSS,
+                        &control_m,
+                        None,
+                    )
+                    .unwrap();
+                    let etas: Vec<Array1<f64>> =
+                        path.per_param.iter().map(|p| p.fitted.clone()).collect();
+                    let want = GaussianLSS.risk(y.as_slice().unwrap(), &etas, &oob) / oob_sum;
+                    assert_close(found.risk[fold][j], want, "held-out risk");
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn unmapped_families_are_left_alone() {
+        let control = BoostControl::new(10, 0.1)
+            .unwrap()
+            .with_response_scale(ResponseScale::Fixed(5.0))
+            .unwrap();
+        for family in [
+            Box::new(PoissonLSS) as Box<dyn LssFamily>,
+            Box::new(BetaLSS),
+            Box::new(NBinomialLSS),
+        ] {
+            assert!(
+                ResponseScaling::resolve(family.as_ref(), &control, &[1.0, 2.0], &[1.0; 2])
+                    .unwrap()
+                    .is_none()
+            );
+            assert!(auto_response_scale(family.as_ref(), &[1.0, 2.0, 3.0], &[1.0; 3]).is_none());
+        }
     }
 }

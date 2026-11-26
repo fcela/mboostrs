@@ -12,4 +12,4 @@ make_grid_lss(max_mstop, length_out=10, log=True)
 Per-parameter 1-D mstop grid, mirroring gamboostLSS::make.grid's marginal
 sequence (the Cartesian product over parameters forms the full search grid).
 
-Source: [`python/mboostrs/gamlss.py` lines 6648-6656](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L6648-L6656)
+Source: [`python/mboostrs/gamlss.py` lines 6733-6741](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L6733-L6741)

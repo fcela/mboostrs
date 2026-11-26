@@ -839,6 +839,18 @@ lss_deviance_increment <- function(family, y, params, ...) {
 #'   `df -> lambda` calibration, and the risk -- so `"raw"` gives a different
 #'   path from R's on the same fractional weights.
 #' @param method Boosting method: "cyclic" (default) or "noncyclic".
+#' @param response_scale The scale the response is divided by before
+#'   fitting (default \code{getOption("mboostrs.response_scale", "auto")}, so
+#'   \code{options(mboostrs.response_scale = "none")} gives gamboostLSS's
+#'   raw-units path throughout a session): \code{"auto"}, the weighted SD of the response the
+#'   fit sees; \code{"none"} (or \code{NULL}), the raw response, R
+#'   gamboostLSS's path; or a positive number. Each boosting step moves a
+#'   location parameter by about \code{nu} in response units, so without a
+#'   scale the fit depends on the units, and a response in large units
+#'   (dollars) barely leaves its offset. A scaled fit is mapped back exactly,
+#'   so predictions, coefficients and the risk are in the original units.
+#'   Families without units (counts, proportions, compositions) are not
+#'   scaled.
 #' @details Gradient stabilization and per-parameter step lengths follow
 #'   upstream `gamboostLSS` 2.2-0. Stabilization is a family argument,
 #'   `GaussianLSS(stabilization = c("none", "MAD", "L2"))`, which scales each
@@ -863,7 +875,7 @@ glmboostLSS <- function(formula, data, families = NULL, family = NULL,
                         control = boost_control(), offset = NULL, mstop = NULL,
                         weights = NULL,
                         method = c("cyclic", "noncyclic"),
-                        weight_policy = "upstream") {
+                        weight_policy = "upstream", response_scale = getOption("mboostrs.response_scale", "auto")) {
   families <- .lss_resolve_families(families, family)
   method <- match.arg(method)
   cl <- match.call()
@@ -919,6 +931,7 @@ glmboostLSS <- function(formula, data, families = NULL, family = NULL,
       as.double(y), as.double(w), as.integer(control$mstop), as.double(.lss_nu_scalar(control$nu)),
       families$rust_name, offs, control$trace %||% FALSE, .lss_stabilization(families), .lss_nu_vector(control$nu, families$param_names),
       control$step %||% "fixed", as.integer(control$step_iterations %||% 4L),
+    .lss_response_scale(response_scale),
  PACKAGE = "mboostrs")
   } else {
     .Call("wrap__fit_glmboostlss",
@@ -928,6 +941,7 @@ glmboostLSS <- function(formula, data, families = NULL, family = NULL,
       families$rust_name, offs, mstop_pp, control$trace %||% FALSE,
       .lss_stabilization(families), .lss_nu_vector(control$nu, families$param_names),
       control$step %||% "fixed", as.integer(control$step_iterations %||% 4L),
+    .lss_response_scale(response_scale),
       PACKAGE = "mboostrs")
   }
   if (isTRUE(control$trace)) .render_execution_report(res$execution_report)
@@ -956,6 +970,7 @@ glmboostLSS <- function(formula, data, families = NULL, family = NULL,
       control = control,
       offset = offset,
       method = method,
+      response_scale = .lss_response_scale(response_scale),
       call = cl
     ),
     class = "mboostrs_glmboostLSS"
@@ -1180,7 +1195,7 @@ print.mboostrs_glmboostLSS <- function(x, ...) {
 gamboostLSS <- function(formula, data, families = NULL, family = NULL,
                         control = boost_control(), offset = NULL, mstop = NULL,
                         weights = NULL, method = c("cyclic", "noncyclic"),
-                        weight_policy = "upstream") {
+                        weight_policy = "upstream", response_scale = getOption("mboostrs.response_scale", "auto")) {
   families <- .lss_resolve_families(families, family)
   cl <- match.call()
   method <- match.arg(method)
@@ -1220,6 +1235,7 @@ gamboostLSS <- function(formula, data, families = NULL, family = NULL,
     control$trace %||% FALSE,
     .lss_stabilization(families), .lss_nu_vector(control$nu, families$param_names),
     control$step %||% "fixed", as.integer(control$step_iterations %||% 4L),
+    .lss_response_scale(response_scale),
     PACKAGE = "mboostrs"
   )
   if (isTRUE(control$trace)) .render_execution_report(res$execution_report)
@@ -1240,6 +1256,7 @@ gamboostLSS <- function(formula, data, families = NULL, family = NULL,
          nu = control$nu, family = families,
          formulas = formulas, param_names = pnames, data = data, n = n,
          weights = w, control = control, offset = offset, method = method,
+         response_scale = .lss_response_scale(response_scale),
          call = cl),
     class = "mboostrs_gamboostLSS"
   )
@@ -1703,6 +1720,8 @@ plot.mboostrs_lss_stabsel <- function(x, ...) {
 #' @param formula,data,families,family,control As in \code{\link{glmboostLSS}}.
 #' @param folds An \code{n x B} matrix of in-bag weights (one column per fold).
 #' @param grid An \code{n_grid x K} matrix of per-parameter mstop values.
+#' @param response_scale The response scale, as in \code{glmboostLSS}
+#'   (default \code{"auto"}); each fold uses the scale of its own rows.
 #' @return A \code{B x n_grid} matrix of per-fold out-of-bag risks, with the
 #'   grid points as column names.
 #' @seealso [make_grid_lss()]
@@ -1718,7 +1737,8 @@ plot.mboostrs_lss_stabsel <- function(x, ...) {
 #'                          folds = folds, grid = grid)
 #' @export
 cvrisk_glmboostLSS <- function(formula, data, families = NULL, family = NULL,
-                               control = boost_control(), folds, grid) {
+                               control = boost_control(), folds, grid,
+                               response_scale = getOption("mboostrs.response_scale", "auto")) {
   families <- .lss_resolve_families(families, family)
   pnames <- families$param_names
   K <- length(pnames)
@@ -1747,6 +1767,7 @@ cvrisk_glmboostLSS <- function(formula, data, families = NULL, family = NULL,
     as.integer(t(grid)), as.integer(nrow(grid)),
     .lss_stabilization(families), .lss_nu_vector(control$nu, families$param_names),
     control$step %||% "fixed", as.integer(control$step_iterations %||% 4L),
+    .lss_response_scale(response_scale),
     PACKAGE = "mboostrs")
   m <- matrix(res, nrow = ncol(folds), byrow = TRUE)
   colnames(m) <- apply(grid, 1, paste, collapse = ",")
@@ -1766,6 +1787,8 @@ cvrisk_glmboostLSS <- function(formula, data, families = NULL, family = NULL,
 #'   are appended here, so \code{B} columns produce \code{2 * B} fits; pairing
 #'   is never inferred from an even column count. \code{\link{stabsel_folds}}
 #'   builds one.
+#' @param response_scale The response scale, as in \code{glmboostLSS}
+#'   (default \code{"auto"}); each fold uses the scale of its own rows.
 #' @param q,PFER,cutoff Stability-selection error-control parameters (as in
 #'   \code{stabs::stabsel}).
 #' @param assumption,sampling_type Passed to the error-control computation.
@@ -1792,7 +1815,8 @@ cvrisk_glmboostLSS <- function(formula, data, families = NULL, family = NULL,
 stabsel_glmboostLSS <- function(formula, data, families = NULL, family = NULL,
                                 control = boost_control(), folds,
                                 q = -1L, PFER = -1.0, cutoff = -1.0,
-                                assumption = "unimodal", sampling_type = "MB") {
+                                assumption = "unimodal", sampling_type = "MB",
+                                response_scale = getOption("mboostrs.response_scale", "auto")) {
   families <- .lss_resolve_families(families, family)
   pnames <- families$param_names
   K <- length(pnames)
@@ -1826,6 +1850,7 @@ stabsel_glmboostLSS <- function(formula, data, families = NULL, family = NULL,
     as.double(y), rep(1.0, n), as.integer(control$mstop), as.double(.lss_nu_scalar(control$nu)),
     families$rust_name, as.double(t(folds)), as.integer(n_fits), .lss_stabilization(families), .lss_nu_vector(control$nu, families$param_names),
     control$step %||% "fixed", as.integer(control$step_iterations %||% 4L),
+    .lss_response_scale(response_scale),
  PACKAGE = "mboostrs")
 
   m <- control$mstop
@@ -2746,11 +2771,13 @@ q_stats.mboostrs_gamboostLSS <- function(object, xvar = NULL, n_intervals = 10L,
     return(gamboostLSS(formulas, data = object$data, families = object$family,
                        control = ctl$control, offset = object$offset,
                        mstop = ctl$mstop, weights = object$weights,
-                       method = object$method))
+                       method = object$method,
+                       response_scale = object$response_scale %||% "none"))
   }
   glmboostLSS(formulas, data = object$data, families = object$family,
               control = ctl$control, offset = object$offset,
-              mstop = ctl$mstop, method = object$method)
+              mstop = ctl$mstop, method = object$method,
+              response_scale = object$response_scale %||% "none")
 }
 
 # Upstream gamboostLSS's mstop(): a named per-parameter vector for a cyclic
@@ -3274,6 +3301,8 @@ logLik.mboostrs_gamboostLSS <- function(object, ...) {
 #' @param formula,data,families,family,control As in \code{\link{gamboostLSS}}.
 #' @param folds An \code{n x B} matrix of in-bag weights.
 #' @param grid An \code{n_grid x K} matrix of per-parameter mstop values.
+#' @param response_scale The response scale, as in \code{glmboostLSS}
+#'   (default \code{"auto"}); each fold uses the scale of its own rows.
 #' @return A \code{B x n_grid} matrix of per-fold OOB risks.
 #' @examples
 #' \dontrun{
@@ -3289,7 +3318,8 @@ logLik.mboostrs_gamboostLSS <- function(object, ...) {
 #' }
 #' @export
 cvrisk_gamboostLSS <- function(formula, data, families = NULL, family = NULL,
-                                control = boost_control(), folds, grid) {
+                                control = boost_control(), folds, grid,
+                                response_scale = getOption("mboostrs.response_scale", "auto")) {
   families <- .lss_resolve_families(families, family)
   pnames <- families$param_names
   K <- length(pnames)
@@ -3321,6 +3351,7 @@ cvrisk_gamboostLSS <- function(formula, data, families = NULL, family = NULL,
     as.integer(n_grid),
     .lss_stabilization(families), .lss_nu_vector(control$nu, families$param_names),
     control$step %||% "fixed", as.integer(control$step_iterations %||% 4L),
+    .lss_response_scale(response_scale),
     PACKAGE = "mboostrs"
   )
 
@@ -3337,6 +3368,8 @@ cvrisk_gamboostLSS <- function(formula, data, families = NULL, family = NULL,
 #'   complementary pair (\code{"SS"}). Under \code{"SS"} the exact complements
 #'   are appended here, so \code{B} columns produce \code{2 * B} fits.
 #'   \code{\link{stabsel_folds}} builds one.
+#' @param response_scale The response scale, as in \code{glmboostLSS}
+#'   (default \code{"auto"}); each fold uses the scale of its own rows.
 #' @param q,PFER,cutoff Stability-selection parameters.
 #' @param assumption,sampling_type Passed to error-control computation.
 #'   \code{sampling_type = "SS"} uses complementary pairs and fits
@@ -3358,7 +3391,8 @@ cvrisk_gamboostLSS <- function(formula, data, families = NULL, family = NULL,
 stabsel_gamboostLSS <- function(formula, data, families = NULL, family = NULL,
                                  control = boost_control(), folds,
                                  q = -1L, PFER = -1.0, cutoff = -1.0,
-                                 assumption = "unimodal", sampling_type = "MB") {
+                                 assumption = "unimodal", sampling_type = "MB",
+                                 response_scale = getOption("mboostrs.response_scale", "auto")) {
   families <- .lss_resolve_families(families, family)
   frontend <- .gamboostlss_frontend(formula, data, families)
   sampling_type <- .stabsel_sampling_type(sampling_type)
@@ -3379,6 +3413,7 @@ stabsel_gamboostLSS <- function(formula, data, families = NULL, family = NULL,
     as.integer(control$mstop), as.double(.lss_nu_scalar(control$nu)), families$rust_name,
     as.double(t(folds)), as.integer(n_fits), .lss_stabilization(families), .lss_nu_vector(control$nu, families$param_names),
     control$step %||% "fixed", as.integer(control$step_iterations %||% 4L),
+    .lss_response_scale(response_scale),
  PACKAGE = "mboostrs")
 
   m <- control$mstop
@@ -3404,6 +3439,26 @@ stabsel_gamboostLSS <- function(formula, data, families = NULL, family = NULL,
 # stability-selection binding. Stabilization is a family argument, as in
 # gamboostLSS 2.2-0 (`GaussianLSS(stabilization = "MAD")`).
 .lss_stabilization <- function(families) families$stabilization %||% "none"
+
+# The scale a distributional fit divides its response by, as the Rust binding
+# reads it: "auto" (the weighted SD of the response the fit sees, so a
+# cross-validation fold and a fit on the same rows agree), "none" (NULL too:
+# R gamboostLSS's raw-units path) or a positive number. Boosted LSS fitting
+# moves a location parameter by about nu per step in response units, so a
+# response in dollars barely leaves its offset; a scaled fit is mapped back
+# and reports everything in the original units.
+.lss_response_scale <- function(response_scale) {
+  if (is.null(response_scale)) return("none")
+  if (is.character(response_scale)) {
+    if (length(response_scale) != 1L || !response_scale %in% c("auto", "none"))
+      stop('response_scale must be "auto", "none" (or NULL) or a positive number')
+    return(response_scale)
+  }
+  if (!is.numeric(response_scale) || length(response_scale) != 1L ||
+      !is.finite(response_scale) || response_scale <= 0)
+    stop('response_scale must be "auto", "none" (or NULL) or a positive number')
+  format(response_scale, digits = 17)
+}
 
 # boost_control(nu = ...) for a distributional fit, read as upstream reads it:
 # a scalar is every parameter's step; a named vector is reordered to the

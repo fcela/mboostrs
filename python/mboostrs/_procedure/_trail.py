@@ -267,10 +267,15 @@ class DecisionTrail:
         self.steps.append(record)
         return self
 
-    def set_final(self, formula: str, family: Any, mstop: int) -> DecisionTrail:
+    def set_final(self, formula: str, family: Any, mstop: int,
+                  unseen_levels: str | None = None) -> DecisionTrail:
+        """Record the final specification, and the model's unseen-level policy
+        when it is not the library default ``"error"``."""
         if not isinstance(family, str):
             family = type(family).__name__
         self.final = {"formula": str(formula), "family": family, "mstop": int(mstop)}
+        if unseen_levels is not None:
+            self.final["unseen_levels"] = str(unseen_levels)
         return self
 
     def set_uncertainty(self, method: str = "none", **fields: Any) -> DecisionTrail:

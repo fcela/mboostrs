@@ -25,4 +25,4 @@ R's internal `HingeLoss` returns the identical value.
 - `alpha_cost` (float): Asymmetric misclassification cost. `0.5`, the default, is the
   symmetric hinge loss.
 
-Source: [`python/mboostrs/families.py` lines 287-309](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L287-L309)
+Source: [`python/mboostrs/families.py` lines 352-374](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L352-L374)

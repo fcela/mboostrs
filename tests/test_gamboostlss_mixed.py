@@ -1364,7 +1364,15 @@ def test_tiny_scale_response_stops_with_guided_error():
             {"x": x, "y": y},
             family=GaussianLSS(),
             control=mb.boost_control(100, 0.1),
+            response_scale=None,
         )
+    # The default fits the response divided by its SD, where the same steps
+    # are of order one, and maps the model back to the original units.
+    fit = gamboostLSS(formulas, {"x": x, "y": y}, family=GaussianLSS(),
+                      control=mb.boost_control(100, 0.1))
+    sigma = np.asarray(fit.predict(type="response")["sigma"], dtype=float)
+    assert np.all(np.isfinite(sigma))
+    assert 0.01 < float(np.median(sigma)) < 0.04
 
 
 def _per_step_eta(model, k, newdata):

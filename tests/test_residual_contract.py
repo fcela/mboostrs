@@ -72,7 +72,7 @@ def test_a_robust_loss_has_no_pearson_residual(data, name):
 
 def test_laplace_working_residual_is_the_sign_it_used_to_call_pearson(data):
     """Available under its real name, where its two values make sense."""
-    model = _fit(data, mb.Laplace())
+    model = _fit(data, mb.Laplace(response_scale=None))
     working = np.asarray(model.residuals(type="working"))
     assert set(np.unique(np.abs(working))) <= {1.0}
     assert len(np.unique(working)) <= 2

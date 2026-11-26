@@ -32,9 +32,9 @@ def test_cqr_doubling_emits_no_search_range_warning():
 
 def test_cqr_warns_when_quantile_step_cap_is_reached(monkeypatch):
     fit = _heteroscedastic_fit()
-    # The search starts at 200 and the cap is 200, so the first grid point is the cap.
-    monkeypatch.setattr(conformal._rust, "conformal_tuned_mstop_start", lambda model_mstop: 200)
-    monkeypatch.setattr(conformal, "_QUANTILE_MSTOP_CAP", 200)
+    # The search starts at 20 and the cap is 20, so the first grid point is the cap.
+    monkeypatch.setattr(conformal._rust, "conformal_tuned_mstop_start", lambda model_mstop: 20)
+    monkeypatch.setattr(conformal, "_QUANTILE_MSTOP_CAP", 20)
     with warnings.catch_warnings(record=True) as record:
         warnings.simplefilter("always")
         mb.conformal_interval(fit, level=0.9, seed=1, method="cqr")

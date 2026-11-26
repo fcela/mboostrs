@@ -16,7 +16,7 @@ Heavier-tailed than Gaussian at the same scale, so it is the usual drop-in
 when residuals are symmetric but mildly outlier-prone. Note `sigma` is the
 logistic scale, not the standard deviation: `sd = sigma * pi / sqrt(3)`.
 
-Source: [`python/mboostrs/gamlss.py` lines 2084-2132](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2084-L2132)
+Source: [`python/mboostrs/gamlss.py` lines 2129-2177](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2129-L2177)
 
 ## Members
 
@@ -45,7 +45,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `IndexError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2097-2103](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2097-L2103)
+Source: [`python/mboostrs/gamlss.py` lines 2142-2148](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2142-L2148)
 
 (logisticlss-mean)=
 ## `LogisticLSS.mean`
@@ -58,7 +58,7 @@ LogisticLSS.mean(params) -> ndarray
 
 Conditional response mean.
 
-Source: [`python/mboostrs/gamlss.py` lines 2105-2107](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2105-L2107)
+Source: [`python/mboostrs/gamlss.py` lines 2150-2152](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2150-L2152)
 
 (logisticlss-pdf)=
 ## `LogisticLSS.pdf`
@@ -77,7 +77,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2109-2116](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2109-L2116)
+Source: [`python/mboostrs/gamlss.py` lines 2154-2161](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2154-L2161)
 
 (logisticlss-cdf)=
 ## `LogisticLSS.cdf`
@@ -96,7 +96,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2118-2128](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2118-L2128)
+Source: [`python/mboostrs/gamlss.py` lines 2163-2173](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2163-L2173)
 
 (logisticlss-quantile)=
 ## `LogisticLSS.quantile`
@@ -109,4 +109,4 @@ LogisticLSS.quantile(p, params) -> ndarray
 
 Logistic quantile, `mu + sigma * log(p / (1 - p))`.
 
-Source: [`python/mboostrs/gamlss.py` lines 2130-2132](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2130-L2132)
+Source: [`python/mboostrs/gamlss.py` lines 2175-2177](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2175-L2177)

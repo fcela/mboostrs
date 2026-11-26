@@ -6,6 +6,103 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- Distributional fits (`gamboostLSS`, `glmboostLSS`, their `cvrisk` and
+  `stabsel`, `tune_mstop` on a distributional specification, `autospec` and
+  `fit`) divide the response by a scale and map the fitted model back
+  exactly to the original units. `response_scale="auto"` (the default) takes
+  the weighted SD of the response each fit sees, so a cross-validation fold,
+  a weighted refit and a fit on the same rows agree; a number fixes the
+  scale; `None` (or `"none"`) fits the raw response, R gamboostLSS's path.
+  Families without units (counts, proportions, compositions) are not
+  scaled. gamboostLSS moves a location parameter by about `nu` per step in
+  response units, so the same data in different units gave different fits:
+  on California housing in dollars a GaussianLSS mean never left its offset
+  (test RMSE 114,622, the response SD, after 1,000 steps; CRPS 62,111, worse
+  than the unconditional distribution's 63,083), and the scaled fit reaches
+  CRPS 33,047. Predictions, coefficients, risk and `logLik` are in the
+  original units; the path at a given `mstop` is R's path on `y / s`, which
+  differs from R's path on `y` when the SD is far from 1. The R package takes
+  the same argument, defaulting to `getOption("mboostrs.response_scale",
+  "auto")`. `parity_notes()` names the deviation on a scaled fit.
+- `Quantile` and `Laplace` take `response_scale="auto"` too (their gradient,
+  `tau - 1{y < f}` or `sign(y - f)`, does not grow with the response, so a
+  fit moved by about `nu * tau` per step in response units). On California
+  housing in dollars, a tuned median regression's pinball loss was 43,787
+  and the 0.9-quantile's 53,700; on the scaled response 21,537 and 12,772.
+  Under scaling the Laplace offset search runs on `y / s`.
+- `Quantile` starts at the `tau`-quantile of the response (`qoffset`
+  defaults to `tau`; R's `QuantReg` uses 0.5), and a fit given no `control`,
+  like `tune_mstop` given no `nu`, takes steps of `nu = 0.3`. On 18 quantile
+  fits (six OpenML-CTR23 data sets, `tau` 0.1, 0.5 and 0.9) the larger step
+  cut the median time from 7.2 s to 2.7 s with the pinball loss 1.6% lower on
+  average (worst task 2.3% higher). `Quantile(tau, qoffset=0.5,
+  response_scale=None)` with `boost_control(nu=0.1)` is R's `QuantReg`.
+  `tune_mstop(nu=None)` (the new default) uses a family's own `default_nu`,
+  else 0.1.
+- The GammaLSS offset search reaches a negative log-mean and a log shape
+  below 0 when R's search interval cannot (a response with mean below 1, or
+  more skewed than an exponential); every offset R's interval contains is
+  unchanged.
+- `tune_mstop` tunes a non-cyclic distributional specification
+  (`method="noncyclic"`, #4): every fold's path is fitted once and resumed
+  from one grid to the next, as for the cyclic method, and the grid counts
+  total steps.
+- A model returned by `fit` predicts a `brandom` or factor level the training
+  rows did not contain as the average group, and the trail's `final`
+  records `unseen_levels: "average"` (the trail schema gains the field).
+  `predict` and the other prediction methods take `unseen_levels=None` by
+  default, meaning the model's policy: `"error"` for a model fitted
+  directly, as before. Before, a model `fit` built on OpenML
+  video_transcoding refused every test split.
+- `autospec`'s bar for adopting a distributional family (2% of the mean
+  family's held-out log score, plus two paired standard errors) reads the
+  log score on the response divided by its SD, so it no longer depends on
+  the response's units.
+- When the spread screen (`log(residual^2)` regressed on each column) finds
+  no covariate, `autospec` offers GaussianLSS with a joint depth-3 tree over
+  the numeric predictors as its scale equation, decided by the held-out log
+  score with the usual gates, so a spread that depends on a product or a
+  threshold of predictors is no longer missed.
+- `autospec(lss_trees=...)` offers an adopted distributional model a joint
+  tree (depths 3 and 6) in every parameter; `"auto"` (default) runs it when
+  the remaining budget pays for it.
+- `fit()` defaults `na_action` to `"impute"`, `interactions` to `"adopt"`,
+  `residual_tree` to `"auto"`, and the `"standard"` fit budget to 64 fits.
+  Above 3,000 rows (with no explicit `folds`, `groups`, or `time`), `fit()`
+  runs specification search on a deterministic 3,000-row subsample (pinning
+  response extremes) and fits the chosen specification on all rows.
+  `Fit.trail.final["formula"]` reports active terms (>= 1% of risk reduction
+  or LSS partial-effect variance, or intercept-only when CV risk does not
+  improve over step 0 by 1%).
+- `autospec` pre-exploration caps its screening table at 2,000 rows, skips
+  1D shape probing on near-zero-contribution columns on wider tables (> 8
+  predictors), retains observed-response rows during search under impute
+  modes, reuses `MstopEvidence.fold_scores` in the residual-tree gate, and
+  adds held-out residual-tree detection with sparse active-column scoping.
+- `conformal_interval(..., unseen_levels=None)` inherits the model's unseen-level
+  policy, and lowered factor `bols` and dummy-encoded categorical columns
+  support `unseen_levels="average"` and `"zero_effect"`.
+- The divergence errors of distributional fits name `stabilization="MAD"`,
+  a smaller `nu` and a family for the response's shape as remedies.
+
+### Fixed
+
+- `predict(..., unseen_levels="average")` on a categorical column with a
+  missing value (`None`) the fit never saw raised `TypeError` while listing
+  the unseen levels.
+- `impute_missing` adds a training-mode `impute_level` step for complete
+  training categorical columns, keeps Polars `impute_level` columns as native
+  `Utf8`/`String` rather than `pl.Object`, and drops post-omission constant
+  predictors before probing.
+
+### Documentation
+
+- The book's R-parity chapter records every difference above, with the
+  measurements, and the R-migration and family pages give the settings that
+  reproduce R's fits.
+
 ## [0.2.3] - 2026-11-23
 
 ### Changed

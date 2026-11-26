@@ -13,7 +13,7 @@ Normal location-scale family: `mu` (identity link), `sigma` (log link).
 
 Matches R `gamboostLSS::GaussianLSS()`.
 
-Source: [`python/mboostrs/gamlss.py` lines 1031-1088](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1031-L1088)
+Source: [`python/mboostrs/gamlss.py` lines 1076-1133](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1076-L1133)
 
 ## Members
 
@@ -44,7 +44,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `IndexError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1041-1047](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1041-L1047)
+Source: [`python/mboostrs/gamlss.py` lines 1086-1092](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1086-L1092)
 
 (gaussianlss-mean)=
 ## `GaussianLSS.mean`
@@ -57,7 +57,7 @@ GaussianLSS.mean(params) -> ndarray
 
 Conditional response mean.
 
-Source: [`python/mboostrs/gamlss.py` lines 1049-1051](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1049-L1051)
+Source: [`python/mboostrs/gamlss.py` lines 1094-1096](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1094-L1096)
 
 (gaussianlss-pdf)=
 ## `GaussianLSS.pdf`
@@ -76,7 +76,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1053-1061](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1053-L1061)
+Source: [`python/mboostrs/gamlss.py` lines 1098-1106](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1098-L1106)
 
 (gaussianlss-cdf)=
 ## `GaussianLSS.cdf`
@@ -95,7 +95,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1063-1070](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1063-L1070)
+Source: [`python/mboostrs/gamlss.py` lines 1108-1115](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1108-L1115)
 
 (gaussianlss-quantile)=
 ## `GaussianLSS.quantile`
@@ -108,7 +108,7 @@ GaussianLSS.quantile(p, params) -> ndarray
 
 Normal quantile for probabilities `p`.
 
-Source: [`python/mboostrs/gamlss.py` lines 1072-1074](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1072-L1074)
+Source: [`python/mboostrs/gamlss.py` lines 1117-1119](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1117-L1119)
 
 (gaussianlss-simulate)=
 ## `GaussianLSS.simulate`
@@ -127,7 +127,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1076-1083](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1076-L1083)
+Source: [`python/mboostrs/gamlss.py` lines 1121-1128](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1121-L1128)
 
 (gaussianlss-deviance_increment)=
 ## `GaussianLSS.deviance_increment`
@@ -140,4 +140,4 @@ GaussianLSS.deviance_increment(y, params) -> ndarray
 
 Per-observation deviance contribution, `-2 * log(pdf(y))`.
 
-Source: [`python/mboostrs/gamlss.py` lines 1085-1088](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1085-L1088)
+Source: [`python/mboostrs/gamlss.py` lines 1130-1133](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1130-L1133)

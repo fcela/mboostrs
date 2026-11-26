@@ -28,9 +28,12 @@ def narrow():
     x = rng.uniform(1.0, 6.0, 300)
     y = 0.4 * np.log(x) + rng.normal(0.0, 0.2, 300)
     data = {"x": x, "y": y}
+    # The raw-units path is the one whose edge slope extrapolates to a value
+    # far from the clipped one; the policy behaviour is what is tested.
     lss = mb.gamboostLSS(
         {"mu": "y ~ bbs(x, df=4)", "sigma": "y ~ 1"}, data=data,
-        family=mb.GaussianLSS(), control=mb.boost_control(mstop=200, nu=0.1))
+        family=mb.GaussianLSS(), control=mb.boost_control(mstop=200, nu=0.1),
+        response_scale=None)
     gam = mb.gamboost("y ~ bbs(x, df=4)", data=data, family=mb.Gaussian(),
                       control=mb.boost_control(mstop=200, nu=0.1))
     return {"x": x, "y": y, "lss": lss, "gam": gam,

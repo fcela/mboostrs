@@ -78,6 +78,10 @@ gamboost <- function(formula, data, family = Gaussian(), control = boost_control
                      weights = NULL, offset = NULL, weight_policy = "upstream",
                      bins = NULL, .oob_weights = NULL) {
   cl <- match.call()
+  # A family may set its own step length for a fit given no control
+  # (Quantile: 0.3, measured on 18 quantile fits; mboost uses 0.1).
+  if (missing(control) && !is.null(family$default_nu))
+    control <- boost_control(nu = family$default_nu)
   .require_scalar_nu(control)
 
   # Accepted so the refusal names the feature. Without the argument, a reader

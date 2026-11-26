@@ -128,9 +128,11 @@ def test_an_explicit_step_length_is_never_searched():
 
 
 def test_a_budget_with_no_room_skips_the_search():
-    rec = mb.autospec(_sin_data(), "y", budget=30, mstop=100)
+    # 25 fits: the family and spread probes (the spread probe validates a
+    # tree scale equation) and the stopping sweep leave no room for it.
+    rec = mb.autospec(_sin_data(), "y", budget=25, mstop=100)
     assert "nu_search" not in rec.evidence
-    assert rec.fits <= 30 + 25  # the search adds nothing when it cannot pay
+    assert rec.fits <= 25 + 25  # the search adds nothing when it cannot pay
 
 
 def test_probe_nu_search_on_real_fits_varies_the_step_length():

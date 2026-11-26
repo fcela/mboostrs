@@ -2,6 +2,9 @@
 # Shared subsampling folds; selected set matches exactly, max selection
 # frequencies match within a near-tie tolerance (non-cyclic flat-objective
 # ambiguity affects a couple of subsamples).
+# Compared with R mboost/gamboostLSS (or with values recorded from them), so
+# fitted on the raw response as R does (see ?gamboostLSS, response_scale).
+options(mboostrs.response_scale = "none")
 if (!requireNamespace("gamboostLSS", quietly = TRUE)) {
   message("gamboostLSS not installed; skipping stabsel LSS parity check")
   quit(save = "no")

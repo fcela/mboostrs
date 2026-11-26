@@ -15,7 +15,8 @@ stabsel_glmboostLSS(
   PFER = -1,
   cutoff = -1,
   assumption = "unimodal",
-  sampling_type = "MB"
+  sampling_type = "MB",
+  response_scale = getOption("mboostrs.response_scale", "auto")
 )
 }
 \arguments{
@@ -36,6 +37,9 @@ builds one.}
 \code{2 * B} models; \code{"MB"} fits \code{B}. The bound is computed on
 \code{B}, and both counts are on the result as \code{B} and
 \code{n_fits}.}
+
+\item{response_scale}{The response scale, as in \code{glmboostLSS}
+(default \code{"auto"}); each fold uses the scale of its own rows.}
 }
 \value{
 A list with \code{selected} (stable combined learners), \code{max}

@@ -55,4 +55,4 @@ because the tensor costs 6.25 df and can miss a bilinear interaction that
 a 1-df varying coefficient captures. Score them against each other
 with `compare_specifications` rather than taking the first.
 
-Source: [`python/mboostrs/explore.py` lines 2886-3055](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L2886-L3055)
+Source: [`python/mboostrs/explore.py` lines 2897-3066](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L2897-L3066)

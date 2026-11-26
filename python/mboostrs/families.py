@@ -42,6 +42,32 @@ class Poisson:
     """
 
 
+def _check_family_response_scale(value):
+    """``"auto"``, ``"none"`` (also ``None``) or a positive number."""
+    if value is None:
+        return "none"
+    if isinstance(value, str):
+        if value not in ("auto", "none"):
+            raise ValueError(
+                f'response_scale must be "auto", "none" (or None) or a positive number, '
+                f'got {value!r}')
+        return value
+    scale = float(value)
+    if not np.isfinite(scale) or scale <= 0.0:
+        raise ValueError(f"response_scale must be finite and positive, got {value!r}")
+    return scale
+
+
+def _response_scale_param(value):
+    """The binding's encoding: absent for the raw response, 0 for ``"auto"``."""
+    if value == "none":
+        return {}
+    return {"response_scale": 0.0 if value == "auto" else float(value)}
+
+
+
+
+
 class Laplace:
     """Absolute error loss, ``|y - f|``, with an identity link.
 
@@ -49,7 +75,24 @@ class Laplace:
     the same magnitude regardless of how far off it is, and the fit targets the
     conditional **median** rather than the mean. The offset is the weighted
     median. Use it when outliers should not pull the fit.
+
+    Parameters
+    ----------
+    response_scale : {"auto", "none"} or float, default "auto"
+        The scale the response is divided by before fitting. The negative
+        gradient of this loss does not grow with the response, so each
+        boosting step moves the fit by about ``nu`` times a constant in
+        response units: without a scale the same data in dollars and in
+        thousands of dollars give different fits at the same ``mstop``, and a
+        response in large units barely leaves its offset. ``"auto"`` fits the
+        response divided by its weighted SD (the SD of the rows each fit sees)
+        and maps the model back exactly, so predictions, coefficients and the
+        risk are in the original units. ``"none"`` (or ``None``) is R mboost's
+        raw-units path; a number fixes the scale.
     """
+
+    def __init__(self, response_scale="auto"):
+        self.response_scale = _check_family_response_scale(response_scale)
 
 
 class GammaReg:
@@ -89,26 +132,48 @@ class Quantile:
     Targets the conditional ``tau``-quantile: residuals above the fit are
     weighted ``tau`` and those below ``1 - tau``, so ``tau=0.5`` gives median
     regression. The offset is the weighted ``qoffset`` quantile of the
-    response, not ``tau``. ``qoffset`` defaults to 0.5 even when ``tau`` is
-    not, matching R, so ``Quantile(tau=0.9)`` starts at the median.
+    response, by default the quantile being fitted.
 
     Fitting several ``tau`` values gives a picture of the whole conditional
     distribution without assuming its shape, which is the alternative to the
     distributional families when only a few quantiles are needed.
 
+    Three defaults differ from R mboost's ``QuantReg``, chosen on 18
+    quantile fits (six OpenML-CTR23 data sets, ``tau`` 0.1, 0.5, 0.9): the
+    offset starts at ``tau`` rather than the median; a fit given no
+    ``control`` (and ``tune_mstop`` given no ``nu``) takes steps of
+    ``nu = 0.3`` rather than 0.1, which cut the median time 2.7-fold with
+    the pinball loss 1.6% lower on average; and the response is scaled (see
+    ``response_scale``). ``Quantile(tau, qoffset=0.5, response_scale=None)``
+    with ``boost_control(..., nu=0.1)`` is R's ``QuantReg``.
+
     Parameters
     ----------
     tau : float
         The quantile to fit, in (0, 1).
-    qoffset : float
-        Quantile of the response used for the starting offset. Default 0.5,
-        independent of ``tau``. Pass ``qoffset=tau`` to start at the quantile
-        being fitted.
+    qoffset : float, optional
+        Quantile of the response used for the starting offset. ``None``
+        (default) is ``tau``; R's ``QuantReg`` uses 0.5 whatever ``tau``.
+    response_scale : {"auto", "none"} or float, default "auto"
+        The scale the response is divided by before fitting. The negative
+        gradient of this loss does not grow with the response, so each
+        boosting step moves the fit by about ``nu`` times a constant in
+        response units: without a scale the same data in dollars and in
+        thousands of dollars give different fits at the same ``mstop``, and a
+        response in large units barely leaves its offset. ``"auto"`` fits the
+        response divided by its weighted SD (the SD of the rows each fit sees)
+        and maps the model back exactly, so predictions, coefficients and the
+        risk are in the original units. ``"none"`` (or ``None``) is R mboost's
+        raw-units path; a number fixes the scale.
     """
 
-    def __init__(self, tau=0.5, qoffset=0.5):
+    #: The step length of a fit given no control (R mboost uses 0.1).
+    default_nu = 0.3
+
+    def __init__(self, tau=0.5, qoffset=None, response_scale="auto"):
         self.tau = check_unit_interval("tau", tau)
-        self.qoffset = check_unit_interval("qoffset", qoffset)
+        self.qoffset = check_unit_interval("qoffset", self.tau if qoffset is None else qoffset)
+        self.response_scale = _check_family_response_scale(response_scale)
 
 
 class Expectile:
@@ -495,7 +560,10 @@ del _cls
 
 def _family_params(family):
     if isinstance(family, Quantile):
-        return {"tau": family.tau, "qoffset": family.qoffset}
+        return {"tau": family.tau, "qoffset": family.qoffset,
+                **_response_scale_param(getattr(family, "response_scale", "none"))}
+    if isinstance(family, Laplace):
+        return _response_scale_param(getattr(family, "response_scale", "none"))
     if isinstance(family, Expectile):
         return {"tau": family.tau}
     if isinstance(family, Huber):

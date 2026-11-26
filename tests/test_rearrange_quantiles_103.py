@@ -19,7 +19,9 @@ def _fits(family, taus=(0.1, 0.5, 0.9), mstop=3):
     # few boosting steps leave the levels close together, so some rows cross
     fits = [
         mb.glmboost(
-            "y ~ bols(x)", data=d, family=family(tau=t),
+            "y ~ bols(x)", data=d,
+            # R's start at the median for every level, so short fits cross.
+            family=family(tau=t, qoffset=0.5) if family is mb.Quantile else family(tau=t),
             control=mb.boost_control(mstop=mstop, nu=0.1),
         )
         for t in taus

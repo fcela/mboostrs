@@ -12,7 +12,7 @@ tune_mstop(
     family=None,
     folds=5,
     start=100,
-    nu=0.1,
+    nu=None,
     extensions=None,
     max_mstop=10000,
     seed=0,
@@ -72,6 +72,8 @@ a response score counts every grid up to the limit.
   matrix, or a scheme from `mboostrs.folds`, such as
   `grouped_folds` for prediction in new groups.
 - `start` (int): The first grid's largest iteration.
+- `nu` (float, optional): Step length. `None` (default) is the family's own default where it
+  sets one (`Quantile`: 0.3), else 0.1.
 - `extensions` (int, optional): How many times the grid may double; `None` (default) doubles until
   the risk turns or `max_mstop` is reached.
 - `max_mstop` (int): The largest step count searched.
@@ -122,4 +124,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `ValueError`
 - `NotImplementedError`
 
-Source: [`python/mboostrs/explore.py` lines 1424-1641](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L1424-L1641)
+Source: [`python/mboostrs/explore.py` lines 1424-1648](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L1424-L1648)

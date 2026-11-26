@@ -18,4 +18,4 @@ reports the dispersion, which is the reciprocal of that shape.
 Being right-skewed does not by itself make a response Gamma; check the fit
 with a PIT histogram before committing to it.
 
-Source: [`python/mboostrs/families.py` lines 55-64](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L55-L64)
+Source: [`python/mboostrs/families.py` lines 98-107](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L98-L107)

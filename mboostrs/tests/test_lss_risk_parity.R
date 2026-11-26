@@ -2,6 +2,9 @@
 # cyclic and non-cyclic fits. The non-cyclic case also checks the update
 # sequence: gamboostLSS scores a candidate parameter with the gradient its
 # model last computed, and the fit follows that (1e-3 apart before).
+# Compared with R mboost/gamboostLSS (or with values recorded from them), so
+# fitted on the raw response as R does (see ?gamboostLSS, response_scale).
+options(mboostrs.response_scale = "none")
 if (!requireNamespace("gamboostLSS", quietly = TRUE)) {
   message("gamboostLSS not installed; skipping LSS risk parity check")
   quit(save = "no")

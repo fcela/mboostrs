@@ -27,7 +27,7 @@ say — without any model of it being fitted. A detected signal says there is
 something there; it does not say which learner will capture it, and the
 wrong learner can make the fit worse than leaving it out.
 
-Source: [`python/mboostrs/explore.py` lines 2621-2654](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L2621-L2654)
+Source: [`python/mboostrs/explore.py` lines 2632-2665](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L2632-L2665)
 
 ## Members
 
@@ -46,4 +46,4 @@ Suggestion.to_dict(*, include_arrays=False)
 
 A JSON-safe record of the change and the evidence for it.
 
-Source: [`python/mboostrs/explore.py` lines 2652-2654](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L2652-L2654)
+Source: [`python/mboostrs/explore.py` lines 2663-2665](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L2663-L2665)

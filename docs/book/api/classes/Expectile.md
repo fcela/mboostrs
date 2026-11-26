@@ -21,4 +21,4 @@ a less direct interpretation — the `tau`-expectile is not the
 
 - `tau` (float): The expectile to fit, in (0, 1). `0.5` recovers the mean.
 
-Source: [`python/mboostrs/families.py` lines 114-130](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L114-L130)
+Source: [`python/mboostrs/families.py` lines 179-195](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L179-L195)

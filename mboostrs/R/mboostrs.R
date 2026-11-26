@@ -272,6 +272,9 @@ Poisson <- function() structure(list(name = "poisson"), class = "mboostrs_family
 #'   less influence than under squared-error loss.
 #'   The negative gradient is sign(y - mu).
 #' @seealso [glmboost()], [gamboost()], [Huber()], [Quantile()]
+#' @param response_scale The scale the response is divided by before fitting,
+#'   as in [Quantile()]: `"auto"` (default), `"none"` (or `NULL`, `mboost`'s
+#'   path) or a positive number.
 #' @examples
 #' set.seed(42)
 #' n <- 100; x <- rnorm(n)
@@ -282,7 +285,26 @@ Poisson <- function() structure(list(name = "poisson"), class = "mboostrs_family
 #'                 control = boost_control(mstop = 100))
 #' coef(fit)
 #' @export
-Laplace <- function() structure(list(name = "laplace"), class = "mboostrs_family")
+Laplace <- function(response_scale = getOption("mboostrs.response_scale", "auto")) {
+  structure(list(name = "laplace",
+                 params = .family_response_scale_param(response_scale)),
+            class = "mboostrs_family")
+}
+
+# A family's response scale as the Rust binding reads its parameter map:
+# absent for the raw response, 0 for "auto", the value for a fixed scale. The
+# check loss and the absolute loss have a gradient that does not grow with
+# the response, so each step moves the fit by about nu times a constant in
+# response units; "auto" fits the response divided by its weighted SD and
+# maps the model back, so a fit is the same in any units.
+.family_response_scale_param <- function(response_scale) {
+  if (is.null(response_scale) || identical(response_scale, "none")) return(list())
+  if (identical(response_scale, "auto")) return(list(response_scale = 0))
+  if (!is.numeric(response_scale) || length(response_scale) != 1L ||
+      !is.finite(response_scale) || response_scale <= 0)
+    stop('response_scale must be "auto", "none" (or NULL) or a positive number')
+  list(response_scale = as.double(response_scale))
+}
 
 #' Gamma regression family
 #'
@@ -355,7 +377,18 @@ GammaReg <- function() structure(list(name = "gammasreg"), class = "mboostrs_fam
 #'
 #' @param tau The quantile to estimate, in (0, 1).
 #' @param qoffset The quantile of the response used as the boosting starting
-#'   value, in (0, 1). `mboost` uses the same convention.
+#'   value, in (0, 1). `NULL` (default) is `tau`; `mboost`'s `QuantReg`
+#'   starts at the median (0.5) whatever `tau`.
+#' @param response_scale The scale the response is divided by before fitting:
+#'   `"auto"` (default), its weighted SD; `"none"` (or `NULL`), the raw
+#'   response, `mboost`'s path; or a positive number. The check loss's
+#'   gradient does not grow with the response, so without a scale each step
+#'   moves the fit by about `nu * tau` in response units and a response in
+#'   large units barely leaves its offset. The model is mapped back exactly,
+#'   so predictions and coefficients are in the original units. A fit given
+#'   no `control` uses `nu = 0.3` rather than 0.1; with `qoffset = 0.5`,
+#'   `response_scale = "none"` and `boost_control(nu = 0.1)` this is
+#'   `mboost`'s `QuantReg`.
 #' @return A family object for [glmboost()] / [gamboost()].
 #' @details The negative gradient is `tau * I(y > mu) + (tau - 1) * I(y < mu)`.
 #' @seealso [Expectile()], which minimises an asymmetric squared loss instead
@@ -371,10 +404,14 @@ GammaReg <- function() structure(list(name = "gammasreg"), class = "mboostrs_fam
 #'                 control = boost_control(mstop = 100))
 #' coef(fit)
 #' @export
-Quantile <- function(tau = 0.5, qoffset = 0.5) {
+Quantile <- function(tau = 0.5, qoffset = NULL, response_scale = getOption("mboostrs.response_scale", "auto")) {
+  tau <- .check_unit_interval("tau", tau)
+  if (is.null(qoffset)) qoffset <- tau
   structure(list(name = "quantreg",
-                 params = list(tau = .check_unit_interval("tau", tau),
-                               qoffset = .check_unit_interval("qoffset", qoffset))),
+                 params = c(list(tau = tau,
+                                 qoffset = .check_unit_interval("qoffset", qoffset)),
+                            .family_response_scale_param(response_scale)),
+                 default_nu = 0.3),
             class = "mboostrs_family")
 }
 
@@ -883,6 +920,10 @@ glmboost <- function(formula, data, family = Gaussian(), control = boost_control
                      weights = NULL, offset = NULL, weight_policy = "upstream",
                      center = TRUE) {
   cl <- match.call()
+  # A family may set its own step length for a fit given no control
+  # (Quantile: 0.3, measured on 18 quantile fits; mboost uses 0.1).
+  if (missing(control) && !is.null(family$default_nu))
+    control <- boost_control(nu = family$default_nu)
   .require_scalar_nu(control)
 
   if (identical(family$name, "multinomial")) {

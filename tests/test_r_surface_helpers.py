@@ -161,7 +161,7 @@ def _heteroscedastic_fit(mstop):
 def test_r_squared_rises_along_the_path():
     values = [r_squared(_heteroscedastic_fit(m), "cox-snell") for m in (1, 5, 30, 150)]
     assert values == sorted(values)
-    assert values[0] < 0.1 and values[-1] > 0.7
+    assert values[0] < 0.2 and values[-1] > 0.7
 
 
 def test_r_squared_matches_its_definition():

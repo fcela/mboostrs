@@ -16,7 +16,7 @@ _BUDGETS = ("quick", "standard", "thorough")
 # 0.1% / 8.4% at 32 and 0.0% / 15.8% at 512, with median wall-clock 0.45 s,
 # 4.5 s and 24 s. autospec stopped on its own at 161 fits or fewer, so 512
 # leaves room for wider tables rather than buying more search on these.
-_BUDGET_FITS = {"quick": 16, "standard": 32, "thorough": 512}
+_BUDGET_FITS = {"quick": 16, "standard": 64, "thorough": 512}
 # Wall-clock seconds each setting gives the search. On 36 held-out OpenML
 # datasets (#913) the slowest completed "standard" search took 51 s and the
 # slowest "quick" search outside one 1,025-column table took 33 s; that table
@@ -24,6 +24,20 @@ _BUDGET_FITS = {"quick": 16, "standard": 32, "thorough": 512}
 # completed run, so they bind on outliers rather than on typical tables.
 _BUDGET_SECONDS = {"quick": 60.0, "standard": 120.0, "thorough": 1200.0}
 _UNCERTAINTIES = ("stability", "bootstrap", "none")
+
+
+#: How a model returned by `fit` predicts a ``brandom`` or factor level the
+#: training rows did not contain (see `GAMBoostModel.predict`).
+UNSEEN_LEVELS = "average"
+#: Default missing-value policy for `fit()` when `na_action` is omitted.
+DEFAULT_NA_ACTION = "impute"
+#: Maximum rows used by `autospec` specification search inside `fit()`. Above
+#: this count, search runs on a deterministic subsample (pinning min/max response
+#: rows to preserve response support) and the final model is fitted on all rows.
+_SEARCH_MAX_ROWS = 3_000
+#: Minimum share of risk reduction (or effect variance for LSS) a
+#: term must carry to remain in the final reported formula.
+_ACTIVE_TERM_SHARE = 0.01
 
 
 class Fit:
@@ -94,6 +108,172 @@ def _formula_text(formula: Any) -> str:
     return str(formula)
 
 
+def _row_count(data: Any) -> int:
+    if isinstance(data, dict):
+        return len(next(iter(data.values()))) if data else 0
+    return int(getattr(data, "height", len(data)))
+
+
+def _search_subsample(data: Any, response: str, seed: int, max_rows: int) -> Any:
+    """Deterministic subsample for specification search on large tables."""
+    import numpy as np
+
+    from mboostrs._frame import read_column, take_rows
+
+    n = _row_count(data)
+    if n <= max_rows:
+        return data
+    rng = np.random.default_rng(seed)
+    y = np.asarray(read_column(data, response).values)
+    finite = np.isfinite(y) if y.dtype.kind == "f" else np.ones(n, dtype=bool)
+    uniq = np.unique(y[finite]) if finite.any() else np.array([])
+    if 2 <= uniq.size <= 10:
+        # Stratified subsample preserving class proportions.
+        chosen = []
+        for cls in uniq:
+            idx = np.flatnonzero(finite & (y == cls))
+            k = max(1, int(round(max_rows * idx.size / max(1, int(finite.sum())))))
+            k = min(k, idx.size)
+            chosen.append(rng.choice(idx, size=k, replace=False))
+        rows = np.sort(np.concatenate(chosen))[:max_rows]
+    else:
+        rows = rng.choice(n, size=max_rows, replace=False)
+        # Pin response extremes (min/max finite y) so positive-support families
+        # (GammaReg, Poisson, BetaLSS) never get inferred from a subsample that
+        # missed a non-positive or boundary response row.
+        if y.dtype.kind in "fiu" and finite.any():
+            f_idx = np.flatnonzero(finite)
+            extremes = {int(f_idx[int(np.argmin(y[f_idx]))]), int(f_idx[int(np.argmax(y[f_idx]))])}
+            row_set = set(rows.tolist())
+            missing_ext = [e for e in extremes if e not in row_set]
+            if missing_ext:
+                rows = np.concatenate([rows[: max_rows - len(missing_ext)], np.array(missing_ext, dtype=rows.dtype)])
+        rows = np.sort(rows)
+    return take_rows(data, rows)
+
+
+def _active_terms_for_gam(model: Any, formula: str, response: str, spec: Any) -> str:
+    """Prune unselected or negligible (<1% risk reduction) terms from formula."""
+    from mboostrs._names import partition_tilde, quote_response, split_terms
+    from mboostrs.formula import term_variables
+
+    lhs = quote_response(response)
+    null_formula = f"{lhs} ~ 1"
+    mstop_ev = (getattr(spec, "evidence", None) or {}).get("mstop")
+    if mstop_ev is not None and getattr(mstop_ev, "risk", None):
+        r0 = float(mstop_ev.risk[0])
+        idx = min(int(mstop_ev.chosen), len(mstop_ev.risk) - 1)
+        r_opt = float(mstop_ev.risk[idx])
+        if r0 > 0 and (r_opt >= r0 or (r0 - r_opt) / abs(r0) < 0.01):
+            return null_formula
+
+    _, sep, rhs = partition_tilde(formula)
+    if not sep:
+        return formula
+    terms = split_terms(rhs)
+    if not terms:
+        return null_formula
+
+    if not hasattr(model, "varimp"):
+        return null_formula if getattr(model, "mstop", 1) == 0 else formula
+    vi = model.varimp(percent=False)
+    reductions = vi.get("reduction") or {}
+    var_names = vi.get("variable_names") or {}
+    total_drop = float(sum(max(0.0, float(v)) for v in reductions.values()))
+    if total_drop <= 0.0:
+        return null_formula
+
+    declared = set(getattr(spec, "declared", ()) or ())
+    # Track which variable sets appear in both a tree term and a non-tree term
+    # so we only disambiguate by "(btree)" when a variable set is duplicated.
+    varset_counts: dict[frozenset[str], int] = {}
+    for term in terms:
+        vs = frozenset(term_variables(term))
+        varset_counts[vs] = varset_counts.get(vs, 0) + 1
+    kept = []
+    for term in terms:
+        tvars = frozenset(term_variables(term))
+        if tvars & declared:
+            kept.append(term)
+            continue
+        is_tree = term.lstrip().startswith("btree(")
+        disambiguate = varset_counts.get(tvars, 0) > 1
+        share = 0.0
+        for key, red in reductions.items():
+            vstr = str(var_names.get(key, key))
+            clean_vstr = vstr.removesuffix(" (btree)").strip()
+            if "(" in clean_vstr:
+                lvars = frozenset(term_variables(clean_vstr))
+            else:
+                lvars = frozenset(v.strip() for v in clean_vstr.split(",") if v.strip())
+            if lvars != tvars:
+                continue
+            if disambiguate and ("(btree)" in str(key)) != is_tree:
+                continue
+            share += max(0.0, float(red)) / total_drop
+        if share >= _ACTIVE_TERM_SHARE:
+            kept.append(term)
+    return f"{lhs} ~ " + " + ".join(kept) if kept else null_formula
+
+
+def _active_formula(model: Any, spec: Any, response: str) -> str:
+    """Formula of terms that meaningfully contribute in the fitted model."""
+    import numpy as np
+
+    from mboostrs._names import partition_tilde, quote_response, split_terms
+    from mboostrs.formula import term_variables
+
+    raw_formula = spec.formula
+    if isinstance(raw_formula, dict):
+        lhs = quote_response(response)
+        declared = set(getattr(spec, "declared", ()) or ())
+        out = {}
+        for pname, pformula in raw_formula.items():
+            _, sep, rhs = partition_tilde(pformula)
+            terms = split_terms(rhs) if sep else []
+            if not terms:
+                out[pname] = f"{lhs} ~ 1"
+                continue
+            # Prefer partial-effect variance shares on training rows: works for
+            # both cyclic and noncyclic LSS fits and cleanly drops 1-step noise
+            # selections whose effect variance is negligible (< 1%).
+            effect_vars: dict[frozenset[str], float] = {}
+            total_var = 0.0
+            try:
+                pe = model.partial_effects(parameter=pname)
+                for key, val in pe.items():
+                    arr = np.asarray(val[1] if isinstance(val, tuple) else val, dtype=float).ravel()
+                    v = float(np.nanvar(arr)) if arr.size else 0.0
+                    if np.isfinite(v) and v > 0:
+                        kvars = frozenset(term_variables(str(key))) if "(" in str(key) else frozenset(
+                            s.strip() for s in str(key).split(",") if s.strip()
+                        )
+                        effect_vars[kvars] = effect_vars.get(kvars, 0.0) + v
+                        total_var += v
+            except Exception:
+                total_var = 0.0
+            if total_var <= 0.0:
+                out[pname] = f"{lhs} ~ 1"
+                continue
+            kept = []
+            for term in terms:
+                tvars = frozenset(term_variables(term))
+                if tvars & declared:
+                    kept.append(term)
+                    continue
+                if effect_vars.get(tvars, 0.0) / total_var >= _ACTIVE_TERM_SHARE:
+                    kept.append(term)
+            out[pname] = f"{lhs} ~ " + " + ".join(kept) if kept else f"{lhs} ~ 1"
+        return _formula_text(out)
+
+    if isinstance(raw_formula, str):
+        try:
+            return _active_terms_for_gam(model, raw_formula, response, spec)
+        except Exception:
+            return raw_formula
+    return _formula_text(raw_formula)
+
+
 def fit(
     data: Any,
     response: str,
@@ -110,9 +290,19 @@ def fit(
 ) -> Fit:
     """Fit one model and return it with the trail of how it was chosen.
 
-    ``fit`` uses ``autospec`` to choose the specification and returns the
-    fitted model with a trail containing the input declarations, specification
-    decision, final formula, family and stopping iteration.
+    ``fit`` uses ``autospec`` (with guarded interaction adoption and
+    ``residual_tree="auto"`` by default) to choose the specification and
+    returns the fitted model with a trail containing the input declarations,
+    specification decision, active final formula (terms carrying at least 1%
+    of risk reduction or effect variance, or intercept-only when the CV curve
+    is flat), family, and stopping iteration.
+
+    The returned model predicts unseen categorical or ``brandom`` levels as
+    the average group by default (override per call with
+    ``unseen_levels="error"``). On tables with more than 3,000 rows and no
+    explicit ``folds`` or ``groups``, specification search runs on a
+    deterministic 3,000-row subsample (pinning the response extremes to
+    preserve support) and the final model is fitted on all rows.
 
     Parameters
     ----------
@@ -131,32 +321,32 @@ def fit(
         The single seed for every random stream.
     budget : {"quick", "standard", "thorough"}
         The number of model fits and the wall-clock time the specification
-        search is given: 16 fits and 60 s, 32 fits and 120 s, 512 fits and
+        search is given: 16 fits and 60 s, 64 fits and 120 s, 512 fits and
         1200 s. Each fit is one cross-validated or held-out evaluation of a
         candidate family, learner, interaction or stopping depth. With fewer
         fits more decisions fall back to the dtype-driven default learner for
-        each column. ``"standard"`` took a median of 4.5 s on benchmark
-        panels of up to 4,000 rows at one thread; ``"quick"`` took 0.45 s and
-        lost up to 45% in test loss on some of them.
+        each column.
 
         Neither limit is exact. autospec checks the fit count before each
-        stage starts, so a stage in progress can exceed it (on 36 held-out
-        OpenML datasets the search spent up to 60 fits at 32 and 45 at 16).
-        The time is checked before each model fit starts, so the search can
-        overrun by the length of one fit. When the time runs out the search
-        keeps what it measured if the probe in progress allows it, and
-        otherwise returns the default specification (one default learner per
-        column, nothing measured). The trail's ``budget`` records both limits
-        and the fits spent, and ``degradations`` says when a limit stopped the
-        search and which of those outcomes occurred.
+        stage starts, so a stage in progress can exceed it. The time is
+        checked before each model fit starts, so the search can overrun by the
+        length of one fit. When the time runs out the search keeps what it
+        measured if the probe in progress allows it, and otherwise returns the
+        default specification (one default learner per column, nothing
+        measured). The trail's ``budget`` records both limits and the fits
+        spent, and ``degradations`` says when a limit stopped the search and
+        which of those outcomes occurred.
     uncertainty : {"none", "stability", "bootstrap"}
         ``"none"`` is currently supported. ``"stability"`` and
         ``"bootstrap"`` raise ``NotImplementedError``.
     na_action : {"impute", "impute_model", "impute_model_split", "omit", "error"}, optional
         Missing-value policy passed through to ``autospec`` and the final fit.
-        ``None`` (default) drops incomplete rows when missing values are present.
+        ``None`` (default) uses ``"impute"`` so incomplete predictors are
+        median/mode-filled with missingness indicators and prediction handles
+        missing values cleanly; pass ``"omit"`` or ``"error"`` to override.
     **kwargs
-        Passed through to ``autospec``.
+        Passed through to ``autospec``. ``interactions`` defaults to
+        ``"adopt"`` and ``residual_tree`` defaults to ``"auto"``.
     """
     if budget not in _BUDGETS:
         raise ValueError(
@@ -179,37 +369,64 @@ def fit(
         )
 
     limit, seconds = _BUDGET_FITS[budget], _BUDGET_SECONDS[budget]
-    spec, stopped = _timed_search(data, response, limit, seconds, family=family,
+    effective_na = DEFAULT_NA_ACTION if na_action is None else na_action
+    search_kwargs = dict(kwargs)
+    search_kwargs.setdefault("interactions", "adopt")
+    search_kwargs.setdefault("residual_tree", "auto")
+    if budget != "thorough":
+        search_kwargs.setdefault("lss_trees", False)
+    search_data = data
+    subsampled_for_search = False
+    if folds is None and groups is None and time is None and _row_count(data) > _SEARCH_MAX_ROWS:
+        search_data = _search_subsample(data, response, seed, _SEARCH_MAX_ROWS)
+        subsampled_for_search = True
+        # Skip the 25-fit step-length grid sweep on large subsampled tables;
+        # the residual tree still lowers nu to 0.1 automatically if adopted.
+        search_kwargs.setdefault("nu", 0.3)
+    spec, stopped = _timed_search(search_data, response, limit, seconds, family=family,
                                   seed=seed, folds=folds, groups=groups,
-                                  na_action=na_action, **kwargs)
+                                  na_action=effective_na, **search_kwargs)
     model = spec.fit(data)
+    # A group code the training rows never saw is predicted as the average
+    # group rather than refused: a model fitted automatically meets new codes
+    # (a new store, a new source video) as routinely as new values. A caller
+    # who wants the refusal passes `unseen_levels="error"` to `predict`.
+    model._default_unseen_levels = UNSEEN_LEVELS
 
     trail = DecisionTrail()
     trail.start(data, response, seed, folds=folds)
-    formula = _formula_text(spec.formula)
+    candidate_formula = _formula_text(spec.formula)
+    final_formula = (
+        candidate_formula if stopped == "fallback"
+        else _active_formula(model, spec, response)
+    )
     trail.steps.append(inputs_step(spec))
     # Stages 1-12 currently record through autospec's evidence.
+    search_note = (
+        f" (specification searched on {_SEARCH_MAX_ROWS:,}-row subsample; final fit on all {_row_count(data):,} rows)"
+        if subsampled_for_search else ""
+    )
     trail.add_step(
         "1-12", "autospec_delegate",
         incumbent=None,
         candidates=[{
-            "spec": formula,
+            "spec": candidate_formula,
             "score": None,
             "d": None,
             "se": None,
             "status": "ok",
-            "reason": f"specification chosen by autospec within {limit} model fits",
+            "reason": f"specification chosen by autospec within {limit} model fits{search_note}",
         }],
         threshold=None,
-        adopted=formula,
+        adopted=final_formula,
         rule=None,
         fits=int(spec.fits),
         reason=(
             f"autospec ran its stages 1-12 with a budget of {limit} model fits "
-            f"and spent {int(spec.fits)}."
+            f"and spent {int(spec.fits)}{search_note}."
         ),
     )
-    trail.set_final(formula, spec.family, spec.mstop)
+    trail.set_final(final_formula, spec.family, spec.mstop, unseen_levels=UNSEEN_LEVELS)
     trail.set_uncertainty("none")
     degradations = []
     if stopped == "fallback":

@@ -44,14 +44,16 @@ and `.report()`; it is not evidence that every proposed term matters.
 
 ## Limits of the convenience wrapper
 
-`mb.fit(data, "y")` and `mb.report(result)` are available. Currently `fit`
-delegates specification choice to `autospec` and wraps its fitted model and
-decision trail; it does not implement every proposed search stage. Its
-`budget="quick"/"standard"/"thorough"` setting gives the search 16, 32 or
-512 model fits, which a stage in progress can exceed, and 60, 120 or 1200
-seconds. `"standard"` is the default. `result.trail.budget` records both
-limits and the fits spent; its `degradations` say when a limit stopped the
-search and what was returned instead.
+`mb.fit(data, "y")` and `mb.report(result)` wrap `autospec` (defaulting to
+`na_action="impute"`, `interactions="adopt"`, `residual_tree="auto"`, and
+`unseen_levels="average"` on the returned model) with a decision trail.
+`budget="quick"/"standard"/"thorough"` gives 16, 64 or 512 fits (a stage in
+progress can exceed this) and 60, 120 or 1200 seconds (`"standard"` is the
+default). Above 3,000 rows without explicit `folds`/`groups`, search runs on
+a 3,000-row subsample preserving response extremes and refits on all rows.
+`result.trail.final["formula"]` keeps terms carrying at least 1% of risk
+reduction (or LSS effect variance), or intercept-only on a flat CV curve.
+`result.trail.budget` records limits, fits spent, and any `degradations`.
 `time=` and `uncertainty="stability"/"bootstrap"` raise
 `NotImplementedError`. Use the explicit tuning path below when you need to
 control validation and stopping, and the dedicated uncertainty or time-fold

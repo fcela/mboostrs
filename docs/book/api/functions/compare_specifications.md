@@ -177,4 +177,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/explore.py` lines 3719-4022](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L3719-L4022)
+Source: [`python/mboostrs/explore.py` lines 3730-4033](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L3730-L4033)

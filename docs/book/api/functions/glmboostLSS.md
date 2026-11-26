@@ -20,7 +20,8 @@ glmboostLSS(
     weight_policy='upstream',
     stabilization=None,
     nu=None,
-    na_action='error'
+    na_action='error',
+    response_scale='auto'
 )
 ```
 
@@ -79,4 +80,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `RuntimeError`
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 5887-6126](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5887-L6126)
+Source: [`python/mboostrs/gamlss.py` lines 5964-6206](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5964-L6206)

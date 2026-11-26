@@ -5,6 +5,9 @@
 # the same fixtures; they must agree to 1e-8 relative.
 library(mboostrs)
 
+# Compared with R mboost/gamboostLSS (or with values recorded from them), so
+# fitted on the raw response as R does (see ?gamboostLSS, response_scale).
+options(mboostrs.response_scale = "none")
 ok <- function(cond, msg) if (!isTRUE(cond)) stop(msg, call. = FALSE)
 close <- function(got, want, label) {
   got <- unname(as.numeric(got)); want <- as.numeric(want)

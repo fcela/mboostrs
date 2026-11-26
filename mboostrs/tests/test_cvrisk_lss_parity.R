@@ -1,6 +1,9 @@
 # Parity check: our cvrisk_glmboostLSS vs R's gamboostLSS::cvrisk (cvrisk.mboostLSS).
 # NB: gamboostLSS::glmboostLSS re-evaluates its `families` argument from the call,
 # so the family constructors are inlined (not passed via a variable).
+# Compared with R mboost/gamboostLSS (or with values recorded from them), so
+# fitted on the raw response as R does (see ?gamboostLSS, response_scale).
+options(mboostrs.response_scale = "none")
 if (!requireNamespace("gamboostLSS", quietly = TRUE)) {
   message("gamboostLSS not installed; skipping cvrisk LSS parity check")
   quit(save = "no")

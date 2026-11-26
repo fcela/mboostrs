@@ -117,4 +117,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 gamboost : the same algorithm with smooth and other structured learners.
 gamboostLSS : one linear predictor per distribution parameter.
 
-Source: [`python/mboostrs/glmboost.py` lines 2417-2814](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L2417-L2814)
+Source: [`python/mboostrs/glmboost.py` lines 2456-2854](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L2456-L2854)

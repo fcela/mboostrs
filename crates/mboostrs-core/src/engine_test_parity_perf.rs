@@ -318,7 +318,7 @@ mod tests {
 
         let _families: Vec<Box<dyn Family>> = vec![
             Box::new(Gaussian),
-            Box::new(Laplace),
+            Box::new(Laplace::default()),
             Box::new(Poisson),
             Box::new(Binomial),
             Box::new(QuantReg::new(0.5)),
@@ -331,7 +331,7 @@ mod tests {
         // Instead, test each family individually inline.
         let families: [Box<dyn Family>; 8] = [
             Box::new(Gaussian),
-            Box::new(Laplace),
+            Box::new(Laplace::default()),
             Box::new(Poisson),
             Box::new(Binomial),
             Box::new(QuantReg::new(0.5)),
@@ -560,7 +560,7 @@ mod tests {
     fn laplace_offset_median_at_boundary() {
         let y = array![1.0, 2.0, 3.0, 4.0, 100.0];
         let w = array![1.0, 1.0, 1.0, 1.0, 1.0];
-        let off = Laplace.offset(y.view(), w.view());
+        let off = Laplace::default().offset(y.view(), w.view());
         // Median of {1,2,3,4,100} = 3, but the Brent optimiser gives the
         // weighted median which minimises absolute deviations.
         assert!(

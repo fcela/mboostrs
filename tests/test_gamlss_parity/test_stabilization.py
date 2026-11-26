@@ -51,9 +51,12 @@ def data():
 
 
 def _fit(data, stabilization):
+    # `response_scale=None` is R's raw-units path, which the reference
+    # coefficients come from.
     return mb.glmboostLSS(
         "y ~ x", data=data, families=mb.GaussianLSS(),
         control=mb.boost_control(60, 0.1), stabilization=stabilization,
+        response_scale=None,
     )
 
 
@@ -82,7 +85,7 @@ def test_none_is_the_default(data):
         [float(v) for v in _fit(data, "none").coef()["mu"].values()],
         [float(v) for v in mb.glmboostLSS(
             "y ~ x", data=data, families=mb.GaussianLSS(),
-            control=mb.boost_control(60, 0.1),
+            control=mb.boost_control(60, 0.1), response_scale=None,
         ).coef()["mu"].values()],
         rtol=1e-12,
     )

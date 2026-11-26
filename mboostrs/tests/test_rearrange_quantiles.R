@@ -1,6 +1,9 @@
 # rearrange_quantiles(): row-wise sort of separately fitted Quantile or
 # Expectile levels, with the crossing report (issue 103).
 library(mboostrs)
+# Compared with R mboost/gamboostLSS (or with values recorded from them), so
+# fitted on the raw response as R does (see ?gamboostLSS, response_scale).
+options(mboostrs.response_scale = "none")
 ok <- function(cond, msg) if (!isTRUE(cond)) stop(msg, call. = FALSE)
 fails <- function(expr, pattern) {
   msg <- tryCatch({ expr; NA_character_ }, error = function(e) conditionMessage(e))
@@ -20,7 +23,9 @@ if (nzchar(in_file)) {
 n <- nrow(d)
 taus <- c(0.1, 0.5, 0.9)
 fit_all <- function(fam) lapply(taus, function(t)
-  glmboost(y ~ x, data = d, family = fam(tau = t),
+  # R's start at the median for every level, so these short fits cross.
+  glmboost(y ~ x, data = d,
+           family = if (identical(fam, Quantile)) fam(tau = t, qoffset = 0.5) else fam(tau = t),
            control = boost_control(mstop = 3, nu = 0.1)))
 
 q <- fit_all(Quantile)
