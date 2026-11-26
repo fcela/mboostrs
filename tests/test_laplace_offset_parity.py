@@ -38,7 +38,8 @@ def test_even_length_offset_matches_mboost(seed):
         "m <- mboost::gamboost(y ~ bbs(x), data = data.frame(x = x, y = y), "
         "family = Laplace(), control = boost_control(mstop = 50)); "
         "list(m$offset, as.numeric(fitted(m)))")
-    fit = mb.gamboost("y ~ bbs(x)", data={"x": x, "y": y}, family=mb.Laplace(),
+    fit = mb.gamboost("y ~ bbs(x)", data={"x": x, "y": y},
+                      family=mb.Laplace(response_scale=None),
                       control=mb.boost_control(50))
     assert float(np.asarray(fit.offset_).ravel()[0]) == float(np.asarray(upstream[0])[0])
     np.testing.assert_allclose(np.asarray(fit.fitted_), np.asarray(upstream[1]),

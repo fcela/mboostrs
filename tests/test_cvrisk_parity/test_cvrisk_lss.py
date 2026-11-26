@@ -49,7 +49,7 @@ def test_cvrisk_glmboostlss_gaussian():
     res = cvrisk_glmboostLSS(
         "y ~ x1 + x2", data={"y": r["y"], "x1": r["x1"], "x2": r["x2"]},
         families=GaussianLSS(), control=mboost.boost_control(30, 0.1),
-        folds=r["folds"], grid=r["grid"],
+        folds=r["folds"], grid=r["grid"], response_scale=None,
     )
     np.testing.assert_allclose(res["risk"], r["risk"], rtol=1e-6, atol=1e-7,
                                err_msg="GaussianLSS cvrisk does not match R")
@@ -64,7 +64,7 @@ def test_cvrisk_glmboostlss_gamma():
     res = cvrisk_glmboostLSS(
         "y ~ x1 + x2", data={"y": r["y"], "x1": r["x1"], "x2": r["x2"]},
         families=GammaLSS(), control=mboost.boost_control(30, 0.1),
-        folds=r["folds"], grid=r["grid"],
+        folds=r["folds"], grid=r["grid"], response_scale=None,
     )
     np.testing.assert_allclose(res["risk"], r["risk"], rtol=1e-6, atol=1e-7,
                                err_msg="GammaLSS cvrisk does not match R")

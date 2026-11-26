@@ -63,7 +63,7 @@ def test_quantile_bols_parity():
     model = mboost.glmboost(
         "y ~ x1 + x2",
         data=data,
-        family=Quantile(tau=0.5),
+        family=Quantile(tau=0.5, qoffset=0.5, response_scale=None),
         control=mboost.boost_control(mstop_val, nu_val),
     )
 
@@ -125,8 +125,9 @@ def test_quantile_bols_weighted_parity(tau):
 
     data = {"y": r["y"], "x1": r["x1"], "x2": r["x2"]}
     model = mboost.glmboost(
-        "y ~ x1 + x2", data=data, family=Quantile(tau=tau), weights=r["w"],
-        control=mboost.boost_control(mstop_val, nu_val),
+        "y ~ x1 + x2", data=data,
+        family=Quantile(tau=tau, qoffset=0.5, response_scale=None),
+        weights=r["w"], control=mboost.boost_control(mstop_val, nu_val),
     )
 
     np.testing.assert_allclose(

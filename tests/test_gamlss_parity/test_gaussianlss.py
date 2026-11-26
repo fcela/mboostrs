@@ -57,7 +57,7 @@ def test_gaussianlss_glmboostlss_parity():
 
     m = glmboostLSS(
         "y ~ x1 + x2", data=data, families=GaussianLSS(),
-        control=mboost.boost_control(mstop, nu),
+        control=mboost.boost_control(mstop, nu), response_scale=None,
     )
 
     np.testing.assert_allclose(
@@ -112,6 +112,7 @@ def test_gaussianlss_per_param_mstop_parity():
     m = glmboostLSS(
         "y ~ x1 + x2", data=data, families=GaussianLSS(),
         control=mboost.boost_control(60, 0.1), mstop={"mu": mu_m, "sigma": sigma_m},
+        response_scale=None,
     )
     assert m.mstop == {"mu": mu_m, "sigma": sigma_m}
     np.testing.assert_allclose(

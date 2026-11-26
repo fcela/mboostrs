@@ -139,10 +139,10 @@ def test_noncyclic_tune_mstop_searches_total_steps():
     # The Laplace offset is R's Brent search for the median, and with an even
     # number of rows any value between the two middle observations minimises
     # the loss: the search stops somewhere in that flat stretch, and rounding
-    # decides where. The fit is the same up to that choice, which also flips
-    # the sign of rows lying closer to the fit than the stretch is wide
-    # (measured: 0.15% of the response SD).
-    (lambda **k: mb.Laplace(**k), 5e-3),
+    # (including x86_64 vs arm64 FMA differences) decides where. The fit is
+    # the same up to that choice, which also flips the sign of rows lying
+    # closer to the fit than the stretch is wide (measured: 0.15%-0.6% of SD).
+    (lambda **k: mb.Laplace(**k), 1e-2),
 ])
 def test_quantile_and_laplace_fits_are_the_same_model_in_other_units(family, rtol):
     # Their gradient (tau - 1{y < f}, sign(y - f)) does not grow with the

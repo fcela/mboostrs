@@ -56,7 +56,7 @@ def test_noncyclic_glmboostlss_counts_and_risk():
     r = _run_r(mstop, nu)
     m = glmboostLSS("y ~ x1 + x2", data={"y": r["y"], "x1": r["x1"], "x2": r["x2"]},
                     families=GaussianLSS(), control=mboost.boost_control(mstop, nu),
-                    method="noncyclic")
+                    method="noncyclic", response_scale=None)
     n_mu = len(m._params[0]["selected"])
     n_sigma = len(m._params[1]["selected"])
     assert (n_mu, n_sigma) == (r["sel_mu"], r["sel_sigma"]), (
@@ -93,7 +93,7 @@ def test_noncyclic_matches_before_first_tie():
 
     m = glmboostLSS("y ~ x1 + x2", data={"y": r["y"], "x1": r["x1"], "x2": r["x2"]},
                     families=GaussianLSS(), control=mboost.boost_control(mstop, nu),
-                    method="noncyclic")
+                    method="noncyclic", response_scale=None)
     np.testing.assert_allclose(m.predict(parameter="mu", type="link"), r_mu,
                                rtol=1e-6, atol=1e-7)
     np.testing.assert_allclose(m.predict(parameter="sigma", type="link"), r_sigma,

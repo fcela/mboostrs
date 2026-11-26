@@ -77,6 +77,7 @@ def test_by_bbs_gamboostlss_predict_newdata_parity():
         data=data,
         families=GaussianLSS(),
         control=mb.boost_control(mstop_val, nu_val),
+        response_scale=None,
     )
 
     newdata_z0 = {

@@ -73,7 +73,7 @@ def test_laplace_bols_parity():
     model = mboost.glmboost(
         "y ~ x1 + x2",
         data=data,
-        family=Laplace(),
+        family=Laplace(response_scale=None),
         control=mboost.boost_control(mstop_val, nu_val),
     )
 
