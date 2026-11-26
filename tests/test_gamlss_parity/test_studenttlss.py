@@ -73,7 +73,8 @@ def test_studenttlss_glmboostlss_parity():
     r = _r_glm(mstop, nu)
     m = glmboostLSS("y ~ x1 + x2 + x3",
                     data={"y": r["y"], "x1": r["x1"], "x2": r["x2"], "x3": r["x3"]},
-                    families=StudentTLSS(), control=mboost.boost_control(mstop, nu))
+                    families=StudentTLSS(), control=mboost.boost_control(mstop, nu),
+                    response_scale=None)
     for p in PARAMS:
         np.testing.assert_allclose(
             m.predict(parameter=p, type="link"), r[p], rtol=RTOL, atol=ATOL,
@@ -85,7 +86,8 @@ def test_studenttlss_gamboostlss_bbs_parity():
     mstop, nu = 100, 0.1
     r = _r_gam(mstop, nu)
     m = gamboostLSS("y ~ bbs(x, knots=20, df=4)", data={"y": r["y"], "x": r["x"]},
-                    families=StudentTLSS(), control=mboost.boost_control(mstop, nu))
+                    families=StudentTLSS(), control=mboost.boost_control(mstop, nu),
+                    response_scale=None)
     for p in PARAMS:
         np.testing.assert_allclose(
             m.predict(parameter=p, type="link"), r[p], rtol=RTOL, atol=ATOL,

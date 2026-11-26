@@ -60,7 +60,8 @@ def test_gamboostlss_bbs_newdata_matches_r():
     y = np.asarray(r.rx2("y"), float)
     nx = np.asarray(r.rx2("nx"), float)
     m = gamboostLSS("y ~ bbs(x, df=4)", data={"x": x, "y": y},
-                    families=GaussianLSS(), control=mb.boost_control(200, 0.1))
+                    families=GaussianLSS(), control=mb.boost_control(200, 0.1),
+                    response_scale=None)
     for par, key in (("mu", "mu"), ("sigma", "sigma")):
         ours = np.asarray(m.predict(parameter=par, newdata={"x": nx}, type="link"), float)
         np.testing.assert_allclose(ours, np.asarray(r.rx2(key), float), rtol=1e-6, atol=1e-7,

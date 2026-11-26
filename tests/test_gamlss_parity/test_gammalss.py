@@ -69,7 +69,8 @@ def test_gammalss_glmboostlss_parity():
     mstop, nu = 100, 0.1
     r = _r_glm(mstop, nu)
     m = glmboostLSS("y ~ x1 + x2", data={"y": r["y"], "x1": r["x1"], "x2": r["x2"]},
-                    families=GammaLSS(), control=mboost.boost_control(mstop, nu))
+                    families=GammaLSS(), control=mboost.boost_control(mstop, nu),
+                    response_scale=None)
     np.testing.assert_allclose(m.predict(parameter="mu", type="link"), r["mu"],
                                rtol=RTOL, atol=ATOL, err_msg="GammaLSS mu (link)")
     np.testing.assert_allclose(m.predict(parameter="sigma", type="link"), r["sigma"],
@@ -83,7 +84,8 @@ def test_gammalss_gamboostlss_bbs_parity():
     mstop, nu = 100, 0.1
     r = _r_gam(mstop, nu)
     m = gamboostLSS("y ~ bbs(x, knots=20, df=4)", data={"y": r["y"], "x": r["x"]},
-                    families=GammaLSS(), control=mboost.boost_control(mstop, nu))
+                    families=GammaLSS(), control=mboost.boost_control(mstop, nu),
+                    response_scale=None)
     np.testing.assert_allclose(m.predict(parameter="mu", type="link"), r["mu"],
                                rtol=RTOL, atol=ATOL, err_msg="GammaLSS bbs mu (link)")
     np.testing.assert_allclose(m.predict(parameter="sigma", type="link"), r["sigma"],

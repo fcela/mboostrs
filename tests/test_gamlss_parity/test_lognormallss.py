@@ -71,7 +71,8 @@ def test_lognormallss_glmboostlss_parity():
     r = _r_glm(mstop, nu)
     m = glmboostLSS("Surv(t, st) ~ x1 + x2",
                     data={"t": r["t"], "st": r["st"], "x1": r["x1"], "x2": r["x2"]},
-                    families=LogNormalLSS(), control=mboost.boost_control(mstop, nu))
+                    families=LogNormalLSS(), control=mboost.boost_control(mstop, nu),
+                    response_scale=None)
     for p in PARAMS:
         np.testing.assert_allclose(
             m.predict(parameter=p, type="link"), r[p], rtol=RTOL, atol=ATOL,
@@ -84,7 +85,8 @@ def test_lognormallss_gamboostlss_bbs_parity():
     r = _r_gam(mstop, nu)
     m = gamboostLSS("Surv(t, st) ~ bbs(x, knots=20, df=4)",
                     data={"t": r["t"], "st": r["st"], "x": r["x"]},
-                    families=LogNormalLSS(), control=mboost.boost_control(mstop, nu))
+                    families=LogNormalLSS(), control=mboost.boost_control(mstop, nu),
+                    response_scale=None)
     for p in PARAMS:
         np.testing.assert_allclose(
             m.predict(parameter=p, type="link"), r[p], rtol=RTOL, atol=ATOL,

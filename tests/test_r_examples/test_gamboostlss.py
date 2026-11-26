@@ -144,7 +144,8 @@ class TestGaussianLSSTutorial:
     def test_mu_parity(self):
         m = glmboostLSS("y ~ x1 + x2 + x3", data=self.data,
                         families=GaussianLSS(),
-                        control=mboost.boost_control(100, 0.1))
+                        control=mboost.boost_control(100, 0.1),
+                        response_scale=None)
         np.testing.assert_allclose(
             m.predict(parameter="mu", type="link"), self.r["mu"],
             rtol=RTOL, atol=ATOL,
@@ -154,7 +155,8 @@ class TestGaussianLSSTutorial:
     def test_sigma_parity(self):
         m = glmboostLSS("y ~ x1 + x2 + x3", data=self.data,
                         families=GaussianLSS(),
-                        control=mboost.boost_control(100, 0.1))
+                        control=mboost.boost_control(100, 0.1),
+                        response_scale=None)
         np.testing.assert_allclose(
             m.predict(parameter="sigma", type="link"), self.r["sigma"],
             rtol=RTOL, atol=ATOL,

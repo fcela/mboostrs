@@ -56,9 +56,10 @@ def _slice_data(data: Any, idx: np.ndarray) -> Any:
     # Polars DataFrame
     if hasattr(data, "select") and hasattr(data, "height"):
         return data[idx.tolist()]
-    # Pandas DataFrame
-    if hasattr(data, "iloc"):
-        return data.iloc[idx].reset_index(drop=True)
+    # Generic column-bearing frame (e.g. pandas): extract columns into a dict
+    # without calling pandas-only indexing helpers.
+    if hasattr(data, "columns"):
+        return {k: np.asarray(data[k])[idx] for k in data.columns}
     return {k: np.asarray(data[k])[idx] for k in data}
 
 
