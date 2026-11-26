@@ -150,7 +150,7 @@ def autospec(data, response, *, family=None, mstop=100, df=4.0, smooth="bbs",
               groups=None, measurements=None, treatment=None, interactions="report",
               deselect=True, step=None, residual_tree=False, preexploration="native",
               heredity="none", forbid=None, mandatory=None, joint_tree=True,
-              exposure=None, na_action=None, lss_trees="auto"):
+              exposure=None, na_action=None, lss_trees="auto", search="exhaustive"):
     """Guess a complete boosting specification for ``data``.
 
     Parameters
@@ -488,6 +488,14 @@ def autospec(data, response, *, family=None, mstop=100, df=4.0, smooth="bbs",
         ``negative_control``). A full `CausalSpec` must name this call's
         response as its outcome, and its post-treatment columns are left
         out with the treatment.
+    search : {"exhaustive", "fast"}
+        Search strategy when `budget > 0`. ``"exhaustive"`` runs the full
+        multi-stage probe sequence. ``"fast"`` runs a single-pass held-out
+        screening radar (variable weeding, shape classification, interaction
+        and spread detection) followed by at most three cross-validated
+        ``mboostrs`` sweeps (additive baseline, gated spatial/histogram-tree
+        interaction challenger, and gated ``GaussianLSS`` challenger), keeping
+        the same held-out paired-SE adoption gates at a fraction of the time.
 
     Returns
     -------
@@ -616,8 +624,10 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
                    treatment, interactions, deselect, step, residual_tree=False,
                    auto_nu=False, preexploration="native", heredity="none", forbid=None,
                    mandatory=None, joint_tree=True, exposure=None, na_action=None,
-                   lss_trees="auto"):
+                   lss_trees="auto", search="exhaustive"):
     """The body of :func:`autospec` at one step rule."""
+    if search not in ("exhaustive", "fast"):
+        raise ValueError(f'search must be "exhaustive" or "fast", got {search!r}')
     if lss_trees not in (False, True, "auto"):
         raise ValueError(f'lss_trees must be True, False or "auto", got {lss_trees!r}')
     if heredity not in ("none", "weak", "strong"):
@@ -989,6 +999,50 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
         if shared_folds is not None:
             return shared_folds
         return cv_weights(n_rows, type="kfold", B=min(5, max(2, n_rows)), seed=seed)
+
+    if search == "fast" and budget > 0 and prior is None and exposure is None:
+        from mboostrs._fast_autospec import run_fast_autospec
+
+        coord_pair = (
+            _coordinate_pair_names(modelled)
+            if coordinates is None and _has_coordinate_pair(modelled)
+            else None
+        )
+        fast_rec = run_fast_autospec(
+            data, response,
+            modelled=modelled,
+            terms=terms,
+            family=family,
+            family_was_inferred=family_was_inferred,
+            mstop=mstop,
+            df=df,
+            nu=nu,
+            step=step,
+            seed=seed,
+            folds=shared_folds,
+            shared_scheme=shared_scheme,
+            shared_judge=shared_judge,
+            folds_description=folds_description,
+            declared=declared,
+            mandatory=frozenset(mandatory),
+            forbidden=frozenset(forbidden),
+            coordinates=coordinates,
+            groups=tuple(groups),
+            interactions=interactions,
+            deselect=deselect,
+            residual_tree=residual_tree,
+            lss_trees=lss_trees,
+            env=env,
+            hygiene=hygiene,
+            incomplete_rows=incomplete_rows,
+            n_rows=n_rows,
+            na_action=na_action,
+            treatment_columns=treatment_columns,
+            response_column=response_column,
+            coord_pair=coord_pair,
+        )
+        if fast_rec is not None:
+            return fast_rec
 
     cache = _FitCache()
     screen_reused = 0
@@ -2360,8 +2414,9 @@ def _joint_tree_step(data, response, formula, learners, family, modelled, eviden
     kept = [t for t in incumbent_terms if not term_variables(t)
             or not set(term_variables(t)) <= set(names)]
     best = None
+    split_opt = ", split_method=histogram" if np.asarray(folds).shape[0] >= 2000 else ""
     for depth in (3, 6):
-        term = f"btree({', '.join(quote_name(n) for n in names)}, maxdepth={depth}, selection=sse)"
+        term = f"btree({', '.join(quote_name(n) for n in names)}, maxdepth={depth}, selection=sse{split_opt})"
         candidate = f"{quote_response(response)} ~ " + " + ".join(kept + [term])
         row = probe_mstop(data, response, candidate, family, folds=folds,
                           largest=largest, nu=tree_nu, env=env, fold_scheme=scheme)
@@ -2657,8 +2712,9 @@ def _residual_tree_step(data, response, formula, family, modelled, evidence, fol
     min_needed = (n_folds if can_reuse_incumbent else 4 * n_folds) + audit_reserve
     if len(columns) < 2 or budget - spent < min_needed:
         return formula, chosen_mstop, main_fit, spent
+    split_opt = ", split_method=histogram" if np.asarray(judge_folds).shape[0] >= 2000 else ""
     term = (f"btree({', '.join(quote_name(_c) for _c in columns)}, maxdepth={_RESIDUAL_TREE_DEPTH}, "
-            f"selection=sse)")
+            f"selection=sse{split_opt})")
     candidate = formula + " + " + term
     # A deep tree term needs a small step: at 0.3 it overfits within a few
     # steps and was declined where at 0.1 it lowered held-out risk.

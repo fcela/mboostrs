@@ -113,7 +113,8 @@ class TestGlmboostCarsLaplace:
         self.data = {"dist": self.r["dist"], "speed": self.r["speed"]}
 
     def test_fitted(self):
-        m = mboost.glmboost("dist ~ speed", data=self.data, family=Laplace(),
+        m = mboost.glmboost("dist ~ speed", data=self.data,
+                            family=Laplace(response_scale=None),
                             control=mboost.boost_control(1000, 0.1))
         np.testing.assert_allclose(m.fitted_, self.r["fitted"], rtol=1e-6, atol=1e-6,
                                    err_msg="Laplace fitted mismatch")

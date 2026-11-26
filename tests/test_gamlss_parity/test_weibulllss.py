@@ -122,7 +122,7 @@ def test_weibulllss_boosting_parity_glm():
     m = glmboostLSS("Surv(t, st) ~ x1 + x2",
                     data={"t": r["t"], "st": r["st"], "x1": r["x1"], "x2": r["x2"]},
                     families=WeibullLSS(), control=mboost.boost_control(mstop, nu),
-                    offset=r["offset"])
+                    offset=r["offset"], response_scale=None)
     for p in PARAMS:
         np.testing.assert_allclose(
             m.predict(parameter=p, type="link"), r[p], rtol=RTOL, atol=ATOL,
@@ -136,7 +136,7 @@ def test_weibulllss_boosting_parity_gam_bbs():
     m = gamboostLSS("Surv(t, st) ~ bbs(x, knots=20, df=4)",
                     data={"t": r["t"], "st": r["st"], "x": r["x"]},
                     families=WeibullLSS(), control=mboost.boost_control(mstop, nu),
-                    offset=r["offset"])
+                    offset=r["offset"], response_scale=None)
     for p in PARAMS:
         np.testing.assert_allclose(
             m.predict(parameter=p, type="link"), r[p], rtol=RTOL, atol=ATOL,

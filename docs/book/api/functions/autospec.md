@@ -36,7 +36,8 @@ autospec(
     joint_tree=True,
     exposure=None,
     na_action=None,
-    lss_trees='auto'
+    lss_trees='auto',
+    search='exhaustive'
 )
 ```
 
@@ -348,6 +349,13 @@ Guess a complete boosting specification for `data`.
   `negative_control`). A full `CausalSpec` must name this call's
   response as its outcome, and its post-treatment columns are left
   out with the treatment.
+- `search` ({"exhaustive", "fast"}): Search strategy when `budget > 0`. `"exhaustive"` runs the full
+  multi-stage probe sequence. `"fast"` runs a single-pass held-out
+  screening radar (variable weeding, shape classification, interaction
+  and spread detection) followed by at most three cross-validated
+  `mboostrs` sweeps (additive baseline, gated spatial/histogram-tree
+  interaction challenger, and gated `GaussianLSS` challenger), keeping
+  the same held-out paired-SE adoption gates at a fraction of the time.
 
 **Returns**
 
@@ -372,4 +380,4 @@ declared both a group and a measurement, or `treatment`
 names the response, a column the frame does not hold, or a
 `CausalSpec` whose outcome is not this call's response.
 
-Source: [`python/mboostrs/autospec.py` lines 147-611](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/autospec.py#L147-L611)
+Source: [`python/mboostrs/autospec.py` lines 147-619](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/autospec.py#L147-L619)

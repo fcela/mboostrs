@@ -387,6 +387,34 @@ class SpecRecommendation:
             lines.append(f"spread: {spread.sentence}")
             lines.append("")
 
+        radar = self.evidence.get("fast_radar")
+        if radar is not None:
+            lines.append(
+                f"fast radar ({radar['backend']}, {radar['seconds']:.2f}s): "
+                f"kept {len(radar['kept_columns'])} column(s)"
+                + (f", weeded {len(radar['dropped_columns'])} noise column(s) "
+                   f"({', '.join(radar['dropped_columns'][:8])}"
+                   + (", ..." if len(radar["dropped_columns"]) > 8 else "") + ")"
+                   if radar["dropped_columns"] else "")
+            )
+            fi = self.evidence.get("fast_interaction")
+            if fi is not None:
+                verdict = "adopted" if fi["adopted"] else "declined"
+                lines.append(
+                    f"  interaction challenger ({', '.join(fi['added'])}): "
+                    f"{verdict} (held-out gain {fi['relative_gain']:.1%}, "
+                    f"SE {fi['paired_se']:.4g})"
+                )
+            fl = self.evidence.get("fast_lss")
+            if fl is not None:
+                verdict = "adopted" if fl["adopted"] else "declined"
+                lines.append(
+                    f"  GaussianLSS challenger: {verdict} "
+                    f"(log-score {fl['lss_logscore']:.4f} vs {fl['mean_logscore']:.4f}, "
+                    f"SE {fl['paired_se']:.4g})"
+                )
+            lines.append("")
+
         shapes = self.evidence.get("shapes", ())
         if shapes:
             lines.append("shapes (held-out risk, shared folds)")
@@ -2405,11 +2433,12 @@ def lss_joint_tree_step(data, response, *, lss_family, formula, columns, folds,
         _unit_free_log_score(base_score, data, response, lss_family))
     tree_columns = ", ".join(quote_name(name) for name in numeric)
     best = None
+    split_opt = ", split_method=histogram" if folds.shape[0] >= 2000 else ""
     for depth in _LSS_TREE_DEPTHS:
         if fits >= budget:
             result["rows"].append({"depth": depth, "status": "not scored: budget spent"})
             continue
-        tree = f"btree({tree_columns}, maxdepth={depth})"
+        tree = f"btree({tree_columns}, maxdepth={depth}{split_opt})"
         candidate = {name: f"{f} + {tree}" for name, f in base.items()}
         scored = _lss_fold_logscores(data, response, candidate, lss_family, folds,
                                      fold_scheme, mstop, nu, env)
@@ -2701,7 +2730,8 @@ def probe_heteroscedasticity(data, response, formula, column_names, terms, *,
         if not validate or not tree_scale or not numeric:
             return evidence
         tree = ", ".join(quote_name(name) for name in numeric)
-        scale_formula = f"{quote_response(response)} ~ btree({tree}, maxdepth=3)"
+        split_opt = ", split_method=histogram" if int(scored.sum()) >= 2000 else ""
+        scale_formula = f"{quote_response(response)} ~ btree({tree}, maxdepth=3{split_opt})"
         lss_formula = {"mu": formula, "sigma": scale_formula}
         evidence = replace(
             evidence, lss_formula=lss_formula,

@@ -83,7 +83,7 @@ def test_matches_gamboostlss(mu, sigma):
         "list(unlist(predict(m, type = 'link')), "
         "unlist(predict(m, newdata = nd, type = 'link')))")
     fit = mb.gamboostLSS({"mu": mu, "sigma": sigma}, data=d, families=mb.GaussianLSS(),
-                         control=mb.boost_control(100))
+                         control=mb.boost_control(100), response_scale=None)
     np.testing.assert_allclose(_links(fit), np.asarray(upstream[0]), atol=1e-10)
     new = d.iloc[list(range(200, 211)) + list(range(390, 400))].copy()
     new["z"] = 2 * new["z"]

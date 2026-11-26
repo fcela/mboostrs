@@ -121,6 +121,7 @@ def test_glmboostlss_path_matches_gamboostlss(family_name, family_cls):
         data={name: expected[name] for name in ("y", "x1", "x2")},
         families=family_cls(),
         control=mb.boost_control(20, 0.05),
+        response_scale=None,
     )
     for parameter in PARAM_NAMES:
         np.testing.assert_allclose(

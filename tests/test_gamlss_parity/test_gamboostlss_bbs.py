@@ -56,7 +56,7 @@ def test_gamboostlss_bbs_parity():
 
     m = gamboostLSS(
         "y ~ bbs(x, knots=20, df=4)", data=data, families=GaussianLSS(),
-        control=mboost.boost_control(mstop, nu),
+        control=mboost.boost_control(mstop, nu), response_scale=None,
     )
 
     np.testing.assert_allclose(
@@ -103,6 +103,7 @@ def test_gamboostlss_bbs_per_param_mstop():
     m = gamboostLSS(
         "y ~ bbs(x, knots=20, df=4)", data=data, families=GaussianLSS(),
         control=mboost.boost_control(mstop, nu), mstop={"mu": 60, "sigma": 30},
+        response_scale=None,
     )
     np.testing.assert_allclose(
         m.predict(parameter="mu", type="link"), r_mu, rtol=RTOL, atol=ATOL,

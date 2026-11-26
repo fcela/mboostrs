@@ -68,6 +68,7 @@ def refresh_realdata(workers: int) -> None:
             results.append({**row, "refresh_status": "retained original measurement"})
     protocol = dict(original["protocol"])
     protocol["preexploration"] = previous.get("protocol", {}).get("preexploration", "native")
+    protocol["search"] = "fast"
     protocol["refresh"] = {
         "source": SOURCE.name,
         "source_sha256": hashlib.sha256(source_bytes).hexdigest(),

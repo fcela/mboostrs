@@ -12910,35 +12910,64 @@ fn fit_tree_with_sorted(
         maxdepth,
     };
     let n = design.nrows();
-    let mut sorted = vec![0usize; n * design.ncols()];
-    for j in 0..design.ncols() {
-        // Histogram mode reads binned codes instead of the sorted order. The
-        // exact fallback for an unbinned column still needs its order.
+    let p = design.ncols();
+    let need_sorted = (0..p).any(|j| {
         let unbinned = binning.get(j).and_then(|b| b.as_ref()).is_none();
-        if categorical.get(j).copied().unwrap_or(0) == 0
+        categorical.get(j).copied().unwrap_or(0) == 0
             && (split_method == SplitMethod::Exact || unbinned)
-        {
-            sorted[j * n..(j + 1) * n].copy_from_slice(&sorted_indices[j]);
+    });
+    let mut sorted = if need_sorted {
+        vec![0usize; n * p]
+    } else {
+        Vec::new()
+    };
+    if need_sorted {
+        for j in 0..p {
+            let unbinned = binning.get(j).and_then(|b| b.as_ref()).is_none();
+            if categorical.get(j).copied().unwrap_or(0) == 0
+                && (split_method == SplitMethod::Exact || unbinned)
+            {
+                sorted[j * n..(j + 1) * n].copy_from_slice(&sorted_indices[j]);
+            }
         }
     }
+    let wu: Vec<f64> = (0..n).map(|i| weights[i] * u[i]).collect();
     let hist_bins = binning
         .iter()
         .filter_map(|b| b.as_ref().map(|q| q.effective))
         .max()
         .unwrap_or(0);
     let max_levels = categorical.iter().copied().max().unwrap_or(0);
+    let use_hist_subtract = split_method == SplitMethod::Histogram
+        && selection == SplitSelection::Sse
+        && !need_sorted
+        && max_levels == 0
+        && hist_bins > 0
+        && p > 0;
     let mut work = TreeWork {
         n,
         rows: (0..n).collect(),
         sorted,
         scratch: vec![0usize; n],
         goes_left: vec![false; n],
-        hist: vec![(0.0, 0.0, 0.0); hist_bins],
-        hist_counts: vec![0usize; hist_bins],
+        wu,
+        hist: vec![(0.0, 0.0, 0usize); hist_bins],
         level_stats: vec![(0.0, 0.0, 0.0); max_levels],
-        level_present: Vec::with_capacity(max_levels),
+        level_present: Vec::with_capacity(max_levels.max(hist_bins)),
     };
-    build_tree_recursive(&spec, &mut work, 0, n, 0, &mut nodes);
+    if use_hist_subtract {
+        let mut root_hists = vec![(0.0f64, 0.0f64, 0usize); p * hist_bins];
+        build_node_hists(
+            &spec,
+            &work.rows[0..n],
+            &work.wu,
+            hist_bins,
+            &mut root_hists,
+        );
+        build_tree_hist_subtract(&spec, &mut work, 0, n, 0, hist_bins, root_hists, &mut nodes);
+    } else {
+        build_tree_recursive(&spec, &mut work, 0, n, 0, &mut nodes);
+    }
     let tree = FittedTree { nodes };
     let pred = tree.predict(design);
     let coef = tree.to_coef_vec();
@@ -13092,15 +13121,227 @@ struct TreeWork {
     sorted: Vec<usize>,
     scratch: Vec<usize>,
     goes_left: Vec<bool>,
+    /// Precomputed `weights[i] * u[i]` for fast histogram accumulation.
+    wu: Vec<f64>,
     /// Histogram accumulation buffers, one entry per bin of the current
-    /// numeric column: `(Σw, Σw·u, Σw·u²)`. Reused across nodes and columns.
-    hist: Vec<(f64, f64, f64)>,
-    /// Row counts per bin, used to reconstruct `last_left` without `sorted`.
-    hist_counts: Vec<usize>,
+    /// numeric column: `(Σw, Σw·u, count)`. Reused across nodes and columns.
+    hist: Vec<(f64, f64, usize)>,
     /// Per-level `(Σw, Σw·u, Σw·u²)` buffers for the categorical path.
     level_stats: Vec<(f64, f64, f64)>,
-    /// Level indices with positive weight at the current node.
+    /// Level or bin indices with positive count at the current node.
     level_present: Vec<usize>,
+}
+
+/// Fill per-column histograms `(Σw, Σw·u, count)` for a slice of row indices.
+fn build_node_hists(
+    spec: &TreeSpec<'_>,
+    rows: &[usize],
+    wu: &[f64],
+    hist_bins: usize,
+    out: &mut [(f64, f64, usize)],
+) {
+    let weights = spec.weights;
+    for (j, bin_opt) in spec.binning.iter().enumerate() {
+        let Some(binning) = bin_opt.as_ref() else {
+            continue;
+        };
+        let effective = binning.effective;
+        let h = &mut out[j * hist_bins..j * hist_bins + effective];
+        h.fill((0.0, 0.0, 0));
+        let index = &binning.index;
+        for &ii in rows {
+            let entry = &mut h[index[ii] as usize];
+            entry.0 += weights[ii];
+            entry.1 += wu[ii];
+            entry.2 += 1;
+        }
+    }
+}
+
+/// Fast pure-histogram recursive builder using the parent-minus-small-child
+/// histogram subtraction trick: only the smaller child scans rows, and the
+/// larger child derives its histograms in O(p * bins) by subtraction.
+#[allow(clippy::too_many_arguments)]
+fn build_tree_hist_subtract(
+    spec: &TreeSpec<'_>,
+    work: &mut TreeWork,
+    lo: usize,
+    hi: usize,
+    depth: usize,
+    hist_bins: usize,
+    mut hists: Vec<(f64, f64, usize)>,
+    nodes: &mut Vec<TreeNode>,
+) -> usize {
+    let n = hi - lo;
+    let p = spec.design.ncols();
+
+    // Node totals come directly from column 0's histogram in O(bins).
+    let (mut total_w, mut total_wsum) = (0.0f64, 0.0f64);
+    let eff0 = spec.binning[0].as_ref().unwrap().effective;
+    for &(w, wsum, _) in &hists[0..eff0] {
+        total_w += w;
+        total_wsum += wsum;
+    }
+
+    let make_leaf = |nodes: &mut Vec<TreeNode>| {
+        let mean = if total_w > 0.0 {
+            total_wsum / total_w
+        } else {
+            0.0
+        };
+        nodes.push(TreeNode::Leaf { mean });
+        nodes.len() - 1
+    };
+
+    if total_w < spec.minsplit as f64 || n < spec.minsplit || depth >= spec.maxdepth {
+        return make_leaf(nodes);
+    }
+
+    let minbucket = spec.minbucket as f64;
+    // Minimizing weighted SSE is identical to maximizing lws^2 / lw + rws^2 / rw.
+    let mut best_gain = f64::NEG_INFINITY;
+    let mut best: Option<(usize, f64, usize, usize)> = None; // (var, point, last_left, bin)
+
+    for j in 0..p {
+        let binning = spec.binning[j].as_ref().unwrap();
+        let effective = binning.effective;
+        let h = &hists[j * hist_bins..j * hist_bins + effective];
+        let present = &mut work.level_present;
+        present.clear();
+        for (b, &(_, _, cnt)) in h.iter().enumerate() {
+            if cnt > 0 {
+                present.push(b);
+            }
+        }
+        let (mut lw, mut lws) = (0.0f64, 0.0f64);
+        let mut lcount = 0usize;
+        for idx in 0..present.len().saturating_sub(1) {
+            let b = present[idx];
+            let (bw, bws, bcnt) = h[b];
+            lw += bw;
+            lws += bws;
+            lcount += bcnt;
+            let rw = total_w - lw;
+            if lw < minbucket || rw < minbucket {
+                continue;
+            }
+            let rws = total_wsum - lws;
+            let gain = lws * lws / lw + rws * rws / rw;
+            if gain > best_gain {
+                best_gain = gain;
+                let next = present[idx + 1];
+                let point = (binning.values[b] + binning.values[next]) * 0.5;
+                best = Some((j, point, lcount - 1, b));
+            }
+        }
+    }
+
+    let Some((var, point, last_left, best_bin)) = best else {
+        return make_leaf(nodes);
+    };
+
+    let n_left = last_left + 1;
+    let n_right = n - n_left;
+    let split_idx = nodes.len();
+    nodes.push(TreeNode::Split {
+        var,
+        point,
+        left: 0,
+        right: 0,
+    });
+
+    // Partition work.rows[lo..hi] directly using the split column's bin codes.
+    {
+        let index = &spec.binning[var].as_ref().unwrap().index;
+        let TreeWork {
+            rows,
+            scratch,
+            goes_left,
+            ..
+        } = work;
+        for &ii in &rows[lo..hi] {
+            goes_left[ii] = (index[ii] as usize) <= best_bin;
+        }
+        TreeWork::partition(&mut rows[lo..hi], scratch, goes_left);
+    }
+
+    let mid = lo + n_left;
+    if depth + 1 >= spec.maxdepth {
+        // Both children are guaranteed leaves; skip building child histograms!
+        let left_child = make_leaf_from_rows(spec, &work.rows[lo..mid], &work.wu, nodes);
+        let right_child = make_leaf_from_rows(spec, &work.rows[mid..hi], &work.wu, nodes);
+        if let TreeNode::Split { left, right, .. } = &mut nodes[split_idx] {
+            *left = left_child;
+            *right = right_child;
+        }
+        return split_idx;
+    }
+
+    // Build histograms only for the smaller child, and subtract from parent for the larger!
+    let mut small_hists = vec![(0.0f64, 0.0f64, 0usize); p * hist_bins];
+    let left_is_smaller = n_left <= n_right;
+    if left_is_smaller {
+        build_node_hists(
+            spec,
+            &work.rows[lo..mid],
+            &work.wu,
+            hist_bins,
+            &mut small_hists,
+        );
+    } else {
+        build_node_hists(
+            spec,
+            &work.rows[mid..hi],
+            &work.wu,
+            hist_bins,
+            &mut small_hists,
+        );
+    }
+    for (parent_e, &(sw, swu, sc)) in hists.iter_mut().zip(small_hists.iter()) {
+        parent_e.0 = (parent_e.0 - sw).max(0.0);
+        parent_e.1 -= swu;
+        parent_e.2 = parent_e.2.saturating_sub(sc);
+    }
+
+    let (left_hists, right_hists) = if left_is_smaller {
+        (small_hists, hists)
+    } else {
+        (hists, small_hists)
+    };
+    let left_child =
+        build_tree_hist_subtract(spec, work, lo, mid, depth + 1, hist_bins, left_hists, nodes);
+    let right_child = build_tree_hist_subtract(
+        spec,
+        work,
+        mid,
+        hi,
+        depth + 1,
+        hist_bins,
+        right_hists,
+        nodes,
+    );
+    if let TreeNode::Split { left, right, .. } = &mut nodes[split_idx] {
+        *left = left_child;
+        *right = right_child;
+    }
+    split_idx
+}
+
+fn make_leaf_from_rows(
+    spec: &TreeSpec<'_>,
+    rows: &[usize],
+    wu: &[f64],
+    nodes: &mut Vec<TreeNode>,
+) -> usize {
+    let mut tw = 0.0f64;
+    let mut twu = 0.0f64;
+    for &ii in rows {
+        tw += spec.weights[ii];
+        twu += wu[ii];
+    }
+    let mean = if tw > 0.0 { twu / tw } else { 0.0 };
+    nodes.push(TreeNode::Leaf { mean });
+    nodes.len() - 1
 }
 
 impl TreeWork {
@@ -13279,49 +13520,38 @@ fn build_tree_recursive(
                 let effective = binning.effective;
                 let TreeWork {
                     rows,
+                    wu,
                     hist,
-                    hist_counts,
                     level_present: present,
                     ..
                 } = &mut *work;
-                for entry in hist[..effective].iter_mut() {
-                    *entry = (0.0, 0.0, 0.0);
-                }
-                hist_counts[..effective].fill(0);
+                hist[..effective].fill((0.0, 0.0, 0));
                 for &ii in &rows[lo..hi] {
-                    let code = binning.index[ii] as usize;
-                    let entry = &mut hist[code];
-                    let wi = weights[ii];
-                    let ui = u[ii];
-                    entry.0 += wi;
-                    entry.1 += wi * ui;
-                    entry.2 += wi * ui * ui;
-                    hist_counts[code] += 1;
+                    let entry = &mut hist[binning.index[ii] as usize];
+                    entry.0 += weights[ii];
+                    entry.1 += wu[ii];
+                    entry.2 += 1;
                 }
-                // Candidate boundaries sit only between bins that actually hold
-                // this node's rows. This keeps the candidate set identical to
-                // the exact scan when there is at most one distinct value per
-                // bin (a boundary is otherwise placed at a midpoint between two
-                // absent-in-this-node values, which no exact scan would emit).
                 let present = &mut *present;
                 present.clear();
-                for (b, &count) in hist_counts[..effective].iter().enumerate() {
+                for (b, &(_, _, count)) in hist[..effective].iter().enumerate() {
                     if count > 0 {
                         present.push(b);
                     }
                 }
-                let (mut lw, mut lws, mut lsq) = (0.0f64, 0.0f64, 0.0f64);
+                let (mut lw, mut lws) = (0.0f64, 0.0f64);
                 let mut lcount = 0usize;
                 for idx in 0..present.len().saturating_sub(1) {
                     let b = present[idx];
                     lw += hist[b].0;
                     lws += hist[b].1;
-                    lsq += hist[b].2;
-                    lcount += hist_counts[b];
-                    if lw < minbucket || total_w - lw < minbucket {
+                    lcount += hist[b].2;
+                    let rw = total_w - lw;
+                    if lw < minbucket || rw < minbucket {
                         continue;
                     }
-                    let sse = split_sse(lw, lws, lsq);
+                    let rws = total_wsum - lws;
+                    let sse = (total_sqsum - lws * lws / lw - rws * rws / rw).max(0.0);
                     if sse < best_sse {
                         best_sse = sse;
                         let next = present[idx + 1];

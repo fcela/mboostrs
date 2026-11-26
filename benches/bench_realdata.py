@@ -126,7 +126,7 @@ def fit_mboostrs(train, test, target, categorical, seed, variant):
     if variant == "y~.":
         model = mb.tune_mstop(f"{target} ~ .", tr, seed=seed, **kwargs).model
         return _point_prediction(model, te)
-    rec = mb.autospec(tr, target, budget=200, seed=seed,
+    rec = mb.autospec(tr, target, budget=200, seed=seed, search="fast",
                       interactions="adopt" if variant in ("adopt", "tree") else "report",
                       residual_tree=variant == "tree",
                       **({"deselect": 0.025} if variant == "sparse" else {}))

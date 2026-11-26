@@ -64,7 +64,8 @@ def test_stabsel_glmboostlss_gaussian():
 
     out = stabsel_glmboostLSS(formula, data=data, families=GaussianLSS(),
                               control=mboost.boost_control(50, 0.1),
-                              q=4, PFER=2, folds=folds, sampling_type="MB")
+                              q=4, PFER=2, folds=folds, sampling_type="MB",
+                              response_scale=None)
 
     # Error-control parameters match R's stabs math exactly.
     assert out["cutoff"] == pytest.approx(r_cutoff)

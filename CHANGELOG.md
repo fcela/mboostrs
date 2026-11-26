@@ -6,6 +6,22 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- `autospec(..., search="fast")`: unified 1–3 sweep specification search backed
+  by a single-pass held-out screening radar (variable weeding, shape
+  classification, interaction detection, and spread detection on interactive
+  residuals; uses `sklearn.ensemble.HistGradientBoosting` when installed with a
+  pure-NumPy fallback) while retaining `mboostrs`'s shared-fold paired-SE
+  adoption gates, `SpecRecommendation.report()` audit trail, and interpretable
+  GAM/GAMLSS formulas.
+- Rust `btree` histogram-subtraction engine (`SplitMethod::Histogram`): skips
+  $n \times p$ pre-sorting allocations, packs `(sum_w, sum_wu, count)` bins
+  into a contiguous buffer, uses parent-minus-smaller-child histogram
+  subtraction, and skips child histogram builds at maximum depth (~3× faster
+  depth-5/6 trees). Exhaustive `autospec` also adopts `split_method=histogram`
+  for multi-column trees when $n \ge 2{,}000$.
+
 ### Changed
 
 - Distributional fits (`gamboostLSS`, `glmboostLSS`, their `cvrisk` and
