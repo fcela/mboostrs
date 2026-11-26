@@ -2,6 +2,9 @@
 # bbs() and bols(), a factor by= on bbs() and bols(), with in-sample and
 # new-data link predictions.
 suppressMessages(library(mboostrs))
+# Compared with R mboost/gamboostLSS (or with values recorded from them), so
+# fitted on the raw response as R does (see ?gamboostLSS, response_scale).
+options(mboostrs.response_scale = "none")
 if (!requireNamespace("gamboostLSS", quietly = TRUE)) {
   cat("test_lss_by_parity.R: skipped (gamboostLSS not installed)\n")
   quit(save = "no")

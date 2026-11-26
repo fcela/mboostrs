@@ -36,7 +36,7 @@ This family is available in both the Python and R frontends as
 counterpart: it is an mboostrs addition, so there is no upstream
 implementation to match or to check results against.
 
-Source: [`python/mboostrs/gamlss.py` lines 1091-1158](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1091-L1158)
+Source: [`python/mboostrs/gamlss.py` lines 1136-1203](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1136-L1203)
 
 ## Members
 
@@ -67,7 +67,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `IndexError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1125-1133](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1125-L1133)
+Source: [`python/mboostrs/gamlss.py` lines 1170-1178](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1170-L1178)
 
 (gaussianknownvarlss-mean)=
 ## `GaussianKnownVarLSS.mean`
@@ -80,7 +80,7 @@ GaussianKnownVarLSS.mean(params) -> ndarray
 
 Conditional response mean; known and excess variance do not shift it.
 
-Source: [`python/mboostrs/gamlss.py` lines 1135-1137](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1135-L1137)
+Source: [`python/mboostrs/gamlss.py` lines 1180-1182](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1180-L1182)
 
 (gaussianknownvarlss-total_sd)=
 ## `GaussianKnownVarLSS.total_sd`
@@ -93,7 +93,7 @@ GaussianKnownVarLSS.total_sd(params, s2) -> ndarray
 
 Total standard deviation `sqrt(s2 + excess variance)`.
 
-Source: [`python/mboostrs/gamlss.py` lines 1139-1143](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1139-L1143)
+Source: [`python/mboostrs/gamlss.py` lines 1184-1188](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1184-L1188)
 
 (gaussianknownvarlss-pdf)=
 ## `GaussianKnownVarLSS.pdf`
@@ -106,7 +106,7 @@ GaussianKnownVarLSS.pdf(y, params, s2) -> ndarray
 
 Normal density at `y` under the total variance.
 
-Source: [`python/mboostrs/gamlss.py` lines 1145-1150](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1145-L1150)
+Source: [`python/mboostrs/gamlss.py` lines 1190-1195](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1190-L1195)
 
 (gaussianknownvarlss-cdf)=
 ## `GaussianKnownVarLSS.cdf`
@@ -119,7 +119,7 @@ GaussianKnownVarLSS.cdf(y, params, s2) -> ndarray
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 1152-1155](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1152-L1155)
+Source: [`python/mboostrs/gamlss.py` lines 1197-1200](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1197-L1200)
 
 (gaussianknownvarlss-quantile)=
 ## `GaussianKnownVarLSS.quantile`
@@ -132,4 +132,4 @@ GaussianKnownVarLSS.quantile(p, params, s2) -> ndarray
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 1157-1158](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1157-L1158)
+Source: [`python/mboostrs/gamlss.py` lines 1202-1203](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1202-L1203)

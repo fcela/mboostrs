@@ -567,7 +567,8 @@ def refuse_unfilled_missing(model, recipe, data) -> None:
                 f"predicting.")
 
 
-def apply_recipe(recipe: TransformRecipe, data, *, unseen_level_columns=frozenset()):
+def apply_recipe(recipe: TransformRecipe, data, *, unseen_level_columns=frozenset(),
+                 unseen_levels="error"):
     """Return `data` plus one derived column per recipe step.
 
     The input is not mutated; a dict copy (or frame `with_columns`) is returned.
@@ -609,7 +610,9 @@ def apply_recipe(recipe: TransformRecipe, data, *, unseen_level_columns=frozense
             derived[step.name] = _encode_factor(
                 step, data, allow_unseen=step.name in unseen_level_columns)
         elif step.kind == "dummy":
-            derived[step.name] = _encode_dummy(step, data)
+            derived[step.name] = _encode_dummy(
+                step, data,
+                unseen_levels=(unseen_levels if step.source in unseen_level_columns else "error"))
         elif step.kind == "missing_indicator":
             if _has_column(data, step.name):
                 # Already built: some prediction routes replay the recipe on
@@ -633,10 +636,18 @@ def apply_recipe(recipe: TransformRecipe, data, *, unseen_level_columns=frozense
             raw = data[step.source]
             raw = np.asarray(raw.to_numpy() if hasattr(raw, "to_numpy") else raw,
                              dtype=object)
+            miss = _missing_labels(raw)
+            if hasattr(data, "with_columns"):
+                # Keep Polars columns as native Utf8/String rather than pl.Object.
+                replaced = [
+                    step.params[0] if m else v
+                    for m, v in zip(miss.tolist(), raw.tolist(), strict=True)
+                ]
+            else:
+                replaced = np.where(miss, step.params[0], raw)
             # Replaced in `data` at once: the factor steps after this one read
             # the same column and must see the missing-value level.
-            data = _with_columns(
-                data, {step.name: np.where(_missing_labels(raw), step.params[0], raw)})
+            data = _with_columns(data, {step.name: replaced})
         elif step.kind == "datetime":
             derived[step.name] = _encode_datetime(step, data)
         else:
@@ -702,7 +713,7 @@ def _is_categorical(data, name: str) -> bool:
         return dtype.kind in "OUS"
     # A Polars `Enum` prints as ``Enum(categories=[...])``, so the name before
     # the parenthesis is what identifies it.
-    return str(dtype).split("(")[0] in ("String", "Categorical", "Enum", "Utf8")
+    return str(dtype).split("(")[0] in ("String", "Categorical", "Enum", "Utf8", "Object")
 
 
 def _is_datetime(data, name: str) -> bool:
@@ -926,6 +937,17 @@ def impute_missing(formula: str, data, *, learner: str = "bols",
         if _is_categorical(data, column):
             missing = _missing_labels(values)
             if not missing.any():
+                # Complete in training: no missing-level effect can be estimated,
+                # so a new row missing this label gets the training mode,
+                # mirroring the median step on complete numeric columns.
+                non_null = [v for v in values.tolist() if v is not None]
+                if non_null:
+                    counts: dict = {}
+                    for v in non_null:
+                        counts[v] = counts.get(v, 0) + 1
+                    mode_label = max(counts, key=lambda k: (counts[k], str(k)))
+                    steps.append(_Step(name=column, kind="impute_level", sources=(column,),
+                                       expression=column, params=(mode_label,)))
                 continue
             # A categorical column gets a level of its own for a missing
             # value; the level's effect is the indicator's.
@@ -1214,7 +1236,7 @@ def _data_column_names(data):
     return list(getattr(data, "columns", []))
 
 
-def _encode_dummy(step: _Step, data):
+def _encode_dummy(step: _Step, data, *, unseen_levels="error"):
     level, levels = step.params[0], tuple(step.params[1])
     column = data[step.source]
     values = column.to_numpy() if hasattr(column, "to_numpy") else np.asarray(column)
@@ -1222,13 +1244,19 @@ def _encode_dummy(step: _Step, data):
     mismatch = _unseen_dtype_mismatch(step.source, levels, listed, column)
     if mismatch is not None:
         raise mismatch
-    unseen = sorted({v for v in listed if v not in levels}, key=str)
-    if unseen:
+    unseen = sorted({v for v in listed if v not in levels},
+                    key=lambda v: (v is None, str(v)))
+    if unseen and unseen_levels not in ("average", "zero_effect"):
         raise ValueError(
             f"column {step.source!r} contains level(s) {unseen} not present "
             f"when the model was fitted (levels: {list(levels)}). A level the "
             f"model never saw has no estimated effect."
         )
+    if unseen and unseen_levels == "average" and levels:
+        known = set(levels)
+        avg = 1.0 / len(levels)
+        return np.array([avg if v not in known else (1.0 if v == level else 0.0)
+                         for v in listed])
     return np.array([1.0 if v == level else 0.0 for v in listed])
 
 
@@ -1453,7 +1481,10 @@ def _encode_factor(step: _Step, data, *, allow_unseen=False):
     mismatch = _unseen_dtype_mismatch(step.source, levels, listed, column)
     if mismatch is not None:
         raise mismatch
-    unseen = sorted({v for v in listed if v not in index})
+    # A missing value (None) is a level like any other here, and does not
+    # compare with the labels; it is listed last.
+    unseen = sorted({v for v in listed if v not in index},
+                    key=lambda v: (v is None, str(v)))
     if unseen and not allow_unseen:
         remedy = (
             ' Pass unseen_levels="average" to predict them as an average group, '

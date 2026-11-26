@@ -21,7 +21,8 @@ gamboostLSS(
     weight_policy='upstream',
     stabilization=None,
     nu=None,
-    na_action='error'
+    na_action='error',
+    response_scale='auto'
 )
 ```
 
@@ -75,4 +76,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `TypeError`
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 6418-6645](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L6418-L6645)
+Source: [`python/mboostrs/gamlss.py` lines 6498-6730](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L6498-L6730)

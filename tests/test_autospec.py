@@ -229,8 +229,13 @@ def test_large_whole_number_response_is_read_as_a_measurement():
     assert isinstance(rec.family, mb.GammaReg)
     with pytest.warns(UserWarning, match="indistinguishable"):
         rec = mb.autospec(data, "y", budget=60)
-    assert type(rec.family).__name__ in ("GammaReg", "Gaussian")
-    assert np.all(np.isfinite(np.asarray(rec.fit(data).predict(), dtype=float)))
+    # With the budget to validate it, the distributional GammaLSS (fitted on
+    # the response divided by its SD, so its mean leaves the offset) is also a
+    # measurement family.
+    assert type(rec.family).__name__ in ("GammaReg", "Gaussian", "GammaLSS")
+    prediction = rec.fit(data).predict()
+    mean = prediction["mu"] if isinstance(prediction, dict) else prediction
+    assert np.all(np.isfinite(np.asarray(mean, dtype=float)))
 
 
 def test_family_from_positive_continuous_response():
@@ -757,7 +762,10 @@ def test_declared_monotone_is_priced_not_replaced():
     rec = mb.autospec(data, "y", monotone={"x": "increasing"},
                       budget=200, mstop=40)
     # The declared term survives measurement even though it is the wrong shape.
-    assert "bmono(x, constraint=increasing" in rec.formula
+    # (The misfitted mean leaves a spread that varies, so the distributional
+    # route may carry it as `mu`.)
+    mean_formula = rec.formula["mu"] if isinstance(rec.formula, dict) else rec.formula
+    assert "bmono(x, constraint=increasing" in mean_formula
     row = next(r for r in rec.evidence["shapes"] if r.column == "x")
     assert row.chosen == row.incumbent
     assert "stands (declared)" in row.sentence
@@ -1035,7 +1043,9 @@ def test_the_interaction_screen_reuses_the_mstop_sweeps_main_effect_fit():
     x1, x2 = (rng.normal(size=n) for _ in range(2))
     data = {"x1": x1, "x2": x2,
             "y": x1 * x2 + 0.5 * x1 + rng.normal(scale=0.3, size=n)}
-    rec = mb.autospec(data, "y", budget=500, mstop=80)
+    # Pinned to the mean family: the additive fit's residual spread moves
+    # with x1 * x2, and the distributional route is not what this tests.
+    rec = mb.autospec(data, "y", family=mb.Gaussian(), budget=500, mstop=80)
     assert "mstop" in rec.measured and "interactions" in rec.measured
     assert rec.reused >= 1
     # The reuse is visible as work not spent: the screen cost no fit.

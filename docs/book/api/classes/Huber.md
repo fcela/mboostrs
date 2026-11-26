@@ -22,4 +22,4 @@ influence of outliers. The negative gradient is `y - f` clipped to
   deviation of the current residuals and re-estimated as the fit
   proceeds, which is R `mboost`'s adaptive default.
 
-Source: [`python/mboostrs/families.py` lines 133-152](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L133-L152)
+Source: [`python/mboostrs/families.py` lines 198-217](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L198-L217)

@@ -1920,12 +1920,13 @@ def _replay_transforms(model, newdata, unseen_levels="error"):
     Uses the parameters recorded at fit time, so `scale(x)` keeps the training
     centre and scale instead of recomputing them from `newdata`. Under
     ``unseen_levels="average"`` or ``"zero_effect"`` a label the fit never saw is let through in
-    a factor column that only ``brandom`` or ``btree`` terms read: a zero
-    coefficient for ``brandom``, the right branch of each split for
-    ``btree``; any other factor column still refuses it. A label that
-    differs from a fitted one only in dtype (fitted as strings, arriving as
-    integers) is refused under every policy, because it is not a new level
-    and the policy would silently average or zero it (#334).
+    a factor column that only ``brandom``, ``btree``, or lowered factor ``bols``
+    terms read: a zero coefficient for ``brandom``, the right branch of each
+    split for ``btree``, and the average/zero contrast row for factor ``bols``;
+    any other factor column still refuses it. A label that differs from a
+    fitted one only in dtype (fitted as strings, arriving as integers) is
+    refused under every policy, because it is not a new level and the policy
+    would silently average or zero it (#334).
     """
     recipe = getattr(model, "_transform_recipe", None)
     if newdata is None or not recipe:
@@ -1935,8 +1936,46 @@ def _replay_transforms(model, newdata, unseen_levels="error"):
     refuse_unfilled_missing(model, recipe, newdata)
     columns = frozenset()
     if unseen_levels in ("zero_effect", "average"):
-        columns = _brandom_only_columns(getattr(model, "_learners_spec", None) or ())
-    return apply_recipe(recipe, newdata, unseen_level_columns=columns)
+        columns = _unseen_level_columns(model)
+    return apply_recipe(recipe, newdata, unseen_level_columns=columns,
+                        unseen_levels=unseen_levels)
+
+
+def _unseen_level_columns(model):
+    """Factor columns whose learners define a prediction for unseen levels."""
+    learners = getattr(model, "_learners_spec", None) or ()
+    interactions = getattr(model, "_interactions", None) or ()
+    derived_ok = set()
+    allowed = set()
+    for interaction in interactions:
+        for margin in (interaction.left, interaction.right):
+            if margin.kind in ("contrasts", "brandom", "byfactor"):
+                allowed.add(margin.column)
+                derived_ok.add(interaction.derived)
+    # Include columns read only by Brandom/Btree or by factor-contrast interactions,
+    # plus dummy-encoded columns in GLMBoostModel (where _learners_spec is empty).
+    if not learners:
+        recipe = getattr(model, "_transform_recipe", None)
+        if recipe:
+            for step in recipe.steps:
+                if step.kind == "dummy":
+                    allowed.add(step.source)
+        return frozenset(allowed)
+    from mboostrs.learners import Brandom, Btree, Buser
+
+    random_columns, other_columns = set(allowed), set()
+    for spec in learners:
+        if isinstance(spec, Buser) and getattr(spec, "name", None) in derived_ok:
+            continue
+        target = random_columns if isinstance(spec, (Brandom, Btree)) else other_columns
+        for attribute in ("name", "name1", "name2"):
+            value = getattr(spec, attribute, None)
+            if isinstance(value, str):
+                target.add(value)
+        target.update(getattr(spec, "names", None) or ())
+        if getattr(spec, "by", None) is not None and spec.by not in allowed:
+            other_columns.add(spec.by)
+    return frozenset(random_columns - other_columns)
 
 
 def _brandom_only_columns(learners):
@@ -2549,7 +2588,8 @@ def glmboost(
         )
 
     if control is None:
-        control = (100, 0.1, "inbag", False)
+        # A family may set its own default step length (Quantile: 0.3).
+        control = (100, getattr(family, "default_nu", 0.1), "inbag", False)
     if len(control) == 2:
         control = (control[0], control[1], "inbag", False)
 

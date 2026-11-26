@@ -1,5 +1,8 @@
 #@validates parity.r.studenttlss
 # Parity check: our StudentTLSS (glmboostLSS + gamboostLSS) vs R's gamboostLSS.
+# Compared with R mboost/gamboostLSS (or with values recorded from them), so
+# fitted on the raw response as R does (see ?gamboostLSS, response_scale).
+options(mboostrs.response_scale = "none")
 if (!requireNamespace("gamboostLSS", quietly = TRUE)) {
   message("gamboostLSS not installed; skipping StudentTLSS parity check")
   quit(save = "no")

@@ -13,7 +13,7 @@ Negative-binomial family: `mu` (log link, mean), `sigma` (log link,
 size/dispersion). Matches R `gamboostLSS::NBinomialLSS()`. Requires
 non-negative integer counts.
 
-Source: [`python/mboostrs/gamlss.py` lines 1350-1432](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1350-L1432)
+Source: [`python/mboostrs/gamlss.py` lines 1395-1477](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1395-L1477)
 
 ## Members
 
@@ -45,7 +45,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `IndexError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1361-1365](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1361-L1365)
+Source: [`python/mboostrs/gamlss.py` lines 1406-1410](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1406-L1410)
 
 (nbinomiallss-mean)=
 ## `NBinomialLSS.mean`
@@ -58,7 +58,7 @@ NBinomialLSS.mean(params) -> ndarray
 
 Conditional count mean `mu`.
 
-Source: [`python/mboostrs/gamlss.py` lines 1367-1369](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1367-L1369)
+Source: [`python/mboostrs/gamlss.py` lines 1412-1414](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1412-L1414)
 
 (nbinomiallss-pmf)=
 ## `NBinomialLSS.pmf`
@@ -77,7 +77,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1371-1383](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1371-L1383)
+Source: [`python/mboostrs/gamlss.py` lines 1416-1428](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1416-L1428)
 
 (nbinomiallss-cdf)=
 ## `NBinomialLSS.cdf`
@@ -96,7 +96,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1385-1392](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1385-L1392)
+Source: [`python/mboostrs/gamlss.py` lines 1430-1437](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1430-L1437)
 
 (nbinomiallss-quantile)=
 ## `NBinomialLSS.quantile`
@@ -109,7 +109,7 @@ NBinomialLSS.quantile(p, params) -> ndarray
 
 Negative-binomial quantile for probabilities `p`.
 
-Source: [`python/mboostrs/gamlss.py` lines 1394-1396](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1394-L1396)
+Source: [`python/mboostrs/gamlss.py` lines 1439-1441](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1439-L1441)
 
 (nbinomiallss-simulate)=
 ## `NBinomialLSS.simulate`
@@ -128,7 +128,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1398-1405](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1398-L1405)
+Source: [`python/mboostrs/gamlss.py` lines 1443-1450](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1443-L1450)
 
 (nbinomiallss-deviance_increment)=
 ## `NBinomialLSS.deviance_increment`
@@ -141,7 +141,7 @@ NBinomialLSS.deviance_increment(y, params) -> ndarray
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 1407-1409](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1407-L1409)
+Source: [`python/mboostrs/gamlss.py` lines 1452-1454](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1452-L1454)
 
 (nbinomiallss-pdf)=
 ## `NBinomialLSS.pdf`
@@ -165,4 +165,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1411-1432](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1411-L1432)
+Source: [`python/mboostrs/gamlss.py` lines 1456-1477](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1456-L1477)

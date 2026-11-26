@@ -20,12 +20,6 @@ order, each named by the parameter it followed.}
 
 \item{...}{Not used.}
 }
-\value{
-A list of numeric paths, or a named numeric vector with
-\code{merge = TRUE}. The \code{risk} element of the fitted object is the
-risk after each full cycle.
-}
 \description{
-The joint negative log-likelihood after each update, as gamboostLSS's
-\code{risk()} reports it.
+Risk paths of a gamboostLSS fit
 }

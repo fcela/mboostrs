@@ -55,4 +55,4 @@ columns (`<col>_missing`, or `<col>_missing_` when the data already
 has a column of that name). They are built from `<col>` when the grid is
 predicted, so `data` supplies only the original columns.
 
-Source: [`python/mboostrs/explore.py` lines 3069-3113](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L3069-L3113)
+Source: [`python/mboostrs/explore.py` lines 3080-3124](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L3080-L3124)

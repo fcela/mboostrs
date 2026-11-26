@@ -24,4 +24,4 @@ reciprocal of `NBinomial`, whose `sigma` is the size
 the mean of the untruncated negative binomial, as mboost does; the mean of
 the truncated count is that divided by `1 - (1 + exp(f) * sigma) ** (-1 / sigma)`.
 
-Source: [`python/mboostrs/families.py` lines 183-198](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L183-L198)
+Source: [`python/mboostrs/families.py` lines 248-263](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L248-L263)

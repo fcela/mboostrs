@@ -2,6 +2,9 @@
 # Tests cars data with Gaussian (default), Laplace, and Huber families.
 # Run after `R CMD INSTALL mboostrs` (needs mboost installed). Skips cleanly
 # if mboost is unavailable.
+# Compared with R mboost/gamboostLSS (or with values recorded from them), so
+# fitted on the raw response as R does (see ?gamboostLSS, response_scale).
+options(mboostrs.response_scale = "none")
 if (!requireNamespace("mboost", quietly = TRUE)) {
   message("mboost not installed; skipping glmboost example parity check")
   quit(save = "no")

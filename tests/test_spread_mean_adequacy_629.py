@@ -33,8 +33,9 @@ def test_sharp_mean_counterexample_keeps_constant_scale():
     row = next(r for r in result.log
                if r["stage"] == "spread" and r["candidate"] == "sigma: bbs(x1, df=4)")
     assert not row["adopted"]
-    assert "confirmation" in row["reason"]
-    # The recorded change/se are the confirmation's: no two-se win there.
+    # Refused at the screening comparison or at the confirmation; either way
+    # the recorded change/se are no two-se win.
+    assert "confirmation" in row["reason"] or "does not beat" in row["reason"]
     assert row["change"] > -2 * row["se"]
     assert any(e["variables"] == ["x3"] for e in result.mean_effects)
     prediction = result.model.predict(data.tail(2000).drop("y"), type="response",

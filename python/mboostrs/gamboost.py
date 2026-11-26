@@ -16,6 +16,7 @@ from mboostrs._control import as_control, step_kwargs
 from mboostrs._model_api import ModelAPIMixin, capture_fit_warnings
 from mboostrs._names import partition_tilde, quote_name
 from mboostrs._results import AicResult, provenance_from_model
+from mboostrs._validate import _model_unseen_levels
 from mboostrs._weights import normalize_weights
 from mboostrs._workflow import call_fit, fit_checkpoint
 from mboostrs.cvrisk import (
@@ -1949,7 +1950,7 @@ class GAMBoostModel(ModelAPIMixin):
 
     def predict(self, newdata=None, *, mstop=None, type=_TYPE_DEFAULT, which=None,
                 aggregate="sum", buser_newdata=None, extrapolation="warn",
-                unseen_levels="error", offset=None):
+                unseen_levels=None, offset=None):
         """Predicted values, optionally decomposed by learner.
         Usage::
 
@@ -2000,7 +2001,10 @@ class GAMBoostModel(ModelAPIMixin):
             Multinomial predictions. ``btree``, ``bkernel``, ``buser`` and
             ``brad`` terms have no training-range boundary to check, so this
             policy does not apply to them (``validate()`` lists them).
-        unseen_levels : {"error", "average", "zero_effect"}, default "error"
+        unseen_levels : {"error", "average", "zero_effect"}, optional
+            ``None`` (default) uses the model's policy: ``"error"``, except
+            for a model returned by ``mb.fit``, which predicts an unseen
+            level as the average group.
             What a term over a categorical column does with a level in
             ``newdata`` that the fit never saw, such as a group held out of a
             grouped cross-validation fold. ``"error"`` refuses the prediction.
@@ -2019,6 +2023,7 @@ class GAMBoostModel(ModelAPIMixin):
             prediction ``cvrisk`` makes for a group its fold holds out, where
             that group's rows enter the fit with zero weight.
         """
+        unseen_levels = _model_unseen_levels(self, unseen_levels)
         if type_was_default := type is _TYPE_DEFAULT:
             type = "link"
         if isinstance(mstop, numbers.Integral) and mstop > self.mstop:
@@ -2356,7 +2361,7 @@ class GAMBoostModel(ModelAPIMixin):
 
     def predict_over_mstop(self, mstops, *, newdata=None, type="link",
                            extrapolation="warn", output="auto",
-                           unseen_levels="error"):
+                           unseen_levels=None):
         """Predictions at several path positions, in one pass over the basis.
 
         `predict(newdata=, mstop=k)` builds every learner's new-data basis, so
@@ -2377,7 +2382,10 @@ class GAMBoostModel(ModelAPIMixin):
             Where to predict. Defaults to the training data.
         type : {"link", "response"}
             As in :meth:`predict`.
-        unseen_levels : {"error", "average", "zero_effect"}, default "error"
+        unseen_levels : {"error", "average", "zero_effect"}, optional
+            ``None`` (default) uses the model's policy: ``"error"``, except
+            for a model returned by ``mb.fit``, which predicts an unseen
+            level as the average group.
             As in :meth:`predict`.
 
         Returns
@@ -2385,6 +2393,7 @@ class GAMBoostModel(ModelAPIMixin):
         A `(len(mstops), n)` array under ``output="numpy"``, otherwise a frame
         with one column per position named ``mstop_<k>``.
         """
+        unseen_levels = _model_unseen_levels(self, unseen_levels)
         unseen_levels = _check_unseen_levels(unseen_levels)
         positions = [int(value) for value in mstops]
         if not positions:
@@ -2445,7 +2454,7 @@ class GAMBoostModel(ModelAPIMixin):
         )
 
     def predict_over_grid(self, variable, grid, *, newdata=None, mstop=None,
-                          type="link", extrapolation="warn", unseen_levels="error",
+                          type="link", extrapolation="warn", unseen_levels=None,
                           offset=None, output="auto"):
         """Predictions at each value of one variable, other columns held per row.
 
@@ -2474,7 +2483,10 @@ class GAMBoostModel(ModelAPIMixin):
             Applied to the replaced values exactly as :meth:`predict` applies it:
             a grid value outside a spline term's training range warns, errors,
             is kept, or is clamped.
-        unseen_levels : {"error", "average", "zero_effect"}, default "error"
+        unseen_levels : {"error", "average", "zero_effect"}, optional
+            ``None`` (default) uses the model's policy: ``"error"``, except
+            for a model returned by ``mb.fit``, which predicts an unseen
+            level as the average group.
             As in :meth:`predict`.
         offset : number or array-like, optional
             As in :meth:`predict`.
@@ -2488,6 +2500,7 @@ class GAMBoostModel(ModelAPIMixin):
             Under ``output="numpy"``, a ``(len(grid), n)`` array: row ``k`` holds
             the prediction of every row with ``variable`` set to ``grid[k]``.
         """
+        unseen_levels = _model_unseen_levels(self, unseen_levels)
         if type not in ("link", "response"):
             raise ValueError(f"type must be 'link' or 'response', got {type!r}")
         unseen_levels = _check_unseen_levels(unseen_levels)
@@ -2648,7 +2661,7 @@ class GAMBoostModel(ModelAPIMixin):
         return stacked
 
     def prediction_contributions(self, *, newdata=None, mstop=None, which=None, aggregate="sum",
-                                 buser_newdata=None, unseen_levels="error",
+                                 buser_newdata=None, unseen_levels=None,
                                  extrapolation="warn"):
         """Per-learner prediction contributions.
 
@@ -2660,7 +2673,10 @@ class GAMBoostModel(ModelAPIMixin):
             Restrict to specific learner(s).
         aggregate : {"sum", "cumsum", "none"}
         buser_newdata : dict, optional
-        unseen_levels : {"error", "average", "zero_effect"}, default "error"
+        unseen_levels : {"error", "average", "zero_effect"}, optional
+            ``None`` (default) uses the model's policy: ``"error"``, except
+            for a model returned by ``mb.fit``, which predicts an unseen
+            level as the average group.
             As in :meth:`predict`.
         extrapolation : {"warn", "error", "allow", "clip"}, default "warn"
             As in :meth:`predict`: the contributions of spline, ``bspatial``
@@ -2674,6 +2690,7 @@ class GAMBoostModel(ModelAPIMixin):
             For ``aggregate="cumsum"``: 2-D array of shape (mstop, n).
             For ``aggregate="none"``: 2-D array of shape (mstop, n).
         """
+        unseen_levels = _model_unseen_levels(self, unseen_levels)
         # predict() takes the contribution path for every aggregate except a
         # whole-model "sum", so it is the one place the range policy runs.
         return self.predict(
@@ -3725,7 +3742,7 @@ class GAMBoostModel(ModelAPIMixin):
         return matches[0]
 
     def partial_effects(self, which=None, n_points=None, newdata=None,
-                        unseen_levels="error", scale="link", extrapolation="allow",
+                        unseen_levels=None, scale="link", extrapolation="allow",
                         *, _prepared=False, _buser=None, mstop=None):
         """Compute per-learner partial effects (contribution to the additive predictor).
 
@@ -3744,7 +3761,10 @@ class GAMBoostModel(ModelAPIMixin):
             grid of this many points. If None, evaluate on training/newdata.
         newdata : dict or DataFrame, optional
             Data to evaluate effects on. If None, uses training data.
-        unseen_levels : {"error", "average", "zero_effect"}, default "error"
+        unseen_levels : {"error", "average", "zero_effect"}, optional
+            ``None`` (default) uses the model's policy: ``"error"``, except
+            for a model returned by ``mb.fit``, which predicts an unseen
+            level as the average group.
             As in :meth:`predict`.
         extrapolation : {"allow", "warn", "error", "clip"}, default "allow"
             As in :meth:`predict`, for `newdata` outside a spline learner's
@@ -3770,6 +3790,7 @@ class GAMBoostModel(ModelAPIMixin):
         dict
             Mapping base-learner name -> (x_values, effect_values) pairs.
         """
+        unseen_levels = _model_unseen_levels(self, unseen_levels)
         if not _prepared:
             newdata = self._newdata_under_policy(newdata, extrapolation)
         if scale not in ("link", "log_odds"):
@@ -5062,7 +5083,8 @@ def gamboost(
 
     require_standard_family(family, "gamboost")
     if control is None:
-        control = (100, 0.1, "inbag", False)
+        # A family may set its own default step length (Quantile: 0.3).
+        control = (100, getattr(family, "default_nu", 0.1), "inbag", False)
     if len(control) == 2:
         control = (control[0], control[1], "inbag", False)
 

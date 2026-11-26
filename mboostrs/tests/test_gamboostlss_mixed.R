@@ -1,5 +1,8 @@
 library(mboostrs)
 
+# Compared with R mboost/gamboostLSS (or with values recorded from them), so
+# fitted on the raw response as R does (see ?gamboostLSS, response_scale).
+options(mboostrs.response_scale = "none")
 set.seed(412)
 n <- 64L
 dat <- data.frame(x = seq(-1, 1, length.out = n), z = rnorm(n))

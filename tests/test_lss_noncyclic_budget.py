@@ -22,7 +22,7 @@ def tied():
     data = {"x": x, "y": np.sin(2 * x) + np.exp(0.5 * x) * rng.normal(size=n)}
     model = mb.gamboostLSS(FORMULAS, data=data, mstop=90, family=mb.GaussianLSS(),
                            method="noncyclic", stabilization="MAD",
-                           nu={"mu": 0.1, "sigma": 0.02})
+                           nu={"mu": 0.1, "sigma": 0.02}, response_scale=None)
     # The fixture is only useful while the counts tie.
     assert model.mstop == 45
     return model, data

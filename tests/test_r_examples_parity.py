@@ -56,7 +56,7 @@ class TestGlmboostCarsExample:
         assert slope == pytest.approx(3.9184, abs=1e-3)
 
     def test_laplace_variant_matches_r(self, cars):
-        model = mboost.glmboost("dist ~ speed", data=cars, family=Laplace(),
+        model = mboost.glmboost("dist ~ speed", data=cars, family=Laplace(response_scale=None),
                                 control=mboost.boost_control(1000, 0.1))
         intercept, slope = _off2int(model)
         assert intercept == pytest.approx(-11.6310, abs=1e-3)

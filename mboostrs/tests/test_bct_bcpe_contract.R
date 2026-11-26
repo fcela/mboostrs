@@ -2,6 +2,9 @@
 
 library(mboostrs)
 
+# Compared with R mboost/gamboostLSS (or with values recorded from them), so
+# fitted on the raw response as R does (see ?gamboostLSS, response_scale).
+options(mboostrs.response_scale = "none")
 if (!requireNamespace("gamlss.dist", quietly = TRUE)) {
   cat("gamlss.dist unavailable; BCT/BCPE R oracle skipped\n")
   quit(status = 0L)

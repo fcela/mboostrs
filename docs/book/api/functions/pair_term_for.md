@@ -45,4 +45,4 @@ and boolean columns as labels. Columns with more than two levels are
 also classified as groups. With `data=None`, the supplied descriptions
 determine the term.
 
-Source: [`python/mboostrs/explore.py` lines 2493-2580](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L2493-L2580)
+Source: [`python/mboostrs/explore.py` lines 2504-2591](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L2504-L2591)

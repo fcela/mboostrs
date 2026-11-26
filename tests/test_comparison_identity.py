@@ -152,7 +152,8 @@ def test_identity_survives_truncation_and_pickling():
 def test_gamboost_and_lss_fits_record_identity():
     data = _sample_data()
     gam = mb.gamboost("y ~ bbs(x, df=3)", data=data, family=mb.Gaussian(), control=CONTROL)
-    lss = mb.glmboostLSS("y ~ bols(x)", data, families=mb.GaussianLSS(), control=CONTROL)
+    lss = mb.glmboostLSS("y ~ bols(x)", data, families=mb.GaussianLSS(), control=CONTROL,
+                         response_scale=None)
     assert gam._comparison_identity["sample"]["n_input"] == 120
     assert lss._comparison_identity["response"]["columns"] == ["y"]
     assert lss._comparison_identity["response_transform"] == "identity"
@@ -263,8 +264,9 @@ def test_scan_lss_families_refuses_a_candidate_fitted_on_another_sample(monkeypa
             shifted = dict(data)
             shifted["x"] = data["x"].copy()
             shifted["x"][3] = np.nan
-            return real(spec, shifted, families=families, control=control, na_action="omit")
-        return real(spec, data, families=families, control=control)
+            return real(spec, shifted, families=families, control=control, na_action="omit",
+                        response_scale=None)
+        return real(spec, data, families=families, control=control, response_scale=None)
 
     monkeypatch.setattr(mb, "glmboostLSS", fit)
     with pytest.raises(ValueError, match="different sample"):
@@ -536,16 +538,21 @@ def test_common_sample_refits_gam_preprocessing_on_the_common_rows():
 
 def test_common_sample_refits_a_distributional_candidate_on_the_common_rows():
     data = _gapped()
+    # The log-normal fixture response makes an unstabilized GaussianLSS at
+    # unit scale overshoot; R's raw-units path is used, as the identity is
+    # what is tested.
     x_model = mb.glmboostLSS("y ~ bols(x)", data, families=mb.GaussianLSS(), control=CONTROL,
-                             na_action="omit")
+                             na_action="omit", response_scale=None)
     z_model = mb.glmboostLSS("y ~ bols(z)", data, families=mb.GaussianLSS(), control=CONTROL,
-                             na_action="omit")
+                             na_action="omit", response_scale=None)
     rows = mb.gaic_table(x_model, z_model, labels=["x", "z"], output="records",
                          common_sample=True)
     reference = _without_rows(data, [3, 5])
     expected = mb.gaic_table(
-        mb.glmboostLSS("y ~ bols(x)", reference, families=mb.GaussianLSS(), control=CONTROL),
-        mb.glmboostLSS("y ~ bols(z)", reference, families=mb.GaussianLSS(), control=CONTROL),
+        mb.glmboostLSS("y ~ bols(x)", reference, families=mb.GaussianLSS(), control=CONTROL,
+                       response_scale=None),
+        mb.glmboostLSS("y ~ bols(z)", reference, families=mb.GaussianLSS(), control=CONTROL,
+                       response_scale=None),
         labels=["x", "z"], output="records")
     for got, want in zip(rows, expected, strict=True):
         assert got["heuristic_GAIC(2)"] == pytest.approx(want["heuristic_GAIC(2)"], rel=1e-10)

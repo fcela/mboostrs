@@ -16,4 +16,4 @@ its squared-error family `Gaussian` while some references reserve that name
 for the likelihood rather than the loss; both are provided so a translated
 script keeps working.
 
-Source: [`python/mboostrs/families.py` lines 67-74](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L67-L74)
+Source: [`python/mboostrs/families.py` lines 110-117](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L110-L117)

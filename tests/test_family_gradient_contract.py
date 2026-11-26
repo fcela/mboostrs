@@ -49,6 +49,10 @@ def _standard_response(name, rng):
 def test_standard_family_gradient(name):
     rng = np.random.default_rng(1)
     family = getattr(mb, name)()
+    if hasattr(family, "response_scale"):
+        # A scaled loss's gradient is the risk gradient times the response
+        # scale; the contract is about the raw risk.
+        family = getattr(mb, name)(response_scale=None)
     args = (_family_rust_name(family), _family_params(family))
     y = _standard_response(name, rng)
     f = rng.normal(0, 0.3, N)

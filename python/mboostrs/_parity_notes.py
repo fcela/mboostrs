@@ -450,6 +450,37 @@ GLOBAL_NOTES: tuple[ParityNote, ...] = (
 )
 
 
+#: Attached to a distributional fit that divided its response by a scale.
+LSS_RESPONSE_SCALE_NOTE = ParityNote(
+    name="distributional fits are run on the response divided by a scale",
+    mechanism=(
+        "gamboostLSS boosts on the response as given: once gradients are "
+        "stabilized each step moves a location parameter by about nu in "
+        "response units, and without stabilization by nu (y - mu)/sigma^2, so "
+        "the fit depends on the units and a response in large units (dollars) "
+        "barely leaves its offset. With response_scale='auto' (the default) "
+        "mboostrs fits y / s, s the weighted SD of the response each fit sees, "
+        "and maps every parameter's predictor back exactly "
+        "(eta = a * eta_s + b: a = s for an identity-link location, "
+        "b = log(s) for a log-link mean or scale); counts, proportions and "
+        "compositions are not scaled"
+    ),
+    consequence=(
+        "predictions, coefficients, risk and logLik are in the original units "
+        "and the same model results in any units, but the boosting path at a "
+        "given mstop is R's path on y / s, not on y: coefficients at an mstop "
+        "tuned for gamboostLSS on raw data differ. response_scale=None (or "
+        "'none') reproduces gamboostLSS's raw-units path"
+    ),
+    shared_with_upstream=False,
+    evidence="tests/test_lss_response_scale.py::test_a_fit_in_other_units_is_the_same_model_in_those_units",
+    effect=(
+        "this fit ran on the response divided by its SD and was mapped back to "
+        "the original units; response_scale=None gives gamboostLSS's raw-units path"
+    ),
+)
+
+
 def notes_for(model, *, include_global: bool = False) -> list[ParityNote]:
     """Every documented deviation that applies to this fit.
 
@@ -473,6 +504,11 @@ def notes_for(model, *, include_global: bool = False) -> list[ParityNote]:
             continue
         seen.add(kind)
         collected.extend(LEARNER_NOTES.get(kind, ()))
+
+    scale = getattr(model, "_response_scale", None)
+    if scale is not None and scale != "none" and \
+            getattr(model, "_response_scale_used", None) is not None:
+        collected.append(LSS_RESPONSE_SCALE_NOTE)
 
     if include_global:
         collected.extend(GLOBAL_NOTES)

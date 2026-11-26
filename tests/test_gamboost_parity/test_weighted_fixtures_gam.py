@@ -19,11 +19,11 @@ FAMILY_MAP = {
     "poisson": lambda d: mboost.Poisson(),
     "binomial": lambda d: mboost.Binomial(),
     "adaexp": lambda d: mboost.AdaExp(),
-    "laplace": lambda d: mboost.Laplace(),
+    "laplace": lambda d: mboost.Laplace(response_scale=None),
     "gammareg": lambda d: mboost.GammaReg(),
     "huber": lambda d: mboost.Huber(),
     "expectreg": lambda d: mboost.Expectile(tau=d["tau"]),
-    "quantreg": lambda d: mboost.Quantile(tau=d["tau"]),
+    "quantreg": lambda d: mboost.Quantile(tau=d["tau"], qoffset=0.5, response_scale=None),
 }
 
 

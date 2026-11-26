@@ -17,7 +17,8 @@ cvrisk_glmboostLSS(
     weight_policy='upstream',
     nu=None,
     stabilization=None,
-    weights=None
+    weights=None,
+    response_scale='auto'
 )
 ```
 
@@ -53,4 +54,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `ValueError`
 - `TypeError`
 
-Source: [`python/mboostrs/gamlss.py` lines 6742-6879](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L6742-L6879)
+Source: [`python/mboostrs/gamlss.py` lines 6827-6965](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L6827-L6965)

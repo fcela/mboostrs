@@ -21,7 +21,8 @@ cvrisk_gamboostLSS(
     stabilization=None,
     weights=None,
     na_action='error',
-    _search=None
+    _search=None,
+    response_scale='auto'
 )
 ```
 
@@ -73,4 +74,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `ValueError`
 - `TypeError`
 
-Source: [`python/mboostrs/gamlss.py` lines 6882-7070](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L6882-L7070)
+Source: [`python/mboostrs/gamlss.py` lines 6968-7159](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L6968-L7159)

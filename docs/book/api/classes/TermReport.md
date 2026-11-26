@@ -22,7 +22,7 @@ TermReport(
 
 Held-out contribution and alternative-shape scores for each term.
 
-Source: [`python/mboostrs/explore.py` lines 2072-2119](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L2072-L2119)
+Source: [`python/mboostrs/explore.py` lines 2083-2130](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L2083-L2130)
 
 ## Members
 
@@ -41,4 +41,4 @@ TermReport.to_dict(*, include_arrays=False)
 
 A JSON-safe record of what each term is worth, and in what shape.
 
-Source: [`python/mboostrs/explore.py` lines 2117-2119](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L2117-L2119)
+Source: [`python/mboostrs/explore.py` lines 2128-2130](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/explore.py#L2128-L2130)

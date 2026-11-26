@@ -405,13 +405,25 @@ fn param_category_count(
     Ok(count)
 }
 
+/// A family parameter map's `response_scale`: absent fits the raw response
+/// (R mboost), `0` asks for the automatic scale, a positive value fixes it.
+fn family_response_scale(params: &HashMap<String, f64>) -> mboostrs_core::control::ResponseScale {
+    use mboostrs_core::control::ResponseScale;
+    match params.get("response_scale").copied() {
+        None => ResponseScale::Raw,
+        Some(0.0) => ResponseScale::Auto,
+        Some(v) if v.is_finite() && v > 0.0 => ResponseScale::Fixed(v),
+        Some(_) => ResponseScale::Raw,
+    }
+}
+
 fn make_family(name: &str, params: &HashMap<String, f64>) -> Result<Box<dyn Family>, String> {
     match name {
         "gaussian" => Ok(Box::new(Gaussian)),
         "gaussreg" => Ok(Box::new(GaussReg)),
         "binomial" => Ok(Box::new(Binomial)),
         "poisson" => Ok(Box::new(Poisson)),
-        "laplace" => Ok(Box::new(Laplace)),
+        "laplace" => Ok(Box::new(Laplace::with_response_scale(family_response_scale(params)))),
         "quantreg" => {
             let tau = param_unit_interval("quantreg", "tau",
                 params.get("tau").copied().unwrap_or(0.5))?;
@@ -419,7 +431,10 @@ fn make_family(name: &str, params: &HashMap<String, f64>) -> Result<Box<dyn Fami
             // direct fit, which reads it via with_concrete_family!.
             let qoffset = param_unit_interval("quantreg", "qoffset",
                 params.get("qoffset").copied().unwrap_or(0.5))?;
-            Ok(Box::new(QuantReg::with_qoffset(tau, qoffset)))
+            Ok(Box::new(
+                QuantReg::with_qoffset(tau, qoffset)
+                    .with_response_scale(family_response_scale(params)),
+            ))
         }
         "expectreg" => {
             let tau = param_unit_interval("expectreg", "tau",
@@ -705,7 +720,8 @@ macro_rules! with_concrete_family {
                 Ok($body)
             }
             "laplace" => {
-                let mut $fam = mboostrs_core::Laplace;
+                let mut $fam =
+                    mboostrs_core::Laplace::with_response_scale(family_response_scale(&$params));
                 Ok($body)
             }
             "quantreg" => {
@@ -713,7 +729,8 @@ macro_rules! with_concrete_family {
                     $params.get("tau").copied().unwrap_or(0.5)))?;
                 let qoffset = check_param(param_unit_interval("quantreg", "qoffset",
                     $params.get("qoffset").copied().unwrap_or(0.5)))?;
-                let mut $fam = mboostrs_core::QuantReg::with_qoffset(tau, qoffset);
+                let mut $fam = mboostrs_core::QuantReg::with_qoffset(tau, qoffset)
+                    .with_response_scale(family_response_scale(&$params));
                 Ok($body)
             }
             "expectreg" => {
@@ -1756,7 +1773,7 @@ fn lss_row_nll<'py>(
 /// Each parameter is fitted with an intercept learner + one scalar-bols learner
 /// per column (centered), matching `fit_glmboost`, so the Python side can reuse
 /// `predict_glmboost` per parameter.
-#[pyfunction(signature = (x_all, param_ncols, learner_names, y, weights, mstop, nu, family_name, offsets=None, mstop_per_param=None, trace=false, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4))]
+#[pyfunction(signature = (x_all, param_ncols, learner_names, y, weights, mstop, nu, family_name, offsets=None, mstop_per_param=None, trace=false, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4, response_scale=None))]
 #[allow(clippy::too_many_arguments)]
 fn fit_glmboostlss(
     py: Python<'_>,
@@ -1775,6 +1792,7 @@ fn fit_glmboostlss(
     nu_per_param: Option<Vec<f64>>,
     step: &str,
     step_iterations: u32,
+    response_scale: Option<Bound<'_, PyAny>>,
 ) -> PyResult<LssFitResult> {
     use mboostrs_core::lss::try_fit_lss;
 
@@ -1810,6 +1828,9 @@ fn fit_glmboostlss(
     let mut ctrl = apply_step(ctrl, step, step_iterations)?;
     ctrl.stabilization = stabilization;
     ctrl.nu_per_param = nu_per_param;
+    ctrl = ctrl
+        .with_response_scale(parse_response_scale(response_scale.as_ref())?)
+        .map_err(mboostrs_error_to_pyerr)?;
 
     let preparation_timer = trace.then(PreparationTimer::start);
     let ones = ndarray::Array1::ones(n);
@@ -1907,7 +1928,7 @@ fn fit_glmboostlss(
 /// Non-cyclic glmboostLSS (R's `method = "noncyclic"`): builds the same
 /// intercept + scalar-bols learners as `fit_glmboostlss`, then runs the
 /// non-cyclic driver (one parameter updated per step, chosen by risk reduction).
-#[pyfunction(signature = (x_all, param_ncols, learner_names, y, weights, mstop, nu, family_name, offsets=None, trace=false, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4))]
+#[pyfunction(signature = (x_all, param_ncols, learner_names, y, weights, mstop, nu, family_name, offsets=None, trace=false, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4, response_scale=None))]
 #[allow(clippy::too_many_arguments)]
 fn fit_glmboostlss_noncyclic(
     py: Python<'_>,
@@ -1925,6 +1946,7 @@ fn fit_glmboostlss_noncyclic(
     nu_per_param: Option<Vec<f64>>,
     step: &str,
     step_iterations: u32,
+    response_scale: Option<Bound<'_, PyAny>>,
 ) -> PyResult<LssFitResult> {
     use mboostrs_core::lss::try_fit_lss_noncyclic;
     let binding_started = trace.then(Instant::now);
@@ -1942,6 +1964,9 @@ fn fit_glmboostlss_noncyclic(
     let mut ctrl = apply_step(ctrl, step, step_iterations)?;
     ctrl.stabilization = stabilization;
     ctrl.nu_per_param = nu_per_param;
+    ctrl = ctrl
+        .with_response_scale(parse_response_scale(response_scale.as_ref())?)
+        .map_err(mboostrs_error_to_pyerr)?;
     let preparation_timer = trace.then(PreparationTimer::start);
     let ones = ndarray::Array1::ones(n);
     let mut per_param: Vec<Vec<PreparedLearner>> = Vec::with_capacity(param_ncols.len());
@@ -2031,7 +2056,7 @@ fn fit_glmboostlss_noncyclic(
 /// `q` is stability selection's cap on distinct components: a fold stops as
 /// soon as it has selected that many, because nothing it selects afterwards
 /// reaches the reported frequencies. `None` runs every fold to `mstop`.
-#[pyfunction(signature = (x_all, param_ncols, y, weights, mstop, nu, family_name, folds, q=None, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4))]
+#[pyfunction(signature = (x_all, param_ncols, y, weights, mstop, nu, family_name, folds, q=None, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4, response_scale=None))]
 #[allow(clippy::too_many_arguments)]
 fn stabsel_selected_glmboostlss(
     py: Python<'_>,
@@ -2048,6 +2073,7 @@ fn stabsel_selected_glmboostlss(
     nu_per_param: Option<Vec<f64>>,
     step: &str,
     step_iterations: u32,
+    response_scale: Option<Bound<'_, PyAny>>,
 ) -> PyResult<Vec<Vec<usize>>> {
     use mboostrs_core::lss::try_fit_lss_noncyclic_capped;
     let x = x_all.as_array();
@@ -2060,6 +2086,9 @@ fn stabsel_selected_glmboostlss(
     ctrl.stabilization =
         mboostrs_core::lss::Stabilization::parse(stabilization).map_err(mboostrs_error_to_pyerr)?;
     ctrl.nu_per_param = nu_per_param;
+    ctrl = ctrl
+        .with_response_scale(parse_response_scale(response_scale.as_ref())?)
+        .map_err(mboostrs_error_to_pyerr)?;
     let mut offset = vec![0usize; param_ncols.len()];
     let mut acc = 0usize;
     for (p, &pc) in param_ncols.iter().enumerate() {
@@ -2142,7 +2171,7 @@ fn stabsel_selected_glmboostlss(
 /// no per-parameter intercept (parameter `p`'s learners occupy
 /// `[offset_p .. offset_p + param_nlearners[p])`). bbs learners are rebuilt per
 /// subsample so `df -> lambda` is recomputed from the subsample weights.
-#[pyfunction(signature = (bbs_x, param_nlearners, bbs_knots, bbs_degree, bbs_differences, bbs_df, bbs_center, learner_names, y, weights, mstop, nu, family_name, folds, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4))]
+#[pyfunction(signature = (bbs_x, param_nlearners, bbs_knots, bbs_degree, bbs_differences, bbs_df, bbs_center, learner_names, y, weights, mstop, nu, family_name, folds, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4, response_scale=None))]
 #[allow(clippy::too_many_arguments)]
 fn stabsel_selected_gamboostlss(
     py: Python<'_>,
@@ -2164,6 +2193,7 @@ fn stabsel_selected_gamboostlss(
     nu_per_param: Option<Vec<f64>>,
     step: &str,
     step_iterations: u32,
+    response_scale: Option<Bound<'_, PyAny>>,
 ) -> PyResult<Vec<Vec<usize>>> {
     let _ = weights;
     let y_owned = y.as_array().to_owned();
@@ -2187,6 +2217,9 @@ fn stabsel_selected_gamboostlss(
     ctrl.stabilization =
         mboostrs_core::lss::Stabilization::parse(stabilization).map_err(mboostrs_error_to_pyerr)?;
     ctrl.nu_per_param = nu_per_param;
+    ctrl = ctrl
+        .with_response_scale(parse_response_scale(response_scale.as_ref())?)
+        .map_err(mboostrs_error_to_pyerr)?;
     // Global learner index offsets (no per-parameter intercept for bbs).
     let mut offset = vec![0usize; param_nlearners.len()];
     let mut acc = 0usize;
@@ -2276,7 +2309,7 @@ fn stabsel_selected_gamboostlss(
 /// learners as `fit_glmboostlss`, then evaluates per-fold out-of-bag risk for
 /// each grid point. `folds` is n x B in-bag weights; `grid[g]` is a per-parameter
 /// mstop vector. Returns a B x grid.len() matrix of per-fold OOB risks.
-#[pyfunction(signature = (x_all, param_ncols, learner_names, y, weights, mstop, nu, family_name, folds, grid, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4))]
+#[pyfunction(signature = (x_all, param_ncols, learner_names, y, weights, mstop, nu, family_name, folds, grid, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4, response_scale=None))]
 #[allow(clippy::too_many_arguments)]
 fn cvrisk_glmboostlss(
     py: Python<'_>,
@@ -2294,6 +2327,7 @@ fn cvrisk_glmboostlss(
     nu_per_param: Option<Vec<f64>>,
     step: &str,
     step_iterations: u32,
+    response_scale: Option<Bound<'_, PyAny>>,
 ) -> PyResult<Vec<Vec<f64>>> {
     use mboostrs_core::lss::try_cvrisk_lss;
 
@@ -2309,6 +2343,9 @@ fn cvrisk_glmboostlss(
     ctrl.stabilization =
         mboostrs_core::lss::Stabilization::parse(stabilization).map_err(mboostrs_error_to_pyerr)?;
     ctrl.nu_per_param = nu_per_param;
+    ctrl = ctrl
+        .with_response_scale(parse_response_scale(response_scale.as_ref())?)
+        .map_err(mboostrs_error_to_pyerr)?;
 
     // Build intercept + scalar-bols learners per parameter (as in fit_glmboostlss).
     let ones = ndarray::Array1::ones(n);
@@ -2369,7 +2406,7 @@ fn cvrisk_glmboostlss(
 /// `df -> lambda` penalty is recomputed from each fold's weights, matching R's
 /// per-fold `dpp`. `folds` is n x B in-bag weights; returns a B x grid.len()
 /// matrix of per-fold OOB risks.
-#[pyfunction(signature = (bbs_x, param_nlearners, bbs_knots, bbs_degree, bbs_differences, bbs_df, bbs_center, learner_names, y, weights, mstop, nu, family_name, folds, grid, judge=None, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4))]
+#[pyfunction(signature = (bbs_x, param_nlearners, bbs_knots, bbs_degree, bbs_differences, bbs_df, bbs_center, learner_names, y, weights, mstop, nu, family_name, folds, grid, judge=None, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4, response_scale=None))]
 #[allow(clippy::too_many_arguments)]
 fn cvrisk_gamboostlss(
     py: Python<'_>,
@@ -2393,6 +2430,7 @@ fn cvrisk_gamboostlss(
     nu_per_param: Option<Vec<f64>>,
     step: &str,
     step_iterations: u32,
+    response_scale: Option<Bound<'_, PyAny>>,
 ) -> PyResult<Vec<Vec<f64>>> {
     use mboostrs_core::lss::try_cvrisk_lss_with;
 
@@ -2420,6 +2458,9 @@ fn cvrisk_gamboostlss(
     ctrl.stabilization =
         mboostrs_core::lss::Stabilization::parse(stabilization).map_err(mboostrs_error_to_pyerr)?;
     ctrl.nu_per_param = nu_per_param;
+    ctrl = ctrl
+        .with_response_scale(parse_response_scale(response_scale.as_ref())?)
+        .map_err(mboostrs_error_to_pyerr)?;
 
     // Owned bbs columns so the per-fold preparer can run without the GIL.
     let bbs_cols: Vec<Vec<f64>> = bbs_x.iter().map(|a| a.as_array().to_vec()).collect();
@@ -2506,7 +2547,7 @@ type MixedGamLssFitResult = (
 /// (bbs) base-learners. Each parameter gets `param_nlearners[k]` bbs learners
 /// built from the flat `bbs_x` columns; there is no separate intercept learner
 /// (the per-parameter offset plays that role, matching R's gamboostLSS).
-#[pyfunction(signature = (bbs_x, param_nlearners, bbs_knots, bbs_degree, bbs_differences, bbs_df, bbs_center, learner_names, y, weights, mstop, nu, family_name, offsets=None, mstop_per_param=None, trace=false, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4))]
+#[pyfunction(signature = (bbs_x, param_nlearners, bbs_knots, bbs_degree, bbs_differences, bbs_df, bbs_center, learner_names, y, weights, mstop, nu, family_name, offsets=None, mstop_per_param=None, trace=false, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4, response_scale=None))]
 #[allow(clippy::too_many_arguments)]
 fn fit_gamboostlss(
     py: Python<'_>,
@@ -2530,6 +2571,7 @@ fn fit_gamboostlss(
     nu_per_param: Option<Vec<f64>>,
     step: &str,
     step_iterations: u32,
+    response_scale: Option<Bound<'_, PyAny>>,
 ) -> PyResult<GamLssFitResult> {
     use mboostrs_core::lss::try_fit_lss;
 
@@ -2561,6 +2603,9 @@ fn fit_gamboostlss(
     let mut ctrl = apply_step(ctrl, step, step_iterations)?;
     ctrl.stabilization = stabilization;
     ctrl.nu_per_param = nu_per_param;
+    ctrl = ctrl
+        .with_response_scale(parse_response_scale(response_scale.as_ref())?)
+        .map_err(mboostrs_error_to_pyerr)?;
 
     let preparation_timer = trace.then(PreparationTimer::start);
     let mut per_param: Vec<Vec<PreparedLearner>> = Vec::with_capacity(param_nlearners.len());
@@ -2640,7 +2685,60 @@ fn fit_gamboostlss(
 /// learner sets. The language front end supplies a list of learner dictionaries
 /// per distribution parameter; the dictionaries are converted immediately to
 /// core-owned [`LearnerBlueprint`] values before releasing the GIL.
-#[pyfunction(signature = (learner_specs, y, weights, mstop, nu, family_name, offsets=None, mstop_per_param=None, method="cyclic", trace=false, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4))]
+/// A front end's `response_scale`: `None` fits the raw response, `"auto"`
+/// the SD of the response each fit sees, a number a fixed scale.
+fn parse_response_scale(
+    value: Option<&Bound<'_, PyAny>>,
+) -> PyResult<mboostrs_core::control::ResponseScale> {
+    use mboostrs_core::control::ResponseScale;
+    let Some(value) = value else {
+        return Ok(ResponseScale::Raw);
+    };
+    if value.is_none() {
+        return Ok(ResponseScale::Raw);
+    }
+    if let Ok(text) = value.extract::<String>() {
+        if text == "auto" {
+            return Ok(ResponseScale::Auto);
+        }
+        if text == "none" {
+            return Ok(ResponseScale::Raw);
+        }
+        return Err(pyo3::exceptions::PyValueError::new_err(format!(
+            "response_scale must be \"auto\", \"none\" (or None) or a positive number, got {text:?}"
+        )));
+    }
+    let scale: f64 = value.extract().map_err(|_| {
+        pyo3::exceptions::PyTypeError::new_err(
+            "response_scale must be \"auto\", None or a positive number",
+        )
+    })?;
+    Ok(ResponseScale::Fixed(scale))
+}
+
+/// The default response scale of a distributional fit: the SD of the part of
+/// `y` the family's scale applies to, over rows with positive weight. `None`
+/// for families with no scale (counts, proportions, compositions) or a
+/// response with no spread.
+#[pyfunction]
+fn lss_auto_response_scale(
+    family_name: &str,
+    n_params: usize,
+    y: PyReadonlyArray1<'_, f64>,
+    weights: PyReadonlyArray1<'_, f64>,
+) -> PyResult<Option<f64>> {
+    let family =
+        mboostrs_core::lss::make_family(family_name, n_params).map_err(mboostrs_error_to_pyerr)?;
+    let ys = y.as_slice()?;
+    let ws = weights.as_slice()?;
+    Ok(mboostrs_core::lss::auto_response_scale(
+        family.as_ref(),
+        ys,
+        ws,
+    ))
+}
+
+#[pyfunction(signature = (learner_specs, y, weights, mstop, nu, family_name, offsets=None, mstop_per_param=None, method="cyclic", trace=false, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4, response_scale=None))]
 #[allow(clippy::too_many_arguments)]
 fn fit_gamboostlss_mixed(
     py: Python<'_>,
@@ -2658,6 +2756,7 @@ fn fit_gamboostlss_mixed(
     nu_per_param: Option<Vec<f64>>,
     step: &str,
     step_iterations: u32,
+    response_scale: Option<Bound<'_, PyAny>>,
 ) -> PyResult<MixedGamLssFitResult> {
     use mboostrs_core::lss::{try_fit_lss, try_fit_lss_noncyclic};
 
@@ -2685,6 +2784,9 @@ fn fit_gamboostlss_mixed(
     let mut ctrl = apply_step(ctrl, step, step_iterations)?;
     ctrl.stabilization = stabilization;
     ctrl.nu_per_param = nu_per_param;
+    ctrl = ctrl
+        .with_response_scale(parse_response_scale(response_scale.as_ref())?)
+        .map_err(mboostrs_error_to_pyerr)?;
     if let Some(ref values) = mstop_per_param {
         if values.len() != blueprints.len() {
             return Err(pyo3::exceptions::PyValueError::new_err(
@@ -2816,7 +2918,7 @@ fn prepare_gamboostlss_stores(
 /// Cross-validated risk for heterogeneous `gamboostLSS` learner sets. Every
 /// fold prepares the same blueprints with its effective in-bag weights, while
 /// spline designs and penalties remain cached inside the blueprint.
-#[pyfunction(signature = (learner_specs, y, weights, mstop, nu, family_name, folds, grid, judge=None, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4))]
+#[pyfunction(signature = (learner_specs, y, weights, mstop, nu, family_name, folds, grid, judge=None, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4, response_scale=None))]
 #[allow(clippy::too_many_arguments)]
 fn cvrisk_gamboostlss_mixed(
     py: Python<'_>,
@@ -2833,6 +2935,7 @@ fn cvrisk_gamboostlss_mixed(
     nu_per_param: Option<Vec<f64>>,
     step: &str,
     step_iterations: u32,
+    response_scale: Option<Bound<'_, PyAny>>,
 ) -> PyResult<Vec<Vec<f64>>> {
     use mboostrs_core::lss::try_cvrisk_lss_with;
 
@@ -2847,6 +2950,9 @@ fn cvrisk_gamboostlss_mixed(
     ctrl.stabilization =
         mboostrs_core::lss::Stabilization::parse(stabilization).map_err(mboostrs_error_to_pyerr)?;
     ctrl.nu_per_param = nu_per_param;
+    ctrl = ctrl
+        .with_response_scale(parse_response_scale(response_scale.as_ref())?)
+        .map_err(mboostrs_error_to_pyerr)?;
 
     let risk = py
         .allow_threads(|| {
@@ -2875,7 +2981,7 @@ fn cvrisk_gamboostlss_mixed(
 /// `(risk, curve, grid, best, at_boundary, ends)`: the per-fold risk on the
 /// final grid, the aggregated curve on it, the final grid's step counts, the
 /// optimum, whether it lies in the boundary band, and the grid ends evaluated.
-#[pyfunction(signature = (learner_specs, y, weights, nu, family_name, folds, ends, grids, boundary_share, judge=None, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4))]
+#[pyfunction(signature = (learner_specs, y, weights, nu, family_name, folds, ends, grids, boundary_share, judge=None, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4, response_scale=None, method="cyclic"))]
 #[allow(clippy::too_many_arguments)]
 fn search_gamboostlss_grid(
     py: Python<'_>,
@@ -2893,9 +2999,17 @@ fn search_gamboostlss_grid(
     nu_per_param: Option<Vec<f64>>,
     step: &str,
     step_iterations: u32,
+    response_scale: Option<Bound<'_, PyAny>>,
+    method: &str,
 ) -> PyResult<(Vec<Vec<f64>>, Vec<f64>, Vec<usize>, usize, bool, Vec<usize>)> {
     use mboostrs_core::grid_search::GridStep;
     use mboostrs_core::lss::try_cvrisk_lss_search;
+
+    if method != "cyclic" && method != "noncyclic" {
+        return Err(pyo3::exceptions::PyValueError::new_err(
+            "method must be 'cyclic' or 'noncyclic'",
+        ));
+    }
 
     if ends.is_empty() || ends.len() != grids.len() {
         return Err(pyo3::exceptions::PyValueError::new_err(format!(
@@ -2916,6 +3030,9 @@ fn search_gamboostlss_grid(
     ctrl.stabilization =
         mboostrs_core::lss::Stabilization::parse(stabilization).map_err(mboostrs_error_to_pyerr)?;
     ctrl.nu_per_param = nu_per_param;
+    ctrl = ctrl
+        .with_response_scale(parse_response_scale(response_scale.as_ref())?)
+        .map_err(mboostrs_error_to_pyerr)?;
     let schedule: Vec<GridStep> = ends
         .iter()
         .zip(grids)
@@ -2932,6 +3049,7 @@ fn search_gamboostlss_grid(
                 weights_owned.view(),
                 family.as_ref(),
                 &ctrl,
+                method == "noncyclic",
                 folds_owned.view(),
                 judge_arr.as_ref(),
                 &schedule,
@@ -3030,7 +3148,7 @@ fn search_fold_scores(
 /// `q` is stability selection's cap on distinct components: a fold stops as
 /// soon as it has selected that many, because nothing it selects afterwards
 /// reaches the reported frequencies. `None` runs every fold to `mstop`.
-#[pyfunction(signature = (learner_specs, y, weights, mstop, nu, family_name, folds, q=None, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4))]
+#[pyfunction(signature = (learner_specs, y, weights, mstop, nu, family_name, folds, q=None, stabilization="none", nu_per_param=None, step="fixed", step_iterations=4, response_scale=None))]
 #[allow(clippy::too_many_arguments)]
 fn stabsel_selected_gamboostlss_mixed(
     py: Python<'_>,
@@ -3046,6 +3164,7 @@ fn stabsel_selected_gamboostlss_mixed(
     nu_per_param: Option<Vec<f64>>,
     step: &str,
     step_iterations: u32,
+    response_scale: Option<Bound<'_, PyAny>>,
 ) -> PyResult<Vec<Vec<usize>>> {
     use mboostrs_core::lss::try_fit_lss_noncyclic_capped;
     use rayon::prelude::*;
@@ -3067,6 +3186,9 @@ fn stabsel_selected_gamboostlss_mixed(
     ctrl.stabilization =
         mboostrs_core::lss::Stabilization::parse(stabilization).map_err(mboostrs_error_to_pyerr)?;
     ctrl.nu_per_param = nu_per_param;
+    ctrl = ctrl
+        .with_response_scale(parse_response_scale(response_scale.as_ref())?)
+        .map_err(mboostrs_error_to_pyerr)?;
     let mut parameter_offsets = Vec::with_capacity(blueprints.len());
     let mut total = 0usize;
     for parameter_blueprints in &blueprints {
@@ -10347,6 +10469,7 @@ fn _rust(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(propodds_response, m)?)?;
     m.add_function(wrap_pyfunction!(fit_glmboostlss, m)?)?;
     m.add_function(wrap_pyfunction!(fit_gamboostlss, m)?)?;
+    m.add_function(wrap_pyfunction!(lss_auto_response_scale, m)?)?;
     m.add_function(wrap_pyfunction!(fit_gamboostlss_mixed, m)?)?;
     m.add_function(wrap_pyfunction!(prepare_gamboostlss_stores, m)?)?;
     m.add_function(wrap_pyfunction!(cvrisk_glmboostlss, m)?)?;

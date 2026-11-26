@@ -35,7 +35,8 @@ autospec(
     mandatory=None,
     joint_tree=True,
     exposure=None,
-    na_action=None
+    na_action=None,
+    lss_trees='auto'
 )
 ```
 
@@ -239,6 +240,21 @@ Guess a complete boosting specification for `data`.
   varying slope, or a switch-on smooth), skipping pairs that record one
   axis twice, and re-tunes `mstop` for the larger formula when budget
   remains.
+- `lss_trees` (bool or "auto"): When the search adopts a distributional family, offer a joint tree
+  (`btree` over the numeric predictors, depths 3 and 6) added to every
+  parameter's formula, so the mean and the spread can depend on
+  products and thresholds of predictors that additive terms cannot
+  represent. The tree is adopted only when the family's held-out log
+  score beats the additive specification by the family choice's margin
+  and two paired fold standard errors, and its squared error of the mean
+  is not worse; `evidence["lss_joint_tree"]` records each depth's
+  comparison. The same setting governs the spread probe's tree
+  candidate: when the linear spread screen finds no covariate, GaussianLSS
+  is offered a joint depth-3 tree as its scale equation. `"auto"`
+  (default) runs each when the budget left pays for it without taking
+  the fits the mean route's stopping search needs (the scale candidate
+  needs 8 sweeps of folds left); `True` runs them whatever the budget;
+  `False` never.
 - `residual_tree` (bool or "auto"): After the interaction step, try one more term: a regression tree of
   depth 5 over every numeric and categorical column (``btree(x1, ...,
   xp, maxdepth=5)``; a factor splits into two sets of its levels),
@@ -356,4 +372,4 @@ declared both a group and a measurement, or `treatment`
 names the response, a column the frame does not hold, or a
 `CausalSpec` whose outcome is not this call's response.
 
-Source: [`python/mboostrs/autospec.py` lines 141-589](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/autospec.py#L141-L589)
+Source: [`python/mboostrs/autospec.py` lines 147-611](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/autospec.py#L147-L611)

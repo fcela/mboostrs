@@ -4,7 +4,12 @@
 \alias{Laplace}
 \title{Laplace family (L1 absolute loss)}
 \usage{
-Laplace()
+Laplace(response_scale = getOption("mboostrs.response_scale", "auto"))
+}
+\arguments{
+\item{response_scale}{The scale the response is divided by before fitting,
+as in \code{\link[=Quantile]{Quantile()}}: \code{"auto"} (default), \code{"none"} (or \code{NULL}, \code{mboost}'s
+path) or a positive number.}
 }
 \value{
 A family object (list with class \code{"mboostrs_family"}) for use with

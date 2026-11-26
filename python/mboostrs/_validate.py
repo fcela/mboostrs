@@ -229,3 +229,18 @@ def check_fit_budget(needed: int, fit_budget, what: str, *, detail: str = "",
         raise ValueError(
             f"{what} needs {needed} fits{detail}, exceeding fit_budget={budget}; "
             f"raise fit_budget to at least {needed}, or {remedy}")
+
+
+def _model_unseen_levels(model, value):
+    """The unseen-level policy of a prediction call: ``value``, or when it is
+    ``None`` (the default) the model's own policy.
+
+    A model's policy is ``"error"`` -- refuse a ``brandom``/factor level the
+    fit never saw -- unless the model records another: one built by
+    ``mb.fit`` predicts an unseen level as the average group (``"average"``)
+    and records that in its trail.
+    """
+    if value is None:
+        return getattr(model, "_default_unseen_levels", "error")
+    return value
+

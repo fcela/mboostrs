@@ -4,13 +4,29 @@
 \alias{Quantile}
 \title{Quantile regression family}
 \usage{
-Quantile(tau = 0.5, qoffset = 0.5)
+Quantile(
+  tau = 0.5,
+  qoffset = NULL,
+  response_scale = getOption("mboostrs.response_scale", "auto")
+)
 }
 \arguments{
 \item{tau}{The quantile to estimate, in (0, 1).}
 
 \item{qoffset}{The quantile of the response used as the boosting starting
-value, in (0, 1). \code{mboost} uses the same convention.}
+value, in (0, 1). \code{NULL} (default) is \code{tau}; \code{mboost}'s \code{QuantReg}
+starts at the median (0.5) whatever \code{tau}.}
+
+\item{response_scale}{The scale the response is divided by before fitting:
+\code{"auto"} (default), its weighted SD; \code{"none"} (or \code{NULL}), the raw
+response, \code{mboost}'s path; or a positive number. The check loss's
+gradient does not grow with the response, so without a scale each step
+moves the fit by about \code{nu * tau} in response units and a response in
+large units barely leaves its offset. The model is mapped back exactly,
+so predictions and coefficients are in the original units. A fit given
+no \code{control} uses \code{nu = 0.3} rather than 0.1; with \code{qoffset = 0.5},
+\code{response_scale = "none"} and \code{boost_control(nu = 0.1)} this is
+\code{mboost}'s \code{QuantReg}.}
 }
 \value{
 A family object for \code{\link[=glmboost]{glmboost()}} / \code{\link[=gamboost]{gamboost()}}.

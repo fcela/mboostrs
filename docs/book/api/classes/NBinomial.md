@@ -25,4 +25,4 @@ The fitted model's `size` property names this value explicitly.
 `NBinomial()` takes no fixed size, `alpha` or `dispersion` argument;
 the core estimates the size at every step.
 
-Source: [`python/mboostrs/families.py` lines 155-180](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L155-L180)
+Source: [`python/mboostrs/families.py` lines 220-245](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L220-L245)

@@ -23,7 +23,10 @@ with the same string labels to `predict`, `gam_refit(...).effects`,
 `gamlss_refit(...).draws`, `confint(method="refit")` and
 `conformal_interval`. A label the fit never saw raises unless you choose a
 policy with `unseen_levels=`: `"average"` predicts the row as an average
-group, `"zero_effect"` gives a `brandom` term zero effect. A column whose
+group, `"zero_effect"` gives a `brandom` term zero effect. A model returned
+by `mb.fit` predicts such a label as the average group without being told,
+and its decision trail records `unseen_levels: "average"` in `final`; pass
+`unseen_levels="error"` to its `predict` to refuse instead. A column whose
 values match the fitted labels only after a type cast (fitted as strings
 `"1"`, `"2"`, arriving as integers 1, 2) is refused under every policy:
 cast it back. An error that lists numbers where you passed labels (or the

@@ -15,4 +15,4 @@ Takes a `Surv(time, status)` response and models log survival time
 directly, so the fit is a statement about time rather than about a hazard
 ratio. The scale parameter is a nuisance estimated alongside the path.
 
-Source: [`python/mboostrs/families.py` lines 260-266](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L260-L266)
+Source: [`python/mboostrs/families.py` lines 325-331](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L325-L331)

@@ -155,6 +155,18 @@ fn r_param_category_count(family: &str, name: &str, value: f64, minimum: usize) 
     count
 }
 
+/// A family parameter map's `response_scale`: absent fits the raw response
+/// (R mboost), `0` asks for the automatic scale, a positive value fixes it.
+fn family_response_scale(params: &HashMap<String, f64>) -> mboostrs_core::control::ResponseScale {
+    use mboostrs_core::control::ResponseScale;
+    match params.get("response_scale").copied() {
+        None => ResponseScale::Raw,
+        Some(v) if v == 0.0 => ResponseScale::Auto,
+        Some(v) if v.is_finite() && v > 0.0 => ResponseScale::Fixed(v),
+        Some(_) => ResponseScale::Raw,
+    }
+}
+
 macro_rules! with_concrete_family {
     ($name:expr, $params:expr, |$fam:ident| $body:expr) => {{
         #[allow(unused_mut)]
@@ -176,7 +188,7 @@ macro_rules! with_concrete_family {
                 $body
             }
             "laplace" => {
-                let mut $fam = Laplace;
+                let mut $fam = Laplace::with_response_scale(family_response_scale(&$params));
                 $body
             }
             "quantreg" => {
@@ -190,7 +202,8 @@ macro_rules! with_concrete_family {
                     "qoffset",
                     $params.get("qoffset").copied().unwrap_or(0.5),
                 );
-                let mut $fam = QuantReg::with_qoffset(tau, qoffset);
+                let mut $fam = QuantReg::with_qoffset(tau, qoffset)
+                    .with_response_scale(family_response_scale(&$params));
                 $body
             }
             "expectreg" => {
@@ -2882,6 +2895,7 @@ fn fit_glmboostlss(
     nu_per_param: &[f64],
     step: &str,
     step_iterations: i32,
+    response_scale: &str,
 ) -> List {
     use mboostrs_core::lss::{
         try_fit_lss, BetaLSS, BinomialLSS, DirichletLSS, GammaLSS, GaussianKnownVarLSS,
@@ -2959,7 +2973,14 @@ fn fit_glmboostlss(
     let ctrl = BoostControl::new(mstop, nu)
         .unwrap_or_else(|e| throw_r_error(format!("invalid BoostControl: {e}")))
         .with_trace(trace);
-    let ctrl = lss_settings(ctrl, stabilization, nu_per_param, step, step_iterations);
+    let ctrl = lss_settings(
+        ctrl,
+        stabilization,
+        nu_per_param,
+        step,
+        step_iterations,
+        response_scale,
+    );
 
     let mut per_param: Vec<Vec<PreparedLearner>> = Vec::with_capacity(param_ncols.len());
     let mut col0 = 0usize;
@@ -3985,6 +4006,7 @@ fn fit_gamboostlss_mixed(
     nu_per_param: &[f64],
     step: &str,
     step_iterations: i32,
+    response_scale: &str,
 ) -> List {
     use mboostrs_core::lss::{
         try_fit_lss, try_fit_lss_noncyclic, BetaLSS, BinomialLSS, DirichletLSS, GammaLSS,
@@ -4049,7 +4071,14 @@ fn fit_gamboostlss_mixed(
     let control = BoostControl::new(mstop, nu)
         .unwrap_or_else(|error| throw_r_error(format!("invalid BoostControl: {error}")))
         .with_trace(trace);
-    let control = lss_settings(control, stabilization, nu_per_param, step, step_iterations);
+    let control = lss_settings(
+        control,
+        stabilization,
+        nu_per_param,
+        step,
+        step_iterations,
+        response_scale,
+    );
     let preparation_timer = trace.then(PreparationTimer::start);
     let mut per_param = prepare_lss_blueprints_r(&blueprints, weights.view())
         .unwrap_or_else(|error| throw_r_error(error.to_string()));
@@ -4153,6 +4182,7 @@ fn cvrisk_gamboostlss_mixed(
     nu_per_param: &[f64],
     step: &str,
     step_iterations: i32,
+    response_scale: &str,
 ) -> Vec<f64> {
     use mboostrs_core::lss::try_cvrisk_lss_with;
 
@@ -4190,7 +4220,14 @@ fn cvrisk_gamboostlss_mixed(
     }
     let control = BoostControl::new(mstop, nu)
         .unwrap_or_else(|error| throw_r_error(format!("invalid BoostControl: {error}")));
-    let control = lss_settings(control, stabilization, nu_per_param, step, step_iterations);
+    let control = lss_settings(
+        control,
+        stabilization,
+        nu_per_param,
+        step,
+        step_iterations,
+        response_scale,
+    );
     let weights = ndarray::Array1::from_vec(weights.to_vec());
     let y = ndarray::Array1::from_vec(y.to_vec());
     let folds = ndarray::Array2::from_shape_vec((n, b), folds.to_vec())
@@ -4234,6 +4271,7 @@ fn stabsel_selected_gamboostlss_mixed(
     nu_per_param: &[f64],
     step: &str,
     step_iterations: i32,
+    response_scale: &str,
 ) -> List {
     use mboostrs_core::lss::try_fit_lss_noncyclic;
 
@@ -4269,7 +4307,14 @@ fn stabsel_selected_gamboostlss_mixed(
     let y = ndarray::Array1::from_vec(y.to_vec());
     let control = BoostControl::new(mstop, nu)
         .unwrap_or_else(|error| throw_r_error(format!("invalid BoostControl: {error}")));
-    let control = lss_settings(control, stabilization, nu_per_param, step, step_iterations);
+    let control = lss_settings(
+        control,
+        stabilization,
+        nu_per_param,
+        step,
+        step_iterations,
+        response_scale,
+    );
     let mut parameter_offsets = Vec::with_capacity(n_params);
     let mut total = 0usize;
     for parameter in &blueprints {
@@ -4335,6 +4380,7 @@ fn cvrisk_glmboostlss(
     nu_per_param: &[f64],
     step: &str,
     step_iterations: i32,
+    response_scale: &str,
 ) -> Vec<f64> {
     use mboostrs_core::lss::{
         BetaLSS, BinomialLSS, DirichletLSS, GammaLSS, GaussianKnownVarLSS, GaussianLSS,
@@ -4394,7 +4440,14 @@ fn cvrisk_glmboostlss(
     };
     let ctrl = BoostControl::new(mstop, nu)
         .unwrap_or_else(|e| throw_r_error(format!("invalid BoostControl: {e}")));
-    let ctrl = lss_settings(ctrl, stabilization, nu_per_param, step, step_iterations);
+    let ctrl = lss_settings(
+        ctrl,
+        stabilization,
+        nu_per_param,
+        step,
+        step_iterations,
+        response_scale,
+    );
 
     let mut per_param: Vec<Vec<PreparedLearner>> = Vec::with_capacity(k);
     let mut col0 = 0usize;
@@ -4470,6 +4523,7 @@ fn fit_glmboostlss_noncyclic(
     nu_per_param: &[f64],
     step: &str,
     step_iterations: i32,
+    response_scale: &str,
 ) -> List {
     use mboostrs_core::lss::{
         try_fit_lss_noncyclic, BetaLSS, BinomialLSS, DirichletLSS, GammaLSS, GaussianKnownVarLSS,
@@ -4527,7 +4581,14 @@ fn fit_glmboostlss_noncyclic(
     let ctrl = BoostControl::new(mstop, nu)
         .unwrap_or_else(|e| throw_r_error(format!("invalid BoostControl: {e}")))
         .with_trace(trace);
-    let ctrl = lss_settings(ctrl, stabilization, nu_per_param, step, step_iterations);
+    let ctrl = lss_settings(
+        ctrl,
+        stabilization,
+        nu_per_param,
+        step,
+        step_iterations,
+        response_scale,
+    );
     let mut per_param: Vec<Vec<PreparedLearner>> = Vec::with_capacity(param_ncols.len());
     let mut col0 = 0usize;
     for &pc in &param_ncols {
@@ -4633,6 +4694,7 @@ fn stabsel_selected_glmboostlss(
     nu_per_param: &[f64],
     step: &str,
     step_iterations: i32,
+    response_scale: &str,
 ) -> List {
     use mboostrs_core::lss::{
         try_fit_lss_noncyclic, BetaLSS, BinomialLSS, DirichletLSS, GammaLSS, GaussianKnownVarLSS,
@@ -4685,7 +4747,14 @@ fn stabsel_selected_glmboostlss(
     };
     let ctrl = BoostControl::new(mstop, nu)
         .unwrap_or_else(|e| throw_r_error(format!("invalid BoostControl: {e}")));
-    let ctrl = lss_settings(ctrl, stabilization, nu_per_param, step, step_iterations);
+    let ctrl = lss_settings(
+        ctrl,
+        stabilization,
+        nu_per_param,
+        step,
+        step_iterations,
+        response_scale,
+    );
     let mut offset = vec![0usize; param_ncols.len()];
     let mut acc = 0usize;
     for (p, &pc) in param_ncols.iter().enumerate() {
@@ -5762,13 +5831,38 @@ fn lss_settings(
     nu_per_param: &[f64],
     step: &str,
     step_iterations: i32,
+    response_scale: &str,
 ) -> BoostControl {
+    use mboostrs_core::control::ResponseScale;
     control.stabilization = mboostrs_core::lss::Stabilization::parse(stabilization)
         .unwrap_or_else(|error| throw_r_error(format!("invalid stabilization: {error}")));
     if !nu_per_param.is_empty() {
         control.nu_per_param = Some(nu_per_param.to_vec());
     }
+    // The R frontend passes "auto", "none" or the scale as text.
+    let scale = match response_scale {
+        "auto" => ResponseScale::Auto,
+        "none" => ResponseScale::Raw,
+        text => ResponseScale::Fixed(text.parse::<f64>().unwrap_or_else(|_| {
+            throw_r_error(format!(
+                "response_scale must be \"auto\", \"none\" or a positive number, got {text:?}"
+            ))
+        })),
+    };
+    let control = control
+        .with_response_scale(scale)
+        .unwrap_or_else(|error| throw_r_error(format!("{error}")));
     apply_r_step(control, step, step_iterations)
+}
+
+/// The automatic response scale of a distributional fit (the weighted SD of
+/// the scaled part of `y`), or `NA` for a family with no scale or a response
+/// with no spread.
+#[extendr]
+fn lss_auto_response_scale_r(family_name: &str, n_params: i32, y: &[f64], weights: &[f64]) -> f64 {
+    let family = mboostrs_core::lss::make_family(family_name, n_params as usize)
+        .unwrap_or_else(|error| throw_r_error(format!("{error}")));
+    mboostrs_core::lss::auto_response_scale(family.as_ref(), y, weights).unwrap_or(f64::NAN)
 }
 
 /// A spline spec's numeric `by = z` modifier (`$by_values`), checked to have
@@ -5860,6 +5954,7 @@ fn r_centered_group_effects(coef: &[f64], centering: &[f64]) -> Vec<f64> {
 
 extendr_module! {
     mod mboostrs;
+    fn lss_auto_response_scale_r;
     fn r_centered_group_effects;
     fn r_lss_distribution;
     fn r_percentile_interval;

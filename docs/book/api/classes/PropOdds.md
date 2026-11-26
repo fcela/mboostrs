@@ -38,4 +38,4 @@ level.
   categories is a binary response, which `Binomial` fits.)
 - `levels` (sequence, optional): The categories in order, lowest first.
 
-Source: [`python/mboostrs/families.py` lines 201-246](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L201-L246)
+Source: [`python/mboostrs/families.py` lines 266-311](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L266-L311)

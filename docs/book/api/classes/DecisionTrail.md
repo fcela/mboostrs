@@ -21,7 +21,7 @@ DecisionTrail(
 
 A builder for the record in section 5 of the design note.
 
-Source: [`python/mboostrs/_procedure/_trail.py` lines 191-361](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_trail.py#L191-L361)
+Source: [`python/mboostrs/_procedure/_trail.py` lines 191-366](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_trail.py#L191-L366)
 
 ## Members
 
@@ -29,7 +29,7 @@ Source: [`python/mboostrs/_procedure/_trail.py` lines 191-361](https://github.co
 |---|---|---|
 | `start` | Method | Open a trail with the data, folds and provenance. |
 | `add_step` | Method | Append one decision. Extra keyword arguments become its fields. |
-| `set_final` | Method |  |
+| `set_final` | Method | Record the final specification, and the model's unseen-level policy |
 | `set_uncertainty` | Method |  |
 | `set_budget` | Method | Record the budget setting, its fit and time limits and the fits spent. |
 | `to_dict` | Method | The trail as plain Python types, JSON-safe (NaN/inf become null). |
@@ -81,12 +81,18 @@ Source: [`python/mboostrs/_procedure/_trail.py` lines 263-268](https://github.co
 *Method* of `DecisionTrail`
 
 ```python
-DecisionTrail.set_final(formula: str, family: Any, mstop: int) -> DecisionTrail
+DecisionTrail.set_final(
+    formula: str,
+    family: Any,
+    mstop: int,
+    unseen_levels: str | None = None
+) -> DecisionTrail
 ```
 
-*No description in the docstring.*
+Record the final specification, and the model's unseen-level policy
+when it is not the library default `"error"`.
 
-Source: [`python/mboostrs/_procedure/_trail.py` lines 270-274](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_trail.py#L270-L274)
+Source: [`python/mboostrs/_procedure/_trail.py` lines 270-279](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_trail.py#L270-L279)
 
 (decisiontrail-set_uncertainty)=
 ## `DecisionTrail.set_uncertainty`
@@ -99,7 +105,7 @@ DecisionTrail.set_uncertainty(method: str = 'none', **fields: Any) -> DecisionTr
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/_procedure/_trail.py` lines 276-288](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_trail.py#L276-L288)
+Source: [`python/mboostrs/_procedure/_trail.py` lines 281-293](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_trail.py#L281-L293)
 
 (decisiontrail-set_budget)=
 ## `DecisionTrail.set_budget`
@@ -118,7 +124,7 @@ DecisionTrail.set_budget(
 
 Record the budget setting, its fit and time limits and the fits spent.
 
-Source: [`python/mboostrs/_procedure/_trail.py` lines 290-303](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_trail.py#L290-L303)
+Source: [`python/mboostrs/_procedure/_trail.py` lines 295-308](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_trail.py#L295-L308)
 
 (decisiontrail-to_dict)=
 ## `DecisionTrail.to_dict`
@@ -131,7 +137,7 @@ DecisionTrail.to_dict(*, include_arrays: bool = False) -> dict[str, Any]
 
 The trail as plain Python types, JSON-safe (NaN/inf become null).
 
-Source: [`python/mboostrs/_procedure/_trail.py` lines 306-321](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_trail.py#L306-L321)
+Source: [`python/mboostrs/_procedure/_trail.py` lines 311-326](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_trail.py#L311-L326)
 
 (decisiontrail-to_json)=
 ## `DecisionTrail.to_json`
@@ -144,7 +150,7 @@ DecisionTrail.to_json(indent: int = 2) -> str
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/_procedure/_trail.py` lines 323-324](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_trail.py#L323-L324)
+Source: [`python/mboostrs/_procedure/_trail.py` lines 328-329](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_trail.py#L328-L329)
 
 (decisiontrail-from_dict)=
 ## `DecisionTrail.from_dict`
@@ -163,7 +169,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `TypeError`
 
-Source: [`python/mboostrs/_procedure/_trail.py` lines 326-346](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_trail.py#L326-L346)
+Source: [`python/mboostrs/_procedure/_trail.py` lines 331-351](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_trail.py#L331-L351)
 
 (decisiontrail-validate)=
 ## `DecisionTrail.validate`
@@ -176,4 +182,4 @@ DecisionTrail.validate() -> bool
 
 Check the record against the schema, raising on failure.
 
-Source: [`python/mboostrs/_procedure/_trail.py` lines 349-361](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_trail.py#L349-L361)
+Source: [`python/mboostrs/_procedure/_trail.py` lines 354-366](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_trail.py#L354-L366)

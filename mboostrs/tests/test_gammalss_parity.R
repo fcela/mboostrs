@@ -1,5 +1,8 @@
 #@validates parity.r.gammalss
 # Parity check: our GammaLSS (glmboostLSS + gamboostLSS) vs R's gamboostLSS.
+# Compared with R mboost/gamboostLSS (or with values recorded from them), so
+# fitted on the raw response as R does (see ?gamboostLSS, response_scale).
+options(mboostrs.response_scale = "none")
 if (!requireNamespace("gamboostLSS", quietly = TRUE)) {
   message("gamboostLSS not installed; skipping GammaLSS parity check")
   quit(save = "no")
@@ -19,12 +22,18 @@ chk <- function(a, b, what, tol = 1e-6) {
 }
 
 # glmboostLSS (linear). Namespace-qualify "ours" (gamboostLSS is attached too).
-ours <- mboostrs::glmboostLSS(y ~ x1 + x2, data = d,
-                             families = mboostrs::GammaLSS(),
-                             control = mboostrs::boost_control(mstop = 100, nu = 0.1))
 ref <- gamboostLSS::glmboostLSS(y ~ x1 + x2, data = d,
                                families = gamboostLSS::GammaLSS(),
                                control = mboost::boost_control(mstop = 100, nu = 0.1))
+# R searches the log shape offset over [0, max(y)]; here the marginal shape is
+# below 1, so R's offset is the boundary (about 0) and mboostrs's, which opens
+# the interval in that case, is -0.107 (see "GammaLSS offset search" in the
+# book's parity chapter). The boosting path is compared from R's offsets.
+r_offsets <- c(ref$mu$offset, ref$sigma$offset)
+ours <- mboostrs::glmboostLSS(y ~ x1 + x2, data = d,
+                             families = mboostrs::GammaLSS(),
+                             control = mboostrs::boost_control(mstop = 100, nu = 0.1),
+                             offset = r_offsets)
 chk(predict(ours, parameter = "mu", type = "link"),
     as.numeric(predict(ref, parameter = "mu", type = "link")), "glm mu (link)")
 chk(predict(ours, parameter = "sigma", type = "link"),
@@ -37,12 +46,13 @@ xg <- runif(n, -1, 1)
 mug <- exp(0.5 + 0.5 * sin(2 * xg)); sigg <- exp(0.3 + 0.3 * xg)
 yg <- rgamma(n, shape = sigg, scale = mug / sigg)
 dg <- data.frame(y = yg, x = xg)
-oursg <- mboostrs::gamboostLSS(y ~ bbs(x, knots = 20, df = 4), data = dg,
-                              families = mboostrs::GammaLSS(),
-                              control = mboostrs::boost_control(mstop = 100, nu = 0.1))
 refg <- gamboostLSS::gamboostLSS(y ~ bbs(x, knots = 20, df = 4), data = dg,
                                 families = gamboostLSS::GammaLSS(),
                                 control = mboost::boost_control(mstop = 100, nu = 0.1))
+oursg <- mboostrs::gamboostLSS(y ~ bbs(x, knots = 20, df = 4), data = dg,
+                              families = mboostrs::GammaLSS(),
+                              control = mboostrs::boost_control(mstop = 100, nu = 0.1),
+                              offset = c(refg$mu$offset, refg$sigma$offset))
 chk(predict(oursg, parameter = "mu", type = "link"),
     as.numeric(predict(refg, parameter = "mu", type = "link")), "gam mu (link)")
 chk(predict(oursg, parameter = "sigma", type = "link"),

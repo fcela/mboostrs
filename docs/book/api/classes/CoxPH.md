@@ -17,4 +17,4 @@ the baseline hazard unspecified, so predictions order patients by risk
 rather than giving survival times. For an absolute time scale, use one of
 the accelerated-failure-time families instead.
 
-Source: [`python/mboostrs/families.py` lines 249-257](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L249-L257)
+Source: [`python/mboostrs/families.py` lines 314-322](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L314-L322)

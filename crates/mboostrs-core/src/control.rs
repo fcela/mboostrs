@@ -98,6 +98,37 @@ pub struct BoostControl {
     /// `nu·h`; `LineSearch` first finds the loss-optimal multiple of the
     /// winner's direction and shrinks that by `nu` instead.
     pub step: StepRule,
+    /// Divide the response by this positive scale before a distributional fit
+    /// and map the fitted model back to the original units afterwards.
+    /// **Distributional fits only**, and only for families whose
+    /// [`crate::lss::LssFamily::scale_map`] is `Some`: the others ignore it.
+    ///
+    /// Boosted LSS fitting is not unit-free. Each step moves a location
+    /// parameter by about `nu` in response units once gradients are
+    /// stabilized (and by much less when they are not), so the same data in
+    /// dollars and in thousands of dollars give different fits at the same
+    /// step count, and a response measured in large units may not leave its
+    /// offset within any practical `mstop`. Fitting `y / s` and mapping each
+    /// parameter's predictor back by `eta = a * eta_s + b` makes the fit
+    /// equivariant: predictions, coefficients and risks are in the original
+    /// units, and the path is the one R `gamboostLSS` takes on `y / s`.
+    /// [`ResponseScale::Raw`] (the default) fits the raw response, R's path.
+    pub response_scale: ResponseScale,
+}
+
+/// The scale a distributional fit divides its response by (see
+/// [`BoostControl::response_scale`]).
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+pub enum ResponseScale {
+    /// Fit the response as given (R `gamboostLSS`).
+    #[default]
+    Raw,
+    /// The weighted SD of the response each fit sees, so a fit on a subset,
+    /// a cross-validation fold or a weighted refit uses the scale of its own
+    /// data (see [`crate::lss::auto_response_scale`]).
+    Auto,
+    /// A fixed positive scale.
+    Fixed(f64),
 }
 
 impl BoostControl {
@@ -123,7 +154,23 @@ impl BoostControl {
             subsample_seed: 0,
             nu_per_param: None,
             step: StepRule::Fixed,
+            response_scale: ResponseScale::Raw,
         })
+    }
+
+    /// Fit distributional models on `y / s` and map the model back (see
+    /// [`BoostControl::response_scale`]). A fixed scale must be finite and
+    /// positive.
+    pub fn with_response_scale(mut self, scale: ResponseScale) -> Result<Self, MboostrsError> {
+        if let ResponseScale::Fixed(s) = scale {
+            if !s.is_finite() || s <= 0.0 {
+                return Err(MboostrsError::Control(format!(
+                    "response_scale must be finite and positive, got {s}"
+                )));
+            }
+        }
+        self.response_scale = scale;
+        Ok(self)
     }
 
     /// Choose the step rule: the constant `nu·h` (`Fixed`), or `nu` as a

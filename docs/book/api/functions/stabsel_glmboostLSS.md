@@ -24,7 +24,8 @@ stabsel_glmboostLSS(
     weight_policy='upstream',
     nu=None,
     stabilization=None,
-    fit_budget=None
+    fit_budget=None,
+    response_scale='auto'
 )
 ```
 
@@ -75,4 +76,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `TypeError`
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 7218-7383](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L7218-L7383)
+Source: [`python/mboostrs/gamlss.py` lines 7307-7473](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L7307-L7473)

@@ -25,4 +25,4 @@ raw fitted values match R directly -- no centering deviation.
 - `sigma` (float): Width of the sigmoid smoothing of the (otherwise non-differentiable)
   pairwise concordance indicator. Default 0.1, matching R.
 
-Source: [`python/mboostrs/families.py` lines 370-392](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L370-L392)
+Source: [`python/mboostrs/families.py` lines 435-457](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/families.py#L435-L457)

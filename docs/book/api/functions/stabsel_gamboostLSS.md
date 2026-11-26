@@ -27,7 +27,8 @@ stabsel_gamboostLSS(
     nu=None,
     stabilization=None,
     fit_budget=None,
-    na_action='error'
+    na_action='error',
+    response_scale='auto'
 )
 ```
 
@@ -82,4 +83,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `TypeError`
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 7386-7574](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L7386-L7574)
+Source: [`python/mboostrs/gamlss.py` lines 7476-7665](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L7476-L7665)

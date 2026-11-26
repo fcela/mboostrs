@@ -15,7 +15,8 @@ stabsel_gamboostLSS(
   PFER = -1,
   cutoff = -1,
   assumption = "unimodal",
-  sampling_type = "MB"
+  sampling_type = "MB",
+  response_scale = getOption("mboostrs.response_scale", "auto")
 )
 }
 \arguments{
@@ -32,6 +33,9 @@ are appended here, so \code{B} columns produce \code{2 * B} fits.
 \item{assumption, sampling_type}{Passed to error-control computation.
 \code{sampling_type = "SS"} uses complementary pairs and fits
 \code{2 * B} models; \code{"MB"} fits \code{B}.}
+
+\item{response_scale}{The response scale, as in \code{glmboostLSS}
+(default \code{"auto"}); each fold uses the scale of its own rows.}
 }
 \value{
 A list with \code{selected}, \code{max}, \code{cutoff}, \code{q}, \code{PFER}.

@@ -45,6 +45,7 @@ import numpy as np
 
 from mboostrs._autospec import (
     _EXPOSURE,
+    _LSS_TREE_DEPTHS,
     _MSTOP_EXTENSION_CAP,
     _SPREAD_TRACKS,
     _STEP,
@@ -56,6 +57,7 @@ from mboostrs._autospec import (
     compare_finished_routes,
     hygiene_findings,
     interaction_structure,
+    lss_joint_tree_step,
     priority_order,
     probe_family,
     probe_heteroscedasticity,
@@ -138,13 +140,17 @@ def _scheme_rows(scheme, rows):
         groups=take(scheme.groups), strata=take(scheme.strata),
         base_weights=take(scheme.base_weights))
 
+#: Model-fit sweeps (one per fold each) that must remain before the spread
+#: probe offers GaussianLSS a tree scale equation under `lss_trees="auto"`.
+_TREE_SCALE_SWEEPS = 8
+
 def autospec(data, response, *, family=None, mstop=100, df=4.0, smooth="bbs",
               budget=0, folds=None, seed=0, nu=None, prior=None,
               monotone=None, coordinates=None, adjacency=None, basis=None,
               groups=None, measurements=None, treatment=None, interactions="report",
               deselect=True, step=None, residual_tree=False, preexploration="native",
               heredity="none", forbid=None, mandatory=None, joint_tree=True,
-              exposure=None, na_action=None):
+              exposure=None, na_action=None, lss_trees="auto"):
     """Guess a complete boosting specification for ``data``.
 
     Parameters
@@ -365,6 +371,22 @@ def autospec(data, response, *, family=None, mstop=100, df=4.0, smooth="bbs",
         varying slope, or a switch-on smooth), skipping pairs that record one
         axis twice, and re-tunes `mstop` for the larger formula when budget
         remains.
+    lss_trees : bool or "auto"
+        When the search adopts a distributional family, offer a joint tree
+        (``btree`` over the numeric predictors, depths 3 and 6) added to every
+        parameter's formula, so the mean and the spread can depend on
+        products and thresholds of predictors that additive terms cannot
+        represent. The tree is adopted only when the family's held-out log
+        score beats the additive specification by the family choice's margin
+        and two paired fold standard errors, and its squared error of the mean
+        is not worse; ``evidence["lss_joint_tree"]`` records each depth's
+        comparison. The same setting governs the spread probe's tree
+        candidate: when the linear spread screen finds no covariate, GaussianLSS
+        is offered a joint depth-3 tree as its scale equation. ``"auto"``
+        (default) runs each when the budget left pays for it without taking
+        the fits the mean route's stopping search needs (the scale candidate
+        needs 8 sweeps of folds left); ``True`` runs them whatever the budget;
+        ``False`` never.
     residual_tree : bool or "auto"
         After the interaction step, try one more term: a regression tree of
         depth 5 over every numeric and categorical column (``btree(x1, ...,
@@ -593,8 +615,11 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
                    prior, monotone, coordinates, adjacency, basis, groups, measurements,
                    treatment, interactions, deselect, step, residual_tree=False,
                    auto_nu=False, preexploration="native", heredity="none", forbid=None,
-                   mandatory=None, joint_tree=True, exposure=None, na_action=None):
+                   mandatory=None, joint_tree=True, exposure=None, na_action=None,
+                   lss_trees="auto"):
     """The body of :func:`autospec` at one step rule."""
+    if lss_trees not in (False, True, "auto"):
+        raise ValueError(f'lss_trees must be True, False or "auto", got {lss_trees!r}')
     if heredity not in ("none", "weak", "strong"):
         raise ValueError(f'heredity must be "none", "weak" or "strong", got {heredity!r}')
     if residual_tree not in (False, True, "auto"):
@@ -761,29 +786,100 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
             "na_action must be None, 'impute', 'impute_model', "
             f"'impute_model_split', 'omit', or 'error', got {na_action!r}"
         )
-    # The probes fit on complete rows. A missing value in the response or a
-    # modelled column makes every fit refuse the row, so the rows are left out
-    # once, here, and the report and `rec.fit` say so.
-    complete = np.isfinite(response_column.values)
+    # Under impute modes, predictors are filled rather than dropping rows;
+    # only rows missing the response itself are left out. Under omit/None/error,
+    # any missing value in the response or a modelled predictor makes the row
+    # incomplete. `incomplete_rows` always counts rows missing either the
+    # response or a modelled predictor so hygiene/trail reporting stays exact.
+    imputing = na_action in ("impute", "impute_model", "impute_model_split")
+    response_complete = np.isfinite(response_column.values)
+    all_complete = response_complete.copy()
     for column in modelled:
-        complete &= np.isfinite(column.values)
-    incomplete_rows = int((~complete).sum())
+        all_complete &= np.isfinite(column.values)
+    incomplete_rows = int((~all_complete).sum())
+    keep_rows = response_complete if imputing else all_complete
+    dropped_rows = int((~keep_rows).sum())
     if incomplete_rows and na_action == "error":
         raise ValueError(
             f"{incomplete_rows} row(s) have missing values in the response or "
             "a modelled predictor and na_action='error'"
         )
-    if incomplete_rows and not complete.any():
-        raise ValueError("no row has the response and every modelled column present")
-    if incomplete_rows:
+    if dropped_rows and not keep_rows.any():
+        raise ValueError(
+            "no row has the response present" if imputing
+            else "no row has the response and every modelled column present"
+        )
+    if dropped_rows:
         from mboostrs._frame import take_rows
 
-        data = take_rows(data, np.flatnonzero(complete))
+        data = take_rows(data, np.flatnonzero(keep_rows))
+    if imputing:
+        # Pre-impute predictor columns on the search copy so every probe
+        # (including preexploration, interaction screen and grouped folds)
+        # sees finite values and all observed-response rows, while
+        # `SpecRecommendation.fit(orig_data)` replays the real `na_action`
+        # with missingness indicators on the caller's original frame.
+        from mboostrs.transforms import _MISSING_LEVEL, _is_categorical, _missing_labels, _with_columns
+
+        filled = {}
+        for column in modelled:
+            raw_col = data[column.name]
+            arr = raw_col.to_numpy() if hasattr(raw_col, "to_numpy") else np.asarray(raw_col)
+            if _is_categorical(data, column.name):
+                obj = np.asarray(arr, dtype=object)
+                miss = _missing_labels(obj)
+                if miss.any():
+                    observed = {str(v) for v in obj[~miss].tolist()}
+                    label = _MISSING_LEVEL
+                    while label in observed:
+                        label += "_"
+                    if hasattr(data, "with_columns"):
+                        filled[column.name] = [
+                            label if m else v
+                            for m, v in zip(miss.tolist(), obj.tolist(), strict=True)
+                        ]
+                    else:
+                        filled[column.name] = np.where(miss, label, obj)
+            elif arr.dtype.kind == "f":
+                miss = ~np.isfinite(arr)
+                if miss.any():
+                    present = arr[~miss]
+                    med = float(np.median(present)) if present.size else 0.0
+                    filled[column.name] = np.where(miss, med, arr)
+        if filled:
+            data = _with_columns(data, filled)
     if exposure_values is not None:
         # The offset every probe fit carries, on the same rows as the data.
-        _EXPOSURE.set(np.log(exposure_values[complete]))
+        _EXPOSURE.set(np.log(exposure_values[keep_rows]))
 
-    n_rows = int(complete.sum())
+    # Dropping incomplete rows can collapse a remaining predictor to a single
+    # value, which breaks spline boundary_knots downstream; drop such columns
+    # before any probe fits them.
+    if dropped_rows and prior is None and len(modelled) > 1:
+        from mboostrs._autospec import _NEAR_CONSTANT_TOLERANCE
+
+        keep_pairs = []
+        for col, term in zip(modelled, terms, strict=True):
+            vals = read_column(data, col.name).values
+            finite = vals[np.isfinite(vals)]
+            if finite.size < 2:
+                continue
+            span = float(finite.max() - finite.min())
+            scale = max(float(np.max(np.abs(finite))), 1.0)
+            if span <= _NEAR_CONSTANT_TOLERANCE * scale:
+                continue
+            keep_pairs.append((col, term))
+        if keep_pairs and len(keep_pairs) < len(modelled):
+            modelled = [c for c, _ in keep_pairs]
+            terms = [t for _, t in keep_pairs]
+            formula = f"{quote_response(response)} ~ " + " + ".join(terms)
+            if any((_reads_transformed(term) or " + " in term) for term in terms):
+                learners = None
+            else:
+                _, learners = parse_gamboost_formula(formula, env=env or None)
+            start_formula = formula
+
+    n_rows = int(keep_rows.sum())
     folds_description = ""
     shared_scheme = None      # the FoldScheme, when the design carries a judge set
     shared_judge = None        # its judge mask, if it has one
@@ -793,14 +889,14 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
         if hasattr(folds, "scheme"):
             # The scheme itself is subset, so the matrix, its judge mask and
             # every refit that reads the scheme describe the same rows.
-            shared_scheme = (_scheme_rows(folds, np.flatnonzero(complete))
-                             if incomplete_rows else folds)
+            shared_scheme = (_scheme_rows(folds, np.flatnonzero(keep_rows))
+                             if dropped_rows else folds)
             shared_judge = shared_scheme.judge
             shared_folds = np.asarray(shared_scheme, dtype=float)
         else:
             shared_folds = np.asarray(folds, dtype=float)
-            if incomplete_rows:
-                shared_folds = shared_folds[complete]
+            if dropped_rows:
+                shared_folds = shared_folds[keep_rows]
     else:
         # The frame's own structure names the honest folds when the caller
         # left the design to the tool. Columns the specification fits as
@@ -892,7 +988,7 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
     def fold_matrix():
         if shared_folds is not None:
             return shared_folds
-        return cv_weights(n_rows, type="kfold", B=5, seed=seed)
+        return cv_weights(n_rows, type="kfold", B=min(5, max(2, n_rows)), seed=seed)
 
     cache = _FitCache()
     screen_reused = 0
@@ -1014,6 +1110,32 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
                 measured=route_measured, evidence=route_evidence,
                 judge=shared_judge)
             route_evidence["family"] = family_evidence
+        if lss_trees and modelled:
+            n_route_folds = int(np.asarray(fold_matrix()).shape[1])
+            need = (len(_LSS_TREE_DEPTHS) + 3) * n_route_folds
+            room = lss_budget - spent
+            if lss_trees is True or room >= need:
+                current = (fit_formula if fit_formula is not None
+                           else family_evidence.lss_formula
+                           if family_evidence.lss_formula is not None else formula)
+                steps = max([*(family_evidence.lss_mstop or ()), mstop])
+                largest = int(max(2 * steps, family_evidence.lss_largest or 0, 50))
+                tree_step = lss_joint_tree_step(
+                    data, response, lss_family=lss_family, formula=current,
+                    columns=[c for c in modelled if c.name not in declared],
+                    folds=fold_matrix(), fold_scheme=shared_scheme, mstop=largest,
+                    nu=route_nu, env=env or None,
+                    budget=max(room, need) if lss_trees is True else room,
+                    judge=shared_judge)
+                spent += tree_step["fits"]
+                route_evidence["lss_joint_tree"] = {
+                    key: value for key, value in tree_step.items() if key != "formula"}
+                if tree_step["adopted"] is not None:
+                    fit_formula = tree_step["formula"]
+                    family_evidence = replace(
+                        family_evidence, lss_formula=fit_formula,
+                        lss_mstop=tree_step["optimal"], lss_score=tree_step["score"])
+                    route_evidence["family"] = family_evidence
         return {"family": lss_family, "family_evidence": family_evidence,
                 "formula": formula if fit_formula is None else fit_formula,
                 "evidence": route_evidence, "measured": route_measured,
@@ -1151,7 +1273,15 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
                     [column.name for column in modelled], terms,
                     folds=fold_weights, mstop=probe_depth, nu=nu,
                     env=env or None, validate=budget - spent >= 2 * n_folds,
-                    cache=cache, judge=shared_judge, fold_scheme=shared_scheme)
+                    cache=cache, judge=shared_judge, fold_scheme=shared_scheme,
+                    # The tree scale candidate costs a validation (about
+                    # three sweeps); at a small budget that starves the mean
+                    # route's stopping search (OpenML wave_energy at budget 32:
+                    # mstop 400 instead of 3200, test MSE 43 times larger), so
+                    # "auto" offers it only when 8 sweeps remain.
+                    tree_scale=(lss_trees is True or (
+                        lss_trees == "auto"
+                        and budget - spent >= _TREE_SCALE_SWEEPS * n_folds)))
                 if het is not None:
                     evidence["heteroscedasticity"] = het
                     measured.append("heteroscedasticity")
@@ -1250,23 +1380,30 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
     # unconditional carve-out above.
     picker_need = 3 * n_folds if interactions == "adopt" else 0
 
+    from mboostrs._workflow import BudgetExhausted
+
     if budget > spent and "shapes" in defaulted:
         fold_weights = fold_matrix()
-        shape_evidence, shape_fits = probe_shapes(
-            data, response, modelled, terms, family,
-            folds=fold_weights, mstop=min(probe_depth, _MSTOP_EXTENSION_CAP),
-            nu=nu, df=df, max_fits=max(n_folds, budget - spent - pair_reserve),
-            fixed_names=declared,
-            env=env or None, cache=cache, judge=shared_judge,
-            fold_scheme=shared_scheme, depth=probe_depth,
-            term_shares=(_term_shares(depth_row._fit, probe_depth, terms)
-                         if depth_row is not None and depth_row._fit is not None
-                         and formula == depth_formula else None),
-            risk_floor=risk_floor,
-            # A squared-error surrogate diagnoses response-scale shapes.
-            # For other links it still proposes pairs, but cannot prune
-            # the link-scale shape catalogue.
-            preexploration=exploration if exploration and exploration["shape_pruning"] else None)
+        try:
+            shape_evidence, shape_fits = probe_shapes(
+                data, response, modelled, terms, family,
+                folds=fold_weights, mstop=min(probe_depth, _MSTOP_EXTENSION_CAP),
+                nu=nu, df=df, max_fits=max(n_folds, budget - spent - pair_reserve),
+                fixed_names=declared,
+                env=env or None, cache=cache, judge=shared_judge,
+                fold_scheme=shared_scheme, depth=probe_depth,
+                term_shares=(_term_shares(depth_row._fit, probe_depth, terms)
+                             if depth_row is not None and depth_row._fit is not None
+                             and formula == depth_formula else None),
+                risk_floor=risk_floor,
+                # A squared-error surrogate diagnoses response-scale shapes.
+                # For other links it still proposes pairs, but cannot prune
+                # the link-scale shape catalogue.
+                preexploration=exploration if exploration and exploration["shape_pruning"] else None)
+        except BudgetExhausted as exc:
+            if getattr(exc, "resource", None) != "seconds" or depth_row is None:
+                raise
+            shape_evidence, shape_fits = (), 0
         if shape_evidence:
             chosen = {row.column: row for row in shape_evidence}
             rebuilt = []
@@ -1305,10 +1442,15 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
         if budget - spent - picker_need >= n_folds:
             extensions = min(_MAX_EXTENSIONS,
                              (budget - spent - picker_need - n_folds) // n_folds)
-            mstop_row = probe_mstop(
-                data, response, formula, family,
-                folds=fold_weights, largest=max(int(mstop), 200, probe_depth), nu=nu,
-                env=env or None, extend=extensions, fold_scheme=shared_scheme)
+            try:
+                mstop_row = probe_mstop(
+                    data, response, formula, family,
+                    folds=fold_weights, largest=max(int(mstop), 200, probe_depth), nu=nu,
+                    env=env or None, extend=extensions, fold_scheme=shared_scheme)
+            except BudgetExhausted as exc:
+                if getattr(exc, "resource", None) != "seconds" or depth_row is None:
+                    raise
+                mstop_row = None
             if mstop_row is not None:
                 chosen_mstop = mstop_row.chosen
                 evidence["mstop"] = mstop_row
@@ -1319,173 +1461,201 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
                 # data; the interaction screen truncates that path instead of
                 # fitting it again.
                 main_fit = mstop_row._fit
+    if "mstop" in defaulted and depth_row is not None and family is depth_family:
+        # When the remaining budget could not pay for a post-shape mstop sweep
+        # (for instance because fits were reserved for interaction picking),
+        # keep the measured initial depth sweep rather than falling back to the
+        # unmeasured default mstop=100.
+        chosen_mstop = depth_row.chosen
+        evidence["mstop"] = depth_row
+        measured.append("mstop")
+        defaulted.remove("mstop")
+        main_fit = depth_row._fit
 
-    if interactions not in ("report", "adopt"):
-        raise ValueError('interactions must be "report" or "adopt"')
-    # The screen reads a one-column residual; a Multinomial fit has one per
-    # class, and no Kronecker wrapping for a pair term, so it is not screened.
-    if type(family).__name__ == "Multinomial" and "interactions" in defaulted:
-        defaulted.remove("interactions")
-        evidence["interactions_skipped"] = (
-            "not screened: a Multinomial fit has one residual per class and no "
-            "pair terms")
-    if (budget > spent and "interactions" in defaulted and len(modelled) > 1
-            and type(family).__name__ != "Multinomial"):
-        screen_counts = {}
-        leads, screen_fits, screen_reused = probe_interactions(
-            data, response, formula, family, modelled, terms,
-            mstop=chosen_mstop, nu=nu, env=env or None, main_fit=main_fit,
-            # Adopted pairs the tuned fit leaves unused are dropped by the
-            # deselection step, so adoption can take more leads than a
-            # report lists.
-            top=_ADOPT_LEADS if interactions == "adopt" else 3,
-            surrogate=exploration if exploration is not None else False, seed=seed,
-            counts=screen_counts)
-        evidence["interaction_candidates"] = screen_counts
-        if forbidden:
-            # A forbidden pair is neither listed nor adopted.
-            kept_leads = [lead for lead in leads
-                          if frozenset((lead.left, lead.right)) not in forbidden]
-            if len(kept_leads) < len(leads):
-                evidence["forbidden_interactions"] = tuple(
-                    f"{lead.left} x {lead.right}" for lead in leads if lead not in kept_leads)
-            leads = kept_leads
-        evidence["interactions"] = leads
-        measured.append("interactions")
-        defaulted.remove("interactions")
-        spent += screen_fits
-        in_model = {column.name for column in modelled}
-        pair_parents = {lead.term: (lead.left, lead.right) for lead in leads if lead.term}
+    # Once `mstop` has been measured, a wall-clock timeout (`seconds`) in an
+    # optional enrichment stage (interactions, residual tree, deselection,
+    # pair form, joint tree) keeps the last validated specification instead of
+    # discarding the entire search. Fit-count BudgetExhausted still propagates.
+    saved_valid = (formula, learners, chosen_mstop, evidence.get("mstop"), main_fit,
+                   list(modelled), list(terms))
+    try:
+        if interactions not in ("report", "adopt"):
+            raise ValueError('interactions must be "report" or "adopt"')
+        # The screen reads a one-column residual; a Multinomial fit has one per
+        # class, and no Kronecker wrapping for a pair term, so it is not screened.
+        if type(family).__name__ == "Multinomial" and "interactions" in defaulted:
+            defaulted.remove("interactions")
+            evidence["interactions_skipped"] = (
+                "not screened: a Multinomial fit has one residual per class and no "
+                "pair terms")
+        if (budget > spent and "interactions" in defaulted and len(modelled) > 1
+                and type(family).__name__ != "Multinomial"):
+            screen_counts = {}
+            leads, screen_fits, screen_reused = probe_interactions(
+                data, response, formula, family, modelled, terms,
+                mstop=chosen_mstop, nu=nu, env=env or None, main_fit=main_fit,
+                # Adopted pairs the tuned fit leaves unused are dropped by the
+                # deselection step, so adoption can take more leads than a
+                # report lists.
+                top=_ADOPT_LEADS if interactions == "adopt" else 3,
+                surrogate=exploration if exploration is not None else False, seed=seed,
+                counts=screen_counts)
+            evidence["interaction_candidates"] = screen_counts
+            if forbidden:
+                # A forbidden pair is neither listed nor adopted.
+                kept_leads = [lead for lead in leads
+                              if frozenset((lead.left, lead.right)) not in forbidden]
+                if len(kept_leads) < len(leads):
+                    evidence["forbidden_interactions"] = tuple(
+                        f"{lead.left} x {lead.right}" for lead in leads if lead not in kept_leads)
+                leads = kept_leads
+            evidence["interactions"] = leads
+            measured.append("interactions")
+            defaulted.remove("interactions")
+            spent += screen_fits
+            in_model = {column.name for column in modelled}
+            pair_parents = {lead.term: (lead.left, lead.right) for lead in leads if lead.term}
 
-        def heredity_allows(lead):
-            # Strong heredity (Nelder's marginality): both main effects are in
-            # the model; weak: at least one is.
-            present = (lead.left in in_model) + (lead.right in in_model)
-            return {"none": True, "weak": present >= 1, "strong": present == 2}[heredity]
+            def heredity_allows(lead):
+                # Strong heredity (Nelder's marginality): both main effects are in
+                # the model; weak: at least one is.
+                present = (lead.left in in_model) + (lead.right in in_model)
+                return {"none": True, "weak": present >= 1, "strong": present == 2}[heredity]
 
-        # Pairs with competing tensor/joint-tree candidates are set aside:
-        # the two model the same joint effect, and the form is picked after
-        # deselection (below), where the budget allows a held-out comparison.
-        competing_pairs = set()
-        if interactions == "adopt":
-            by_kind = {}
-            for lead in leads:
-                if lead.kind in ("tensor", "joint_tree") and lead.term \
-                        and heredity_allows(lead):
-                    key = frozenset((lead.left, lead.right))
-                    by_kind.setdefault(key, set()).add(lead.kind)
-            competing_pairs = {key for key, kinds in by_kind.items()
-                               if kinds == {"tensor", "joint_tree"}}
-            if competing_pairs:
-                leads = tuple(lead for lead in leads
-                              if frozenset((lead.left, lead.right))
-                              not in competing_pairs
-                              or lead.kind not in ("tensor", "joint_tree"))
-                pair_parents = {lead.term: (lead.left, lead.right)
-                                for lead in leads if lead.term}
-                evidence["competing_pairs"] = tuple(
-                    "_x_".join(sorted(key)) for key in competing_pairs)
+            # Pairs with competing tensor/joint-tree candidates are set aside:
+            # the two model the same joint effect, and the form is picked after
+            # deselection (below), where the budget allows a held-out comparison.
+            competing_pairs = set()
+            if interactions == "adopt":
+                by_kind = {}
+                for lead in leads:
+                    if lead.kind in ("tensor", "joint_tree") and lead.term \
+                            and heredity_allows(lead):
+                        key = frozenset((lead.left, lead.right))
+                        by_kind.setdefault(key, set()).add(lead.kind)
+                competing_pairs = {key for key, kinds in by_kind.items()
+                                   if kinds == {"tensor", "joint_tree"}}
+                if competing_pairs:
+                    leads = tuple(lead for lead in leads
+                                  if frozenset((lead.left, lead.right))
+                                  not in competing_pairs
+                                  or lead.kind not in ("tensor", "joint_tree"))
+                    pair_parents = {lead.term: (lead.left, lead.right)
+                                    for lead in leads if lead.term}
+                    evidence["competing_pairs"] = tuple(
+                        "_x_".join(sorted(key)) for key in competing_pairs)
 
-        adopted = [lead.term for lead in leads
-                   if interactions == "adopt" and lead.kind != "duplicate-axis" and lead.term
-                   and heredity_allows(lead)]
-        if interactions == "adopt" and heredity != "none":
-            barred = [lead.term for lead in leads
-                      if lead.kind != "duplicate-axis" and lead.term and not heredity_allows(lead)]
-            if barred:
-                evidence["heredity_barred_interactions"] = tuple(barred)
-        # O(n/constant) cap on offered pairs: with few rows the screen
-        # passes chance pairs, and each pair term costs effective rows the
-        # small sample cannot spare. The screen's top-6 cap binds first at
-        # ordinary sizes.
-        pair_cap = max(1, n_rows // _PAIRS_PER_ROW)
-        if len(adopted) > pair_cap:
-            evidence["pair_cap"] = (pair_cap, n_rows,
-                                    tuple(t for t in adopted[pair_cap:]))
-            adopted = adopted[:pair_cap]
-        adopt_folds = fold_matrix()
-        adopt_n_folds = int(np.asarray(adopt_folds).shape[1])
-        validation_fits = adopt_n_folds * (1 + len(adopted))
-        if adopted and budget - spent - picker_need < adopt_n_folds + validation_fits:
-            evidence["unvalidated_interactions"] = tuple(adopted)
-            adopted = []
-        if adopted:
-            before_adoption = (formula, learners, chosen_mstop, evidence.get("mstop"),
-                               main_fit)
-            formula = formula + " + " + " + ".join(adopted)
-            evidence["adopted_interactions"] = tuple(adopted)
-            learners = None       # the %X% terms are expanded when the fit parses the formula
-            if budget - spent - picker_need >= adopt_n_folds:
-                mstop_row = probe_mstop(
-                    data, response, formula, family,
-                    folds=adopt_folds, largest=max(int(mstop), 200, chosen_mstop), nu=nu,
-                    env=env or None,
-                    extend=max(0, min(_MAX_EXTENSIONS,
-                                      (budget - spent - picker_need - validation_fits
-                                       - adopt_n_folds) // adopt_n_folds)),
-                    fold_scheme=shared_scheme)
-                if mstop_row is not None:
-                    chosen_mstop = mstop_row.chosen
-                    evidence["mstop"] = mstop_row
-                    spent += mstop_row.fits
-                    main_fit = mstop_row._fit
-                else:
-                    main_fit = None
-            # The screen measured each pair on the training residual. Keep an
-            # adopted pair only if held-out risk says the model needs it:
-            # removing it must cost 2% of the risk or clear the paired-SE
-            # bar, which grows as 2*sqrt(log(candidates)) so a many-column
-            # screen does not pass chance pairs on a fixed bar. With many
-            # columns and few rows the screen passes chance pairs, which
-            # the tuned fit then uses.
-            if (main_fit is not None
-                    and budget - spent - picker_need >= adopt_n_folds * (1 + len(adopted))):
-                kept, rejected, adoption_evidence, spent = _held_out_pairs(
-                    data, response, formula, adopted, family, adopt_folds,
-                    min(2 * chosen_mstop, _MSTOP_EXTENSION_CAP), nu, env or None,
-                    shared_scheme, spent, risk_floor=risk_floor,
-                    n_candidates=len(adopted))
-                evidence["adoption_evidence"] = adoption_evidence
-                if rejected:
-                    formula = f"{quote_response(response)} ~ " + " + ".join(terms + kept)
-                    evidence["adopted_interactions"] = tuple(kept)
-                    evidence["rejected_interactions"] = tuple(rejected)
-                    if kept and budget - spent - picker_need >= adopt_n_folds:
-                        mstop_row = probe_mstop(
-                            data, response, formula, family, folds=adopt_folds,
-                            largest=max(int(mstop), 200, chosen_mstop), nu=nu,
-                            env=env or None,
-                            extend=max(0, min(_MAX_EXTENSIONS,
-                                              (budget - spent - picker_need
-                                               - adopt_n_folds) // adopt_n_folds)),
-                            fold_scheme=shared_scheme)
-                        if mstop_row is not None:
-                            chosen_mstop = mstop_row.chosen
-                            evidence["mstop"] = mstop_row
-                            spent += mstop_row.fits
-                            main_fit = mstop_row._fit
-                    elif not kept:
-                        # Back to the additive specification and its sweep.
-                        formula, learners, chosen_mstop, additive_row, main_fit = \
-                            before_adoption
-                        if additive_row is not None:
-                            evidence["mstop"] = additive_row
-            else:
-                # A failed sweep or unexpectedly exhausted budget is not
-                # evidence for a pair. Restore the last validated specification.
+            adopted = [lead.term for lead in leads
+                       if interactions == "adopt" and lead.kind != "duplicate-axis" and lead.term
+                       and heredity_allows(lead)]
+            if interactions == "adopt" and heredity != "none":
+                barred = [lead.term for lead in leads
+                          if lead.kind != "duplicate-axis" and lead.term and not heredity_allows(lead)]
+                if barred:
+                    evidence["heredity_barred_interactions"] = tuple(barred)
+            # O(n/constant) cap on offered pairs: with few rows the screen
+            # passes chance pairs, and each pair term costs effective rows the
+            # small sample cannot spare. The screen's top-6 cap binds first at
+            # ordinary sizes.
+            pair_cap = max(1, n_rows // _PAIRS_PER_ROW)
+            if len(adopted) > pair_cap:
+                evidence["pair_cap"] = (pair_cap, n_rows,
+                                        tuple(t for t in adopted[pair_cap:]))
+                adopted = adopted[:pair_cap]
+            adopt_folds = fold_matrix()
+            adopt_n_folds = int(np.asarray(adopt_folds).shape[1])
+            validation_fits = adopt_n_folds * (1 + len(adopted))
+            if adopted and budget - spent - picker_need < adopt_n_folds + validation_fits:
                 evidence["unvalidated_interactions"] = tuple(adopted)
-                evidence.pop("adopted_interactions", None)
-                formula, learners, chosen_mstop, additive_row, main_fit = before_adoption
-                if additive_row is not None:
-                    evidence["mstop"] = additive_row
+                adopted = []
+            if adopted:
+                before_adoption = (formula, learners, chosen_mstop, evidence.get("mstop"),
+                                   main_fit)
+                formula = formula + " + " + " + ".join(adopted)
+                evidence["adopted_interactions"] = tuple(adopted)
+                learners = None       # the %X% terms are expanded when the fit parses the formula
+                if budget - spent - picker_need >= adopt_n_folds:
+                    mstop_row = probe_mstop(
+                        data, response, formula, family,
+                        folds=adopt_folds, largest=max(int(mstop), 200, chosen_mstop), nu=nu,
+                        env=env or None,
+                        extend=max(0, min(_MAX_EXTENSIONS,
+                                          (budget - spent - picker_need - validation_fits
+                                           - adopt_n_folds) // adopt_n_folds)),
+                        fold_scheme=shared_scheme)
+                    if mstop_row is not None:
+                        chosen_mstop = mstop_row.chosen
+                        evidence["mstop"] = mstop_row
+                        spent += mstop_row.fits
+                        main_fit = mstop_row._fit
+                    else:
+                        main_fit = None
+                # The screen measured each pair on the training residual. Keep an
+                # adopted pair only if held-out risk says the model needs it:
+                # removing it must cost 2% of the risk or clear the paired-SE
+                # bar, which grows as 2*sqrt(log(candidates)) so a many-column
+                # screen does not pass chance pairs on a fixed bar. With many
+                # columns and few rows the screen passes chance pairs, which
+                # the tuned fit then uses.
+                if (main_fit is not None
+                        and budget - spent - picker_need >= adopt_n_folds * (1 + len(adopted))):
+                    kept, rejected, adoption_evidence, spent = _held_out_pairs(
+                        data, response, formula, adopted, family, adopt_folds,
+                        min(2 * chosen_mstop, _MSTOP_EXTENSION_CAP), nu, env or None,
+                        shared_scheme, spent, risk_floor=risk_floor,
+                        n_candidates=len(adopted))
+                    evidence["adoption_evidence"] = adoption_evidence
+                    if rejected:
+                        formula = f"{quote_response(response)} ~ " + " + ".join(terms + kept)
+                        evidence["adopted_interactions"] = tuple(kept)
+                        evidence["rejected_interactions"] = tuple(rejected)
+                        if kept and budget - spent - picker_need >= adopt_n_folds:
+                            mstop_row = probe_mstop(
+                                data, response, formula, family, folds=adopt_folds,
+                                largest=max(int(mstop), 200, chosen_mstop), nu=nu,
+                                env=env or None,
+                                extend=max(0, min(_MAX_EXTENSIONS,
+                                                  (budget - spent - picker_need
+                                                   - adopt_n_folds) // adopt_n_folds)),
+                                fold_scheme=shared_scheme)
+                            if mstop_row is not None:
+                                chosen_mstop = mstop_row.chosen
+                                evidence["mstop"] = mstop_row
+                                spent += mstop_row.fits
+                                main_fit = mstop_row._fit
+                        elif not kept:
+                            # Back to the additive specification and its sweep.
+                            formula, learners, chosen_mstop, additive_row, main_fit = \
+                                before_adoption
+                            if additive_row is not None:
+                                evidence["mstop"] = additive_row
                 else:
-                    evidence.pop("mstop", None)
+                    # A failed sweep or unexpectedly exhausted budget is not
+                    # evidence for a pair. Restore the last validated specification.
+                    evidence["unvalidated_interactions"] = tuple(adopted)
+                    evidence.pop("adopted_interactions", None)
+                    formula, learners, chosen_mstop, additive_row, main_fit = before_adoption
+                    if additive_row is not None:
+                        evidence["mstop"] = additive_row
+                    else:
+                        evidence.pop("mstop", None)
+            saved_valid = (formula, learners, chosen_mstop, evidence.get("mstop"), main_fit,
+                           list(modelled), list(terms))
+    except BudgetExhausted as exc:
+        if getattr(exc, "resource", None) != "seconds" or "mstop" not in measured:
+            raise
+        formula, learners, chosen_mstop, saved_mstop, main_fit, modelled, terms = saved_valid
+        if saved_mstop is not None:
+            evidence["mstop"] = saved_mstop
+        evidence.pop("adopted_interactions", None)
+        competing_pairs = set()
+        pair_parents = {}
 
     offer_tree = residual_tree is True
     detection = None
     if residual_tree in (True, "auto") and type(family).__name__ != "Multinomial":
         # The screen-stage lead, recorded apart from the adoption decision.
-        detection = _residual_tree_detection(data, response, modelled, main_fit)
+        detection = _residual_tree_detection(data, response, modelled, main_fit, seed=seed)
         if detection is not None:
             evidence["residual_tree_detection"] = detection
     if residual_tree == "auto" and type(family).__name__ != "Multinomial":
@@ -1494,20 +1664,25 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
         if offer_tree:
             evidence["residual_tree_offer"] = offer_reason
     if offer_tree and type(family).__name__ != "Multinomial":
-        formula, chosen_mstop, main_fit, spent = _residual_tree_step(
-            data, response, formula, family, modelled, evidence, fold_matrix(),
-            shared_scheme, chosen_mstop, main_fit, nu, env or None, budget, spent,
-            risk_floor, int(mstop))
-        if "adopted_tree" in evidence:
-            measured.append("residual_tree")
-            # The tree term is parsed from the formula when the fit runs; the
-            # learner list built before it would drop the tree from rec.fit().
-            learners = None
-            if nu != evidence["residual_tree"]["nu"]:
-                nu = evidence["residual_tree"]["nu"]
-                evidence["nu"] = (
-                    f"nu={nu:g} — the residual tree needs a smaller step than the "
-                    f"additive terms; the recommendation and rec.fit() use it")
+        try:
+            formula, chosen_mstop, main_fit, spent = _residual_tree_step(
+                data, response, formula, family, modelled, evidence, fold_matrix(),
+                shared_scheme, chosen_mstop, main_fit, nu, env or None, budget, spent,
+                risk_floor, int(mstop),
+                detection=(detection if residual_tree == "auto" else None))
+            if "adopted_tree" in evidence:
+                measured.append("residual_tree")
+                # The tree term is parsed from the formula when the fit runs; the
+                # learner list built before it would drop the tree from rec.fit().
+                learners = None
+                if nu != evidence["residual_tree"]["nu"]:
+                    nu = evidence["residual_tree"]["nu"]
+                    evidence["nu"] = (
+                        f"nu={nu:g} — the residual tree needs a smaller step than the "
+                        f"additive terms; the recommendation and rec.fit() use it")
+        except BudgetExhausted as exc:
+            if getattr(exc, "resource", None) != "seconds" or "mstop" not in measured:
+                raise
 
     # Retain eligible tree inputs before marginal deselection: a coordinate
     # with no main effect can still carry signal jointly with its neighbour.
@@ -1877,13 +2052,18 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
         budget = pending["budget"]
         route = pending["route"]
         route_family = route["family_evidence"]
-        comparison = compare_finished_routes(
-            data, response, mean_family=family, mean_formula=formula,
-            mean_mstop=chosen_mstop, mean_nu=nu, lss_family=route["family"],
-            lss_formula=route["formula"], lss_nu=route["nu"],
-            lss_largest=max(int(route_family.lss_largest or 0), 50),
-            folds=fold_matrix(), fold_scheme=shared_scheme,
-            env=env or None, cache=cache, judge=shared_judge)
+        try:
+            comparison = compare_finished_routes(
+                data, response, mean_family=family, mean_formula=formula,
+                mean_mstop=chosen_mstop, mean_nu=nu, lss_family=route["family"],
+                lss_formula=route["formula"], lss_nu=route["nu"],
+                lss_largest=max(int(route_family.lss_largest or 0), 50),
+                folds=fold_matrix(), fold_scheme=shared_scheme,
+                env=env or None, cache=cache, judge=shared_judge)
+        except BudgetExhausted as exc:
+            if getattr(exc, "resource", None) != "seconds" or "mstop" not in measured:
+                raise
+            comparison = None
         mean_name = type(family).__name__
         lss_name = type(route["family"]).__name__
         record = {
@@ -2433,8 +2613,8 @@ def _paired_held_out_gain(base_folds, tree_folds):
 
 def _residual_tree_step(data, response, formula, family, modelled, evidence, folds,
                         scheme, chosen_mstop, main_fit, nu, env, budget, spent,
-                        risk_floor, mstop):
-    """Add ``btree(<numeric columns>, maxdepth=5)`` when held-out risk says so.
+                        risk_floor, mstop, *, detection=None):
+    """Add ``btree(<columns>, maxdepth=5)`` when held-out risk says so.
 
     The incumbent and the candidate are each judged at their own best step
     count; the tree needs more steps than the additive terms, so the
@@ -2452,39 +2632,45 @@ def _residual_tree_step(data, response, formula, family, modelled, evidence, fol
     )
 
     # Factor columns enter as level codes, which the tree splits into two
-    # sets of levels.
-    columns = [c.name for c in modelled if c.kind in ("numeric", "boolean", "categorical")]
+    # sets of levels. When residual-tree detection identified a clean sparse
+    # subset of active interacting columns, scope the tree to those columns so
+    # noise predictors do not pollute the tree or the reported formula.
+    eligible = [c.name for c in modelled if c.kind in ("numeric", "boolean", "categorical")]
+    active = (detection or {}).get("active_columns") or ()
+    if len(active) >= 2 and all(name in eligible for name in active):
+        columns = list(active)
+    else:
+        columns = eligible
     n_folds = int(np.asarray(folds).shape[1])
+    spatial, n_cells = _spatial_cell_scheme(data, modelled, folds, scheme)
+    judge_folds = np.asarray(spatial) if spatial is not None else folds
+    judge_scheme = spatial if spatial is not None else scheme
+    incumbent_ev = evidence.get("mstop") if spatial is None else None
+    can_reuse_incumbent = (
+        incumbent_ev is not None
+        and len(getattr(incumbent_ev, "fold_scores", ())) == n_folds
+        and not _single_fold_design(judge_folds, judge_scheme, family)
+    )
     # A single supplied holdout also spends two fold fits on the per-row
     # audit of the adoption (below); reserve them up front.
     audit_reserve = 2 if _single_fold_design(folds, scheme, family) else 0
-    if len(columns) < 2 or budget - spent < 4 * n_folds + audit_reserve:
+    min_needed = (n_folds if can_reuse_incumbent else 4 * n_folds) + audit_reserve
+    if len(columns) < 2 or budget - spent < min_needed:
         return formula, chosen_mstop, main_fit, spent
     term = (f"btree({', '.join(quote_name(_c) for _c in columns)}, maxdepth={_RESIDUAL_TREE_DEPTH}, "
             f"selection=sse)")
     candidate = formula + " + " + term
     # A deep tree term needs a small step: at 0.3 it overfits within a few
-    # steps and was declined where at 0.1 it lowered held-out risk
-    # (grid_stability R^2 0.904 against 0.937, white wine 0.449 against 0.478
-    # on development training rows). The candidate is fitted at `tree_nu` and
-    # compared with the incumbent at the incumbent's own step length, each at
-    # its best step count.
+    # steps and was declined where at 0.1 it lowered held-out risk.
     tree_nu = min(nu, _RESIDUAL_TREE_NU)
-    # With coordinates present, judge the adoption on spatial-cell grouped
-    # folds (#266): random row folds let the tree validate on rows
-    # neighbouring its training rows, so the gain does not predict transfer
-    # to unseen regions. `evidence["residual_tree"]["validation"]` records
-    # which scheme decided.
-    spatial, n_cells = _spatial_cell_scheme(data, modelled, folds, scheme)
-    judge_folds = np.asarray(spatial) if spatial is not None else folds
-    judge_scheme = spatial if spatial is not None else scheme
     shared_label = scheme.scheme if scheme is not None else "row"
     validation = (f"spatial-cell grouped folds ({n_cells} cells)"
                   if spatial is not None else f"shared {shared_label} folds")
+    extra_reserve = 0 if can_reuse_incumbent else 3 * n_folds
     row = probe_mstop(data, response, candidate, family, folds=judge_folds,
                       largest=max(mstop, 200, chosen_mstop), nu=tree_nu, env=env,
                       extend=max(0, min(_MAX_EXTENSIONS,
-                                        (budget - spent - 3 * n_folds) // n_folds)),
+                                        (budget - spent - n_folds - extra_reserve) // n_folds)),
                       fold_scheme=judge_scheme)
     if row is None:
         evidence["residual_tree"] = {"term": term, "adopted": False,
@@ -2495,29 +2681,35 @@ def _residual_tree_step(data, response, formula, family, modelled, evidence, fol
     largest_base = min(2 * chosen_mstop, _MSTOP_EXTENSION_CAP)
     single = _single_fold_design(judge_folds, judge_scheme, family)
     base_step = 0
-    if single:
-        base_evidence, base_fold_tuple = _path_held_out_evidence(
-            data, response, formula, family, judge_folds, largest_base, nu,
-            env=env, fold_scheme=judge_scheme)
-        if base_evidence is None:
-            base_risk, base_folds = float("nan"), ()
-            spent += int(np.asarray(judge_folds).shape[1])
-        else:
-            base_risk = base_evidence.risk[base_evidence.chosen]
-            base_step = base_evidence.chosen
-            base_folds = base_fold_tuple
-            spent += base_evidence.fits
+    if can_reuse_incumbent and len(getattr(row, "fold_scores", ())) == n_folds:
+        base_folds = np.asarray(incumbent_ev.fold_scores, float).ravel()
+        tree_folds = np.asarray(row.fold_scores, float).ravel()
+        base_risk = float(incumbent_ev.risk[incumbent_ev.chosen])
+        tree_risk = float(row.risk[row.chosen])
     else:
-        base_risk, fits, base_folds = _path_held_out_risk(
-            data, response, formula, family, judge_folds, largest_base, nu, env=env,
+        if single:
+            base_evidence, base_fold_tuple = _path_held_out_evidence(
+                data, response, formula, family, judge_folds, largest_base, nu,
+                env=env, fold_scheme=judge_scheme)
+            if base_evidence is None:
+                base_risk, base_folds = float("nan"), ()
+                spent += int(np.asarray(judge_folds).shape[1])
+            else:
+                base_risk = base_evidence.risk[base_evidence.chosen]
+                base_step = base_evidence.chosen
+                base_folds = base_fold_tuple
+                spent += base_evidence.fits
+        else:
+            base_risk, fits, base_folds = _path_held_out_risk(
+                data, response, formula, family, judge_folds, largest_base, nu, env=env,
+                fold_scheme=judge_scheme)
+            spent += fits
+        tree_risk, fits, tree_folds = _path_held_out_risk(
+            data, response, candidate, family, judge_folds, len(row.risk) - 1, tree_nu, env=env,
             fold_scheme=judge_scheme)
         spent += fits
-    tree_risk, fits, tree_folds = _path_held_out_risk(
-        data, response, candidate, family, judge_folds, len(row.risk) - 1, tree_nu, env=env,
-        fold_scheme=judge_scheme)
-    spent += fits
-    base_folds = np.asarray(base_folds, float).ravel()
-    tree_folds = np.asarray(tree_folds, float).ravel()
+        base_folds = np.asarray(base_folds, float).ravel()
+        tree_folds = np.asarray(tree_folds, float).ravel()
     gain = _relative_gain(base_risk, tree_risk, risk_floor)
     held_out_gain, held_out_se, z, held_out_reason = _paired_held_out_gain(
         base_folds, tree_folds)
@@ -2909,16 +3101,16 @@ def _spatial_cell_scheme(data, modelled, folds, scheme):
                          weights=getattr(scheme, "base_weights", None)), n_cells
 
 
-def _residual_tree_detection(data, response, modelled, main_fit):
+def _residual_tree_detection(data, response, modelled, main_fit, *, seed=0):
     """The screen-stage lead for a residual tree, or None when it cannot be measured.
 
-    Detection is what the additive fit leaves behind, measured on training
-    rows: ``leftover_share`` is the share of the response variance the fit
-    does not explain, and ``tree_r2`` is the in-sample R^2 of a depth-3 tree
-    on that leftover over the numeric columns. ``product`` is their product,
-    the share of the total variance a shallow tree reads from the leftover.
-    The numbers are a lead, not a held-out measurement: adoption is decided
-    by the held-out comparison in ``_residual_tree_step`` (#124).
+    Detection measures what the additive fit leaves behind: ``leftover_share``
+    is the share of the response variance the fit does not explain, ``tree_r2``
+    is the in-sample R^2 of a depth-3 tree on that leftover, and ``val_tree_r2``
+    is the held-out (80/20 split) R^2 of a depth-4 tree on that leftover over
+    eligible predictors. ``active_columns`` names the sparse subset of
+    predictors that carry the residual tree's splits when one exists. Adoption
+    remains gated by the held-out CV comparison in ``_residual_tree_step``.
     """
     from sklearn.tree import DecisionTreeRegressor
 
@@ -2927,52 +3119,77 @@ def _residual_tree_detection(data, response, modelled, main_fit):
     if main_fit is None:
         return None
     y = np.asarray(read_column(data, response).values, dtype=float)
-    # The response scale: a link-scale predictor is not comparable with y for
-    # a Binomial or Poisson fit.
     fitted = np.asarray(main_fit.predict(type="response"), dtype=float).ravel()
     if fitted.shape[0] != y.shape[0]:
         return None
-    numeric = [c for c in modelled if c.kind == "numeric"]
-    if len(numeric) < 2:
+    eligible = [c for c in modelled if c.kind in ("numeric", "boolean", "categorical")]
+    if len(eligible) < 2:
         return None
     X = np.column_stack([np.asarray(read_column(data, c.name).values, dtype=float)
-                         for c in numeric])
-    # Rows with a missing value in the response, the fit or a predictor carry
-    # no leftover to read.
+                         for c in eligible])
     usable = np.isfinite(y) & np.isfinite(fitted) & np.isfinite(X).all(axis=1)
     if usable.sum() < 10:
         return None
     y, fitted, X = y[usable], fitted[usable], X[usable]
+    if y.shape[0] > 4000:
+        idx = np.sort(np.random.default_rng(seed).choice(y.shape[0], 4000, replace=False))
+        y, fitted, X = y[idx], fitted[idx], X[idx]
     share = float(leftover_share(y, fitted))
     residual = y - fitted
     tree_r2 = 0.0
+    val_tree_r2 = 0.0
+    active_columns: tuple[str, ...] = ()
     if np.isfinite(share) and share > 0:
-        tree = DecisionTreeRegressor(max_depth=3, random_state=0)
+        tree = DecisionTreeRegressor(max_depth=3, random_state=seed)
         tree.fit(X, residual)
         tree_r2 = float(tree.score(X, residual))
+        n = X.shape[0]
+        if n >= 50:
+            perm = np.random.default_rng(seed).permutation(n)
+            cut = int(0.8 * n)
+            tr_i, va_i = perm[:cut], perm[cut:]
+            val_tree = DecisionTreeRegressor(
+                max_depth=4, min_samples_leaf=max(5, n // 200), random_state=seed)
+            val_tree.fit(X[tr_i], residual[tr_i])
+            val_tree_r2 = float(val_tree.score(X[va_i], residual[va_i]))
+            imp = np.asarray(val_tree.feature_importances_, dtype=float)
+            if val_tree_r2 >= _RESIDUAL_TREE_VAL_OFFER_R2 and imp.sum() > 0:
+                order = np.argsort(imp)[::-1]
+                # Keep predictors that carry >= 5% split gain if they account
+                # for at least 90% of total gain (clean sparse interaction), or
+                # cap wide tables to top 20 splitters.
+                strong = [eligible[i].name for i in order if imp[i] >= 0.05]
+                strong_mass = float(sum(imp[i] for i in order if imp[i] >= 0.05))
+                if len(strong) >= 2 and strong_mass >= 0.90:
+                    active_columns = tuple(strong)
+                elif len(eligible) > 20:
+                    nonzero = [eligible[i].name for i in order if imp[i] > 0][:20]
+                    if len(nonzero) >= 2:
+                        active_columns = tuple(nonzero)
     return {"leftover_share": share, "tree_r2": tree_r2,
+            "val_tree_r2": val_tree_r2, "active_columns": active_columns,
             "product": share * tree_r2, "candidates": 1,
-            "basis": "training rows, depth-3 tree on the additive leftover"}
+            "basis": "depth-3 on training rows and depth-4 80/20 held-out tree on the additive leftover"}
 
 
 #: The screen-stage tree R^2 that offers a residual tree after pairs were
 #: adopted: a shallow tree taking a tenth of the leftover on training rows is
 #: the signature of structure the smooth pairs left behind.
 _RESIDUAL_TREE_OFFER_R2 = 0.10
+#: Held-out 80/20 residual-tree R^2 threshold to offer a guarded residual tree
+#: even without coordinate columns or explicit pairwise adoption.
+_RESIDUAL_TREE_VAL_OFFER_R2 = 0.04
 
 
 def _should_offer_residual_tree(modelled, evidence, main_fit, data, response,
                                 detection=None):
-    """The training-only offer rule for a residual tree (#244).
+    """The offer rule for a residual tree (#244).
 
-    Offers when (b) the predictors include a coordinates-like pair, or (a)
-    adopted pairs left a large residual-scale reduction: the pairs were
-    adopted, so interaction structure is present, and a shallow regression
-    tree fitted on the training residual still explains a substantial share
-    of it (``detection["tree_r2"]``), which is what sharp-boundary structure
-    looks like to a smooth model. The offer is training-only; whether the
-    tree is ADOPTED is decided by the held-out incremental-value statistic
-    in ``_residual_tree_step``.
+    Offers when (a) predictors include a coordinates-like pair, (b) adopted
+    pairs left substantial training residual structure, or (c) a held-out
+    80/20 depth-4 tree on the additive residual explains at least 4% of its
+    variance. Adoption is always decided by the held-out CV comparison in
+    ``_residual_tree_step``.
     """
     if _has_coordinate_pair(modelled):
         return True, "predictors include a coordinates-like pair"
@@ -2983,6 +3200,17 @@ def _should_offer_residual_tree(modelled, evidence, main_fit, data, response,
             return True, (f"adopted pairs leave residual structure: a "
                           f"depth-3 tree explains {r2:.0%} of the "
                           f"training residual variance")
+    if detection is not None:
+        val_r2 = float(detection.get("val_tree_r2", 0.0))
+        if val_r2 >= _RESIDUAL_TREE_VAL_OFFER_R2:
+            return True, (f"held-out residual tree explains {val_r2:.0%} of "
+                          f"the additive residual variance")
+        leftover = float(detection.get("leftover_share", 0.0))
+        pre = evidence.get("preexploration") or {}
+        top_h2 = max((float(p[2]) for p in (pre.get("pairs") or ())), default=0.0)
+        if leftover >= 0.05 and (top_h2 >= 0.15 or evidence.get("unvalidated_interactions")):
+            return True, (f"non-additive residual structure detected "
+                          f"(leftover={leftover:.0%}, max pair H^2={top_h2:.2f})")
     return False, ""
 
 

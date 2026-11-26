@@ -1415,7 +1415,7 @@ def conformal_interval(
     extrapolation="warn",
     score="auto",
     count_reference="zero_inflated_poisson",
-    unseen_levels="error",
+    unseen_levels=None,
 ):
     """Distribution-free prediction intervals for a fitted standard model.
     Usage::
@@ -1614,6 +1614,9 @@ def conformal_interval(
     True
     """
     _require_level(level)
+    from mboostrs._validate import _model_unseen_levels
+
+    unseen_levels = _model_unseen_levels(model, unseen_levels)
     if unseen_levels not in ("error", "average", "zero_effect"):
         raise ValueError(
             "unseen_levels must be 'error', 'average', or 'zero_effect', "

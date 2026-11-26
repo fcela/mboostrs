@@ -11,4 +11,4 @@ OrderedCategoryWarning(...)
 
 An ordered categorical predictor was fitted as unordered groups.
 
-Source: [`python/mboostrs/autospec.py` lines 120-121](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/autospec.py#L120-L121)
+Source: [`python/mboostrs/autospec.py` lines 122-123](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/autospec.py#L122-L123)

@@ -11,7 +11,8 @@ cvrisk_glmboostLSS(
   family = NULL,
   control = boost_control(),
   folds,
-  grid
+  grid,
+  response_scale = getOption("mboostrs.response_scale", "auto")
 )
 }
 \arguments{
@@ -20,6 +21,9 @@ cvrisk_glmboostLSS(
 \item{folds}{An \code{n x B} matrix of in-bag weights (one column per fold).}
 
 \item{grid}{An \code{n_grid x K} matrix of per-parameter mstop values.}
+
+\item{response_scale}{The response scale, as in \code{glmboostLSS}
+(default \code{"auto"}); each fold uses the scale of its own rows.}
 }
 \value{
 A \code{B x n_grid} matrix of per-fold out-of-bag risks, with the

@@ -14,7 +14,7 @@ Zero-adjusted Poisson family: `mu` (log link, Poisson mean), `sigma`
 `gamboostLSS::ZeroAdjustedPoissonLSS()` (wrapping gamlss.dist `ZAP`).
 Requires non-negative integer counts.
 
-Source: [`python/mboostrs/gamlss.py` lines 2252-2314](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2252-L2314)
+Source: [`python/mboostrs/gamlss.py` lines 2297-2359](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2297-L2359)
 
 ## Members
 
@@ -43,7 +43,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `IndexError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2266-2273](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2266-L2273)
+Source: [`python/mboostrs/gamlss.py` lines 2311-2318](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2311-L2318)
 
 (zeroadjustedpoissonlss-mean)=
 ## `ZeroAdjustedPoissonLSS.mean`
@@ -62,7 +62,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2275-2281](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2275-L2281)
+Source: [`python/mboostrs/gamlss.py` lines 2320-2326](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2320-L2326)
 
 (zeroadjustedpoissonlss-cdf)=
 ## `ZeroAdjustedPoissonLSS.cdf`
@@ -82,7 +82,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2283-2296](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2283-L2296)
+Source: [`python/mboostrs/gamlss.py` lines 2328-2341](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2328-L2341)
 
 (zeroadjustedpoissonlss-quantile)=
 ## `ZeroAdjustedPoissonLSS.quantile`
@@ -95,7 +95,7 @@ ZeroAdjustedPoissonLSS.quantile(p, params) -> ndarray
 
 Zero-adjusted Poisson quantile; zero for `p <= sigma`.
 
-Source: [`python/mboostrs/gamlss.py` lines 2298-2300](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2298-L2300)
+Source: [`python/mboostrs/gamlss.py` lines 2343-2345](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2343-L2345)
 
 (zeroadjustedpoissonlss-pdf)=
 ## `ZeroAdjustedPoissonLSS.pdf`
@@ -115,4 +115,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2302-2314](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2302-L2314)
+Source: [`python/mboostrs/gamlss.py` lines 2347-2359](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2347-L2359)

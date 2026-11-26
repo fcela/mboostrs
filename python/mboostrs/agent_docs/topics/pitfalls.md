@@ -30,7 +30,8 @@
   `"average"` predicts the row as a member of an average group (for
   `brandom`, the mean level coefficient); `"zero_effect"` gives the level
   the ridge-shrunk zero — the prediction `cvrisk` makes for a group its
-  fold holds out. A column whose
+  fold holds out. A model fitted directly refuses by default; a model from
+  `mb.fit` uses `"average"` and records it in its trail. A column whose
   levels differ from the fitted ones only in dtype (fitted as strings
   `'1'`, `'2'`, `'3'`, arriving as Int64 1, 2, 3) is refused under every
   policy: those are the fitted levels in another dtype, not new groups,

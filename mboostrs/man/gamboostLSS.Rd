@@ -14,7 +14,8 @@ gamboostLSS(
   mstop = NULL,
   weights = NULL,
   method = c("cyclic", "noncyclic"),
-  weight_policy = "upstream"
+  weight_policy = "upstream",
+  response_scale = getOption("mboostrs.response_scale", "auto")
 )
 }
 \arguments{
@@ -52,6 +53,19 @@ scale is itself meaningful (survey weights summing to a population total,
 for example). The scale is not cosmetic -- it enters \verb{X'WX}, the
 \code{df -> lambda} calibration, and the risk -- so \code{"raw"} gives a different
 path from R's on the same fractional weights.}
+
+\item{response_scale}{The scale the response is divided by before
+fitting (default \code{getOption("mboostrs.response_scale", "auto")}, so
+\code{options(mboostrs.response_scale = "none")} gives gamboostLSS's
+raw-units path throughout a session): \code{"auto"}, the weighted SD of the response the
+fit sees; \code{"none"} (or \code{NULL}), the raw response, R
+gamboostLSS's path; or a positive number. Each boosting step moves a
+location parameter by about \code{nu} in response units, so without a
+scale the fit depends on the units, and a response in large units
+(dollars) barely leaves its offset. A scaled fit is mapped back exactly,
+so predictions, coefficients and the risk are in the original units.
+Families without units (counts, proportions, compositions) are not
+scaled.}
 }
 \value{
 An object of class \code{"mboostrs_gamboostLSS"}.

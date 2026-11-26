@@ -1,5 +1,6 @@
 use ndarray::{Array1, ArrayView1, ArrayViewMut1};
 
+use crate::control::ResponseScale;
 use crate::MboostrsError;
 use libm::lgamma;
 
@@ -1241,8 +1242,65 @@ impl Family for Poisson {
 
 /// `L1` loss for robust regression; the offset is the L1 risk minimizer found
 /// by Brent search, matching R.
-#[derive(Clone, Copy)]
-pub struct Laplace;
+#[derive(Clone, Copy, Debug, Default)]
+pub struct Laplace {
+    /// The scale the response is divided by before fitting (see
+    /// [`gradient_scale`]); [`ResponseScale::Raw`] is R mboost's path.
+    pub response_scale: ResponseScale,
+}
+
+impl Laplace {
+    /// A Laplace family fitted on the response divided by `response_scale`.
+    pub fn with_response_scale(response_scale: ResponseScale) -> Self {
+        Self { response_scale }
+    }
+}
+
+/// The multiplier a family whose gradient does not grow with the response
+/// (absolute and check loss: `sign(y - f)`, `tau - 1{y < f}`) applies to it
+/// to fit `y / s` and map the model back.
+///
+/// Boosting `y / s` takes the steps `nu * fit(g)` on `f / s` with the same
+/// `g`, because the sign of a residual does not change when the response is
+/// divided by `s`; on `f` that is `nu * s * fit(g)`, since a base learner's fit
+/// is linear in its target. The offset (a weighted quantile) and the risk
+/// already scale with the units. So multiplying the gradient by `s` is the
+/// scaled fit, mapped back exactly. Without it each step moves the fit by
+/// about `nu * tau` in response units, and a response in dollars needs millions
+/// of steps. [`ResponseScale::Auto`] takes `s` as the weighted SD of the
+/// response the fit sees, so a cross-validation fold and a fit on the same
+/// rows take the same steps.
+pub fn gradient_scale(scale: ResponseScale, y: &[f64], w: &[f64]) -> f64 {
+    match scale {
+        ResponseScale::Raw => 1.0,
+        ResponseScale::Fixed(s) => s,
+        ResponseScale::Auto => {
+            let (mut sw, mut swy) = (0.0f64, 0.0f64);
+            for (&v, &wi) in y.iter().zip(w) {
+                if wi > 0.0 && v.is_finite() {
+                    sw += wi;
+                    swy += wi * v;
+                }
+            }
+            if sw <= 0.0 {
+                return 1.0;
+            }
+            let mean = swy / sw;
+            let mut ss = 0.0f64;
+            for (&v, &wi) in y.iter().zip(w) {
+                if wi > 0.0 && v.is_finite() {
+                    ss += wi * (v - mean) * (v - mean);
+                }
+            }
+            let sd = (ss / sw).sqrt();
+            if sd.is_finite() && sd > 0.0 {
+                sd
+            } else {
+                1.0
+            }
+        }
+    }
+}
 
 impl Family for Laplace {
     fn name(&self) -> &'static str {
@@ -1263,8 +1321,18 @@ impl Family for Laplace {
         if !y_min.is_finite() || !y_max.is_finite() {
             return 0.0;
         }
-        let risk = |f: f64| -> f64 { ys.iter().zip(ws).map(|(yi, wi)| wi * (yi - f).abs()).sum() };
-        minimize_brent(&risk, y_min, y_max, R_OPTIMIZE_TOL, 500)
+        // Brent's tolerance is absolute, so R's offset is found more finely,
+        // relative to the data, in larger units. A scaled fit runs the same
+        // search on `y / s` and scales the result back, so the offset is the
+        // same in any units; the raw response keeps R's search.
+        let scale = gradient_scale(self.response_scale, ys, ws);
+        let risk = |f: f64| -> f64 {
+            ys.iter()
+                .zip(ws)
+                .map(|(yi, wi)| wi * (yi / scale - f).abs())
+                .sum()
+        };
+        scale * minimize_brent(&risk, y_min / scale, y_max / scale, R_OPTIMIZE_TOL, 500)
     }
 
     fn negative_gradient(
@@ -1274,9 +1342,10 @@ impl Family for Laplace {
         w: ArrayView1<f64>,
         mut out: ArrayViewMut1<f64>,
     ) {
-        let (ys, fs, _ws, os, n) = s4!(y, f, w, out);
+        let (ys, fs, ws, os, n) = s4!(y, f, w, out);
+        let scale = gradient_scale(self.response_scale, ys, ws);
         for i in 0..n {
-            os[i] = (ys[i] - fs[i]).signum();
+            os[i] = scale * (ys[i] - fs[i]).signum();
         }
     }
 
@@ -1298,10 +1367,11 @@ impl Family for Laplace {
         mut out: ArrayViewMut1<f64>,
     ) -> f64 {
         let (ys, fs, ws, os, n) = s4!(y, f, w, out);
+        let scale = gradient_scale(self.response_scale, ys, ws);
         let mut risk = 0.0f64;
         for i in 0..n {
             let r = ys[i] - fs[i];
-            os[i] = r.signum();
+            os[i] = scale * r.signum();
             risk += ws[i] * r.abs();
         }
         risk
@@ -1312,7 +1382,7 @@ impl Family for Laplace {
     }
 
     fn clone_family(&self) -> Box<dyn Family> {
-        Box::new(Laplace)
+        Box::new(*self)
     }
 }
 
@@ -1325,6 +1395,9 @@ pub struct QuantReg {
     pub tau: f64,
     /// Additive shift applied to the fitted quantile line (R's `qoffset`).
     pub qoffset: f64,
+    /// The scale the response is divided by before fitting (see
+    /// [`gradient_scale`]); [`ResponseScale::Raw`] is R mboost's path.
+    pub response_scale: ResponseScale,
 }
 
 /// `value` strictly inside `(0, 1)`, and finite.
@@ -1370,12 +1443,26 @@ impl QuantReg {
     /// [`QuantReg::try_new`], which rejects a `tau` outside `(0, 1)` instead
     /// of producing a check loss that is minimised at an endpoint.
     pub fn new(tau: f64) -> Self {
-        Self { tau, qoffset: 0.5 }
+        Self {
+            tau,
+            qoffset: 0.5,
+            response_scale: ResponseScale::Raw,
+        }
     }
 
     /// Unchecked. Prefer [`QuantReg::try_with_qoffset`].
     pub fn with_qoffset(tau: f64, qoffset: f64) -> Self {
-        Self { tau, qoffset }
+        Self {
+            tau,
+            qoffset,
+            response_scale: ResponseScale::Raw,
+        }
+    }
+
+    /// The same family fitted on the response divided by `response_scale`.
+    pub fn with_response_scale(mut self, response_scale: ResponseScale) -> Self {
+        self.response_scale = response_scale;
+        self
     }
 
     /// `tau` in `(0, 1)`.
@@ -1387,7 +1474,7 @@ impl QuantReg {
     pub fn try_with_qoffset(tau: f64, qoffset: f64) -> Result<Self, MboostrsError> {
         check_open_unit("QuantReg", "tau", tau)?;
         check_open_unit("QuantReg", "qoffset", qoffset)?;
-        Ok(Self { tau, qoffset })
+        Ok(Self::with_qoffset(tau, qoffset))
     }
 }
 
@@ -1407,9 +1494,10 @@ impl Family for QuantReg {
         w: ArrayView1<f64>,
         mut out: ArrayViewMut1<f64>,
     ) {
-        let (ys, fs, _ws, os, n) = s4!(y, f, w, out);
-        let tau = self.tau;
-        let neg = -(1.0 - tau);
+        let (ys, fs, ws, os, n) = s4!(y, f, w, out);
+        let scale = gradient_scale(self.response_scale, ys, ws);
+        let tau = scale * self.tau;
+        let neg = -scale * (1.0 - self.tau);
         for i in 0..n {
             os[i] = if ys[i] >= fs[i] { tau } else { neg };
         }
@@ -1436,10 +1524,7 @@ impl Family for QuantReg {
     }
 
     fn clone_family(&self) -> Box<dyn Family> {
-        Box::new(QuantReg {
-            tau: self.tau,
-            qoffset: self.qoffset,
-        })
+        Box::new(self.clone())
     }
 }
 
@@ -5685,7 +5770,12 @@ mod tests {
         let f = [-1.3, -0.2, 0.4, 0.9, 1.7];
         assert_family_gradient_matches_fd(&mut GaussReg, &[0.3, -1.0, 2.0, 0.5, 1.1], &f, 2.0);
         // Laplace: every residual is away from the kink at y = f.
-        assert_family_gradient_matches_fd(&mut Laplace, &[0.3, -1.0, 2.0, 0.5, 1.1], &f, 1.0);
+        assert_family_gradient_matches_fd(
+            &mut Laplace::default(),
+            &[0.3, -1.0, 2.0, 0.5, 1.1],
+            &f,
+            1.0,
+        );
         // Nuisance parameters are set away from their defaults so that they
         // enter the gradient; calibration is a separate step.
         let positive = [0.4, 1.9, 0.7, 3.2, 5.0];
@@ -6024,7 +6114,7 @@ mod tests {
     fn laplace_offset_optimize() {
         let y = array![1.0, 2.0, 3.0, 4.0, 5.0];
         let w = array![1.0, 1.0, 1.0, 1.0, 1.0];
-        let offset = Laplace.offset(y.view(), w.view());
+        let offset = Laplace::default().offset(y.view(), w.view());
         assert!((offset - 3.0).abs() < 1e-6);
     }
 
@@ -6943,7 +7033,7 @@ mod tests {
             (Box::new(Gaussian) as Box<dyn Family>, "Gaussian"),
             (Box::new(Binomial) as Box<dyn Family>, "Binomial"),
             (Box::new(Poisson) as Box<dyn Family>, "Poisson"),
-            (Box::new(Laplace) as Box<dyn Family>, "Laplace"),
+            (Box::new(Laplace::default()) as Box<dyn Family>, "Laplace"),
             (Box::new(AdaExp) as Box<dyn Family>, "AdaExp"),
         ] {
             let mut g = Array1::zeros(5);
@@ -8370,7 +8460,7 @@ mod row_loss_tests {
         let positive = vec![0.5, 1.2, 2.0, 0.8, 3.1, 1.7];
         check(Gaussian, real.clone(), f.clone());
         check(GaussReg, real.clone(), f.clone());
-        check(Laplace, real.clone(), f.clone());
+        check(Laplace::default(), real.clone(), f.clone());
         check(QuantReg::new(0.3), real.clone(), f.clone());
         check(ExpectReg::new(0.7), real.clone(), f.clone());
         check(Huber::new(Some(0.5)), real.clone(), f.clone());

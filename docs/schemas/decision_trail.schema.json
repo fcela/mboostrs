@@ -73,7 +73,12 @@
       "properties": {
         "formula": {"type": "string"},
         "family": {"type": "string"},
-        "mstop": {"type": "integer"}
+        "mstop": {"type": "integer"},
+        "unseen_levels": {
+          "type": "string",
+          "enum": ["error", "average", "zero_effect"],
+          "description": "How the model predicts a factor or brandom level its training rows did not contain, when it is not the library default 'error'."
+        }
       },
       "additionalProperties": false
     },
