@@ -84,11 +84,16 @@ the specification *and* measures the choices. `budget=0` (default) costs no
 fits and returns the dtype-driven draft plus hygiene findings; a positive
 budget buys measured decisions (family probe, shape probe, mstop tuning)
 recorded so `rec.report()` distinguishes what was measured from what fell
-back to a default. Use `autospec` with a budget when the frame is unfamiliar
-and the analyst has not committed to a family; use `classify_columns` +
-hand-editing when the analyst has. Watch its family inference: whole-number
-responses are read as counts, including floats that happen to be whole; a
-rounded continuous measurement needs `family=Gaussian()` declared by you.
-With `budget=0` a Poisson recommendation carries `step="line_search"`, not the
-fixed step: no fit runs to catch an overflow, and the fixed Poisson step grows
-with the mean. Read `rec.evidence["step"]` for the reason.
+back to a default. Pass `search="fast"` to use the single-pass held-out
+screening radar (variable weeding, shape classification, interaction and spread
+screening in 1–3 sweeps while retaining shared-fold paired-SE adoption gates
+and histogram-subtraction `btree` terms); keep `search="exhaustive"` (default)
+when you want full per-column cross-validated probes. Use `autospec` with a
+budget when the frame is unfamiliar and the analyst has not committed to a
+family; use `classify_columns` + hand-editing when the analyst has. Watch its
+family inference: whole-number responses are read as counts, including floats
+that happen to be whole; a rounded continuous measurement needs
+`family=Gaussian()` declared by you. With `budget=0` a Poisson recommendation
+carries `step="line_search"`, not the fixed step: no fit runs to catch an
+overflow, and the fixed Poisson step grows with the mean. Read
+`rec.evidence["step"]` for the reason.
