@@ -69,6 +69,10 @@ fi
 "$PYTHON_BIN" check_runtime.py
 "$PYTHON_BIN" generate_figures.py
 
+# Pre-warm shared scikit-learn datasets so parallel MyST kernels do not race
+# when downloading and unlinking the same archive (e.g. cal_housing.tgz).
+"$PYTHON_BIN" -c "from sklearn.datasets import fetch_california_housing; fetch_california_housing()" >/dev/null 2>&1 || true
+
 # ── HTML build ───────────────────────────────────────────────────────────────
 mkdir -p _build
 myst build --html --execute --strict --ci 2>&1 | tee _build/html-myst.log
