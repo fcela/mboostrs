@@ -3573,7 +3573,7 @@ fn cv_and_fit_multi_quantile_specs(
     }
     let scale = match response_scale {
         None => ResponseScale::Raw,
-        Some(v) if v == 0.0 => ResponseScale::Auto,
+        Some(0.0) => ResponseScale::Auto,
         Some(v) if v.is_finite() && v > 0.0 => ResponseScale::Fixed(v),
         Some(v) => {
             return Err(pyo3::exceptions::PyValueError::new_err(format!(
@@ -3663,8 +3663,8 @@ fn cv_and_fit_multi_quantile_specs(
                             let tau = taus[q_idx];
                             let (ref fold_w, ref base_learners) = fold_learners[b_idx];
                             let mut learners = base_learners.clone();
-                            let mut fit_fam = QuantReg::try_with_qoffset(tau, tau)?
-                                .with_response_scale(scale);
+                            let mut fit_fam =
+                                QuantReg::try_with_qoffset(tau, tau)?.with_response_scale(scale);
                             let eval_fam = fit_fam.clone();
                             let path = try_fit_with(
                                 &mut learners,
@@ -3736,8 +3736,7 @@ fn cv_and_fit_multi_quantile_specs(
                     let opt_m = opt_mstops[q_idx];
                     let ctrl_q = BoostControl::new(opt_m as u32, nu)?;
                     let mut learners = base_learners.clone();
-                    let mut fam =
-                        QuantReg::try_with_qoffset(tau, tau)?.with_response_scale(scale);
+                    let mut fam = QuantReg::try_with_qoffset(tau, tau)?.with_response_scale(scale);
                     let path = try_fit_with(
                         &mut learners,
                         y_owned.view(),

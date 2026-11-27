@@ -4924,7 +4924,6 @@ impl LssFamily for SurvivalLSS {
     }
 }
 
-
 mod gamlss_families;
 pub use self::gamlss_families::*;
 #[allow(unused_imports)]
@@ -5087,7 +5086,6 @@ mod pig_contract {
         assert!(family.check_y(good.view()).is_ok());
     }
 }
-
 
 #[cfg(test)]
 mod test_suite;

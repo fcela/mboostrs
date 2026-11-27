@@ -5645,7 +5645,6 @@ impl Family for Multinomial {
     }
 }
 
-
 #[cfg(test)]
 mod checked_construction {
     use super::*;
@@ -5753,7 +5752,6 @@ mod checked_construction {
         );
     }
 }
-
 
 #[cfg(test)]
 mod test_suite;

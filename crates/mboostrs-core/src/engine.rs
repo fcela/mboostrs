@@ -2259,10 +2259,8 @@ fn try_fit_with_options_warm<F: Family + ?Sized>(
     })
 }
 
-
 mod gaussian_gram;
 pub(crate) use self::gaussian_gram::*;
-
 
 /// Compute the cumulative hat-matrix trace at each boosting iteration,
 /// matching R's C routine `R_trace_gamboost`.
@@ -3196,7 +3194,6 @@ fn argmin_skip_nan(v: &[f64]) -> Option<usize> {
     }
     best
 }
-
 
 #[cfg(test)]
 mod test_suite;

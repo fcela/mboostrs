@@ -2546,19 +2546,6 @@ mod stabilization_tests {
     }
 }
 
-/// The exact PIG contract, against `gamlss.dist` and against itself.
-///
-/// P4.1 item 1: "Implement the exact PIG negative log-likelihood and gradients
-/// with a tested modified-Bessel kernel; keep PIG fitting rejected until
-/// finite differences, density normalization, simulation recovery, and R
-/// parity pass."
-///
-/// What was there approximated the mu gradient as `y - mu` -- the Poisson one
-/// -- with a comment saying so, and computed the risk as a Poisson negative
-/// log-likelihood outright. Both ran and neither was PIG, so a fit would have
-/// converged to the wrong model quietly; `check_y` refusing every response was
-/// the only thing keeping that off the road.
-
 #[cfg(test)]
 mod response_scale_tests {
     use super::*;

@@ -6646,12 +6646,8 @@ impl PreparedLearner {
                 step_counter,
                 ..
             } => {
-                let active_cols = btree_active_cols(
-                    design.ncols(),
-                    *colsample,
-                    *colsample_seed,
-                    step_counter,
-                );
+                let active_cols =
+                    btree_active_cols(design.ncols(), *colsample, *colsample_seed, step_counter);
                 let target = btree_target(u, by.as_ref());
                 let (coef, pred) = fit_tree_with_sorted(
                     design.view(),
@@ -6910,12 +6906,8 @@ impl PreparedLearner {
                 step_counter,
                 ..
             } => {
-                let active_cols = btree_active_cols(
-                    design.ncols(),
-                    *colsample,
-                    *colsample_seed,
-                    step_counter,
-                );
+                let active_cols =
+                    btree_active_cols(design.ncols(), *colsample, *colsample_seed, step_counter);
                 let target = btree_target(u, by.as_ref());
                 let (coef, pred) = fit_tree_with_sorted(
                     design.view(),
@@ -7356,12 +7348,8 @@ impl PreparedLearner {
                 ..
             } => {
                 let _w_slice = weights.as_slice().expect("weights must be contiguous");
-                let active_cols = btree_active_cols(
-                    design.ncols(),
-                    *colsample,
-                    *colsample_seed,
-                    step_counter,
-                );
+                let active_cols =
+                    btree_active_cols(design.ncols(), *colsample, *colsample_seed, step_counter);
                 let target = btree_target(u, by.as_ref());
                 let (coef, pred) = fit_tree_with_sorted(
                     design.view(),
@@ -13833,10 +13821,9 @@ fn fit_tree_with_sorted(
     (coef, pred)
 }
 
-
 mod tree_split;
-pub use self::tree_split::{SplitMethod, SplitSelection};
 use self::tree_split::*;
+pub use self::tree_split::{SplitMethod, SplitSelection};
 
 #[cfg(test)]
 mod test_suite;

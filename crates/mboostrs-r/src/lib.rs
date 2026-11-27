@@ -1466,9 +1466,13 @@ fn parse_r_bbs_options(spec: &List, lname: &str) -> (String, Option<usize>) {
         let b = v
             .as_integer()
             .or_else(|| v.as_real().map(|r| r as i32))
-            .unwrap_or_else(|| throw_r_error(format!("bbs {lname}: bins must be a positive integer")));
+            .unwrap_or_else(|| {
+                throw_r_error(format!("bbs {lname}: bins must be a positive integer"))
+            });
         if b <= 0 {
-            throw_r_error(format!("bbs {lname}: bins must be a positive integer, got {b}"));
+            throw_r_error(format!(
+                "bbs {lname}: bins must be a positive integer, got {b}"
+            ));
         }
         Some(b as usize)
     });
@@ -1856,15 +1860,9 @@ fn prepare_gamboost_learners_r(
                 let design = ndarray::Array2::from_shape_vec((nr, nc), design_flat)
                     .unwrap_or_else(|e| throw_r_error(format!("tree design shape error: {e}")));
                 let by = r_by_values(&spec, nr, lname);
-                let blueprint = LearnerBlueprint::btree(
-                    design,
-                    lname,
-                    minbucket,
-                    minsplit,
-                    maxdepth,
-                    by,
-                )
-                .unwrap_or_else(|e| throw_r_error(e.to_string()));
+                let blueprint =
+                    LearnerBlueprint::btree(design, lname, minbucket, minsplit, maxdepth, by)
+                        .unwrap_or_else(|e| throw_r_error(e.to_string()));
                 let blueprint = apply_r_btree_options(blueprint, &spec);
                 let (prepared, _) = blueprint
                     .prepare(w_owned.view())
@@ -5092,14 +5090,13 @@ fn r_bbs_design_centered(
 
 /// Compute deduplicated empirical-quantile knots for `bbs(..., knot_placement = "quantile")`.
 #[extendr]
-fn r_bbs_ospline_knots(
-    x: &[f64],
-    bk_lo: f64,
-    bk_hi: f64,
-    n_knots: i32,
-    degree: i32,
-) -> Vec<f64> {
-    bspline_quantile_knots(x, (bk_lo, bk_hi), n_knots.max(1) as usize, degree.max(0) as usize)
+fn r_bbs_ospline_knots(x: &[f64], bk_lo: f64, bk_hi: f64, n_knots: i32, degree: i32) -> Vec<f64> {
+    bspline_quantile_knots(
+        x,
+        (bk_lo, bk_hi),
+        n_knots.max(1) as usize,
+        degree.max(0) as usize,
+    )
 }
 
 /// Evaluate a quantile O-spline basis at `x` using stored `knots` and optional spectral centering.

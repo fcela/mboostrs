@@ -649,10 +649,7 @@ pub(super) fn build_tree_recursive(
         let rw = total_w - lw;
         let rws = total_wsum - lws;
         if lambda_leaf > 0.0 {
-            (total_sqsum
-                - lws * lws / (lw + lambda_leaf)
-                - rws * rws / (rw + lambda_leaf))
-                .max(0.0)
+            (total_sqsum - lws * lws / (lw + lambda_leaf) - rws * rws / (rw + lambda_leaf)).max(0.0)
         } else {
             let lsse = lsq - lws * lws / lw;
             let rsse = (total_sqsum - lsq) - rws * rws / rw;
@@ -987,4 +984,3 @@ pub(super) fn build_tree_recursive(
     }
     split_idx
 }
-

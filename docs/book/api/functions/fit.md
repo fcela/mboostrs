@@ -80,4 +80,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/_procedure/_fit.py` lines 749-1001](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_fit.py#L749-L1001)
+Source: [`python/mboostrs/_procedure/_fit.py` lines 749-1003](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_fit.py#L749-L1003)

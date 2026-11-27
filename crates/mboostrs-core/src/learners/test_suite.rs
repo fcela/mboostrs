@@ -2315,13 +2315,7 @@ mod tests {
 
             let mut replay = vec![0.0f64; n];
             b_binned
-                .predict_into(
-                    coef_binned,
-                    x.as_slice().unwrap(),
-                    &mut replay,
-                    1.0,
-                    None,
-                )
+                .predict_into(coef_binned, x.as_slice().unwrap(), &mut replay, 1.0, None)
                 .unwrap();
             let replay_diff = pred_binned
                 .iter()
@@ -2362,13 +2356,7 @@ mod tests {
                 design[[i, j]] = ((state >> 11) as f64) / ((1u64 << 53) as f64) * 2.0 - 1.0;
             }
         }
-        let u = Array1::from_shape_fn(n, |i| {
-            if design[[i, 0]] > 0.0 {
-                2.0
-            } else {
-                -2.0
-            }
-        });
+        let u = Array1::from_shape_fn(n, |i| if design[[i, 0]] > 0.0 { 2.0 } else { -2.0 });
         let w = Array1::ones(n);
 
         for method in [SplitMethod::Exact, SplitMethod::Histogram] {

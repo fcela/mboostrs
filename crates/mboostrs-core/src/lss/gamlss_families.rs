@@ -2236,4 +2236,3 @@ impl LssFamily for ZeroAdjustedGammaLSS {
         Box::new(ZeroAdjustedGammaLSS)
     }
 }
-

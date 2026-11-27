@@ -1126,9 +1126,7 @@ impl<F: Family + Clone> FoldRun<F> {
                     }
                 }
                 PreparedLearner::BinnedBlockBols {
-                    bin_index,
-                    basis,
-                    ..
+                    bin_index, basis, ..
                 } => {
                     let k = basis.nrows();
                     let p = basis.ncols();
@@ -1260,7 +1258,7 @@ impl<F: Family + Clone> FoldRun<F> {
     }
 }
 
-/// Score a fitted in-bag [`BoostingPath`] on held-out observations across
+/// Score a fitted in-bag [`BoostingPath`](crate::path::BoostingPath) on held-out observations across
 /// iterations `0..=mstop`, returning normalized OOB risk at every step.
 pub fn score_fold_oob_path<F: Family + Clone>(
     learners: Vec<PreparedLearner>,
@@ -1609,47 +1607,55 @@ fn try_cvrisk_binned_multifold<F: Family + Clone>(
 
     let is_compatible = fold_learners.iter().all(|ls| {
         ls.len() == n_learners
-            && ls.iter().enumerate().all(|(l_idx, lr)| match (lr, &fold_learners[0][l_idx]) {
-                (
-                    PreparedLearner::BinnedBlockBols {
-                        bin_index: idx_b,
-                        basis: bas_b,
-                        ..
-                    },
-                    PreparedLearner::BinnedBlockBols {
-                        bin_index: idx_0,
-                        basis: bas_0,
-                        ..
-                    },
-                ) => std::sync::Arc::ptr_eq(idx_b, idx_0) && bas_b.nrows() == bas_0.nrows(),
-                (
-                    PreparedLearner::BinnedScalarBols {
-                        bin_index: idx_b,
-                        exact: ex_b,
-                        bin_values: bv_b,
-                        ..
-                    },
-                    PreparedLearner::BinnedScalarBols {
-                        bin_index: idx_0,
-                        exact: ex_0,
-                        bin_values: bv_0,
-                        ..
-                    },
-                ) => !*ex_b && !*ex_0 && std::sync::Arc::ptr_eq(idx_b, idx_0) && bv_b.len() == bv_0.len(),
-                (
-                    PreparedLearner::DiagBrandom {
-                        group_idx: idx_b,
-                        n_levels: nl_b,
-                        ..
-                    },
-                    PreparedLearner::DiagBrandom {
-                        group_idx: idx_0,
-                        n_levels: nl_0,
-                        ..
-                    },
-                ) => std::sync::Arc::ptr_eq(idx_b, idx_0) && nl_b == nl_0,
-                _ => false,
-            })
+            && ls
+                .iter()
+                .enumerate()
+                .all(|(l_idx, lr)| match (lr, &fold_learners[0][l_idx]) {
+                    (
+                        PreparedLearner::BinnedBlockBols {
+                            bin_index: idx_b,
+                            basis: bas_b,
+                            ..
+                        },
+                        PreparedLearner::BinnedBlockBols {
+                            bin_index: idx_0,
+                            basis: bas_0,
+                            ..
+                        },
+                    ) => std::sync::Arc::ptr_eq(idx_b, idx_0) && bas_b.nrows() == bas_0.nrows(),
+                    (
+                        PreparedLearner::BinnedScalarBols {
+                            bin_index: idx_b,
+                            exact: ex_b,
+                            bin_values: bv_b,
+                            ..
+                        },
+                        PreparedLearner::BinnedScalarBols {
+                            bin_index: idx_0,
+                            exact: ex_0,
+                            bin_values: bv_0,
+                            ..
+                        },
+                    ) => {
+                        !*ex_b
+                            && !*ex_0
+                            && std::sync::Arc::ptr_eq(idx_b, idx_0)
+                            && bv_b.len() == bv_0.len()
+                    }
+                    (
+                        PreparedLearner::DiagBrandom {
+                            group_idx: idx_b,
+                            n_levels: nl_b,
+                            ..
+                        },
+                        PreparedLearner::DiagBrandom {
+                            group_idx: idx_0,
+                            n_levels: nl_0,
+                            ..
+                        },
+                    ) => std::sync::Arc::ptr_eq(idx_b, idx_0) && nl_b == nl_0,
+                    _ => false,
+                })
     });
     if !is_compatible {
         return Ok(None);
@@ -1677,8 +1683,7 @@ fn try_cvrisk_binned_multifold<F: Family + Clone>(
         {
             return Ok(None);
         }
-        if fit_families[f_idx].requires_binary_weights()
-            && fw.iter().any(|&w| w != 0.0 && w != 1.0)
+        if fit_families[f_idx].requires_binary_weights() && fw.iter().any(|&w| w != 0.0 && w != 1.0)
         {
             return Ok(None);
         }
@@ -1708,7 +1713,11 @@ fn try_cvrisk_binned_multifold<F: Family + Clone>(
         let f_all = Array1::from_elem(n, offset);
         let f_oob = Array1::from_elem(oob_idx.len(), offset);
         let r0 = eval_families[f_idx].held_out_risk(y_oob.view(), f_oob.view(), w_oob.view());
-        risk_matrix[[f_idx, 0]] = if oob_sum > 0.0 { r0 / oob_sum } else { f64::NAN };
+        risk_matrix[[f_idx, 0]] = if oob_sum > 0.0 {
+            r0 / oob_sum
+        } else {
+            f64::NAN
+        };
 
         oob_indices.push(oob_idx);
         y_oobs.push(y_oob);
@@ -3367,7 +3376,8 @@ mod tests {
             let n = 400;
             let x1 = Array1::from_shape_fn(n, |i| ((i as f64) * 0.13).sin());
             let x2 = Array1::from_shape_fn(n, |i| ((i as f64) * 0.07).cos());
-            let y = Array1::from_shape_fn(n, |i| if x1[i] + 0.5 * x2[i] > 0.0 { 1.0 } else { -1.0 });
+            let y =
+                Array1::from_shape_fn(n, |i| if x1[i] + 0.5 * x2[i] > 0.0 { 1.0 } else { -1.0 });
             let w = Array1::ones(n);
             let fmat = folds(n);
             let bp1 = LearnerBlueprint::bbs_ospline_binned(
@@ -3424,7 +3434,8 @@ mod tests {
             assert_eq!(batched.risk_matrix.dim(), per_fold.risk_matrix.dim());
             for f_idx in 0..batched.risk_matrix.nrows() {
                 for m in 0..batched.risk_matrix.ncols() {
-                    let diff = (batched.risk_matrix[[f_idx, m]] - per_fold.risk_matrix[[f_idx, m]]).abs();
+                    let diff =
+                        (batched.risk_matrix[[f_idx, m]] - per_fold.risk_matrix[[f_idx, m]]).abs();
                     assert!(
                         diff <= 1e-13,
                         "mismatch at fold {f_idx} step {m}: {} vs {}",

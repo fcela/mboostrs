@@ -2201,19 +2201,6 @@ mod tests {
     }
 }
 
-/// Every invalid boundary of every checked family constructor.
-///
-/// P0.3's closure condition: "the published core crate still permits invalid
-/// construction: `QuantReg::new`/`with_qoffset`, `Huber::new`, `Cindex::new`,
-/// and `PropOdds::new` accept impossible values, while `Multinomial::new`
-/// asserts and can panic."
-///
-/// The Python and R frontends validated these, and the crate is published on
-/// its own, so a Rust caller could build a family whose loss is minimised at
-/// an endpoint, whose sigmoid is inverted, or that describes an ordinal
-/// response with no categories -- and then fit with it. None of those fail
-/// loudly: they produce numbers.
-
 /// The ranked AUC kernel computes what the pairwise one computes.
 ///
 /// P3.4 item 5: "optimize AUC/Gehan/C-index pairwise kernels with

@@ -220,4 +220,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `TypeError`
 - `ValueError`
 
-Source: [`python/mboostrs/causal.py` lines 4159-4747](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L4159-L4747)
+Source: [`python/mboostrs/causal.py` lines 4171-4759](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L4171-L4759)
