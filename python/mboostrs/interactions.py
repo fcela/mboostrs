@@ -254,7 +254,15 @@ def _fit_marginal(kind: str, column: str, args: str | None, data,
         present_levels = [v for v in listed if not _is_missing_scalar(v)]
         if has_missing:
             present_levels.append(_MISSING_LEVEL)
-        levels = tuple(sorted(set(present_levels), key=lambda x: (str(type(x).__name__), str(x)) if any(not isinstance(u, type(present_levels[0])) for u in present_levels) else x))
+        mixed_types = bool(present_levels) and any(
+            not isinstance(u, type(present_levels[0])) for u in present_levels
+        )
+        levels = tuple(
+            sorted(
+                set(present_levels),
+                key=(lambda x: (type(x).__name__, str(x))) if mixed_types else None,
+            )
+        )
         extra = {"impute_missing": True} if impute else {}
         return _Marginal(kind, column, {"levels": levels, **extra, **hyper})
 

@@ -43,6 +43,7 @@ def main(argv=None) -> int:
 
     if args.command == "reproduce":
         from pathlib import Path
+
         import mboostrs as mb
 
         data_path = Path(args.data)

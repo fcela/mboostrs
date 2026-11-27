@@ -203,7 +203,9 @@ def _search_subsample(data: Any, response: str, seed: int, max_rows: int) -> Any
 def _sanitize_formula_domains(formula: Any, data: Any) -> Any:
     """Downgrade any log(col)/sqrt(col) whose full-data domain violates positivity."""
     import re
+
     import numpy as np
+
     from mboostrs._frame import read_column
     from mboostrs._names import unquote_name
 

@@ -326,6 +326,7 @@ def _column_constant_value(data, col: str) -> float | None:
 def _guard_formula_constant_bbs(formula: str, sub_data) -> str:
     """Inject a leak-free boundary.knots pair when a row subset collapses a bbs column."""
     import re
+
     from mboostrs._names import partition_tilde, split_terms, unquote_name
 
     lhs, sep, rhs = partition_tilde(formula)
