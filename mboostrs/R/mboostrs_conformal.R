@@ -75,11 +75,15 @@
 #'   prediction at the same rows).
 #' @export
 conformal_interval <- function(model, newdata = NULL, level = 0.9,
-                               method = c("split", "cv+", "cqr", "distributional"), seed = NULL,
+                               method = c("split", "cv+", "cqr", "distributional", "adaptive"), seed = NULL,
                                calib_fraction = 0.5, n_folds = 10L, mstop = NULL,
                                calibration = NULL, score = "auto",
-                               count_reference = "zero_inflated_poisson") {
+                               count_reference = "zero_inflated_poisson",
+                               decay = 0.99, time = NULL) {
   method <- match.arg(method)
+  if (!is.numeric(decay) || length(decay) != 1L || !is.finite(decay) || decay <= 0 || decay > 1) {
+    stop("decay must be a finite number in (0, 1]", call. = FALSE)
+  }
   requested_score <- score
   score <- match.arg(score, c("auto", "absolute", "poisson_normalized", "poisson_quantile", "count_rank", "gaussian_normalized"))
   count_reference <- match.arg(count_reference, c("zero_inflated_poisson", "poisson"))
@@ -89,17 +93,19 @@ conformal_interval <- function(model, newdata = NULL, level = 0.9,
   }
   if (is_lss) {
     if (!identical(model$family$rust_name, "gaussianlss") ||
-        !(method %in% c("split", "distributional")) ||
+        !(method %in% c("split", "distributional", "adaptive")) ||
         score != "gaussian_normalized") {
       stop("R LSS calibration currently needs GaussianLSS and score=gaussian_normalized", call. = FALSE)
     }
-    return(.conformal_gaussian_lss(model, newdata, level, seed, calib_fraction, mstop,
-                                   calibration, score, requested_score))
+    res_lss <- .conformal_gaussian_lss(model, newdata, level, seed, calib_fraction, mstop,
+                                       calibration, score, requested_score)
+    res_lss$reliability <- .conformal_assess_reliability(res_lss, model, newdata)
+    return(res_lss)
   }
   if (score == "gaussian_normalized" || method == "distributional") {
     stop("Gaussian distributional calibration needs a GaussianLSS fit", call. = FALSE)
   }
-  if (score != "absolute" && method != "split") {
+  if (score != "absolute" && !(method %in% c("split"))) {
     stop("Poisson scores are available only for method='split'", call. = FALSE)
   }
   if (!inherits(model, c("mboostrs_glmboost", "mboostrs_gamboost"))) {
@@ -120,7 +126,9 @@ conformal_interval <- function(model, newdata = NULL, level = 0.9,
             call. = FALSE)
   }
 
-  result <- if (!is.null(calibration)) {
+  result <- if (method == "adaptive") {
+    .conformal_adaptive(model, newdata, level, calib_fraction, mstop, calibration, decay, time)
+  } else if (!is.null(calibration)) {
     if (method != "split") {
       stop("calibration= supplies held-out rows for split conformal; cv+ and cqr ",
            "refit on subsets of the training rows instead", call. = FALSE)
@@ -141,6 +149,7 @@ conformal_interval <- function(model, newdata = NULL, level = 0.9,
                                as.double(result$upper), PACKAGE="mboostrs")
     result$empty_count_set <- result$count_size == 0
   }
+  result$reliability <- .conformal_assess_reliability(result, model, newdata)
   structure(result, class = "mboostrs_conformal")
 }
 
@@ -637,4 +646,195 @@ print.mboostrs_conformal <- function(x, ...) {
     calibration_source = sprintf("random split of the model's %d training rows (seed=%s)",
                                  n, if (is.null(seed)) "NULL" else seed),
     mstop_source = mstop_source))
+}
+
+.adaptive_gamma_r <- function(scores, decay = 0.99) {
+  decay <- as.double(decay)
+  if (decay == 1.0 || decay != 0.99) return(decay)
+  n_cal <- length(scores)
+  half <- n_cal %/% 2L
+  if (half < 5L) return(0.5 ^ (1.0 / max(10.0, 0.5 * max(n_cal, 1L))))
+  early <- scores[seq_len(half)]
+  late <- scores[(half + 1L):n_cal]
+  early_rms <- sqrt(mean(early * early))
+  late_rms <- sqrt(mean(late * late))
+  if (early_rms <= 1e-12 || late_rms <= early_rms) return(1.0)
+  ratio <- late_rms / early_rms
+  if (ratio <= 1.15) return(0.5 ^ (1.0 / max(25.0, 0.5 * n_cal)))
+  neff_fn <- function(g) {
+    w <- g ^ rev(seq_len(n_cal) - 1L)
+    (sum(w) ^ 2) / max(sum(w * w), 1e-15)
+  }
+  target_neff <- if (n_cal > 300L) max(40.0, 0.12 * n_cal) else min(40.0, 0.85 * n_cal)
+  gamma_lo <- max(0.96, 1.0 - 2.0 / target_neff - 0.015 * min(2.0, ratio - 1.15))
+  if (neff_fn(gamma_lo) >= target_neff) return(gamma_lo)
+  lo <- gamma_lo
+  hi <- 0.9999
+  for (iter in seq_len(24L)) {
+    mid <- 0.5 * (lo + hi)
+    if (neff_fn(mid) >= target_neff) hi <- mid else lo <- mid
+  }
+  min(0.9999, max(0.96, hi))
+}
+
+.weighted_conformal_quantile_r <- function(scores, level, gamma) {
+  n_cal <- length(scores)
+  w <- gamma ^ rev(seq_len(n_cal) - 1L)
+  ord <- order(scores)
+  s_sorted <- scores[ord]
+  w_sorted <- w[ord] / (sum(w) + 1.0)
+  cs <- cumsum(w_sorted)
+  idx <- which(cs >= level)
+  if (length(idx) == 0L) Inf else as.double(s_sorted[idx[1L]])
+}
+
+.temporal_scale_ratio_r <- function(scores) {
+  n_cal <- length(scores)
+  if (n_cal < 10L) return(NA_real_)
+  half <- n_cal %/% 2L
+  s1 <- scores[seq_len(half)]
+  s2 <- scores[(half + 1L):n_cal]
+  sd1 <- max(stats::sd(s1), 1e-12)
+  sd2 <- max(stats::sd(s2), 1e-12)
+  med1 <- max(stats::median(s1), 1e-12)
+  med2 <- max(stats::median(s2), 1e-12)
+  max(sd2 / sd1, sd1 / sd2, med2 / med1, med1 / med2)
+}
+
+.conformal_adaptive <- function(model, newdata, level, calib_fraction, mstop,
+                                calibration, decay, time) {
+  target <- .conformal_target(model, newdata)
+  if (!is.null(calibration)) {
+    if (!is.null(time) && is.character(time) && length(time) == 1L && !is.null(calibration[[time]])) {
+      calibration <- .conformal_rows(calibration, order(calibration[[time]]))
+    }
+    y_cal <- .conformal_response(model, calibration)
+    .conformal_check_calibration_size(length(y_cal), level)
+    fit <- model
+    n_train <- model$n
+    source_desc <- "caller-supplied chronological calibration rows"
+  } else {
+    data <- model$data
+    n_total <- model$n
+    if (n_total < 25L) {
+      stop("method='adaptive' needs at least 25 training rows", call. = FALSE)
+    }
+    if (!is.null(time) && is.character(time) && length(time) == 1L && !is.null(data[[time]])) {
+      ord <- order(data[[time]])
+    } else {
+      ord <- seq_len(n_total)
+    }
+    frac <- min(as.double(calib_fraction), 0.25)
+    n_cal <- if (n_total >= 40L) max(20L, min(as.integer(round(n_total * frac)), n_total - 20L)) else max(10L, n_total %/% 4L)
+    .conformal_check_calibration_size(n_cal, level)
+    train_idx <- ord[seq_len(n_total - n_cal)]
+    cal_idx <- ord[(n_total - n_cal + 1L):n_total]
+    fit <- .conformal_refit(model, train_idx, steps = mstop)
+    calibration <- .conformal_rows(data, cal_idx)
+    y_cal <- .conformal_response(model, calibration)
+    n_train <- length(train_idx)
+    source_desc <- sprintf("chronological last %d of %d training rows", n_cal, n_total)
+  }
+  cal_pred <- as.double(predict(fit, calibration, mstop = mstop, type = "response"))
+  scores <- abs(y_cal - cal_pred)
+  gamma <- .adaptive_gamma_r(scores, decay)
+  q <- .weighted_conformal_quantile_r(scores, level, gamma)
+  point <- as.double(predict(fit, target, mstop = mstop, type = "response"))
+  band <- .conformal_band(point, q)
+  res <- .conformal_fields(list(
+    lower = band$lower, upper = band$upper, predicted = point, level = level,
+    method = "adaptive", n_calibration = length(scores), quantile = q,
+    score = "absolute", guaranteed_coverage = level,
+    guarantee = sprintf("weighted non-exchangeable conformal calibration (Barber et al., 2023; gamma=%.4g)", gamma),
+    assumptions = "exponentially weighted calibration over chronological nonconformity scores",
+    n_training = n_train,
+    calibration_source = sprintf("%s (gamma=%.4g)", source_desc, gamma),
+    mstop_source = if (is.null(mstop)) "fitted step count" else sprintf("fixed (mstop=%d)", as.integer(mstop))
+  ))
+  res$.temporal_scale_ratio <- .temporal_scale_ratio_r(scores)
+  res
+}
+
+.conformal_assess_reliability <- function(result, model, newdata) {
+  n_cal <- as.integer(result$n_calibration %||% 0L)
+  lvl <- as.double(result$level %||% 0.9)
+  cov_se <- sqrt(lvl * (1.0 - lvl) / max(n_cal + 1.0, 1.0))
+  warnings <- character(0)
+  if (cov_se > 0.05) {
+    warnings <- c(warnings, sprintf("small calibration split (n_calibration=%d, coverage SE=+/-%.3f)", n_cal, cov_se))
+  }
+  tsr <- result$.temporal_scale_ratio
+  has_shift <- !is.null(tsr) && is.finite(tsr) && tsr >= 1.4
+  if (has_shift) {
+    warnings <- c(warnings, sprintf("temporal_scale_shift: second-half calibration residual scale differs from first-half by %.2fx", tsr))
+  }
+  list(
+    status = if (length(warnings) > 0L) "caution" else "reliable",
+    warnings = warnings,
+    n_calibration = n_cal,
+    calibration_coverage_se = round(cov_se, 4L),
+    temporal_scale_shift = isTRUE(has_shift)
+  )
+}
+
+#' Online Adaptive Conformal Inference (Gibbs & Candes, 2021)
+#'
+#' Updates the effective miscoverage target sequentially along a time-ordered
+#' forecast stream to maintain long-run coverage under distribution shift.
+#'
+#' @param predicted Numeric vector of sequential point predictions.
+#' @param observed Numeric vector of sequential observed outcomes (same length).
+#' @param half_width Baseline interval half-width (scalar or vector of same length).
+#' @param level Nominal target coverage in (0, 1), default 0.9.
+#' @param lr Step-size learning rate for the online alpha update, default 0.02.
+#' @return A list with \code{lower}, \code{upper}, \code{coverage}, \code{alpha_path},
+#'   \code{multipliers}, \code{level}, and \code{lr}.
+#' @export
+adaptive_conformal_stream <- function(predicted, observed, half_width,
+                                      level = 0.9, lr = 0.02) {
+  pred <- as.double(predicted)
+  obs <- as.double(observed)
+  n <- length(pred)
+  if (length(obs) != n || n < 1L) {
+    stop("predicted and observed must be non-empty numeric vectors of equal length", call. = FALSE)
+  }
+  hw <- if (length(half_width) == 1L) rep(as.double(half_width), n) else as.double(half_width)
+  if (length(hw) != n || any(!is.finite(hw)) || any(hw < 0)) {
+    stop("half_width must be non-negative finite scalar or vector matching predicted", call. = FALSE)
+  }
+  if (!is.numeric(level) || length(level) != 1L || level <= 0 || level >= 1) {
+    stop("level must be in (0, 1)", call. = FALSE)
+  }
+  if (!is.numeric(lr) || length(lr) != 1L || !is.finite(lr) || lr <= 0) {
+    stop("lr must be a positive finite number", call. = FALSE)
+  }
+  target_alpha <- 1.0 - as.double(level)
+  z_base <- stats::qnorm(0.5 + 0.5 * level)
+  alpha_t <- target_alpha
+  lower <- numeric(n)
+  upper <- numeric(n)
+  alpha_path <- numeric(n)
+  multipliers <- numeric(n)
+  covered <- logical(n)
+  for (t in seq_len(n)) {
+    a_clamped <- min(max(alpha_t, 1e-6), 0.999)
+    mult <- max(0.0, stats::qnorm(1.0 - 0.5 * a_clamped) / z_base)
+    half_t <- mult * hw[t]
+    lower[t] <- pred[t] - half_t
+    upper[t] <- pred[t] + half_t
+    alpha_path[t] <- alpha_t
+    multipliers[t] <- mult
+    err_t <- if (obs[t] < lower[t] || obs[t] > upper[t]) 1.0 else 0.0
+    covered[t] <- (err_t == 0.0)
+    alpha_t <- min(max(alpha_t + lr * (target_alpha - err_t), 1e-5), 0.999)
+  }
+  list(
+    lower = lower,
+    upper = upper,
+    coverage = mean(covered),
+    alpha_path = alpha_path,
+    multipliers = multipliers,
+    level = as.double(level),
+    lr = as.double(lr)
+  )
 }

@@ -25,10 +25,12 @@ use mboostrs_core::families::{
     QuantReg, Weibull,
 };
 use mboostrs_core::learners::{
-    bspline_basis_with_deriv, build_bbs_template, df_to_lambda, prepare_bbs_from_template,
+    bspline_basis_extrap, bspline_basis_with_deriv, bspline_quantile_knots, build_bbs_template,
+    center_spectral, df_to_lambda, ospline_curvature_penalty, prepare_bbs_from_template,
     prepare_bbs_with_lambda, prepare_block_bols, prepare_bns, prepare_bspatial,
     prepare_kronecker_bols, prepare_scalar_bols, prepare_scalar_bols_fixed_center, BasisInfo,
-    BmonoSolver, KroneckerRebuild, LearnerBlueprint, MonoConstraint, PreparedLearner,
+    BmonoSolver, KroneckerRebuild, LearnerBlueprint, MonoConstraint, PreparedLearner, SplitMethod,
+    SplitSelection,
 };
 use std::collections::HashMap;
 use std::time::Instant;
@@ -1448,6 +1450,174 @@ fn cvrisk_glmboost(
 
 // ─── gamboost ─────────────────────────────────────────────────────────
 
+fn parse_r_bbs_options(spec: &List, lname: &str) -> (String, Option<usize>) {
+    let knot_placement = list_optional_elt(spec, "knot_placement")
+        .and_then(|v| v.as_str().map(str::to_string))
+        .unwrap_or_else(|| "equidistant".to_string());
+    if knot_placement != "equidistant" && knot_placement != "quantile" {
+        throw_r_error(format!(
+            "bbs {lname}: knot_placement must be 'equidistant' or 'quantile', got {knot_placement:?}"
+        ));
+    }
+    let bins = list_optional_elt(spec, "bins").and_then(|v| {
+        if v.is_null() {
+            return None;
+        }
+        let b = v
+            .as_integer()
+            .or_else(|| v.as_real().map(|r| r as i32))
+            .unwrap_or_else(|| throw_r_error(format!("bbs {lname}: bins must be a positive integer")));
+        if b <= 0 {
+            throw_r_error(format!("bbs {lname}: bins must be a positive integer, got {b}"));
+        }
+        Some(b as usize)
+    });
+    (knot_placement, bins)
+}
+
+#[allow(clippy::too_many_arguments)]
+fn build_r_bbs_blueprint(
+    spec: &List,
+    x: ndarray::Array1<f64>,
+    name: &str,
+    knots: usize,
+    degree: usize,
+    differences: usize,
+    df: f64,
+    lambda: Option<f64>,
+    center: bool,
+    by: Option<ndarray::Array1<f64>>,
+    cyclic: bool,
+    boundary_knots: Option<(f64, f64)>,
+    deriv: usize,
+) -> Result<LearnerBlueprint, mboostrs_core::MboostrsError> {
+    let (knot_placement, bins) = parse_r_bbs_options(spec, name);
+    match (knot_placement.as_str(), bins) {
+        ("equidistant", None) => LearnerBlueprint::bbs(
+            x,
+            name,
+            knots,
+            degree,
+            differences,
+            df,
+            lambda,
+            center,
+            by,
+            cyclic,
+            boundary_knots,
+            deriv,
+        ),
+        ("equidistant", Some(b)) => LearnerBlueprint::bbs_binned(
+            x,
+            name,
+            knots,
+            degree,
+            differences,
+            df,
+            lambda,
+            center,
+            by,
+            cyclic,
+            boundary_knots,
+            deriv,
+            b,
+        ),
+        ("quantile", None) => LearnerBlueprint::bbs_ospline(
+            x,
+            name,
+            knots,
+            degree,
+            df,
+            lambda,
+            center,
+            by,
+            boundary_knots,
+            deriv,
+        ),
+        ("quantile", Some(b)) => LearnerBlueprint::bbs_ospline_binned(
+            x,
+            name,
+            knots,
+            degree,
+            df,
+            lambda,
+            center,
+            by,
+            boundary_knots,
+            deriv,
+            b,
+        ),
+        _ => unreachable!(),
+    }
+}
+
+fn apply_r_btree_options(blueprint: LearnerBlueprint, spec: &List) -> LearnerBlueprint {
+    let categorical: Vec<usize> = list_optional_elt(spec, "categorical")
+        .and_then(|value| value.as_integer_vector())
+        .unwrap_or_default()
+        .into_iter()
+        .map(|v| v.max(0) as usize)
+        .collect();
+    let selection = match list_optional_elt(spec, "selection")
+        .and_then(|value| value.as_str().map(str::to_string))
+        .as_deref()
+        .unwrap_or("ctree")
+    {
+        "sse" => SplitSelection::Sse,
+        "ctree" => SplitSelection::CtreeStatistic,
+        "ctree_pvalue" => SplitSelection::CtreePvalue,
+        other => throw_r_error(format!(
+            "btree selection must be 'sse', 'ctree' or 'ctree_pvalue', got {other:?}"
+        )),
+    };
+    let split_method = match list_optional_elt(spec, "split_method")
+        .and_then(|value| value.as_str().map(str::to_string))
+        .as_deref()
+        .unwrap_or("exact")
+    {
+        "exact" => SplitMethod::Exact,
+        "histogram" => SplitMethod::Histogram,
+        other => throw_r_error(format!(
+            "btree split_method must be 'exact' or 'histogram', got {other:?}"
+        )),
+    };
+    let lambda_leaf = list_optional_elt(spec, "lambda_leaf")
+        .and_then(|value| value.as_real())
+        .unwrap_or(0.0);
+    if !lambda_leaf.is_finite() || lambda_leaf < 0.0 {
+        throw_r_error(format!(
+            "btree lambda_leaf must be finite and >= 0, got {lambda_leaf}"
+        ));
+    }
+    let colsample = list_optional_elt(spec, "colsample")
+        .and_then(|value| value.as_real())
+        .unwrap_or(1.0);
+    if !colsample.is_finite() || colsample <= 0.0 || colsample > 1.0 {
+        throw_r_error(format!(
+            "btree colsample must lie in (0, 1], got {colsample}"
+        ));
+    }
+    let colsample_seed_raw = list_optional_elt(spec, "colsample_seed")
+        .and_then(|value| {
+            value
+                .as_integer()
+                .map(|i| i as i64)
+                .or_else(|| value.as_real().map(|r| r as i64))
+        })
+        .unwrap_or(0);
+    if colsample_seed_raw < 0 {
+        throw_r_error(format!(
+            "btree colsample_seed must be >= 0, got {colsample_seed_raw}"
+        ));
+    }
+    blueprint
+        .with_categorical(categorical)
+        .with_selection(selection)
+        .with_split_method(split_method)
+        .with_lambda_leaf(lambda_leaf)
+        .with_colsample(colsample, colsample_seed_raw as u64)
+}
+
 /// Builds the prepared learners of an R `gamboost` learner specification
 /// list with the given fit weights. `fit_gamboost` and `gamboost_hat_r`
 /// share it, so the hat matrix is formed from the learners the fit used.
@@ -1555,6 +1725,12 @@ fn prepare_gamboost_learners_r(
             }
             "bbs" => {
                 if multinomial_n_classes > 1 {
+                    let (knot_placement, bins) = parse_r_bbs_options(&spec, lname);
+                    if knot_placement == "quantile" || bins.is_some() {
+                        throw_r_error(format!(
+                            "Multinomial bbs {lname} does not support knot_placement='quantile' or bins="
+                        ));
+                    }
                     // Smooth multinomial: build the raw B-spline basis with the
                     // (I + K1) per-class penalty and per-class df via
                     // prepare_kronecker_bbs (matches R's bbs(x) %O% bols(class)).
@@ -1616,24 +1792,53 @@ fn prepare_gamboost_learners_r(
                             ));
                         }
                     }
-                    learners.push(prepare_bbs_with_lambda(
-                        xa.view(),
-                        w_owned.view(),
-                        knots,
-                        degree,
-                        differences,
-                        df,
-                        lambda_opt,
-                        center,
-                        lname,
-                        by.as_ref().map(|values| values.view()),
-                        false,
-                        None,
-                        deriv,
-                    ));
+                    let (knot_placement, bins) = parse_r_bbs_options(&spec, lname);
+                    if knot_placement == "equidistant" && bins.is_none() {
+                        learners.push(prepare_bbs_with_lambda(
+                            xa.view(),
+                            w_owned.view(),
+                            knots,
+                            degree,
+                            differences,
+                            df,
+                            lambda_opt,
+                            center,
+                            lname,
+                            by.as_ref().map(|values| values.view()),
+                            false,
+                            None,
+                            deriv,
+                        ));
+                    } else {
+                        let boundary_lo =
+                            list_optional_elt(&spec, "bk_lo").and_then(|value| value.as_real());
+                        let boundary_hi =
+                            list_optional_elt(&spec, "bk_hi").and_then(|value| value.as_real());
+                        let boundary_knots = boundary_lo.zip(boundary_hi);
+                        let blueprint = build_r_bbs_blueprint(
+                            &spec,
+                            xa,
+                            lname,
+                            knots,
+                            degree,
+                            differences,
+                            df,
+                            lambda_opt,
+                            center,
+                            by,
+                            false,
+                            boundary_knots,
+                            deriv,
+                        )
+                        .unwrap_or_else(|e| throw_r_error(e.to_string()));
+                        let (prepared, _) = blueprint
+                            .prepare(w_owned.view())
+                            .unwrap_or_else(|e| throw_r_error(e.to_string()));
+                        learners.push(prepared);
+                    }
                 }
             }
-            "tree" => {
+            "tree" | "btree" => {
                 let design_flat = list_named_elt(&spec, "design")
                     .as_real_vector()
                     .unwrap_or_else(|| throw_r_error("tree $design not numeric"));
@@ -1650,37 +1855,21 @@ fn prepare_gamboost_learners_r(
                 let nc = dims[1] as usize;
                 let design = ndarray::Array2::from_shape_vec((nr, nc), design_flat)
                     .unwrap_or_else(|e| throw_r_error(format!("tree design shape error: {e}")));
-
-                let categorical: Vec<usize> = list_named_elt(&spec, "categorical")
-                    .as_integer_vector()
-                    .unwrap_or_default()
-                    .into_iter()
-                    .map(|v| v.max(0) as usize)
-                    .collect();
-                use mboostrs_core::learners::SplitSelection;
-                let selection = match list_named_elt(&spec, "selection")
-                    .as_str()
-                    .unwrap_or("ctree")
-                {
-                    "sse" => SplitSelection::Sse,
-                    "ctree" => SplitSelection::CtreeStatistic,
-                    "ctree_pvalue" => SplitSelection::CtreePvalue,
-                    other => throw_r_error(format!(
-                        "btree selection must be 'sse', 'ctree' or 'ctree_pvalue', got {other:?}"
-                    )),
-                };
                 let by = r_by_values(&spec, nr, lname);
-                learners.push(mboostrs_core::learners::prepare_btree_selected(
-                    design.view(),
-                    w_owned.view(),
+                let blueprint = LearnerBlueprint::btree(
+                    design,
+                    lname,
                     minbucket,
                     minsplit,
                     maxdepth,
                     by,
-                    lname,
-                    categorical,
-                    selection,
-                ));
+                )
+                .unwrap_or_else(|e| throw_r_error(e.to_string()));
+                let blueprint = apply_r_btree_options(blueprint, &spec);
+                let (prepared, _) = blueprint
+                    .prepare(w_owned.view())
+                    .unwrap_or_else(|e| throw_r_error(e.to_string()));
+                learners.push(prepared);
             }
             "bmono" => {
                 // Build the monotone P-spline with the CORE machinery from the
@@ -3160,7 +3349,8 @@ fn parse_lss_learner_blueprints_r(learner_specs: &List) -> Vec<Vec<LearnerBluepr
                     let boundary_hi =
                         list_optional_elt(&spec, "bk_hi").and_then(|value| value.as_real());
                     let boundary_knots = boundary_lo.zip(boundary_hi);
-                    LearnerBlueprint::bbs(
+                    build_r_bbs_blueprint(
+                        &spec,
                         ndarray::Array1::from_vec(x),
                         name,
                         list_optional_elt(&spec, "knots")
@@ -3456,28 +3646,7 @@ fn parse_lss_learner_blueprints_r(learner_specs: &List) -> Vec<Vec<LearnerBluepr
                             .filter(|values| !values.is_empty())
                             .map(ndarray::Array1::from_vec),
                     )
-                    .map(|blueprint| {
-                        // The factor columns' level counts and the split
-                        // rule, as the gamboost tree arm reads them: without
-                        // them a gamboostLSS tree split factor codes as
-                        // ordered numbers and chose columns by SSE.
-                        let categorical: Vec<usize> = list_optional_elt(&spec, "categorical")
-                            .and_then(|value| value.as_integer_vector())
-                            .unwrap_or_default()
-                            .into_iter()
-                            .map(|v| v.max(0) as usize)
-                            .collect();
-                        let selection = match list_optional_elt(&spec, "selection")
-                            .and_then(|value| value.as_str().map(str::to_string))
-                            .as_deref()
-                            .unwrap_or("ctree")
-                        {
-                            "sse" => mboostrs_core::learners::SplitSelection::Sse,
-                            "ctree_pvalue" => mboostrs_core::learners::SplitSelection::CtreePvalue,
-                            _ => mboostrs_core::learners::SplitSelection::CtreeStatistic,
-                        };
-                        blueprint.with_categorical(categorical).with_selection(selection)
-                    })
+                    .map(|blueprint| apply_r_btree_options(blueprint, &spec))
                 }
                 "bkernel" => {
                     let x = list_named_elt(&spec, "x")
@@ -4921,6 +5090,47 @@ fn r_bbs_design_centered(
     list!(design = flat, p = p as i32)
 }
 
+/// Compute deduplicated empirical-quantile knots for `bbs(..., knot_placement = "quantile")`.
+#[extendr]
+fn r_bbs_ospline_knots(
+    x: &[f64],
+    bk_lo: f64,
+    bk_hi: f64,
+    n_knots: i32,
+    degree: i32,
+) -> Vec<f64> {
+    bspline_quantile_knots(x, (bk_lo, bk_hi), n_knots.max(1) as usize, degree.max(0) as usize)
+}
+
+/// Evaluate a quantile O-spline basis at `x` using stored `knots` and optional spectral centering.
+#[extendr]
+fn r_bbs_ospline_design(
+    x: &[f64],
+    knots: &[f64],
+    bk_lo: f64,
+    bk_hi: f64,
+    degree: i32,
+    deriv: i32,
+    center: bool,
+) -> List {
+    let d = degree.max(0) as usize;
+    let drv = deriv.max(0) as usize;
+    let basis = if drv > 0 {
+        bspline_basis_with_deriv(x, knots, d, drv)
+    } else {
+        bspline_basis_extrap(x, knots, d, (bk_lo, bk_hi))
+    };
+    let out = if center {
+        let penalty = ospline_curvature_penalty(knots, (bk_lo, bk_hi), d);
+        center_spectral(&basis, &penalty, 2)
+    } else {
+        basis
+    };
+    let p = out.ncols();
+    let flat: Vec<f64> = out.iter().copied().collect();
+    list!(design = flat, p = p as i32)
+}
+
 /// Build the bspatial tensor-product B-spline design for a 2-d spline surface.
 /// Returns observation-major flat design vector + number of basis columns.
 #[extendr]
@@ -5969,6 +6179,8 @@ extendr_module! {
     fn r_diff_penalty;
     fn r_joint_support;
     fn r_bbs_design_centered;
+    fn r_bbs_ospline_knots;
+    fn r_bbs_ospline_design;
     fn r_bspatial_design;
     fn r_bns_design;
     fn fit_glmboost;

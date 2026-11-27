@@ -1004,6 +1004,11 @@ partial_effects.mboostrs_gamboost <- function(object, which = NULL, n_points = 1
       bd <- if (sp$type == "bns") {
         .Call("wrap__r_bns_design", as.double(x_seq), sp$bk_lo, sp$bk_hi,
               as.integer(sp$knots), as.integer(sp$degree), PACKAGE = "mboostrs")
+      } else if (identical(sp$type, "bbs") && identical(sp$knot_placement, "quantile") &&
+                 !is.null(sp$knots_vec)) {
+        .Call("wrap__r_bbs_ospline_design", as.double(x_seq), as.double(sp$knots_vec),
+              sp$bk_lo, sp$bk_hi, as.integer(sp$degree), as.integer(sp$deriv %||% 0),
+              isTRUE(sp$center), PACKAGE = "mboostrs")
       } else {
         .Call("wrap__r_bbs_design", as.double(x_seq), sp$bk_lo, sp$bk_hi,
               as.integer(sp$knots), as.integer(sp$degree),

@@ -2,20 +2,31 @@
 % Please edit documentation in R/mboostrs_conformal.R
 \name{conformal_interval}
 \alias{conformal_interval}
+\alias{adaptive_conformal_stream}
 \title{Conformal prediction intervals for a boosted model}
 \usage{
 conformal_interval(
   model,
   newdata = NULL,
   level = 0.9,
-  method = c("split", "cv+", "cqr", "distributional"),
+  method = c("split", "cv+", "cqr", "distributional", "adaptive"),
   seed = NULL,
   calib_fraction = 0.5,
   n_folds = 10L,
   mstop = NULL,
   calibration = NULL,
   score = "auto",
-  count_reference = "zero_inflated_poisson"
+  count_reference = "zero_inflated_poisson",
+  decay = 0.99,
+  time = NULL
+)
+
+adaptive_conformal_stream(
+  predicted,
+  observed,
+  half_width,
+  level = 0.9,
+  lr = 0.02
 )
 }
 \arguments{
@@ -76,6 +87,18 @@ calibration until its frozen confirmation gate passes.}
 
 \item{count_reference}{\code{"zero_inflated_poisson"} fits a mean-preserving
 zero probability on proper-training rows. \code{"poisson"} fixes it at zero.}
+
+\item{decay}{Exponential decay factor in (0, 1] for \code{method = "adaptive"}.}
+
+\item{time}{Optional column name ordering training/calibration rows chronologically for \code{method = "adaptive"}.}
+
+\item{predicted}{Numeric vector of sequential point forecasts for \code{adaptive_conformal_stream}.}
+
+\item{observed}{Numeric vector of sequential observed outcomes for \code{adaptive_conformal_stream}.}
+
+\item{half_width}{Baseline conformal half-width (scalar or vector) for \code{adaptive_conformal_stream}.}
+
+\item{lr}{Online miscoverage step size for \code{adaptive_conformal_stream}, default 0.02.}
 }
 \value{
 An object of class \code{mboostrs_conformal} with \code{lower},
@@ -83,8 +106,8 @@ An object of class \code{mboostrs_conformal} with \code{lower},
 \code{method}, \code{n_calibration}, \code{quantile},
 \code{guaranteed_coverage}, \code{guarantee}, \code{assumptions},
 \code{n_training}, \code{n_folds}, \code{n_set_aside}, \code{mstop_source},
-\code{calibration_source} and \code{fitted_mean} (the full model's
-prediction at the same rows).
+\code{calibration_source}, \code{fitted_mean}, and \code{reliability}
+(status, warnings, coverage SE, and temporal scale-shift flag).
 }
 \description{
 Splits the training rows into proper-training and calibration sets (or

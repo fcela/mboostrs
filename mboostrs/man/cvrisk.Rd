@@ -41,7 +41,9 @@ supplied; for other model classes they are passed to \code{mboost::cvrisk()}.}
 An object of class \code{mboostrs_cvrisk}.
 }
 \description{
-Cross-validated risk for glmboost
+Cross-validated risk for glmboost. Note: R \code{cvrisk()} defaults to
+\code{fold_type = "subsampling"} (matching upstream \code{mboost::cvrisk}),
+whereas the Python \code{.cvrisk()} method defaults to \code{type = "bootstrap"}.
 }
 \examples{
 set.seed(42)

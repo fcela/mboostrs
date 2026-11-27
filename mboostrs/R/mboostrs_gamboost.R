@@ -197,6 +197,10 @@ gamboost <- function(formula, data, family = Gaussian(), control = boost_control
         df = as.double(sp$df),
         lambda = as.double(sp$lambda %||% -1),
         deriv = as.double(sp$deriv %||% 0),
+        bk_lo = as.double(sp$bk_lo),
+        bk_hi = as.double(sp$bk_hi),
+        knot_placement = as.character(sp$knot_placement %||% "equidistant"),
+        bins = if (is.null(sp$bins)) NULL else as.integer(sp$bins),
         by_values = if (is.null(sp$by_values)) NULL else as.double(sp$by_values)
       ),
       "tree" = list(
@@ -206,6 +210,10 @@ gamboost <- function(formula, data, family = Gaussian(), control = boost_control
         nq = as.integer(sp$dims),
         categorical = as.integer(sp$categorical %||% integer(0)),
         selection = as.character(sp$selection %||% "ctree"),
+        split_method = as.character(sp$split_method %||% "exact"),
+        lambda_leaf = as.double(sp$lambda_leaf %||% 0.0),
+        colsample = as.double(sp$colsample %||% 1.0),
+        colsample_seed = as.integer(sp$colsample_seed %||% 0L),
         minbucket = as.integer(sp$minbucket %||% 4L),
         minsplit = as.integer(sp$minsplit %||% 10L),
         maxdepth = as.integer(sp$maxdepth %||% 1L),
@@ -1091,6 +1099,15 @@ gamboost <- function(formula, data, family = Gaussian(), control = boost_control
   knots <- as.integer(args$named$knots %||% 20)   # inner knots (mboost default)
   lambda <- args$named$lambda  # NULL means use df
   deriv <- as.integer(args$named$deriv %||% 0)
+  knot_placement <- gsub("[\"']", "", as.character(args$named$knot_placement %||% "equidistant"))
+  if (!knot_placement %in% c("equidistant", "quantile")) {
+    stop("bbs knot_placement must be 'equidistant' or 'quantile'", call. = FALSE)
+  }
+  bins <- args$named$bins
+  if (!is.null(bins)) {
+    bins <- as.integer(bins)
+    if (is.na(bins) || bins < 1L) stop("bbs bins must be a positive integer", call. = FALSE)
+  }
 
   # Boundary knots: user-specified or training data range
   bk_str <- args$named$boundary.knots
@@ -1113,18 +1130,21 @@ gamboost <- function(formula, data, family = Gaussian(), control = boost_control
   }
 
   # Build the design with the CORE B-spline machinery (the same basis the fit
-  # uses via prepare_bbs_with_lambda, and the same one mboost uses), rather than
-  # splines::bs. This keeps fit, in-sample predict and newdata predict consistent.
-  bd <- .Call("wrap__r_bbs_design", x, bk_lo, bk_hi, knots, degree,
-              as.integer(deriv), PACKAGE = "mboostrs")
+  # uses via prepare_bbs_with_lambda / bbs_ospline), rather than splines::bs.
+  knots_vec <- NULL
+  if (identical(knot_placement, "quantile")) {
+    knots_vec <- .Call("wrap__r_bbs_ospline_knots", x, bk_lo, bk_hi, knots,
+                       degree, PACKAGE = "mboostrs")
+    bd <- .Call("wrap__r_bbs_ospline_design", x, as.double(knots_vec), bk_lo, bk_hi,
+                degree, as.integer(deriv), isTRUE(center), PACKAGE = "mboostrs")
+  } else {
+    bd <- .Call("wrap__r_bbs_design", x, bk_lo, bk_hi, knots, degree,
+                as.integer(deriv), PACKAGE = "mboostrs")
+  }
   design <- bd$design          # observation-major flat, length n*p
   p <- bd$p
 
   # Type "bbs": carries the core design AND the raw spline parameters
-  # (x, knots, degree, ..., boundary) — the non-multinomial fit path uses the raw
-  # params (prepare_bbs_with_lambda), the Multinomial path uses them to build the
-  # Kronecker bbs learner (prepare_kronecker_bbs), and prediction uses bk_lo/bk_hi
-  # to rebuild the basis on newdata.
   list(
     spec = list(
       type = "bbs",
@@ -1138,7 +1158,10 @@ gamboost <- function(formula, data, family = Gaussian(), control = boost_control
       lambda = if (!is.null(lambda)) as.double(lambda) else -1,
       deriv = deriv,
       bk_lo = bk_lo,
-      bk_hi = bk_hi
+      bk_hi = bk_hi,
+      knot_placement = knot_placement,
+      knots_vec = knots_vec,
+      bins = bins
     ),
     design = design,
     name = var_name,
@@ -1320,6 +1343,22 @@ gamboost <- function(formula, data, family = Gaussian(), control = boost_control
   if (!selection %in% c("sse", "ctree", "ctree_pvalue")) {
     stop("btree selection must be 'sse', 'ctree' or 'ctree_pvalue'")
   }
+  split_method <- gsub("[\"']", "", as.character(args$named$split_method %||% "exact"))
+  if (!split_method %in% c("exact", "histogram")) {
+    stop("btree split_method must be 'exact' or 'histogram'", call. = FALSE)
+  }
+  lambda_leaf <- as.double(args$named$lambda_leaf %||% 0.0)
+  if (!is.finite(lambda_leaf) || lambda_leaf < 0.0) {
+    stop("btree lambda_leaf must be a finite non-negative number", call. = FALSE)
+  }
+  colsample <- as.double(args$named$colsample %||% 1.0)
+  if (!is.finite(colsample) || colsample <= 0.0 || colsample > 1.0) {
+    stop("btree colsample must be in (0, 1]", call. = FALSE)
+  }
+  colsample_seed <- as.integer(args$named$colsample_seed %||% 0L)
+  if (is.na(colsample_seed) || colsample_seed < 0L) {
+    stop("btree colsample_seed must be a non-negative integer", call. = FALSE)
+  }
   n <- nrow(data)
 
   list(
@@ -1334,7 +1373,11 @@ gamboost <- function(formula, data, family = Gaussian(), control = boost_control
       minbucket = minbucket,
       minsplit = minsplit,
       maxdepth = maxdepth,
-      selection = selection
+      selection = selection,
+      split_method = split_method,
+      lambda_leaf = lambda_leaf,
+      colsample = colsample,
+      colsample_seed = colsample_seed
     ),
     design = design,
     name = paste(cols, collapse = ", "),
@@ -2048,7 +2091,11 @@ predict.mboostrs_gamboost <- function(object, newdata = NULL, mstop = NULL,
         # prediction possible here at all. Rebuilding the raw basis instead is
         # what made this refuse.
         centered <- isTRUE(sp$center)
-        bd <- if (centered) {
+        bd <- if (identical(sp$type, "bbs") && identical(sp$knot_placement, "quantile") &&
+                  !is.null(sp$knots_vec)) {
+          .Call("wrap__r_bbs_ospline_design", xn, as.double(sp$knots_vec), sp$bk_lo, sp$bk_hi,
+                as.integer(sp$degree), deriv, centered, PACKAGE = "mboostrs")
+        } else if (centered) {
           .Call("wrap__r_bbs_design_centered", xn, sp$bk_lo, sp$bk_hi,
                 as.integer(sp$knots), as.integer(sp$degree),
                 as.integer(sp$differences %||% 2), deriv, PACKAGE = "mboostrs")
