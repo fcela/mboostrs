@@ -11973,11 +11973,7 @@ pub fn prepare_bbs_from_template(
     lambda_override: Option<f64>,
     name: &str,
 ) -> PreparedLearner {
-    let lambda = lambda_override
-        .unwrap_or_else(|| df_to_lambda(&design, &penalty_mat, &weights.to_owned(), df));
-    let penalized_k = penalty_mat.mapv(|v| lambda * v);
-    prepare_block_bols(design, weights, penalized_k, false, name)
-        .with_effective_lambda(Some(lambda))
+    prepare_block_bols_shared_gram(design, weights, penalty_mat, df, lambda_override, name)
 }
 
 /// Prepare a `bbs` learner, optionally with an explicit smoothing parameter.
