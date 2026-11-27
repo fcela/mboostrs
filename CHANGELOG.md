@@ -6,8 +6,26 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.2.4] - 2026-11-27
+
 ### Added
 
+- `bbs(x, knot_placement="quantile")`: opt-in quantile-knot O-spline basis with
+  deduplicated empirical-quantile interior knots and exact integrated squared
+  second-derivative curvature penalty (Wand & Ormerod 2008) in Rust and Python,
+  preserving exact raw-scale linearity in the null space for signed heavy-tailed
+  predictors while keeping `knot_placement="equidistant"` as the R-parity default.
+- `ConformalInterval.reliability` and `ConformalReliabilityWarning`: structured
+  reliability diagnostics flagging covariate shift, out-of-range queries, small
+  calibration splits, and residual heteroscedasticity.
+- `mb.reproduce(trail, data)`, `ReproductionResult`, `Fit.reproduce(data)`, and
+  CLI `python -m mboostrs reproduce <trail.json> <data.parquet|csv>`:
+  one-command verification of bit-identical predictions and report regeneration
+  from a saved `DecisionTrail`.
+- `DiagBrandom` exact $O(n + L)$ diagonal ridge path in Rust for uncentered
+  `by=None` `brandom` learners with $> 64$ levels (cuts high-cardinality fits
+  such as 9,689 levels from $> 300\text{ s}$ / 2.3 GB to $< 2\text{ s}$).
+- Mixed numeric + categorical histogram subtraction in Rust `btree(..., split_method="histogram")`.
 - `autospec(..., search="fast")`: unified 1–3 sweep specification search backed
   by a single-pass held-out screening radar (variable weeding, shape
   classification, interaction detection, and spread detection on interactive
@@ -23,6 +41,45 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   for multi-column trees when $n \ge 2{,}000$.
 
 ### Changed
+
+- `mb.fit(..., budget="quick"|"standard")` now defaults to `search="fast"` and
+  `lss_trees="auto"` (`budget="thorough"` retains exhaustive 12-stage search),
+  with regularized Stage 2 histogram trees (`nu=0.1`, adaptive `minbucket`,
+  depth 4–5), a 5% mean-MSE guard on Stage 3 `GaussianLSS` adoption, and
+  domain-safe full-column `log`/`sqrt` skew transforms.
+- `Fit.predict()` defaults to `extrapolation="clip"` (holding spline terms flat
+  outside training boundary knots while `bols` linear terms still extrapolate
+  linearly; direct `GAMBoostModel.predict()` keeps `extrapolation="warn"` for R
+  parity, and callers can always override explicitly).
+- Undeclared auto-detected `grouped_folds` in `autospec` now trigger only for
+  integer-coded unit IDs (`integer-labels`) or `bmrf` regions rather than
+  ordinary nominal string/Categorical predictors (which stay on i.i.d. random
+  folds unless declared via `groups=`).
+- Full-suite held-out benchmark refresh (`v0.2.4` vs `v0.2.3`): real-data
+  completion **285/285 (100.0%, zero failures)** (up from 94.4%); median
+  320-run fit+predict **2.64 s** (6.5× faster, ahead of CatBoost 3.01 s); 50k×20
+  session **1.52 s** median (4.4× faster than CatBoost, 45× faster than EBM);
+  D1b discovery **80/80 (100%) TPR** at **0.0% permutation FDR** and **80/80
+  (100%) native-formula TPR** (5/5 silent nulls, 5/5 S3 scale-only); D9
+  calibration **95.8%** within `[0.85, 0.95]` and tied #1 binary ECE
+  (**0.0221**); D11 beats XGBoost and LightGBM on both regression and binary,
+  beats EBM on regression, matches CatBoost within statistical noise on both
+  tracks, leads 6/7 planted generators, and cuts S2 MSE from 0.842 to **0.533**.
+
+### Fixed
+
+- Retained raw pre-transform inputs for `gamboostLSS` formulas containing `%X%`
+  interactions and guarded constant spline subsets in `RefitSpec.subset`,
+  resolving all split-conformal failures on distributional interaction models.
+- Handled missing values inside `%X%` `brandom` margins and test-only `NaN`s
+  under `na_action="impute"`.
+- Pinned domain-boundary rows in search subsampling and sanitized `log`/`sqrt`
+  expressions against full-data column minimums before final fitting.
+- Updated `term_variables()` to skip enum-valued arguments (`split_method=`,
+  `knot_placement=`) so active-term formula pruning retains histogram `btree`
+  and quantile `bbs` learners in `trail.final["formula"]`.
+
+### Earlier unreleased changes now shipped in 0.2.4
 
 - Distributional fits (`gamboostLSS`, `glmboostLSS`, their `cvrisk` and
   `stabsel`, `tune_mstop` on a distributional specification, `autospec` and
