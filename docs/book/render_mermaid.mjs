@@ -67,9 +67,17 @@ try {
   );
 
   if (path.extname(outputPath).toLowerCase() === ".svg") {
-    const output = await page.$eval("svg", (svg) =>
-      new XMLSerializer().serializeToString(svg),
-    );
+    const output = await page.$eval("svg", (svg) => {
+      const vb = (svg.getAttribute("viewBox") || "").trim().split(/[\s,]+/).map(Number);
+      if (vb.length === 4 && vb[2] > 0 && vb[3] > 0) {
+        const w = Math.round(vb[2] * 0.8 * 100) / 100;
+        const h = Math.round(vb[3] * 0.8 * 100) / 100;
+        svg.setAttribute("width", String(w));
+        svg.setAttribute("height", String(h));
+        svg.style.maxWidth = `${w}px`;
+      }
+      return new XMLSerializer().serializeToString(svg);
+    });
     await fs.writeFile(outputPath, output);
   } else if (path.extname(outputPath).toLowerCase() === ".png") {
     const clip = await page.$eval("svg", (svg) => {

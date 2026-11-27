@@ -852,8 +852,13 @@ def main(argv: list[str] | None = None) -> int:
             continue
         svg = BOOK / "figures" / f"mermaid-{diagram_id}.svg"
         png = svg.with_suffix(".png")
-        if not svg.is_file() or MERMAID_FONT_MARKER not in svg.read_text(encoding="utf-8"):
+        svg_text = svg.read_text(encoding="utf-8") if svg.is_file() else ""
+        if not svg.is_file() or MERMAID_FONT_MARKER not in svg_text:
             errors.append(f"Mermaid SVG missing embedded DM Sans font: {svg.relative_to(BOOK)}")
+        elif re.search(r'<svg[^>]*\bwidth="100%"', svg_text):
+            errors.append(
+                f"Mermaid SVG has width=\"100%\" (lacks intrinsic pixel dimensions): {svg.relative_to(BOOK)}"
+            )
         if not png.is_file():
             errors.append(f"missing Mermaid PNG for PDF output: {png.relative_to(BOOK)}")
 
