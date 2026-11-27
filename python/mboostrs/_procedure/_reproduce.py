@@ -213,6 +213,12 @@ def reproduce(
     kwargs: dict[str, Any] = {"seed": seed, "budget": budget}
     if group_cols:
         kwargs["groups"] = group_cols[0] if len(group_cols) == 1 else tuple(group_cols)
+    time_col = recorded.get("folds", {}).get("time_column")
+    if isinstance(time_col, str) and time_col:
+        kwargs["time"] = time_col
+    unc_method = recorded.get("uncertainty", {}).get("method")
+    if unc_method in ("stability", "bootstrap", "conformal"):
+        kwargs["uncertainty"] = unc_method
     kwargs.update(overrides)
 
     reproduced_fit = fit(data, response, **kwargs)

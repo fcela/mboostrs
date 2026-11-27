@@ -924,6 +924,8 @@ def fit(
 
     trail = DecisionTrail()
     trail.start(data, response, seed, folds=effective_folds)
+    if time is not None:
+        trail.folds["time_column"] = str(time)
     candidate_formula = _formula_text(spec.formula)
     final_formula = (
         candidate_formula if stopped == "fallback"

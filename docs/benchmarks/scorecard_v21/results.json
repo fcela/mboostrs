@@ -1,0 +1,52 @@
+{
+  "scorecard_id": "mboostrs-scorecard/2.1",
+  "protocol_id": "scorecard_v21_supplementary_v1",
+  "mboostrs_version": "0.2.4",
+  "D1a_open_structure": {
+    "n_tasks": 12,
+    "open_tpr": 0.8889,
+    "open_tp": 8,
+    "open_total_signals": 9,
+    "open_fdr_per_null": 0.0,
+    "open_fp": 0,
+    "open_total_nulls": 36
+  },
+  "D2_causal_humility": {
+    "n_replicates": 6,
+    "simpson_sign_reversals_recovered": 6,
+    "thin_overlap_ato_companion_recall": 1.0,
+    "median_abs_error_ato": 0.0529,
+    "median_abs_error_ate_under_thin_overlap": 0.041
+  },
+  "D3_faithfulness": {
+    "models_audited": 5,
+    "claims_checked": 17,
+    "unbacked_claims": 0,
+    "faithfulness_rate": 1.0
+  },
+  "D4_cate_calibration": {
+    "nominal_level": 0.9,
+    "ate_90_coverage": 0.8,
+    "cate_smooth_dr_orthogonal_90_coverage": 0.895,
+    "cate_joint_tree_dr_orthogonal_90_coverage": 0.918,
+    "n_smooth_points": 2000,
+    "n_joint_points": 1000
+  },
+  "D6_large_n_and_shift": {
+    "large_n_rows": 5000000,
+    "large_n_predictors": 3,
+    "large_n_mstop": 30,
+    "large_n_seconds": 1.966,
+    "shift_warning_recall": 1.0,
+    "clean_exchangeable_false_alarm_rate": 0.0
+  },
+  "D8_and_D10_lock": {
+    "n_sessions": 5,
+    "zero_human_assists_completion_rate": 1.0,
+    "median_fits_used": 10.0,
+    "median_session_seconds": 0.468,
+    "d10_exact_reproduce_rate": 1.0,
+    "d10_tamper_detection_recall": 1.0
+  },
+  "total_wall_seconds": 21.32
+}
