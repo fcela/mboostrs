@@ -154,7 +154,7 @@ def _level_of(model, index: int) -> tuple[str, float]:
     )
 
 
-def rearrange_quantiles(models, newdata=None, *, levels=None, output="auto"):
+def rearrange_quantiles(models, newdata=None, *, levels=None, output="auto", unseen_levels="error"):
     """Predict several quantile or expectile fits and sort each row across levels.
 
     Each model estimates one level ``tau`` of the conditional distribution, so
@@ -248,10 +248,16 @@ def rearrange_quantiles(models, newdata=None, *, levels=None, output="auto"):
     if len(set(taus)) != len(taus):
         raise MboostrsValueError(f"two models share a tau; taus are {taus}")
 
+    import inspect
+
     order = sorted(range(len(taus)), key=lambda i: taus[i])
     cols = []
     for i in order:
-        pred = np.asarray(mlist[i].predict(newdata, type="link"), dtype=float)
+        predict_fn = mlist[i].predict
+        if unseen_levels != "error" and "unseen_levels" in inspect.signature(predict_fn).parameters:
+            pred = np.asarray(predict_fn(newdata, type="link", unseen_levels=unseen_levels), dtype=float)
+        else:
+            pred = np.asarray(predict_fn(newdata, type="link"), dtype=float)
         if pred.ndim != 1:
             raise MboostrsValueError(
                 f"models[{i}] returned predictions of shape {pred.shape}; "

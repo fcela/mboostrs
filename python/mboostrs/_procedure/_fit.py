@@ -74,10 +74,21 @@ class Fit:
 
         Defaults ``extrapolation="clip"`` so spline terms are held flat outside
         their training boundary knots on automated fits (linear ``bols`` terms
-        still extrapolate linearly). Pass an explicit ``extrapolation=`` value
-        (e.g. ``"warn"``, ``"allow"``, ``"error"``) to override.
+        still extrapolate linearly). For distributional (``LSSModel``) fits,
+        defaults ``type="mean"`` when neither ``type`` nor ``parameter`` is
+        specified so ``fit.predict(newdata)`` returns 1D response-scale mean
+        predictions uniformly across families. Pass an explicit ``type=``,
+        ``parameter=``, or ``extrapolation=`` to override.
         """
         kwargs.setdefault("extrapolation", getattr(self.model, "_default_extrapolation", "clip"))
+        is_lss = type(self.model).__name__ == "LSSModel" or hasattr(self.model, "param_names")
+        if (
+            is_lss
+            and "type" not in kwargs
+            and "parameter" not in kwargs
+            and hasattr(getattr(self.model, "_family", None), "mean")
+        ):
+            kwargs["type"] = "mean"
         return self.model.predict(newdata, **kwargs)
 
     def predict_interval(

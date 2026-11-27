@@ -258,6 +258,7 @@ from mboostrs.policy import (
     Spent,
     auto_policy,
 )
+from mboostrs.quantile import MultiQuantileModel, quantile_boost
 from mboostrs.rearrange import RearrangedQuantiles, rearrange_quantiles
 from mboostrs.reference_gap import ReferenceGapResult, reference_gap
 from mboostrs.report import ExecutionReport, PathRow
@@ -551,6 +552,8 @@ __all__ = [
     "GaussReg",
     "AdaExp",
     "Quantile",
+    "MultiQuantileModel",
+    "quantile_boost",
     "Expectile",
     "Huber",
     "CoxPH",

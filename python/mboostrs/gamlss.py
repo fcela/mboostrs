@@ -2885,7 +2885,7 @@ class _SurvivalLSS(_StabilizedNGradient, _DensityDeviance):
         plain-response family, so ``cdf``, ``quantile`` and the other
         distribution methods apply to ``y`` directly.
         """
-        clone = type(self)()
+        clone = type(self)(stabilization=self.stabilization)
         clone._survival = False
         clone._rust_name = f"{self._rust_name}_uncensored"
         return clone

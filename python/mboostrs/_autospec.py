@@ -149,6 +149,9 @@ class SpecRecommendation:
     #: The column of exposures the response is a rate per unit of
     #: (``autospec(exposure=)``). `fit` passes its log as the offset.
     exposure: str | None = None
+    #: Distributional boosting schedule (``"cyclic"`` or ``"noncyclic"``),
+    #: replayed by ``fit()`` when the recommended family is an LSS family.
+    method: str | None = None
 
     # -- tuple compatibility -------------------------------------------
     def __iter__(self):
@@ -294,6 +297,8 @@ class SpecRecommendation:
             # one formula, one predictor per distribution parameter.
             if self.env and "env" not in kwargs:
                 kwargs["env"] = self.env
+            if self.method is not None and "method" not in kwargs:
+                kwargs["method"] = self.method
             return gamboostLSS(self.formula, data=data, families=self.family,
                                control=control, **kwargs)
         if self.learners is None and "learners" not in kwargs:
