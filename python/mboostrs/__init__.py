@@ -318,6 +318,17 @@ from mboostrs.transforms import imputation_diagnostics
 # function; use `from mboostrs.report import ...` for the submodule's names.
 from mboostrs._procedure import DecisionTrail, Fit, ReproductionResult, fit, report, reproduce
 
+
+def digest(obj) -> str:
+    """Return a concise, deterministic summary card of a fitted mboostrs object."""
+    fn = getattr(obj, "digest", None)
+    if not callable(fn):
+        raise TypeError(
+            f"digest() expects a fitted mboostrs model or result with a .digest() method; "
+            f"got {type(obj).__name__}"
+        )
+    return fn()
+
 # Importing public names from these submodules causes Python to bind the
 # submodule itself on the package.  They are implementation modules, not part
 # of the flat public API (unlike ``datasets`` and ``plot`` above).
@@ -373,6 +384,7 @@ __all__ = [
     "api_card",
     "install_skill",
     "fit",
+    "digest",
     "report",
     "reproduce",
     "Fit",

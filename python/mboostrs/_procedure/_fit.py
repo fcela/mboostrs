@@ -140,6 +140,79 @@ class Fit:
         mstop = final.get("mstop")
         return f"Fit(family={family!r}, mstop={mstop!r}, steps={len(self.trail.steps)})"
 
+    def digest(self) -> str:
+        """Return a concise, deterministic summary card of this Fit."""
+        final = self.trail.final
+        data_info = self.trail.data
+        folds_info = self.trail.folds
+        budget_info = self.trail.budget
+        unc = self.trail.uncertainty or {}
+        n_obs = data_info.get("n")
+        family = final.get("family")
+        formula = final.get("formula")
+        mstop = final.get("mstop")
+
+        lines = [
+            f"[mboostrs Fit] family={family}, n={n_obs}, formula={formula}",
+            (
+                f"stopping: mstop={mstop}, folds={folds_info.get('scheme')}"
+                f"(K={folds_info.get('K')}, R={folds_info.get('R')}), "
+                f"criterion={self.trail.criterion}, "
+                f"budget={budget_info.get('setting')} ({budget_info.get('spent', 0):.0f} fits)"
+            ),
+        ]
+        if hasattr(self.model, "_params") and hasattr(self.model, "param_names"):
+            for k, pname in enumerate(self.model.param_names):
+                names_k = self.model._parameter_selected_names(k)
+                counts: dict[str, int] = {}
+                for nm in names_k:
+                    counts[nm] = counts.get(nm, 0) + 1
+                total_k = len(self.model._params[k].get("learners")
+                              or self.model._params[k].get("predictor_names") or ())
+                ranked = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
+                shown = ", ".join(f"{nm}({c})" for nm, c in ranked[:6]) or "none"
+                if len(ranked) > 6:
+                    shown += f", (+{len(ranked) - 6} more)"
+                lines.append(f"active[{pname}]: {shown}; inactive={max(0, total_k - len(counts))}")
+        elif hasattr(self.model, "_selected") and hasattr(self.model, "_learner_names"):
+            counts = {}
+            for idx in self.model._selected:
+                nm = self.model._learner_names[int(idx)]
+                counts[nm] = counts.get(nm, 0) + 1
+            ranked = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
+            shown = ", ".join(f"{nm}({c})" for nm, c in ranked[:8]) or "none"
+            if len(ranked) > 8:
+                shown += f", (+{len(ranked) - 8} more)"
+            inactive = max(0, len(self.model._learner_names) - len(counts))
+            lines.append(f"active_terms: {shown}; inactive={inactive}")
+
+        hygiene = []
+        if self.trail.steps:
+            hygiene = (self.trail.steps[0].get("evidence") or {}).get("hygiene") or []
+        degradations = budget_info.get("degradations") or []
+        unc_method = unc.get("method", "none")
+        unc_detail = f"uncertainty={unc_method}"
+        if unc_method == "conformal":
+            rel_status = None
+            if self.conformal is not None and hasattr(self.conformal, "reliability"):
+                rel_status = (self.conformal.reliability or {}).get("status")
+            else:
+                rel_status = unc.get("status")
+            if rel_status is not None:
+                unc_detail += f" (status={rel_status})"
+        elif unc_method == "stability":
+            unc_detail += f" (B={unc.get('B')}, terms={len(unc.get('terms') or ())})"
+        elif unc_method == "bootstrap":
+            unc_detail += f" (B={unc.get('B')})"
+        cautions = [unc_detail]
+        if hygiene:
+            hyg_txt = ", ".join(f"{h.get('column')}({h.get('kind')})" for h in hygiene[:5])
+            cautions.append(f"hygiene={hyg_txt}")
+        if degradations:
+            cautions.append(f"degradations={len(degradations)}")
+        lines.append("diagnostics: " + "; ".join(cautions))
+        return "\n".join(lines)
+
 
 def _timed_search(data: Any, response: str, limit: int, seconds: float,
                   **kwargs: Any) -> tuple[Any, str | None]:

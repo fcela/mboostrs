@@ -285,6 +285,41 @@ class MultiQuantileModel:
             f"mstop={self.optimal_mstop})"
         )
 
+    def digest(self) -> str:
+        """Return a concise, deterministic summary card of this MultiQuantileModel."""
+        qs = ", ".join(f"{q:g}" for q in self.quantiles)
+        first_model = next(iter(self.models.values()), None)
+        n_obs = len(first_model._fitted) if first_model is not None else 0
+        q_mid = min(self.quantiles, key=lambda q: abs(q - 0.5)) if self.quantiles else None
+        cv_parts = []
+        for q in self.quantiles:
+            arr = self.cv_risk.get(q)
+            if arr is not None and len(arr):
+                idx = min(int(self.optimal_mstop.get(q, len(arr) - 1)), len(arr) - 1)
+                cv_parts.append(f"q{q:g}={float(arr[idx]):.4g}")
+        cv_text = ", ".join(cv_parts[:5]) if cv_parts else "none"
+        if len(cv_parts) > 5:
+            cv_text += f", (+{len(cv_parts) - 5} more)"
+        lines = [
+            f"[mboostrs MultiQuantileModel] response={self.response}, n={n_obs}, "
+            f"quantiles=({qs}), formula={self.formula}",
+            f"stopping: optimal_mstop={self.optimal_mstop}, oof_pinball=({cv_text})",
+        ]
+        if q_mid is not None and q_mid in self.models:
+            m_mid = self.models[q_mid]
+            counts: dict[str, int] = {}
+            for idx in m_mid._selected:
+                nm = m_mid._learner_names[int(idx)]
+                counts[nm] = counts.get(nm, 0) + 1
+            ranked = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
+            shown = ", ".join(f"{nm}({c})" for nm, c in ranked[:8]) or "none"
+            if len(ranked) > 8:
+                shown += f", (+{len(ranked) - 8} more)"
+            inactive = max(0, len(m_mid._learner_names) - len(counts))
+            lines.append(f"active_terms[q={q_mid:g}]: {shown}; inactive={inactive}")
+        lines.append("diagnostics: rearrangement=isotonic_available")
+        return "\n".join(lines)
+
 
 def quantile_boost(
     formula: str,

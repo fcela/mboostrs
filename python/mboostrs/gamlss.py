@@ -3326,6 +3326,34 @@ class LSSModel(WeightPolicyMixin):
                            for k in range(len(self.param_names))))
         return self.mstop
 
+    def digest(self) -> str:
+        """Return a concise, deterministic summary card of this LSSModel."""
+        n_obs = len(self._params[0]["fitted"]) if self._params else 0
+        risk_str = f"{float(self._risk[-1]):.6g}" if len(self._risk) else "nan"
+        if isinstance(self._formula, dict):
+            f_text = "; ".join(f"{p}: {self._formula.get(p, '')}" for p in self.param_names)
+        else:
+            f_text = str(self._formula)
+        lines = [
+            f"[mboostrs LSSModel] family={type(self._family).__name__}, n={n_obs}, "
+            f"method={self._method}, formulas=({f_text})",
+            f"stopping: mstop={self.mstop}, nu={self._nu}, final_risk={risk_str}",
+        ]
+        for k, pname in enumerate(self.param_names):
+            names_k = self._parameter_selected_names(k)
+            counts: dict[str, int] = {}
+            for nm in names_k:
+                counts[nm] = counts.get(nm, 0) + 1
+            total_k = len(self._params[k].get("learners")
+                          or self._params[k].get("predictor_names") or ())
+            ranked = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
+            shown = ", ".join(f"{nm}({c})" for nm, c in ranked[:6]) or "none"
+            if len(ranked) > 6:
+                shown += f", (+{len(ranked) - 6} more)"
+            lines.append(f"active[{pname}]: {shown}; inactive={max(0, total_k - len(counts))}")
+        lines.append(f"diagnostics: fit_warnings={len(self._fit_warnings)}")
+        return "\n".join(lines[:25])
+
     def _param_index(self, parameter) -> int:
         if isinstance(parameter, int):
             if not 0 <= parameter < len(self.param_names):
