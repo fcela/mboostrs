@@ -1452,33 +1452,47 @@ def _effective_sample_size(gamma: float, n_cal: int) -> float:
 
 
 def _adaptive_gamma(scores: np.ndarray, decay: float) -> float:
-    """Resolve effective exponential decay factor ``gamma`` in (0, 1]."""
+    """Resolve effective exponential decay factor ``gamma`` in (0, 1].
+
+    When the caller leaves ``decay=0.99`` (the default), adapt ``gamma`` to the
+    calibration sample size ``n_cal`` and the observed late-vs-early scale ratio:
+    - If late scale is quieter than or comparable to early scale
+      (``late_rms / early_rms <= 1.15``), keep at least half the calibration
+      window effective (``gamma = 1.0`` when ``late_rms <= early_rms`` so a
+      brief calm spell at the end of a long series never shrinks static future
+      intervals, else half-life ``0.5 * n_cal``).
+    - If late scale inflated (``late_rms / early_rms > 1.15``), concentrate
+      exponentially on the recent high-volatility regime while keeping effective
+      sample size ``>= min(40, 0.85 * n_cal)``.
+    """
     decay = float(decay)
     if decay == 1.0 or decay != 0.99:
         return decay
     n_cal = int(scores.size)
     half = n_cal // 2
     if half < 5:
-        return decay
+        return float(0.5 ** (1.0 / max(10.0, 0.5 * float(max(n_cal, 1)))))
     early = scores[:half]
     late = scores[half:]
     early_rms = float(np.sqrt(np.mean(early * early)))
     late_rms = float(np.sqrt(np.mean(late * late)))
-    if early_rms <= 1e-12 or (late_rms / early_rms) <= 1.25:
-        return decay
+    if early_rms <= 1e-12 or late_rms <= early_rms:
+        return 1.0
     ratio = late_rms / early_rms
-    gamma_lo = max(0.96, 0.995 - 0.02 * min(2.0, ratio - 1.25))
-    min_neff = min(40.0, 0.85 * float(n_cal))
-    if _effective_sample_size(gamma_lo, n_cal) >= min_neff:
+    if ratio <= 1.15:
+        return float(0.5 ** (1.0 / max(25.0, 0.5 * float(n_cal))))
+    target_neff = max(40.0, 0.12 * float(n_cal)) if n_cal > 300 else min(40.0, 0.85 * float(n_cal))
+    gamma_lo = max(0.96, 1.0 - 2.0 / target_neff - 0.015 * min(2.0, ratio - 1.15))
+    if _effective_sample_size(gamma_lo, n_cal) >= target_neff:
         return gamma_lo
-    lo, hi = gamma_lo, 0.998
-    for _ in range(20):
+    lo, hi = gamma_lo, 0.9999
+    for _ in range(24):
         mid = 0.5 * (lo + hi)
-        if _effective_sample_size(mid, n_cal) >= min_neff:
+        if _effective_sample_size(mid, n_cal) >= target_neff:
             hi = mid
         else:
             lo = mid
-    return min(0.998, max(0.96, hi))
+    return min(0.9999, max(0.96, hi))
 
 
 def _temporal_scale_ratio(scores: np.ndarray) -> float | None:
