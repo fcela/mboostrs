@@ -430,6 +430,10 @@ def run_fast_autospec(
                 kept_terms.append(t)
             continue
         col = col_by_name[cname]
+        orig_t = orig_term_by_col.get(cname, "")
+        if col.kind == "numeric" and orig_t.startswith(("brandom(", "bmrf(")):
+            kept_terms.append(orig_t)
+            continue
         shape = radar.column_shapes.get(cname, "bbs")
         kept_terms.append(_build_term(col, shape, df))
 

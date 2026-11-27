@@ -20,6 +20,7 @@ passing to `gamboost`.
 
 from __future__ import annotations
 
+import re
 import warnings
 from dataclasses import dataclass, replace
 
@@ -87,9 +88,29 @@ LABEL_MIN_COVERAGE = 0.8
 COUNT_NAME_FRAGMENTS = ("n_", "num", "count", "kid", "child", "ment",
                         "visits", "age")
 
+#: Column-name fragments that say a whole-number column is a physical,
+#: temporal, or clinical measurement rather than nominal group codes.
+MEASUREMENT_NAME_FRAGMENTS = (
+    "age", "year", "yr", "month", "day", "hour", "minute", "week",
+    "score", "rate", "temp", "weight", "height", "bmi", "bp",
+    "glucose", "insulin", "chol", "duration", "tenure", "income",
+    "price", "cost", "salary", "distance", "length", "width",
+    "depth", "area", "volume", "speed", "pressure", "humidity",
+    "wind", "pm25", "pm10",
+)
+
+_EXPLICIT_CODE_RE = re.compile(
+    r"(?:^|_)(?:id|code|zip|fips|district|cluster|group|site|ward|region)(?:$|_)"
+)
+
+
+def _is_explicit_code_name(name: str) -> bool:
+    """True when ``name`` carries an explicit identifier, code, or group token."""
+    return bool(_EXPLICIT_CODE_RE.search(name.lower()))
+
 
 def count_like(column, levels):
-    """(min, max) when a whole-number column reads as a count, else None.
+    """(min, max) when a whole-number column reads as a count or bounded measurement, else None.
 
     A count column -- children under five, outpatient visits, an age in
     whole years -- is a number: ``bols`` and ``bbs`` extend its effect to a
@@ -97,11 +118,19 @@ def count_like(column, levels):
     value seen in training and ``predict()`` raises on a new one (issue
     #313: a test row with ``kid5 = 4`` could not be scored). The reading is
     structural, so it comes before both the level-count reading and
-    `label_evidence`: every value a non-negative whole number, the minimum
-    0 or 1, at least three distinct values, and either the values fill at
-    least half of the integer range they span or the column's name says what
-    it counts. A string, enum or declared-categorical column is never a
-    count: its codes are labels whatever they look like.
+    `label_evidence`: every value a non-negative whole number, at least three
+    distinct values, and either:
+
+    - minimum 0 or 1, with values filling at least half of the integer range
+      or matching `COUNT_NAME_FRAGMENTS`, or
+    - minimum > 1 (non-zero-origin bounded integer measurement such as age
+      16..90 or calendar year), not named as an explicit code/ID token, and
+      either matching `COUNT_NAME_FRAGMENTS`/`MEASUREMENT_NAME_FRAGMENTS` or
+      spanning a dense contiguous range (span <= 200, > `CATEGORICAL_MAX_LEVELS`
+      levels, and >= 50% integer fill).
+
+    A string, enum or declared-categorical column is never a count: its codes
+    are labels whatever they look like.
 
     ``column`` is a `mboostrs._frame.Column` and ``levels`` its count of
     distinct non-missing values.
@@ -111,14 +140,29 @@ def count_like(column, levels):
     present = column.values[~np.isnan(column.values)]
     if not present.size:
         return None
-    low, high = float(np.min(present)), float(np.max(present))
-    if low < 0 or low > 1 or not np.all(present == np.round(present)):
+    if not np.all(present == np.round(present)):
         return None
-    if levels < 0.5 * (high - low + 1):
-        lowered = column.name.lower()
-        if not any(fragment in lowered for fragment in COUNT_NAME_FRAGMENTS):
-            return None
-    return low, high
+    low, high = float(np.min(present)), float(np.max(present))
+    if low < 0:
+        return None
+    lowered = column.name.lower()
+    if low <= 1:
+        if levels < 0.5 * (high - low + 1):
+            if not any(fragment in lowered for fragment in COUNT_NAME_FRAGMENTS):
+                return None
+        return low, high
+    if _is_explicit_code_name(column.name):
+        return None
+    all_fragments = (*COUNT_NAME_FRAGMENTS, *MEASUREMENT_NAME_FRAGMENTS)
+    if any(fragment in lowered for fragment in all_fragments):
+        return low, high
+    if (
+        levels > CATEGORICAL_MAX_LEVELS
+        and (high - low) <= 200.0
+        and levels >= 0.50 * (high - low + 1.0)
+    ):
+        return low, high
+    return None
 
 
 @dataclass(frozen=True)
@@ -265,6 +309,18 @@ def label_evidence(name, values, response):
     labels = bool(signal_z >= LABEL_SIGNAL_Z and np.isfinite(adjacency)
                   and adjacency >= LABEL_ADJACENCY_RATIO
                   and order_p >= LABEL_ORDER_ALPHA)
+    low_x, high_x = float(np.min(x)), float(np.max(x))
+    lowered_name = str(name).lower()
+    all_fragments = (*COUNT_NAME_FRAGMENTS, *MEASUREMENT_NAME_FRAGMENTS)
+    if (
+        low_x >= 2.0
+        and not _is_explicit_code_name(str(name))
+        and (
+            any(fragment in lowered_name for fragment in all_fragments)
+            or (high_x - low_x <= 200.0 and k >= 0.50 * (high_x - low_x + 1.0))
+        )
+    ):
+        labels = False
     return LabelEvidence(column=name, levels=int(k), signal_ratio=float(signal_ratio),
                          signal_z=signal_z, adjacency_ratio=adjacency, labels=labels,
                          order_p=order_p)

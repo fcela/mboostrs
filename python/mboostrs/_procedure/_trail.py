@@ -123,7 +123,7 @@ def _structural_check(record: dict[str, Any]) -> None:
     if not isinstance(budget.get("degradations"), list):
         raise ValueError("budget.degradations must be a list")
     uncertainty = record["uncertainty"]
-    if uncertainty.get("method") not in ("stability", "bootstrap", "none"):
+    if uncertainty.get("method") not in ("stability", "bootstrap", "conformal", "none"):
         raise ValueError(f"invalid uncertainty method {uncertainty.get('method')!r}")
 
 

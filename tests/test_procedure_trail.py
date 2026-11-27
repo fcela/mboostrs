@@ -228,12 +228,32 @@ def test_two_fits_with_the_same_seed_give_identical_trail_dicts():
     assert first.trail.to_dict() == second.trail.to_dict()
 
 
-def test_uncertainty_other_than_none_raises_not_implemented():
-    data = _gaussian_data()
-    with pytest.raises(NotImplementedError):
-        mb.fit(data, "y", seed=0, uncertainty="stability")
-    with pytest.raises(NotImplementedError):
-        mb.fit(data, "y", seed=0, uncertainty="bootstrap")
+def test_uncertainty_modes_and_time_validate_against_schema():
+    data = _gaussian_data(n=240, seed=3)
+    for mode, attr in (
+        ("stability", "stability"),
+        ("bootstrap", "bootstrap"),
+        ("conformal", "conformal"),
+    ):
+        fitted = mb.fit(data, "y", seed=0, uncertainty=mode)
+        assert fitted.trail.validate()
+        record = fitted.trail.to_dict()
+        assert record["uncertainty"]["method"] == mode
+        assert getattr(fitted, attr) is not None
+
+    # Invalid uncertainty mode still raises ValueError
+    with pytest.raises(ValueError, match="uncertainty must be one of"):
+        mb.fit(data, "y", seed=0, uncertainty="bogus")
+
+    # time= builds rolling folds and validates against schema
+    timed_data = dict(data)
+    timed_data["t"] = np.arange(len(data["y"]), dtype=float)
+    fitted_time = mb.fit(timed_data, "y", time="t", seed=0, uncertainty="conformal")
+    assert fitted_time.trail.validate()
+    assert "rolling" in fitted_time.trail.to_dict()["folds"]["scheme"].lower()
+    ci = fitted_time.predict_interval({"x1": data["x1"][:10], "x2": data["x2"][:10], "x3": data["x3"][:10], "t": np.arange(240, 250, dtype=float)}, level=0.8)
+    assert ci.method == "adaptive"
+    assert ci.level == 0.8
 
 
 def test_invalid_budget_setting_raises_value_error():

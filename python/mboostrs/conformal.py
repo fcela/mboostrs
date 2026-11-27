@@ -40,6 +40,7 @@ import warnings
 from contextlib import contextmanager
 from contextvars import ContextVar
 from dataclasses import dataclass, field, replace
+from statistics import NormalDist
 
 import numpy as np
 
@@ -47,8 +48,15 @@ from mboostrs import _rust
 from mboostrs._extrapolation import routine_warnings
 from mboostrs._names import quote_name
 from mboostrs._output import export_result
+from mboostrs._results import MappingResultMixin
 
-__all__ = ["ConformalInterval", "ConformalReliabilityWarning", "conformal_interval"]
+__all__ = [
+    "AdaptiveConformalStream",
+    "ConformalInterval",
+    "ConformalReliabilityWarning",
+    "adaptive_conformal_stream",
+    "conformal_interval",
+]
 
 
 class ConformalReliabilityWarning(UserWarning):
@@ -115,6 +123,7 @@ class ConformalInterval:
     #: Structured reliability diagnostics (D9): calibration coverage SE,
     #: out-of-range/covariate-shift counts on query rows, and caution reasons.
     reliability: dict | None = None
+    _temporal_scale_ratio: float | None = field(default=None, repr=False, compare=False)
 
     def __post_init__(self):
         if self.support not in ("real", "nonnegative_integers"):
@@ -493,12 +502,12 @@ def conformal_fit_count(model, *, method="split", mstop=None, n_folds=10,
     """
     if calibration is not None:
         return 0
-    if method not in ("split", "distributional", "cqr", "cv+", "cv_plus"):
-        raise ValueError(f"method must be 'split', 'cv+', or 'cqr', got {method!r}")
+    if method not in ("split", "distributional", "cqr", "cv+", "cv_plus", "adaptive"):
+        raise ValueError(f"method must be 'split', 'cv+', 'cqr', or 'adaptive', got {method!r}")
     tuned = 1 + _TUNE_FOLDS
-    if _is_lss(model) and method in ("split", "distributional"):
+    if _is_lss(model) and method in ("split", "distributional", "adaptive"):
         return 1
-    if method == "split":
+    if method in ("split", "adaptive"):
         return tuned if mstop == "tune" else 1
     if method in ("cv+", "cv_plus"):
         return int(n_folds) * (tuned if mstop == "tune" else 1)
@@ -1415,6 +1424,476 @@ def _distributional(model, newdata, level, seed, calib_fraction, mstop, extrapol
     )
 
 
+def _weighted_conformal_quantile(scores: np.ndarray, level: float, gamma: float) -> float:
+    """Barber et al. (2023) exponentially weighted non-exchangeable conformal quantile."""
+    n_cal = int(scores.size)
+    if n_cal == 0:
+        return float("inf")
+    exponents = np.arange(n_cal - 1, -1, -1, dtype=np.float64)
+    weights = np.power(float(gamma), exponents)
+    total_w = float(np.sum(weights)) + 1.0
+    norm_w = weights / total_w
+    order = np.argsort(scores, kind="mergesort")
+    sorted_scores = scores[order]
+    cum_w = np.cumsum(norm_w[order])
+    pos = int(np.searchsorted(cum_w, float(level), side="left"))
+    if pos >= n_cal:
+        return float("inf")
+    return float(sorted_scores[pos])
+
+
+def _effective_sample_size(gamma: float, n_cal: int) -> float:
+    exponents = np.arange(n_cal - 1, -1, -1, dtype=np.float64)
+    w = np.power(float(gamma), exponents)
+    w_sq = float(np.sum(w * w))
+    if w_sq <= 0.0:
+        return 0.0
+    return float((np.sum(w) ** 2) / w_sq)
+
+
+def _adaptive_gamma(scores: np.ndarray, decay: float) -> float:
+    """Resolve effective exponential decay factor ``gamma`` in (0, 1]."""
+    decay = float(decay)
+    if decay == 1.0 or decay != 0.99:
+        return decay
+    n_cal = int(scores.size)
+    half = n_cal // 2
+    if half < 5:
+        return decay
+    early = scores[:half]
+    late = scores[half:]
+    early_rms = float(np.sqrt(np.mean(early * early)))
+    late_rms = float(np.sqrt(np.mean(late * late)))
+    if early_rms <= 1e-12 or (late_rms / early_rms) <= 1.25:
+        return decay
+    ratio = late_rms / early_rms
+    gamma_lo = max(0.96, 0.995 - 0.02 * min(2.0, ratio - 1.25))
+    min_neff = min(40.0, 0.85 * float(n_cal))
+    if _effective_sample_size(gamma_lo, n_cal) >= min_neff:
+        return gamma_lo
+    lo, hi = gamma_lo, 0.998
+    for _ in range(20):
+        mid = 0.5 * (lo + hi)
+        if _effective_sample_size(mid, n_cal) >= min_neff:
+            hi = mid
+        else:
+            lo = mid
+    return min(0.998, max(0.96, hi))
+
+
+def _temporal_scale_ratio(scores: np.ndarray) -> float | None:
+    """Ratio between first-half and second-half calibration residual scale."""
+    n_cal = int(scores.size)
+    if n_cal < 10:
+        return None
+    half = n_cal // 2
+    s1, s2 = scores[:half], scores[half:]
+    med1_raw, med2_raw = float(np.median(s1)), float(np.median(s2))
+    sd1_raw, sd2_raw = float(np.std(s1)), float(np.std(s2))
+    if max(med1_raw, med2_raw, sd1_raw, sd2_raw) <= 1e-12:
+        return None
+    med1, med2 = max(med1_raw, 1e-12), max(med2_raw, 1e-12)
+    sd1, sd2 = max(sd1_raw, 1e-12), max(sd2_raw, 1e-12)
+    return max(sd2 / sd1, sd1 / sd2, med2 / med1, med1 / med2)
+
+
+def _fit_local_scale_model(train_dict: dict[str, np.ndarray], train_pred: np.ndarray,
+                           y_train: np.ndarray, response_name: str):
+    """Fit a small REML log-residual scale predictor, returning predict_scale(frame_dict)."""
+    n = y_train.size
+    if n < _SCALE_MODEL_MIN_ROWS:
+        return lambda frame: np.ones(_n_rows(frame), dtype=np.float64)
+    col_names: list[str] = []
+    splittable: list[np.ndarray] = []
+    for name, vals in train_dict.items():
+        if name == response_name:
+            continue
+        arr = np.asarray(vals)
+        if arr.dtype.kind not in "fiu":
+            continue
+        arr_f = np.asarray(arr, dtype=np.float64).ravel()
+        if arr_f.size != n or not np.all(np.isfinite(arr_f)) or np.unique(arr_f).size <= 2:
+            continue
+        col_names.append(name)
+        splittable.append(arr_f)
+    if not splittable:
+        return lambda frame: np.ones(_n_rows(frame), dtype=np.float64)
+    target = _vec(_rust.conformal_scale_target(_f64(y_train), _f64(train_pred)))
+    if len(splittable) > _SCALE_MODEL_MAX_COLUMNS:
+        ranked = _rust.conformal_rank_scale_columns(
+            np.ascontiguousarray(np.vstack(splittable)), target, _SCALE_MODEL_MAX_COLUMNS)
+        col_names = [col_names[i] for i in ranked]
+        splittable = [splittable[i] for i in ranked]
+    fit_frame: dict[str, np.ndarray] = {"_log_resid_sq": target}
+    terms = []
+    for idx, col_arr in enumerate(splittable):
+        alias = f"_sx{idx}"
+        fit_frame[alias] = col_arr
+        terms.append(f"bbs({quote_name(alias)}, df=4)")
+    try:
+        from mboostrs.direct_gam import gam
+
+        scale_fit = gam(f"_log_resid_sq ~ {' + '.join(terms)}", fit_frame)
+        if not scale_fit.convergence.get("converged", True):
+            return lambda frame: np.ones(_n_rows(frame), dtype=np.float64)
+
+        def _predict_scale(frame) -> np.ndarray:
+            fdict = _as_column_dict(frame)
+            q_n = _n_rows(fdict)
+            pred_frame = {
+                f"_sx{idx}": np.asarray(fdict[orig_name], dtype=np.float64).ravel()
+                for idx, orig_name in enumerate(col_names)
+            }
+            log_var = np.asarray(
+                scale_fit.predict(pred_frame, extrapolation="allow"),
+                dtype=np.float64,
+            ).ravel()
+            scale = np.exp(0.5 * np.clip(log_var, -20.0, 20.0))
+            return np.where(np.isfinite(scale) & (scale > 1e-6), scale, 1.0)[:q_n]
+
+        return _predict_scale
+    except Exception:  # noqa: BLE001
+        return lambda frame: np.ones(_n_rows(frame), dtype=np.float64)
+
+
+def _chronological_order(model, n: int, time) -> np.ndarray:
+    if time is None:
+        return np.arange(n, dtype=np.int64)
+    if isinstance(time, str):
+        raw_inputs = getattr(model, "_raw_inputs", None)
+        if isinstance(raw_inputs, dict) and raw_inputs.get("data") is not None:
+            raw_dict = _as_column_dict(raw_inputs["data"])
+            if time in raw_dict and len(raw_dict[time]) == n:
+                return np.argsort(np.asarray(raw_dict[time]), kind="stable")
+        train_dict = _training_data(model)
+        if time not in train_dict:
+            raise ValueError(f"time column {time!r} not found in training data")
+        return np.argsort(np.asarray(train_dict[time]), kind="stable")
+    t_arr = np.asarray(time).ravel()
+    if t_arr.size != n:
+        raise ValueError(f"time length {t_arr.size} does not match training rows {n}")
+    return np.argsort(t_arr, kind="stable")
+
+
+def _adaptive_conformal(
+    model,
+    newdata,
+    level: float,
+    seed,
+    calib_fraction: float,
+    mstop,
+    extrapolation: str = "warn",
+    score: str = "absolute",
+    unseen_levels: str = "error",
+    decay: float = 0.99,
+    calibration=None,
+    time=None,
+) -> ConformalInterval:
+    """Chronological weighted conformal calibration (Barber et al., 2023)."""
+    from mboostrs._refit import refit_spec
+
+    is_lss = _is_lss(model)
+    if is_lss:
+        family = model._family
+        if (getattr(family, "_survival", False) or getattr(family, "_multivariate", False)
+                or getattr(family, "_known_variance", False)):
+            raise NotImplementedError(
+                f"method='adaptive' needs a single observed response; "
+                f"{type(family).__name__} has a censored, multivariate or known-variance response."
+            )
+        if mstop == "tune":
+            raise NotImplementedError(
+                "mstop='tune' is not available for a distributional fit; pass None or an integer"
+            )
+
+    data = _training_data(model)
+    n_total = len(next(iter(data.values())))
+
+    if calibration is None:
+        if n_total < 25:
+            raise ValueError(
+                f"method='adaptive' needs at least 25 training rows (got {n_total}) "
+                "or an explicit calibration= frame"
+            )
+        if n_total >= 40:
+            n_calib = max(20, min(int(round(n_total * min(calib_fraction, 0.25))), n_total - 20))
+        else:
+            n_calib = max(10, min(int(round(n_total * min(calib_fraction, 0.25))), n_total - 10))
+        n_train = n_total - n_calib
+        order = _chronological_order(model, n_total, time)
+        train_idx, calib_idx = order[:n_train], order[n_train:]
+    else:
+        _require_fitted_steps(model, mstop)
+        n_train = n_total
+        train_idx = None
+        calib_idx = None
+
+    if is_lss:
+        recipe = getattr(model, "_transform_recipe", None)
+        fitted_steps = [
+            step for step in (recipe.steps if recipe else ())
+            if step.kind not in _UNESTIMATED_STEPS
+        ]
+        response_step = getattr(model, "_response_transform", None)
+        if response_step is not None:
+            fitted_steps.append(response_step)
+        resp_name = response_step.source if response_step is not None else model._response_name
+        if calibration is None:
+            if fitted_steps:
+                spec = _preprocessing_refit_spec(model, fitted_steps)
+                frame = _as_column_dict(spec.raw_data)
+                fit = spec.subset(train_idx, refit_preprocessing=True).build()
+                cal_target = _subset(frame, calib_idx)
+                y_cal = _calibration_response(cal_target, resp_name, level)
+                target = frame if newdata is None else newdata
+            else:
+                fit = refit_spec(model).subset(train_idx).build()
+                y_all = np.asarray(data[model._response_name], dtype=np.float64).ravel()
+                y_cal = y_all[calib_idx]
+                cal_target = _subset(data, calib_idx)
+                target = _encode(model, newdata, unseen_levels) if newdata is not None else data
+        else:
+            fit = model
+            cal_target = calibration
+            y_cal = _calibration_response(calibration, resp_name, level)
+            target = calibration if newdata is None else newdata
+            fitted_steps = True  # bypass raw recipe stripping; predict via model's own recipe
+
+        fam_name = type(model._family).__name__
+        use_standardized = (
+            fam_name in ("GaussianLSS", "StudentTLSS")
+            and response_step is None
+        )
+
+        def _lss_eval(rows):
+            if use_standardized:
+                if fitted_steps:
+                    return fit.params(rows, type="response", mstop=mstop,
+                                      extrapolation=extrapolation, unseen_levels=unseen_levels)
+                with _recipe_bypassed(fit):
+                    return fit.params(rows, type="response", mstop=mstop,
+                                      extrapolation=extrapolation, unseen_levels=unseen_levels)
+            if fitted_steps:
+                return _distributional_band(fit, rows, level, mstop, extrapolation, unseen_levels)
+            with _recipe_bypassed(fit):
+                return _distributional_band(fit, rows, level, mstop, extrapolation, unseen_levels)
+
+        if use_standardized:
+            cal_params = _lss_eval(cal_target)
+            query_params = _lss_eval(target)
+            mu_cal = np.asarray(cal_params["mu"], dtype=np.float64).ravel()
+            sigma_cal = np.maximum(np.asarray(cal_params["sigma"], dtype=np.float64).ravel(), 1e-12)
+            scores = np.abs(y_cal - mu_cal) / sigma_cal
+            gamma = _adaptive_gamma(scores, decay)
+            q = _weighted_conformal_quantile(scores, level, gamma)
+            mu_q = np.asarray(query_params["mu"], dtype=np.float64).ravel()
+            sigma_q = np.maximum(np.asarray(query_params["sigma"], dtype=np.float64).ravel(), 1e-12)
+            lower = mu_q - q * sigma_q
+            upper = mu_q + q * sigma_q
+            point = _clip(mu_q, lower, upper)
+            score_label = "lss_standardized"
+        else:
+            lo_c, _, hi_c = _lss_eval(cal_target)
+            scores = _quantile_scores(lo_c, hi_c, y_cal)
+            gamma = _adaptive_gamma(scores, decay)
+            q = _weighted_conformal_quantile(scores, level, gamma)
+            lo_q, mid_q, hi_q = _lss_eval(target)
+            lower, upper = _widen(lo_q, hi_q, q)
+            point = _clip(mid_q, lower, upper)
+            score_label = "distributional_quantile"
+        n_calib = int(y_cal.size)
+    else:
+        resp_name = _original_response_name(model)
+        if calibration is None:
+            _check_refittable(model)
+            fit, mstop = _fit_for(model, train_idx, seed, mstop)
+            has_recipe = bool(
+                getattr(fit, "_transform_recipe", None)
+                or getattr(fit, "_response_transform", None) is not None
+            )
+            if has_recipe:
+                raw = _raw_refit_frame(model, n_total)
+                train_dict = _subset(raw, train_idx)
+                cal_dict = _subset(raw, calib_idx)
+                query_target = raw if newdata is None else newdata
+                calib_pred = _predict_raw(fit, cal_dict, mstop, extrapolation, unseen_levels)
+                point = _predict_raw(fit, query_target, mstop, extrapolation, unseen_levels)
+                if score == "local":
+                    train_pred = _predict_raw(fit, train_dict, mstop, extrapolation, unseen_levels)
+            else:
+                train_dict = _subset(data, train_idx)
+                cal_dict = _subset(data, calib_idx)
+                query_target = _encode(model, newdata, unseen_levels) if newdata is not None else data
+                calib_pred = _predict(fit, cal_dict, mstop, extrapolation, unseen_levels)
+                point = _predict(fit, query_target, mstop, extrapolation, unseen_levels)
+                if score == "local":
+                    train_pred = _predict(fit, train_dict, mstop, extrapolation, unseen_levels)
+            y_cal = _response(model, cal_dict)
+        else:
+            fit = model
+            y_cal = _calibration_response(calibration, resp_name, level)
+            calib_pred = _predict_raw(model, calibration, mstop, extrapolation, unseen_levels)
+            query_raw = _raw_refit_frame(model, n_total) if newdata is None else newdata
+            point = _predict_raw(model, query_raw, mstop, extrapolation, unseen_levels)
+            if score == "local":
+                raw = _raw_refit_frame(model, n_total)
+                train_dict = raw
+                train_pred = _predict_raw(model, raw, mstop, extrapolation, unseen_levels)
+                cal_dict = calibration
+                query_target = query_raw
+
+        n_calib = int(y_cal.size)
+        if score == "local":
+            y_tr = _response(model, train_dict)
+            predict_scale = _fit_local_scale_model(train_dict, train_pred, y_tr, str(resp_name))
+            cal_scale = predict_scale(cal_dict)
+            query_scale = predict_scale(query_target)
+            scores = np.abs(y_cal - calib_pred) / np.maximum(cal_scale, 1e-6)
+            gamma = _adaptive_gamma(scores, decay)
+            q = _weighted_conformal_quantile(scores, level, gamma)
+            lower = point - q * query_scale
+            upper = point + q * query_scale
+            score_label = "local"
+        else:
+            scores = _absolute_residuals(y_cal, calib_pred)
+            gamma = _adaptive_gamma(scores, decay)
+            q = _weighted_conformal_quantile(scores, level, gamma)
+            lower, upper = _symmetric_band(point, q)
+            score_label = "absolute"
+
+    ratio = _temporal_scale_ratio(scores)
+    cal_source = (
+        "rows supplied by the caller in chronological order, held out before fitting"
+        if calibration is not None
+        else f"chronological last {n_calib} of {n_total} training rows (decay={gamma:.4g})"
+    )
+    assumptions = (
+        "calibration rows are ordered chronologically (no random shuffle)",
+        f"weighted non-exchangeable calibration (Barber et al., 2023) with exponential decay gamma={gamma:.4g}",
+        "the specification, hyperparameters and mstop were fixed without calibration responses",
+    )
+    out = ConformalInterval(
+        lower=lower,
+        upper=upper,
+        predicted=point,
+        level=level,
+        method="adaptive",
+        n_calibration=n_calib,
+        quantile=q,
+        score=score_label,
+        guaranteed_coverage=float(level) if np.isfinite(q) else 0.0,
+        guarantee=(
+            "weighted non-exchangeable conformal coverage (Barber et al., 2023); "
+            "coverage degrades by weighted total-variation drift"
+        ),
+        assumptions=assumptions,
+        n_training=n_train,
+        calibration_source=cal_source,
+        _temporal_scale_ratio=ratio,
+    )
+    return out
+
+
+@dataclass(frozen=True)
+class AdaptiveConformalStream(MappingResultMixin):
+    """Online Adaptive Conformal Inference stream (Gibbs & Candès, 2021)."""
+
+    lower: np.ndarray
+    upper: np.ndarray
+    coverage: float
+    alpha_path: np.ndarray
+    multipliers: np.ndarray
+    level: float
+    lr: float
+
+    _MAPPING_KEYS = ("lower", "upper", "coverage", "alpha_path", "multipliers", "level", "lr")
+
+    def __post_init__(self):
+        for name in ("lower", "upper", "alpha_path", "multipliers"):
+            arr = np.asarray(getattr(self, name), dtype=np.float64).ravel().copy()
+            arr.setflags(write=False)
+            object.__setattr__(self, name, arr)
+
+
+def adaptive_conformal_stream(
+    predicted,
+    observed,
+    half_width,
+    *,
+    level: float = 0.9,
+    lr: float = 0.02,
+) -> AdaptiveConformalStream:
+    """Online Adaptive Conformal Inference (Gibbs & Candès, 2021).
+
+    Sequentially updates the effective miscoverage target ``alpha_t`` after each
+    observation ``y_t`` arrives and scales the next step's baseline ``half_width``
+    by the Gaussian tail ratio ``z(alpha_t) / z(1 - level)`` *before* observing
+    ``y_t``.
+    """
+    _require_level(level)
+    if isinstance(lr, bool) or not isinstance(lr, (int, float, np.integer, np.floating)) or float(lr) <= 0.0:
+        raise ValueError(f"lr must be positive, got {lr!r}")
+    lr = float(lr)
+    pred_arr = np.asarray(predicted, dtype=np.float64).ravel()
+    obs_arr = np.asarray(observed, dtype=np.float64).ravel()
+    if pred_arr.size == 0 or pred_arr.shape != obs_arr.shape:
+        raise ValueError(
+            f"predicted and observed must be non-empty 1D arrays of matching shape; "
+            f"got {pred_arr.shape} and {obs_arr.shape}"
+        )
+    T = int(pred_arr.size)
+    hw_arr = np.asarray(half_width, dtype=np.float64)
+    if hw_arr.ndim == 0:
+        hw_arr = np.full(T, float(hw_arr), dtype=np.float64)
+    else:
+        hw_arr = hw_arr.ravel()
+        if hw_arr.size != T:
+            raise ValueError(
+                f"half_width must be a scalar or have length {T}, got {hw_arr.size}"
+            )
+    if np.any(hw_arr < 0.0) or not np.all(np.isfinite(hw_arr)):
+        raise ValueError("half_width must be finite and non-negative")
+
+    norm = NormalDist()
+    z_nom = norm.inv_cdf(0.5 + float(level) / 2.0)
+    alpha_t = float(np.clip(1.0 - float(level), 0.001, 0.999))
+
+    lower = np.empty(T, dtype=np.float64)
+    upper = np.empty(T, dtype=np.float64)
+    alpha_path = np.empty(T, dtype=np.float64)
+    multipliers = np.empty(T, dtype=np.float64)
+    covered_count = 0
+
+    for t in range(T):
+        alpha_eff = float(np.clip(alpha_t, 1e-4, 0.999))
+        z_t = norm.inv_cdf(1.0 - alpha_eff / 2.0)
+        mult_t = max(0.0, z_t / z_nom)
+        hw_t = mult_t * float(hw_arr[t])
+        lo_t = float(pred_arr[t]) - hw_t
+        hi_t = float(pred_arr[t]) + hw_t
+
+        lower[t] = lo_t
+        upper[t] = hi_t
+        alpha_path[t] = alpha_t
+        multipliers[t] = mult_t
+
+        hit = (lo_t <= float(obs_arr[t]) <= hi_t)
+        err_t = 0.0 if hit else 1.0
+        if hit:
+            covered_count += 1
+        alpha_t = float(np.clip(alpha_t + lr * ((1.0 - float(level)) - err_t), 0.001, 0.999))
+
+    return AdaptiveConformalStream(
+        lower=lower,
+        upper=upper,
+        coverage=float(covered_count / T),
+        alpha_path=alpha_path,
+        multipliers=multipliers,
+        level=float(level),
+        lr=lr,
+    )
+
+
 # --------------------------------------------------------------------------
 # public entry point
 # --------------------------------------------------------------------------
@@ -1435,6 +1914,8 @@ def conformal_interval(
     score="auto",
     count_reference="zero_inflated_poisson",
     unseen_levels=None,
+    decay=0.99,
+    time=None,
 ):
     """Distribution-free prediction intervals for a fitted standard model.
     Usage::
@@ -1649,14 +2130,23 @@ def conformal_interval(
         if (method == "split" and not _is_lss(model)
                 and getattr(model, "_response_transform", None) is None):
             score = "count_auto"
+    if (isinstance(decay, bool)
+            or not isinstance(decay, (int, float, np.integer, np.floating))
+            or not np.isfinite(float(decay))
+            or not (0.0 < float(decay) <= 1.0)):
+        raise ValueError(f"decay must be in (0, 1], got {decay!r}")
+    decay = float(decay)
     if score not in ("absolute", "poisson_normalized", "poisson_quantile", "count_auto", "count_rank",
-                      "gaussian_normalized"):
+                      "gaussian_normalized", "local"):
         raise ValueError("score must be 'auto', 'absolute', 'poisson_normalized', 'poisson_quantile', "
-                         "'count_rank' or 'gaussian_normalized'")
-    if score == "gaussian_normalized":
+                         "'count_rank', 'gaussian_normalized' or 'local'")
+    if score == "local":
+        if method != "adaptive" or _is_lss(model):
+            raise ValueError("score='local' is available only for standard-model method='adaptive'")
+    elif score == "gaussian_normalized":
         if (not _is_lss(model) or type(model._family).__name__ != "GaussianLSS"
                 or getattr(model, "_response_transform", None) is not None
-                or method not in ("split", "distributional")):
+                or method not in ("split", "distributional", "adaptive")):
             raise ValueError("gaussian_normalized needs an untransformed GaussianLSS split/distributional fit")
     elif score != "absolute":
         if method != "split" or _is_lss(model):
@@ -1672,16 +2162,29 @@ def conformal_interval(
     if not (0.0 < calib_fraction < 1.0):
         raise ValueError(f"calib_fraction must be in (0, 1), got {calib_fraction}")
     if calibration is not None:
-        if method not in (("split", "distributional") if _is_lss(model) else ("split",)):
+        if method not in (("split", "distributional", "adaptive") if _is_lss(model) else ("split", "adaptive")):
             raise NotImplementedError(
-                "calibration= supports split conformal on a standard model "
-                "or distributional calibration of an LSS model; CV+ and CQR "
+                "calibration= supports split/adaptive conformal on a standard model "
+                "or distributional/adaptive calibration of an LSS model; CV+ and CQR "
                 "refit on subsets of the training rows instead")
         if mstop == "tune":
             raise ValueError(
                 "mstop='tune' re-chooses the step count in refits; with "
                 "calibration= the model is used as fitted, so choose its mstop "
                 "on the fitting rows before calling")
+        if method == "adaptive":
+            _warn_if_weighted(model)
+            with routine_warnings(stacklevel=2):
+                interval = _adaptive_conformal(
+                    model, newdata, level, seed, calib_fraction, mstop,
+                    extrapolation, score, unseen_levels, decay,
+                    calibration=calibration, time=time,
+                )
+                return _with_fitted_mean(
+                    model, newdata,
+                    replace(interval, requested_score=requested_score),
+                    extrapolation, unseen_levels=unseen_levels,
+                )
         if _is_lss(model):
             _warn_if_weighted(model)
             with routine_warnings(stacklevel=2):
@@ -1697,6 +2200,19 @@ def conformal_interval(
                                        score, count_reference, seed, unseen_levels=unseen_levels)
             return _with_fitted_mean(model, newdata, replace(interval, requested_score=requested_score),
                                      extrapolation, unseen_levels=unseen_levels)
+    if method == "adaptive":
+        _warn_if_weighted(model)
+        with routine_warnings(stacklevel=2), _tuning_warnings():
+            result = _adaptive_conformal(
+                model, newdata, level, seed, calib_fraction, mstop,
+                extrapolation, score, unseen_levels, decay, time=time,
+            )
+            return _with_fitted_mean(
+                model, newdata,
+                replace(result, mstop_source=_mstop_source(mstop, model),
+                        requested_score=requested_score),
+                extrapolation, unseen_levels=unseen_levels,
+            )
     if _is_lss(model) and method in ("split", "distributional"):
         # A distributional fit has one method: the default "split" means it.
         _warn_if_weighted(model)
@@ -1728,7 +2244,7 @@ def conformal_interval(
                           unseen_levels=unseen_levels)
         else:
             raise ValueError(
-                f"method must be 'split', 'cv+', or 'cqr', got {method!r}"
+                f"method must be 'split', 'cv+', 'cqr', or 'adaptive', got {method!r}"
             )
         # CQR always tunes its quantile fits unless the caller fixes mstop.
         source_key = "tune" if (method == "cqr" and mstop is None) else mstop
@@ -1744,6 +2260,7 @@ def _assess_reliability(
     interval: ConformalInterval,
     *,
     uneven_reasons: tuple[str, ...] = (),
+    temporal_scale_ratio: float | None = None,
 ) -> ConformalInterval:
     """Attach structured D9 reliability diagnostics and warn when coverage is at risk."""
     import math
@@ -1835,6 +2352,14 @@ def _assess_reliability(
             "uneven conditional coverage across calibration slices "
             f"({'; '.join(uneven_reasons)})"
         )
+    has_temporal_shift = bool(temporal_scale_ratio is not None and temporal_scale_ratio >= 1.4)
+    if has_temporal_shift:
+        msg = (
+            f"temporal_scale_shift: second-half calibration residual scale "
+            f"differs from first-half by {temporal_scale_ratio:.2f}x"
+        )
+        reasons.append(msg)
+        warn_reasons.append(msg)
 
     if warn_reasons:
         warnings.warn(
@@ -1853,6 +2378,7 @@ def _assess_reliability(
         "out_of_range_fraction": round(oor_frac, 4),
         "shifted_columns": shifted,
         "heteroscedastic_split": bool(uneven_reasons),
+        "temporal_scale_shift": has_temporal_shift,
     }
     return replace(interval, reliability=diag)
 
@@ -1866,11 +2392,18 @@ def _with_fitted_mean(model, newdata, interval: ConformalInterval,
     the one the interval used.
     """
     uneven = getattr(interval, "_uneven_reasons", ())
+    temporal_ratio = getattr(interval, "_temporal_scale_ratio", None)
     if getattr(model, "_response_transform", None) is None:
         with routine_warnings(stacklevel=3):
             mean = _full_model_mean(model, newdata, extrapolation, unseen_levels)
         interval = replace(interval, fitted_mean=mean)
-    return _assess_reliability(model, newdata, interval, uneven_reasons=uneven)
+    return _assess_reliability(
+        model,
+        newdata,
+        interval,
+        uneven_reasons=uneven,
+        temporal_scale_ratio=temporal_ratio,
+    )
 
 
 def _full_model_mean(model, newdata, extrapolation="warn", unseen_levels="error") -> np.ndarray:

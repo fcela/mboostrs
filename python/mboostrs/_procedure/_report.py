@@ -62,6 +62,15 @@ def _uncertainty_section(trail: DecisionTrail) -> str:
         text.append(f"B={B}")
     if bound is not None:
         text.append(f"expected false selections bound={bound}")
+    conformal_method = trail.uncertainty.get("conformal_method")
+    if conformal_method is not None:
+        text.append(f"conformal_method={conformal_method}")
+    level = trail.uncertainty.get("level")
+    if level is not None:
+        text.append(f"level={level}")
+    ece = trail.uncertainty.get("ece")
+    if ece is not None:
+        text.append(f"ece={ece:.4f}")
     return ", ".join(text)
 
 

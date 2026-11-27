@@ -86,7 +86,7 @@
       "type": "object",
       "required": ["method"],
       "properties": {
-        "method": {"enum": ["stability", "bootstrap", "none"]},
+        "method": {"enum": ["stability", "bootstrap", "conformal", "none"]},
         "B": {"type": ["integer", "null"]},
         "pi_thr": {"type": ["number", "null"]},
         "terms": {
@@ -100,7 +100,15 @@
             }
           }
         },
-        "expected_false_selections_bound": {"type": ["number", "null"]}
+        "expected_false_selections_bound": {"type": ["number", "null"]},
+        "level": {"type": ["number", "null"]},
+        "conformal_method": {"type": ["string", "null"]},
+        "n_calibration": {"type": ["integer", "null"]},
+        "quantile": {"type": ["number", "null"]},
+        "mean_width": {"type": ["number", "null"]},
+        "ece": {"type": ["number", "null"]},
+        "status": {"type": ["string", "null"]},
+        "note": {"type": ["string", "null"]}
       },
       "additionalProperties": false
     },

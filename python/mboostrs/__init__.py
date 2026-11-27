@@ -57,7 +57,13 @@ from mboostrs.causal import (
     rank_by_effect,
 )
 from mboostrs.compare import CompareReport, CompareSpec, compare_to_r
-from mboostrs.conformal import ConformalInterval, ConformalReliabilityWarning, conformal_interval
+from mboostrs.conformal import (
+    AdaptiveConformalStream,
+    ConformalInterval,
+    ConformalReliabilityWarning,
+    adaptive_conformal_stream,
+    conformal_interval,
+)
 from mboostrs.cost import estimate_cost
 from mboostrs.cvrisk import CvReport, CvRiskResult, cv_weights, make_grid, weighted_median
 from mboostrs.declarations import DeclarationCheck, check_declarations
@@ -502,10 +508,12 @@ __all__ = [
     "Summary",
     "SummaryTable",
     "validation_capabilities",
+    "AdaptiveConformalStream",
     "ConformalInterval",
     "ConformalReliabilityWarning",
     "load_model",
     "save_model",
+    "adaptive_conformal_stream",
     "conformal_interval",
     "rearrange_quantiles",
     "RearrangedQuantiles",
