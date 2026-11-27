@@ -118,6 +118,7 @@ Frequently used entries: [`gamboost`](functions/gamboost.md), [`glmboost`](funct
 | [`reference_gap`](functions/reference_gap.md) | Compare a specification with a tree reference and rank candidate revisions. |
 | [`repeated_kfold_folds`](functions/repeated_kfold_folds.md) | ``repeats`` independent k-fold partitions, side by side. |
 | [`report`](functions/report.md) | Render a ``Fit`` (or ``DecisionTrail``) as text, markdown or JSON. |
+| [`reproduce`](functions/reproduce.md) | Reproduce a recorded :func:`fit` and its discovery report in one call. |
 | [`residual_frame`](functions/residual_frame.md) | Diagnostic residual table for any model. |
 | [`revision_checks`](functions/revision_checks.md) | Run the cluster, time and influence checks and report their revisions. |
 | [`rolling_folds`](functions/rolling_folds.md) | Rolling-origin splits: train on the past, judge on what comes next. |
@@ -187,6 +188,7 @@ Frequently used entries: [`gamboost`](functions/gamboost.md), [`glmboost`](funct
 | [`CompareReport`](classes/CompareReport.md) | Structured comparison report between Python and R. |
 | [`CompareSpec`](classes/CompareSpec.md) | Specification for a single model comparison. |
 | [`ConformalInterval`](classes/ConformalInterval.md) | Prediction intervals with their calibration evidence attached. |
+| [`ConformalReliabilityWarning`](classes/ConformalReliabilityWarning.md) | Warning emitted when conformal reliability diagnostics detect risk to coverage. |
 | [`ContrastResult`](classes/ContrastResult.md) | A standardized full-model prediction contrast and its row contributions. |
 | [`CostBudget`](classes/CostBudget.md) | Limits on a procedure's fit count, run time and memory. ``None`` means no limit on that field. |
 | [`CoxPH`](classes/CoxPH.md) | Cox partial likelihood for right-censored survival data. |
@@ -273,6 +275,7 @@ Frequently used entries: [`gamboost`](functions/gamboost.md), [`glmboost`](funct
 | [`Quantile`](classes/Quantile.md) | Check (pinball) loss for quantile regression. |
 | [`RearrangedQuantiles`](classes/RearrangedQuantiles.md) | Sorted predictions at several levels and the crossings found before sorting. |
 | [`ReferenceGapResult`](classes/ReferenceGapResult.md) | Result of comparing a specification with a tree reference, including candidate revisions. |
+| [`ReproductionResult`](classes/ReproductionResult.md) | Outcome of replaying a saved :class:`DecisionTrail` on a dataset. |
 | [`RevisionFinding`](classes/RevisionFinding.md) | One residual check: what it found, the evidence, and the revision. |
 | [`RevisionReport`](classes/RevisionReport.md) | The three checks run together, in the order cluster, time, influence. |
 | [`SameFamilyGap`](classes/SameFamilyGap.md) | Log-likelihood gap between a boost and the same-family GLM. |

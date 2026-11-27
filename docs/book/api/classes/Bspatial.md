@@ -45,7 +45,7 @@ Args:
     bins: enable exact compact factor storage. Must be at least the number
         of observed levels; factor levels are never merged.
 
-Source: [`python/mboostrs/learners.py` lines 496-553](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L496-L553)
+Source: [`python/mboostrs/learners.py` lines 520-577](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L520-L577)
 
 ## Members
 
@@ -64,4 +64,4 @@ Bspatial.name
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/learners.py` lines 551-553](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L551-L553)
+Source: [`python/mboostrs/learners.py` lines 575-577](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L575-L577)

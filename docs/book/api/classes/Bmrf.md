@@ -37,4 +37,4 @@ Args:
     bins: optional quantile-bin count per coordinate axis. Only occupied
         two-dimensional cells are stored.
 
-Source: [`python/mboostrs/learners.py` lines 453-493](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L453-L493)
+Source: [`python/mboostrs/learners.py` lines 477-517](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L477-L517)

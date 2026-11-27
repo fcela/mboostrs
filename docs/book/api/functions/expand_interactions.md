@@ -28,4 +28,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/interactions.py` lines 907-972](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/interactions.py#L907-L972)
+Source: [`python/mboostrs/interactions.py` lines 948-1013](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/interactions.py#L948-L1013)

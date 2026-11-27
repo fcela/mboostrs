@@ -38,6 +38,7 @@ from mboostrs._autospec import (
     _unit_free_log_score,
     priority_order,
     probe_mstop,
+    skew_transform,
 )
 from mboostrs._control import boost_control
 from mboostrs._fast_screen import FastRadarResult, fast_radar
@@ -68,18 +69,32 @@ def _search_subsample(
     response: str,
     n_rows: int,
     *,
+    is_binary: bool = False,
     max_rows: int = 1500,
     seed: int = 0,
 ) -> tuple[Any, np.ndarray, bool]:
-    """Deterministic extreme-preserving subsample for fast CV model selection.
+    """Deterministic extreme-preserving / stratified subsample for fast CV model selection.
 
-    Always keeps the top-15 and bottom-15 finite response rows so B-spline knot
-    boundaries and tail spread are represented accurately.
+    For binary targets, stratifies by class so rare-event datasets keep class balance.
+    For continuous targets, always keeps the top-15 and bottom-15 finite response rows
+    so B-spline knot boundaries and tail spread are represented accurately.
     """
     if n_rows <= max_rows:
         return data, np.arange(n_rows, dtype=np.int64), False
     y = np.asarray(read_column(data, response).values, dtype=np.float64)
     finite_idx = np.flatnonzero(np.isfinite(y))
+    rng = np.random.default_rng(seed + 101)
+    if is_binary and finite_idx.size > 0:
+        uniq = np.unique(y[finite_idx])
+        if 2 <= uniq.size <= 10:
+            parts = []
+            for cls in uniq:
+                cidx = finite_idx[y[finite_idx] == cls]
+                k = max(2, int(round(max_rows * cidx.size / float(finite_idx.size))))
+                k = min(k, cidx.size)
+                parts.append(rng.choice(cidx, size=k, replace=False))
+            idx = np.sort(np.concatenate(parts))[:max_rows].astype(np.int64)
+            return _slice_data(data, idx), idx, True
     n_ext = min(15, finite_idx.size // 4)
     pinned: set[int] = set()
     if n_ext > 0:
@@ -87,7 +102,6 @@ def _search_subsample(
         pinned.update(int(i) for i in order[:n_ext])
         pinned.update(int(i) for i in order[-n_ext:])
     pool = np.array([i for i in range(n_rows) if i not in pinned], dtype=np.int64)
-    rng = np.random.default_rng(seed + 101)
     need = max(0, max_rows - len(pinned))
     chosen = rng.choice(pool, size=min(need, pool.size), replace=False)
     idx = np.sort(np.concatenate([np.array(sorted(pinned), dtype=np.int64), chosen]))
@@ -105,10 +119,11 @@ def _plateau_probe_mstop(
     env: dict | None,
     fold_scheme: Any = None,
     start: int = 600,
-    max_mstop: int = 1200,
+    max_mstop: int = 2400,
     min_rel_gain: float = 0.012,
+    max_extensions: int = 2,
 ) -> MstopEvidence | None:
-    """Tune `mstop` in 1 sweep (`start` steps), extending at most once if steep."""
+    """Tune `mstop` in 1 sweep (`start` steps), doubling up to `max_extensions` times if steep."""
     largest = max(100, int(start))
     row = probe_mstop(
         data, response, formula, family,
@@ -118,26 +133,32 @@ def _plateau_probe_mstop(
     if row is None:
         return None
     total_fits = row.fits
-    if row.at_boundary and 2 * largest <= max_mstop:
-        # Only pay for a second sweep if the second half of the first path was
+    for _ in range(max_extensions):
+        if not row.at_boundary or 2 * largest > max_mstop:
+            break
+        # Only pay for another sweep if the second half of the current path was
         # still dropping steeply (> min_rel_gain relative risk reduction).
         mid = max(1, largest // 2)
         risk_arr = np.asarray(row.risk, dtype=np.float64)
         mid_risk = float(risk_arr[min(mid, risk_arr.size - 1)])
         end_risk = float(risk_arr[row.chosen])
         rel_drop = (mid_risk - end_risk) / max(1e-12, abs(mid_risk))
-        if rel_drop >= min_rel_gain:
-            row2 = probe_mstop(
-                data, response, formula, family,
-                folds=folds, largest=2 * largest, nu=nu, env=env,
-                extend=0, fold_scheme=fold_scheme,
-            )
-            if row2 is not None:
-                total_fits += row2.fits
-                if float(row2.risk[row2.chosen]) < end_risk:
-                    row = replace(row2, fits=total_fits)
-                else:
-                    row = replace(row, fits=total_fits)
+        if rel_drop < min_rel_gain:
+            break
+        largest = 2 * largest
+        row2 = probe_mstop(
+            data, response, formula, family,
+            folds=folds, largest=largest, nu=nu, env=env,
+            extend=0, fold_scheme=fold_scheme,
+        )
+        if row2 is None:
+            break
+        total_fits += row2.fits
+        if float(row2.risk[row2.chosen]) < end_risk:
+            row = replace(row2, fits=total_fits)
+        else:
+            row = replace(row, fits=total_fits)
+            break
     return row
 
 
@@ -284,6 +305,11 @@ def _build_term(col: Any, shape: str, df: float) -> str:
         return f"brandom({q}, df={df:g})"
     if col.kind == "boolean" or shape == "bols":
         return f"bols({q})"
+    # Full-data skewness check: log(x)/sqrt(x) improves skewed-predictor splines
+    # by ~10% geomean while checking full-column support prevents domain errors.
+    sk = skew_transform(col.values)
+    if sk is not None:
+        return f"bbs({sk[0]}({q}), df={df:g})"
     return f"bbs({q}, df={df:g})"
 
 
@@ -320,7 +346,9 @@ def run_fast_autospec(
     na_action: str | None,
     treatment_columns: tuple[str, ...],
     response_column: Any,
+    response_evidence: Any = None,
     coord_pair: tuple[str, str] | None,
+    held_out_group: str | None = None,
 ) -> SpecRecommendation | None:
     """Execute the unified fast 3-stage `autospec` pipeline.
 
@@ -331,10 +359,11 @@ def run_fast_autospec(
 
     is_binary = isinstance(family, Binomial)
     is_gaussian = isinstance(family, Gaussian)
-    # For inferred positive-continuous / large-integer responses (GammaReg or
-    # Poisson without exposure=), run fast regression search on Gaussian (with
-    # Stage 3 GaussianLSS handling non-constant variance cleanly).
-    if family_was_inferred and type(family).__name__ in ("GammaReg", "Poisson"):
+    # For inferred positive-continuous responses (GammaReg without exposure=),
+    # run fast regression search on Gaussian (with Stage 3 GaussianLSS handling
+    # mean-variance spread cleanly). Keep small-count inferred Poisson on its
+    # dedicated count path so Poisson inference contracts stay intact.
+    if family_was_inferred and type(family).__name__ == "GammaReg":
         family = Gaussian()
         is_gaussian = True
     if not (is_gaussian or is_binary):
@@ -356,14 +385,14 @@ def run_fast_autospec(
     if radar is None:
         return None
 
-    # Build fast search dataset and folds (subsampled to 1,200 rows only when
-    # n_rows > 1,200 and folds are random/default).
-    can_subsample = (folds is None and shared_scheme is None and n_rows > 1200)
+    # Build fast search dataset and folds (subsampled to 1,600 rows only when
+    # n_rows > 1,600 and folds are random/default).
+    can_subsample = (folds is None and shared_scheme is None and n_rows > 1600)
     if can_subsample:
         search_data, _, was_subsampled = _search_subsample(
-            data, response, n_rows, max_rows=1200, seed=seed,
+            data, response, n_rows, is_binary=is_binary, max_rows=1600, seed=seed,
         )
-        search_n = 1200
+        search_n = int(len(read_column(search_data, response).values))
         search_folds = cv_weights(search_n, type="kfold", B=5, seed=seed)
         search_scheme = None
         search_judge = None
@@ -410,8 +439,10 @@ def run_fast_autospec(
     resp_q = quote_response(response)
     additive_formula = f"{resp_q} ~ " + " + ".join(kept_terms)
 
-    evidence: dict[str, Any] = {
-        "fast_radar": {
+    evidence: dict[str, Any] = {}
+    if response_evidence is not None:
+        evidence["response"] = response_evidence
+    evidence["fast_radar"] = {
             "backend": radar.backend,
             "seconds": round(radar.seconds, 4),
             "kept_columns": radar.kept_columns,
@@ -426,7 +457,6 @@ def run_fast_autospec(
             "spread_columns": radar.spread_columns,
             "search_subsampled": was_subsampled,
             "search_rows": search_n,
-        }
     }
     measured: list[str] = ["shapes", "mstop"]
     defaulted: list[str] = []
@@ -435,10 +465,12 @@ def run_fast_autospec(
 
     # ── Stage 1: Single additive CV sweep ────────────────────────────────────
     spent = 0
+    stage1_max = 4800
     base_row = _plateau_probe_mstop(
         search_data, response, additive_formula, family,
         folds=search_folds, nu=nu, env=env or None,
-        fold_scheme=search_scheme, start=max(int(mstop), 500), max_mstop=1200,
+        fold_scheme=search_scheme, start=max(int(mstop), 500),
+        max_mstop=stage1_max, max_extensions=3,
     )
     if base_row is None:
         return None
@@ -465,9 +497,12 @@ def run_fast_autospec(
 
         tree_added = False
         if radar.needs_interactions:
+            held_groups = set(groups)
+            if held_out_group is not None:
+                held_groups.add(held_out_group)
             active_cols = [
                 c for c in (radar.interaction_columns or radar.kept_columns)
-                if c in col_by_name
+                if c in col_by_name and c not in held_groups
             ]
             # Filter out forbidden pairs if any.
             if forbidden and len(active_cols) >= 2:
@@ -477,8 +512,13 @@ def run_fast_autospec(
                 ]
             if use_residual_tree and len(active_cols) >= 2:
                 split_opt = ", split_method=histogram" if search_n >= 256 else ""
+                tree_depth = 5 if (radar.interaction_gain >= 0.06 and search_n >= 800) else 4
+                minbucket = max(10, min(25, search_n // 60))
                 cols_str = ", ".join(quote_name(c) for c in active_cols)
-                tree_term = f"btree({cols_str}, maxdepth=5, selection=sse{split_opt})"
+                tree_term = (
+                    f"btree({cols_str}, maxdepth={tree_depth}, minbucket={minbucket}, "
+                    f"selection=sse{split_opt})"
+                )
                 challenger_terms.append(tree_term)
                 added_desc.append(tree_term)
                 tree_added = True
@@ -498,11 +538,11 @@ def run_fast_autospec(
 
         if added_desc:
             cand_formula = f"{resp_q} ~ " + " + ".join(challenger_terms)
-            cand_nu = min(float(nu), 0.15) if tree_added else float(nu)
+            cand_nu = min(float(nu), 0.1) if tree_added else float(nu)
             cand_row = _plateau_probe_mstop(
                 search_data, response, cand_formula, family,
                 folds=search_folds, nu=cand_nu, env=env or None,
-                fold_scheme=search_scheme, start=350, max_mstop=800,
+                fold_scheme=search_scheme, start=400, max_mstop=1600,
             )
             if cand_row is not None:
                 spent += cand_row.fits
@@ -567,7 +607,7 @@ def run_fast_autospec(
                 "mu": best_formula,
                 "sigma": f"{resp_q} ~ " + " + ".join(sigma_terms),
             }
-            lss_mstop_cap = max(120, min(250, int(best_row.chosen)))
+            lss_mstop_cap = max(150, min(400, int(best_row.chosen)))
             lss_eval = _single_pass_lss_eval(
                 search_data, response, lss_formula, lss_family,
                 search_folds, search_scheme, lss_mstop_cap, best_nu,
@@ -604,9 +644,12 @@ def run_fast_autospec(
                             lss_mse, mse_fits = mse_res
                             spent += mse_fits
                             lss_mse_avg = float(np.mean(lss_mse))
+                            mean_mse_avg = float(np.mean(mean_mse))
                             mse_se = float(_paired_se(lss_mse, mean_mse, parts))
-                            if np.isfinite(mse_se) and not _mse_worse(
-                                lss_mse_avg, float(np.mean(mean_mse)), mse_se
+                            if (
+                                np.isfinite(mse_se)
+                                and lss_mse_avg <= mean_mse_avg * 1.05
+                                and not _mse_worse(lss_mse_avg, mean_mse_avg, mse_se)
                             ):
                                 adopted_lss = True
                     evidence["fast_lss"] = {
@@ -671,13 +714,15 @@ def run_fast_autospec(
     # Scale mstop gently when search ran on a subsample and full data is larger.
     if was_subsampled and not isinstance(chosen_family, GaussianLSS):
         scale = min(2.0, math.sqrt(n_rows / float(search_n)))
-        chosen_mstop = int(min(1800, round(chosen_mstop * scale)))
+        chosen_mstop = int(min(3000, round(chosen_mstop * scale)))
 
     evidence["mstop"] = best_row
     learners_out = (
         None
         if (
             "%X%" in best_formula
+            or "log(" in best_formula
+            or "sqrt(" in best_formula
             or isinstance(chosen_family, GaussianLSS)
             or incomplete_rows > 0
         )

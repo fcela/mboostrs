@@ -18,7 +18,7 @@ gamlss.dist `PARETO2` uses the reciprocal shape: this family's
 `(mu, sigma)` is `PARETO2(mu, 1 / sigma)`, so `pdf` equals
 `dPARETO2(y, mu, 1 / sigma)`. Requires `y > 0`.
 
-Source: [`python/mboostrs/gamlss.py` lines 2234-2294](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2234-L2294)
+Source: [`python/mboostrs/gamlss.py` lines 2238-2298](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2238-L2298)
 
 ## Members
 
@@ -47,7 +47,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `IndexError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2249-2253](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2249-L2253)
+Source: [`python/mboostrs/gamlss.py` lines 2253-2257](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2253-L2257)
 
 (pareto2lss-mean)=
 ## `Pareto2LSS.mean`
@@ -66,7 +66,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2255-2261](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2255-L2261)
+Source: [`python/mboostrs/gamlss.py` lines 2259-2265](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2259-L2265)
 
 (pareto2lss-cdf)=
 ## `Pareto2LSS.cdf`
@@ -89,7 +89,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2263-2276](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2263-L2276)
+Source: [`python/mboostrs/gamlss.py` lines 2267-2280](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2267-L2280)
 
 (pareto2lss-quantile)=
 ## `Pareto2LSS.quantile`
@@ -102,7 +102,7 @@ Pareto2LSS.quantile(p, params) -> ndarray
 
 Pareto-II quantile, `mu * ((1 - p)**(-1 / sigma) - 1)`.
 
-Source: [`python/mboostrs/gamlss.py` lines 2278-2280](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2278-L2280)
+Source: [`python/mboostrs/gamlss.py` lines 2282-2284](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2282-L2284)
 
 (pareto2lss-pdf)=
 ## `Pareto2LSS.pdf`
@@ -124,4 +124,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2282-2294](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2282-L2294)
+Source: [`python/mboostrs/gamlss.py` lines 2286-2298](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2286-L2298)

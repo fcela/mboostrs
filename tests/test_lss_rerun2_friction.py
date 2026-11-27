@@ -131,16 +131,37 @@ def test_conformal_refusal_does_not_name_a_median_for_a_complete_column():
     z = rng.uniform(0.5, 2.0, n)
     y = np.log(ave) + z + 0.2 * rng.normal(size=n)
     ave[rng.uniform(size=n) < 0.1] = np.nan
+    X_ext = np.column_stack([z, z ** 2])
+    K_ext = np.eye(2)
     data = {"y": y, "ave_occup": ave, "households": households, "z": z}
-    fit = mb.gamboostLSS({"mu": "y ~ bbs(log(ave_occup)) %X% bbs(z) + bbs(log(households))",
+    fit = mb.gamboostLSS({"mu": "y ~ buser(z, X=X_ext, K=K_ext, df=2) + bbs(log(ave_occup)) + bbs(log(households))",
                           "sigma": "y ~ bols(z)"},
-                         data=data, family=mb.GaussianLSS(),
+                         data=data, env={"X_ext": X_ext, "K_ext": K_ext},
+                         family=mb.GaussianLSS(),
                          control=mb.boost_control(40, 0.1), na_action="impute")
     with pytest.raises(NotImplementedError) as caught:
         mb.conformal_interval(fit, method="distributional", level=0.9, seed=1)
     message = str(caught.value)
     assert "impute(households)" not in message
     assert "did not keep them" in message
+
+
+def test_distributional_conformal_works_with_interactions_and_transforms():
+    rng = np.random.default_rng(3)
+    n = 300
+    ave = rng.lognormal(1.0, 0.4, n)
+    households = rng.lognormal(3.0, 0.8, n)
+    z = rng.uniform(0.5, 2.0, n)
+    y = np.log(ave) + z + 0.2 * rng.normal(size=n)
+    ave[rng.uniform(size=n) < 0.1] = np.nan
+    data = {"y": y, "ave_occup": ave, "households": households, "z": z}
+    fit = mb.gamboostLSS({"mu": "y ~ bbs(log(ave_occup)) %X% bbs(z) + bbs(log(households))",
+                          "sigma": "y ~ bols(z)"},
+                         data=data, family=mb.GaussianLSS(),
+                         control=mb.boost_control(40, 0.1), na_action="impute")
+    interval = mb.conformal_interval(fit, method="distributional", level=0.9, seed=1)
+    assert np.isfinite(interval.lower).all() and np.isfinite(interval.upper).all()
+    assert "re-estimated on the proper-training rows" in interval.calibration_source
 
 
 def test_distributional_conformal_works_with_impute_and_log():
@@ -190,10 +211,13 @@ def test_a_model_without_retained_inputs_refuses_naming_the_reason():
     z = rng.uniform(0.5, 2.0, n)
     w = rng.uniform(1.0, 3.0, n)
     y = np.log(x) + z + 0.2 * rng.normal(size=n)
+    X_ext = np.column_stack([x, z])
+    K_ext = np.eye(2)
     data = {"y": y, "x": x, "z": z, "w": w}
-    fit = mb.gamboostLSS({"mu": "y ~ bbs(x) %X% bbs(z) + bbs(log(w))",
+    fit = mb.gamboostLSS({"mu": "y ~ buser(x, X=X_ext, K=K_ext, df=2) + bbs(log(w))",
                           "sigma": "y ~ bols(z)"},
-                         data=data, family=mb.GaussianLSS(),
+                         data=data, env={"X_ext": X_ext, "K_ext": K_ext},
+                         family=mb.GaussianLSS(),
                          control=mb.boost_control(40, 0.1))
     with pytest.raises(NotImplementedError, match="did not keep them"):
         mb.conformal_interval(fit, method="distributional", level=0.9, seed=1)

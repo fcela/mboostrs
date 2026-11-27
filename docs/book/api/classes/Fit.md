@@ -18,7 +18,7 @@ because selection-aware uncertainty is not yet supported.
 `predict` delegates to the model, so a `Fit` can stand in wherever the
 model itself was used.
 
-Source: [`python/mboostrs/_procedure/_fit.py` lines 43-72](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_fit.py#L43-L72)
+Source: [`python/mboostrs/_procedure/_fit.py` lines 43-85](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_fit.py#L43-L85)
 
 ## Members
 
@@ -26,6 +26,7 @@ Source: [`python/mboostrs/_procedure/_fit.py` lines 43-72](https://github.com/fc
 |---|---|---|
 | `predict` | Method | Predict with the wrapped model. See ``model.predict``. |
 | `to_dict` | Method | The wrapping record: the decision trail as a JSON-safe dict. |
+| `reproduce` | Method | Replay this fit's decision trail on ``data`` and verify agreement. |
 
 (fit-predict)=
 ## `Fit.predict`
@@ -38,7 +39,12 @@ Fit.predict(newdata: Any, **kwargs: Any) -> Any
 
 Predict with the wrapped model. See `model.predict`.
 
-Source: [`python/mboostrs/_procedure/_fit.py` lines 59-61](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_fit.py#L59-L61)
+Defaults `extrapolation="clip"` so spline terms are held flat outside
+their training boundary knots on automated fits (linear `bols` terms
+still extrapolate linearly). Pass an explicit `extrapolation=` value
+(e.g. `"warn"`, `"allow"`, `"error"`) to override.
+
+Source: [`python/mboostrs/_procedure/_fit.py` lines 59-68](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_fit.py#L59-L68)
 
 (fit-to_dict)=
 ## `Fit.to_dict`
@@ -51,4 +57,17 @@ Fit.to_dict(*, include_arrays: bool = False) -> dict[str, Any]
 
 The wrapping record: the decision trail as a JSON-safe dict.
 
-Source: [`python/mboostrs/_procedure/_fit.py` lines 63-66](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_fit.py#L63-L66)
+Source: [`python/mboostrs/_procedure/_fit.py` lines 70-73](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_fit.py#L70-L73)
+
+(fit-reproduce)=
+## `Fit.reproduce`
+
+*Method* of `Fit`
+
+```python
+Fit.reproduce(data: Any, **kwargs: Any) -> Any
+```
+
+Replay this fit's decision trail on `data` and verify agreement.
+
+Source: [`python/mboostrs/_procedure/_fit.py` lines 75-79](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_fit.py#L75-L79)

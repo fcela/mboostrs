@@ -246,14 +246,17 @@ def test_budget_setting_sets_the_autospec_fit_limit_and_is_recorded():
     data = _gaussian_data()
     quick = mb.fit(data, "y", seed=0, budget="quick").trail.to_dict()
     standard = mb.fit(data, "y", seed=0, budget="standard").trail.to_dict()
-    assert quick["budget"]["limit"] == 16 and standard["budget"]["limit"] == 64
-    for record in (quick, standard):
+    thorough = mb.fit(data, "y", seed=0, budget="thorough").trail.to_dict()
+    assert quick["budget"]["limit"] == 16
+    assert standard["budget"]["limit"] == 64
+    assert thorough["budget"]["limit"] == 512
+    for record in (quick, standard, thorough):
         spent = record["budget"]["spent"]
         assert spent > 0
         assert record["steps"][1]["fits"] == spent
         stopped = spent >= record["budget"]["limit"]
         assert bool(record["budget"]["degradations"]) == stopped
-    assert standard["budget"]["spent"] > quick["budget"]["spent"]
+    assert thorough["budget"]["spent"] > quick["budget"]["spent"]
 
 
 def test_time_limit_falls_back_to_the_budget_zero_specification(monkeypatch):

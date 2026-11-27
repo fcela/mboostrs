@@ -207,7 +207,11 @@ def term_variables(term: str) -> tuple[str, ...]:
     text = re.sub(r"(\"[^\"]*\"|'[^']*'|%\w+%)", " ", text)
     # These arguments take enum tokens, not column names. A real column
     # called `sse` still counts in `bols(sse)`; only `selection=sse` is skipped.
-    text = re.sub(r"\b(?:selection|constraint)\s*=\s*[A-Za-z_]\w*", " ", text)
+    text = re.sub(
+        r"\b(?:selection|constraint|split_method|knot_placement)\s*=\s*[A-Za-z_]\w*",
+        " ",
+        text,
+    )
     out = []
     for match in _IDENTIFIER.finditer(text):
         name = ticked.get(match.group(0), match.group(0))
@@ -739,7 +743,7 @@ _LEARNER_PARAMETERS: dict[str, tuple[str, ...]] = {
     "bbs": (
         "bins", "knots", "degree", "differences", "df", "lambda",
         "lambda_value", "center", "cyclic", "boundary.knots", "constraint",
-        "deriv", "by",
+        "deriv", "by", "knot_placement",
     ),
     "bols": ("df", "bins", "lambda", "lambda_value", "intercept", "by"),
     "bmono": (
@@ -841,6 +845,8 @@ def _parse_bbs_kwargs(kwargs_str: str) -> dict:
             kwargs[key] = _kwarg_number(val, key, "bbs", int)
         elif key == "by":
             kwargs[key] = val
+        elif key == "knot_placement":
+            kwargs[key] = val.strip().strip("'\"")
         else:
             _raise_unknown_parameter('bbs', key)
     return kwargs

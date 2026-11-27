@@ -26,4 +26,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/formula.py` lines 477-586](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/formula.py#L477-L586)
+Source: [`python/mboostrs/formula.py` lines 481-590](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/formula.py#L481-L590)

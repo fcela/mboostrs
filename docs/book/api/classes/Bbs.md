@@ -19,7 +19,8 @@ Bbs(
     boundary_knots=None,
     constraint=None,
     deriv=0,
-    bins=None
+    bins=None,
+    knot_placement='equidistant'
 )
 ```
 
@@ -60,5 +61,11 @@ Args:
         function itself).
     bins: optional quantile-bin count. At least one bin per distinct value
         reproduces the exact design; smaller values approximate it.
+    knot_placement: how inner knots are placed, `"equidistant"` (default,
+        matching R `mboost::bbs` with a finite-difference penalty) or
+        `"quantile"` (an O-spline with deduplicated empirical-quantile
+        inner knots and an exact integrated second-derivative curvature
+        penalty `integral B''(x) B''(x)^T dx` that preserves raw-scale
+        linearity in the penalty null space).
 
-Source: [`python/mboostrs/learners.py` lines 291-375](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L291-L375)
+Source: [`python/mboostrs/learners.py` lines 291-399](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L291-L399)

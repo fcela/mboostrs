@@ -549,6 +549,12 @@ def refuse_unfilled_missing(model, recipe, data) -> None:
         if isinstance(text, str):
             read.update(unquote_name(t) for t in re.findall(rf"{IDENT}", partition_tilde(text)[2]))
     filled = {source for step in recipe.steps for source in step.sources}
+    for ix in getattr(model, "_interactions", None) or ():
+        for margin in (getattr(ix, "left", None), getattr(ix, "right", None)):
+            if margin is not None:
+                params = getattr(margin, "params", None) or {}
+                if "impute_value" in params or params.get("impute_missing"):
+                    filled.add(margin.column)
     for name in sorted(read - filled):
         if not _has_column(data, name):
             continue

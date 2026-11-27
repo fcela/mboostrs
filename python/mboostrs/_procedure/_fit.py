@@ -57,13 +57,26 @@ class Fit:
         self.stability = stability
 
     def predict(self, newdata: Any, **kwargs: Any) -> Any:
-        """Predict with the wrapped model. See ``model.predict``."""
+        """Predict with the wrapped model. See ``model.predict``.
+
+        Defaults ``extrapolation="clip"`` so spline terms are held flat outside
+        their training boundary knots on automated fits (linear ``bols`` terms
+        still extrapolate linearly). Pass an explicit ``extrapolation=`` value
+        (e.g. ``"warn"``, ``"allow"``, ``"error"``) to override.
+        """
+        kwargs.setdefault("extrapolation", getattr(self.model, "_default_extrapolation", "clip"))
         return self.model.predict(newdata, **kwargs)
 
     def to_dict(self, *, include_arrays: bool = False) -> dict[str, Any]:
         """The wrapping record: the decision trail as a JSON-safe dict."""
         del include_arrays  # accepted for the shared to_dict() convention
         return self.trail.to_dict()
+
+    def reproduce(self, data: Any, **kwargs: Any) -> Any:
+        """Replay this fit's decision trail on ``data`` and verify agreement."""
+        from mboostrs._procedure._reproduce import reproduce as _reproduce
+
+        return _reproduce(self, data, **kwargs)
 
     def __repr__(self) -> str:
         final = self.trail.final
@@ -149,7 +162,92 @@ def _search_subsample(data: Any, response: str, seed: int, max_rows: int) -> Any
             if missing_ext:
                 rows = np.concatenate([rows[: max_rows - len(missing_ext)], np.array(missing_ext, dtype=rows.dtype)])
         rows = np.sort(rows)
+    # Pin domain-boundary rows for numeric predictors whose full-data minimum
+    # crosses 0 (min <= 0 in full data while subsample has min > 0, or min < 0
+    # while subsample has min >= 0), so autospec never chooses log(x)/sqrt(x)
+    # on a subsample that missed a zero or negative training observation.
+    from mboostrs._frame import column_names
+
+    row_set = set(rows.tolist())
+    pin_rows: list[int] = []
+    for col_name in column_names(data):
+        if col_name == response:
+            continue
+        col = read_column(data, col_name)
+        if col.kind != "numeric":
+            continue
+        vals = np.asarray(col.values, dtype=float)
+        fin = np.isfinite(vals)
+        if not fin.any():
+            continue
+        f_idx = np.flatnonzero(fin)
+        min_pos = int(f_idx[int(np.argmin(vals[f_idx]))])
+        full_min = float(vals[min_pos])
+        if full_min <= 0.0 and min_pos not in row_set:
+            sub_vals = vals[rows]
+            sub_fin = sub_vals[np.isfinite(sub_vals)]
+            if sub_fin.size > 0:
+                sub_min = float(np.min(sub_fin))
+                if (full_min <= 0.0 < sub_min) or (full_min < 0.0 <= sub_min):
+                    pin_rows.append(min_pos)
+                    row_set.add(min_pos)
+    if pin_rows:
+        # Keep the pinned rows by replacing an equal number of non-pinned interior rows.
+        pin_set = set(pin_rows)
+        keep_n = max(0, max_rows - len(pin_rows))
+        kept = [r for r in rows.tolist() if r not in pin_set][:keep_n]
+        rows = np.sort(np.asarray(kept + pin_rows, dtype=rows.dtype))
     return take_rows(data, rows)
+
+
+def _sanitize_formula_domains(formula: Any, data: Any) -> Any:
+    """Downgrade any log(col)/sqrt(col) whose full-data domain violates positivity."""
+    import re
+    import numpy as np
+    from mboostrs._frame import read_column
+    from mboostrs._names import unquote_name
+
+    cache: dict[str, float | None] = {}
+
+    def _col_min(name: str) -> float | None:
+        if name not in cache:
+            try:
+                vals = np.asarray(read_column(data, name).values, dtype=float)
+                fin = vals[np.isfinite(vals)]
+                cache[name] = float(np.min(fin)) if fin.size else None
+            except Exception:
+                cache[name] = None
+        return cache[name]
+
+    pattern = re.compile(r"\b(log|sqrt)\(\s*([^()]+?)\s*\)")
+
+    def _fix_one(expr: str) -> str:
+        if "log(" not in expr and "sqrt(" not in expr:
+            return expr
+
+        def _repl(match: re.Match[str]) -> str:
+            kind, raw_col = match.group(1), match.group(2).strip()
+            col = unquote_name(raw_col)
+            lo = _col_min(col)
+            if lo is None:
+                return match.group(0)
+            if kind == "log":
+                if lo > 0.0:
+                    return match.group(0)
+                if lo >= 0.0:
+                    return f"sqrt({raw_col})"
+                return raw_col
+            if lo >= 0.0:
+                return match.group(0)
+            return raw_col
+
+        return pattern.sub(_repl, expr)
+
+    if isinstance(formula, str):
+        return _fix_one(formula)
+    if isinstance(formula, dict):
+        return {k: _fix_one(v) for k, v in formula.items()}
+    return formula
 
 
 def _active_terms_for_gam(model: Any, formula: str, response: str, spec: Any) -> str:
@@ -190,15 +288,16 @@ def _active_terms_for_gam(model: Any, formula: str, response: str, spec: Any) ->
     for term in terms:
         vs = frozenset(term_variables(term))
         varset_counts[vs] = varset_counts.get(vs, 0) + 1
-    kept = []
+    # Compute per-term risk shares (both overall and among non-tree additive
+    # terms, so a genuine weak main effect like x2 on S2 is not pruned solely
+    # because a dominant interaction/tree absorbed >90% of total risk drop).
+    term_shares: list[tuple[str, frozenset[str], bool, float]] = []
+    additive_drop = 0.0
     for term in terms:
         tvars = frozenset(term_variables(term))
-        if tvars & declared:
-            kept.append(term)
-            continue
         is_tree = term.lstrip().startswith("btree(")
         disambiguate = varset_counts.get(tvars, 0) > 1
-        share = 0.0
+        drop = 0.0
         for key, red in reductions.items():
             vstr = str(var_names.get(key, key))
             clean_vstr = vstr.removesuffix(" (btree)").strip()
@@ -210,8 +309,25 @@ def _active_terms_for_gam(model: Any, formula: str, response: str, spec: Any) ->
                 continue
             if disambiguate and ("(btree)" in str(key)) != is_tree:
                 continue
-            share += max(0.0, float(red)) / total_drop
+            drop += max(0.0, float(red))
+        if not is_tree:
+            additive_drop += drop
+        term_shares.append((term, tvars, is_tree, drop))
+
+    kept = []
+    for term, tvars, is_tree, drop in term_shares:
+        if tvars & declared:
+            kept.append(term)
+            continue
+        share = drop / total_drop
         if share >= _ACTIVE_TERM_SHARE:
+            kept.append(term)
+        elif (
+            not is_tree
+            and additive_drop > 0.0
+            and share >= 0.003
+            and (drop / additive_drop) >= 0.03
+        ):
             kept.append(term)
     return f"{lhs} ~ " + " + ".join(kept) if kept else null_formula
 
@@ -373,11 +489,21 @@ def fit(
     search_kwargs = dict(kwargs)
     search_kwargs.setdefault("interactions", "adopt")
     search_kwargs.setdefault("residual_tree", "auto")
-    if budget != "thorough":
+    default_search = "exhaustive" if budget == "thorough" else "fast"
+    search_kwargs.setdefault("search", default_search)
+    if search_kwargs.get("search") == "exhaustive" and budget != "thorough":
         search_kwargs.setdefault("lss_trees", False)
+    else:
+        search_kwargs.setdefault("lss_trees", "auto")
     search_data = data
     subsampled_for_search = False
-    if folds is None and groups is None and time is None and _row_count(data) > _SEARCH_MAX_ROWS:
+    if (
+        search_kwargs.get("search") == "exhaustive"
+        and folds is None
+        and groups is None
+        and time is None
+        and _row_count(data) > _SEARCH_MAX_ROWS
+    ):
         search_data = _search_subsample(data, response, seed, _SEARCH_MAX_ROWS)
         subsampled_for_search = True
         # Skip the 25-fit step-length grid sweep on large subsampled tables;
@@ -386,12 +512,20 @@ def fit(
     spec, stopped = _timed_search(search_data, response, limit, seconds, family=family,
                                   seed=seed, folds=folds, groups=groups,
                                   na_action=effective_na, **search_kwargs)
+    sanitized = _sanitize_formula_domains(spec.formula, data)
+    if sanitized != spec.formula:
+        from dataclasses import replace as _dc_replace
+        spec = _dc_replace(spec, formula=sanitized, learners=None)
     model = spec.fit(data)
     # A group code the training rows never saw is predicted as the average
     # group rather than refused: a model fitted automatically meets new codes
     # (a new store, a new source video) as routinely as new values. A caller
     # who wants the refusal passes `unseen_levels="error"` to `predict`.
     model._default_unseen_levels = UNSEEN_LEVELS
+    # Hold spline terms flat at their training boundary knots by default on
+    # automated fits (linear `bols` terms still extrapolate linearly), so a
+    # single extreme out-of-range predictor value cannot blow up predictions.
+    model._default_extrapolation = "clip"
 
     trail = DecisionTrail()
     trail.start(data, response, seed, folds=folds)
@@ -402,9 +536,12 @@ def fit(
     )
     trail.steps.append(inputs_step(spec))
     # Stages 1-12 currently record through autospec's evidence.
+    radar_ev = (getattr(spec, "evidence", None) or {}).get("fast_radar") or {}
+    fast_subsampled = bool(radar_ev.get("search_subsampled"))
+    sub_n = int(radar_ev.get("search_rows") or _SEARCH_MAX_ROWS) if fast_subsampled else _SEARCH_MAX_ROWS
     search_note = (
-        f" (specification searched on {_SEARCH_MAX_ROWS:,}-row subsample; final fit on all {_row_count(data):,} rows)"
-        if subsampled_for_search else ""
+        f" (specification searched on {sub_n:,}-row subsample; final fit on all {_row_count(data):,} rows)"
+        if (subsampled_for_search or fast_subsampled) else ""
     )
     trail.add_step(
         "1-12", "autospec_delegate",

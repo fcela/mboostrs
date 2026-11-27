@@ -1316,7 +1316,13 @@ fn parse_learner_blueprint_list(
                     let boundary =
                         optional_spec_value::<(f64, f64)>(spec, "boundary_knots")?;
                     let deriv = optional_spec_value::<usize>(spec, "deriv")?.unwrap_or(0);
-                    if let Some(bins) = optional_spec_value::<usize>(spec, "bins")? {
+                    let knot_placement = optional_spec_value::<String>(spec, "knot_placement")?
+                        .unwrap_or_else(|| "equidistant".to_string());
+                    if knot_placement == "quantile" {
+                        LearnerBlueprint::bbs_ospline(
+                            x, name, knots, degree, df, lambda, center, by, boundary, deriv,
+                        )
+                    } else if let Some(bins) = optional_spec_value::<usize>(spec, "bins")? {
                         LearnerBlueprint::bbs_binned(
                             x, name, knots, degree, differences, df, lambda, center, by,
                             cyclic, boundary, deriv, bins,
@@ -9004,6 +9010,11 @@ impl LearnerStore {
                 let coefficient = coef[0];
                 for i in 0..n {
                     eta[i] += self.nu * bin_values[bin_index[i] as usize] * coefficient;
+                }
+            }
+            PreparedLearner::DiagBrandom { group_idx, .. } => {
+                for i in 0..n {
+                    eta[i] += self.nu * coef[group_idx[i] as usize];
                 }
             }
             PreparedLearner::BinnedBlockBols {

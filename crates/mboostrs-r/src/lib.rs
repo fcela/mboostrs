@@ -161,7 +161,7 @@ fn family_response_scale(params: &HashMap<String, f64>) -> mboostrs_core::contro
     use mboostrs_core::control::ResponseScale;
     match params.get("response_scale").copied() {
         None => ResponseScale::Raw,
-        Some(v) if v == 0.0 => ResponseScale::Auto,
+        Some(0.0) => ResponseScale::Auto,
         Some(v) if v.is_finite() && v > 0.0 => ResponseScale::Fixed(v),
         Some(_) => ResponseScale::Raw,
     }

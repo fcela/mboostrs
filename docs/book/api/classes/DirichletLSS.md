@@ -14,7 +14,7 @@ parameters `alpha_k = exp(eta_k)` (log links). The response is a `K`-column
 composition specified as `cbind(y1, ..., yK) ~ ...` (each row sums to 1).
 Matches R `gamboostLSS::DirichletLSS(K)`. Requires `0 < y < 1`.
 
-Source: [`python/mboostrs/gamlss.py` lines 2742-2788](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2742-L2788)
+Source: [`python/mboostrs/gamlss.py` lines 2746-2792](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2746-L2792)
 
 ## Members
 
@@ -42,7 +42,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `IndexError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2760-2763](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2760-L2763)
+Source: [`python/mboostrs/gamlss.py` lines 2764-2767](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2764-L2767)
 
 (dirichletlss-pdf)=
 ## `DirichletLSS.pdf`
@@ -55,7 +55,7 @@ DirichletLSS.pdf(y, params) -> ndarray
 
 Dirichlet density for a K-column compositional response.
 
-Source: [`python/mboostrs/gamlss.py` lines 2765-2776](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2765-L2776)
+Source: [`python/mboostrs/gamlss.py` lines 2769-2780](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2769-L2780)
 
 (dirichletlss-simulate)=
 ## `DirichletLSS.simulate`
@@ -74,7 +74,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2778-2784](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2778-L2784)
+Source: [`python/mboostrs/gamlss.py` lines 2782-2788](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2782-L2788)
 
 (dirichletlss-deviance_increment)=
 ## `DirichletLSS.deviance_increment`
@@ -87,4 +87,4 @@ DirichletLSS.deviance_increment(y, params) -> ndarray
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 2786-2788](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2786-L2788)
+Source: [`python/mboostrs/gamlss.py` lines 2790-2792](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2790-L2792)

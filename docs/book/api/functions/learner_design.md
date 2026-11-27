@@ -24,4 +24,4 @@ LearnerDesign
     `design` and `penalty` can be passed to `buser`; `transform`
     constructs the conformable design for new rows.
 
-Source: [`python/mboostrs/interactions.py` lines 886-904](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/interactions.py#L886-L904)
+Source: [`python/mboostrs/interactions.py` lines 927-945](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/interactions.py#L927-L945)
