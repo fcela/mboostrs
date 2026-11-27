@@ -34,7 +34,7 @@ IVResult(
 
 A cross-fitted instrumental-variable estimate, its interval and its first-stage diagnostics.
 
-Source: [`python/mboostrs/causal.py` lines 5832-5937](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L5832-L5937)
+Source: [`python/mboostrs/causal.py` lines 6141-6246](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L6141-L6246)
 
 ## Members
 
@@ -55,7 +55,7 @@ IVResult.to_dict(*, include_arrays=False)
 
 A JSON-safe record; the per-row residuals and influence values only on request.
 
-Source: [`python/mboostrs/causal.py` lines 5876-5884](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L5876-L5884)
+Source: [`python/mboostrs/causal.py` lines 6185-6193](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L6185-L6193)
 
 (ivresult-to_frame)=
 ## `IVResult.to_frame`
@@ -68,7 +68,7 @@ IVResult.to_frame(output='auto')
 
 One row per observation: its fold, its three residuals and its influence value.
 
-Source: [`python/mboostrs/causal.py` lines 5886-5898](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L5886-L5898)
+Source: [`python/mboostrs/causal.py` lines 6195-6207](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L6195-L6207)
 
 (ivresult-describe)=
 ## `IVResult.describe`
@@ -81,4 +81,4 @@ IVResult.describe() -> str
 
 The estimand, the estimate with its interval, the first stage and the assumptions.
 
-Source: [`python/mboostrs/causal.py` lines 5900-5937](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L5900-L5937)
+Source: [`python/mboostrs/causal.py` lines 6209-6246](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L6209-L6246)

@@ -60,4 +60,4 @@ appear in the data. For an unordered sample the result is meaningless
 rather than merely uninformative, so only apply it when the rows have a
 sequence.
 
-Source: [`python/mboostrs/diagnostics.py` lines 978-1060](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/diagnostics.py#L978-L1060)
+Source: [`python/mboostrs/diagnostics.py` lines 1000-1082](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/diagnostics.py#L1000-L1082)

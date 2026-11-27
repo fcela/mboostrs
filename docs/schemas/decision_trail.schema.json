@@ -27,7 +27,20 @@
         "mboostrs": {"type": "string"},
         "git_sha": {"type": ["string", "null"]},
         "seed": {"type": "integer"},
-        "blas_threads": {"type": ["integer", "null"]}
+        "blas_threads": {"type": ["integer", "null"]},
+        "environment": {
+          "type": "object",
+          "properties": {
+            "python": {"type": "string"},
+            "platform": {"type": "string"},
+            "rust": {"type": ["object", "null"]},
+            "packages": {
+              "type": "object",
+              "additionalProperties": {"type": ["string", "null"]}
+            }
+          },
+          "additionalProperties": false
+        }
       },
       "additionalProperties": false
     },
@@ -41,6 +54,11 @@
         "columns": {
           "type": "object",
           "description": "Column name to the kind the procedure typed it as (numeric, categorical, group, ...).",
+          "additionalProperties": {"type": "string"}
+        },
+        "sha256": {"type": "string"},
+        "schema": {
+          "type": "object",
           "additionalProperties": {"type": "string"}
         }
       },

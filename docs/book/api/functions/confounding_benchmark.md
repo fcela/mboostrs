@@ -55,4 +55,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `TypeError`
 - `ValueError`
 
-Source: [`python/mboostrs/causal.py` lines 5620-5742](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L5620-L5742)
+Source: [`python/mboostrs/causal.py` lines 5929-6051](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L5929-L6051)

@@ -31,4 +31,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `TypeError`
 - `ValueError`
 
-Source: [`python/mboostrs/diagnostics.py` lines 648-703](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/diagnostics.py#L648-L703)
+Source: [`python/mboostrs/diagnostics.py` lines 670-725](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/diagnostics.py#L670-L725)

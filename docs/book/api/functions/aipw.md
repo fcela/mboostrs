@@ -335,4 +335,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `TypeError`
 - `ValueError`
 
-Source: [`python/mboostrs/causal.py` lines 1889-2856](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L1889-L2856)
+Source: [`python/mboostrs/causal.py` lines 1926-2917](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L1926-L2917)

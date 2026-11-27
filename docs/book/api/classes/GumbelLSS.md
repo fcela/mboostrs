@@ -19,7 +19,7 @@ for *minima*, and its `RG` is the right-skewed form usually meant by
 `mu = 0.5, sigma = 2`, the risk is 9.042800226406863, matching
 `-sum(dRG(..., log = TRUE))`; `dGU` gives 9.161943.
 
-Source: [`python/mboostrs/gamlss.py` lines 2184-2235](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2184-L2235)
+Source: [`python/mboostrs/gamlss.py` lines 2187-2238](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2187-L2238)
 
 ## Members
 
@@ -48,7 +48,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `IndexError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2200-2206](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2200-L2206)
+Source: [`python/mboostrs/gamlss.py` lines 2203-2209](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2203-L2209)
 
 (gumbellss-mean)=
 ## `GumbelLSS.mean`
@@ -61,7 +61,7 @@ GumbelLSS.mean(params) -> ndarray
 
 Conditional response mean, `mu + EulerGamma * sigma`.
 
-Source: [`python/mboostrs/gamlss.py` lines 2208-2210](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2208-L2210)
+Source: [`python/mboostrs/gamlss.py` lines 2211-2213](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2211-L2213)
 
 (gumbellss-cdf)=
 ## `GumbelLSS.cdf`
@@ -81,7 +81,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2212-2220](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2212-L2220)
+Source: [`python/mboostrs/gamlss.py` lines 2215-2223](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2215-L2223)
 
 (gumbellss-quantile)=
 ## `GumbelLSS.quantile`
@@ -94,7 +94,7 @@ GumbelLSS.quantile(p, params) -> ndarray
 
 Gumbel (maxima) quantile, `mu - sigma * log(-log(p))`.
 
-Source: [`python/mboostrs/gamlss.py` lines 2222-2224](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2222-L2224)
+Source: [`python/mboostrs/gamlss.py` lines 2225-2227](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2225-L2227)
 
 (gumbellss-pdf)=
 ## `GumbelLSS.pdf`
@@ -114,4 +114,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2226-2235](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2226-L2235)
+Source: [`python/mboostrs/gamlss.py` lines 2229-2238](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2229-L2238)

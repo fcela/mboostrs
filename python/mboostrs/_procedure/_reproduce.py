@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -21,6 +21,7 @@ import numpy as np
 from mboostrs._procedure._fit import Fit, fit
 from mboostrs._procedure._report import report as _render_report
 from mboostrs._procedure._trail import DecisionTrail
+from mboostrs._provenance import fingerprint, provenance
 
 __all__ = ["ReproductionResult", "reproduce"]
 
@@ -85,6 +86,9 @@ class ReproductionResult:
     prediction_sha256: str
     original_trail: dict[str, Any]
     reproduced_trail: dict[str, Any]
+    data_verified: bool | None = None
+    environment_matches: bool | None = None
+    environment_differences: dict[str, Any] = field(default_factory=dict)
 
     @property
     def model(self) -> Any:
@@ -102,6 +106,9 @@ class ReproductionResult:
             "matched": self.matched,
             "differences": list(self.differences),
             "prediction_sha256": self.prediction_sha256,
+            "data_verified": self.data_verified,
+            "environment_matches": self.environment_matches,
+            "environment_differences": dict(self.environment_differences),
             "original_final": dict(self.original_trail.get("final", {})),
             "reproduced_final": dict(self.reproduced_trail.get("final", {})),
             "reproduced_trail": self.reproduced_trail,
@@ -113,6 +120,60 @@ class ReproductionResult:
             f"ReproductionResult(status={status!r}, "
             f"sha256={self.prediction_sha256[:12]!r}, fit={self.fit!r})"
         )
+
+
+def _check_data_lock(
+    recorded: dict[str, Any], data: Any
+) -> tuple[bool | None, list[str]]:
+    """Verify supplied ``data`` against recorded ``data.schema`` and ``data.sha256``."""
+    data_block = recorded.get("data", {})
+    recorded_sha = data_block.get("sha256")
+    recorded_schema = data_block.get("schema")
+    if recorded_sha is None and recorded_schema is None:
+        return None, []
+    fp_now = fingerprint(data)
+    schema_now = {col["name"]: col["dtype"] for col in fp_now["columns"]}
+    diffs: list[str] = []
+    if recorded_schema is not None and recorded_schema != schema_now:
+        diffs.append("data.schema")
+    if recorded_sha is not None and recorded_sha != fp_now["sha256"]:
+        diffs.append("data.sha256")
+    if recorded_sha is None:
+        return (False if diffs else None), diffs
+    return (len(diffs) == 0), diffs
+
+
+def _check_environment(
+    recorded: dict[str, Any], data: Any, seed: int
+) -> tuple[bool | None, dict[str, Any]]:
+    """Compare recorded ``provenance.environment`` against current runtime."""
+    recorded_env = recorded.get("provenance", {}).get("environment")
+    if not isinstance(recorded_env, dict):
+        return None, {}
+    prov_now = provenance(data, seed=seed)
+    current_env = {
+        "python": prov_now["python_version"],
+        "platform": prov_now["platform"],
+        "packages": dict(prov_now["packages"]),
+    }
+    env_diffs: dict[str, Any] = {}
+    for key in ("python", "platform"):
+        if key in recorded_env and recorded_env[key] != current_env[key]:
+            env_diffs[key] = {
+                "recorded": recorded_env[key],
+                "current": current_env[key],
+            }
+    if isinstance(recorded_env.get("packages"), dict):
+        rec_pkgs = recorded_env["packages"]
+        cur_pkgs = current_env["packages"]
+        pkg_diffs = {
+            pkg: {"recorded": rec_pkgs.get(pkg), "current": cur_pkgs.get(pkg)}
+            for pkg in sorted(set(rec_pkgs) | set(cur_pkgs))
+            if rec_pkgs.get(pkg) != cur_pkgs.get(pkg)
+        }
+        if pkg_diffs:
+            env_diffs["packages"] = pkg_diffs
+    return (len(env_diffs) == 0), env_diffs
 
 
 def reproduce(
@@ -160,7 +221,9 @@ def reproduce(
     if isinstance(rendered, dict):
         rendered = json.dumps(rendered, indent=2, sort_keys=True)
     digest = _prediction_digest(reproduced_fit.model, data)
-    diffs = _compare_trails(recorded, reproduced_dict) if verify else ()
+    data_verified, data_diffs = _check_data_lock(recorded, data)
+    env_matches, env_diffs = _check_environment(recorded, data, seed)
+    diffs = (*_compare_trails(recorded, reproduced_dict), *data_diffs) if verify else ()
     return ReproductionResult(
         fit=reproduced_fit,
         report=rendered,
@@ -169,4 +232,7 @@ def reproduce(
         prediction_sha256=digest,
         original_trail=recorded,
         reproduced_trail=reproduced_dict,
+        data_verified=data_verified,
+        environment_matches=env_matches,
+        environment_differences=env_diffs,
     )

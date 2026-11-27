@@ -40,4 +40,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/terms.py` lines 374-412](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L374-L412)
+Source: [`python/mboostrs/terms.py` lines 434-472](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L434-L472)

@@ -6,7 +6,13 @@ Defined in `mboostrs.rearrange`; exported as `mboostrs.rearrange_quantiles`.
 *Function*
 
 ```python
-rearrange_quantiles(models, newdata=None, *, levels=None, output='auto')
+rearrange_quantiles(
+    models,
+    newdata=None,
+    levels=None,
+    output='auto',
+    unseen_levels='error'
+)
 ```
 
 Predict several quantile or expectile fits and sort each row across levels.
@@ -65,4 +71,4 @@ the predictions differ in length or contain NaN.
 >>> r.crossing_share, r.predictions                        # doctest: +SKIP
 ```
 
-Source: [`python/mboostrs/rearrange.py` lines 157-297](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/rearrange.py#L157-L297)
+Source: [`python/mboostrs/rearrange.py` lines 157-303](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/rearrange.py#L157-L303)

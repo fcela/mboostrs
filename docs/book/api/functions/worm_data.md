@@ -23,4 +23,4 @@ Return worm-plot deviation data.
 Bins observations by `xvar` into `n_intervals` groups, then
 computes expected vs theoretical normal quantiles within each bin.
 
-Source: [`python/mboostrs/diagnostics.py` lines 392-432](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/diagnostics.py#L392-L432)
+Source: [`python/mboostrs/diagnostics.py` lines 414-454](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/diagnostics.py#L414-L454)

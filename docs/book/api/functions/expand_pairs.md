@@ -25,4 +25,4 @@ quadratic in the number of columns — a 21-column frame has 210 pairs, each
 of which the selection step scores at every iteration — so pass the output
 of `screen_interactions` rather than the default on anything wide.
 
-Source: [`python/mboostrs/terms.py` lines 732-749](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L732-L749)
+Source: [`python/mboostrs/terms.py` lines 792-809](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L792-L809)

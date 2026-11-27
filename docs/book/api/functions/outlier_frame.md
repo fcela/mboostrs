@@ -14,4 +14,4 @@ Observations ranked by absolute residual, largest first.
 Records are ranked before the requested frame is built, so row order is
 consistent across pandas and Polars output.
 
-Source: [`python/mboostrs/diagnostics.py` lines 801-811](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/diagnostics.py#L801-L811)
+Source: [`python/mboostrs/diagnostics.py` lines 823-833](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/diagnostics.py#L823-L833)

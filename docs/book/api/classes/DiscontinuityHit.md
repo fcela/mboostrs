@@ -63,7 +63,7 @@ significant gap at all -- neither is typed as a jump even though the
 global `type_z` may be large. `n_above` counts the rows on the far
 side of the boundary.
 
-Source: [`python/mboostrs/terms.py` lines 919-1007](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L919-L1007)
+Source: [`python/mboostrs/terms.py` lines 979-1067](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L979-L1067)
 
 ## Members
 
@@ -87,7 +87,7 @@ Under the null of no jump anywhere this fires on about 4.6% of
 screens; a screen that does not flag is a first-class result that
 finds no screened evidence for a jump in these columns.
 
-Source: [`python/mboostrs/terms.py` lines 976-983](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L976-L983)
+Source: [`python/mboostrs/terms.py` lines 1036-1043](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L1036-L1043)
 
 (discontinuityhit-typed_jump)=
 ## `DiscontinuityHit.typed_jump`
@@ -109,4 +109,4 @@ at all. Note the resolution limit: a smooth transition narrower
 than the small scale's span is indistinguishable from a jump (see
 the `type_ratio` discussion in `screen_discontinuities`).
 
-Source: [`python/mboostrs/terms.py` lines 985-1000](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L985-L1000)
+Source: [`python/mboostrs/terms.py` lines 1045-1060](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L1045-L1060)

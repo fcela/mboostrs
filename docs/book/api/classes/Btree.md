@@ -13,7 +13,10 @@ Btree(
     maxdepth=1,
     by=None,
     selection='sse',
-    split_method='exact'
+    split_method='exact',
+    lambda_leaf: float = 0.0,
+    colsample: float = 1.0,
+    colsample_seed: int = 0
 )
 ```
 
@@ -97,7 +100,7 @@ the test. Note the test itself is not neutral -- under `"ctree"` a
 factor with many levels has an edge over a number; `"ctree_pvalue"`
 compares p-values instead and removes it.
 
-Source: [`python/mboostrs/learners.py` lines 624-730](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L624-L730)
+Source: [`python/mboostrs/learners.py` lines 622-776](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L622-L776)
 
 ## Members
 
@@ -116,4 +119,4 @@ Btree.name
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/learners.py` lines 728-730](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L728-L730)
+Source: [`python/mboostrs/learners.py` lines 736-738](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L736-L738)

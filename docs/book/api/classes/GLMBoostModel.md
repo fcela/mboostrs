@@ -31,7 +31,7 @@ GLMBoostModel(
 
 Fitted gradient boosting model.
 
-Source: [`python/mboostrs/glmboost.py` lines 97-1728](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L97-L1728)
+Source: [`python/mboostrs/glmboost.py` lines 97-1747](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L97-L1747)
 
 ## Members
 
@@ -46,6 +46,7 @@ Source: [`python/mboostrs/glmboost.py` lines 97-1728](https://github.com/fcela/m
 | `concurvity` | Method | Concurvity of the fitted terms, as mgcv's ``concurvity`` measures |
 | `variable_names` | Method | Names of all variables used in the model (response + predictors). |
 | `base_learner_names` | Method | Names of all base-learners (including intercept if present). |
+| `digest` | Method | Return a concise, deterministic summary card of this GLMBoostModel. |
 | `model_matrix` | Method | Return the design matrix (n × p) for the specified predictors. |
 | `nuisance` | Method | The family's nuisance parameter at the model's step count, as R's |
 | `predict` | Method | Predicted values, optionally decomposed by learner. |
@@ -240,6 +241,19 @@ Names of all base-learners (including intercept if present).
 
 Source: [`python/mboostrs/glmboost.py` lines 297-299](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L297-L299)
 
+(glmboostmodel-digest)=
+## `GLMBoostModel.digest`
+
+*Method* of `GLMBoostModel`
+
+```python
+GLMBoostModel.digest() -> str
+```
+
+Return a concise, deterministic summary card of this GLMBoostModel.
+
+Source: [`python/mboostrs/glmboost.py` lines 301-318](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L301-L318)
+
 (glmboostmodel-model_matrix)=
 ## `GLMBoostModel.model_matrix`
 
@@ -261,7 +275,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/glmboost.py` lines 303-320](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L303-L320)
+Source: [`python/mboostrs/glmboost.py` lines 322-339](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L322-L339)
 
 (glmboostmodel-nuisance)=
 ## `GLMBoostModel.nuisance`
@@ -280,7 +294,7 @@ A family with no nuisance parameter stores an empty path entry. That
 is `None`, not a zero-length array: `gamboost` already returned
 `None`, and `nuisance()[0]` on an empty array raises `IndexError`.
 
-Source: [`python/mboostrs/glmboost.py` lines 324-342](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L324-L342)
+Source: [`python/mboostrs/glmboost.py` lines 343-361](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L343-L361)
 
 (glmboostmodel-predict)=
 ## `GLMBoostModel.predict`
@@ -329,7 +343,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/glmboost.py` lines 345-468](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L345-L468)
+Source: [`python/mboostrs/glmboost.py` lines 364-487](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L364-L487)
 
 (glmboostmodel-extrapolation_report)=
 ## `GLMBoostModel.extrapolation_report`
@@ -358,7 +372,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/glmboost.py` lines 470-501](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L470-L501)
+Source: [`python/mboostrs/glmboost.py` lines 489-520](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L489-L520)
 
 (glmboostmodel-predict_path)=
 ## `GLMBoostModel.predict_path`
@@ -397,7 +411,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/glmboost.py` lines 503-555](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L503-L555)
+Source: [`python/mboostrs/glmboost.py` lines 522-574](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L522-L574)
 
 (glmboostmodel-prediction_contributions)=
 ## `GLMBoostModel.prediction_contributions`
@@ -429,7 +443,7 @@ ndarray
     For `aggregate="cumsum"`: 2-D array of shape (mstop, n).
     For `aggregate="none"`: 2-D array of shape (mstop, n).
 
-Source: [`python/mboostrs/glmboost.py` lines 683-707](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L683-L707)
+Source: [`python/mboostrs/glmboost.py` lines 702-726](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L702-L726)
 
 (glmboostmodel-cvrisk)=
 ## `GLMBoostModel.cvrisk`
@@ -491,7 +505,7 @@ CvRiskResult
 the model keeps no data to refit from.
 - `RuntimeError`: If the Rust engine is not available.
 
-Source: [`python/mboostrs/glmboost.py` lines 782-919](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L782-L919)
+Source: [`python/mboostrs/glmboost.py` lines 801-938](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L801-L938)
 
 (glmboostmodel-coef)=
 ## `GLMBoostModel.coef`
@@ -516,7 +530,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `TypeError`
 - `ValueError`
 
-Source: [`python/mboostrs/glmboost.py` lines 921-989](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L921-L989)
+Source: [`python/mboostrs/glmboost.py` lines 940-1008](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L940-L1008)
 
 (glmboostmodel-residuals)=
 ## `GLMBoostModel.residuals`
@@ -545,7 +559,7 @@ Residuals of the named kind, or a refusal saying why there are none.
 - `:func:`mboostrs.quantile_residuals` for a kind that is comparable`
 - `across families because it is uniform under a correct fit.`
 
-Source: [`python/mboostrs/glmboost.py` lines 998-1022](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L998-L1022)
+Source: [`python/mboostrs/glmboost.py` lines 1017-1041](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1017-L1041)
 
 (glmboostmodel-residual_kinds)=
 ## `GLMBoostModel.residual_kinds`
@@ -558,7 +572,7 @@ GLMBoostModel.residual_kinds()
 
 The residual kinds defined for this model's family.
 
-Source: [`python/mboostrs/glmboost.py` lines 1024-1028](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1024-L1028)
+Source: [`python/mboostrs/glmboost.py` lines 1043-1047](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1043-L1047)
 
 (glmboostmodel-extract)=
 ## `GLMBoostModel.extract`
@@ -587,7 +601,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/glmboost.py` lines 1030-1093](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1030-L1093)
+Source: [`python/mboostrs/glmboost.py` lines 1049-1112](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1049-L1112)
 
 (glmboostmodel-varimp)=
 ## `GLMBoostModel.varimp`
@@ -612,7 +626,7 @@ When several learners share a name, their reductions and selection
 frequencies are summed under that name; the value is the predictor's
 total, not one learner's.
 
-Source: [`python/mboostrs/glmboost.py` lines 1095-1121](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1095-L1121)
+Source: [`python/mboostrs/glmboost.py` lines 1114-1140](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1114-L1140)
 
 (glmboostmodel-coef_path)=
 ## `GLMBoostModel.coef_path`
@@ -635,7 +649,7 @@ dict
     Mapping predictor name -> 1D array of cumulative coefficients
     over iterations 0..mstop.
 
-Source: [`python/mboostrs/glmboost.py` lines 1123-1155](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1123-L1155)
+Source: [`python/mboostrs/glmboost.py` lines 1142-1174](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1142-L1174)
 
 (glmboostmodel-plot_coef_path)=
 ## `GLMBoostModel.plot_coef_path`
@@ -656,7 +670,7 @@ Plot coefficient paths.
 
 alt.Chart
 
-Source: [`python/mboostrs/glmboost.py` lines 1157-1171](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1157-L1171)
+Source: [`python/mboostrs/glmboost.py` lines 1176-1190](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1176-L1190)
 
 (glmboostmodel-plot)=
 ## `GLMBoostModel.plot`
@@ -677,7 +691,7 @@ Plot coefficient paths.
 
 alt.Chart
 
-Source: [`python/mboostrs/glmboost.py` lines 1173-1185](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1173-L1185)
+Source: [`python/mboostrs/glmboost.py` lines 1192-1204](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1192-L1204)
 
 (glmboostmodel-confint)=
 ## `GLMBoostModel.confint`
@@ -727,7 +741,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `ValueError`
 - `NotImplementedError`
 
-Source: [`python/mboostrs/glmboost.py` lines 1191-1345](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1191-L1345)
+Source: [`python/mboostrs/glmboost.py` lines 1210-1364](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1210-L1364)
 
 (glmboostmodel-aic)=
 ## `GLMBoostModel.aic`
@@ -758,7 +772,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `NotImplementedError`
 - `ValueError`
 
-Source: [`python/mboostrs/glmboost.py` lines 1423-1504](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1423-L1504)
+Source: [`python/mboostrs/glmboost.py` lines 1442-1523](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1442-L1523)
 
 (glmboostmodel-hatvalues)=
 ## `GLMBoostModel.hatvalues`
@@ -784,7 +798,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `ValueError`
 - `NotImplementedError`
 
-Source: [`python/mboostrs/glmboost.py` lines 1506-1538](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1506-L1538)
+Source: [`python/mboostrs/glmboost.py` lines 1525-1557](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1525-L1557)
 
 (glmboostmodel-loglik)=
 ## `GLMBoostModel.logLik`
@@ -819,7 +833,7 @@ family defines one. The Gaussian value includes the normalizing
 terms implied by its fitted variance. Use `negative_risk` for
 the negated empirical risk convention used by `mboost`.
 
-Source: [`python/mboostrs/glmboost.py` lines 1540-1567](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1540-L1567)
+Source: [`python/mboostrs/glmboost.py` lines 1559-1586](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1559-L1586)
 
 (glmboostmodel-negative_risk)=
 ## `GLMBoostModel.negative_risk`
@@ -844,7 +858,7 @@ them are not likelihood ratios. Use it to compare two fits of the *same
 family* on the *same data*, and `logLik` when a log-likelihood is
 what the calculation needs.
 
-Source: [`python/mboostrs/glmboost.py` lines 1569-1584](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1569-L1584)
+Source: [`python/mboostrs/glmboost.py` lines 1588-1603](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1588-L1603)
 
 (glmboostmodel-likelihood_contract)=
 ## `GLMBoostModel.likelihood_contract`
@@ -862,7 +876,7 @@ fields say whether the loss comes from a probability model, whether
 `-risk` is the complete log-likelihood, what measure that likelihood is
 taken with respect to, and which residual kinds are defined.
 
-Source: [`python/mboostrs/glmboost.py` lines 1586-1596](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1586-L1596)
+Source: [`python/mboostrs/glmboost.py` lines 1605-1615](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1605-L1615)
 
 (glmboostmodel-to_dict)=
 ## `GLMBoostModel.to_dict`
@@ -878,7 +892,7 @@ the library build and environment, and the fingerprint of the
 training data. `include_arrays` is accepted for the uniform export
 signature; the summary holds no per-row arrays.
 
-Source: [`python/mboostrs/glmboost.py` lines 1598-1605](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1598-L1605)
+Source: [`python/mboostrs/glmboost.py` lines 1617-1624](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1617-L1624)
 
 (glmboostmodel-summary)=
 ## `GLMBoostModel.summary`
@@ -903,7 +917,7 @@ fixed-width text and renders as a table in a notebook. Use
   cross-validation prefers. A model keeps no record of how it was
   tuned, so this is not inferred.
 
-Source: [`python/mboostrs/glmboost.py` lines 1607-1665](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1607-L1665)
+Source: [`python/mboostrs/glmboost.py` lines 1626-1684](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1626-L1684)
 
 (glmboostmodel-update)=
 ## `GLMBoostModel.update`
@@ -937,7 +951,7 @@ replaced and every other argument as the original fit had it.
 GLMBoostModel
     Updated model.
 
-Source: [`python/mboostrs/glmboost.py` lines 1667-1701](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1667-L1701)
+Source: [`python/mboostrs/glmboost.py` lines 1686-1720](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1686-L1720)
 
 (glmboostmodel-continue_to)=
 ## `GLMBoostModel.continue_to`
@@ -962,4 +976,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/glmboost.py` lines 1703-1724](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1703-L1724)
+Source: [`python/mboostrs/glmboost.py` lines 1722-1743](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/glmboost.py#L1722-L1743)

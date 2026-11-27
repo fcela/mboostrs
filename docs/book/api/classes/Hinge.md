@@ -68,4 +68,4 @@ Example:
 True
 ```
 
-Source: [`python/mboostrs/learners.py` lines 1198-1269](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L1198-L1269)
+Source: [`python/mboostrs/learners.py` lines 1244-1315](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L1244-L1315)

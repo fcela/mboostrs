@@ -68,4 +68,4 @@ Args:
         penalty `integral B''(x) B''(x)^T dx` that preserves raw-scale
         linearity in the penalty null space).
 
-Source: [`python/mboostrs/learners.py` lines 291-399](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L291-L399)
+Source: [`python/mboostrs/learners.py` lines 291-397](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L291-L397)

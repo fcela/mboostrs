@@ -13,7 +13,7 @@ Binomial location family: `mu` (logit link, probability).
 Matches R `gamboostLSS::BinomialLSS()` (wrapping gamlss.dist `BI`).
 Requires `y` in `[0, 1]` (proportions).
 
-Source: [`python/mboostrs/gamlss.py` lines 1812-1888](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1812-L1888)
+Source: [`python/mboostrs/gamlss.py` lines 1815-1891](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1815-L1891)
 
 ## Members
 
@@ -39,7 +39,7 @@ BinomialLSS.response(k: int, eta: numpy.ndarray) -> ndarray
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 1823-1825](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1823-L1825)
+Source: [`python/mboostrs/gamlss.py` lines 1826-1828](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1826-L1828)
 
 (binomiallss-mean)=
 ## `BinomialLSS.mean`
@@ -52,7 +52,7 @@ BinomialLSS.mean(params) -> ndarray
 
 Single-trial response mean, the success probability `mu`.
 
-Source: [`python/mboostrs/gamlss.py` lines 1827-1829](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1827-L1829)
+Source: [`python/mboostrs/gamlss.py` lines 1830-1832](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1830-L1832)
 
 (binomiallss-pmf)=
 ## `BinomialLSS.pmf`
@@ -71,7 +71,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1831-1847](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1831-L1847)
+Source: [`python/mboostrs/gamlss.py` lines 1834-1850](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1834-L1850)
 
 (binomiallss-cdf)=
 ## `BinomialLSS.cdf`
@@ -90,7 +90,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1849-1855](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1849-L1855)
+Source: [`python/mboostrs/gamlss.py` lines 1852-1858](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1852-L1858)
 
 (binomiallss-quantile)=
 ## `BinomialLSS.quantile`
@@ -103,7 +103,7 @@ BinomialLSS.quantile(p, params, size=1) -> ndarray
 
 Binomial quantile: smallest `k` with `CDF(k) >= p`.
 
-Source: [`python/mboostrs/gamlss.py` lines 1857-1859](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1857-L1859)
+Source: [`python/mboostrs/gamlss.py` lines 1860-1862](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1860-L1862)
 
 (binomiallss-simulate)=
 ## `BinomialLSS.simulate`
@@ -122,7 +122,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1861-1868](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1861-L1868)
+Source: [`python/mboostrs/gamlss.py` lines 1864-1871](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1864-L1871)
 
 (binomiallss-deviance_increment)=
 ## `BinomialLSS.deviance_increment`
@@ -135,7 +135,7 @@ BinomialLSS.deviance_increment(y, params, size=1) -> ndarray
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 1870-1872](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1870-L1872)
+Source: [`python/mboostrs/gamlss.py` lines 1873-1875](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1873-L1875)
 
 (binomiallss-pdf)=
 ## `BinomialLSS.pdf`
@@ -158,4 +158,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1874-1888](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1874-L1888)
+Source: [`python/mboostrs/gamlss.py` lines 1877-1891](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1877-L1891)

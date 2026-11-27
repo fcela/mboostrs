@@ -13,13 +13,16 @@ ReproductionResult(
     differences: tuple[str, ...],
     prediction_sha256: str,
     original_trail: dict[str, typing.Any],
-    reproduced_trail: dict[str, typing.Any]
+    reproduced_trail: dict[str, typing.Any],
+    data_verified: bool | None = None,
+    environment_matches: bool | None = None,
+    environment_differences: dict[str, typing.Any] = <factory>
 ) -> None
 ```
 
 Outcome of replaying a saved `DecisionTrail` on a dataset.
 
-Source: [`python/mboostrs/_procedure/_reproduce.py` lines 77-115](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_reproduce.py#L77-L115)
+Source: [`python/mboostrs/_procedure/_reproduce.py` lines 78-122](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_reproduce.py#L78-L122)
 
 ## Members
 
@@ -41,7 +44,7 @@ ReproductionResult.model  # -> Any
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/_procedure/_reproduce.py` lines 89-91](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_reproduce.py#L89-L91)
+Source: [`python/mboostrs/_procedure/_reproduce.py` lines 93-95](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_reproduce.py#L93-L95)
 
 (reproductionresult-trail)=
 ## `ReproductionResult.trail`
@@ -54,7 +57,7 @@ ReproductionResult.trail  # -> DecisionTrail
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/_procedure/_reproduce.py` lines 93-95](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_reproduce.py#L93-L95)
+Source: [`python/mboostrs/_procedure/_reproduce.py` lines 97-99](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_reproduce.py#L97-L99)
 
 (reproductionresult-predict)=
 ## `ReproductionResult.predict`
@@ -67,7 +70,7 @@ ReproductionResult.predict(newdata: Any, **kwargs: Any) -> Any
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/_procedure/_reproduce.py` lines 97-98](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_reproduce.py#L97-L98)
+Source: [`python/mboostrs/_procedure/_reproduce.py` lines 101-102](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_reproduce.py#L101-L102)
 
 (reproductionresult-to_dict)=
 ## `ReproductionResult.to_dict`
@@ -80,4 +83,4 @@ ReproductionResult.to_dict() -> dict[str, Any]
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/_procedure/_reproduce.py` lines 100-108](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_reproduce.py#L100-L108)
+Source: [`python/mboostrs/_procedure/_reproduce.py` lines 104-115](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_reproduce.py#L104-L115)

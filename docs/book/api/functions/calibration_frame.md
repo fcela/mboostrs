@@ -35,4 +35,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `ValueError`
 - `NotImplementedError`
 
-Source: [`python/mboostrs/diagnostics.py` lines 710-794](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/diagnostics.py#L710-L794)
+Source: [`python/mboostrs/diagnostics.py` lines 732-816](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/diagnostics.py#L732-L816)

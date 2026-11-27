@@ -16,7 +16,7 @@ has no family of this name; its `NBinomialLSS` (`NBinomialLSS`
 here) is the same distribution with `sigma` naming the size
 `1/sigma`. Requires non-negative integer counts.
 
-Source: [`python/mboostrs/gamlss.py` lines 1891-1977](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1891-L1977)
+Source: [`python/mboostrs/gamlss.py` lines 1894-1980](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1894-L1980)
 
 ## Members
 
@@ -48,7 +48,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `IndexError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1907-1911](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1907-L1911)
+Source: [`python/mboostrs/gamlss.py` lines 1910-1914](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1910-L1914)
 
 (negativebinomiallss-mean)=
 ## `NegativeBinomialLSS.mean`
@@ -61,7 +61,7 @@ NegativeBinomialLSS.mean(params) -> ndarray
 
 Conditional count mean `mu`.
 
-Source: [`python/mboostrs/gamlss.py` lines 1913-1915](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1913-L1915)
+Source: [`python/mboostrs/gamlss.py` lines 1916-1918](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1916-L1918)
 
 (negativebinomiallss-pmf)=
 ## `NegativeBinomialLSS.pmf`
@@ -79,7 +79,7 @@ parameterization. It used the size `sigma` instead of `1/sigma`,
 the NBinomialLSS parameterization, so mass, CDF, quantiles and draws
 described a different distribution from the one the fit estimates.
 
-Source: [`python/mboostrs/gamlss.py` lines 1917-1925](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1917-L1925)
+Source: [`python/mboostrs/gamlss.py` lines 1920-1928](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1920-L1928)
 
 (negativebinomiallss-cdf)=
 ## `NegativeBinomialLSS.cdf`
@@ -98,7 +98,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1927-1934](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1927-L1934)
+Source: [`python/mboostrs/gamlss.py` lines 1930-1937](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1930-L1937)
 
 (negativebinomiallss-quantile)=
 ## `NegativeBinomialLSS.quantile`
@@ -111,7 +111,7 @@ NegativeBinomialLSS.quantile(p, params) -> ndarray
 
 NBI quantile for probabilities `p` (size `1/sigma`).
 
-Source: [`python/mboostrs/gamlss.py` lines 1936-1938](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1936-L1938)
+Source: [`python/mboostrs/gamlss.py` lines 1939-1941](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1939-L1941)
 
 (negativebinomiallss-simulate)=
 ## `NegativeBinomialLSS.simulate`
@@ -130,7 +130,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1940-1948](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1940-L1948)
+Source: [`python/mboostrs/gamlss.py` lines 1943-1951](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1943-L1951)
 
 (negativebinomiallss-deviance_increment)=
 ## `NegativeBinomialLSS.deviance_increment`
@@ -143,7 +143,7 @@ NegativeBinomialLSS.deviance_increment(y, params) -> ndarray
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 1950-1952](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1950-L1952)
+Source: [`python/mboostrs/gamlss.py` lines 1953-1955](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1953-L1955)
 
 (negativebinomiallss-pdf)=
 ## `NegativeBinomialLSS.pdf`
@@ -168,4 +168,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1954-1977](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1954-L1977)
+Source: [`python/mboostrs/gamlss.py` lines 1957-1980](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1957-L1980)

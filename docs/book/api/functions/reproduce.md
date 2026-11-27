@@ -28,4 +28,4 @@ Reproduce a recorded `fit` and its discovery report in one call.
 - `**overrides`: Optional keyword arguments forwarded to `fit` (overriding values
   read from the trail).
 
-Source: [`python/mboostrs/_procedure/_reproduce.py` lines 118-172](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_reproduce.py#L118-L172)
+Source: [`python/mboostrs/_procedure/_reproduce.py` lines 179-238](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_reproduce.py#L179-L238)

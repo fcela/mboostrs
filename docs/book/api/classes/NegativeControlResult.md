@@ -16,7 +16,7 @@ NegativeControlResult(
 
 A prespecified negative-control estimate and its expected null value.
 
-Source: [`python/mboostrs/causal.py` lines 883-952](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L883-L952)
+Source: [`python/mboostrs/causal.py` lines 920-989](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L920-L989)
 
 ## Members
 
@@ -37,7 +37,7 @@ NegativeControlResult.interval_excludes_expected  # -> bool | None
 
 Whether the reported interval excludes the prespecified null.
 
-Source: [`python/mboostrs/causal.py` lines 902-908](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L902-L908)
+Source: [`python/mboostrs/causal.py` lines 939-945](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L939-L945)
 
 (negativecontrolresult-to_dict)=
 ## `NegativeControlResult.to_dict`
@@ -54,7 +54,7 @@ The nested effect record keeps its scalar estimate, standard error and
 interval; its per-row contribution arrays are gated by
 `include_arrays`, as in `AIPWResult.to_dict`.
 
-Source: [`python/mboostrs/causal.py` lines 910-922](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L910-L922)
+Source: [`python/mboostrs/causal.py` lines 947-959](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L947-L959)
 
 (negativecontrolresult-describe)=
 ## `NegativeControlResult.describe`
@@ -67,4 +67,4 @@ NegativeControlResult.describe() -> str
 
 Interpret the falsification result without treating a null as proof.
 
-Source: [`python/mboostrs/causal.py` lines 931-952](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L931-L952)
+Source: [`python/mboostrs/causal.py` lines 968-989](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L968-L989)

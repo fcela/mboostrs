@@ -19,7 +19,9 @@ conformal_interval(
     extrapolation='warn',
     score='auto',
     count_reference='zero_inflated_poisson',
-    unseen_levels=None
+    unseen_levels=None,
+    decay=0.99,
+    time=None
 )
 ```
 
@@ -218,4 +220,4 @@ calibration and reported as `n_set_aside`.
 True
 ```
 
-Source: [`python/mboostrs/conformal.py` lines 1423-1738](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/conformal.py#L1423-L1738)
+Source: [`python/mboostrs/conformal.py` lines 1916-2268](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/conformal.py#L1916-L2268)

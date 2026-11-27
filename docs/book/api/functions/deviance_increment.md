@@ -22,4 +22,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `NotImplementedError`
 
-Source: [`python/mboostrs/diagnostics.py` lines 132-160](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/diagnostics.py#L132-L160)
+Source: [`python/mboostrs/diagnostics.py` lines 154-182](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/diagnostics.py#L154-L182)

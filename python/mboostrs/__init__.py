@@ -329,12 +329,20 @@ def digest(obj) -> str:
         )
     return fn()
 
+from mboostrs import (  # noqa: F401
+    causal,
+    conformal,
+    diagnostics,
+    families,
+    learners,
+    quantile,
+)
+
 # Importing public names from these submodules causes Python to bind the
 # submodule itself on the package.  They are implementation modules, not part
 # of the flat public API (unlike ``datasets`` and ``plot`` above).
 for _submodule in (
-    "build", "causal", "compare", "conformal", "cvrisk", "diagnostics",
-    "explain", "serialize",
+    "build", "compare", "cvrisk", "explain", "serialize",
 ):
     globals().pop(_submodule, None)
 del _submodule

@@ -35,4 +35,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/diagnostics.py` lines 218-274](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/diagnostics.py#L218-L274)
+Source: [`python/mboostrs/diagnostics.py` lines 240-296](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/diagnostics.py#L240-L296)

@@ -364,3 +364,101 @@ def test_inputs_stage_records_a_declared_family_and_groups():
     assert step["rule"] == "declared"
     assert step["evidence"]["groups"] == ["g"]
     assert json.loads(fitted.trail.to_json())["steps"][0] == step
+
+
+# -- D10 Anchor 5: data/schema/environment lock & C12-Py submodules --------
+
+
+def test_trail_records_deterministic_data_lock_and_environment():
+    data = _gaussian_data()
+    fitted1 = mb.fit(data, "y", seed=5)
+    fitted2 = mb.fit(data, "y", seed=5)
+    record = fitted1.trail.to_dict()
+    assert record == fitted2.trail.to_dict()
+    assert fitted1.trail.validate()
+
+    assert isinstance(record["data"]["sha256"], str)
+    assert len(record["data"]["sha256"]) == 64
+    assert record["data"]["schema"] == {
+        "y": "float64",
+        "x1": "float64",
+        "x2": "float64",
+        "x3": "float64",
+    }
+
+    env = record["provenance"]["environment"]
+    assert isinstance(env["python"], str)
+    assert isinstance(env["platform"], str)
+    assert isinstance(env["rust"], dict)
+    assert "numpy" in env["packages"]
+    assert "polars" in env["packages"]
+
+
+def test_reproduce_verifies_data_lock_and_detects_cell_and_schema_mutation():
+    data = _gaussian_data()
+    fitted = mb.fit(data, "y", seed=7)
+
+    ok = mb.reproduce(fitted.trail.to_dict(), data)
+    assert ok.matched is True
+    assert ok.data_verified is True
+    assert ok.environment_matches is True
+    assert ok.environment_differences == {}
+    ok_dict = ok.to_dict()
+    assert ok_dict["data_verified"] is True
+    assert ok_dict["environment_matches"] is True
+    assert ok_dict["environment_differences"] == {}
+
+    # Mutate a single cell -> data.sha256 mismatch causes matched=False, data_verified=False
+    mutated = {k: v.copy() for k, v in data.items()}
+    mutated["x1"][0] += 1e-3
+    bad_cell = mb.reproduce(fitted.trail.to_dict(), mutated)
+    assert bad_cell.matched is False
+    assert bad_cell.data_verified is False
+    assert "data.sha256" in bad_cell.differences
+
+    # Mutate dtype -> data.schema and data.sha256 mismatch
+    retyped = dict(data)
+    retyped["x3"] = retyped["x3"].astype(np.float32)
+    bad_schema = mb.reproduce(fitted.trail.to_dict(), retyped)
+    assert bad_schema.matched is False
+    assert bad_schema.data_verified is False
+    assert "data.schema" in bad_schema.differences
+    assert "data.sha256" in bad_schema.differences
+
+    # Cross-machine environment drift does not fail bitwise matched reproduction
+    drifted_trail = fitted.trail.to_dict()
+    drifted_trail["provenance"]["environment"]["platform"] = "OtherOS-1.0"
+    drifted_trail["provenance"]["environment"]["packages"]["numpy"] = "0.0.0"
+    drifted = mb.reproduce(drifted_trail, data)
+    assert drifted.matched is True
+    assert drifted.data_verified is True
+    assert drifted.environment_matches is False
+    assert "platform" in drifted.environment_differences
+    assert "numpy" in drifted.environment_differences["packages"]
+
+    # Legacy trail without sha256/environment reports None for lock fields
+    legacy_trail = fitted.trail.to_dict()
+    legacy_trail["data"].pop("sha256")
+    legacy_trail["data"].pop("schema")
+    legacy_trail["provenance"].pop("environment")
+    legacy = mb.reproduce(legacy_trail, data)
+    assert legacy.matched is True
+    assert legacy.data_verified is None
+    assert legacy.environment_matches is None
+    assert legacy.environment_differences == {}
+
+
+def test_c12_submodule_namespaces_and_diagnostics_all():
+    import types
+
+    for mod_name in ("families", "learners", "causal", "conformal", "diagnostics", "quantile"):
+        submod = getattr(mb, mod_name)
+        assert isinstance(submod, types.ModuleType), f"mb.{mod_name} is not a module"
+        assert mod_name not in mb.__all__
+
+    assert hasattr(mb.diagnostics, "__all__")
+    for name in mb.diagnostics.__all__:
+        assert hasattr(mb.diagnostics, name)
+    assert hasattr(mb.causal, "aipw")
+    assert hasattr(mb.conformal, "conformal_interval")
+    assert hasattr(mb.quantile, "quantile_boost")

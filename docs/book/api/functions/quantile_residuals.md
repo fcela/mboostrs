@@ -21,4 +21,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `NotImplementedError`
 
-Source: [`python/mboostrs/diagnostics.py` lines 187-211](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/diagnostics.py#L187-L211)
+Source: [`python/mboostrs/diagnostics.py` lines 209-233](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/diagnostics.py#L209-L233)
