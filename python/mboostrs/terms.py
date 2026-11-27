@@ -153,8 +153,10 @@ def count_like(column, levels):
         return low, high
     if _is_explicit_code_name(column.name):
         return None
-    all_fragments = (*COUNT_NAME_FRAGMENTS, *MEASUREMENT_NAME_FRAGMENTS)
-    if any(fragment in lowered for fragment in all_fragments):
+    if (
+        any(fragment in lowered for fragment in MEASUREMENT_NAME_FRAGMENTS)
+        and levels >= 0.25 * (high - low + 1.0)
+    ):
         return low, high
     if (
         levels > CATEGORICAL_MAX_LEVELS
@@ -311,12 +313,14 @@ def label_evidence(name, values, response):
                   and order_p >= LABEL_ORDER_ALPHA)
     low_x, high_x = float(np.min(x)), float(np.max(x))
     lowered_name = str(name).lower()
-    all_fragments = (*COUNT_NAME_FRAGMENTS, *MEASUREMENT_NAME_FRAGMENTS)
     if (
         low_x >= 2.0
         and not _is_explicit_code_name(str(name))
         and (
-            any(fragment in lowered_name for fragment in all_fragments)
+            (
+                any(fragment in lowered_name for fragment in MEASUREMENT_NAME_FRAGMENTS)
+                and k >= 0.25 * (high_x - low_x + 1.0)
+            )
             or (high_x - low_x <= 200.0 and k >= 0.50 * (high_x - low_x + 1.0))
         )
     ):

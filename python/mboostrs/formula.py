@@ -750,7 +750,10 @@ _LEARNER_PARAMETERS: dict[str, tuple[str, ...]] = {
         "knots", "degree", "differences", "niter", "df", "lambda2",
         "constraint", "type", "by",
     ),
-    "btree": ("minbucket", "minsplit", "maxdepth", "by", "selection", "split_method"),
+    "btree": (
+        "minbucket", "minsplit", "maxdepth", "by", "selection",
+        "split_method", "lambda_leaf", "colsample", "colsample_seed",
+    ),
     "hinge": ("df", "n_candidates", "lambda", "lambda_value", "center", "by"),
     "bmrf": ("K", "df", "lambda", "lambda_value", "center", "by"),
     "brandom": ("df", "bins", "lambda", "lambda_value", "center", "by"),
@@ -920,8 +923,10 @@ def _parse_btree_kwargs(kwargs_str: str) -> dict:
     for m in _kwarg_matches(kwargs_str, "btree"):
         key = m.group(1).strip()
         val = _kwarg_value(m)
-        if key in ("minbucket", "minsplit", "maxdepth"):
+        if key in ("minbucket", "minsplit", "maxdepth", "colsample_seed"):
             kwargs[key] = _kwarg_number(val, key, "btree", int)
+        elif key in ("lambda_leaf", "colsample"):
+            kwargs[key] = _kwarg_number(val, key, "btree")
         elif key == "by":
             kwargs[key] = val
         elif key in ("selection", "split_method"):

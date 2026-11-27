@@ -815,7 +815,19 @@ def fit(
     if sanitized != spec.formula:
         from dataclasses import replace as _dc_replace
         spec = _dc_replace(spec, formula=sanitized, learners=None)
-    model = spec.fit(data)
+    from mboostrs.families import Gaussian as _Gaussian
+
+    fit_extra: dict[str, Any] = {}
+    if not isinstance(spec.family, _Gaussian) and _row_count(data) >= 1500:
+        fit_extra["bins"] = 256
+    if fit_extra:
+        import warnings
+
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", message="bins= was not applied")
+            model = spec.fit(data, **fit_extra)
+    else:
+        model = spec.fit(data)
     # A group code the training rows never saw is predicted as the average
     # group rather than refused: a model fitted automatically meets new codes
     # (a new store, a new source video) as routinely as new values. A caller

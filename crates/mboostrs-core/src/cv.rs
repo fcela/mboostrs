@@ -1111,9 +1111,36 @@ impl<F: Family + Clone> FoldRun<F> {
                         *fi += nu * coef[group_idx[oi] as usize];
                     }
                 }
-                PreparedLearner::BinnedScalarBols { .. }
-                | PreparedLearner::BinnedBlockBols { .. }
-                | PreparedLearner::BlockBols { .. }
+                PreparedLearner::BinnedScalarBols {
+                    bin_index,
+                    bin_values,
+                    ..
+                } => {
+                    let c = nu * coef[0];
+                    for (fi, &oi) in self.f_oob.iter_mut().zip(self.oob_idx.iter()) {
+                        *fi += c * bin_values[bin_index[oi] as usize];
+                    }
+                }
+                PreparedLearner::BinnedBlockBols {
+                    bin_index,
+                    basis,
+                    ..
+                } => {
+                    let k = basis.nrows();
+                    let p = basis.ncols();
+                    let mut bin_pred = vec![0.0f64; k];
+                    for bin in 0..k {
+                        let mut s = 0.0;
+                        for col in 0..p {
+                            s += basis[[bin, col]] * coef[col];
+                        }
+                        bin_pred[bin] = s;
+                    }
+                    for (fi, &oi) in self.f_oob.iter_mut().zip(self.oob_idx.iter()) {
+                        *fi += nu * bin_pred[bin_index[oi] as usize];
+                    }
+                }
+                PreparedLearner::BlockBols { .. }
                 | PreparedLearner::BspatialStreamed { .. }
                 | PreparedLearner::BmonoBbs { .. } => {
                     if let Some(ref design_oob) = self.compacted[idx] {
@@ -1223,6 +1250,85 @@ impl<F: Family + Clone> FoldRun<F> {
             self.push_risk(m + 1);
         }
     }
+}
+
+/// Score a fitted in-bag [`BoostingPath`] on held-out observations across
+/// iterations `0..=mstop`, returning normalized OOB risk at every step.
+pub fn score_fold_oob_path<F: Family + Clone>(
+    learners: Vec<PreparedLearner>,
+    fit_family: F,
+    eval_family: F,
+    y: ArrayView1<f64>,
+    weights: ArrayView1<f64>,
+    fold_w: Array1<f64>,
+    path: crate::path::BoostingPath,
+    nu: f64,
+    fold_idx: usize,
+) -> Result<Vec<f64>, MboostrsError> {
+    let n = eval_family.n_from_y(y);
+    let mut oob_weights = weights.to_owned();
+    for i in 0..n {
+        if fold_w[i] > 0.0 {
+            oob_weights[i] = 0.0;
+        }
+    }
+    let oob_sum: f64 = oob_weights.sum() / eval_family.flat_response_span() as f64;
+    let oob_idx: Vec<usize> = (0..n).filter(|&i| oob_weights[i] > 0.0).collect();
+    let n_oob = oob_idx.len();
+    if n_oob == 0 {
+        return Err(MboostrsError::Control(format!(
+            "cross-validation fold {fold_idx} has no positive-weight OOB observations"
+        )));
+    }
+    let y_oob = if y.len() == n {
+        y.select(ndarray::Axis(0), &oob_idx)
+    } else {
+        let times = y.slice(ndarray::s![..n]);
+        let events = y.slice(ndarray::s![n..]);
+        ndarray::concatenate![
+            ndarray::Axis(0),
+            times.select(ndarray::Axis(0), &oob_idx),
+            events.select(ndarray::Axis(0), &oob_idx),
+        ]
+    };
+    let w_oob = oob_weights.select(ndarray::Axis(0), &oob_idx);
+    let start = Array1::from_elem(n_oob, path.offset);
+    let compacted: Vec<Option<Array2<f64>>> = learners
+        .iter()
+        .map(|l| match l {
+            PreparedLearner::BlockBols { design, .. }
+            | PreparedLearner::BmonoBbs { design, .. }
+            | PreparedLearner::Btree { design, .. } => {
+                Some(design.select(ndarray::Axis(0), &oob_idx))
+            }
+            PreparedLearner::FactoredBlockBols { x_l, .. } => {
+                Some(x_l.select(ndarray::Axis(0), &oob_idx))
+            }
+            PreparedLearner::BspatialStreamed { .. } => {
+                Some(l.design_matrix()?.select(ndarray::Axis(0), &oob_idx))
+            }
+            _ => None,
+        })
+        .collect();
+    let n_steps = path.selected.len();
+    let mut run = FoldRun {
+        learners,
+        fit_family,
+        eval_family,
+        fold_w,
+        path,
+        oob_idx,
+        y_oob,
+        w_oob,
+        oob_sum,
+        compacted,
+        f_oob: start,
+        nu,
+        risks: Vec::with_capacity(n_steps + 1),
+    };
+    run.push_risk(0);
+    run.walk(0, n_steps);
+    Ok(run.risks)
 }
 
 /// Monomorphised cvrisk: takes a concrete family type so the per-fold

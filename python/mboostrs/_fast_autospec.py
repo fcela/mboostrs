@@ -122,13 +122,15 @@ def _plateau_probe_mstop(
     max_mstop: int = 2400,
     min_rel_gain: float = 0.012,
     max_extensions: int = 2,
+    bins: int | None = None,
+    step: str | None = None,
 ) -> MstopEvidence | None:
     """Tune `mstop` in 1 sweep (`start` steps), doubling up to `max_extensions` times if steep."""
     largest = max(100, int(start))
     row = probe_mstop(
         data, response, formula, family,
         folds=folds, largest=largest, nu=nu, env=env,
-        extend=0, fold_scheme=fold_scheme,
+        extend=0, fold_scheme=fold_scheme, bins=bins, step=step,
     )
     if row is None:
         return None
@@ -149,7 +151,7 @@ def _plateau_probe_mstop(
         row2 = probe_mstop(
             data, response, formula, family,
             folds=folds, largest=largest, nu=nu, env=env,
-            extend=0, fold_scheme=fold_scheme,
+            extend=0, fold_scheme=fold_scheme, bins=bins, step=step,
         )
         if row2 is None:
             break
@@ -241,6 +243,7 @@ def _single_pass_lss_eval(
     from mboostrs.gamlss import cvrisk_gamboostLSS, diagonal_grid, gamboostLSS
 
     largest = max(50, int(mstop))
+    lss_bins = 256 if int(folds.shape[0]) >= 600 else None
     try:
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
@@ -249,6 +252,7 @@ def _single_pass_lss_eval(
                 control=boost_control(largest, nu),
                 folds=(fold_scheme if fold_scheme is not None else np.asarray(folds, dtype=float)),
                 grid=diagonal_grid(largest, len(lss_family.param_names), length_out=15),
+                bins=lss_bins,
                 env=env,
             )
     except BaseException:
@@ -280,6 +284,7 @@ def _single_pass_lss_eval(
                     fit = gamboostLSS(
                         lss_formula, data=data, families=lss_family,
                         control=boost_control(m_max, nu),
+                        bins=lss_bins,
                         weights=w, env=env,
                     )
                     mu = np.asarray(fit.predict(parameter="mu", type="response"), dtype=np.float64)
@@ -470,11 +475,12 @@ def run_fast_autospec(
     # ── Stage 1: Single additive CV sweep ────────────────────────────────────
     spent = 0
     stage1_max = 4800
+    probe_bins = 256 if (not is_gaussian and search_n >= 600) else None
     base_row = _plateau_probe_mstop(
         search_data, response, additive_formula, family,
         folds=search_folds, nu=nu, env=env or None,
         fold_scheme=search_scheme, start=max(int(mstop), 500),
-        max_mstop=stage1_max, max_extensions=3,
+        max_mstop=stage1_max, max_extensions=3, bins=probe_bins,
     )
     if base_row is None:
         return None
@@ -482,6 +488,7 @@ def run_fast_autospec(
     best_formula = additive_formula
     best_row = base_row
     best_nu = float(nu)
+    best_step = step
     base_risk = float(base_row.risk[base_row.chosen])
     base_folds = np.asarray(base_row.fold_scores, dtype=np.float64)
     parts = _partitions(search_folds)
@@ -518,10 +525,16 @@ def run_fast_autospec(
                 split_opt = ", split_method=histogram" if search_n >= 256 else ""
                 tree_depth = 5 if (radar.interaction_gain >= 0.06 and search_n >= 800) else 4
                 minbucket = max(10, min(25, search_n // 60))
+                lambda_leaf = 2.0 if len(active_cols) >= 20 else 1.0
+                colsample_opt = (
+                    f", colsample=0.75, colsample_seed={int(seed)}"
+                    if len(active_cols) >= 16
+                    else ""
+                )
                 cols_str = ", ".join(quote_name(c) for c in active_cols)
                 tree_term = (
                     f"btree({cols_str}, maxdepth={tree_depth}, minbucket={minbucket}, "
-                    f"selection=sse{split_opt})"
+                    f"selection=sse{split_opt}, lambda_leaf={lambda_leaf:g}{colsample_opt})"
                 )
                 challenger_terms.append(tree_term)
                 added_desc.append(tree_term)
@@ -543,10 +556,12 @@ def run_fast_autospec(
         if added_desc:
             cand_formula = f"{resp_q} ~ " + " + ".join(challenger_terms)
             cand_nu = min(float(nu), 0.1) if tree_added else float(nu)
+            cand_step = "line_search" if (is_binary and tree_added) else step
             cand_row = _plateau_probe_mstop(
                 search_data, response, cand_formula, family,
                 folds=search_folds, nu=cand_nu, env=env or None,
                 fold_scheme=search_scheme, start=400, max_mstop=1600,
+                bins=probe_bins, step=cand_step,
             )
             if cand_row is not None:
                 spent += cand_row.fits
@@ -572,11 +587,13 @@ def run_fast_autospec(
                     "adopted": adopted_inter,
                     "candidate_mstop": int(cand_row.chosen),
                     "candidate_nu": cand_nu,
+                    "candidate_step": cand_step,
                 }
                 if adopted_inter:
                     best_formula = cand_formula
                     best_row = cand_row
                     best_nu = cand_nu
+                    best_step = cand_step
                     measured.append("interactions")
 
     # ── Stage 3: Gated Distributional (GaussianLSS) Challenger ───────────────
@@ -735,7 +752,7 @@ def run_fast_autospec(
     if isinstance(chosen_family, GaussianLSS) and "family" in evidence and evidence["family"].lss_mstop:
         rec_control = boost_control(int(max(evidence["family"].lss_mstop)), best_nu, step=step)
     else:
-        rec_control = boost_control(chosen_mstop, best_nu, step=step)
+        rec_control = boost_control(chosen_mstop, best_nu, step=best_step)
 
     return SpecRecommendation(
         formula=chosen_formula,

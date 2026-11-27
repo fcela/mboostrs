@@ -707,6 +707,9 @@ def learner_spec(learner, data, *, bols_form="block", kronecker_n_resp=None):
             spec["categorical"] = [int(v) for v in categorical]
         spec["selection"] = getattr(learner, "selection", "ctree")
         spec["split_method"] = getattr(learner, "split_method", "exact")
+        spec["lambda_leaf"] = float(getattr(learner, "lambda_leaf", 0.0))
+        spec["colsample"] = float(getattr(learner, "colsample", 1.0))
+        spec["colsample_seed"] = int(getattr(learner, "colsample_seed", 0))
     elif isinstance(learner, Bkernel):
         if learner.landmarks is not None:
             spec["kind"] = "bkernel_nystrom"

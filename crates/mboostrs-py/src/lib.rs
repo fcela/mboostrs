@@ -1318,11 +1318,19 @@ fn parse_learner_blueprint_list(
                     let deriv = optional_spec_value::<usize>(spec, "deriv")?.unwrap_or(0);
                     let knot_placement = optional_spec_value::<String>(spec, "knot_placement")?
                         .unwrap_or_else(|| "equidistant".to_string());
+                    let bins = optional_spec_value::<usize>(spec, "bins")?;
                     if knot_placement == "quantile" {
-                        LearnerBlueprint::bbs_ospline(
-                            x, name, knots, degree, df, lambda, center, by, boundary, deriv,
-                        )
-                    } else if let Some(bins) = optional_spec_value::<usize>(spec, "bins")? {
+                        if let Some(bins) = bins.filter(|_| by.is_none() && !cyclic) {
+                            LearnerBlueprint::bbs_ospline_binned(
+                                x, name, knots, degree, df, lambda, center, by, boundary, deriv,
+                                bins,
+                            )
+                        } else {
+                            LearnerBlueprint::bbs_ospline(
+                                x, name, knots, degree, df, lambda, center, by, boundary, deriv,
+                            )
+                        }
+                    } else if let Some(bins) = bins {
                         LearnerBlueprint::bbs_binned(
                             x, name, knots, degree, differences, df, lambda, center, by,
                             cyclic, boundary, deriv, bins,
@@ -1513,6 +1521,11 @@ fn parse_learner_blueprint_list(
                         &optional_spec_value::<String>(spec, "split_method")?
                             .unwrap_or_else(|| "exact".to_string()),
                     )?;
+                    let lambda_leaf =
+                        optional_spec_value::<f64>(spec, "lambda_leaf")?.unwrap_or(0.0);
+                    let colsample = optional_spec_value::<f64>(spec, "colsample")?.unwrap_or(1.0);
+                    let colsample_seed =
+                        optional_spec_value::<u64>(spec, "colsample_seed")?.unwrap_or(0);
                     LearnerBlueprint::btree(
                         design,
                         name,
@@ -1526,6 +1539,8 @@ fn parse_learner_blueprint_list(
                             .with_categorical(categorical)
                             .with_selection(selection)
                             .with_split_method(split_method)
+                            .with_lambda_leaf(lambda_leaf)
+                            .with_colsample(colsample, colsample_seed)
                     })
                 }
                 "bhinge" => LearnerBlueprint::bhinge(
@@ -3529,6 +3544,255 @@ fn run_gamboost_fit(
         execution_report,
         residual,
     ))
+}
+
+#[pyfunction(signature = (specs, y, weights, taus, folds=None, max_mstop=400, nu=0.3, response_scale=Some(0.0)))]
+#[allow(clippy::too_many_arguments)]
+fn cv_and_fit_multi_quantile_specs(
+    py: Python<'_>,
+    specs: &Bound<'_, pyo3::types::PyList>,
+    y: PyReadonlyArray1<'_, f64>,
+    weights: PyReadonlyArray1<'_, f64>,
+    taus: Vec<f64>,
+    folds: Option<PyReadonlyArray2<'_, f64>>,
+    max_mstop: u32,
+    nu: f64,
+    response_scale: Option<f64>,
+) -> PyResult<Vec<PyObject>> {
+    use mboostrs_core::control::ResponseScale;
+    use mboostrs_core::cv::score_fold_oob_path;
+    use rayon::prelude::*;
+
+    if taus.is_empty() {
+        return Err(pyo3::exceptions::PyValueError::new_err(
+            "taus must contain at least one quantile level",
+        ));
+    }
+    for &tau in &taus {
+        QuantReg::try_with_qoffset(tau, tau).map_err(mboostrs_error_to_pyerr)?;
+    }
+    let scale = match response_scale {
+        None => ResponseScale::Raw,
+        Some(v) if v == 0.0 => ResponseScale::Auto,
+        Some(v) if v.is_finite() && v > 0.0 => ResponseScale::Fixed(v),
+        Some(v) => {
+            return Err(pyo3::exceptions::PyValueError::new_err(format!(
+                "response_scale must be positive, 0.0 for 'auto', or None; got {v}"
+            )))
+        }
+    };
+    let ctrl_max = BoostControl::new(max_mstop, nu).map_err(mboostrs_error_to_pyerr)?;
+
+    let y_owned = y.as_array().to_owned();
+    let w_owned = weights.as_array().to_owned();
+    let n = y_owned.len();
+    if n == 0 || w_owned.len() != n {
+        return Err(pyo3::exceptions::PyValueError::new_err(format!(
+            "y (len {n}) and weights (len {}) must be nonempty and equal length",
+            w_owned.len()
+        )));
+    }
+    if y_owned.iter().any(|v| !v.is_finite()) || w_owned.iter().any(|v| !v.is_finite() || *v < 0.0)
+    {
+        return Err(pyo3::exceptions::PyValueError::new_err(
+            "y and weights must be finite with non-negative weights",
+        ));
+    }
+    if w_owned.sum() <= 0.0 {
+        return Err(pyo3::exceptions::PyValueError::new_err(
+            "weights must have positive sum",
+        ));
+    }
+    let folds_owned = match folds {
+        Some(f) => {
+            let arr = f.as_array().to_owned();
+            if arr.nrows() != n || arr.ncols() == 0 {
+                return Err(pyo3::exceptions::PyValueError::new_err(format!(
+                    "folds has shape {:?}, expected ({n}, B) with B >= 1",
+                    arr.dim()
+                )));
+            }
+            if arr.iter().any(|v| !v.is_finite() || *v < 0.0) {
+                return Err(pyo3::exceptions::PyValueError::new_err(
+                    "folds must contain finite non-negative weights",
+                ));
+            }
+            Some(arr)
+        }
+        None => None,
+    };
+
+    let spec_objs: Vec<PyObject> = specs.iter().map(|item| item.unbind()).collect();
+    let blueprints = parse_learner_blueprint_list(py, spec_objs)?;
+
+    struct QuantileFitOut {
+        tau: f64,
+        opt_mstop: usize,
+        cv_risk: Vec<f64>,
+        path: mboostrs_core::path::BoostingPath,
+        learners: Vec<PreparedLearner>,
+        basis_info: Vec<BasisInfo>,
+    }
+
+    let fit_outputs = py
+        .allow_threads(|| -> Result<Vec<QuantileFitOut>, MboostrsError> {
+            let q_count = taus.len();
+            let (opt_mstops, cv_curves): (Vec<usize>, Vec<Vec<f64>>) = match folds_owned {
+                Some(ref folds_mat) => {
+                    let b_count = folds_mat.ncols();
+                    // Prepare learners once per fold (depends only on fold weights, not tau).
+                    let fold_learners: Vec<(ndarray::Array1<f64>, Vec<PreparedLearner>)> = (0
+                        ..b_count)
+                        .into_par_iter()
+                        .map(|b_idx| {
+                            let fold_w = folds_mat.column(b_idx).to_owned();
+                            let learners = blueprints
+                                .iter()
+                                .map(|bp| Ok(bp.prepare(fold_w.view())?.0))
+                                .collect::<Result<Vec<_>, MboostrsError>>()?;
+                            Ok((fold_w, learners))
+                        })
+                        .collect::<Result<Vec<_>, MboostrsError>>()?;
+
+                    let jobs: Vec<(usize, usize)> = (0..q_count)
+                        .flat_map(|q_idx| (0..b_count).map(move |b_idx| (q_idx, b_idx)))
+                        .collect();
+                    let fold_curves: Vec<(usize, Vec<f64>)> = jobs
+                        .into_par_iter()
+                        .map(|(q_idx, b_idx)| {
+                            let tau = taus[q_idx];
+                            let (ref fold_w, ref base_learners) = fold_learners[b_idx];
+                            let mut learners = base_learners.clone();
+                            let mut fit_fam = QuantReg::try_with_qoffset(tau, tau)?
+                                .with_response_scale(scale);
+                            let eval_fam = fit_fam.clone();
+                            let path = try_fit_with(
+                                &mut learners,
+                                y_owned.view(),
+                                fold_w.view(),
+                                &mut fit_fam,
+                                &ctrl_max,
+                                None,
+                                false,
+                            )?;
+                            let risks = score_fold_oob_path(
+                                learners,
+                                fit_fam,
+                                eval_fam,
+                                y_owned.view(),
+                                w_owned.view(),
+                                fold_w.clone(),
+                                path,
+                                nu,
+                                b_idx,
+                            )?;
+                            Ok((q_idx, risks))
+                        })
+                        .collect::<Result<Vec<_>, MboostrsError>>()?;
+
+                    let n_iter = max_mstop as usize + 1;
+                    let mut sum_curves = vec![vec![0.0f64; n_iter]; q_count];
+                    let mut counts = vec![0usize; q_count];
+                    for (q_idx, risks) in fold_curves {
+                        counts[q_idx] += 1;
+                        for (dst, &val) in sum_curves[q_idx].iter_mut().zip(risks.iter()) {
+                            *dst += val;
+                        }
+                    }
+                    let mut opt_mstops = Vec::with_capacity(q_count);
+                    for q_idx in 0..q_count {
+                        let denom = counts[q_idx].max(1) as f64;
+                        for v in &mut sum_curves[q_idx] {
+                            *v /= denom;
+                        }
+                        let mut best_m = 1usize.min(max_mstop as usize);
+                        let mut best_val = f64::INFINITY;
+                        for m in 1..=max_mstop as usize {
+                            let val = sum_curves[q_idx][m];
+                            if val.is_finite() && val < best_val {
+                                best_val = val;
+                                best_m = m;
+                            }
+                        }
+                        opt_mstops.push(best_m);
+                    }
+                    (opt_mstops, sum_curves)
+                }
+                None => (vec![max_mstop as usize; q_count], vec![Vec::new(); q_count]),
+            };
+
+            // Prepare full-data learners once in parallel, then clone per quantile.
+            let full_prepared: Vec<(PreparedLearner, BasisInfo)> = blueprints
+                .into_par_iter()
+                .map(|bp| bp.into_prepared(w_owned.view()))
+                .collect::<Result<Vec<_>, MboostrsError>>()?;
+            let (base_learners, base_basis_info): (Vec<PreparedLearner>, Vec<BasisInfo>) =
+                full_prepared.into_iter().unzip();
+
+            (0..q_count)
+                .into_par_iter()
+                .map(|q_idx| {
+                    let tau = taus[q_idx];
+                    let opt_m = opt_mstops[q_idx];
+                    let ctrl_q = BoostControl::new(opt_m as u32, nu)?;
+                    let mut learners = base_learners.clone();
+                    let mut fam =
+                        QuantReg::try_with_qoffset(tau, tau)?.with_response_scale(scale);
+                    let path = try_fit_with(
+                        &mut learners,
+                        y_owned.view(),
+                        w_owned.view(),
+                        &mut fam,
+                        &ctrl_q,
+                        None,
+                        false,
+                    )?;
+                    Ok(QuantileFitOut {
+                        tau,
+                        opt_mstop: opt_m,
+                        cv_risk: cv_curves[q_idx].clone(),
+                        path,
+                        learners,
+                        basis_info: base_basis_info.clone(),
+                    })
+                })
+                .collect::<Result<Vec<_>, MboostrsError>>()
+        })
+        .map_err(mboostrs_error_to_pyerr)?;
+
+    let mut py_results = Vec::with_capacity(fit_outputs.len());
+    for out in fit_outputs {
+        reject_diverged(&out.path.risk, &out.path.fitted)?;
+        let nuisance_vec_path = out.path.nuisance_rows();
+        let store = Py::new(
+            py,
+            LearnerStore {
+                learners: out.learners,
+                nu,
+                basis_info: out.basis_info,
+            },
+        )?;
+        let execution_report = fit_report_to_py(py, &out.path.report)?;
+        let fit_tuple: GamFitResult = (
+            out.path.offset,
+            out.path.selected,
+            out.path.coefs,
+            out.path.risk,
+            out.path.fitted.into_raw_vec_and_offset().0,
+            out.path.nuisance_vec,
+            nuisance_vec_path,
+            store,
+            execution_report,
+            out.path.residual.into_raw_vec_and_offset().0,
+        );
+        let dict = PyDict::new(py);
+        dict.set_item("tau", out.tau)?;
+        dict.set_item("opt_mstop", out.opt_mstop)?;
+        dict.set_item("cv_risk", out.cv_risk)?;
+        dict.set_item("fit", fit_tuple)?;
+        py_results.push(dict.into_pyobject(py)?.into_any().unbind());
+    }
+    Ok(py_results)
 }
 
 /// Rebuild a `LearnerStore` from learner specifications, without fitting.
@@ -10471,6 +10735,7 @@ fn _rust(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(cvrisk_gamboost_specs, m)?)?;
     m.add_function(wrap_pyfunction!(cvrisk_gamboost_specs_extending, m)?)?;
     m.add_function(wrap_pyfunction!(cvrisk_selected_gamboost_specs, m)?)?;
+    m.add_function(wrap_pyfunction!(cv_and_fit_multi_quantile_specs, m)?)?;
     m.add_function(wrap_pyfunction!(cvrisk_selected_glmboost, m)?)?;
     m.add_function(wrap_pyfunction!(stabsel_d_rc, m)?)?;
     m.add_function(wrap_pyfunction!(stabsel_min_d, m)?)?;

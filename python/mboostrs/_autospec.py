@@ -3665,7 +3665,7 @@ _MSTOP_EXTENSION_CAP = 10_000
 
 
 def probe_mstop(data, response, formula, family, *, folds, largest, nu,
-                env=None, extend=0, fold_scheme=None):
+                env=None, extend=0, fold_scheme=None, bins=None, step=None):
     """Cross-validate one path and read the optimum off the curve.
 
     One fit per fold covers the whole grid: the cross-validated risk is
@@ -3685,12 +3685,17 @@ def probe_mstop(data, response, formula, family, *, folds, largest, nu,
         with warnings.catch_warnings():
             # `MstopEvidence.at_boundary` carries this to the report instead.
             warnings.filterwarnings("ignore", message=_SEARCH_ENDED_FALLING)
+            if bins is not None:
+                warnings.filterwarnings("ignore", message="bins= was not applied")
+            extra = {"bins": bins} if bins is not None else {}
             tuning = tune_mstop(
                 formula, data, family,
                 folds=fold_scheme if fold_scheme is not None
                 else np.asarray(folds, dtype=float),
                 start=largest, nu=nu, extensions=extend,
-                max_mstop=_MSTOP_EXTENSION_CAP, env=env, step=_STEP.get(),
+                max_mstop=_MSTOP_EXTENSION_CAP, env=env,
+                step=(_STEP.get() if step is None else step),
+                **extra,
                 **_offset_kwargs())
     except ValueError:
         return None

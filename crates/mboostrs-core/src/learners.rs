@@ -1190,6 +1190,12 @@ pub enum LearnerBlueprint {
         split_method: SplitMethod,
         /// Optional varying-coefficient multiplier column.
         by: Option<Array1<f64>>,
+        /// L2 leaf shrinkage penalty (`0.0` = unregularized).
+        lambda_leaf: f64,
+        /// Fraction of columns subsampled per fit step (`1.0` = all columns).
+        colsample: f64,
+        /// Deterministic seed for per-step column subsampling.
+        colsample_seed: u64,
         /// New-data replay recipe for this basis.
         basis_info: BasisInfo,
     },
@@ -1780,6 +1786,151 @@ impl LearnerBlueprint {
 
         Ok(Self::Bbs {
             design: into_column_major(design),
+            penalty,
+            name,
+            df,
+            lambda,
+            basis_info,
+        })
+    }
+
+    /// Build a binned quantile-knot O-spline (`bbs(..., knot_placement="quantile", bins=...)`)
+    /// blueprint using empirical-quantile knots from the raw covariate, the exact
+    /// Gauss-Legendre integrated curvature penalty, and quantile binning for fast
+    /// non-Gram fitting and resampling.
+    #[allow(clippy::too_many_arguments)]
+    pub fn bbs_ospline_binned(
+        x: Array1<f64>,
+        name: impl Into<String>,
+        n_knots: usize,
+        degree: usize,
+        df: f64,
+        lambda: Option<f64>,
+        center: bool,
+        by: Option<Array1<f64>>,
+        boundary_knots: Option<(f64, f64)>,
+        deriv: usize,
+        bins: usize,
+    ) -> Result<Self, MboostrsError> {
+        let name = name.into();
+        validate_blueprint_vector(&x, &name, "x")?;
+        if bins == 0 {
+            return Err(MboostrsError::LearnerSetup(
+                name,
+                "bins must be a positive integer".to_string(),
+            ));
+        }
+        if by.is_some() {
+            return Err(MboostrsError::LearnerSetup(
+                name,
+                "binned bbs with by= is not implemented; use the exact learner".to_string(),
+            ));
+        }
+        if n_knots == 0 {
+            return Err(MboostrsError::LearnerSetup(
+                name,
+                "knots must be positive".to_string(),
+            ));
+        }
+        if degree < 2 {
+            return Err(MboostrsError::LearnerSetup(
+                name,
+                format!("quantile O-spline requires degree >= 2, got {degree}"),
+            ));
+        }
+        if let Some(value) = lambda {
+            if !value.is_finite() || value < 0.0 {
+                return Err(MboostrsError::LearnerSetup(
+                    name,
+                    format!("lambda must be finite and non-negative, got {value}"),
+                ));
+            }
+        } else if !df.is_finite() || df <= 0.0 {
+            return Err(MboostrsError::LearnerSetup(
+                name,
+                format!("df must be finite and positive, got {df}"),
+            ));
+        }
+        let boundary_knots = match boundary_knots {
+            Some(bounds) => bounds,
+            None => (
+                x.iter().copied().fold(f64::INFINITY, f64::min),
+                x.iter().copied().fold(f64::NEG_INFINITY, f64::max),
+            ),
+        };
+        if !boundary_knots.0.is_finite()
+            || !boundary_knots.1.is_finite()
+            || boundary_knots.0 >= boundary_knots.1
+        {
+            return Err(MboostrsError::LearnerSetup(
+                name,
+                if x.len() < 2 {
+                    format!(
+                        "a spline basis needs at least 2 samples; got {} sample{}",
+                        x.len(),
+                        if x.len() == 1 { "" } else { "s" }
+                    )
+                } else {
+                    "boundary_knots must contain two finite increasing values".to_string()
+                },
+            ));
+        }
+
+        let x_slice = x.as_slice().expect("x contiguous");
+        let knots = bspline_quantile_knots(x_slice, boundary_knots, n_knots, degree);
+        let penalty_raw = ospline_curvature_penalty(&knots, boundary_knots, degree);
+        let binning = quantile_bin_column(x.view(), bins)
+            .map_err(|error| MboostrsError::LearnerSetup(name.clone(), error.to_string()))?;
+        let rep_slice = binning.values.as_ref();
+        let raw_basis = if deriv > 0 {
+            bspline_basis_with_deriv(rep_slice, &knots, degree, deriv)
+        } else {
+            bspline_basis_extrap(rep_slice, &knots, degree, boundary_knots)
+        };
+        let (basis, penalty, inner_basis_info) = if center {
+            let p = raw_basis.ncols();
+            let (centering_mat, centering_cols) = compute_centering_transform(&penalty_raw, p);
+            let centered = center_spectral(&raw_basis, &penalty_raw, 2);
+            let p_c = centered.ncols();
+            (
+                centered,
+                Array2::eye(p_c),
+                BasisInfo::BbsCentered {
+                    knots,
+                    degree,
+                    boundary_knots,
+                    centering_mat,
+                    centering_rows: p,
+                    centering_cols,
+                    by: None,
+                    deriv,
+                },
+            )
+        } else {
+            (
+                raw_basis,
+                penalty_raw,
+                BasisInfo::BbsUncentered {
+                    knots,
+                    degree,
+                    boundary_knots,
+                    by: None,
+                    cyclic: false,
+                    deriv,
+                },
+            )
+        };
+        let basis_info = BasisInfo::Binned {
+            cutpoints: binning.cutpoints.clone(),
+            values: binning.values.clone(),
+            lower: binning.lower,
+            upper: binning.upper,
+            inner: Box::new(inner_basis_info),
+        };
+
+        Ok(Self::BinnedBbs {
+            binning,
+            basis: Arc::new(basis),
             penalty,
             name,
             df,
@@ -2878,8 +3029,43 @@ impl LearnerBlueprint {
             selection: SplitSelection::Sse,
             split_method: SplitMethod::Exact,
             by,
+            lambda_leaf: 0.0,
+            colsample: 1.0,
+            colsample_seed: 0,
             basis_info,
         })
+    }
+
+    /// Set L2 leaf shrinkage penalty on a tree blueprint (`lambda_leaf >= 0`);
+    /// other blueprints are returned unchanged.
+    pub fn with_lambda_leaf(mut self, value: f64) -> Self {
+        if let Self::Btree { lambda_leaf, .. } = &mut self {
+            *lambda_leaf = if value.is_finite() {
+                value.max(0.0)
+            } else {
+                0.0
+            };
+        }
+        self
+    }
+
+    /// Set deterministic per-step column subsampling on a tree blueprint
+    /// (`colsample` clamped to `(0.0, 1.0]`); other blueprints are returned unchanged.
+    pub fn with_colsample(mut self, ratio: f64, seed: u64) -> Self {
+        if let Self::Btree {
+            colsample,
+            colsample_seed,
+            ..
+        } = &mut self
+        {
+            *colsample = if ratio.is_finite() && ratio > 0.0 {
+                ratio.min(1.0)
+            } else {
+                1.0
+            };
+            *colsample_seed = seed;
+        }
+        self
     }
 
     /// Set a tree blueprint's column-selection rule; other blueprints are
@@ -3884,9 +4070,12 @@ impl LearnerBlueprint {
                 selection,
                 split_method,
                 by,
+                lambda_leaf,
+                colsample,
+                colsample_seed,
                 basis_info,
-            } => Ok((
-                prepare_btree_selected_with_method(
+            } => {
+                let mut learner = prepare_btree_selected_with_method(
                     design.view(),
                     weights,
                     *minbucket,
@@ -3897,9 +4086,20 @@ impl LearnerBlueprint {
                     categorical.clone(),
                     *selection,
                     *split_method,
-                ),
-                basis_info.clone(),
-            )),
+                );
+                if let PreparedLearner::Btree {
+                    lambda_leaf: ll,
+                    colsample: cs,
+                    colsample_seed: seed,
+                    ..
+                } = &mut learner
+                {
+                    *ll = *lambda_leaf;
+                    *cs = *colsample;
+                    *seed = *colsample_seed;
+                }
+                Ok((learner, basis_info.clone()))
+            }
             Self::Bhinge {
                 x,
                 name,
@@ -5348,6 +5548,14 @@ pub enum PreparedLearner {
         pred_buf: Vec<f64>,
         /// Precomputed binning for numeric columns (histogram path).
         binning: Vec<Option<QuantileBinning>>,
+        /// L2 leaf shrinkage penalty (`0.0` = unregularized).
+        lambda_leaf: f64,
+        /// Fraction of columns subsampled per step (`1.0` = all columns).
+        colsample: f64,
+        /// Deterministic seed for per-step column subsampling.
+        colsample_seed: u64,
+        /// Monotonic step counter incremented on each tree fit.
+        step_counter: u64,
     },
     /// Adaptive hinge base-learner (`bhinge`, mboostrs extension for kinked
     /// DGPs, issue #279). At each fit step, scans the candidate knots in both
@@ -6432,8 +6640,18 @@ impl PreparedLearner {
                 beta_buf,
                 pred_buf,
                 binning,
+                lambda_leaf,
+                colsample,
+                colsample_seed,
+                step_counter,
                 ..
             } => {
+                let active_cols = btree_active_cols(
+                    design.ncols(),
+                    *colsample,
+                    *colsample_seed,
+                    step_counter,
+                );
                 let target = btree_target(u, by.as_ref());
                 let (coef, pred) = fit_tree_with_sorted(
                     design.view(),
@@ -6450,6 +6668,8 @@ impl PreparedLearner {
                     *minbucket,
                     *minsplit,
                     *maxdepth,
+                    *lambda_leaf,
+                    active_cols.as_deref(),
                 );
                 let pred_by = if let Some(by_vec) = by {
                     &pred * &*by_vec
@@ -6684,8 +6904,18 @@ impl PreparedLearner {
                 split_method,
                 by,
                 binning,
+                lambda_leaf,
+                colsample,
+                colsample_seed,
+                step_counter,
                 ..
             } => {
+                let active_cols = btree_active_cols(
+                    design.ncols(),
+                    *colsample,
+                    *colsample_seed,
+                    step_counter,
+                );
                 let target = btree_target(u, by.as_ref());
                 let (coef, pred) = fit_tree_with_sorted(
                     design.view(),
@@ -6702,6 +6932,8 @@ impl PreparedLearner {
                     *minbucket,
                     *minsplit,
                     *maxdepth,
+                    *lambda_leaf,
+                    active_cols.as_deref(),
                 );
                 let pred_by = if let Some(by_vec) = by {
                     &pred * &*by_vec
@@ -7117,9 +7349,19 @@ impl PreparedLearner {
                 beta_buf,
                 pred_buf,
                 binning,
+                lambda_leaf,
+                colsample,
+                colsample_seed,
+                step_counter,
                 ..
             } => {
                 let _w_slice = weights.as_slice().expect("weights must be contiguous");
+                let active_cols = btree_active_cols(
+                    design.ncols(),
+                    *colsample,
+                    *colsample_seed,
+                    step_counter,
+                );
                 let target = btree_target(u, by.as_ref());
                 let (coef, pred) = fit_tree_with_sorted(
                     design.view(),
@@ -7136,6 +7378,8 @@ impl PreparedLearner {
                     *minbucket,
                     *minsplit,
                     *maxdepth,
+                    *lambda_leaf,
+                    active_cols.as_deref(),
                 );
                 let pred_by = if let Some(by_vec) = by {
                     &pred * &*by_vec
@@ -12773,6 +13017,10 @@ pub fn prepare_btree_selected_with_method(
         beta_buf: Vec::new(),
         pred_buf: Vec::new(),
         binning,
+        lambda_leaf: 0.0,
+        colsample: 1.0,
+        colsample_seed: 0,
+        step_counter: 0,
     }
 }
 
@@ -13415,9 +13663,49 @@ fn fit_tree(
         minbucket,
         minsplit,
         maxdepth,
+        0.0,
+        None,
     )
 }
 
+#[inline]
+fn splitmix64(state: &mut u64) -> u64 {
+    *state = state.wrapping_add(0x9E37_79B9_7F4A_7C15);
+    let mut z = *state;
+    z = (z ^ (z >> 30)).wrapping_mul(0xBF58_476D_1CE4_E5B9);
+    z = (z ^ (z >> 27)).wrapping_mul(0x94D0_49BB_1331_11EB);
+    z ^ (z >> 31)
+}
+
+fn btree_active_cols(
+    p: usize,
+    colsample: f64,
+    colsample_seed: u64,
+    step_counter: &mut u64,
+) -> Option<Vec<bool>> {
+    if colsample >= 1.0 || p <= 1 {
+        return None;
+    }
+    let step_idx = *step_counter;
+    *step_counter = step_counter.wrapping_add(1);
+    let k = ((p as f64 * colsample).ceil() as usize).clamp(1, p);
+    if k >= p {
+        return None;
+    }
+    let mut cols: Vec<usize> = (0..p).collect();
+    let mut rng_state = colsample_seed ^ step_idx.wrapping_mul(0x9E37_79B9_7F4A_7C15);
+    for i in 0..k {
+        let j = i + (splitmix64(&mut rng_state) as usize % (p - i));
+        cols.swap(i, j);
+    }
+    let mut active = vec![false; p];
+    for &c in &cols[..k] {
+        active[c] = true;
+    }
+    Some(active)
+}
+
+#[allow(clippy::too_many_arguments)]
 fn fit_tree_with_sorted(
     design: ArrayView2<f64>,
     u: ArrayView1<f64>,
@@ -13430,6 +13718,8 @@ fn fit_tree_with_sorted(
     minbucket: usize,
     minsplit: usize,
     maxdepth: usize,
+    lambda_leaf: f64,
+    active_cols: Option<&[bool]>,
 ) -> (Array1<f64>, Array1<f64>) {
     let mut nodes: Vec<TreeNode> = Vec::new();
     let spec = TreeSpec {
@@ -13443,10 +13733,15 @@ fn fit_tree_with_sorted(
         minbucket,
         minsplit,
         maxdepth,
+        lambda_leaf,
+        active_cols,
     };
     let n = design.nrows();
     let p = design.ncols();
     let need_sorted = (0..p).any(|j| {
+        if active_cols.is_some_and(|active| !active[j]) {
+            return false;
+        }
         let unbinned = binning.get(j).and_then(|b| b.as_ref()).is_none();
         categorical.get(j).copied().unwrap_or(0) == 0
             && (split_method == SplitMethod::Exact || unbinned)
@@ -13458,6 +13753,9 @@ fn fit_tree_with_sorted(
     };
     if need_sorted {
         for j in 0..p {
+            if active_cols.is_some_and(|active| !active[j]) {
+                continue;
+            }
             let unbinned = binning.get(j).and_then(|b| b.as_ref()).is_none();
             if categorical.get(j).copied().unwrap_or(0) == 0
                 && (split_method == SplitMethod::Exact || unbinned)
@@ -13583,6 +13881,10 @@ struct TreeSpec<'a> {
     maxdepth: usize,
     /// Precomputed quantile binning for numeric columns when using histogram method.
     binning: &'a [Option<QuantileBinning>],
+    /// L2 leaf shrinkage penalty (`0.0` = unregularized).
+    lambda_leaf: f64,
+    /// Optional per-step column activity mask (`None` = all columns active).
+    active_cols: Option<&'a [bool]>,
 }
 
 /// The best split found at a node.
@@ -13620,6 +13922,9 @@ fn ctree_column(
     }
     let mut best: Option<(usize, f64)> = None;
     for j in 0..design.ncols() {
+        if spec.active_cols.is_some_and(|active| !active[j]) {
+            continue;
+        }
         let col = design.column(j);
         let n_levels = spec.categorical.get(j).copied().unwrap_or(0);
         let (statistic, df) = if n_levels > 0 {
@@ -13708,6 +14013,9 @@ fn build_node_hists(
     let weights = spec.weights;
     let p = spec.design.ncols();
     for j in 0..p {
+        if spec.active_cols.is_some_and(|active| !active[j]) {
+            continue;
+        }
         let start = col_offsets[j];
         let end = col_offsets[j + 1];
         let h = &mut out[start..end];
@@ -13771,7 +14079,11 @@ fn build_tree_hist_subtract(
 
     let make_leaf = |nodes: &mut Vec<TreeNode>| {
         let mean = if total_w > 0.0 {
-            total_wsum / total_w
+            if spec.lambda_leaf > 0.0 {
+                total_wsum / (total_w + spec.lambda_leaf)
+            } else {
+                total_wsum / total_w
+            }
         } else {
             0.0
         };
@@ -13784,10 +14096,23 @@ fn build_tree_hist_subtract(
     }
 
     let minbucket = spec.minbucket as f64;
-    let mut best_gain = f64::NEG_INFINITY;
+    let lambda_leaf = spec.lambda_leaf;
+    let parent_score = if lambda_leaf > 0.0 {
+        total_wsum * total_wsum / (total_w + lambda_leaf)
+    } else {
+        0.0
+    };
+    let mut best_gain = if lambda_leaf > 0.0 {
+        0.0
+    } else {
+        f64::NEG_INFINITY
+    };
     let mut best: Option<BestHistSplit> = None;
 
     for j in 0..p {
+        if spec.active_cols.is_some_and(|active| !active[j]) {
+            continue;
+        }
         let start = col_offsets[j];
         let end = col_offsets[j + 1];
         let h = &hists[start..end];
@@ -13821,7 +14146,11 @@ fn build_tree_hist_subtract(
                     continue;
                 }
                 let rws = total_wsum - lws;
-                let gain = lws * lws / lw + rws * rws / rw;
+                let gain = if lambda_leaf > 0.0 {
+                    lws * lws / (lw + lambda_leaf) + rws * rws / (rw + lambda_leaf) - parent_score
+                } else {
+                    lws * lws / lw + rws * rws / rw
+                };
                 if gain > col_best_gain {
                     col_best_gain = gain;
                     col_best_k = Some(k);
@@ -13856,7 +14185,11 @@ fn build_tree_hist_subtract(
                     continue;
                 }
                 let rws = total_wsum - lws;
-                let gain = lws * lws / lw + rws * rws / rw;
+                let gain = if lambda_leaf > 0.0 {
+                    lws * lws / (lw + lambda_leaf) + rws * rws / (rw + lambda_leaf) - parent_score
+                } else {
+                    lws * lws / lw + rws * rws / rw
+                };
                 if gain > best_gain {
                     best_gain = gain;
                     let next = present[idx + 1];
@@ -14062,7 +14395,15 @@ fn make_leaf_from_rows(
         tw += spec.weights[ii];
         twu += wu[ii];
     }
-    let mean = if tw > 0.0 { twu / tw } else { 0.0 };
+    let mean = if tw > 0.0 {
+        if spec.lambda_leaf > 0.0 {
+            twu / (tw + spec.lambda_leaf)
+        } else {
+            twu / tw
+        }
+    } else {
+        0.0
+    };
     nodes.push(TreeNode::Leaf { mean });
     nodes.len() - 1
 }
@@ -14122,7 +14463,11 @@ fn build_tree_recursive(
     }
     let leaf = |nodes: &mut Vec<TreeNode>| {
         let mean = if total_w > 0.0 {
-            total_wsum / total_w
+            if spec.lambda_leaf > 0.0 {
+                total_wsum / (total_w + spec.lambda_leaf)
+            } else {
+                total_wsum / total_w
+            }
         } else {
             0.0
         };
@@ -14135,15 +14480,27 @@ fn build_tree_recursive(
     }
 
     let minbucket = spec.minbucket as f64;
+    let lambda_leaf = spec.lambda_leaf;
     let split_sse = |lw: f64, lws: f64, lsq: f64| {
         let rw = total_w - lw;
         let rws = total_wsum - lws;
-        let lsse = lsq - lws * lws / lw;
-        let rsse = (total_sqsum - lsq) - rws * rws / rw;
-        (lsse + rsse).max(0.0)
+        if lambda_leaf > 0.0 {
+            (total_sqsum
+                - lws * lws / (lw + lambda_leaf)
+                - rws * rws / (rw + lambda_leaf))
+                .max(0.0)
+        } else {
+            let lsse = lsq - lws * lws / lw;
+            let rsse = (total_sqsum - lsq) - rws * rws / rw;
+            (lsse + rsse).max(0.0)
+        }
     };
 
-    let mut best_sse = f64::INFINITY;
+    let mut best_sse = if lambda_leaf > 0.0 {
+        (total_sqsum - total_wsum * total_wsum / (total_w + lambda_leaf)).max(0.0)
+    } else {
+        f64::INFINITY
+    };
     let mut best: Option<BestSplit> = None;
     // ctree chooses the column first, by its association with the gradient;
     // only that column's split points are then searched.
@@ -14163,6 +14520,9 @@ fn build_tree_recursive(
     }
 
     for j in 0..p {
+        if spec.active_cols.is_some_and(|active| !active[j]) {
+            continue;
+        }
         if only.is_some_and(|chosen| chosen != j) {
             continue;
         }
@@ -14274,7 +14634,14 @@ fn build_tree_recursive(
                         continue;
                     }
                     let rws = total_wsum - lws;
-                    let sse = (total_sqsum - lws * lws / lw - rws * rws / rw).max(0.0);
+                    let sse = if lambda_leaf > 0.0 {
+                        (total_sqsum
+                            - lws * lws / (lw + lambda_leaf)
+                            - rws * rws / (rw + lambda_leaf))
+                            .max(0.0)
+                    } else {
+                        (total_sqsum - lws * lws / lw - rws * rws / rw).max(0.0)
+                    };
                     if sse < best_sse {
                         best_sse = sse;
                         let next = present[idx + 1];
@@ -16677,6 +17044,197 @@ mod tests {
     }
 
     #[test]
+    fn bbs_ospline_binned_matches_bbs_ospline() {
+        let n = 800usize;
+        let mut x_vec = Vec::with_capacity(n);
+        let mut state = 0x1234_5678_9ABC_DEF0u64;
+        for _ in 0..n {
+            state = state.wrapping_mul(6364136223846793005).wrapping_add(1);
+            let u = ((state >> 11) as f64) / ((1u64 << 53) as f64);
+            x_vec.push((u * 3.0).exp() - 1.0);
+        }
+        let x = Array1::from_vec(x_vec);
+        let y = x.mapv(|v| (0.4 * v).sin() + 0.1 * v);
+        let w = Array1::ones(n);
+
+        for center in [false, true] {
+            let bp_exact = LearnerBlueprint::bbs_ospline(
+                x.clone(),
+                "bbs(x)",
+                15,
+                3,
+                4.0,
+                None,
+                center,
+                None,
+                None,
+                0,
+            )
+            .unwrap();
+            let bp_binned = LearnerBlueprint::bbs_ospline_binned(
+                x.clone(),
+                "bbs(x)",
+                15,
+                3,
+                4.0,
+                None,
+                center,
+                None,
+                None,
+                0,
+                256,
+            )
+            .unwrap();
+
+            let (mut l_exact, b_exact) = bp_exact.prepare(w.view()).unwrap();
+            let (mut l_binned, b_binned) = bp_binned.prepare(w.view()).unwrap();
+
+            let (_, pred_exact, _) = l_exact.fit_step_ref(y.view(), w.view());
+            let (coef_binned, pred_binned, _) = l_binned.fit_step_ref(y.view(), w.view());
+
+            let max_diff = pred_exact
+                .iter()
+                .zip(pred_binned.iter())
+                .map(|(a, b)| (a - b).abs())
+                .fold(0.0f64, f64::max);
+            let rmse_diff = (pred_exact
+                .iter()
+                .zip(pred_binned.iter())
+                .map(|(a, b)| (a - b) * (a - b))
+                .sum::<f64>()
+                / n as f64)
+                .sqrt();
+            assert!(
+                rmse_diff < 0.015 && max_diff < 0.1,
+                "center={center}: bbs_ospline_binned rmse={rmse_diff} max={max_diff}"
+            );
+
+            // When bins >= n, quantile binning is exact.
+            let bp_full_bins = LearnerBlueprint::bbs_ospline_binned(
+                x.clone(),
+                "bbs(x)",
+                15,
+                3,
+                4.0,
+                None,
+                center,
+                None,
+                None,
+                0,
+                n,
+            )
+            .unwrap();
+            let (mut l_full, _) = bp_full_bins.prepare(w.view()).unwrap();
+            let (_, pred_full, _) = l_full.fit_step_ref(y.view(), w.view());
+            let exact_diff = pred_exact
+                .iter()
+                .zip(pred_full.iter())
+                .map(|(a, b)| (a - b).abs())
+                .fold(0.0f64, f64::max);
+            assert!(
+                exact_diff < 1e-9,
+                "center={center}: bins=n exact diff {exact_diff} >= 1e-9"
+            );
+
+            let mut replay = vec![0.0f64; n];
+            b_binned
+                .predict_into(
+                    coef_binned,
+                    x.as_slice().unwrap(),
+                    &mut replay,
+                    1.0,
+                    None,
+                )
+                .unwrap();
+            let replay_diff = pred_binned
+                .iter()
+                .zip(replay.iter())
+                .map(|(a, b)| (a - b).abs())
+                .fold(0.0f64, f64::max);
+            assert!(
+                replay_diff < 1e-11,
+                "center={center}: replay diff {replay_diff} >= 1e-11"
+            );
+
+            // Exact unbinned replay on held-out grid stays close to binned replay
+            let grid = vec![0.1, 1.0, 4.0, 12.0, 30.0];
+            let (coef_exact, _, _) = l_exact.fit_step_ref(y.view(), w.view());
+            let mut out_exact = vec![0.0f64; grid.len()];
+            let mut out_binned = vec![0.0f64; grid.len()];
+            b_exact
+                .predict_into(coef_exact, &grid, &mut out_exact, 1.0, None)
+                .unwrap();
+            b_binned
+                .predict_into(coef_binned, &grid, &mut out_binned, 1.0, None)
+                .unwrap();
+            for (a, b) in out_exact.iter().zip(out_binned.iter()) {
+                assert!((a - b).abs() < 0.1, "extrap/grid diff {} vs {}", a, b);
+            }
+        }
+    }
+
+    #[test]
+    fn btree_lambda_leaf_shrinks_and_colsample_is_deterministic() {
+        let n = 120usize;
+        let p = 8usize;
+        let mut design = Array2::zeros((n, p));
+        let mut state = 0xDEAD_BEEF_1234_5678u64;
+        for i in 0..n {
+            for j in 0..p {
+                state = state.wrapping_mul(6364136223846793005).wrapping_add(1);
+                design[[i, j]] = ((state >> 11) as f64) / ((1u64 << 53) as f64) * 2.0 - 1.0;
+            }
+        }
+        let u = Array1::from_shape_fn(n, |i| {
+            if design[[i, 0]] > 0.0 {
+                2.0
+            } else {
+                -2.0
+            }
+        });
+        let w = Array1::ones(n);
+
+        for method in [SplitMethod::Exact, SplitMethod::Histogram] {
+            let bp0 = LearnerBlueprint::btree(design.clone(), "t", 4, 10, 3, None)
+                .unwrap()
+                .with_split_method(method);
+            let bp_reg = LearnerBlueprint::btree(design.clone(), "t", 4, 10, 3, None)
+                .unwrap()
+                .with_split_method(method)
+                .with_lambda_leaf(20.0);
+
+            let (mut l0, _) = bp0.prepare(w.view()).unwrap();
+            let (mut lr, _) = bp_reg.prepare(w.view()).unwrap();
+            let (_, pred0, _) = l0.fit_step_ref(u.view(), w.view());
+            let (_, predr, _) = lr.fit_step_ref(u.view(), w.view());
+            let norm0: f64 = pred0.iter().map(|v| v * v).sum();
+            let normr: f64 = predr.iter().map(|v| v * v).sum();
+            assert!(
+                normr < norm0 * 0.9,
+                "method={method:?}: lambda_leaf should shrink predictions: normr={normr} vs norm0={norm0}"
+            );
+
+            let bp_cs1 = LearnerBlueprint::btree(design.clone(), "t", 4, 10, 3, None)
+                .unwrap()
+                .with_split_method(method)
+                .with_colsample(0.5, 42);
+            let bp_cs2 = LearnerBlueprint::btree(design.clone(), "t", 4, 10, 3, None)
+                .unwrap()
+                .with_split_method(method)
+                .with_colsample(0.5, 42);
+            let (mut c1, _) = bp_cs1.prepare(w.view()).unwrap();
+            let (mut c2, _) = bp_cs2.prepare(w.view()).unwrap();
+            for _ in 0..5 {
+                let (coef1, p1, sse1) = c1.fit_step_ref(u.view(), w.view());
+                let (coef2, p2, sse2) = c2.fit_step_ref(u.view(), w.view());
+                assert_eq!(coef1, coef2);
+                assert_eq!(p1, p2);
+                assert_eq!(sse1, sse2);
+            }
+        }
+    }
+
+    #[test]
     fn btree_predict_by_masks_correctly() {
         // btree + by: verify by multiplies prediction element-wise
         // and that unseen by-values (e.g. 0.5, -1) don't cause OOB.
@@ -17992,6 +18550,8 @@ mod categorical_tree_tests {
             1,
             2,
             1,
+            0.0,
+            None,
         );
         for (p, t) in pred.iter().zip(&u) {
             assert!((p - t).abs() < 1e-12);
@@ -18051,6 +18611,8 @@ mod histogram_tree_tests {
             minbucket,
             minsplit,
             maxdepth,
+            0.0,
+            None,
         )
     }
 
