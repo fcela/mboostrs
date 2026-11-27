@@ -22,7 +22,8 @@ EffectModel(
     scale_plan: dict = <factory>,
     interval_method: str = 'refit',
     interval_fits: tuple = (),
-    second_stage: object = None
+    second_stage: object = None,
+    _dr_state: dict | None = None
 ) -> None
 ```
 
@@ -55,7 +56,7 @@ each modifier's share of it depends on the others; a fitted `joint`
 model reports a combined `partial_effects` row rather than one row per
 modifier.
 
-Source: [`python/mboostrs/causal.py` lines 3240-3567](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3240-L3567)
+Source: [`python/mboostrs/causal.py` lines 3301-3677](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3301-L3677)
 
 ## Members
 
@@ -66,6 +67,7 @@ Source: [`python/mboostrs/causal.py` lines 3240-3567](https://github.com/fcela/m
 | `overlap_report` | Method | The overlap summary of the fitting rows; see :func:`overlap_report`. |
 | `to_dict` | Method | A JSON-safe record; per-row arrays only on request. |
 | `describe` | Method | The fitted effect, how it was chosen, and what it assumes. |
+| `digest` | Method | Return a concise, deterministic summary card of this CATE model. |
 
 (effectmodel-predict)=
 ## `EffectModel.predict`
@@ -140,8 +142,9 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 - `NotImplementedError`
+- `RuntimeError`
 
-Source: [`python/mboostrs/causal.py` lines 3358-3476](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3358-L3476)
+Source: [`python/mboostrs/causal.py` lines 3421-3563](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3421-L3563)
 
 (effectmodel-ate_plugin)=
 ## `EffectModel.ate_plugin`
@@ -160,7 +163,7 @@ of the population average effect only as far as the fitted `tau` is
 accurate. It has no standard error. Use `aipw` for an average
 effect with an interval.
 
-Source: [`python/mboostrs/causal.py` lines 3478-3488](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3478-L3488)
+Source: [`python/mboostrs/causal.py` lines 3565-3575](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3565-L3575)
 
 (effectmodel-overlap_report)=
 ## `EffectModel.overlap_report`
@@ -173,7 +176,7 @@ EffectModel.overlap_report(bounds=None, data=None)
 
 The overlap summary of the fitting rows; see `overlap_report`.
 
-Source: [`python/mboostrs/causal.py` lines 3490-3493](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3490-L3493)
+Source: [`python/mboostrs/causal.py` lines 3577-3580](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3577-L3580)
 
 (effectmodel-to_dict)=
 ## `EffectModel.to_dict`
@@ -186,7 +189,7 @@ EffectModel.to_dict(*, include_arrays=False)
 
 A JSON-safe record; per-row arrays only on request.
 
-Source: [`python/mboostrs/causal.py` lines 3495-3501](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3495-L3501)
+Source: [`python/mboostrs/causal.py` lines 3582-3588](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3582-L3588)
 
 (effectmodel-describe)=
 ## `EffectModel.describe`
@@ -199,4 +202,17 @@ EffectModel.describe() -> str
 
 The fitted effect, how it was chosen, and what it assumes.
 
-Source: [`python/mboostrs/causal.py` lines 3507-3567](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3507-L3567)
+Source: [`python/mboostrs/causal.py` lines 3594-3656](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3594-L3656)
+
+(effectmodel-digest)=
+## `EffectModel.digest`
+
+*Method* of `EffectModel`
+
+```python
+EffectModel.digest() -> str
+```
+
+Return a concise, deterministic summary card of this CATE model.
+
+Source: [`python/mboostrs/causal.py` lines 3658-3677](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3658-L3677)

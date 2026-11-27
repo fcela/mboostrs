@@ -26,6 +26,7 @@ AIPWResult(
     observed: numpy.ndarray | None = None,
     response_propensity: numpy.ndarray | None = None,
     weights: numpy.ndarray | None = None,
+    ato_companion: dict | None = None,
     _propensity_model: object = None,
     _data: object = None,
     _groups: object = None,
@@ -35,7 +36,7 @@ AIPWResult(
 
 Cross-fitted AIPW estimate with reconstructible row contributions.
 
-Source: [`python/mboostrs/causal.py` lines 453-880](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L453-L880)
+Source: [`python/mboostrs/causal.py` lines 453-917](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L453-L917)
 
 ## Members
 
@@ -50,6 +51,7 @@ Source: [`python/mboostrs/causal.py` lines 453-880](https://github.com/fcela/mbo
 | `overlap_frame` | Method | Row-level propensity support and estimand-specific analysis weights. |
 | `target` | Property | The population the estimate describes: ``"all"`` (every row, or |
 | `describe` | Method | Estimate, target, interval, overlap and the assumptions it depends on. |
+| `digest` | Method | Return a concise, deterministic summary card of this AIPW estimate. |
 
 (aipwresult-to_frame)=
 ## `AIPWResult.to_frame`
@@ -62,7 +64,7 @@ AIPWResult.to_frame(output='auto')
 
 One row per observation, sufficient to reconstruct the estimate.
 
-Source: [`python/mboostrs/causal.py` lines 526-539](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L526-L539)
+Source: [`python/mboostrs/causal.py` lines 529-542](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L529-L542)
 
 (aipwresult-to_dict)=
 ## `AIPWResult.to_dict`
@@ -79,7 +81,7 @@ The scalar estimate, standard error, interval, level and specification
 are always present; the per-row propensity, means, scores, influence
 and fold ids are gated behind `include_arrays`.
 
-Source: [`python/mboostrs/causal.py` lines 541-555](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L541-L555)
+Source: [`python/mboostrs/causal.py` lines 544-558](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L544-L558)
 
 (aipwresult-predict_propensity)=
 ## `AIPWResult.predict_propensity`
@@ -107,7 +109,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/causal.py` lines 565-594](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L565-L594)
+Source: [`python/mboostrs/causal.py` lines 568-597](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L568-L597)
 
 (aipwresult-subgroup_effect)=
 ## `AIPWResult.subgroup_effect`
@@ -163,7 +165,7 @@ The method needs an ATE result (`target='all'`). With
 repeats, and a subgroup holding every row gives the mean of the
 averaged scores, which differs from it.
 
-Source: [`python/mboostrs/causal.py` lines 603-696](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L603-L696)
+Source: [`python/mboostrs/causal.py` lines 606-699](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L606-L699)
 
 (aipwresult-effect_surface)=
 ## `AIPWResult.effect_surface`
@@ -217,7 +219,7 @@ uncertainty. The surface describes the effect only through the
 covariates in `formula`. The method needs an ATE result
 (`target='all'`).
 
-Source: [`python/mboostrs/causal.py` lines 698-764](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L698-L764)
+Source: [`python/mboostrs/causal.py` lines 701-767](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L701-L767)
 
 (aipwresult-balance_frame)=
 ## `AIPWResult.balance_frame`
@@ -230,7 +232,7 @@ AIPWResult.balance_frame(output='auto')
 
 Standardized mean differences before and after treatment weighting.
 
-Source: [`python/mboostrs/causal.py` lines 766-768](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L766-L768)
+Source: [`python/mboostrs/causal.py` lines 769-771](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L769-L771)
 
 (aipwresult-overlap_frame)=
 ## `AIPWResult.overlap_frame`
@@ -249,7 +251,7 @@ the weight column shows which observations dominate the requested ATE
 or ATT. Propensities used for estimation include the explicitly
 recorded clipping policy, when one was requested.
 
-Source: [`python/mboostrs/causal.py` lines 770-799](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L770-L799)
+Source: [`python/mboostrs/causal.py` lines 773-802](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L773-L802)
 
 (aipwresult-target)=
 ## `AIPWResult.target`
@@ -264,7 +266,7 @@ The population the estimate describes: `"all"` (every row, or
 every treated row for the ATT) or `"overlap"` (the overlap-weighted
 ATE). Set by `aipw(target=...)`.
 
-Source: [`python/mboostrs/causal.py` lines 801-806](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L801-L806)
+Source: [`python/mboostrs/causal.py` lines 804-809](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L804-L809)
 
 (aipwresult-describe)=
 ## `AIPWResult.describe`
@@ -277,4 +279,17 @@ AIPWResult.describe() -> str
 
 Estimate, target, interval, overlap and the assumptions it depends on.
 
-Source: [`python/mboostrs/causal.py` lines 830-850](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L830-L850)
+Source: [`python/mboostrs/causal.py` lines 837-857](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L837-L857)
+
+(aipwresult-digest)=
+## `AIPWResult.digest`
+
+*Method* of `AIPWResult`
+
+```python
+AIPWResult.digest() -> str
+```
+
+Return a concise, deterministic summary card of this AIPW estimate.
+
+Source: [`python/mboostrs/causal.py` lines 889-917](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L889-L917)

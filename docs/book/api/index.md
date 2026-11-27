@@ -10,6 +10,7 @@ Frequently used entries: [`gamboost`](functions/gamboost.md), [`glmboost`](funct
 |---|---|
 | [`accumulated_local_effect`](functions/accumulated_local_effect.md) | Estimate a centered univariate accumulated local effect. |
 | [`acf_residuals`](functions/acf_residuals.md) | Compute residual autocorrelation and autocorrelation of selected powers. |
+| [`adaptive_conformal_stream`](functions/adaptive_conformal_stream.md) | Online Adaptive Conformal Inference (Gibbs & Candès, 2021). |
 | [`agent_guide`](functions/agent_guide.md) | Return the agent skill text, a topic section, or a file path. |
 | [`aipw`](functions/aipw.md) | Cross-fitted augmented inverse-probability estimate for binary treatment. |
 | [`api_card`](functions/api_card.md) | A bounded card for one function, method or class. |
@@ -48,6 +49,7 @@ Frequently used entries: [`gamboost`](functions/gamboost.md), [`glmboost`](funct
 | [`deviance_increment`](functions/deviance_increment.md) | Per-observation deviance contributions. |
 | [`deviance_profile`](functions/deviance_profile.md) | Bin joint deviance contributions along a numeric covariate. |
 | [`diagonal_grid`](functions/diagonal_grid.md) | A grid whose points give every distribution parameter the same budget. |
+| [`digest`](functions/digest.md) | Return a concise, deterministic summary card of a fitted mboostrs object. |
 | [`discover`](functions/discover.md) | Run the rule-driven analysis of ``response`` on ``data``. |
 | [`distributional_contrast`](functions/distributional_contrast.md) | Contrast a fitted LSS mean, quantile, or exceedance probability. |
 | [`dump_result_json`](functions/dump_result_json.md) | Serialize a result dictionary or JSON data with reversible nonfinite values. |
@@ -111,6 +113,7 @@ Frequently used entries: [`gamboost`](functions/gamboost.md), [`glmboost`](funct
 | [`profile_mstop`](functions/profile_mstop.md) | Evaluate a model at different mstop values. |
 | [`provenance`](functions/provenance.md) | Return build, environment and optional data identity metadata for a result. |
 | [`q_stats`](functions/q_stats.md) | Binned quantile-residual moment summaries. |
+| [`quantile_boost`](functions/quantile_boost.md) | Simultaneously CV-tune and fit multiple conditional quantile models in one Rust pass. |
 | [`quantile_residuals`](functions/quantile_residuals.md) | Randomized quantile residuals. |
 | [`r_squared`](functions/r_squared.md) | Generalized R-squared for a distributional model, as ``gamlss::Rsq``. |
 | [`rank_by_effect`](functions/rank_by_effect.md) | Rank new rows by estimated effect, using only rows with overlap. |
@@ -156,6 +159,7 @@ Frequently used entries: [`gamboost`](functions/gamboost.md), [`glmboost`](funct
 | [`ALE1DResult`](classes/ALE1DResult.md) | A centered univariate accumulated-local-effect curve and its support. |
 | [`AUC`](classes/AUC.md) | Smoothed 1 - AUC ranking loss (mboost::AUC()). |
 | [`AdaExp`](classes/AdaExp.md) | Exponential loss, ``exp(-(2y - 1) f)`` — the AdaBoost loss. |
+| [`AdaptiveConformalStream`](classes/AdaptiveConformalStream.md) | Online Adaptive Conformal Inference stream (Gibbs & Candès, 2021). |
 | [`AicResult`](classes/AicResult.md) | An information-criterion path: the value at each iteration, the |
 | [`Assumption`](classes/Assumption.md) | One causal statement with its provenance, never inferred from data. |
 | [`AssumptionLedger`](classes/AssumptionLedger.md) | The causal statements a run depends on, tagged by who vouched for them. |
@@ -254,6 +258,7 @@ Frequently used entries: [`gamboost`](functions/gamboost.md), [`glmboost`](funct
 | [`MboostrsValueError`](classes/MboostrsValueError.md) | A failed validation: a bad argument, shape, parameter, or response. |
 | [`ModelerResult`](classes/ModelerResult.md) | Model and specification selected by the loop, with the decision record. |
 | [`MstopTuning`](classes/MstopTuning.md) | A cross-validated step count, and whether the grid grew to find it. |
+| [`MultiQuantileModel`](classes/MultiQuantileModel.md) | Simultaneously fitted conditional quantile models sharing one learner basis. |
 | [`Multinomial`](classes/Multinomial.md) | Multinomial logistic likelihood for an unordered K-class response. |
 | [`NBinomial`](classes/NBinomial.md) | Negative binomial log-likelihood with a log link, for overdispersed counts. |
 | [`NBinomialLSS`](classes/NBinomialLSS.md) | Negative-binomial family: ``mu`` (log link, mean), ``sigma`` (log link, |

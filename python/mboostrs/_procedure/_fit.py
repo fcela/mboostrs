@@ -23,7 +23,7 @@ _BUDGET_FITS = {"quick": 16, "standard": 64, "thorough": 512}
 # exceeded 600 s at both settings. The limits are about twice the slowest
 # completed run, so they bind on outliers rather than on typical tables.
 _BUDGET_SECONDS = {"quick": 60.0, "standard": 120.0, "thorough": 1200.0}
-_UNCERTAINTIES = ("stability", "bootstrap", "none")
+_UNCERTAINTIES = ("stability", "bootstrap", "conformal", "none")
 
 
 #: How a model returned by `fit` predicts a ``brandom`` or factor level the
@@ -45,27 +45,83 @@ class Fit:
 
     ``model`` is the underlying fitted model (a ``GAMBoostModel`` or
     ``LSSModel``), ``trail`` is the :class:`~mboostrs._procedure._trail.DecisionTrail`
-    explaining how it was chosen, and ``stability`` is currently ``None``
-    because selection-aware uncertainty is not yet supported.
-    ``predict`` delegates to the model, so a ``Fit`` can stand in wherever the
-    model itself was used.
+    explaining how it was chosen, and optional uncertainty summaries are
+    attached to ``stability``, ``bootstrap``, or ``conformal`` depending on
+    ``uncertainty=``. ``predict`` delegates to the model and ``predict_interval``
+    computes conformal prediction intervals (defaulting to ``"adaptive"`` when
+    fitted with ``time=``).
     """
 
-    def __init__(self, model: Any, trail: DecisionTrail, stability: Any = None):
+    def __init__(
+        self,
+        model: Any,
+        trail: DecisionTrail,
+        stability: Any = None,
+        bootstrap: Any = None,
+        conformal: Any = None,
+        *,
+        time: str | None = None,
+    ):
         self.model = model
         self.trail = trail
         self.stability = stability
+        self.bootstrap = bootstrap
+        self.conformal = conformal
+        self._time = time
 
     def predict(self, newdata: Any, **kwargs: Any) -> Any:
         """Predict with the wrapped model. See ``model.predict``.
 
         Defaults ``extrapolation="clip"`` so spline terms are held flat outside
         their training boundary knots on automated fits (linear ``bols`` terms
-        still extrapolate linearly). Pass an explicit ``extrapolation=`` value
-        (e.g. ``"warn"``, ``"allow"``, ``"error"``) to override.
+        still extrapolate linearly). For distributional (``LSSModel``) fits,
+        defaults ``type="mean"`` when neither ``type`` nor ``parameter`` is
+        specified so ``fit.predict(newdata)`` returns 1D response-scale mean
+        predictions uniformly across families. Pass an explicit ``type=``,
+        ``parameter=``, or ``extrapolation=`` to override.
         """
         kwargs.setdefault("extrapolation", getattr(self.model, "_default_extrapolation", "clip"))
+        is_lss = type(self.model).__name__ == "LSSModel" or hasattr(self.model, "param_names")
+        if (
+            is_lss
+            and "type" not in kwargs
+            and "parameter" not in kwargs
+            and hasattr(getattr(self.model, "_family", None), "mean")
+        ):
+            kwargs["type"] = "mean"
         return self.model.predict(newdata, **kwargs)
+
+    def predict_interval(
+        self,
+        newdata: Any = None,
+        *,
+        level: float = 0.9,
+        method: str | None = None,
+        **kwargs: Any,
+    ) -> Any:
+        """Compute conformal prediction intervals on ``newdata``.
+
+        Defaults ``method="adaptive"`` when ``fit(..., time=...)`` was used
+        and ``method="split"`` otherwise.
+        """
+        from mboostrs.conformal import conformal_interval
+
+        chosen_method = (
+            method
+            if method is not None
+            else ("adaptive" if self._time is not None else "split")
+        )
+        seed = (
+            self.trail.provenance.get("seed")
+            if isinstance(self.trail.provenance, dict)
+            else None
+        )
+        kwargs.setdefault("seed", seed)
+        if chosen_method == "adaptive" and self._time is not None and "time" not in kwargs:
+            kwargs["time"] = self._time
+        return conformal_interval(
+            self.model, newdata, level=level, method=chosen_method, **kwargs
+        )
 
     def to_dict(self, *, include_arrays: bool = False) -> dict[str, Any]:
         """The wrapping record: the decision trail as a JSON-safe dict."""
@@ -83,6 +139,79 @@ class Fit:
         family = final.get("family")
         mstop = final.get("mstop")
         return f"Fit(family={family!r}, mstop={mstop!r}, steps={len(self.trail.steps)})"
+
+    def digest(self) -> str:
+        """Return a concise, deterministic summary card of this Fit."""
+        final = self.trail.final
+        data_info = self.trail.data
+        folds_info = self.trail.folds
+        budget_info = self.trail.budget
+        unc = self.trail.uncertainty or {}
+        n_obs = data_info.get("n")
+        family = final.get("family")
+        formula = final.get("formula")
+        mstop = final.get("mstop")
+
+        lines = [
+            f"[mboostrs Fit] family={family}, n={n_obs}, formula={formula}",
+            (
+                f"stopping: mstop={mstop}, folds={folds_info.get('scheme')}"
+                f"(K={folds_info.get('K')}, R={folds_info.get('R')}), "
+                f"criterion={self.trail.criterion}, "
+                f"budget={budget_info.get('setting')} ({budget_info.get('spent', 0):.0f} fits)"
+            ),
+        ]
+        if hasattr(self.model, "_params") and hasattr(self.model, "param_names"):
+            for k, pname in enumerate(self.model.param_names):
+                names_k = self.model._parameter_selected_names(k)
+                counts: dict[str, int] = {}
+                for nm in names_k:
+                    counts[nm] = counts.get(nm, 0) + 1
+                total_k = len(self.model._params[k].get("learners")
+                              or self.model._params[k].get("predictor_names") or ())
+                ranked = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
+                shown = ", ".join(f"{nm}({c})" for nm, c in ranked[:6]) or "none"
+                if len(ranked) > 6:
+                    shown += f", (+{len(ranked) - 6} more)"
+                lines.append(f"active[{pname}]: {shown}; inactive={max(0, total_k - len(counts))}")
+        elif hasattr(self.model, "_selected") and hasattr(self.model, "_learner_names"):
+            counts = {}
+            for idx in self.model._selected:
+                nm = self.model._learner_names[int(idx)]
+                counts[nm] = counts.get(nm, 0) + 1
+            ranked = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
+            shown = ", ".join(f"{nm}({c})" for nm, c in ranked[:8]) or "none"
+            if len(ranked) > 8:
+                shown += f", (+{len(ranked) - 8} more)"
+            inactive = max(0, len(self.model._learner_names) - len(counts))
+            lines.append(f"active_terms: {shown}; inactive={inactive}")
+
+        hygiene = []
+        if self.trail.steps:
+            hygiene = (self.trail.steps[0].get("evidence") or {}).get("hygiene") or []
+        degradations = budget_info.get("degradations") or []
+        unc_method = unc.get("method", "none")
+        unc_detail = f"uncertainty={unc_method}"
+        if unc_method == "conformal":
+            rel_status = None
+            if self.conformal is not None and hasattr(self.conformal, "reliability"):
+                rel_status = (self.conformal.reliability or {}).get("status")
+            else:
+                rel_status = unc.get("status")
+            if rel_status is not None:
+                unc_detail += f" (status={rel_status})"
+        elif unc_method == "stability":
+            unc_detail += f" (B={unc.get('B')}, terms={len(unc.get('terms') or ())})"
+        elif unc_method == "bootstrap":
+            unc_detail += f" (B={unc.get('B')})"
+        cautions = [unc_detail]
+        if hygiene:
+            hyg_txt = ", ".join(f"{h.get('column')}({h.get('kind')})" for h in hygiene[:5])
+            cautions.append(f"hygiene={hyg_txt}")
+        if degradations:
+            cautions.append(f"degradations={len(degradations)}")
+        lines.append("diagnostics: " + "; ".join(cautions))
+        return "\n".join(lines)
 
 
 def _timed_search(data: Any, response: str, limit: int, seconds: float,
@@ -392,6 +521,231 @@ def _active_formula(model: Any, spec: Any, response: str) -> str:
     return _formula_text(raw_formula)
 
 
+def _compute_stability(model: Any, seed: int) -> tuple[Any, dict[str, Any]]:
+    """Compute stability selection for ``uncertainty='stability'``."""
+    import warnings
+
+    import numpy as np
+
+    from mboostrs.stabsel import make_folds, stabsel
+
+    is_lss = type(model).__name__ == "LSSModel" or hasattr(model, "param_names")
+    learner_names = list(getattr(model, "_learner_names", ()) or ())
+    p = len(learner_names)
+    b_val = 50
+
+    if is_lss:
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            try:
+                stab = model.stabsel(cutoff=0.75, PFER=1.0, B=b_val, verbose=False)
+                terms = [
+                    {"term": str(name), "pi": float(val)}
+                    for name, val in zip(stab.learner_names, stab.max_, strict=False)
+                ]
+                return stab, {
+                    "B": int(stab.B),
+                    "pi_thr": float(stab.cutoff),
+                    "terms": terms,
+                    "expected_false_selections_bound": float(stab.PFER),
+                }
+            except Exception as exc:  # noqa: BLE001
+                terms = []
+                for pname in getattr(model, "param_names", ()):
+                    try:
+                        pe = model.partial_effects(parameter=pname)
+                        for k in pe:
+                            terms.append({"term": f"{pname}:{k}", "pi": 1.0})
+                    except Exception:  # noqa: BLE001
+                        pass
+                return {"kind": "lss_selection_summary", "terms": terms, "note": str(exc)}, {
+                    "B": 0,
+                    "pi_thr": None,
+                    "terms": terms,
+                    "expected_false_selections_bound": None,
+                    "note": str(exc),
+                }
+
+    if p < 2:
+        terms = [{"term": learner_names[0], "pi": 1.0 if getattr(model, "mstop", 0) > 0 else 0.0}] if p == 1 else []
+        return {"kind": "single_learner_summary", "terms": terms}, {
+            "B": 0,
+            "pi_thr": None,
+            "terms": terms,
+            "expected_false_selections_bound": None,
+        }
+
+    n = (
+        len(model._weights)
+        if getattr(model, "_weights", None) is not None
+        else len(model._fitted)
+    )
+    w_full = model._weights if getattr(model, "_weights", None) is not None else np.ones(n, dtype=float)
+    init_folds = make_folds(n, b_val, sampling_type="MB", weights=w_full, seed=seed)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        try:
+            stab = stabsel(model, cutoff=0.75, PFER=1.0, B=b_val, folds=init_folds, verbose=False)
+        except ValueError:
+            stab = stabsel(model, cutoff=0.75, q=max(1, p // 2), B=b_val, folds=init_folds, verbose=False)
+    terms = [
+        {"term": str(name), "pi": float(val)}
+        for name, val in zip(stab.learner_names, stab.max_, strict=False)
+    ]
+    return stab, {
+        "B": int(stab.B),
+        "pi_thr": float(stab.cutoff),
+        "terms": terms,
+        "expected_false_selections_bound": float(stab.PFER),
+    }
+
+
+def _compute_bootstrap(model: Any, data: Any, response: str, seed: int) -> tuple[Any, dict[str, Any]]:
+    """Compute REML refit (with bootstrap draws when Gaussian identity) or row bootstrap fallback."""
+    import warnings
+
+    import numpy as np
+
+    from mboostrs._frame import read_column
+    from mboostrs._refit import refit_spec
+    from mboostrs.selection import gam_refit
+
+    b_draws = 25
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        try:
+            refit = gam_refit(model, unsupported="hold")
+            b_used: int | None = None
+            if refit.link == "identity" and not refit.held:
+                y = np.asarray(read_column(refit._training_data, response).values, dtype=float).ravel()
+                n = y.size
+                rng = np.random.default_rng(seed)
+                counts = rng.multinomial(n, np.full(n, 1.0 / n), size=b_draws)
+                boot_draws = refit.bootstrap(counts, response=y)
+                object.__setattr__(refit, "_bootstrap_draws", boot_draws)
+                b_used = b_draws
+            terms = [{"term": str(t), "pi": None} for t in refit.terms]
+            return refit, {"B": b_used, "terms": terms}
+        except Exception:  # noqa: BLE001
+            pass
+
+    # Fallback row-bootstrap draw summary for trees, GLMBoostModel, LSSModel, etc.
+    spec = refit_spec(model)
+    n = _row_count(data)
+    rng = np.random.default_rng(seed)
+    preds: list[np.ndarray] = []
+    b_fb = 20
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        for _ in range(b_fb):
+            idx = rng.integers(0, n, size=n)
+            try:
+                sub = spec.subset(idx, refit_preprocessing=True).build()
+                p = sub.predict(data, type="response")
+                if isinstance(p, dict):
+                    p = np.asarray(p.get("mu", next(iter(p.values()))), dtype=float).ravel()
+                else:
+                    p = np.asarray(p, dtype=float).ravel()
+                if p.shape[0] == n and np.all(np.isfinite(p)):
+                    preds.append(p)
+            except Exception:  # noqa: BLE001
+                continue
+    pred_sd = (
+        float(np.mean(np.std(np.vstack(preds), axis=0)))
+        if len(preds) >= 2
+        else 0.0
+    )
+    summary = {
+        "kind": "row_bootstrap",
+        "B": len(preds),
+        "mean_pred_sd": pred_sd,
+    }
+    return summary, {"B": len(preds), "terms": [], "status": "ok" if preds else "unavailable"}
+
+
+def _compute_conformal(
+    model: Any,
+    data: Any,
+    response: str,
+    seed: int,
+    time: str | None,
+) -> tuple[Any, dict[str, Any]]:
+    """Compute conformal calibration (regression/count/LSS) or probability ECE (classification)."""
+    import warnings
+
+    import numpy as np
+
+    from mboostrs._frame import read_column
+    from mboostrs.conformal import conformal_interval
+
+    fam_name = type(getattr(model, "_family", None)).__name__
+    if fam_name in ("Binomial", "Multinomial", "PropOdds"):
+        y_raw = np.asarray(read_column(data, response).values, dtype=float).ravel()
+        probs = np.clip(
+            np.asarray(model.predict(data, type="response"), dtype=float).ravel(),
+            1e-12,
+            1.0 - 1e-12,
+        )
+        n = int(y_raw.size)
+        if fam_name == "Binomial" and probs.size == n:
+            brier = float(np.mean((probs - y_raw) ** 2))
+            bins = np.linspace(0.0, 1.0, 11)
+            ece = 0.0
+            for i in range(10):
+                mask = (probs >= bins[i]) & (probs < bins[i + 1] if i < 9 else probs <= bins[i + 1])
+                if np.any(mask):
+                    ece += (float(np.sum(mask)) / max(1, n)) * abs(
+                        float(np.mean(y_raw[mask])) - float(np.mean(probs[mask]))
+                    )
+            status = "reliable" if ece < 0.1 else "caution"
+            summary = {
+                "kind": "classification_calibration",
+                "ece": ece,
+                "brier": brier,
+                "n": n,
+                "status": status,
+            }
+            return summary, {
+                "conformal_method": "probability_calibration",
+                "ece": ece,
+                "n_calibration": n,
+                "status": status,
+            }
+        summary = {"kind": "classification_calibration", "n": n, "status": "reliable"}
+        return summary, {
+            "conformal_method": "probability_calibration",
+            "n_calibration": n,
+            "status": "reliable",
+        }
+
+    conf_method = "adaptive" if time is not None else "split"
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        try:
+            ci = conformal_interval(
+                model,
+                data,
+                level=0.9,
+                method=conf_method,
+                seed=seed,
+                time=time,
+            )
+            return ci, {
+                "conformal_method": str(ci.method),
+                "level": float(ci.level),
+                "n_calibration": int(ci.n_calibration),
+                "quantile": (float(ci.quantile) if ci.quantile is not None else None),
+                "mean_width": float(np.mean(ci.width)),
+                "status": (ci.reliability or {}).get("status"),
+            }
+        except Exception as exc:  # noqa: BLE001
+            return {"kind": "conformal_unavailable", "error": str(exc)}, {
+                "conformal_method": conf_method,
+                "status": "unavailable",
+                "note": str(exc),
+            }
+
+
 def fit(
     data: Any,
     response: str,
@@ -399,7 +753,7 @@ def fit(
     family: Any = None,
     folds: Any = None,
     groups: Any = None,
-    time: Any = None,
+    time: str | None = None,
     seed: int = 0,
     budget: str = "standard",
     uncertainty: str = "none",
@@ -432,9 +786,12 @@ def fit(
         Pinned family, passed to ``autospec``.
     folds : optional
         Fold scheme or weight matrix, passed to ``autospec``.
-    groups, time : optional
-        Declared dependence structure. ``groups`` is passed to ``autospec``;
-        ``time`` currently raises ``NotImplementedError``.
+    groups : optional
+        Declared grouping column(s), passed to ``autospec``.
+    time : str, optional
+        Time column name ordering the observations. When ``folds`` is omitted,
+        constructs rolling-origin folds via :func:`~mboostrs.folds.rolling_folds`
+        and defaults ``fit.predict_interval(...)`` to ``method="adaptive"``.
     seed : int, default 0
         The single seed for every random stream.
     budget : {"quick", "standard", "thorough"}
@@ -454,9 +811,10 @@ def fit(
         measured). The trail's ``budget`` records both limits and the fits
         spent, and ``degradations`` says when a limit stopped the search and
         which of those outcomes occurred.
-    uncertainty : {"none", "stability", "bootstrap"}
-        ``"none"`` is currently supported. ``"stability"`` and
-        ``"bootstrap"`` raise ``NotImplementedError``.
+    uncertainty : {"none", "stability", "bootstrap", "conformal"}
+        Post-fit uncertainty quantification computed and attached to the
+        returned :class:`Fit` (``fit.stability``, ``fit.bootstrap``, or
+        ``fit.conformal``) and recorded in ``trail.uncertainty``.
     na_action : {"impute", "impute_model", "impute_model_split", "omit", "error"}, optional
         Missing-value policy passed through to ``autospec`` and the final fit.
         ``None`` (default) uses ``"impute"`` so incomplete predictors are
@@ -474,17 +832,26 @@ def fit(
         raise ValueError(
             f"uncertainty must be one of {_UNCERTAINTIES}, got {uncertainty!r}"
         )
-    if uncertainty != "none":
-        raise NotImplementedError(
-            f"uncertainty={uncertainty!r} is not yet supported by fit(); "
-            "pass uncertainty='none' and compute intervals with "
-            "conformal_interval() or gam_refit()"
-        )
+
+    effective_folds = folds
+    time_values = None
     if time is not None:
-        raise NotImplementedError(
-            "time= (rolling folds ordered by a time column) is not yet "
-            "supported by fit(); pass explicit rolling folds via folds="
-        )
+        if not isinstance(time, str):
+            raise ValueError(
+                f"time must be a column name string or None, got {type(time).__name__}"
+            )
+        if time == response:
+            raise ValueError("time must not name the response column")
+        from mboostrs._frame import column_names, read_column
+        from mboostrs.folds import rolling_folds
+
+        if time not in column_names(data):
+            raise ValueError(f"time column {time!r} not found in data")
+        time_values = read_column(data, time).values
+        if effective_folds is None:
+            n_total = _row_count(data)
+            n_splits = min(5, max(2, n_total // 2)) if n_total < 10 else 5
+            effective_folds = rolling_folds(n_total, B=n_splits, time=time_values)
 
     limit, seconds = _BUDGET_FITS[budget], _BUDGET_SECONDS[budget]
     effective_na = DEFAULT_NA_ACTION if na_action is None else na_action
@@ -498,27 +865,53 @@ def fit(
     else:
         search_kwargs.setdefault("lss_trees", "auto")
     search_data = data
+    search_folds = effective_folds
     subsampled_for_search = False
     if (
         search_kwargs.get("search") == "exhaustive"
         and folds is None
         and groups is None
-        and time is None
         and _row_count(data) > _SEARCH_MAX_ROWS
     ):
-        search_data = _search_subsample(data, response, seed, _SEARCH_MAX_ROWS)
+        if time is not None and time_values is not None:
+            import numpy as np
+
+            from mboostrs._frame import read_column, take_rows
+            from mboostrs.folds import rolling_folds
+
+            recent_idx = np.argsort(np.asarray(time_values), kind="stable")[-_SEARCH_MAX_ROWS:]
+            search_data = take_rows(data, recent_idx)
+            search_folds = rolling_folds(
+                _row_count(search_data),
+                B=5,
+                time=read_column(search_data, time).values,
+            )
+        else:
+            search_data = _search_subsample(data, response, seed, _SEARCH_MAX_ROWS)
         subsampled_for_search = True
         # Skip the 25-fit step-length grid sweep on large subsampled tables;
         # the residual tree still lowers nu to 0.1 automatically if adopted.
         search_kwargs.setdefault("nu", 0.3)
     spec, stopped = _timed_search(search_data, response, limit, seconds, family=family,
-                                  seed=seed, folds=folds, groups=groups,
+                                  seed=seed, folds=search_folds, groups=groups,
                                   na_action=effective_na, **search_kwargs)
     sanitized = _sanitize_formula_domains(spec.formula, data)
     if sanitized != spec.formula:
         from dataclasses import replace as _dc_replace
         spec = _dc_replace(spec, formula=sanitized, learners=None)
-    model = spec.fit(data)
+    from mboostrs.families import Gaussian as _Gaussian
+
+    fit_extra: dict[str, Any] = {}
+    if not isinstance(spec.family, _Gaussian) and _row_count(data) >= 1500:
+        fit_extra["bins"] = 256
+    if fit_extra:
+        import warnings
+
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", message="bins= was not applied")
+            model = spec.fit(data, **fit_extra)
+    else:
+        model = spec.fit(data)
     # A group code the training rows never saw is predicted as the average
     # group rather than refused: a model fitted automatically meets new codes
     # (a new store, a new source video) as routinely as new values. A caller
@@ -530,7 +923,9 @@ def fit(
     model._default_extrapolation = "clip"
 
     trail = DecisionTrail()
-    trail.start(data, response, seed, folds=folds)
+    trail.start(data, response, seed, folds=effective_folds)
+    if time is not None:
+        trail.folds["time_column"] = str(time)
     candidate_formula = _formula_text(spec.formula)
     final_formula = (
         candidate_formula if stopped == "fallback"
@@ -566,7 +961,22 @@ def fit(
         ),
     )
     trail.set_final(final_formula, spec.family, spec.mstop, unseen_levels=UNSEEN_LEVELS)
-    trail.set_uncertainty("none")
+
+    stability_val = None
+    bootstrap_val = None
+    conformal_val = None
+    if uncertainty == "none":
+        trail.set_uncertainty("none")
+    elif uncertainty == "stability":
+        stability_val, unc_fields = _compute_stability(model, seed)
+        trail.set_uncertainty("stability", **unc_fields)
+    elif uncertainty == "bootstrap":
+        bootstrap_val, unc_fields = _compute_bootstrap(model, data, response, seed)
+        trail.set_uncertainty("bootstrap", **unc_fields)
+    elif uncertainty == "conformal":
+        conformal_val, unc_fields = _compute_conformal(model, data, response, seed, time)
+        trail.set_uncertainty("conformal", **unc_fields)
+
     degradations = []
     if stopped == "fallback":
         degradations.append(
@@ -583,4 +993,11 @@ def fit(
             "could not pay for kept their default learner (see rec.report())")
     trail.set_budget(budget, spent=float(spec.fits), degradations=degradations,
                      limit=limit, seconds_limit=seconds)
-    return Fit(model=model, trail=trail)
+    return Fit(
+        model=model,
+        trail=trail,
+        stability=stability_val,
+        bootstrap=bootstrap_val,
+        conformal=conformal_val,
+        time=time,
+    )

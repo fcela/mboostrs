@@ -34,7 +34,7 @@ propensity is inside `bounds`. The restricted standard error treats the
 inside rows as an independent sample and does not account for the
 cross-fitting or for choosing the bounds after seeing the propensities.
 
-Source: [`python/mboostrs/causal.py` lines 3035-3102](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3035-L3102)
+Source: [`python/mboostrs/causal.py` lines 3096-3163](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3096-L3163)
 
 ## Members
 
@@ -56,7 +56,7 @@ OverlapReport.n_outside  # -> int
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/causal.py` lines 3063-3065](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3063-L3065)
+Source: [`python/mboostrs/causal.py` lines 3124-3126](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3124-L3126)
 
 (overlapreport-share_outside)=
 ## `OverlapReport.share_outside`
@@ -69,7 +69,7 @@ OverlapReport.share_outside  # -> float
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/causal.py` lines 3067-3069](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3067-L3069)
+Source: [`python/mboostrs/causal.py` lines 3128-3130](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3128-L3130)
 
 (overlapreport-to_dict)=
 ## `OverlapReport.to_dict`
@@ -82,7 +82,7 @@ OverlapReport.to_dict(*, include_arrays=False)
 
 A JSON-safe record of the counts, regions and estimates.
 
-Source: [`python/mboostrs/causal.py` lines 3071-3076](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3071-L3076)
+Source: [`python/mboostrs/causal.py` lines 3132-3137](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3132-L3137)
 
 (overlapreport-describe)=
 ## `OverlapReport.describe`
@@ -95,4 +95,4 @@ OverlapReport.describe() -> str
 
 The share outside the bounds, the flagged regions and both estimates.
 
-Source: [`python/mboostrs/causal.py` lines 3083-3102](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3083-L3102)
+Source: [`python/mboostrs/causal.py` lines 3144-3163](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L3144-L3163)

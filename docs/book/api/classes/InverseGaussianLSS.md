@@ -16,7 +16,7 @@ dispersion). Requires `y > 0`. Matches `gamlss.dist::IG()`.
 than Gamma's does — the usual choice for right-skewed positive data with
 heavier mean-dependence than Gamma can express.
 
-Source: [`python/mboostrs/gamlss.py` lines 2073-2130](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2073-L2130)
+Source: [`python/mboostrs/gamlss.py` lines 2076-2133](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2076-L2133)
 
 ## Members
 
@@ -45,7 +45,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `IndexError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2086-2090](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2086-L2090)
+Source: [`python/mboostrs/gamlss.py` lines 2089-2093](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2089-L2093)
 
 (inversegaussianlss-mean)=
 ## `InverseGaussianLSS.mean`
@@ -58,7 +58,7 @@ InverseGaussianLSS.mean(params) -> ndarray
 
 Conditional response mean.
 
-Source: [`python/mboostrs/gamlss.py` lines 2092-2094](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2092-L2094)
+Source: [`python/mboostrs/gamlss.py` lines 2095-2097](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2095-L2097)
 
 (inversegaussianlss-pdf)=
 ## `InverseGaussianLSS.pdf`
@@ -71,7 +71,7 @@ InverseGaussianLSS.pdf(y, params)
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 2096-2111](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2096-L2111)
+Source: [`python/mboostrs/gamlss.py` lines 2099-2114](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2099-L2114)
 
 (inversegaussianlss-cdf)=
 ## `InverseGaussianLSS.cdf`
@@ -95,7 +95,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2113-2126](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2113-L2126)
+Source: [`python/mboostrs/gamlss.py` lines 2116-2129](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2116-L2129)
 
 (inversegaussianlss-quantile)=
 ## `InverseGaussianLSS.quantile`
@@ -108,4 +108,4 @@ InverseGaussianLSS.quantile(p, params) -> ndarray
 
 Inverse-Gaussian quantile, obtained by inverting `cdf`.
 
-Source: [`python/mboostrs/gamlss.py` lines 2128-2130](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2128-L2130)
+Source: [`python/mboostrs/gamlss.py` lines 2131-2133](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2131-L2133)

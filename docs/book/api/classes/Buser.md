@@ -28,4 +28,4 @@ Args:
         (default False).
     by: optional varying-coefficient variable name.
 
-Source: [`python/mboostrs/learners.py` lines 893-933](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L893-L933)
+Source: [`python/mboostrs/learners.py` lines 939-979](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L939-L979)

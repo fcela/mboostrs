@@ -20,6 +20,28 @@ from mboostrs._dispatch import is_lss as _is_lss
 from mboostrs._same_family import SameFamilyGap, same_family_gap  # noqa: F401
 from mboostrs.gamlss import _normal_ppf_array, _prob_col, _records_frame
 
+__all__ = [
+    "SameFamilyGap",
+    "acf_residuals",
+    "calibration_frame",
+    "centile_fan_data",
+    "coef_all",
+    "coverage",
+    "density_overlay_data",
+    "deviance_increment",
+    "deviance_profile",
+    "interval_metrics",
+    "ipc_weights",
+    "outlier_frame",
+    "pit",
+    "predict_all",
+    "q_stats",
+    "quantile_residuals",
+    "residual_frame",
+    "same_family_gap",
+    "worm_data",
+]
+
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------

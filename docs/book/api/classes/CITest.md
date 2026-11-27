@@ -34,7 +34,7 @@ is an exact linear combination of the conditioning set. In that case
 the identity, the one `ci_test` suggests. Read a skipped result as
 undetermined: no p-value exists for it.
 
-Source: [`python/mboostrs/causal.py` lines 4871-4935](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L4871-L4935)
+Source: [`python/mboostrs/causal.py` lines 5192-5256](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L5192-L5256)
 
 ## Members
 
@@ -54,7 +54,7 @@ CITest.to_dict(*, include_arrays=False)
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/causal.py` lines 4911-4912](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L4911-L4912)
+Source: [`python/mboostrs/causal.py` lines 5232-5233](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L5232-L5233)
 
 (citest-describe)=
 ## `CITest.describe`
@@ -67,4 +67,4 @@ CITest.describe() -> str
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/causal.py` lines 4919-4935](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L4919-L4935)
+Source: [`python/mboostrs/causal.py` lines 5240-5256](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L5240-L5256)

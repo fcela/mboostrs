@@ -57,7 +57,13 @@ from mboostrs.causal import (
     rank_by_effect,
 )
 from mboostrs.compare import CompareReport, CompareSpec, compare_to_r
-from mboostrs.conformal import ConformalInterval, ConformalReliabilityWarning, conformal_interval
+from mboostrs.conformal import (
+    AdaptiveConformalStream,
+    ConformalInterval,
+    ConformalReliabilityWarning,
+    adaptive_conformal_stream,
+    conformal_interval,
+)
 from mboostrs.cost import estimate_cost
 from mboostrs.cvrisk import CvReport, CvRiskResult, cv_weights, make_grid, weighted_median
 from mboostrs.declarations import DeclarationCheck, check_declarations
@@ -252,6 +258,7 @@ from mboostrs.policy import (
     Spent,
     auto_policy,
 )
+from mboostrs.quantile import MultiQuantileModel, quantile_boost
 from mboostrs.rearrange import RearrangedQuantiles, rearrange_quantiles
 from mboostrs.reference_gap import ReferenceGapResult, reference_gap
 from mboostrs.report import ExecutionReport, PathRow
@@ -311,12 +318,31 @@ from mboostrs.transforms import imputation_diagnostics
 # function; use `from mboostrs.report import ...` for the submodule's names.
 from mboostrs._procedure import DecisionTrail, Fit, ReproductionResult, fit, report, reproduce
 
+
+def digest(obj) -> str:
+    """Return a concise, deterministic summary card of a fitted mboostrs object."""
+    fn = getattr(obj, "digest", None)
+    if not callable(fn):
+        raise TypeError(
+            f"digest() expects a fitted mboostrs model or result with a .digest() method; "
+            f"got {type(obj).__name__}"
+        )
+    return fn()
+
+from mboostrs import (  # noqa: F401
+    causal,
+    conformal,
+    diagnostics,
+    families,
+    learners,
+    quantile,
+)
+
 # Importing public names from these submodules causes Python to bind the
 # submodule itself on the package.  They are implementation modules, not part
 # of the flat public API (unlike ``datasets`` and ``plot`` above).
 for _submodule in (
-    "build", "causal", "compare", "conformal", "cvrisk", "diagnostics",
-    "explain", "serialize",
+    "build", "compare", "cvrisk", "explain", "serialize",
 ):
     globals().pop(_submodule, None)
 del _submodule
@@ -366,6 +392,7 @@ __all__ = [
     "api_card",
     "install_skill",
     "fit",
+    "digest",
     "report",
     "reproduce",
     "Fit",
@@ -502,10 +529,12 @@ __all__ = [
     "Summary",
     "SummaryTable",
     "validation_capabilities",
+    "AdaptiveConformalStream",
     "ConformalInterval",
     "ConformalReliabilityWarning",
     "load_model",
     "save_model",
+    "adaptive_conformal_stream",
     "conformal_interval",
     "rearrange_quantiles",
     "RearrangedQuantiles",
@@ -543,6 +572,8 @@ __all__ = [
     "GaussReg",
     "AdaExp",
     "Quantile",
+    "MultiQuantileModel",
+    "quantile_boost",
     "Expectile",
     "Huber",
     "CoxPH",

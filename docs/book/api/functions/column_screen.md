@@ -36,4 +36,4 @@ Columns
 
 Returns a data frame (see `output`) sorted by `curve_r2`.
 
-Source: [`python/mboostrs/terms.py` lines 1503-1562](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L1503-L1562)
+Source: [`python/mboostrs/terms.py` lines 1563-1622](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L1563-L1622)

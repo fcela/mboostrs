@@ -123,7 +123,7 @@ def _structural_check(record: dict[str, Any]) -> None:
     if not isinstance(budget.get("degradations"), list):
         raise ValueError("budget.degradations must be a list")
     uncertainty = record["uncertainty"]
-    if uncertainty.get("method") not in ("stability", "bootstrap", "none"):
+    if uncertainty.get("method") not in ("stability", "bootstrap", "conformal", "none"):
         raise ValueError(f"invalid uncertainty method {uncertainty.get('method')!r}")
 
 
@@ -238,21 +238,33 @@ class DecisionTrail:
         """
         from mboostrs import __version__
         from mboostrs._procedure._seeding import blas_threads
+        from mboostrs._provenance import fingerprint, provenance
 
-        try:
-            from mboostrs.build import build_info
-
-            git_sha = build_info().get("git_revision")
-        except Exception:  # noqa: BLE001
-            git_sha = None
+        fp = fingerprint(data)
+        prov = provenance(data, seed=seed)
+        build_meta = prov.get("build") or {}
+        git_sha = build_meta.get("git_revision")
+        rust_env = {
+            k: build_meta.get(k)
+            for k in ("rustc", "target", "profile", "source_sha256")
+            if k in build_meta
+        }
 
         self.provenance = {
             "mboostrs": __version__,
             "git_sha": None if git_sha is None else str(git_sha),
             "seed": int(seed),
             "blas_threads": blas_threads(),
+            "environment": {
+                "python": prov["python_version"],
+                "platform": prov["platform"],
+                "rust": rust_env,
+                "packages": dict(prov["packages"]),
+            },
         }
         self.data = summarize_data(data, response, column_kinds=column_kinds)
+        self.data["sha256"] = fp["sha256"]
+        self.data["schema"] = {col["name"]: col["dtype"] for col in fp["columns"]}
         if folds_info is None:
             folds_info = _folds_info(folds, seed, self.data.get("n", 0))
         self.folds = dict(folds_info)

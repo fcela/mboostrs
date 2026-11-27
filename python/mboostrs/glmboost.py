@@ -298,6 +298,25 @@ class GLMBoostModel(ModelAPIMixin):
         """Names of all base-learners (including intercept if present)."""
         return list(self._learner_names)
 
+    def digest(self) -> str:
+        """Return a concise, deterministic summary card of this GLMBoostModel."""
+        n_obs = len(self._fitted)
+        risk_str = f"{float(self._risk[-1]):.6g}" if len(self._risk) else "nan"
+        coefs = self.coefficients_
+        ranked = sorted(coefs.items(), key=lambda kv: (-abs(kv[1]), kv[0]))
+        shown = ", ".join(f"{nm}={val:.4g}" for nm, val in ranked[:10]) or "none"
+        if len(ranked) > 10:
+            shown += f", (+{len(ranked) - 10} more)"
+        inactive = max(0, len(self._learner_names) - len(coefs))
+        n_warn = len(self._fit_warnings)
+        return "\n".join([
+            f"[mboostrs GLMBoostModel] family={type(self._family).__name__}, n={n_obs}, "
+            f"formula={self.formula}",
+            f"stopping: mstop={self.mstop}, nu={self._nu:g}, final_inbag_risk={risk_str}",
+            f"active_terms: {shown}; inactive={inactive}",
+            f"diagnostics: fit_warnings={n_warn}",
+        ])
+
 
 
     def model_matrix(self, which=None):

@@ -20,4 +20,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/_procedure/_report.py` lines 142-155](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_report.py#L142-L155)
+Source: [`python/mboostrs/_procedure/_report.py` lines 151-164](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_report.py#L151-L164)

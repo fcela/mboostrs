@@ -12,7 +12,7 @@ fit(
     family: Any = None,
     folds: Any = None,
     groups: Any = None,
-    time: Any = None,
+    time: str | None = None,
     seed: int = 0,
     budget: str = 'standard',
     uncertainty: str = 'none',
@@ -43,8 +43,10 @@ preserve support) and the final model is fitted on all rows.
 - `response` (str): The response column.
 - `family` (Family, optional): Pinned family, passed to `autospec`.
 - `folds` (optional): Fold scheme or weight matrix, passed to `autospec`.
-- `groups, time` (optional): Declared dependence structure. `groups` is passed to `autospec`;
-  `time` currently raises `NotImplementedError`.
+- `groups` (optional): Declared grouping column(s), passed to `autospec`.
+- `time` (str, optional): Time column name ordering the observations. When `folds` is omitted,
+  constructs rolling-origin folds via `mboostrs.folds.rolling_folds`
+  and defaults `fit.predict_interval(...)` to `method="adaptive"`.
 - `seed` (int, default 0): The single seed for every random stream.
 - `budget` ({"quick", "standard", "thorough"}): The number of model fits and the wall-clock time the specification
   search is given: 16 fits and 60 s, 64 fits and 120 s, 512 fits and
@@ -62,8 +64,9 @@ preserve support) and the final model is fitted on all rows.
   measured). The trail's `budget` records both limits and the fits
   spent, and `degradations` says when a limit stopped the search and
   which of those outcomes occurred.
-- `uncertainty` ({"none", "stability", "bootstrap"}): `"none"` is currently supported. `"stability"` and
-  `"bootstrap"` raise `NotImplementedError`.
+- `uncertainty` ({"none", "stability", "bootstrap", "conformal"}): Post-fit uncertainty quantification computed and attached to the
+  returned `Fit` (`fit.stability`, `fit.bootstrap`, or
+  `fit.conformal`) and recorded in `trail.uncertainty`.
 - `na_action` ({"impute", "impute_model", "impute_model_split", "omit", "error"}, optional): Missing-value policy passed through to `autospec` and the final fit.
   `None` (default) uses `"impute"` so incomplete predictors are
   median/mode-filled with missingness indicators and prediction handles
@@ -76,6 +79,5 @@ preserve support) and the final model is fitted on all rows.
 Found by reading the function's `raise` statements; conditions are in the source.
 
 - `ValueError`
-- `NotImplementedError`
 
-Source: [`python/mboostrs/_procedure/_fit.py` lines 395-586](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_fit.py#L395-L586)
+Source: [`python/mboostrs/_procedure/_fit.py` lines 749-1003](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_fit.py#L749-L1003)

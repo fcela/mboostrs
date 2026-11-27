@@ -19,4 +19,4 @@ The main-effect right-hand side suggested for `data`.
 'bbs(age, df=4.0) + bols(sex)'
 ```
 
-Source: [`python/mboostrs/terms.py` lines 623-632](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L623-L632)
+Source: [`python/mboostrs/terms.py` lines 683-692](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L683-L692)

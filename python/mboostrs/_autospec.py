@@ -149,6 +149,9 @@ class SpecRecommendation:
     #: The column of exposures the response is a rate per unit of
     #: (``autospec(exposure=)``). `fit` passes its log as the offset.
     exposure: str | None = None
+    #: Distributional boosting schedule (``"cyclic"`` or ``"noncyclic"``),
+    #: replayed by ``fit()`` when the recommended family is an LSS family.
+    method: str | None = None
 
     # -- tuple compatibility -------------------------------------------
     def __iter__(self):
@@ -294,6 +297,8 @@ class SpecRecommendation:
             # one formula, one predictor per distribution parameter.
             if self.env and "env" not in kwargs:
                 kwargs["env"] = self.env
+            if self.method is not None and "method" not in kwargs:
+                kwargs["method"] = self.method
             return gamboostLSS(self.formula, data=data, families=self.family,
                                control=control, **kwargs)
         if self.learners is None and "learners" not in kwargs:
@@ -3665,7 +3670,7 @@ _MSTOP_EXTENSION_CAP = 10_000
 
 
 def probe_mstop(data, response, formula, family, *, folds, largest, nu,
-                env=None, extend=0, fold_scheme=None):
+                env=None, extend=0, fold_scheme=None, bins=None, step=None):
     """Cross-validate one path and read the optimum off the curve.
 
     One fit per fold covers the whole grid: the cross-validated risk is
@@ -3685,12 +3690,17 @@ def probe_mstop(data, response, formula, family, *, folds, largest, nu,
         with warnings.catch_warnings():
             # `MstopEvidence.at_boundary` carries this to the report instead.
             warnings.filterwarnings("ignore", message=_SEARCH_ENDED_FALLING)
+            if bins is not None:
+                warnings.filterwarnings("ignore", message="bins= was not applied")
+            extra = {"bins": bins} if bins is not None else {}
             tuning = tune_mstop(
                 formula, data, family,
                 folds=fold_scheme if fold_scheme is not None
                 else np.asarray(folds, dtype=float),
                 start=largest, nu=nu, extensions=extend,
-                max_mstop=_MSTOP_EXTENSION_CAP, env=env, step=_STEP.get(),
+                max_mstop=_MSTOP_EXTENSION_CAP, env=env,
+                step=(_STEP.get() if step is None else step),
+                **extra,
                 **_offset_kwargs())
     except ValueError:
         return None

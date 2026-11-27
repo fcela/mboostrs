@@ -903,6 +903,8 @@ struct FoldRun<F: Family + Clone> {
     /// Block, tree and factored designs restricted to held-out rows.
     compacted: Vec<Option<Array2<f64>>>,
     f_oob: Array1<f64>,
+    bin_pred_buf: Vec<f64>,
+    oob_pred_buf: Vec<f64>,
     nu: f64,
     risks: Vec<f64>,
 }
@@ -1035,6 +1037,8 @@ impl<F: Family + Clone> FoldRun<F> {
             oob_sum,
             compacted,
             f_oob: start,
+            bin_pred_buf: Vec::with_capacity(256),
+            oob_pred_buf: vec![0.0; n_oob],
             nu: control.nu,
             risks: Vec::with_capacity(control.mstop as usize + 1),
         };
@@ -1111,16 +1115,45 @@ impl<F: Family + Clone> FoldRun<F> {
                         *fi += nu * coef[group_idx[oi] as usize];
                     }
                 }
-                PreparedLearner::BinnedScalarBols { .. }
-                | PreparedLearner::BinnedBlockBols { .. }
-                | PreparedLearner::BlockBols { .. }
+                PreparedLearner::BinnedScalarBols {
+                    bin_index,
+                    bin_values,
+                    ..
+                } => {
+                    let c = nu * coef[0];
+                    for (fi, &oi) in self.f_oob.iter_mut().zip(self.oob_idx.iter()) {
+                        *fi += c * bin_values[bin_index[oi] as usize];
+                    }
+                }
+                PreparedLearner::BinnedBlockBols {
+                    bin_index, basis, ..
+                } => {
+                    let k = basis.nrows();
+                    let p = basis.ncols();
+                    self.bin_pred_buf.resize(k, 0.0);
+                    for bin in 0..k {
+                        let mut s = 0.0;
+                        for col in 0..p {
+                            s += basis[[bin, col]] * coef[col];
+                        }
+                        self.bin_pred_buf[bin] = s;
+                    }
+                    for (fi, &oi) in self.f_oob.iter_mut().zip(self.oob_idx.iter()) {
+                        *fi += nu * self.bin_pred_buf[bin_index[oi] as usize];
+                    }
+                }
+                PreparedLearner::BlockBols { .. }
                 | PreparedLearner::BspatialStreamed { .. }
                 | PreparedLearner::BmonoBbs { .. } => {
                     if let Some(ref design_oob) = self.compacted[idx] {
-                        // The clone is gone; the product stays, for the
-                        // reason above.
-                        let pred = design_oob.dot(&ndarray::ArrayView1::from(&coef[..]));
-                        for (fi, &pi) in self.f_oob.iter_mut().zip(pred.iter()) {
+                        ndarray::linalg::general_mat_vec_mul(
+                            1.0,
+                            design_oob,
+                            &ndarray::ArrayView1::from(&coef[..]),
+                            0.0,
+                            &mut ndarray::ArrayViewMut1::from(&mut self.oob_pred_buf[..]),
+                        );
+                        for (fi, &pi) in self.f_oob.iter_mut().zip(self.oob_pred_buf.iter()) {
                             *fi += nu * pi;
                         }
                     }
@@ -1223,6 +1256,88 @@ impl<F: Family + Clone> FoldRun<F> {
             self.push_risk(m + 1);
         }
     }
+}
+
+/// Score a fitted in-bag [`BoostingPath`](crate::path::BoostingPath) on held-out observations across
+/// iterations `0..=mstop`, returning normalized OOB risk at every step.
+pub fn score_fold_oob_path<F: Family + Clone>(
+    learners: Vec<PreparedLearner>,
+    fit_family: F,
+    eval_family: F,
+    y: ArrayView1<f64>,
+    weights: ArrayView1<f64>,
+    fold_w: Array1<f64>,
+    path: crate::path::BoostingPath,
+    nu: f64,
+    fold_idx: usize,
+) -> Result<Vec<f64>, MboostrsError> {
+    let n = eval_family.n_from_y(y);
+    let mut oob_weights = weights.to_owned();
+    for i in 0..n {
+        if fold_w[i] > 0.0 {
+            oob_weights[i] = 0.0;
+        }
+    }
+    let oob_sum: f64 = oob_weights.sum() / eval_family.flat_response_span() as f64;
+    let oob_idx: Vec<usize> = (0..n).filter(|&i| oob_weights[i] > 0.0).collect();
+    let n_oob = oob_idx.len();
+    if n_oob == 0 {
+        return Err(MboostrsError::Control(format!(
+            "cross-validation fold {fold_idx} has no positive-weight OOB observations"
+        )));
+    }
+    let y_oob = if y.len() == n {
+        y.select(ndarray::Axis(0), &oob_idx)
+    } else {
+        let times = y.slice(ndarray::s![..n]);
+        let events = y.slice(ndarray::s![n..]);
+        ndarray::concatenate![
+            ndarray::Axis(0),
+            times.select(ndarray::Axis(0), &oob_idx),
+            events.select(ndarray::Axis(0), &oob_idx),
+        ]
+    };
+    let w_oob = oob_weights.select(ndarray::Axis(0), &oob_idx);
+    let start = Array1::from_elem(n_oob, path.offset);
+    let compacted: Vec<Option<Array2<f64>>> = learners
+        .iter()
+        .map(|l| match l {
+            PreparedLearner::BlockBols { design, .. }
+            | PreparedLearner::BmonoBbs { design, .. }
+            | PreparedLearner::Btree { design, .. } => {
+                Some(design.select(ndarray::Axis(0), &oob_idx))
+            }
+            PreparedLearner::FactoredBlockBols { x_l, .. } => {
+                Some(x_l.select(ndarray::Axis(0), &oob_idx))
+            }
+            PreparedLearner::BspatialStreamed { .. } => {
+                Some(l.design_matrix()?.select(ndarray::Axis(0), &oob_idx))
+            }
+            _ => None,
+        })
+        .collect();
+    let n_steps = path.selected.len();
+    let n_oob = oob_idx.len();
+    let mut run = FoldRun {
+        learners,
+        fit_family,
+        eval_family,
+        fold_w,
+        path,
+        oob_idx,
+        y_oob,
+        w_oob,
+        oob_sum,
+        compacted,
+        f_oob: start,
+        bin_pred_buf: Vec::with_capacity(256),
+        oob_pred_buf: vec![0.0; n_oob],
+        nu,
+        risks: Vec::with_capacity(n_steps + 1),
+    };
+    run.push_risk(0);
+    run.walk(0, n_steps);
+    Ok(run.risks)
 }
 
 /// Monomorphised cvrisk: takes a concrete family type so the per-fold
@@ -1446,6 +1561,424 @@ fn check_cv_inputs<F: Family>(
     Ok((y_encoded, n))
 }
 
+/// Batched multi-fold CV fast path for purely binned / diagonal learners.
+///
+/// Streams each learner's shared `u32` bin/group index vector ONCE per boosting
+/// iteration across all `B` folds simultaneously (`bin_wu[bin * B + b] += fw_u[i * B + b]`),
+/// cutting memory bandwidth by `B`x while remaining IEEE-754 bit-identical to `FoldRun`.
+fn try_cvrisk_binned_multifold<F: Family + Clone>(
+    inputs: &FoldInputs<'_, F>,
+    control: &BoostControl,
+    parallel: bool,
+    fold_label: &str,
+) -> Result<Option<CvRiskResult>, MboostrsError> {
+    let b = inputs.folds.ncols();
+    let n = inputs.n;
+    if b < 2
+        || inputs.offset_vec.is_some()
+        || !matches!(control.step, crate::control::StepRule::Fixed)
+        || control.component_fraction.is_some()
+        || inputs.family_template.flat_response_span() != 1
+        || inputs.y.len() != n
+        || inputs.family_template.calibrates()
+        || inputs.family_template.supports_gram_update()
+    {
+        return Ok(None);
+    }
+
+    let fold_ws: Vec<Array1<f64>> = (0..b)
+        .map(|f_idx| (0..n).map(|i| inputs.folds[[i, f_idx]]).collect())
+        .collect();
+    let fold_learners: Vec<Vec<PreparedLearner>> = if parallel {
+        fold_ws
+            .par_iter()
+            .map(|fw| inputs.preparer.prepare(fw.view()))
+            .collect()
+    } else {
+        fold_ws
+            .iter()
+            .map(|fw| inputs.preparer.prepare(fw.view()))
+            .collect()
+    };
+    let n_learners = fold_learners[0].len();
+    if n_learners == 0 {
+        return Ok(None);
+    }
+
+    let is_compatible = fold_learners.iter().all(|ls| {
+        ls.len() == n_learners
+            && ls
+                .iter()
+                .enumerate()
+                .all(|(l_idx, lr)| match (lr, &fold_learners[0][l_idx]) {
+                    (
+                        PreparedLearner::BinnedBlockBols {
+                            bin_index: idx_b,
+                            basis: bas_b,
+                            ..
+                        },
+                        PreparedLearner::BinnedBlockBols {
+                            bin_index: idx_0,
+                            basis: bas_0,
+                            ..
+                        },
+                    ) => std::sync::Arc::ptr_eq(idx_b, idx_0) && bas_b.nrows() == bas_0.nrows(),
+                    (
+                        PreparedLearner::BinnedScalarBols {
+                            bin_index: idx_b,
+                            exact: ex_b,
+                            bin_values: bv_b,
+                            ..
+                        },
+                        PreparedLearner::BinnedScalarBols {
+                            bin_index: idx_0,
+                            exact: ex_0,
+                            bin_values: bv_0,
+                            ..
+                        },
+                    ) => {
+                        !*ex_b
+                            && !*ex_0
+                            && std::sync::Arc::ptr_eq(idx_b, idx_0)
+                            && bv_b.len() == bv_0.len()
+                    }
+                    (
+                        PreparedLearner::DiagBrandom {
+                            group_idx: idx_b,
+                            n_levels: nl_b,
+                            ..
+                        },
+                        PreparedLearner::DiagBrandom {
+                            group_idx: idx_0,
+                            n_levels: nl_0,
+                            ..
+                        },
+                    ) => std::sync::Arc::ptr_eq(idx_b, idx_0) && nl_b == nl_0,
+                    _ => false,
+                })
+    });
+    if !is_compatible {
+        return Ok(None);
+    }
+
+    let y = inputs.y;
+    let mstop = control.mstop as usize;
+    let nu = control.nu;
+
+    let mut fit_families: Vec<F> = (0..b).map(|_| inputs.family_template.clone()).collect();
+    let eval_families: Vec<F> = (0..b).map(|_| inputs.family_template.clone()).collect();
+    let mut oob_indices: Vec<Vec<usize>> = Vec::with_capacity(b);
+    let mut y_oobs: Vec<Array1<f64>> = Vec::with_capacity(b);
+    let mut w_oobs: Vec<Array1<f64>> = Vec::with_capacity(b);
+    let mut oob_sums: Vec<f64> = Vec::with_capacity(b);
+    let mut f_alls: Vec<Array1<f64>> = Vec::with_capacity(b);
+    let mut f_oobs: Vec<Array1<f64>> = Vec::with_capacity(b);
+    let mut u_bufs: Vec<Array1<f64>> = (0..b).map(|_| Array1::zeros(n)).collect();
+    let mut risk_matrix = Array2::zeros((b, mstop + 1));
+
+    for f_idx in 0..b {
+        let fw = &fold_ws[f_idx];
+        if fit_families[f_idx].requires_unit_weights()
+            && fw.iter().any(|&w| w != 0.0 && (w - 1.0).abs() > 1e-12)
+        {
+            return Ok(None);
+        }
+        if fit_families[f_idx].requires_binary_weights() && fw.iter().any(|&w| w != 0.0 && w != 1.0)
+        {
+            return Ok(None);
+        }
+        let mut oob_w = inputs.weights.to_owned();
+        for i in 0..n {
+            if fw[i] > 0.0 {
+                oob_w[i] = 0.0;
+            }
+            if let Some(mask) = inputs.judge {
+                if !mask[[i, f_idx]] {
+                    oob_w[i] = 0.0;
+                }
+            }
+        }
+        let oob_idx: Vec<usize> = (0..n).filter(|&i| oob_w[i] > 0.0).collect();
+        if oob_idx.is_empty() {
+            return Err(MboostrsError::Control(format!(
+                "cross-validation fold {f_idx} has no positive-weight OOB observations"
+            )));
+        }
+        let oob_sum: f64 = oob_w.sum();
+        let y_oob = y.select(ndarray::Axis(0), &oob_idx);
+        let w_oob = oob_w.select(ndarray::Axis(0), &oob_idx);
+        let offset = inputs
+            .offset_override
+            .unwrap_or_else(|| fit_families[f_idx].offset(y, fw.view()));
+        let f_all = Array1::from_elem(n, offset);
+        let f_oob = Array1::from_elem(oob_idx.len(), offset);
+        let r0 = eval_families[f_idx].held_out_risk(y_oob.view(), f_oob.view(), w_oob.view());
+        risk_matrix[[f_idx, 0]] = if oob_sum > 0.0 {
+            r0 / oob_sum
+        } else {
+            f64::NAN
+        };
+
+        oob_indices.push(oob_idx);
+        y_oobs.push(y_oob);
+        w_oobs.push(w_oob);
+        oob_sums.push(oob_sum);
+        f_alls.push(f_all);
+        f_oobs.push(f_oob);
+    }
+
+    let mut fw_u = vec![0.0f64; n * b];
+    let mut wu2 = vec![0.0f64; b];
+    let mut win_bin_pred: Vec<Vec<f64>> = (0..b).map(|_| Vec::with_capacity(256)).collect();
+
+    let eval_learner = |l_idx: usize, fw_u: &[f64], wu2: &[f64]| -> Vec<(f64, Vec<f64>)> {
+        match &fold_learners[0][l_idx] {
+            PreparedLearner::BinnedBlockBols {
+                bin_index, basis, ..
+            } => {
+                let k = basis.nrows();
+                let mut bin_wu = vec![0.0f64; k * b];
+                for i in 0..n {
+                    let bin_base = (bin_index[i] as usize) * b;
+                    let row_base = i * b;
+                    for f_idx in 0..b {
+                        bin_wu[bin_base + f_idx] += fw_u[row_base + f_idx];
+                    }
+                }
+                let mut out = Vec::with_capacity(b);
+                for f_idx in 0..b {
+                    if let PreparedLearner::BinnedBlockBols {
+                        basis,
+                        penalty,
+                        solver,
+                        ..
+                    } = &fold_learners[f_idx][l_idx]
+                    {
+                        let p = basis.ncols();
+                        let mut rhs = vec![0.0f64; p];
+                        for col in 0..p {
+                            let mut total = 0.0f64;
+                            for bin in 0..k {
+                                total += basis[[bin, col]] * bin_wu[bin * b + f_idx];
+                            }
+                            rhs[col] = total;
+                        }
+                        let mut beta = vec![0.0f64; p];
+                        solver.solve_into_slice(&rhs, &mut beta);
+                        let mut beta_dot_rhs = 0.0f64;
+                        let mut beta_dot_pbeta = 0.0f64;
+                        for row in 0..p {
+                            beta_dot_rhs += beta[row] * rhs[row];
+                            let mut pen_row = 0.0f64;
+                            for col in 0..p {
+                                pen_row += penalty[[row, col]] * beta[col];
+                            }
+                            beta_dot_pbeta += beta[row] * pen_row;
+                        }
+                        out.push((wu2[f_idx] - beta_dot_rhs - beta_dot_pbeta, beta));
+                    }
+                }
+                out
+            }
+            PreparedLearner::BinnedScalarBols {
+                bin_index,
+                bin_values,
+                ..
+            } => {
+                let k = bin_values.len();
+                let mut bin_wu = vec![0.0f64; k * b];
+                for i in 0..n {
+                    let bin_base = (bin_index[i] as usize) * b;
+                    let row_base = i * b;
+                    for f_idx in 0..b {
+                        bin_wu[bin_base + f_idx] += fw_u[row_base + f_idx];
+                    }
+                }
+                let mut out = Vec::with_capacity(b);
+                for f_idx in 0..b {
+                    if let PreparedLearner::BinnedScalarBols {
+                        bin_values,
+                        penalty,
+                        scalar_denom,
+                        ..
+                    } = &fold_learners[f_idx][l_idx]
+                    {
+                        let numer: f64 = (0..k)
+                            .map(|bin| bin_values[bin] * bin_wu[bin * b + f_idx])
+                            .sum();
+                        let beta_val = if *scalar_denom > 0.0 {
+                            numer / *scalar_denom
+                        } else {
+                            0.0
+                        };
+                        let sse = if *scalar_denom > 0.0 {
+                            wu2[f_idx] - beta_val * numer - *penalty * beta_val * beta_val
+                        } else {
+                            wu2[f_idx]
+                        };
+                        out.push((sse, vec![beta_val]));
+                    }
+                }
+                out
+            }
+            PreparedLearner::DiagBrandom {
+                group_idx,
+                n_levels,
+                ..
+            } => {
+                let k = *n_levels;
+                let mut grp_wu = vec![0.0f64; k * b];
+                for i in 0..n {
+                    let grp_base = (group_idx[i] as usize) * b;
+                    let row_base = i * b;
+                    for f_idx in 0..b {
+                        grp_wu[grp_base + f_idx] += fw_u[row_base + f_idx];
+                    }
+                }
+                let mut out = Vec::with_capacity(b);
+                for f_idx in 0..b {
+                    if let PreparedLearner::DiagBrandom {
+                        n_levels,
+                        inv_denom,
+                        lambda,
+                        ..
+                    } = &fold_learners[f_idx][l_idx]
+                    {
+                        let mut beta = vec![0.0f64; *n_levels];
+                        let mut beta_dot_rhs = 0.0f64;
+                        let mut beta_sq = 0.0f64;
+                        for g in 0..*n_levels {
+                            let r = grp_wu[g * b + f_idx];
+                            let bv = r * inv_denom[g];
+                            beta[g] = bv;
+                            beta_dot_rhs += bv * r;
+                            beta_sq += bv * bv;
+                        }
+                        out.push((wu2[f_idx] - beta_dot_rhs - (*lambda) * beta_sq, beta));
+                    }
+                }
+                out
+            }
+            _ => unreachable!(),
+        }
+    };
+
+    for m in 1..=mstop {
+        for f_idx in 0..b {
+            fit_families[f_idx].negative_gradient(
+                y,
+                f_alls[f_idx].view(),
+                fold_ws[f_idx].view(),
+                u_bufs[f_idx].view_mut(),
+            );
+            let fw_s = fold_ws[f_idx].as_slice().unwrap();
+            let u_s = u_bufs[f_idx].as_slice().unwrap();
+            let mut sum_wu2 = 0.0f64;
+            for i in 0..n {
+                let wu = fw_s[i] * u_s[i];
+                fw_u[i * b + f_idx] = wu;
+                sum_wu2 += wu * u_s[i];
+            }
+            wu2[f_idx] = sum_wu2;
+        }
+
+        let per_learner: Vec<Vec<(f64, Vec<f64>)>> = if parallel && n_learners >= 8 {
+            (0..n_learners)
+                .into_par_iter()
+                .map(|l_idx| eval_learner(l_idx, &fw_u, &wu2))
+                .collect()
+        } else {
+            (0..n_learners)
+                .map(|l_idx| eval_learner(l_idx, &fw_u, &wu2))
+                .collect()
+        };
+
+        for f_idx in 0..b {
+            let mut best_l = 0usize;
+            let mut best_sse = f64::INFINITY;
+            for (l_idx, fold_res) in per_learner.iter().enumerate() {
+                let sse = fold_res[f_idx].0;
+                if sse.is_finite() && sse < best_sse {
+                    best_sse = sse;
+                    best_l = l_idx;
+                }
+            }
+            let best_beta = &per_learner[best_l][f_idx].1;
+            match &fold_learners[f_idx][best_l] {
+                PreparedLearner::BinnedBlockBols {
+                    bin_index, basis, ..
+                } => {
+                    let k = basis.nrows();
+                    let p = basis.ncols();
+                    win_bin_pred[f_idx].resize(k, 0.0);
+                    for bin in 0..k {
+                        let mut s = 0.0;
+                        for col in 0..p {
+                            s += basis[[bin, col]] * best_beta[col];
+                        }
+                        win_bin_pred[f_idx][bin] = nu * s;
+                    }
+                    let bp = &win_bin_pred[f_idx];
+                    let fa = f_alls[f_idx].as_slice_mut().unwrap();
+                    for i in 0..n {
+                        fa[i] += bp[bin_index[i] as usize];
+                    }
+                    let fo = f_oobs[f_idx].as_slice_mut().unwrap();
+                    for (j, &oi) in oob_indices[f_idx].iter().enumerate() {
+                        fo[j] += bp[bin_index[oi] as usize];
+                    }
+                }
+                PreparedLearner::BinnedScalarBols {
+                    bin_index,
+                    bin_values,
+                    ..
+                } => {
+                    let c = nu * best_beta[0];
+                    let fa = f_alls[f_idx].as_slice_mut().unwrap();
+                    for i in 0..n {
+                        fa[i] += c * bin_values[bin_index[i] as usize];
+                    }
+                    let fo = f_oobs[f_idx].as_slice_mut().unwrap();
+                    for (j, &oi) in oob_indices[f_idx].iter().enumerate() {
+                        fo[j] += c * bin_values[bin_index[oi] as usize];
+                    }
+                }
+                PreparedLearner::DiagBrandom { group_idx, .. } => {
+                    let fa = f_alls[f_idx].as_slice_mut().unwrap();
+                    for i in 0..n {
+                        fa[i] += nu * best_beta[group_idx[i] as usize];
+                    }
+                    let fo = f_oobs[f_idx].as_slice_mut().unwrap();
+                    for (j, &oi) in oob_indices[f_idx].iter().enumerate() {
+                        fo[j] += nu * best_beta[group_idx[oi] as usize];
+                    }
+                }
+                _ => unreachable!(),
+            }
+            let r_m = eval_families[f_idx].held_out_risk(
+                y_oobs[f_idx].view(),
+                f_oobs[f_idx].view(),
+                w_oobs[f_idx].view(),
+            );
+            risk_matrix[[f_idx, m]] = if oob_sums[f_idx] > 0.0 {
+                r_m / oob_sums[f_idx]
+            } else {
+                f64::NAN
+            };
+        }
+    }
+
+    let aggregate = Array1::from_shape_fn(mstop + 1, |m| {
+        (0..b).map(|f_idx| risk_matrix[[f_idx, m]]).sum::<f64>() / b as f64
+    });
+    Ok(Some(CvRiskResult {
+        risk_matrix,
+        aggregate,
+        grid: (0..=mstop).collect(),
+        fold_type: format!("{}-fold {fold_label}", b),
+    }))
+}
+
 /// Fit every fold, grow the grid under `rule` when one is given, and
 /// assemble the (folds x iterations) risk matrix.
 fn run_folds<F: Family + Clone>(
@@ -1455,6 +1988,11 @@ fn run_folds<F: Family + Clone>(
     fold_label: &str,
     rule: Option<&ExtendRule>,
 ) -> Result<(CvRiskResult, Option<ExtensionReport>), MboostrsError> {
+    if rule.is_none() {
+        if let Some(fast) = try_cvrisk_binned_multifold(inputs, control, parallel, fold_label)? {
+            return Ok((fast, None));
+        }
+    }
     let b = inputs.folds.ncols();
     let mut control = control.clone();
     if let Some(rule) = rule {
@@ -2815,6 +3353,97 @@ mod tests {
             assert!(report.at_boundary);
             assert_eq!(report.grid_ends, vec![5, 10, 20, 40]);
             assert_eq!(grown.aggregate.len(), 41);
+        }
+
+        #[test]
+        fn batched_multifold_binned_cv_matches_fold_run_bit_for_bit() {
+            use crate::families::Binomial;
+            use crate::learners::LearnerBlueprint;
+
+            struct BlueprintPrep(Vec<LearnerBlueprint>);
+            impl crate::cv::LearnerPreparer for BlueprintPrep {
+                fn prepare(&self, weights: ArrayView1<f64>) -> Vec<PreparedLearner> {
+                    self.0
+                        .iter()
+                        .map(|bp| bp.prepare(weights).unwrap().0)
+                        .collect()
+                }
+                fn family(&self) -> Box<dyn Family> {
+                    Box::new(Binomial)
+                }
+            }
+
+            let n = 400;
+            let x1 = Array1::from_shape_fn(n, |i| ((i as f64) * 0.13).sin());
+            let x2 = Array1::from_shape_fn(n, |i| ((i as f64) * 0.07).cos());
+            let y =
+                Array1::from_shape_fn(n, |i| if x1[i] + 0.5 * x2[i] > 0.0 { 1.0 } else { -1.0 });
+            let w = Array1::ones(n);
+            let fmat = folds(n);
+            let bp1 = LearnerBlueprint::bbs_ospline_binned(
+                x1, "x1", 12, 3, 4.0, None, false, None, None, 0, 64,
+            )
+            .unwrap();
+            let bp2 = LearnerBlueprint::bbs_ospline_binned(
+                x2, "x2", 12, 3, 4.0, None, false, None, None, 0, 64,
+            )
+            .unwrap();
+            let prep = BlueprintPrep(vec![bp1, bp2]);
+            let ctrl = BoostControl::new(35, 0.2).unwrap();
+
+            let batched = try_cvrisk_with(
+                &prep,
+                y.view(),
+                w.view(),
+                &ctrl,
+                &fmat,
+                None,
+                None,
+                None,
+                true,
+                Binomial,
+                "kfold",
+            )
+            .unwrap();
+
+            // Force FoldRun path via a trivial ExtendRule with max_mstop == start == 35
+            // and max_extensions = Some(0).
+            let rule = ExtendRule {
+                start: 35,
+                max_mstop: 35,
+                patience: None,
+                boundary_share: 0.02,
+                max_extensions: Some(0),
+            };
+            let (per_fold, _) = try_cvrisk_extending(
+                &prep,
+                y.view(),
+                w.view(),
+                &ctrl,
+                &fmat,
+                None,
+                None,
+                None,
+                false,
+                Binomial,
+                "kfold",
+                &rule,
+            )
+            .unwrap();
+
+            assert_eq!(batched.risk_matrix.dim(), per_fold.risk_matrix.dim());
+            for f_idx in 0..batched.risk_matrix.nrows() {
+                for m in 0..batched.risk_matrix.ncols() {
+                    let diff =
+                        (batched.risk_matrix[[f_idx, m]] - per_fold.risk_matrix[[f_idx, m]]).abs();
+                    assert!(
+                        diff <= 1e-13,
+                        "mismatch at fold {f_idx} step {m}: {} vs {}",
+                        batched.risk_matrix[[f_idx, m]],
+                        per_fold.risk_matrix[[f_idx, m]]
+                    );
+                }
+            }
         }
     }
 }

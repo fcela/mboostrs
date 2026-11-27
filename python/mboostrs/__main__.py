@@ -1,6 +1,6 @@
 """Command-line entry: ``python -m mboostrs <command>``.
 
-    python -m mboostrs guide [TOPIC]            print the agent guide or a topic
+    python -m mboostrs guide [TOPIC ...]       print the agent guide or one or more topics
     python -m mboostrs sig NAME                 print an API card for NAME
     python -m mboostrs skill install [--dest DIR] [--overwrite]
     python -m mboostrs skill path               print where the shipped skill is
@@ -17,9 +17,9 @@ def main(argv=None) -> int:
 
     parser = argparse.ArgumentParser(prog="python -m mboostrs")
     sub = parser.add_subparsers(dest="command", required=True)
-    guide = sub.add_parser("guide", help="print the agent guide, or one topic of it")
-    guide.add_argument("topic", nargs="?", default=None,
-                       help=f"'index', 'example:<name>', or one of: {', '.join(TOPICS)}")
+    guide = sub.add_parser("guide", help="print the agent guide, or one or more topics of it")
+    guide.add_argument("topic", nargs="*", default=[],
+                       help=f"'index', 'example:<name>', or one or more of: {', '.join(TOPICS)}")
     sig = sub.add_parser("sig", help="print a signature/return/example card for one name")
     sig.add_argument("name",
                      help="a top-level name ('tune_mstop') or a dotted path "
@@ -75,7 +75,13 @@ def main(argv=None) -> int:
 
     if args.command == "guide":
         try:
-            sys.stdout.write(agent_guide(args.topic))
+            if not args.topic:
+                sys.stdout.write(agent_guide(None))
+            elif len(args.topic) == 1:
+                sys.stdout.write(agent_guide(args.topic[0]))
+            else:
+                parts = [agent_guide(t).rstrip("\n") for t in args.topic]
+                sys.stdout.write("\n---\n".join(parts) + "\n")
         except ValueError as exc:
             parser.error(str(exc))
         return 0

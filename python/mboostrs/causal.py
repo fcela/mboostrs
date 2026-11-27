@@ -390,8 +390,8 @@ class CausalSpec:
             raise ValueError(
                 f"post-treatment variables cannot enter the baseline adjustment set: {sorted(post)}"
             )
-        if self.estimand not in ("ate", "att"):
-            raise ValueError("estimand must be 'ate' or 'att'")
+        if self.estimand not in ("ate", "att", "ato"):
+            raise ValueError("estimand must be 'ate', 'att', or 'ato'")
         if self.outcome_type not in ("continuous", "binary"):
             raise ValueError("outcome_type must be 'continuous' or 'binary'")
         if not self.time_zero or not self.follow_up:
@@ -484,6 +484,9 @@ class AIPWResult:
     response_propensity: np.ndarray | None = None
     #: The observation weights, when the estimate was weighted.
     weights: np.ndarray | None = None
+    #: Zero-extra-fit overlap-weighted (ATO) companion when ``estimand="ate"``,
+    #: ``target="all"``, and at least 5% of rows fall outside ``overlap_bounds``.
+    ato_companion: dict | None = None
     #: The propensity model fitted on all rows, which :meth:`predict_propensity`
     #: scores new rows with. None when the result was built without one.
     _propensity_model: object = field(default=None, repr=False, compare=False)
@@ -806,13 +809,17 @@ class AIPWResult:
         return self.diagnostics.get("target", "all")
 
     def _score_estimand(self):
-        return "overlap" if self.target == "overlap" else self.spec.estimand
+        if self.target == "overlap" or self.spec.estimand == "ato":
+            return "overlap"
+        return self.spec.estimand
 
     def _label(self):
+        if self.spec.estimand == "ato":
+            return "ATO"
         return "OVERLAP-WEIGHTED ATE" if self.target == "overlap" else self.spec.estimand.upper()
 
     def _target_text(self):
-        if self.target == "overlap":
+        if self.target == "overlap" or self.spec.estimand == "ato":
             return ("overlap-weighted ATE over all rows, each row weighted by e (1 - e) "
                     "with its cross-fitted propensity e; rows with propensity near 0 or 1 "
                     "count little, so this is not the ATE over every row")
@@ -878,6 +885,36 @@ class AIPWResult:
             return (f"{used}, chosen by outcome_model={choice['requested']!r} because "
                     f"{choice['reason']}")
         return f"{used}, because outcome_model={choice['requested']!r} was requested"
+
+    def digest(self) -> str:
+        """Return a concise, deterministic summary card of this AIPW estimate."""
+        d = self.diagnostics
+        overlap = d.get("overlap") or {}
+        ci_text = (f"[{self.interval[0]:.6g}, {self.interval[1]:.6g}]"
+                   if self.interval is not None else "unavailable")
+        se_text = f"{self.standard_error:.6g}" if self.standard_error is not None else "None"
+        prop_choice = (d.get("propensity_learner") or {}).get("chosen", "smooth")
+        lines = [
+            f"[mboostrs AIPWResult] estimand={self._label()}, n={len(self.scores)}, "
+            f"treatment={self.spec.treatment}, outcome={self.spec.outcome}",
+            f"estimate={self.estimate:.6g}, se={se_text}, {self.level:.0%} CI={ci_text}",
+            f"folds={self.nuisance.get('fold_count')} (repeats={self.nuisance.get('fold_repeats')}), "
+            f"outcome_model={d.get('outcome_model')}, propensity_learner={prop_choice}",
+            f"propensity=[{d.get('propensity_min', float('nan')):.4g}, "
+            f"{d.get('propensity_max', float('nan')):.4g}], "
+            f"outside_overlap={overlap.get('share_outside', 0.0):.1%}, "
+            f"ess={d.get('ipw_effective_sample_size', float('nan')):.1f}",
+        ]
+        if self.ato_companion is not None:
+            c = self.ato_companion
+            c_se = f"{c['se']:.6g}" if c["se"] is not None else "None"
+            c_ci = (f"[{c['ci_lower']:.6g}, {c['ci_upper']:.6g}]"
+                    if c["ci_lower"] is not None else "unavailable")
+            lines.append(
+                f"ato_companion={c['estimate']:.6g} (se={c_se}, CI={c_ci}, "
+                f"outside_share={c['outside_overlap_share']:.1%})"
+            )
+        return "\n".join(lines)
 
 
 @dataclass(frozen=True)
@@ -1551,11 +1588,11 @@ def _check_target(target, estimand):
         raise ValueError(
             "target must be 'all' (the ATE over every row) or 'overlap' (the "
             "overlap-weighted ATE, each row weighted by e (1 - e))")
-    if target == "overlap" and estimand != "ate":
+    if target == "overlap" and estimand not in ("ate", "ato"):
         raise ValueError(
             "target='overlap' is defined for estimand='ate' only; for the ATT, pass "
             "target='all' (the default), which estimates the effect on all treated rows")
-    return target
+    return "overlap" if estimand == "ato" else target
 
 
 def _balance_terms(values, covariates):
@@ -2713,6 +2750,29 @@ def aipw(data, spec: CausalSpec, *, folds=5, repeats=1, seed=42, smooth=False, d
             se = float(combined_se[0])
     interval_ci = ((estimate - critical * se, estimate + critical * se)
                    if se is not None else None)
+    ato_companion = None
+    if spec.estimand == "ate" and target_used == "all":
+        lo_b, hi_b = overlap_bounds
+        outside_share = float(np.mean((e < lo_b) | (e > hi_b)))
+        if outside_share >= 0.05:
+            _, ato_est, ato_inf, *_ = _rust.augmented_scores(
+                y, a, observed, sample_weight, e, pi, mu0, mu1,
+                "overlap", None, propensity_clip if use_response else None,
+            )
+            ato_se, ato_crit, _ = _influence_uncertainty(
+                ato_inf, scheme, level, sample_weight)
+            if ato_se is not None and ato_crit is not None:
+                ato_lo = float(ato_est - ato_crit * ato_se)
+                ato_hi = float(ato_est + ato_crit * ato_se)
+            else:
+                ato_lo = ato_hi = None
+            ato_companion = {
+                "estimate": float(ato_est),
+                "se": None if ato_se is None else float(ato_se),
+                "ci_lower": ato_lo,
+                "ci_upper": ato_hi,
+                "outside_overlap_share": outside_share,
+            }
     bootstrap_record = None
     if interval == "bootstrap":
         bootstrap_record = _aipw_bootstrap(
@@ -2845,6 +2905,7 @@ def aipw(data, spec: CausalSpec, *, folds=5, repeats=1, seed=42, smooth=False, d
         observed=observed,
         response_propensity=pi,
         weights=None if weights is None else sample_weight,
+        ato_companion=ato_companion,
         _propensity_model=full_propensity,
         _data=data,
         _groups=None if scheme.groups is None else np.asarray(scheme.groups),
@@ -3298,6 +3359,8 @@ class EffectModel:
     #: The second-stage row bootstrap behind ``"second_stage_bootstrap"``: a
     #: :class:`~mboostrs.selection.GamRefitBootstrap` with one refit per draw.
     second_stage: object = field(default=None, repr=False, compare=False)
+    #: Calibrated DR/orthogonal interval state for ``interval_method="dr_orthogonal"``.
+    _dr_state: dict | None = field(default=None, repr=False, compare=False)
 
     def _model_inputs(self, newdata):
         """The modifier columns of new rows on the scale the fitted ``tau`` uses."""
@@ -3428,12 +3491,36 @@ class EffectModel:
                 return np.asarray(estimates)
             return output_frame([{"estimate": float(value)} for value in estimates], output,
                                 columns=("estimate",))
-        if not isinstance(self.model, GamRefit):
+        if not isinstance(self.model, GamRefit) and self.interval_method != "dr_orthogonal":
             raise NotImplementedError(
                 f"interval=True needs a penalized smooth fit, but this model chose "
                 f"terms={self.terms!r}, a boosted fit with no coefficient covariance. "
                 "Refit with effect_model(..., terms='smooth') to get per-row intervals.")
-        if self.interval_method == "second_stage_bootstrap":
+        if self.interval_method == "dr_orthogonal":
+            level = check_unit_interval("level", level)
+            if self._dr_state is None:
+                raise RuntimeError("dr_orthogonal interval state is missing")
+            if self._dr_state["kind"] == "smooth":
+                estimate, se, lower, upper, outside_range = _dr_smooth_predict(
+                    self, newdata, level, extrapolation)
+            else:
+                from mboostrs.cvrisk import _t_quantile
+
+                inputs = self._model_inputs(newdata)
+                estimate = self._tau_at(newdata, extrapolation)
+                draws = np.vstack([
+                    np.asarray(m.predict(newdata=inputs, extrapolation=extrapolation),
+                               dtype=np.float64).ravel()
+                    for m in self._dr_state["models"]
+                ])
+                n_draws = draws.shape[0]
+                se = np.std(draws, axis=0, ddof=1) * np.sqrt(
+                    (n_draws + 1.0) / max(n_draws - 1.0, 1.0))
+                tcrit = _t_quantile(0.5 + float(level) / 2.0, max(1, n_draws - 1))
+                lower = estimate - tcrit * se
+                upper = estimate + tcrit * se
+                outside_range = np.zeros(len(estimate), dtype=bool)
+        elif self.interval_method == "second_stage_bootstrap":
             draws = self._second_stage_draws(newdata, extrapolation)
             lower, upper, se = _rust.bootstrap_percentile_interval(draws, level)
             full = self._interval_arrays(newdata, level, extrapolation)
@@ -3521,7 +3608,9 @@ class EffectModel:
                          "penalized smooth that flattens a sharp effect, is not covered)")
         else:
             fit = f"{self.model.mstop} boosting steps"
-            interval = "no per-row interval (boosted fit)"
+            interval = (_EFFECT_INTERVAL_TEXT["dr_orthogonal"]
+                        if self.interval_method == "dr_orthogonal"
+                        else "no per-row interval (boosted fit)")
         overlap = d.get("overlap", {})
         share = overlap.get("share_outside")
         overlap_text = ("" if share is None else
@@ -3565,6 +3654,27 @@ class EffectModel:
             f"{overlap_text} Identification assumes "
             + "; ".join(self.spec.assumptions) + "."
         )
+
+    def digest(self) -> str:
+        """Return a concise, deterministic summary card of this CATE model."""
+        d = self.diagnostics
+        overlap = d.get("overlap") or {}
+        ce = d.get("constant_effect") or {}
+        losses = ", ".join(f"{k}={v:.4g}" for k, v in self.cv_rloss.items())
+        fit_info = (f"edf={sum(self.model.edf.values()):.3g}"
+                    if isinstance(self.model, GamRefit)
+                    else f"mstop={self.model.mstop}")
+        lines = [
+            f"[mboostrs EffectModel] terms={self.terms}, n={len(self.tau)}, "
+            f"modifiers={list(self.modifiers)}, treatment={self.spec.treatment}, "
+            f"outcome={self.spec.outcome}",
+            f"ate_plugin={self.ate_plugin:.6g}, {fit_info}, interval_method={self.interval_method}",
+            f"cv_rloss=({losses}), constant_rloss={self.constant_rloss:.6g}, "
+            f"beats_constant_by_se={ce.get('beats_by_se')}",
+            f"outside_overlap={overlap.get('share_outside', 0.0):.1%}, "
+            f"learner={d.get('learner')}, nuisance={d.get('nuisance_source')}",
+        ]
+        return "\n".join(lines)
 
 
 #: Depth of the joint candidate. Three levels can express an effect that turns
@@ -3611,23 +3721,34 @@ def _choose_candidate(cv_rloss):
 _AUTO_FALLBACK = "smooth"
 
 
-def _candidate_gains(loss_rows, constant_loss, mstops):
-    """Each candidate's out-of-fold R-loss gain over the constant effect, the
-    standard error of that gain over the rows, whether its step count is too
-    small to be a fit (``flat``), and whether it is eligible: its gain exceeds
-    its standard error and it is not flat. Returns four dicts keyed by candidate."""
+def _gain_and_se(diff, sample_weight):
+    """Mean of the per-row loss differences ``diff`` and its standard error,
+    with the observation weights as frequencies (``_rust.rloss_gain``).
+    ``None`` weights are unit weights."""
     from mboostrs import _rust
 
+    diff = np.ascontiguousarray(diff, dtype=np.float64)
+    weight = (np.ones_like(diff) if sample_weight is None
+              else np.ascontiguousarray(sample_weight, dtype=np.float64))
+    gain, se = _rust.rloss_gain(diff, weight)
+    return float(gain), float(se)
+
+
+def _candidate_gains(loss_rows, constant_loss, mstops, sample_weight=None):
+    """Each candidate's out-of-fold R-loss gain over the constant effect, the
+    standard error of that gain over the rows (observation weights
+    ``sample_weight`` counted as frequencies), whether its step count is too
+    small to be a fit (``flat``), and whether it is eligible: its gain exceeds
+    its standard error and it is not flat. Returns four dicts keyed by candidate."""
     gain, gain_se, flat, eligible = {}, {}, {}, {}
     for kind, rows in loss_rows.items():
-        gain[kind], gain_se[kind] = _rust.paired_mean_se(
-            np.asarray(constant_loss, dtype=float), np.asarray(rows, dtype=float))
+        gain[kind], gain_se[kind] = _gain_and_se(constant_loss - rows, sample_weight)
         flat[kind] = bool(kind in mstops and mstops[kind] < _CLOSE_TO_CONSTANT_STEPS)
         eligible[kind] = bool(gain[kind] > gain_se[kind] and not flat[kind])
     return gain, gain_se, flat, eligible
 
 
-def _auto_terms(cv_rloss, loss_rows, constant_loss, mstops):
+def _auto_terms(cv_rloss, loss_rows, constant_loss, mstops, sample_weight=None):
     """The candidate that ``terms="auto"`` returns, and how it was chosen.
 
     A candidate is eligible when its out-of-fold R-loss gain over the constant
@@ -3641,12 +3762,14 @@ def _auto_terms(cv_rloss, loss_rows, constant_loss, mstops):
     helps. When no candidate is eligible, the smooth candidate is returned and
     the constant-effect warning names it.
 
+    Standard errors count the observation weights ``sample_weight`` as
+    frequencies; ``None`` means unit weights.
+
     Returns the candidate and a record of the gains, standard errors, flags and
     the rule that decided the choice.
     """
-    from mboostrs import _rust
-
-    gain, gain_se, flat, eligible = _candidate_gains(loss_rows, constant_loss, mstops)
+    gain, gain_se, flat, eligible = _candidate_gains(loss_rows, constant_loss, mstops,
+                                                     sample_weight)
     record = {
         "lowest_loss": _choose_candidate(cv_rloss),
         "gain_over_constant": gain, "gain_se": gain_se, "flat": flat,
@@ -3660,9 +3783,8 @@ def _auto_terms(cv_rloss, loss_rows, constant_loss, mstops):
     chosen = _choose_candidate(pool)
     if chosen != _AUTO_FALLBACK and _AUTO_FALLBACK in pool:
         # Positive when the chosen candidate has the lower loss.
-        advantage, se = _rust.paired_mean_se(
-            np.asarray(loss_rows[_AUTO_FALLBACK], dtype=float),
-            np.asarray(loss_rows[chosen], dtype=float))
+        advantage, se = _gain_and_se(loss_rows[_AUTO_FALLBACK] - loss_rows[chosen],
+                                     sample_weight)
         if advantage <= se:
             record["tie_with_smooth"] = True
             chosen = _AUTO_FALLBACK
@@ -3980,7 +4102,8 @@ _SKEW_RATIO = 3.0
 
 
 #: The ways ``effect_model`` can build a per-row interval; see its ``interval_method``.
-_INTERVAL_METHODS = ("auto", "refit", "repeats", "bootstrap", "second_stage_bootstrap")
+_INTERVAL_METHODS = ("auto", "refit", "repeats", "bootstrap", "second_stage_bootstrap",
+                     "dr_orthogonal")
 
 #: Seed step between the splits of repeated fits, the same step :func:`aipw` uses.
 _REPEAT_SEED_STEP = 104729
@@ -4300,7 +4423,7 @@ def effect_model(data, spec: CausalSpec, *, nuisance=None, modifiers=None, terms
                                          allow_none=False)
     if interval_method == "auto" and terms in ("stumps", "joint"):
         interval_method = "refit"
-    if interval_method not in ("auto", "refit"):
+    if interval_method not in ("auto", "refit", "dr_orthogonal"):
         if terms in ("stumps", "joint"):
             raise ValueError(
                 f"interval_method={interval_method!r} needs the smooth second stage, and "
@@ -4365,6 +4488,9 @@ def effect_model(data, spec: CausalSpec, *, nuisance=None, modifiers=None, terms
         propensity_record = nuisance.diagnostics.get("propensity_learner")
         propensity_formula = None
         source = "the supplied aipw result"
+        unique_folds = np.unique(nuisance.fold_id)
+        held = (np.column_stack([nuisance.fold_id == f for f in unique_folds])
+                if unique_folds.size >= 2 else np.ones((n, 1), dtype=bool))
     else:
         raise TypeError("nuisance must be None or an AIPWResult")
 
@@ -4373,19 +4499,44 @@ def effect_model(data, spec: CausalSpec, *, nuisance=None, modifiers=None, terms
     # its complete-case value 1 would otherwise be pulled to the bound.
     clip = propensity_clip if propensity_clip is not None else (0.0, 1.0)
     response_clip = propensity_clip if use_response else None
-    pseudo, weights_r, n_clipped, n_clipped_response = _rust.rloss_transform_weighted(
-        np.ascontiguousarray(y, dtype=np.float64), a,
-        np.ascontiguousarray(m_hat), np.ascontiguousarray(e_hat), clip,
-        sample_weight, observed, np.ascontiguousarray(pi_hat), response_clip,
-    )
-    pseudo = np.asarray(pseudo, dtype=np.float64)
-    weights_r = np.asarray(weights_r, dtype=np.float64)
     pseudo_bounds, n_winsorized = None, 0
-    if learner == "r_winsorized":
-        pseudo, lower_bound, upper_bound, n_winsorized = _rust.winsorize_pseudo_outcome(
-            pseudo, weights_r, _PSEUDO_TAIL)
+    if interval_method == "dr_orthogonal":
+        clip_base = propensity_clip if propensity_clip is not None else (0.01, 0.99)
+        stab_clip = (max(0.01, clip_base[0]), min(0.99, clip_base[1]))
+        if isinstance(nuisance, AIPWResult):
+            e_stab = np.clip(e_hat, stab_clip[0], stab_clip[1])
+            pi_stab = np.clip(pi_hat, stab_clip[0], stab_clip[1]) if use_response else np.ones(n)
+            mu_t = np.where(a == 1.0, nuisance.mu1, nuisance.mu0)
+            y_obs = np.where(observed == 1.0, y, 0.0)
+            obs_factor = (observed / pi_stab) if use_response else 1.0
+            pseudo = ((nuisance.mu1 - nuisance.mu0)
+                      + obs_factor * ((a - e_stab) / (e_stab * (1.0 - e_stab))) * (y_obs - mu_t))
+            weights_r = sample_weight.copy()
+            n_clipped = int(np.sum((e_hat < stab_clip[0]) | (e_hat > stab_clip[1])))
+            n_clipped_response = (int(np.sum((pi_hat < stab_clip[0]) | (pi_hat > stab_clip[1])))
+                                  if use_response else 0)
+        else:
+            pseudo, weights_r, n_clipped, n_clipped_response = _rust.rloss_transform_weighted(
+                np.ascontiguousarray(y, dtype=np.float64), a,
+                np.ascontiguousarray(m_hat), np.ascontiguousarray(e_hat), stab_clip,
+                sample_weight, observed, np.ascontiguousarray(pi_hat),
+                stab_clip if use_response else None,
+            )
+            pseudo = np.asarray(pseudo, dtype=np.float64)
+            weights_r = np.asarray(weights_r, dtype=np.float64)
+    else:
+        pseudo, weights_r, n_clipped, n_clipped_response = _rust.rloss_transform_weighted(
+            np.ascontiguousarray(y, dtype=np.float64), a,
+            np.ascontiguousarray(m_hat), np.ascontiguousarray(e_hat), clip,
+            sample_weight, observed, np.ascontiguousarray(pi_hat), response_clip,
+        )
         pseudo = np.asarray(pseudo, dtype=np.float64)
-        pseudo_bounds = (float(lower_bound), float(upper_bound))
+        weights_r = np.asarray(weights_r, dtype=np.float64)
+        if learner == "r_winsorized":
+            pseudo, lower_bound, upper_bound, n_winsorized = _rust.winsorize_pseudo_outcome(
+                pseudo, weights_r, _PSEUDO_TAIL)
+            pseudo = np.asarray(pseudo, dtype=np.float64)
+            pseudo_bounds = (float(lower_bound), float(upper_bound))
     response = "tau_pseudo_outcome"
     while response in modifiers:
         response = "_" + response
@@ -4425,19 +4576,19 @@ def effect_model(data, spec: CausalSpec, *, nuisance=None, modifiers=None, terms
     constant_rloss = float(np.mean(constant_loss))
     if terms == "auto":
         chosen, terms_selection = _auto_terms(
-            cv_rloss, loss_rows, constant_loss, {k: t.mstop for k, t in tuned.items()})
+            cv_rloss, loss_rows, constant_loss, {k: t.mstop for k, t in tuned.items()},
+            sample_weight)
     else:
         chosen = _choose_candidate(cv_rloss)
         # The gains of every candidate are reported for a named choice too, so the
         # record reads the same as terms="auto"; the choice itself is the one asked for.
         gains, gain_ses, flats, eligibles = _candidate_gains(
-            loss_rows, constant_loss, {k: t.mstop for k, t in tuned.items()})
+            loss_rows, constant_loss, {k: t.mstop for k, t in tuned.items()}, sample_weight)
         terms_selection = {"rule": "requested", "lowest_loss": chosen,
                            "gain_over_constant": gains, "gain_se": gain_ses,
                            "flat": flats, "eligible": eligibles, "tie_with_smooth": False}
     gain_rows = constant_loss - _loss_rows(pseudo, weights_r, cv_predicted[chosen])
-    gain = float(np.mean(gain_rows))
-    gain_se = float(np.std(gain_rows, ddof=1) / np.sqrt(n)) if n > 1 else float("nan")
+    gain, gain_se = _gain_and_se(gain_rows, sample_weight)
     everything = np.ones(n, dtype=bool)
     if chosen == "smooth":
         model = _fit_tau("smooth", modifiers, smooth_values, response, pseudo, weights_r,
@@ -4546,6 +4697,7 @@ def effect_model(data, spec: CausalSpec, *, nuisance=None, modifiers=None, terms
         interval_method = _AUTO_INTERVAL_SMOOTH if chosen == "smooth" else "refit"
     interval_fits = ()
     second_stage = None
+    dr_state = None
     if interval_method in ("repeats", "bootstrap", "second_stage_bootstrap"):
         if chosen != "smooth":
             raise ValueError(
@@ -4568,6 +4720,16 @@ def effect_model(data, spec: CausalSpec, *, nuisance=None, modifiers=None, terms
                     else np.ones(n, dtype=bool))
         second_stage = _second_stage_bootstrap(
             model, pseudo, weights_r, fit_rows, bootstrap_draws, seed)
+    elif interval_method == "dr_orthogonal":
+        if chosen == "smooth":
+            fit_rows = (_inside_plan(smooth_values, scale_plan) if scale_plan
+                        else np.ones(n, dtype=bool))
+            dr_state = _build_dr_smooth_state(
+                model, pseudo[fit_rows], weights_r[fit_rows], held[fit_rows])
+        else:
+            dr_state = _build_dr_boosted_state(
+                chosen, modifiers, values, response, pseudo, weights_r, held,
+                model.mstop, seed)
     fx = EffectModel(model=model, spec=spec, modifiers=modifiers, terms=chosen,
                      cv_rloss=cv_rloss, tau=tau,
                      propensity=_Propensities(
@@ -4577,7 +4739,7 @@ def effect_model(data, spec: CausalSpec, *, nuisance=None, modifiers=None, terms
                      constant_rloss=constant_rloss,
                      scale_plan=scale_plan if chosen == "smooth" else {},
                      interval_method=interval_method, interval_fits=interval_fits,
-                     second_stage=second_stage)
+                     second_stage=second_stage, _dr_state=dr_state)
     fx.diagnostics["overlap"] = overlap_report(
         fx, data={name: values[name] for name in spec.covariates}).to_dict()
     fx.diagnostics["interval"] = {
@@ -4588,6 +4750,8 @@ def effect_model(data, spec: CausalSpec, *, nuisance=None, modifiers=None, terms
         "second_stage_draws": (None if second_stage is None else second_stage.n_draws),
         "second_stage_converged": (None if second_stage is None
                                    else int(sum(second_stage.converged()))),
+        "dr_draws": (dr_state["n_draws"]
+                     if dr_state is not None and dr_state["kind"] == "boosted" else None),
         "repeat_seed_step": _REPEAT_SEED_STEP if interval_method in ("repeats", "bootstrap")
         else None,
     }
@@ -4606,6 +4770,8 @@ _EFFECT_INTERVAL_TEXT = {
         "the pseudo-outcome held fixed"),
     "repeats": "per-row intervals from the median rule over split-seed refits",
     "bootstrap": "per-row percentile intervals from full-pipeline row resamples",
+    "dr_orthogonal": (
+        "per-row calibrated DR/orthogonal intervals with nuisance fold-perturbation uncertainty"),
 }
 
 
@@ -4639,6 +4805,161 @@ def _second_stage_bootstrap(model, response, weights, rows, draws, seed):
         counts[b] = rng.multinomial(n_fit, probability)
     return model.bootstrap(counts, np.asarray(response)[fit_index],
                            np.asarray(weights)[fit_index])
+
+
+def _solve_linear(mat, rhs):
+    """Solve ``mat @ x = rhs`` with a minimum-norm pseudoinverse fallback."""
+    try:
+        return np.linalg.solve(mat, rhs)
+    except np.linalg.LinAlgError:
+        return np.linalg.lstsq(mat, rhs, rcond=None)[0]
+
+
+def _build_dr_smooth_state(model, z_fit, w_fit, held_fit):
+    """Precompute HC3 sandwich covariance and K leave-one-fold-out refits."""
+    z_fit = np.asarray(z_fit, dtype=np.float64)
+    w_fit = np.asarray(model._weights if model._weights is not None else w_fit, dtype=np.float64)
+    held_fit = np.asarray(held_fit, dtype=bool)
+    n_fit = z_fit.size
+    Xs = [np.ones((n_fit, 1))]
+    Ss = [np.zeros((1, 1))]
+    Z_list = []
+    train_data = model._training_data
+    for (_term, design, by), blk in zip(model._blocks, model._core.blocks(), strict=True):
+        X_raw = np.asarray(design.design, dtype=np.float64)
+        if by is not None:
+            X_raw = X_raw * np.asarray(read_column(train_data, by).values, dtype=np.float64)[:, None]
+        width = int(blk["end"]) - int(blk["start"])
+        if width < X_raw.shape[1]:
+            c = X_raw.T @ w_fit
+            Q, _ = np.linalg.qr(c[:, None], mode="complete")
+            Z = Q[:, X_raw.shape[1] - width:]
+            X_c = X_raw @ Z
+            Ks = [Z.T @ np.asarray(K, dtype=np.float64) @ Z for K in design.penalties]
+        else:
+            Z = None
+            X_c = X_raw
+            Ks = [np.asarray(K, dtype=np.float64) for K in design.penalties]
+        Z_list.append(Z)
+        Xs.append(X_c)
+        S_blk = np.zeros((width, width))
+        for lam, K in zip(blk["lambda"], Ks, strict=False):
+            S_blk = S_blk + float(lam) * K
+        Ss.append(S_blk)
+    X_S = np.hstack(Xs)
+    p_tot = X_S.shape[1]
+    S_lam = np.zeros((p_tot, p_tot))
+    pos = 0
+    for s_blk in Ss:
+        k = s_blk.shape[0]
+        S_lam[pos:pos + k, pos:pos + k] = s_blk
+        pos += k
+    H = X_S.T @ (w_fit[:, None] * X_S) + S_lam
+    try:
+        H_inv = np.linalg.inv(H)
+    except np.linalg.LinAlgError:
+        H_inv = np.linalg.pinv(H)
+    beta_hat = H_inv @ (X_S.T @ (w_fit * z_fit))
+    res = z_fit - X_S @ beta_hat
+    h_ii = w_fit * np.sum((X_S @ H_inv) * X_S, axis=1)
+    scale_hc = (w_fit ** 2) * (res ** 2) / np.maximum(1.0 - h_ii, 0.2) ** 2
+    V_hc = H_inv @ (X_S.T @ (scale_hc[:, None] * X_S)) @ H_inv
+
+    K_folds = held_fit.shape[1] if held_fit.ndim == 2 else 1
+    if K_folds >= 2:
+        betas_loo = np.empty((K_folds, p_tot), dtype=np.float64)
+        for k_fold in range(K_folds):
+            keep = ~held_fit[:, k_fold]
+            if not np.any(keep):
+                betas_loo[k_fold] = beta_hat
+                continue
+            X_k = X_S[keep]
+            w_k = w_fit[keep]
+            H_k = X_k.T @ (w_k[:, None] * X_k) + S_lam
+            betas_loo[k_fold] = _solve_linear(H_k, X_k.T @ (w_k * z_fit[keep]))
+    else:
+        betas_loo = beta_hat[None, :]
+    df_eff = max(1.0, float(model._core.residual_df)
+                 if model._core.residual_df is not None else float(n_fit))
+    return {
+        "kind": "smooth",
+        "V_hc": V_hc,
+        "Z_list": tuple(Z_list),
+        "betas_loo": betas_loo,
+        "df_eff": df_eff,
+    }
+
+
+def _dr_smooth_predict(effect_model, newdata, level, extrapolation):
+    """Evaluate calibrated HC3 + fold-perturbation intervals on a smooth EffectModel."""
+    from mboostrs.cvrisk import _t_quantile
+    from mboostrs.selection import _apply_range_policy, _range_rows
+
+    full = effect_model._interval_arrays(newdata, level, extrapolation)
+    estimate, outside_range = full["estimate"], full["outside_range"]
+    inputs = effect_model._model_inputs(newdata)
+    pairs = _range_rows(effect_model.model._ranges, inputs)
+    policy = "allow" if extrapolation == "warn" else extrapolation
+    clipped_inputs = _apply_range_policy(pairs, inputs, policy)
+    raws, bys, _ = effect_model.model._design_rows(
+        effect_model.model._imputed(clipped_inputs), "error")
+    dr_state = effect_model._dr_state
+    Xs_te = [np.ones((len(estimate), 1))]
+    for raw, by, Z in zip(raws, bys, dr_state["Z_list"], strict=True):
+        if by is not None:
+            raw = raw * by[:, None]
+        Xs_te.append(raw @ Z if Z is not None else raw)
+    X_te = np.hstack(Xs_te)
+    v_hc = np.maximum(np.sum((X_te @ dr_state["V_hc"]) * X_te, axis=1), 0.0)
+    betas_loo = dr_state["betas_loo"]
+    K_folds = betas_loo.shape[0]
+    if K_folds >= 2:
+        taus_loo = betas_loo @ X_te.T
+        v_loo = ((K_folds - 1.0) / K_folds) * np.sum(
+            (taus_loo - taus_loo.mean(axis=0, keepdims=True)) ** 2, axis=0)
+    else:
+        v_loo = 0.0
+    se = np.sqrt(v_hc + 0.25 * v_loo)
+    tcrit = _t_quantile(0.5 + float(level) / 2.0, dr_state["df_eff"])
+    lower = estimate - tcrit * se
+    upper = estimate + tcrit * se
+    return estimate, se, lower, upper, outside_range
+
+
+def _build_dr_boosted_state(chosen, modifiers, values, response, pseudo, weights_r,
+                            held, mstop, seed, n_draws=40):
+    """Fit ``n_draws`` Bayesian Exp(1) * fold-perturbed boosted second-stage models."""
+    import mboostrs as mb
+    from mboostrs.families import Gaussian
+
+    rhs = _rhs_for(modifiers, values, chosen)
+    formula = f"{quote_response(response)} ~ {rhs}"
+    n = len(pseudo)
+    K_folds = held.shape[1] if held.ndim == 2 else 1
+    mstop_use = max(1, min(int(mstop), 150))
+    rng = np.random.default_rng([int(seed), 2026])
+    base_data = {name: values[name] for name in modifiers}
+    base_data[response] = np.asarray(pseudo, dtype=np.float64)
+    w_base = np.asarray(weights_r, dtype=np.float64)
+    models = []
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        for _ in range(n_draws):
+            exp_w = rng.exponential(1.0, size=n)
+            if K_folds >= 2:
+                fold_mult = rng.exponential(1.0, size=K_folds)
+                fold_mult = fold_mult / max(float(np.mean(fold_mult)), 1e-12)
+                row_fold = held @ fold_mult
+            else:
+                row_fold = 1.0
+            w_draw = w_base * exp_w * row_fold
+            if float(np.sum(w_draw)) <= 0.0:
+                w_draw = w_base
+            models.append(mb.gamboost(
+                formula, data=base_data, family=Gaussian(), weights=w_draw,
+                control=mb.boost_control(mstop_use, 0.1),
+            ))
+    return {"kind": "boosted", "models": tuple(models), "n_draws": int(n_draws)}
 
 
 #: Level of the interval on the gain of the top group.

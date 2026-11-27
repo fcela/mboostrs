@@ -27,7 +27,20 @@
         "mboostrs": {"type": "string"},
         "git_sha": {"type": ["string", "null"]},
         "seed": {"type": "integer"},
-        "blas_threads": {"type": ["integer", "null"]}
+        "blas_threads": {"type": ["integer", "null"]},
+        "environment": {
+          "type": "object",
+          "properties": {
+            "python": {"type": "string"},
+            "platform": {"type": "string"},
+            "rust": {"type": ["object", "null"]},
+            "packages": {
+              "type": "object",
+              "additionalProperties": {"type": ["string", "null"]}
+            }
+          },
+          "additionalProperties": false
+        }
       },
       "additionalProperties": false
     },
@@ -42,6 +55,11 @@
           "type": "object",
           "description": "Column name to the kind the procedure typed it as (numeric, categorical, group, ...).",
           "additionalProperties": {"type": "string"}
+        },
+        "sha256": {"type": "string"},
+        "schema": {
+          "type": "object",
+          "additionalProperties": {"type": "string"}
         }
       },
       "additionalProperties": false
@@ -54,7 +72,8 @@
         "scheme": {"type": "string"},
         "K": {"type": "integer", "minimum": 0},
         "R": {"type": "integer", "minimum": 0},
-        "hash": {"type": "string"}
+        "hash": {"type": "string"},
+        "time_column": {"type": ["string", "null"]}
       },
       "additionalProperties": false
     },
@@ -86,7 +105,7 @@
       "type": "object",
       "required": ["method"],
       "properties": {
-        "method": {"enum": ["stability", "bootstrap", "none"]},
+        "method": {"enum": ["stability", "bootstrap", "conformal", "none"]},
         "B": {"type": ["integer", "null"]},
         "pi_thr": {"type": ["number", "null"]},
         "terms": {
@@ -100,7 +119,15 @@
             }
           }
         },
-        "expected_false_selections_bound": {"type": ["number", "null"]}
+        "expected_false_selections_bound": {"type": ["number", "null"]},
+        "level": {"type": ["number", "null"]},
+        "conformal_method": {"type": ["string", "null"]},
+        "n_calibration": {"type": ["integer", "null"]},
+        "quantile": {"type": ["number", "null"]},
+        "mean_width": {"type": ["number", "null"]},
+        "ece": {"type": ["number", "null"]},
+        "status": {"type": ["string", "null"]},
+        "note": {"type": ["string", "null"]}
       },
       "additionalProperties": false
     },

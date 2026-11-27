@@ -37,4 +37,4 @@ and p-values against them; those need the exact reference definition and
 its assumptions reproduced before they would mean anything, which is a
 separate piece of work.
 
-Source: [`python/mboostrs/diagnostics.py` lines 345-385](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/diagnostics.py#L345-L385)
+Source: [`python/mboostrs/diagnostics.py` lines 367-407](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/diagnostics.py#L367-L407)

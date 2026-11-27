@@ -54,4 +54,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `ValueError`
 - `TypeError`
 
-Source: [`python/mboostrs/gamlss.py` lines 6831-6969](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L6831-L6969)
+Source: [`python/mboostrs/gamlss.py` lines 6862-7000](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L6862-L7000)

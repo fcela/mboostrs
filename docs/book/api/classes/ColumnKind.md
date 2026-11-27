@@ -31,7 +31,7 @@ it targets and what it gives up -- so the choice can be made rather than
 accepted. Everything here is a string the caller may edit before it
 reaches `gamboost`.
 
-Source: [`python/mboostrs/terms.py` lines 286-339](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L286-L339)
+Source: [`python/mboostrs/terms.py` lines 346-399](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L346-L399)
 
 ## Members
 
@@ -50,4 +50,4 @@ ColumnKind.explain() -> str
 
 The recommendation, its reason, and the alternatives, as text.
 
-Source: [`python/mboostrs/terms.py` lines 324-339](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L324-L339)
+Source: [`python/mboostrs/terms.py` lines 384-399](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L384-L399)

@@ -363,8 +363,6 @@ class Bbs:
                 )
             if cyclic:
                 raise ValueError("knot_placement='quantile' cannot be combined with cyclic=True")
-            if bins is not None:
-                raise ValueError("knot_placement='quantile' cannot be combined with bins=")
             if constraint is not None:
                 raise ValueError("knot_placement='quantile' does not yet support shape constraints")
         if df is not None:
@@ -706,7 +704,9 @@ class Btree:
     categorical = None
 
     def __init__(self, names, *, minbucket=4, minsplit=10, maxdepth=1, by=None,
-                 selection="sse", split_method="exact"):
+                 selection="sse", split_method="exact",
+                 lambda_leaf: float = 0.0, colsample: float = 1.0,
+                 colsample_seed: int = 0):
         if selection not in ("sse", "ctree", "ctree_pvalue"):
             raise ValueError("selection must be 'sse', 'ctree' or 'ctree_pvalue'")
         if split_method not in ("exact", "histogram"):
@@ -716,6 +716,11 @@ class Btree:
         for _n, _v in (("minbucket", minbucket), ("minsplit", minsplit),
                        ("maxdepth", maxdepth)):
             _count(_n, _v, minimum=1)
+        lambda_leaf = _nonnegative("lambda_leaf", lambda_leaf)
+        colsample_val = float(colsample)
+        if not np.isfinite(colsample_val) or colsample_val <= 0.0 or colsample_val > 1.0:
+            raise ValueError(f"colsample must lie in (0, 1], got {colsample!r}")
+        colsample_seed = _count("colsample_seed", colsample_seed, minimum=0)
         # A tree splits on the columns it is given, so an empty list is a
         # learner with nothing to split on and a repeated name makes the same
         # column compete with itself.
@@ -724,10 +729,51 @@ class Btree:
         self.minsplit = minsplit
         self.maxdepth = maxdepth
         self.by = by
+        self.lambda_leaf = lambda_leaf
+        self.colsample = colsample_val
+        self.colsample_seed = colsample_seed
 
     @property
     def name(self):
         return ",".join(self.names)
+
+    def __repr__(self):
+        parts = [repr(self.names)]
+        if self.minbucket != 4:
+            parts.append(f"minbucket={self.minbucket!r}")
+        if self.minsplit != 10:
+            parts.append(f"minsplit={self.minsplit!r}")
+        if self.maxdepth != 1:
+            parts.append(f"maxdepth={self.maxdepth!r}")
+        if self.by is not None:
+            parts.append(f"by={self.by!r}")
+        if self.selection != "sse":
+            parts.append(f"selection={self.selection!r}")
+        if self.split_method != "exact":
+            parts.append(f"split_method={self.split_method!r}")
+        if self.lambda_leaf != 0.0:
+            parts.append(f"lambda_leaf={self.lambda_leaf!r}")
+        if self.colsample != 1.0:
+            parts.append(f"colsample={self.colsample!r}")
+        if self.colsample_seed != 0:
+            parts.append(f"colsample_seed={self.colsample_seed!r}")
+        return f"Btree({', '.join(parts)})"
+
+    def __eq__(self, other):
+        if type(self) is not type(other):
+            return NotImplemented
+        return (
+            self.names == other.names
+            and self.minbucket == other.minbucket
+            and self.minsplit == other.minsplit
+            and self.maxdepth == other.maxdepth
+            and self.by == other.by
+            and self.selection == other.selection
+            and self.split_method == other.split_method
+            and self.lambda_leaf == other.lambda_leaf
+            and self.colsample == other.colsample
+            and self.colsample_seed == other.colsample_seed
+        )
 
 
 class Bns:

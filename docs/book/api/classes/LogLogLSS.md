@@ -17,7 +17,7 @@ Negative log-likelihood, gradients, and risk match R
 offset minimizes the log-logistic negative log-likelihood; its value can
 differ from the initialization used by R's `gamboostLSS`.
 
-Source: [`python/mboostrs/gamlss.py` lines 2920-2952](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2920-L2952)
+Source: [`python/mboostrs/gamlss.py` lines 2923-2955](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2923-L2955)
 
 ## Members
 
@@ -42,4 +42,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2932-2938](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2932-L2938)
+Source: [`python/mboostrs/gamlss.py` lines 2935-2941](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2935-L2941)

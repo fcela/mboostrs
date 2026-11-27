@@ -22,7 +22,7 @@ predictors rather than one blended variance assumption.
 An all-zero response is refused: the Gamma part would have no data to
 identify `mu` and `sigma` from.
 
-Source: [`python/mboostrs/gamlss.py` lines 1980-2070](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1980-L2070)
+Source: [`python/mboostrs/gamlss.py` lines 1983-2073](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1983-L2073)
 
 ## Members
 
@@ -52,7 +52,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `IndexError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2000-2006](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2000-L2006)
+Source: [`python/mboostrs/gamlss.py` lines 2003-2009](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2003-L2009)
 
 (zeroadjustedgammalss-mean)=
 ## `ZeroAdjustedGammaLSS.mean`
@@ -65,7 +65,7 @@ ZeroAdjustedGammaLSS.mean(params) -> ndarray
 
 Unconditional response mean, `(1 - nu) * mu`.
 
-Source: [`python/mboostrs/gamlss.py` lines 2008-2010](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2008-L2010)
+Source: [`python/mboostrs/gamlss.py` lines 2011-2013](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2011-L2013)
 
 (zeroadjustedgammalss-pdf)=
 ## `ZeroAdjustedGammaLSS.pdf`
@@ -84,7 +84,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2012-2033](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2012-L2033)
+Source: [`python/mboostrs/gamlss.py` lines 2015-2036](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2015-L2036)
 
 (zeroadjustedgammalss-cdf)=
 ## `ZeroAdjustedGammaLSS.cdf`
@@ -108,7 +108,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2035-2061](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2035-L2061)
+Source: [`python/mboostrs/gamlss.py` lines 2038-2064](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2038-L2064)
 
 (zeroadjustedgammalss-cdf_left)=
 ## `ZeroAdjustedGammaLSS.cdf_left`
@@ -121,7 +121,7 @@ ZeroAdjustedGammaLSS.cdf_left(y, params) -> ndarray
 
 Left CDF limit: zero at the atom, ordinary CDF above zero.
 
-Source: [`python/mboostrs/gamlss.py` lines 2063-2066](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2063-L2066)
+Source: [`python/mboostrs/gamlss.py` lines 2066-2069](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2066-L2069)
 
 (zeroadjustedgammalss-quantile)=
 ## `ZeroAdjustedGammaLSS.quantile`
@@ -134,4 +134,4 @@ ZeroAdjustedGammaLSS.quantile(p, params) -> ndarray
 
 Zero-adjusted gamma quantile; zero for `p <= nu`.
 
-Source: [`python/mboostrs/gamlss.py` lines 2068-2070](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2068-L2070)
+Source: [`python/mboostrs/gamlss.py` lines 2071-2073](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2071-L2073)

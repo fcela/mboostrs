@@ -13,7 +13,7 @@ PoissonLSS(stabilization: str = 'none')
 Matches R `gamboostLSS::PoissonLSS()` (wrapping gamlss.dist `PO`).
 Requires non-negative integer counts.
 
-Source: [`python/mboostrs/gamlss.py` lines 1667-1731](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1667-L1731)
+Source: [`python/mboostrs/gamlss.py` lines 1670-1734](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1670-L1734)
 
 ## Members
 
@@ -39,7 +39,7 @@ PoissonLSS.response(k: int, eta: numpy.ndarray) -> ndarray
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 1680-1681](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1680-L1681)
+Source: [`python/mboostrs/gamlss.py` lines 1683-1684](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1683-L1684)
 
 (poissonlss-mean)=
 ## `PoissonLSS.mean`
@@ -52,7 +52,7 @@ PoissonLSS.mean(params) -> ndarray
 
 Conditional count mean `mu`.
 
-Source: [`python/mboostrs/gamlss.py` lines 1683-1685](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1683-L1685)
+Source: [`python/mboostrs/gamlss.py` lines 1686-1688](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1686-L1688)
 
 (poissonlss-pmf)=
 ## `PoissonLSS.pmf`
@@ -71,7 +71,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1687-1695](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1687-L1695)
+Source: [`python/mboostrs/gamlss.py` lines 1690-1698](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1690-L1698)
 
 (poissonlss-cdf)=
 ## `PoissonLSS.cdf`
@@ -90,7 +90,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1697-1703](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1697-L1703)
+Source: [`python/mboostrs/gamlss.py` lines 1700-1706](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1700-L1706)
 
 (poissonlss-quantile)=
 ## `PoissonLSS.quantile`
@@ -103,7 +103,7 @@ PoissonLSS.quantile(p, params) -> ndarray
 
 Poisson quantile for probabilities `p`.
 
-Source: [`python/mboostrs/gamlss.py` lines 1705-1707](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1705-L1707)
+Source: [`python/mboostrs/gamlss.py` lines 1708-1710](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1708-L1710)
 
 (poissonlss-simulate)=
 ## `PoissonLSS.simulate`
@@ -122,7 +122,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1709-1715](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1709-L1715)
+Source: [`python/mboostrs/gamlss.py` lines 1712-1718](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1712-L1718)
 
 (poissonlss-deviance_increment)=
 ## `PoissonLSS.deviance_increment`
@@ -135,7 +135,7 @@ PoissonLSS.deviance_increment(y, params) -> ndarray
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 1717-1719](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1717-L1719)
+Source: [`python/mboostrs/gamlss.py` lines 1720-1722](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1720-L1722)
 
 (poissonlss-pdf)=
 ## `PoissonLSS.pdf`
@@ -154,4 +154,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1721-1731](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1721-L1731)
+Source: [`python/mboostrs/gamlss.py` lines 1724-1734](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1724-L1734)

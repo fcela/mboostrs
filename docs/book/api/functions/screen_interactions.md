@@ -74,4 +74,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/terms.py` lines 809-902](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L809-L902)
+Source: [`python/mboostrs/terms.py` lines 869-962](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L869-L962)

@@ -45,22 +45,20 @@ evidence that every proposed term matters.
 
 ## Limits of the convenience wrapper
 
-`mb.fit(data, "y")` and `mb.report(result)` wrap `autospec` (defaulting to
-`na_action="impute"`, `interactions="adopt"`, `residual_tree="auto"`, and
-`unseen_levels="average"` on the returned model) with a decision trail.
-`budget="quick"/"standard"/"thorough"` gives 16, 64 or 512 fits (a stage in
-progress can exceed this) and 60, 120 or 1200 seconds (`"standard"` is the
-default). Above 3,000 rows without explicit `folds`/`groups`, search runs on
-a 3,000-row subsample preserving response extremes and refits on all rows.
-`result.trail.final["formula"]` keeps terms carrying at least 1% of risk
-reduction (or LSS effect variance), or intercept-only on a flat CV curve.
-`result.trail.budget` records limits, fits spent, and any `degradations`.
-`time=` and `uncertainty="stability"/"bootstrap"` raise
-`NotImplementedError`. Use the explicit tuning path below when you need to
-control validation and stopping, and the dedicated uncertainty or time-fold
-APIs for those tasks. Read `result.trail` and `mb.report(result)` as a record
-of what ran, not evidence that omitted stages were completed. The underlying
-fitted model is `result.model`.
+`mb.fit(data, "y")` and `mb.report(result)` wrap `autospec` (`na_action="impute"`,
+`interactions="adopt"`, `residual_tree="auto"`, `unseen_levels="average"`) with a
+trail. `budget="quick"/"standard"/"thorough"` allows 16/64/512 fits (60/120/1200 s;
+default `"standard"`). Above 3,000 rows without `folds`/`groups`, search
+subsamples 3,000 rows preserving extremes and refits on all rows.
+`result.trail.final["formula"]` keeps terms with >=1% risk reduction (or LSS
+variance). Read `result.trail` (`result.model` is the underlying fit) as what ran.
+
+## Fast v0.2.5 workflow
+
+- Temporal/conformal fit & digest: `r = mb.fit(data, "y", time="t", uncertainty="conformal")`; `r.digest()` or `mb.digest(model)` gives a compact summary card.
+- Multi-quantile: `mb.quantile_boost("y ~ bbs(x1) + bbs(x2)", data)` tunes quantiles together with `.predict_interval(...)` and `.crps(...)`.
+- Overlap & CATE intervals: `mb.CausalSpec(..., estimand="ato")` targets overlap weights (`.ato_companion` on thin-overlap `estimand="ate"`); `mb.effect_model(data, spec, interval_method="dr_orthogonal")` calibrates intervals for `"smooth"`, `"stumps"`, and `"joint"`.
+- Multi-topic guide: `python -m mboostrs guide fit-and-tune causal uncertainty`.
 
 ## Decisions that affect correctness
 

@@ -20,4 +20,4 @@ those values hold at least `LABEL_MIN_COVERAGE` of the rows and average
 two or more rows each: a district code where a few districts appear once
 is still read, while a column of mostly unique integers is not.
 
-Source: [`python/mboostrs/terms.py` lines 216-270](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L216-L270)
+Source: [`python/mboostrs/terms.py` lines 262-330](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L262-L330)

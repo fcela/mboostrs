@@ -56,4 +56,4 @@ Args:
     niter: iterative-only; max inner fixed-point iterations (default 10).
         Ignored when type="quad.prog".
 
-Source: [`python/mboostrs/learners.py` lines 402-474](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L402-L474)
+Source: [`python/mboostrs/learners.py` lines 400-472](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L400-L472)

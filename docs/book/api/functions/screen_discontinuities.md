@@ -140,4 +140,4 @@ A diagonal jump that no single-column step can express:
 (True, ('s0', 's1'))
 ```
 
-Source: [`python/mboostrs/terms.py` lines 1018-1454](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L1018-L1454)
+Source: [`python/mboostrs/terms.py` lines 1078-1514](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L1078-L1514)

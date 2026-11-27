@@ -27,7 +27,7 @@ any two codes; for a measurement with a smooth effect, neighbouring values
 have similar means. Both statistics are corrected for the noise in a mean
 of `n` rows, using the pooled within-level variance.
 
-Source: [`python/mboostrs/terms.py` lines 124-178](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L124-L178)
+Source: [`python/mboostrs/terms.py` lines 170-224](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L170-L224)
 
 ## Members
 
@@ -46,4 +46,4 @@ LabelEvidence.sentence  # -> str
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/terms.py` lines 159-178](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L159-L178)
+Source: [`python/mboostrs/terms.py` lines 205-224](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/terms.py#L205-L224)

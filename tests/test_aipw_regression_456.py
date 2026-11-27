@@ -220,6 +220,39 @@ def test_auto_terms_returns_smooth_when_no_candidate_beats_the_constant():
     assert "no candidate beats the constant effect" in record["rule"]
 
 
+def test_candidate_gain_se_matches_the_former_numpy_value_on_unit_weights():
+    # mean(diff) and std(diff, ddof=1) / sqrt(n), the values the NumPy code in
+    # causal._candidate_gains returned before the port to rloss_gain (#821).
+    constant = np.zeros(10)
+    diff = np.array([0.42, -0.15, 0.08, 0.61, -0.33, 0.27, 0.05, 0.19, -0.02, 0.38])
+    gain, se, _, _ = causal._candidate_gains({"smooth": constant - diff}, constant, {})
+    assert gain["smooth"] == pytest.approx(0.15, rel=1e-8)
+    assert se["smooth"] == pytest.approx(0.08929352346801717, rel=1e-8)
+    gain, se, _, _ = causal._candidate_gains({"smooth": constant - diff}, constant, {},
+                                             np.ones(10))
+    assert se["smooth"] == pytest.approx(0.08929352346801717, rel=1e-8)
+
+
+def test_candidate_gain_se_counts_observation_weights_as_frequencies():
+    # The loss rows carry the weight, as w (t - e)^2 (z - tau)^2 does. The
+    # unweighted formula gave 0.10136425515053234 here; the weighted standard
+    # error is 0.07806379954883057, and the gain is unchanged at 0.1007.
+    w = np.array([1.0, 2.5, 0.5, 3.0, 1.0, 0.0, 2.0, 1.5, 0.8, 1.2])
+    unit = np.array([0.31, -0.22, 0.4, 0.17, -0.09, 0.0, 0.12, 0.25, -0.3, 0.21])
+    constant = np.zeros(10)
+    gain, se, _, _ = causal._candidate_gains({"smooth": constant - w * unit}, constant, {}, w)
+    assert gain["smooth"] == pytest.approx(0.1007, rel=1e-8)
+    assert se["smooth"] == pytest.approx(0.07806379954883057, rel=1e-8)
+    # Integer weights give the standard error of the data with each row
+    # repeated, rescaled from the expanded to the original row count.
+    counts = np.array([1.0, 3.0, 2.0, 1.0, 4.0])
+    d = np.array([0.2, -0.1, 0.5, 0.3, -0.4])
+    _, se_w, _, _ = causal._candidate_gains({"c": -counts * d}, np.zeros(5), {}, counts)
+    expanded = np.repeat(d, counts.astype(int))
+    se_expanded = np.std(expanded, ddof=1) / np.sqrt(expanded.size)
+    assert se_w["c"] * 5 / counts.sum() == pytest.approx(se_expanded, rel=1e-12)
+
+
 def _heterogeneous_effect_data(n=800, seed=7):
     rng = np.random.default_rng(seed)
     x = rng.uniform(-1, 1, n)

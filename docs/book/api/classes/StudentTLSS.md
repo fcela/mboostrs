@@ -12,7 +12,7 @@ StudentTLSS(stabilization: str = 'none')
 Student's t family: `mu` (identity link), `sigma` (log link, scale),
 `df` (log link, degrees of freedom). Matches R `gamboostLSS::StudentTLSS()`.
 
-Source: [`python/mboostrs/gamlss.py` lines 1267-1329](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1267-L1329)
+Source: [`python/mboostrs/gamlss.py` lines 1270-1332](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1270-L1332)
 
 ## Members
 
@@ -43,7 +43,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `IndexError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1276-1282](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1276-L1282)
+Source: [`python/mboostrs/gamlss.py` lines 1279-1285](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1279-L1285)
 
 (studenttlss-mean)=
 ## `StudentTLSS.mean`
@@ -62,7 +62,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1284-1289](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1284-L1289)
+Source: [`python/mboostrs/gamlss.py` lines 1287-1292](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1287-L1292)
 
 (studenttlss-pdf)=
 ## `StudentTLSS.pdf`
@@ -75,7 +75,7 @@ StudentTLSS.pdf(y, params) -> ndarray
 
 Student-t density: location `mu`, scale `sigma`, df `df`.
 
-Source: [`python/mboostrs/gamlss.py` lines 1291-1301](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1291-L1301)
+Source: [`python/mboostrs/gamlss.py` lines 1294-1304](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1294-L1304)
 
 (studenttlss-cdf)=
 ## `StudentTLSS.cdf`
@@ -94,7 +94,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1303-1311](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1303-L1311)
+Source: [`python/mboostrs/gamlss.py` lines 1306-1314](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1306-L1314)
 
 (studenttlss-quantile)=
 ## `StudentTLSS.quantile`
@@ -107,7 +107,7 @@ StudentTLSS.quantile(p, params) -> ndarray
 
 Student-t quantile, obtained by inverting the standardized CDF.
 
-Source: [`python/mboostrs/gamlss.py` lines 1313-1315](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1313-L1315)
+Source: [`python/mboostrs/gamlss.py` lines 1316-1318](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1316-L1318)
 
 (studenttlss-simulate)=
 ## `StudentTLSS.simulate`
@@ -126,7 +126,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 1317-1325](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1317-L1325)
+Source: [`python/mboostrs/gamlss.py` lines 1320-1328](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1320-L1328)
 
 (studenttlss-deviance_increment)=
 ## `StudentTLSS.deviance_increment`
@@ -139,4 +139,4 @@ StudentTLSS.deviance_increment(y, params) -> ndarray
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 1327-1329](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1327-L1329)
+Source: [`python/mboostrs/gamlss.py` lines 1330-1332](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L1330-L1332)

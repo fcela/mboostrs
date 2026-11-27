@@ -35,7 +35,7 @@ than `share` asks for. `rows` holds one record per row of `newdata`
 with its estimate, interval, propensity, overlap flag, rank among the
 overlap rows and whether it is chosen.
 
-Source: [`python/mboostrs/causal.py` lines 4648-4711](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L4648-L4711)
+Source: [`python/mboostrs/causal.py` lines 4969-5032](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L4969-L5032)
 
 ## Members
 
@@ -57,7 +57,7 @@ OverlapRanking.table(output='auto')
 One row per row of `newdata`; see the `rows` field. The
 `tied_at_boundary` column marks the tied rows.
 
-Source: [`python/mboostrs/causal.py` lines 4681-4684](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L4681-L4684)
+Source: [`python/mboostrs/causal.py` lines 5002-5005](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L5002-L5005)
 
 (overlapranking-to_dict)=
 ## `OverlapRanking.to_dict`
@@ -70,7 +70,7 @@ OverlapRanking.to_dict(*, include_arrays=False)
 
 A JSON-safe record; the per-row records only on request.
 
-Source: [`python/mboostrs/causal.py` lines 4686-4690](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L4686-L4690)
+Source: [`python/mboostrs/causal.py` lines 5007-5011](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L5007-L5011)
 
 (overlapranking-describe)=
 ## `OverlapRanking.describe`
@@ -83,4 +83,4 @@ OverlapRanking.describe() -> str
 
 The top group, its gain, and the rows left out for lack of overlap.
 
-Source: [`python/mboostrs/causal.py` lines 4692-4711](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L4692-L4711)
+Source: [`python/mboostrs/causal.py` lines 5013-5032](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/causal.py#L5013-L5032)

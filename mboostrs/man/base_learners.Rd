@@ -34,12 +34,12 @@ formula spelling is otherwise the same.
     per-learner intercept. A factor expands to one indicator per level. This is
     the only learner \code{\link{glmboost}} uses, and a bare column name in a
     \code{glmboost} formula means this.}
-  \item{\code{bbs(x, df = 4, knots = 20, degree = 3, differences = 2)}}{
-    Penalized B-spline (P-spline). The predictor is expanded into a B-spline
-    basis and the \code{differences}-order differences between adjacent
-    coefficients are penalized, calibrated so the learner's hat matrix has
-    trace \code{df}. A bare column name in a \code{gamboost} formula means
-    this.}
+  \item{\code{bbs(x, df = 4, knots = 20, degree = 3, differences = 2, knot_placement = c("equidistant", "quantile"), bins = NULL)}}{
+    Penalized B-spline (P-spline, or quantile O-spline when
+    \code{knot_placement = "quantile"}). Optionally discretizes continuous
+    values into \code{bins} quantile bins (e.g. \code{bins = 256}) for fast
+    \eqn{O(n + B \cdot K)} evaluation. A bare column name in a \code{gamboost}
+    formula means \code{bbs(x)}.}
   \item{\code{bns(x, df = NULL)}}{The same B-spline basis with an identity
     ridge penalty instead of a difference penalty. Having no null space, the
     fitted curve can shrink to zero entirely, and any positive \code{df} is
@@ -59,9 +59,11 @@ formula spelling is otherwise the same.
     two predictors, with the additive Kronecker penalty. Its penalty null space
     has dimension \code{differences^2}, so \code{df} must be at least 4 at the
     defaults.}
-  \item{\code{btree(x, maxdepth = 1)}}{Decision stump, or a shallow tree at
-    higher \code{maxdepth}. This is the learner upstream \code{blackboost}
-    uses.}
+  \item{\code{btree(x, maxdepth = 1, selection = "ctree", split_method = c("exact", "histogram"), lambda_leaf = 0, colsample = 1)}}{
+    Decision stump or shallow interaction tree over one or more predictors,
+    supporting exact or 256-bin histogram split scanning, L2 leaf shrinkage
+    (\code{lambda_leaf}), and deterministic per-step column subsampling
+    (\code{colsample}, \code{colsample_seed}).}
   \item{\code{bkernel(x, bandwidth = 1)}}{Kernel ridge effect built from a
     dense kernel matrix. Upstream \code{mboost::bkernel} constructs its kernel
     from genotype data for pathway and GWAS analysis; this learner does not
