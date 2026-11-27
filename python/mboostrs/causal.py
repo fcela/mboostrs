@@ -3721,23 +3721,34 @@ def _choose_candidate(cv_rloss):
 _AUTO_FALLBACK = "smooth"
 
 
-def _candidate_gains(loss_rows, constant_loss, mstops):
-    """Each candidate's out-of-fold R-loss gain over the constant effect, the
-    standard error of that gain over the rows, whether its step count is too
-    small to be a fit (``flat``), and whether it is eligible: its gain exceeds
-    its standard error and it is not flat. Returns four dicts keyed by candidate."""
+def _gain_and_se(diff, sample_weight):
+    """Mean of the per-row loss differences ``diff`` and its standard error,
+    with the observation weights as frequencies (``_rust.rloss_gain``).
+    ``None`` weights are unit weights."""
     from mboostrs import _rust
 
+    diff = np.ascontiguousarray(diff, dtype=np.float64)
+    weight = (np.ones_like(diff) if sample_weight is None
+              else np.ascontiguousarray(sample_weight, dtype=np.float64))
+    gain, se = _rust.rloss_gain(diff, weight)
+    return float(gain), float(se)
+
+
+def _candidate_gains(loss_rows, constant_loss, mstops, sample_weight=None):
+    """Each candidate's out-of-fold R-loss gain over the constant effect, the
+    standard error of that gain over the rows (observation weights
+    ``sample_weight`` counted as frequencies), whether its step count is too
+    small to be a fit (``flat``), and whether it is eligible: its gain exceeds
+    its standard error and it is not flat. Returns four dicts keyed by candidate."""
     gain, gain_se, flat, eligible = {}, {}, {}, {}
     for kind, rows in loss_rows.items():
-        gain[kind], gain_se[kind] = _rust.paired_mean_se(
-            np.asarray(constant_loss, dtype=float), np.asarray(rows, dtype=float))
+        gain[kind], gain_se[kind] = _gain_and_se(constant_loss - rows, sample_weight)
         flat[kind] = bool(kind in mstops and mstops[kind] < _CLOSE_TO_CONSTANT_STEPS)
         eligible[kind] = bool(gain[kind] > gain_se[kind] and not flat[kind])
     return gain, gain_se, flat, eligible
 
 
-def _auto_terms(cv_rloss, loss_rows, constant_loss, mstops):
+def _auto_terms(cv_rloss, loss_rows, constant_loss, mstops, sample_weight=None):
     """The candidate that ``terms="auto"`` returns, and how it was chosen.
 
     A candidate is eligible when its out-of-fold R-loss gain over the constant
@@ -3751,12 +3762,14 @@ def _auto_terms(cv_rloss, loss_rows, constant_loss, mstops):
     helps. When no candidate is eligible, the smooth candidate is returned and
     the constant-effect warning names it.
 
+    Standard errors count the observation weights ``sample_weight`` as
+    frequencies; ``None`` means unit weights.
+
     Returns the candidate and a record of the gains, standard errors, flags and
     the rule that decided the choice.
     """
-    from mboostrs import _rust
-
-    gain, gain_se, flat, eligible = _candidate_gains(loss_rows, constant_loss, mstops)
+    gain, gain_se, flat, eligible = _candidate_gains(loss_rows, constant_loss, mstops,
+                                                     sample_weight)
     record = {
         "lowest_loss": _choose_candidate(cv_rloss),
         "gain_over_constant": gain, "gain_se": gain_se, "flat": flat,
@@ -3770,9 +3783,8 @@ def _auto_terms(cv_rloss, loss_rows, constant_loss, mstops):
     chosen = _choose_candidate(pool)
     if chosen != _AUTO_FALLBACK and _AUTO_FALLBACK in pool:
         # Positive when the chosen candidate has the lower loss.
-        advantage, se = _rust.paired_mean_se(
-            np.asarray(loss_rows[_AUTO_FALLBACK], dtype=float),
-            np.asarray(loss_rows[chosen], dtype=float))
+        advantage, se = _gain_and_se(loss_rows[_AUTO_FALLBACK] - loss_rows[chosen],
+                                     sample_weight)
         if advantage <= se:
             record["tie_with_smooth"] = True
             chosen = _AUTO_FALLBACK
@@ -4564,19 +4576,19 @@ def effect_model(data, spec: CausalSpec, *, nuisance=None, modifiers=None, terms
     constant_rloss = float(np.mean(constant_loss))
     if terms == "auto":
         chosen, terms_selection = _auto_terms(
-            cv_rloss, loss_rows, constant_loss, {k: t.mstop for k, t in tuned.items()})
+            cv_rloss, loss_rows, constant_loss, {k: t.mstop for k, t in tuned.items()},
+            sample_weight)
     else:
         chosen = _choose_candidate(cv_rloss)
         # The gains of every candidate are reported for a named choice too, so the
         # record reads the same as terms="auto"; the choice itself is the one asked for.
         gains, gain_ses, flats, eligibles = _candidate_gains(
-            loss_rows, constant_loss, {k: t.mstop for k, t in tuned.items()})
+            loss_rows, constant_loss, {k: t.mstop for k, t in tuned.items()}, sample_weight)
         terms_selection = {"rule": "requested", "lowest_loss": chosen,
                            "gain_over_constant": gains, "gain_se": gain_ses,
                            "flat": flats, "eligible": eligibles, "tie_with_smooth": False}
     gain_rows = constant_loss - _loss_rows(pseudo, weights_r, cv_predicted[chosen])
-    gain = float(np.mean(gain_rows))
-    gain_se = float(np.std(gain_rows, ddof=1) / np.sqrt(n)) if n > 1 else float("nan")
+    gain, gain_se = _gain_and_se(gain_rows, sample_weight)
     everything = np.ones(n, dtype=bool)
     if chosen == "smooth":
         model = _fit_tau("smooth", modifiers, smooth_values, response, pseudo, weights_r,

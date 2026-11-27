@@ -8010,6 +8010,20 @@ fn mean_and_iid_se(values: PyReadonlyArray1<'_, f64>) -> PyResult<(f64, f64)> {
         .map_err(mboostrs_error_to_pyerr)
 }
 
+/// Mean R-loss gain and its frequency-weighted standard error
+/// (`mboostrs_core::causal::rloss_gain`). Returns `(gain, se)`.
+#[pyfunction(signature = (diff, sample_weight))]
+fn rloss_gain(
+    diff: PyReadonlyArray1<'_, f64>,
+    sample_weight: PyReadonlyArray1<'_, f64>,
+) -> PyResult<(f64, f64)> {
+    mboostrs_core::causal::rloss_gain(
+        &diff.as_array().to_vec(),
+        &sample_weight.as_array().to_vec(),
+    )
+    .map_err(mboostrs_error_to_pyerr)
+}
+
 /// Effective sample size `(sum w)^2 / sum w^2` (`mboostrs_core::causal::effective_sample_size`).
 #[pyfunction]
 fn effective_sample_size(weights: PyReadonlyArray1<'_, f64>) -> PyResult<f64> {
@@ -10627,6 +10641,7 @@ fn _rust(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(augmented_scores, m)?)?;
     m.add_function(wrap_pyfunction!(influence_variance, m)?)?;
     m.add_function(wrap_pyfunction!(mean_and_iid_se, m)?)?;
+    m.add_function(wrap_pyfunction!(rloss_gain, m)?)?;
     m.add_function(wrap_pyfunction!(subgroup_scores, m)?)?;
     m.add_function(wrap_pyfunction!(effective_sample_size, m)?)?;
     m.add_function(wrap_pyfunction!(median_repeat_combine, m)?)?;

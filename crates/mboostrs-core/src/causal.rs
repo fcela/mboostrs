@@ -847,6 +847,66 @@ pub fn subgroup_scores(
     Ok(out)
 }
 
+/// Mean R-loss gain over the rows and its standard error under frequency
+/// weights.
+///
+/// `diff[i]` is row `i`'s loss difference, already multiplied by its
+/// observation weight `sample_weight[i]` (as the per-row R-loss
+/// `w_i (t_i - e_i)^2 (z_i - tau_i)^2` is). The gain is `sum(diff) / n`, the
+/// quantity `effect_model` reports. Its standard error treats the weights as
+/// frequencies, as [`influence_variance`] does: row `i` stands for
+/// `sample_weight[i]` copies whose unweighted difference is
+/// `d_i = diff[i] / sample_weight[i]`. With `W = sum w` and
+/// `G = sum(diff) / W`, the variance of `G` is
+/// `sum w (d - G)^2 / (W (W - 1))`, and the standard error of the gain is
+/// `sqrt` of that times `W / n`. On unit weights this is
+/// `sd(diff, ddof = 1) / sqrt(n)`. Rows of zero weight are not observations
+/// and leave the variance unchanged; their `diff` must be zero.
+///
+/// Returns `(gain, se)`; `se` is `NaN` when `W <= 1`.
+pub fn rloss_gain(diff: &[f64], sample_weight: &[f64]) -> Result<(f64, f64), MboostrsError> {
+    let n = diff.len();
+    if n == 0 || sample_weight.len() != n {
+        return Err(MboostrsError::Shape(format!(
+            "sample_weight has {} rows but diff has {n}",
+            sample_weight.len()
+        )));
+    }
+    let rejected = |what: String| MboostrsError::BadResponse("rlearner".to_string(), what);
+    for i in 0..n {
+        if !diff[i].is_finite() {
+            return Err(rejected(format!("row {i}: loss difference must be finite")));
+        }
+        if !(sample_weight[i].is_finite() && sample_weight[i] >= 0.0) {
+            return Err(rejected(format!(
+                "row {i}: sample weight must be finite and non-negative"
+            )));
+        }
+        if sample_weight[i] == 0.0 && diff[i] != 0.0 {
+            return Err(rejected(format!(
+                "row {i} has zero weight but a non-zero loss difference"
+            )));
+        }
+    }
+    let nf = n as f64;
+    let sum: f64 = diff.iter().sum();
+    let gain = sum / nf;
+    let total: f64 = sample_weight.iter().sum();
+    if total <= 1.0 {
+        return Ok((gain, f64::NAN));
+    }
+    let g = sum / total;
+    let ss: f64 = (0..n)
+        .filter(|&i| sample_weight[i] > 0.0)
+        .map(|i| {
+            let centred = diff[i] - sample_weight[i] * g;
+            centred * centred / sample_weight[i]
+        })
+        .sum();
+    let se = (ss / (total * (total - 1.0))).sqrt() * total / nf;
+    Ok((gain, se))
+}
+
 /// Sample mean of `values` and its IID standard error, `sd(ddof = 1) / sqrt(n)`.
 pub fn mean_and_iid_se(values: &[f64]) -> Result<(f64, f64), MboostrsError> {
     let n = values.len();
@@ -1660,6 +1720,46 @@ pub fn iv_ratio_weighted(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn rloss_gain_matches_the_unit_weight_formula_and_weights_as_frequencies() {
+        // Unit weights: the former NumPy values, mean(diff) and
+        // std(diff, ddof=1) / sqrt(n), from python/mboostrs/causal.py (#821).
+        let diff = [
+            0.42, -0.15, 0.08, 0.61, -0.33, 0.27, 0.05, 0.19, -0.02, 0.38,
+        ];
+        let (gain, se) = rloss_gain(&diff, &[1.0; 10]).unwrap();
+        assert!((gain - 0.15).abs() <= 1e-8 * 0.15);
+        assert!((se - 0.08929352346801717).abs() <= 1e-8 * 0.08929352346801717);
+
+        // Non-uniform weights. The unweighted formula gave 0.10136425515053234;
+        // the frequency-weighted one gives 0.07806379954883057.
+        let w = [1.0, 2.5, 0.5, 3.0, 1.0, 0.0, 2.0, 1.5, 0.8, 1.2];
+        let unit = [0.31, -0.22, 0.4, 0.17, -0.09, 0.0, 0.12, 0.25, -0.3, 0.21];
+        let weighted: Vec<f64> = w.iter().zip(&unit).map(|(a, b)| a * b).collect();
+        let (gain, se) = rloss_gain(&weighted, &w).unwrap();
+        assert!((gain - 0.1007).abs() <= 1e-8 * 0.1007);
+        assert!((se - 0.07806379954883057).abs() <= 1e-8 * 0.07806379954883057);
+
+        // Integer weights: the same variance as the data with each row
+        // repeated `w` times and unit weights.
+        let counts = [1.0, 3.0, 2.0, 1.0, 4.0];
+        let unit = [0.2, -0.1, 0.5, 0.3, -0.4];
+        let weighted: Vec<f64> = counts.iter().zip(&unit).map(|(a, b)| a * b).collect();
+        let (_, se) = rloss_gain(&weighted, &counts).unwrap();
+        let expanded: Vec<f64> = counts
+            .iter()
+            .zip(&unit)
+            .flat_map(|(&c, &d)| std::iter::repeat_n(d, c as usize))
+            .collect();
+        let (_, se_expanded) = rloss_gain(&expanded, &vec![1.0; expanded.len()]).unwrap();
+        let total: f64 = counts.iter().sum();
+        assert!((se * counts.len() as f64 / total - se_expanded).abs() < 1e-14);
+
+        assert!(rloss_gain(&[0.1], &[1.0]).unwrap().1.is_nan());
+        assert!(rloss_gain(&[0.1, 0.2], &[0.0, 1.0]).is_err());
+        assert!(rloss_gain(&[0.1, 0.2], &[1.0]).is_err());
+    }
 
     #[test]
     fn subgroup_scores_full_group_matches_influence_variance() {
