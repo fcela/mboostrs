@@ -97,7 +97,7 @@ the test. Note the test itself is not neutral -- under `"ctree"` a
 factor with many levels has an edge over a number; `"ctree_pvalue"`
 compares p-values instead and removes it.
 
-Source: [`python/mboostrs/learners.py` lines 600-706](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L600-L706)
+Source: [`python/mboostrs/learners.py` lines 624-730](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L624-L730)
 
 ## Members
 
@@ -116,4 +116,4 @@ Btree.name
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/learners.py` lines 704-706](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L704-L706)
+Source: [`python/mboostrs/learners.py` lines 728-730](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L728-L730)

@@ -48,7 +48,16 @@ from mboostrs._extrapolation import routine_warnings
 from mboostrs._names import quote_name
 from mboostrs._output import export_result
 
-__all__ = ["ConformalInterval", "conformal_interval"]
+__all__ = ["ConformalInterval", "ConformalReliabilityWarning", "conformal_interval"]
+
+
+class ConformalReliabilityWarning(UserWarning):
+    """Warning emitted when conformal reliability diagnostics detect risk to coverage.
+
+    Triggered when query rows extrapolate outside the training predictor support,
+    when covariate mean shift is substantial, or when the calibration split is
+    small enough that finite-sample coverage variance is wide.
+    """
 
 
 def _f64(values) -> np.ndarray:
@@ -103,6 +112,9 @@ class ConformalInterval:
     zero_probability: float | None = None
     reference_dispersion: float | None = None
     randomization_seed: int | None = None
+    #: Structured reliability diagnostics (D9): calibration coverage SE,
+    #: out-of-range/covariate-shift counts on query rows, and caution reasons.
+    reliability: dict | None = None
 
     def __post_init__(self):
         if self.support not in ("real", "nonnegative_integers"):
@@ -818,6 +830,7 @@ def _warn_uneven_coverage(model, calib_data, lower, upper, level, label="split-c
             "follow noise that changes across the data. Use "
             "method='cqr' for that case.",
             UserWarning, stacklevel=3)
+    return tuple(flagged)
 
 
 def _split_scores(y, predicted, level, score):
@@ -914,11 +927,14 @@ def _split_conformal(model, newdata, level, seed, calib_fraction, mstop, extrapo
     lower, upper, q, score, metadata = _calibrated_split_band(
         fit, _response(model, calib_data), calib_pred, point, level, seed,
         mstop, extrapolation, score, count_reference)
+    uneven_reasons: tuple[str, ...] = ()
     if score == "absolute":
-        _warn_uneven_coverage(model, calib_data, *_symmetric_band(calib_pred, q), level,
-                              predictions=calib_pred)
+        uneven_reasons = _warn_uneven_coverage(
+            model, calib_data, *_symmetric_band(calib_pred, q), level,
+            predictions=calib_pred,
+        )
 
-    return ConformalInterval(
+    out = ConformalInterval(
         lower=lower, upper=upper, predicted=point, level=level,
         method="split", n_calibration=n_calib, quantile=q, score=score,
         guaranteed_coverage=level,
@@ -929,6 +945,9 @@ def _split_conformal(model, newdata, level, seed, calib_fraction, mstop, extrapo
         calibration_source=f"random split of the model's {n} training rows (seed={seed})",
         **metadata,
     )
+    if uneven_reasons:
+        object.__setattr__(out, "_uneven_reasons", uneven_reasons)
+    return out
 
 
 def _calibration_response(calibration, name, level):
@@ -1264,8 +1283,8 @@ def _preprocessing_refit_spec(model, fitted):
             f"{'(' + ', '.join(names) + ') ' if names else ''}"
             "on the proper-training rows, which needs the "
             "model's inputs before those transforms. This model did not keep "
-            "them: it has an interaction term (%X%) or an env= matrix. Fit it "
-            "again without them to calibrate a distributional interval.")
+            "them: it has an external env= matrix. Fit it "
+            "again without one to calibrate a distributional interval.")
     raw_columns = set(_as_column_dict(spec.raw_data))
     recipe = getattr(model, "_transform_recipe", None)
     produced = {step.name for step in (recipe.steps if recipe else ())}
@@ -1719,19 +1738,139 @@ def conformal_interval(
             extrapolation, unseen_levels=unseen_levels)
 
 
+def _assess_reliability(
+    model,
+    newdata,
+    interval: ConformalInterval,
+    *,
+    uneven_reasons: tuple[str, ...] = (),
+) -> ConformalInterval:
+    """Attach structured D9 reliability diagnostics and warn when coverage is at risk."""
+    import math
+
+    n_cal = int(interval.n_calibration)
+    level = float(interval.level)
+    cov_se = float(math.sqrt(max(0.0, level * (1.0 - level)) / max(1.0, float(n_cal + 1))))
+
+    oor_rows = 0
+    oor_frac = 0.0
+    oor_cols: list[str] = []
+    shift_cols: list[str] = []
+    n_query = int(interval.lower.size)
+
+    if newdata is not None and n_query > 0:
+        try:
+            train_dict = _training_data(model)
+            raw_inputs = getattr(model, "_raw_inputs", None)
+            if isinstance(raw_inputs, dict) and raw_inputs.get("data") is not None:
+                train_dict = _as_column_dict(raw_inputs["data"])
+            query_dict = _as_column_dict(newdata)
+            resp_name = getattr(model, "_response_name", None)
+            row_oor = np.zeros(n_query, dtype=bool)
+            for col, tr_raw in train_dict.items():
+                if col == resp_name or col not in query_dict:
+                    continue
+                if tr_raw.dtype.kind not in "fiu":
+                    continue
+                tr_v = np.asarray(tr_raw, dtype=np.float64)
+                tr_fin = tr_v[np.isfinite(tr_v)]
+                if tr_fin.size < 4:
+                    continue
+                lo, hi = float(np.min(tr_fin)), float(np.max(tr_fin))
+                span = hi - lo
+                if span <= 0.0:
+                    continue
+                try:
+                    q_v = np.asarray(query_dict[col], dtype=np.float64)
+                except (TypeError, ValueError):
+                    continue
+                if q_v.size != n_query:
+                    continue
+                q_fin_mask = np.isfinite(q_v)
+                tol = 1e-9 * span
+                col_oor = q_fin_mask & ((q_v < lo - tol) | (q_v > hi + tol))
+                if np.any(col_oor):
+                    row_oor |= col_oor
+                    oor_cols.append(col)
+                q_fin = q_v[q_fin_mask]
+                if q_fin.size >= 20:
+                    tr_sd = float(np.std(tr_fin))
+                    if tr_sd > 1e-12:
+                        z_shift = abs(float(np.mean(q_fin)) - float(np.mean(tr_fin))) / tr_sd
+                        if z_shift >= 1.5:
+                            shift_cols.append(col)
+            oor_rows = int(np.sum(row_oor))
+            oor_frac = float(oor_rows / max(1, n_query))
+        except Exception:
+            pass
+
+    reasons: list[str] = []
+    warn_reasons: list[str] = []
+    if cov_se > 0.05:
+        msg = (
+            f"small calibration split (n_calibration={n_cal}, "
+            f"coverage SE=+/-{cov_se:.3f}): finite-sample coverage variance is wide"
+        )
+        reasons.append(msg)
+        warn_reasons.append(msg)
+    if oor_frac >= 0.05:
+        cols_preview = ", ".join(oor_cols[:5]) + ("..." if len(oor_cols) > 5 else "")
+        msg = (
+            f"covariate extrapolation on {oor_rows}/{n_query} query rows "
+            f"({100.0 * oor_frac:.1f}%) in [{cols_preview}]: exchangeability "
+            "does not hold outside training support"
+        )
+        reasons.append(msg)
+        warn_reasons.append(msg)
+    if shift_cols:
+        cols_preview = ", ".join(shift_cols[:5]) + ("..." if len(shift_cols) > 5 else "")
+        msg = (
+            f"covariate mean shift (>= 1.5 training SD) in [{cols_preview}]: "
+            "exchangeability between calibration and query rows may be violated"
+        )
+        reasons.append(msg)
+        warn_reasons.append(msg)
+    if uneven_reasons:
+        reasons.append(
+            "uneven conditional coverage across calibration slices "
+            f"({'; '.join(uneven_reasons)})"
+        )
+
+    if warn_reasons:
+        warnings.warn(
+            "conformal interval reliability caution: " + "; ".join(warn_reasons),
+            ConformalReliabilityWarning,
+            stacklevel=4,
+        )
+
+    shifted = tuple(sorted(set(oor_cols + shift_cols)))
+    diag = {
+        "status": "caution" if reasons else "reliable",
+        "warnings": tuple(reasons),
+        "n_calibration": n_cal,
+        "calibration_coverage_se": round(cov_se, 4),
+        "out_of_range_rows": oor_rows,
+        "out_of_range_fraction": round(oor_frac, 4),
+        "shifted_columns": shifted,
+        "heteroscedastic_split": bool(uneven_reasons),
+    }
+    return replace(interval, reliability=diag)
+
+
 def _with_fitted_mean(model, newdata, interval: ConformalInterval,
                       extrapolation="warn", unseen_levels="error") -> ConformalInterval:
-    """`interval` with the full model's prediction at the same rows attached.
+    """`interval` with the full model's prediction and reliability diagnostics attached.
 
     Callers run this inside :func:`routine_warnings`, so the full model's
     extrapolation rows join the interval's rows in one summary; the policy is
     the one the interval used.
     """
-    if getattr(model, "_response_transform", None) is not None:
-        return interval
-    with routine_warnings(stacklevel=3):
-        mean = _full_model_mean(model, newdata, extrapolation, unseen_levels)
-    return replace(interval, fitted_mean=mean)
+    uneven = getattr(interval, "_uneven_reasons", ())
+    if getattr(model, "_response_transform", None) is None:
+        with routine_warnings(stacklevel=3):
+            mean = _full_model_mean(model, newdata, extrapolation, unseen_levels)
+        interval = replace(interval, fitted_mean=mean)
+    return _assess_reliability(model, newdata, interval, uneven_reasons=uneven)
 
 
 def _full_model_mean(model, newdata, extrapolation="warn", unseen_levels="error") -> np.ndarray:

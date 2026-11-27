@@ -212,8 +212,24 @@ def _raw_column(data, column):
     return values.to_numpy() if hasattr(values, "to_numpy") else np.asarray(values)
 
 
+def _is_missing_scalar(v) -> bool:
+    if v is None:
+        return True
+    try:
+        return bool(np.isnan(v))
+    except (TypeError, ValueError):
+        try:
+            import pandas as pd
+            return bool(pd.isna(v))
+        except Exception:
+            return False
+
+
+_MISSING_LEVEL = "__missing__"
+
+
 def _fit_marginal(kind: str, column: str, args: str | None, data,
-                  transform: str | None = None) -> _Marginal:
+                  transform: str | None = None, *, na_action: str = "error") -> _Marginal:
     """Record what is needed to rebuild this marginal's design at new points.
 
     `transform` (``"log"`` or ``"sqrt"``) fits the margin on the transformed
@@ -223,8 +239,32 @@ def _fit_marginal(kind: str, column: str, args: str | None, data,
     hyper = _marginal_hyper(kind, args)
     if kind == "brandom":
         raw = _raw_column(data, column)
-        levels = tuple(sorted({v for v in raw.tolist()}))
-        return _Marginal(kind, column, {"levels": levels, **hyper})
+        listed = raw.tolist()
+        has_missing = any(_is_missing_scalar(v) for v in listed)
+        impute = na_action in ("impute", "impute_model", "impute_model_split")
+        if has_missing and not impute:
+            first = next(i for i, v in enumerate(listed) if _is_missing_scalar(v))
+            n_miss = sum(1 for v in listed if _is_missing_scalar(v))
+            raise MboostrsValueError(
+                f"the interaction term's margin {column!r} has {n_miss} missing "
+                f"value(s), first at row {first}. Pass na_action='impute' to "
+                f"encode them as a dedicated level, or na_action='omit' to drop "
+                f"those rows, or fill the column yourself before fitting."
+            )
+        present_levels = [v for v in listed if not _is_missing_scalar(v)]
+        if has_missing:
+            present_levels.append(_MISSING_LEVEL)
+        mixed_types = bool(present_levels) and any(
+            not isinstance(u, type(present_levels[0])) for u in present_levels
+        )
+        levels = tuple(
+            sorted(
+                set(present_levels),
+                key=(lambda x: (type(x).__name__, str(x))) if mixed_types else None,
+            )
+        )
+        extra = {"impute_missing": True} if impute else {}
+        return _Marginal(kind, column, {"levels": levels, **extra, **hyper})
 
     from mboostrs.transforms import _column
 
@@ -281,7 +321,7 @@ def _with_training_fill(marginal: _Marginal, data, na_action: str) -> _Marginal:
 
     values = np.asarray(_raw_column(data, marginal.column), dtype=float)
     present = values[np.isfinite(values)]
-    if present.size == values.size or present.size == 0:
+    if present.size == 0:
         return marginal
     return _Marginal(marginal.kind, marginal.column,
                      {**marginal.params, "impute_value": _median(present)})
@@ -449,12 +489,21 @@ def _level_codes(marginal: _Marginal, data, *, unseen: str = "error") -> np.ndar
     raw = _raw_column(data, marginal.column)
     levels = marginal.params["levels"]
     listed = raw.tolist()
+    if marginal.params.get("impute_missing"):
+        listed = [_MISSING_LEVEL if _is_missing_scalar(v) else v for v in listed]
     mismatch = _unseen_dtype_mismatch(marginal.column, levels, listed, raw)
     if mismatch is not None:
         raise mismatch
     index = {level: j + 1 for j, level in enumerate(levels)}
     new_levels = sorted({v for v in listed if v not in index}, key=str)
     if new_levels and unseen not in ("zero", "average"):
+        if (
+            marginal.params.get("impute_missing")
+            and new_levels == [_MISSING_LEVEL]
+        ):
+            # Training had no missing values in this margin, but na_action='impute'
+            # was active; treat unseen missing values as the average group (0 code).
+            return np.asarray([float(index.get(v, 0)) for v in listed])
         raise ValueError(
             f"column {marginal.column!r} has level(s) {new_levels} not seen at "
             f"fit time (levels: {list(levels)}); "
@@ -855,12 +904,12 @@ def _lower_factor_bols(learner, data, derived, is_factor):
     return lowered, recipe
 
 
-def _parse_marginal(text: str, data) -> _Marginal:
+def _parse_marginal(text: str, data, *, na_action: str = "error") -> _Marginal:
     transformed = _TRANSFORMED_MARGINAL_RE.match(text)
     if transformed:
         kind, transform, column, args = transformed.groups()
         column = unquote_name(column)
-        return _fit_marginal(kind, column, args, data, transform=transform)
+        return _fit_marginal(kind, column, args, data, transform=transform, na_action=na_action)
     match = _MARGINAL_RE.match(text)
     if not match:
         raise ValueError(
@@ -868,7 +917,7 @@ def _parse_marginal(text: str, data) -> _Marginal:
             f"bbs(col), bols(col), brandom(col), or bbs/bols of log(col) or sqrt(col)"
         )
     kind, column, args = match.group(1), unquote_name(match.group(2)), match.group(3)
-    return _fit_marginal(kind, column, args, data)
+    return _fit_marginal(kind, column, args, data, na_action=na_action)
 
 
 def _transformed(values, transform):
@@ -944,8 +993,8 @@ def expand_interactions(formula: str, data, *, na_action: str = "error"):
             raise ValueError(
                 f"interaction term {term.strip()!r} must be exactly 'a %X% b'"
             )
-        left = _with_training_fill(_parse_marginal(parts[0], data), data, na_action)
-        right = _with_training_fill(_parse_marginal(parts[1], data), data, na_action)
+        left = _with_training_fill(_parse_marginal(parts[0], data, na_action=na_action), data, na_action)
+        right = _with_training_fill(_parse_marginal(parts[1], data, na_action=na_action), data, na_action)
 
         k = len(interactions)
         derived = f"__ix{k}"

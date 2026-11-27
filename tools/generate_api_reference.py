@@ -107,6 +107,7 @@ SECTIONS: list[tuple[str, str, Any]] = [
          "predict_all", "q_stats", "quantile_residuals", "residual_frame",
          "same_family_gap", "SameFamilyGap",
          "worm_data", "conformal_interval", "ConformalInterval",
+         "ConformalReliabilityWarning",
          "rearrange_quantiles", "RearrangedQuantiles",
          "heteroscedasticity", "interval_metrics", "evaluate_distribution",
          "cluster_residual_check", "time_residual_check", "influence_check",
@@ -157,7 +158,8 @@ SECTIONS: list[tuple[str, str, Any]] = [
                                 "TrapFinding", "TrapReport", "causal_trap_report",
                                 "elicit_causal_spec")),
     ("Persistence and reporting", "Save fitted models, inspect recorded decisions, and report predictions.",
-     lambda name, obj: name in ("report", "DecisionTrail", "save_model", "load_model", "dump_result_json", "load_result_json", "ExecutionReport",
+     lambda name, obj: name in ("report", "DecisionTrail", "reproduce", "ReproductionResult",
+                                "save_model", "load_model", "dump_result_json", "load_result_json", "ExecutionReport",
                                 "PathRow", "build_info", "provenance", "llm_describe",
                                 "llm_explain_prompt")),
     ("Capabilities", "List supported operations and the tests used to validate them.",
@@ -183,6 +185,19 @@ EXAMPLES: dict[str, str] = {
         'issues = mb.validate(model, test, output="records")\n'
         'refused = [issue for issue in issues if issue["severity"] == "error"]'
     ),
+    "ConformalReliabilityWarning": (
+        'import warnings\n'
+        'with warnings.catch_warnings(record=True) as caught:\n'
+        '    warnings.simplefilter("always", mb.ConformalReliabilityWarning)\n'
+        '    ci = mb.conformal_interval(model, newdata=new_df, method="split")\n'
+        'ci.reliability["status"]'
+    ),
+    "reproduce": (
+        'fitted = mb.fit(df, "y", seed=0)\n'
+        'check = mb.reproduce(fitted.trail, df)\n'
+        'check.matched, check.prediction_sha256'
+    ),
+    "ReproductionResult": 'check.matched, check.differences, check.report[:120]',
     "CostBudget": 'budget = mb.CostBudget(fits=100, seconds=60)',
     "open_search": (
         'df = mb.datasets.bodyfat()\n'

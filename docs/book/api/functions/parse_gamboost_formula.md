@@ -51,4 +51,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 ('y', ['Bbs', 'Bols'])
 ```
 
-Source: [`python/mboostrs/formula.py` lines 1106-1284](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/formula.py#L1106-L1284)
+Source: [`python/mboostrs/formula.py` lines 1112-1290](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/formula.py#L1112-L1290)

@@ -2,8 +2,8 @@
  "scorecard_id": "mboostrs-scorecard/2.1",
  "scorecard_sha256": "12d0ea339b4894ca3821ba9a0a3394c89572f962d022420c36d485ee3aa3daec",
  "library": "mboostrs",
- "model_revision": "0.2.3 (default imputation and unseen-level handling, guarded interaction adoption, residual_tree='auto', active-term formula pruning, 3k search subsampling, histogram-subtraction btree)",
- "benchmark_protocol_id": "competitive_heldout/PROTOCOL.md (2026-11-21; mboostrs arm refreshed 2026-11-26, see DEVIATIONS.md #4)",
+ "model_revision": "0.2.4 (fast radar search default, mixed numeric+categorical histogram btree, O(n+L) diagonal brandom, quantile O-splines, domain-safe skew transforms, default spline clipping, conformal reliability diagnostics, one-command reproduce)",
+ "benchmark_protocol_id": "competitive_heldout/PROTOCOL.md (2026-11-21; mboostrs arm refreshed 2026-11-26 for v0.2.4, see DEVIATIONS.md #5)",
  "mode": "fully_automated",
  "dimensions": [
   {
@@ -17,14 +17,13 @@
   {
    "id": "D1b",
    "name": "Relationship discovery from data alone",
-   "score": 4,
+   "score": 5,
    "status": "scored",
    "evidence": [
     "docs/benchmarks/competitive_heldout/analysis.json",
-    "docs/benchmarks/2026-11-21-competitive-heldout.md",
-    "docs/benchmarks/2026-11-25-heldout-eyesores-remediation.md"
+    "docs/benchmarks/2026-11-21-competitive-heldout.md"
    ],
-   "justification": "Structured screening and adoption validated on planted-truth tasks with characterized false-discovery control (anchor 4). Common permutation rule: TPR 1.000 (linear 30/30, nonlinear 40/40, interaction 10/10), FDR 0.167 (2.8% outside the S2 residual-tree draws; half the 0.310-0.459 FDR of the tree ensembles), silent on 5/5 null tasks. Reported formula (mboostrs native claim): TPR 0.912 (nonlinear 40/40, linear 25/30, interaction 8/10), FDR 0.039 (down from 0.645), silent on 5/5 null tasks, and 5/5 scale-only detections on S3. Real-data published effect directions: 104/113 (92.0%). Held below 5 because residual-tree splits on S2 raise permutation FDR and active-term pruning drops weak linear terms when a dominant interaction absorbs >95% of risk reduction."
+   "justification": "Structured screening and adoption validated on planted-truth tasks with 100% recall across main effects, interactions, and distributional scale effects (anchor 5). Common permutation rule: TPR 1.000 (linear 30/30, nonlinear 40/40, interaction 10/10), FDR 0.000 (down from 0.167, versus 0.310-0.459 for EBM and tree ensembles), silent on 5/5 null tasks. Reported formula (mboostrs native claim): TPR 1.000 (linear 30/30, nonlinear 40/40, interaction 10/10), FDR 0.080, silent on 5/5 null tasks, and 5/5 scale-only distributional detections on S3. Real-data published effect directions: 108/114 (94.7%)."
   },
   {
    "id": "D2",
@@ -53,24 +52,23 @@
   {
    "id": "D5",
    "name": "Experimental iteration speed",
-   "score": 3,
+   "score": 3.5,
    "status": "scored",
    "evidence": [
     "docs/benchmarks/competitive_heldout/analysis.json",
     "docs/benchmarks/competitive_heldout/sessions.jsonl"
    ],
-   "justification": "Scorecard session, 50,000 x 20, ten follow-up fits with prediction and permutation importance: median 3.04 s, p90 7.19 s, total 39.75 s (anchor 3: seconds per fit; 2.2x faster than CatBoost's 6.69 s median and 11.3x faster than the 2026-11-21 baseline of 34.4 s). Median fit-plus-predict on the 95-table real battery is 17.1 s under the 64-fit standard budget (vs. 50.5 s for EBM). Not sub-second (anchor 4)."
+   "justification": "Scorecard session, 50,000 x 20, ten follow-up fits with prediction and permutation importance: median 1.52 s, p90 2.84 s, total 17.83 s (4.4x faster than CatBoost's 6.69 s median, 45x faster than EBM's 67.5 s, and 22.7x faster than the initial 34.4 s baseline). Median fit-plus-predict on the 320-run battery dropped 6.5x to 2.64 s (faster than CatBoost's 3.01 s and 19x faster than EBM's 50.5 s). Half point below 4 because 50k x 20 follow-ups are ~1.5 s rather than sub-second."
   },
   {
    "id": "D6",
    "name": "Robustness across conditions",
-   "score": 2.5,
+   "score": 3,
    "status": "scored",
    "evidence": [
-    "docs/benchmarks/competitive_heldout/analysis.json",
-    "docs/benchmarks/2026-11-25-heldout-eyesores-remediation.md"
+    "docs/benchmarks/competitive_heldout/analysis.json"
    ],
-   "justification": "Completes 269 of 285 real-data runs (94.4%, up from 70.9% and ahead of EBM's 91.2%). Small-n real tasks: 12/12 completed with median loss 9.8% below the reference (ahead of CatBoost -8.0%, XGBoost -0.8%, LightGBM +7.0%); lowest loss of all six libraries on S5 (n=200, MSE 0.268). Half point below 3 because 16 runs still fail rather than degrading gracefully: 8 in conformal_interval on LSS models with adopted interactions (NotImplementedError), 5 from out-of-domain test values entering log/sqrt transforms, and 3 edge cases (mixed str/None sort, interaction margin missingness, degenerate sqrt knot)."
+   "justification": "Completes 285 of 285 real-data runs (100.0%, zero failures, up from 94.4% and ahead of EBM's 91.2%). Small-n real tasks: 12/12 completed with median loss 9.5% below the reference (ahead of CatBoost -8.0%, XGBoost -0.8%, LightGBM +7.0%); lowest loss of all six libraries on S5 (n=200, MSE 0.281). Meets anchor 3 cleanly; large-n (5M-row) scalability (anchor 4) is outside this protocol."
   },
   {
    "id": "D7",
@@ -91,32 +89,32 @@
   {
    "id": "D9",
    "name": "Uncertainty honesty (calibration)",
+   "score": 4.5,
+   "status": "scored",
+   "evidence": [
+    "docs/benchmarks/competitive_heldout/analysis.json"
+   ],
+   "justification": "Split-conformal 90% intervals across all 165 regression runs: median coverage 0.902, 95.8% within 0.85-0.95, 1.2% below 0.85, median width/SD 1.501. On heteroscedastic S3, tercile coverage is 0.891/0.905/0.908 (anchor 4). Binary median ECE drops to 0.0221 (tied best overall with EBM, ahead of CatBoost 0.0269, LightGBM 0.0370, XGBoost 0.0530). ConformalInterval.reliability and ConformalReliabilityWarning now flag covariate shift, out-of-range queries, small calibration splits, and residual heteroscedasticity; held at 4.5 pending an external temporal-shift evaluation of those warnings."
+  },
+  {
+   "id": "D10",
+   "name": "Reproducibility and auditability",
+   "score": 4,
+   "status": "scored",
+   "evidence": [
+    "docs/benchmarks/competitive_heldout/d10.json"
+   ],
+   "justification": "Predictions identical on rerun for 10/10 datasets (exact SHA-256 match to 1e-12). fit returns a structured DecisionTrail with provenance, candidate history, and active final formula, and mb.reproduce(trail, data) plus `python -m mboostrs reproduce <trail.json> <data>` verify bit-identical predictions and regenerate the report in one command (anchor 4)."
+  },
+  {
+   "id": "D11",
+   "name": "Predictive validity",
    "score": 4,
    "status": "scored",
    "evidence": [
     "docs/benchmarks/competitive_heldout/analysis.json"
    ],
-   "justification": "Split-conformal 90% intervals across 156 regression runs: median coverage 0.901, 93.6% within 0.85-0.95, 1.9% below 0.85, with sharper median width/SD 1.523 (down from 1.722). On the heteroscedastic task S3, coverage by tercile of the scale variable is 0.894/0.906/0.908, demonstrating adaptivity (anchor 4). Binary median ECE 0.0355. No demonstrated warning when an interval is unreliable under shift (anchor 5)."
-  },
-  {
-   "id": "D10",
-   "name": "Reproducibility and auditability",
-   "score": 3,
-   "status": "scored",
-   "evidence": [
-    "docs/benchmarks/competitive_heldout/d10.json"
-   ],
-   "justification": "Predictions identical on rerun for 10/10 datasets (exact SHA-256 match to 1e-12). fit returns a structured DecisionTrail with provenance (version, git sha, seed, threads), candidate evaluation history, and active final formula. One-command reproduction of an entire discovery report is not demonstrated (anchor 4)."
-  },
-  {
-   "id": "D11",
-   "name": "Predictive validity",
-   "score": 3.5,
-   "status": "scored",
-   "evidence": [
-    "docs/benchmarks/competitive_heldout/analysis.json"
-   ],
-   "justification": "Beats the prespecified reference on 33/38 regression (Wilcoxon p = 7.2e-6, median ratio 0.847) and 31/46 binary tasks (p = 0.034). Median gap to the best complete library drops to 9.0% on regression (within 5% on 17/38) and 7.5% on binary (within 5% on 20/46), ahead of LightGBM (9.9% / 30.7%) and XGBoost (19.3% / 35.7%) on both tracks; paired against CatBoost on regression, median ratio is 1.036 (16/38 better, p = 0.16). Lowest loss of all six libraries on 6 of 7 planted tasks (S1, S3-S7) and 0.842 on pure-interaction S2 (down from 9.324, ahead of LightGBM 0.918 and XGBoost 1.712). Half point below 4 because CatBoost still leads in regression within-5% count (33/45 vs 17/38) and 5.6% of real runs do not complete."
+   "justification": "Completes all 45/45 regression and 50/50 binary real tasks. Beats the prespecified reference on 37/45 regression (Wilcoxon p = 1.2e-6, median ratio 0.805) and 37/50 binary tasks (p = 5.7e-6, median ratio 0.947). Median gap to best complete library is 8.0% on regression and 6.0% on binary, beating XGBoost (33-12 regression p = 0.0038; 37-13 binary p = 0.0039), LightGBM (28-17 regression; 36-14 binary p = 0.038), and EBM on regression (21-18, median ratio 0.999). Paired against CatBoost, median ratio is 1.030 on regression (p = 0.067) and 1.015 on binary (23-27, p = 0.33, geometric mean 1.052) — statistically indistinguishable on both tracks. Lowest loss of all six libraries on 6 of 7 planted tasks (S1, S3-S7) and 0.533 on pure-interaction S2 (ahead of EBM 0.739, LightGBM 0.918, XGBoost 1.712). Meets anchor 4; anchor 5 requires confirmation on an independent held-back task suite."
   }
  ],
  "aggregate": null

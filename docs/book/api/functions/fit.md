@@ -78,4 +78,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `ValueError`
 - `NotImplementedError`
 
-Source: [`python/mboostrs/_procedure/_fit.py` lines 277-447](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_fit.py#L277-L447)
+Source: [`python/mboostrs/_procedure/_fit.py` lines 395-586](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/_procedure/_fit.py#L395-L586)

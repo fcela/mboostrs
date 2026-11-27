@@ -30,7 +30,7 @@ LSSModel(
 
 Fitted gamboostLSS/glmboostLSS model (one predictor per parameter).
 
-Source: [`python/mboostrs/gamlss.py` lines 3079-5703](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3079-L5703)
+Source: [`python/mboostrs/gamlss.py` lines 3083-5708](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3083-L5708)
 
 ## Members
 
@@ -128,7 +128,7 @@ Not persisted: `save_model`/`load_model` restore the model without
 the fit-time warnings, because the artifact format carries plain data
 only and the warning types are interpreter-specific.
 
-Source: [`python/mboostrs/gamlss.py` lines 3085-3100](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3085-L3100)
+Source: [`python/mboostrs/gamlss.py` lines 3089-3104](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3089-L3104)
 
 (lssmodel-execution_report)=
 ## `LSSModel.execution_report`
@@ -141,7 +141,7 @@ LSSModel.execution_report() -> mboostrs.report.ExecutionReport | None
 
 Return aggregate numerical-route metadata for this LSS fit.
 
-Source: [`python/mboostrs/gamlss.py` lines 3198-3200](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3198-L3200)
+Source: [`python/mboostrs/gamlss.py` lines 3202-3204](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3202-L3204)
 
 (lssmodel-path_frame)=
 ## `LSSModel.path_frame`
@@ -154,7 +154,7 @@ LSSModel.path_frame(output='auto')
 
 Return globally ordered parameter-update rows for this LSS fit.
 
-Source: [`python/mboostrs/gamlss.py` lines 3202-3214](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3202-L3214)
+Source: [`python/mboostrs/gamlss.py` lines 3206-3218](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3206-L3218)
 
 (lssmodel-risk_)=
 ## `LSSModel.risk_`
@@ -170,7 +170,7 @@ The joint risk after each iteration.
 Read-only: this is the fit's own array, not a copy. See
 `mboostrs._state`.
 
-Source: [`python/mboostrs/gamlss.py` lines 3216-3225](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3216-L3225)
+Source: [`python/mboostrs/gamlss.py` lines 3220-3229](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3220-L3229)
 
 (lssmodel-mstop)=
 ## `LSSModel.mstop`
@@ -183,7 +183,7 @@ LSSModel.mstop
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 3227-3234](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3227-L3234)
+Source: [`python/mboostrs/gamlss.py` lines 3231-3238](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3231-L3238)
 
 (lssmodel-stopping_report)=
 ## `LSSModel.stopping_report`
@@ -201,7 +201,7 @@ risk step, risk there versus at the end, whether the risk rose after
 its best step, and a same-family GLM gap when one can be fit cheaply.
 Reads only the stored joint risk path; nothing is refit.
 
-Source: [`python/mboostrs/gamlss.py` lines 3236-3246](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3236-L3246)
+Source: [`python/mboostrs/gamlss.py` lines 3240-3250](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3240-L3250)
 
 (lssmodel-stopping_budget)=
 ## `LSSModel.stopping_budget`
@@ -217,7 +217,7 @@ How far this model was boosted, as
 counts, their total (the budget a non-cyclic refit takes) and whether
 the parameters were updated cyclically or non-cyclically.
 
-Source: [`python/mboostrs/gamlss.py` lines 3248-3258](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3248-L3258)
+Source: [`python/mboostrs/gamlss.py` lines 3252-3262](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3252-L3262)
 
 (lssmodel-selected_terms)=
 ## `LSSModel.selected_terms`
@@ -234,7 +234,7 @@ One row per boosting update, in the order the fit made them:
 cyclic fit updates every parameter once per iteration, in parameter
 order; a non-cyclic fit records the parameter it chose at each update.
 
-Source: [`python/mboostrs/gamlss.py` lines 3260-3281](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3260-L3281)
+Source: [`python/mboostrs/gamlss.py` lines 3264-3285](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3264-L3285)
 
 (lssmodel-predict_parameters)=
 ## `LSSModel.predict_parameters`
@@ -245,7 +245,7 @@ Source: [`python/mboostrs/gamlss.py` lines 3260-3281](https://github.com/fcela/m
 LSSModel.predict_parameters(
     newdata=None,
     type=<object object>,
-    extrapolation='warn',
+    extrapolation=None,
     unseen_levels=None
 ) -> dict
 ```
@@ -265,7 +265,7 @@ an omitted `type`. Pass `type="link"` for the linear predictors;
 pass `extrapolation="clip"` to hold covariates at the training range
 and `unseen_levels="average"` to score categories absent from training.
 
-Source: [`python/mboostrs/gamlss.py` lines 3283-3305](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3283-L3305)
+Source: [`python/mboostrs/gamlss.py` lines 3287-3309](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3287-L3309)
 
 (lssmodel-selected)=
 ## `LSSModel.selected`
@@ -283,7 +283,7 @@ The call forms `fit.selected(parameter=...)` and
 `fit.selected_which(parameter=...)` and
 `fit.selected_which(merge=True)`.
 
-Source: [`python/mboostrs/gamlss.py` lines 3379-3392](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3379-L3392)
+Source: [`python/mboostrs/gamlss.py` lines 3383-3396](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3383-L3396)
 
 (lssmodel-fitted)=
 ## `LSSModel.fitted`
@@ -296,7 +296,7 @@ LSSModel.fitted(parameter=None, mstop=None, type='link')
 
 In-sample fitted values, mirroring `predict(newdata=None, ...)`.
 
-Source: [`python/mboostrs/gamlss.py` lines 3409-3411](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3409-L3411)
+Source: [`python/mboostrs/gamlss.py` lines 3413-3415](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3413-L3415)
 
 (lssmodel-params)=
 ## `LSSModel.params`
@@ -310,7 +310,7 @@ LSSModel.params(
     mstop=None,
     buser_newdata=None,
     unseen_levels=None,
-    extrapolation='warn'
+    extrapolation=None
 )
 ```
 
@@ -325,7 +325,7 @@ member of an average group, `"zero_effect"` with a zero coefficient,
 `predict`; pass `"clip"` to hold covariates at the training
 range instead of continuing the spline edge slope.
 
-Source: [`python/mboostrs/gamlss.py` lines 3468-3489](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3468-L3489)
+Source: [`python/mboostrs/gamlss.py` lines 3472-3493](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3472-L3493)
 
 (lssmodel-predict_all)=
 ## `LSSModel.predict_all`
@@ -341,7 +341,7 @@ LSSModel.predict_all(
     include_response=True,
     buser_newdata=None,
     unseen_levels=None,
-    extrapolation='warn'
+    extrapolation=None
 )
 ```
 
@@ -360,7 +360,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 3491-3545](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3491-L3545)
+Source: [`python/mboostrs/gamlss.py` lines 3495-3549](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3495-L3549)
 
 (lssmodel-coef_all)=
 ## `LSSModel.coef_all`
@@ -383,7 +383,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 3548-3573](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3548-L3573)
+Source: [`python/mboostrs/gamlss.py` lines 3552-3577](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3552-L3577)
 
 (lssmodel-risk)=
 ## `LSSModel.risk`
@@ -403,7 +403,7 @@ ndarray. The joint negative log-likelihood after each parameter's own
 updates, which gamboostLSS's `risk()` reports, is
 `parameter_risk`.
 
-Source: [`python/mboostrs/gamlss.py` lines 3576-3589](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3576-L3589)
+Source: [`python/mboostrs/gamlss.py` lines 3580-3593](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3580-L3593)
 
 (lssmodel-parameter_risk)=
 ## `LSSModel.parameter_risk`
@@ -432,7 +432,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 3591-3630](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3591-L3630)
+Source: [`python/mboostrs/gamlss.py` lines 3595-3634](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3595-L3634)
 
 (lssmodel-model_weights)=
 ## `LSSModel.model_weights`
@@ -445,7 +445,7 @@ LSSModel.model_weights()
 
 Observation weights used for fitting.
 
-Source: [`python/mboostrs/gamlss.py` lines 3642-3647](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3642-L3647)
+Source: [`python/mboostrs/gamlss.py` lines 3646-3651](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3646-L3651)
 
 (lssmodel-deviance_increment)=
 ## `LSSModel.deviance_increment`
@@ -464,7 +464,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `NotImplementedError`
 
-Source: [`python/mboostrs/gamlss.py` lines 3660-3669](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3660-L3669)
+Source: [`python/mboostrs/gamlss.py` lines 3664-3673](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3664-L3673)
 
 (lssmodel-centiles)=
 ## `LSSModel.centiles`
@@ -498,7 +498,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `NotImplementedError`
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 3671-3710](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3671-L3710)
+Source: [`python/mboostrs/gamlss.py` lines 3675-3714](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3675-L3714)
 
 (lssmodel-prediction_interval)=
 ## `LSSModel.prediction_interval`
@@ -539,7 +539,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `ValueError`
 - `NotImplementedError`
 
-Source: [`python/mboostrs/gamlss.py` lines 3789-3856](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3789-L3856)
+Source: [`python/mboostrs/gamlss.py` lines 3793-3860](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3793-L3860)
 
 (lssmodel-predint)=
 ## `LSSModel.predint`
@@ -552,7 +552,7 @@ LSSModel.predint(level=0.95, newdata=None, mstop=None, unseen_levels=None)
 
 Alias for `prediction_interval`, matching R `predint` naming.
 
-Source: [`python/mboostrs/gamlss.py` lines 3917-3921](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3917-L3921)
+Source: [`python/mboostrs/gamlss.py` lines 3921-3925](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3921-L3925)
 
 (lssmodel-pi)=
 ## `LSSModel.PI`
@@ -565,7 +565,7 @@ LSSModel.PI(level=0.95, newdata=None, mstop=None, unseen_levels=None)
 
 Alias for `prediction_interval`, matching R `PI` naming.
 
-Source: [`python/mboostrs/gamlss.py` lines 3923-3926](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3923-L3926)
+Source: [`python/mboostrs/gamlss.py` lines 3927-3930](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3927-L3930)
 
 (lssmodel-pit)=
 ## `LSSModel.pit`
@@ -590,7 +590,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `NotImplementedError`
 
-Source: [`python/mboostrs/gamlss.py` lines 3928-3953](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3928-L3953)
+Source: [`python/mboostrs/gamlss.py` lines 3932-3957](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3932-L3957)
 
 (lssmodel-quantile_residuals)=
 ## `LSSModel.quantile_residuals`
@@ -620,7 +620,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `NotImplementedError`
 
-Source: [`python/mboostrs/gamlss.py` lines 3955-3972](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3955-L3972)
+Source: [`python/mboostrs/gamlss.py` lines 3959-3976](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3959-L3976)
 
 (lssmodel-residual_frame)=
 ## `LSSModel.residual_frame`
@@ -653,7 +653,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `ValueError`
 - `NotImplementedError`
 
-Source: [`python/mboostrs/gamlss.py` lines 3974-4029](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3974-L4029)
+Source: [`python/mboostrs/gamlss.py` lines 3978-4033](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L3978-L4033)
 
 (lssmodel-worm_data)=
 ## `LSSModel.worm_data`
@@ -677,7 +677,7 @@ Worm-plot data. See `mboostrs.worm_data`.
 The table `worm_plot` draws from, for a caller who wants the
 numbers rather than the figure.
 
-Source: [`python/mboostrs/gamlss.py` lines 4031-4043](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4031-L4043)
+Source: [`python/mboostrs/gamlss.py` lines 4035-4047](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4035-L4047)
 
 (lssmodel-calibration_frame)=
 ## `LSSModel.calibration_frame`
@@ -694,7 +694,7 @@ Reports the location parameter's mean per bin, under the name
 `location_mean`: on a distributional fit there is no single fitted
 vector, and the first parameter is the mean only for some families.
 
-Source: [`python/mboostrs/gamlss.py` lines 4045-4055](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4045-L4055)
+Source: [`python/mboostrs/gamlss.py` lines 4049-4059](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4049-L4059)
 
 (lssmodel-q_stats)=
 ## `LSSModel.q_stats`
@@ -719,7 +719,7 @@ A data-table analogue of the descriptive part of GAMLSS `Q.stats`.
 It uses the same equal-count bins and sample-variance convention as
 `mboostrs.q_stats`.
 
-Source: [`python/mboostrs/gamlss.py` lines 4057-4085](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4057-L4085)
+Source: [`python/mboostrs/gamlss.py` lines 4061-4089](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4061-L4089)
 
 (lssmodel-density_overlay_data)=
 ## `LSSModel.density_overlay_data`
@@ -739,7 +739,7 @@ LSSModel.density_overlay_data(
 
 Observed and fitted marginal-distribution curves as a table.
 
-Source: [`python/mboostrs/gamlss.py` lines 4087-4095](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4087-L4095)
+Source: [`python/mboostrs/gamlss.py` lines 4091-4099](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4091-L4099)
 
 (lssmodel-centile_fan_data)=
 ## `LSSModel.centile_fan_data`
@@ -759,7 +759,7 @@ LSSModel.centile_fan_data(
 
 Observed responses and fitted centiles ordered by `xvar`.
 
-Source: [`python/mboostrs/gamlss.py` lines 4097-4106](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4097-L4106)
+Source: [`python/mboostrs/gamlss.py` lines 4101-4110](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4101-L4110)
 
 (lssmodel-deviance_profile)=
 ## `LSSModel.deviance_profile`
@@ -779,7 +779,7 @@ LSSModel.deviance_profile(
 
 Binned joint deviance contributions along a numeric covariate.
 
-Source: [`python/mboostrs/gamlss.py` lines 4108-4116](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4108-L4116)
+Source: [`python/mboostrs/gamlss.py` lines 4112-4120](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4112-L4120)
 
 (lssmodel-worm_plot)=
 ## `LSSModel.worm_plot`
@@ -802,7 +802,7 @@ Worm plot(s) of (randomized) quantile residuals (R's `gamlss::wp`).
 Thin wrapper around `mboostrs.plot.plot_worm`; see there for
 the full description of the panels.
 
-Source: [`python/mboostrs/gamlss.py` lines 4118-4130](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4118-L4130)
+Source: [`python/mboostrs/gamlss.py` lines 4122-4134](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4122-L4134)
 
 (lssmodel-loglik)=
 ## `LSSModel.logLik`
@@ -830,7 +830,7 @@ adaptive LSS fit are not implemented. The update count used by
 `gaic` is a separate heuristic and must not be reported as
 likelihood degrees of freedom.
 
-Source: [`python/mboostrs/gamlss.py` lines 4132-4155](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4132-L4155)
+Source: [`python/mboostrs/gamlss.py` lines 4136-4159](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4136-L4159)
 
 (lssmodel-negative_risk)=
 ## `LSSModel.negative_risk`
@@ -849,7 +849,7 @@ writing family-agnostic code can ask for the quantity the fit minimised
 without asserting it is a likelihood; on a standard model the two
 differ.
 
-Source: [`python/mboostrs/gamlss.py` lines 4157-4166](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4157-L4166)
+Source: [`python/mboostrs/gamlss.py` lines 4161-4170](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4161-L4170)
 
 (lssmodel-parity_notes)=
 ## `LSSModel.parity_notes`
@@ -865,7 +865,7 @@ Where this fit differs from what its names refer to.
 See `GLMBoostModel.parity_notes`. A distributional fit collects
 notes from its family and from every learner kind in its formulas.
 
-Source: [`python/mboostrs/gamlss.py` lines 4168-4193](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4168-L4193)
+Source: [`python/mboostrs/gamlss.py` lines 4172-4197](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4172-L4197)
 
 (lssmodel-likelihood_contract)=
 ## `LSSModel.likelihood_contract`
@@ -880,7 +880,7 @@ What this family's risk is: a likelihood, a loss, or neither.
 
 Returns the `mboostrs._likelihood.FamilyLikelihood` row.
 
-Source: [`python/mboostrs/gamlss.py` lines 4195-4202](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4195-L4202)
+Source: [`python/mboostrs/gamlss.py` lines 4199-4206](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4199-L4206)
 
 (lssmodel-gaic)=
 ## `LSSModel.gaic`
@@ -902,7 +902,7 @@ does not estimate the complexity of adaptive distributional fitting.
 to rank it against standard-model criteria. Prefer held-out scoring
 for family selection.
 
-Source: [`python/mboostrs/gamlss.py` lines 4204-4221](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4204-L4221)
+Source: [`python/mboostrs/gamlss.py` lines 4208-4225](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4208-L4225)
 
 (lssmodel-llm_explain_prompt)=
 ## `LSSModel.llm_explain_prompt`
@@ -920,7 +920,7 @@ One block per distribution parameter. See
 `which`, `top`, `n_points`, `dataset_description`, `output`,
 ...).
 
-Source: [`python/mboostrs/gamlss.py` lines 4223-4233](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4223-L4233)
+Source: [`python/mboostrs/gamlss.py` lines 4227-4237](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4227-L4237)
 
 (lssmodel-llm_describe)=
 ## `LSSModel.llm_describe`
@@ -937,7 +937,7 @@ Makes a network request. See `mboostrs.llm_describe` for the
 arguments (`llm`, `base_url`, `api_key`, `client`, `reasoning`,
 plus everything `mboostrs.llm_explain_prompt` takes).
 
-Source: [`python/mboostrs/gamlss.py` lines 4235-4244](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4235-L4244)
+Source: [`python/mboostrs/gamlss.py` lines 4239-4248](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4239-L4248)
 
 (lssmodel-to_dict)=
 ## `LSSModel.to_dict`
@@ -955,7 +955,7 @@ signature; the summary holds no per-row arrays. A model loaded from
 an artifact keeps no training frame, so its provenance has no
 `"data"` entry.
 
-Source: [`python/mboostrs/gamlss.py` lines 4246-4255](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4246-L4255)
+Source: [`python/mboostrs/gamlss.py` lines 4250-4259](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4250-L4259)
 
 (lssmodel-summary)=
 ## `LSSModel.summary`
@@ -973,7 +973,7 @@ fixed-width text and renders as a table in a notebook, with one
 selection table per distribution parameter. Use `as_dict=True` for
 the machine-readable form.
 
-Source: [`python/mboostrs/gamlss.py` lines 4257-4293](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4257-L4293)
+Source: [`python/mboostrs/gamlss.py` lines 4261-4297](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4261-L4297)
 
 (lssmodel-cvrisk)=
 ## `LSSModel.cvrisk`
@@ -1037,7 +1037,7 @@ LssCvRiskResult
 - `ValueError`: If `folds` is not a two-dimensional matrix or `unseen_levels`
 is invalid.
 
-Source: [`python/mboostrs/gamlss.py` lines 4359-4455](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4359-L4455)
+Source: [`python/mboostrs/gamlss.py` lines 4363-4459](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4363-L4459)
 
 (lssmodel-stabsel)=
 ## `LSSModel.stabsel`
@@ -1060,7 +1060,7 @@ and nothing said so. `cvrisk` has always passed them, by building its
 folds from `model_weights()`; this path built its own inside the entry
 point and had no way to receive them.
 
-Source: [`python/mboostrs/gamlss.py` lines 4607-4628](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4607-L4628)
+Source: [`python/mboostrs/gamlss.py` lines 4611-4632](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4611-L4632)
 
 (lssmodel-profile_mstop)=
 ## `LSSModel.profile_mstop`
@@ -1073,7 +1073,7 @@ LSSModel.profile_mstop(grid=None, metric='risk')
 
 Refit over a grid of stopping points and report `metric` at each.
 
-Source: [`python/mboostrs/gamlss.py` lines 4630-4634](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4630-L4634)
+Source: [`python/mboostrs/gamlss.py` lines 4634-4638](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4634-L4638)
 
 (lssmodel-control)=
 ## `LSSModel.control`
@@ -1086,7 +1086,7 @@ LSSModel.control
 
 The `boost_control` this model was fitted with.
 
-Source: [`python/mboostrs/gamlss.py` lines 4636-4639](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4636-L4639)
+Source: [`python/mboostrs/gamlss.py` lines 4640-4643](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4640-L4643)
 
 (lssmodel-offset)=
 ## `LSSModel.offset`
@@ -1102,7 +1102,7 @@ Per-parameter offsets, as `{parameter: value}`.
 Same mapping as `offset_`, with one value per distribution
 parameter.
 
-Source: [`python/mboostrs/gamlss.py` lines 4641-4648](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4641-L4648)
+Source: [`python/mboostrs/gamlss.py` lines 4645-4652](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4645-L4652)
 
 (lssmodel-plot_risk)=
 ## `LSSModel.plot_risk`
@@ -1115,7 +1115,7 @@ LSSModel.plot_risk(**kwargs)
 
 Plot the joint risk path.
 
-Source: [`python/mboostrs/gamlss.py` lines 4650-4654](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4650-L4654)
+Source: [`python/mboostrs/gamlss.py` lines 4654-4658](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4654-L4658)
 
 (lssmodel-plot_selected)=
 ## `LSSModel.plot_selected`
@@ -1128,7 +1128,7 @@ LSSModel.plot_selected(**kwargs)
 
 Plot selection frequency per base learner and parameter.
 
-Source: [`python/mboostrs/gamlss.py` lines 4656-4660](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4656-L4660)
+Source: [`python/mboostrs/gamlss.py` lines 4660-4664](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4660-L4664)
 
 (lssmodel-plot_density)=
 ## `LSSModel.plot_density`
@@ -1141,7 +1141,7 @@ LSSModel.plot_density(**kwargs)
 
 Overlay the observed and average fitted response distributions.
 
-Source: [`python/mboostrs/gamlss.py` lines 4662-4666](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4662-L4666)
+Source: [`python/mboostrs/gamlss.py` lines 4666-4670](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4666-L4670)
 
 (lssmodel-plot_centile_fan)=
 ## `LSSModel.plot_centile_fan`
@@ -1154,7 +1154,7 @@ LSSModel.plot_centile_fan(xvar, **kwargs)
 
 Plot nested fitted centile bands against `xvar`.
 
-Source: [`python/mboostrs/gamlss.py` lines 4668-4672](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4668-L4672)
+Source: [`python/mboostrs/gamlss.py` lines 4672-4676](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4672-L4676)
 
 (lssmodel-plot_deviance_profile)=
 ## `LSSModel.plot_deviance_profile`
@@ -1167,7 +1167,7 @@ LSSModel.plot_deviance_profile(**kwargs)
 
 Plot binned joint deviance along a covariate or row order.
 
-Source: [`python/mboostrs/gamlss.py` lines 4674-4678](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4674-L4678)
+Source: [`python/mboostrs/gamlss.py` lines 4678-4682](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4678-L4682)
 
 (lssmodel-continue_to)=
 ## `LSSModel.continue_to`
@@ -1195,7 +1195,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 4680-4719](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4680-L4719)
+Source: [`python/mboostrs/gamlss.py` lines 4684-4723](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4684-L4723)
 
 (lssmodel-varimp)=
 ## `LSSModel.varimp`
@@ -1231,7 +1231,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `NotImplementedError`
 
-Source: [`python/mboostrs/gamlss.py` lines 4721-4765](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4721-L4765)
+Source: [`python/mboostrs/gamlss.py` lines 4725-4769](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4725-L4769)
 
 (lssmodel-base_learner_names)=
 ## `LSSModel.base_learner_names`
@@ -1253,7 +1253,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 4773-4793](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4773-L4793)
+Source: [`python/mboostrs/gamlss.py` lines 4777-4797](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4777-L4797)
 
 (lssmodel-bnames)=
 ## `LSSModel.bnames`
@@ -1266,7 +1266,7 @@ LSSModel.bnames(parameter=None)
 
 Alias for `base_learner_names`.
 
-Source: [`python/mboostrs/gamlss.py` lines 4795-4797](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4795-L4797)
+Source: [`python/mboostrs/gamlss.py` lines 4799-4801](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4799-L4801)
 
 (lssmodel-variable_names)=
 ## `LSSModel.variable_names`
@@ -1279,7 +1279,7 @@ LSSModel.variable_names(parameter=None)
 
 Distinct predictor names, in formula order.
 
-Source: [`python/mboostrs/gamlss.py` lines 4799-4807](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4799-L4807)
+Source: [`python/mboostrs/gamlss.py` lines 4803-4811](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4803-L4811)
 
 (lssmodel-selected_which)=
 ## `LSSModel.selected_which`
@@ -1304,7 +1304,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 4809-4840](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4809-L4840)
+Source: [`python/mboostrs/gamlss.py` lines 4813-4844](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4813-L4844)
 
 (lssmodel-fitted_)=
 ## `LSSModel.fitted_`
@@ -1320,7 +1320,7 @@ Fitted link-scale values per parameter, as a mapping.
 The standard models' `fitted_` is one array; an LSS fit has one per
 distribution parameter, so this mirrors `fitted()`'s shape.
 
-Source: [`python/mboostrs/gamlss.py` lines 4842-4856](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4842-L4856)
+Source: [`python/mboostrs/gamlss.py` lines 4846-4860](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4846-L4860)
 
 (lssmodel-offset_)=
 ## `LSSModel.offset_`
@@ -1333,7 +1333,7 @@ LSSModel.offset_
 
 Per-parameter offsets, as a mapping. See also `offset`.
 
-Source: [`python/mboostrs/gamlss.py` lines 4858-4864](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4858-L4864)
+Source: [`python/mboostrs/gamlss.py` lines 4862-4868](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4862-L4868)
 
 (lssmodel-save)=
 ## `LSSModel.save`
@@ -1351,7 +1351,7 @@ carries one learner block per distribution parameter and the family's
 own state; the Rust and R readers score linear and additive models
 only and refuse it by name.
 
-Source: [`python/mboostrs/gamlss.py` lines 4866-4876](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4866-L4876)
+Source: [`python/mboostrs/gamlss.py` lines 4870-4880](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4870-L4880)
 
 (lssmodel-with_mstop)=
 ## `LSSModel.with_mstop`
@@ -1367,7 +1367,7 @@ Return a copy refit to `k` boosting iterations.
 Equivalent to `model.update(mstop=k)` but more readable.
 Scalar `k` is broadcast to all parameters.
 
-Source: [`python/mboostrs/gamlss.py` lines 4878-4884](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4878-L4884)
+Source: [`python/mboostrs/gamlss.py` lines 4882-4888](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4882-L4888)
 
 (lssmodel-update)=
 ## `LSSModel.update`
@@ -1395,7 +1395,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `NotImplementedError`
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 4915-5065](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4915-L5065)
+Source: [`python/mboostrs/gamlss.py` lines 4919-5069](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L4919-L5069)
 
 (lssmodel-extrapolation_report)=
 ## `LSSModel.extrapolation_report`
@@ -1413,7 +1413,7 @@ Columns are those of `GAMBoostModel.extrapolation_report`, with
 term. Only spline terms appear: `predict(extrapolation=)` applies to
 spline learners, and a parameter whose predictor is linear has no rows.
 
-Source: [`python/mboostrs/gamlss.py` lines 5147-5178](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5147-L5178)
+Source: [`python/mboostrs/gamlss.py` lines 5151-5182](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5151-L5182)
 
 (lssmodel-mean)=
 ## `LSSModel.mean`
@@ -1426,7 +1426,7 @@ LSSModel.mean(
     mstop=None,
     buser_newdata=None,
     unseen_levels=None,
-    extrapolation='warn'
+    extrapolation=None
 )
 ```
 
@@ -1443,7 +1443,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `TypeError`
 
-Source: [`python/mboostrs/gamlss.py` lines 5242-5271](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5242-L5271)
+Source: [`python/mboostrs/gamlss.py` lines 5246-5275](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5246-L5275)
 
 (lssmodel-predict)=
 ## `LSSModel.predict`
@@ -1458,7 +1458,7 @@ LSSModel.predict(
     mstop=None,
     buser_newdata=None,
     unseen_levels=None,
-    extrapolation='warn'
+    extrapolation=None
 )
 ```
 
@@ -1524,7 +1524,7 @@ ndarray or dict of ndarray
 - `ValueError`: If `type` or `extrapolation` is not one of the listed values,
 or `parameter` is combined with `type="mean"`.
 
-Source: [`python/mboostrs/gamlss.py` lines 5273-5406](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5273-L5406)
+Source: [`python/mboostrs/gamlss.py` lines 5277-5411](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5277-L5411)
 
 (lssmodel-partial_effects)=
 ## `LSSModel.partial_effects`
@@ -1567,7 +1567,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `IndexError`
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 5408-5512](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5408-L5512)
+Source: [`python/mboostrs/gamlss.py` lines 5413-5517](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5413-L5517)
 
 (lssmodel-coef)=
 ## `LSSModel.coef`
@@ -1585,7 +1585,7 @@ one parameter's mapping when `parameter` is given. Coefficients sum
 the updates after multiplying each by that parameter's learning rate;
 the intercept includes the shifts induced by centered predictors.
 
-Source: [`python/mboostrs/gamlss.py` lines 5514-5574](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5514-L5574)
+Source: [`python/mboostrs/gamlss.py` lines 5519-5579](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5519-L5579)
 
 (lssmodel-residual_kinds)=
 ## `LSSModel.residual_kinds`
@@ -1603,7 +1603,7 @@ parameter); `response` needs an uncensored univariate response and a
 response-scale `mu`; `pearson` needs a declared variance function,
 which only `GaussianLSS` and `PoissonLSS` have.
 
-Source: [`python/mboostrs/gamlss.py` lines 5576-5584](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5576-L5584)
+Source: [`python/mboostrs/gamlss.py` lines 5581-5589](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5581-L5589)
 
 (lssmodel-residuals)=
 ## `LSSModel.residuals`
@@ -1641,4 +1641,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `ValueError`
 - `NotImplementedError`
 
-Source: [`python/mboostrs/gamlss.py` lines 5586-5697](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5586-L5697)
+Source: [`python/mboostrs/gamlss.py` lines 5591-5702](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5591-L5702)

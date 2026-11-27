@@ -1264,6 +1264,23 @@ pub enum LearnerBlueprint {
         /// Optional varying-coefficient multiplier column.
         by: Option<Array1<f64>>,
     },
+    /// High-cardinality uncentered random intercept (`n_levels > 64`, no `by=`)
+    /// solved in O(n + L) via diagonal normal equations instead of dense O(L^3)
+    /// Cholesky / SVD. Mathematically identical to `Brandom`.
+    DiagBrandom {
+        /// Per-observation level index in `0..n_levels`.
+        group_idx: Arc<[u32]>,
+        /// Number of distinct levels `L`.
+        n_levels: usize,
+        /// Formula name of the learner.
+        name: String,
+        /// Target effective degrees of freedom.
+        df: f64,
+        /// Penalty weight; overrides `df` when both are given.
+        lambda: Option<f64>,
+        /// Sorted integer level codes mapping observations to columns.
+        level_codes: Vec<i64>,
+    },
     /// Markov random field over integer-coded regions. The graph penalty and
     /// optional spectral transform are fold-invariant; only `df -> lambda` and
     /// the weighted Gram factorization are recomputed for each resample.
@@ -1616,6 +1633,152 @@ impl LearnerBlueprint {
         Ok(Self::Bbs {
             // Column-major now, so every fold's `prepare` clones it into the
             // layout `BlockBols` keeps instead of copying it a second time.
+            design: into_column_major(design),
+            penalty,
+            name,
+            df,
+            lambda,
+            basis_info,
+        })
+    }
+
+    /// Build a quantile-knot O-spline (`bbs(..., knot_placement="quantile")`)
+    /// blueprint using deduplicated empirical-quantile interior knots and an
+    /// exact Gauss-Legendre integrated second-derivative curvature penalty
+    /// `K = integral B''(x) B''(x)^T dx` (Wand & Ormerod 2008).
+    ///
+    /// Keeps exact raw-scale linear functions `a + b*x` in the zero-penalty
+    /// null space while concentrating knot density where the data lie.
+    #[allow(clippy::too_many_arguments)]
+    pub fn bbs_ospline(
+        x: Array1<f64>,
+        name: impl Into<String>,
+        n_knots: usize,
+        degree: usize,
+        df: f64,
+        lambda: Option<f64>,
+        center: bool,
+        by: Option<Array1<f64>>,
+        boundary_knots: Option<(f64, f64)>,
+        deriv: usize,
+    ) -> Result<Self, MboostrsError> {
+        let name = name.into();
+        validate_blueprint_vector(&x, &name, "x")?;
+        if let Some(ref by_values) = by {
+            validate_blueprint_vector(by_values, &name, "by")?;
+            if by_values.len() != x.len() {
+                return Err(MboostrsError::LearnerSetup(
+                    name,
+                    format!(
+                        "by length {} does not match covariate length {}",
+                        by_values.len(),
+                        x.len()
+                    ),
+                ));
+            }
+        }
+        if n_knots == 0 {
+            return Err(MboostrsError::LearnerSetup(
+                name,
+                "knots must be positive".to_string(),
+            ));
+        }
+        if degree < 2 {
+            return Err(MboostrsError::LearnerSetup(
+                name,
+                format!("quantile O-spline requires degree >= 2, got {degree}"),
+            ));
+        }
+        if let Some(value) = lambda {
+            if !value.is_finite() || value < 0.0 {
+                return Err(MboostrsError::LearnerSetup(
+                    name,
+                    format!("lambda must be finite and non-negative, got {value}"),
+                ));
+            }
+        } else if !df.is_finite() || df <= 0.0 {
+            return Err(MboostrsError::LearnerSetup(
+                name,
+                format!("df must be finite and positive, got {df}"),
+            ));
+        }
+        let boundary_knots = match boundary_knots {
+            Some(bounds) => bounds,
+            None => (
+                x.iter().copied().fold(f64::INFINITY, f64::min),
+                x.iter().copied().fold(f64::NEG_INFINITY, f64::max),
+            ),
+        };
+        if !boundary_knots.0.is_finite()
+            || !boundary_knots.1.is_finite()
+            || boundary_knots.0 >= boundary_knots.1
+        {
+            return Err(MboostrsError::LearnerSetup(
+                name,
+                if x.len() < 2 {
+                    format!(
+                        "a spline basis needs at least 2 samples; got {} sample{}",
+                        x.len(),
+                        if x.len() == 1 { "" } else { "s" }
+                    )
+                } else {
+                    "boundary_knots must contain two finite increasing values".to_string()
+                },
+            ));
+        }
+
+        let x_slice = x.as_slice().expect("x contiguous");
+        let knots = bspline_quantile_knots(x_slice, boundary_knots, n_knots, degree);
+        let mut design = if deriv > 0 {
+            bspline_basis_with_deriv(x_slice, &knots, degree, deriv)
+        } else {
+            bspline_basis_extrap(x_slice, &knots, degree, boundary_knots)
+        };
+        let penalty_raw = ospline_curvature_penalty(&knots, boundary_knots, degree);
+        if let Some(ref by_vec) = by {
+            let n = design.nrows();
+            for i in 0..n {
+                for j in 0..design.ncols() {
+                    design[[i, j]] *= by_vec[i];
+                }
+            }
+        }
+        let by_values = by.as_ref().map(|values| values.to_vec());
+        let (design, penalty, basis_info) = if center {
+            let p = design.ncols();
+            let (centering_mat, centering_cols) = compute_centering_transform(&penalty_raw, p);
+            let centered = center_spectral(&design, &penalty_raw, 2);
+            let p_c = centered.ncols();
+            (
+                centered,
+                Array2::eye(p_c),
+                BasisInfo::BbsCentered {
+                    knots,
+                    degree,
+                    boundary_knots,
+                    centering_mat,
+                    centering_rows: p,
+                    centering_cols,
+                    by: by_values,
+                    deriv,
+                },
+            )
+        } else {
+            (
+                design,
+                penalty_raw,
+                BasisInfo::BbsUncentered {
+                    knots,
+                    degree,
+                    boundary_knots,
+                    by: by_values,
+                    cyclic: false,
+                    deriv,
+                },
+            )
+        };
+
+        Ok(Self::Bbs {
             design: into_column_major(design),
             penalty,
             name,
@@ -2009,6 +2172,26 @@ impl LearnerBlueprint {
                 df,
                 lambda,
                 center,
+                level_codes,
+            });
+        }
+        if !center && by.is_none() && n_levels > 64 {
+            let mut group_idx = Vec::with_capacity(levels.len());
+            for value in levels.iter() {
+                let level = level_codes.binary_search(&(*value as i64)).map_err(|_| {
+                    MboostrsError::LearnerSetup(
+                        name.clone(),
+                        format!("level code {value} could not be indexed"),
+                    )
+                })?;
+                group_idx.push(level as u32);
+            }
+            return Ok(Self::DiagBrandom {
+                group_idx: group_idx.into(),
+                n_levels,
+                name,
+                df,
+                lambda,
                 level_codes,
             });
         }
@@ -2993,6 +3176,7 @@ impl LearnerBlueprint {
             | Self::BinnedBbs { name, .. }
             | Self::Bns { name, .. }
             | Self::Brandom { name, .. }
+            | Self::DiagBrandom { name, .. }
             | Self::BinnedBrandom { name, .. }
             | Self::Bmrf { name, .. }
             | Self::Bspatial { name, .. }
@@ -3019,6 +3203,7 @@ impl LearnerBlueprint {
             | Self::Bmrf { design, .. }
             | Self::Bspatial { design, .. }
             | Self::Buser { design, .. } => design.nrows(),
+            Self::DiagBrandom { group_idx, .. } => group_idx.len(),
             Self::BinnedBrandom { binning, .. } => binning.index.len(),
             Self::BinnedBspatial { grid, .. } => grid.index.len(),
             Self::Bmono { x, .. } => x.len(),
@@ -3397,6 +3582,55 @@ impl LearnerBlueprint {
                         level_codes: level_codes.clone(),
                         centering,
                         by: by.as_ref().map(|values| values.to_vec()),
+                    },
+                ))
+            }
+            Self::DiagBrandom {
+                group_idx,
+                n_levels,
+                name,
+                df,
+                lambda,
+                level_codes,
+            } => {
+                let n = group_idx.len();
+                let mut group_weights = vec![0.0f64; *n_levels];
+                for i in 0..n {
+                    group_weights[group_idx[i] as usize] += weights[i];
+                }
+                let eff_lambda = match lambda {
+                    Some(value) => *value,
+                    None => df_to_lambda_diag(&group_weights, *df),
+                };
+                let inv_denom: Vec<f64> = group_weights
+                    .iter()
+                    .map(|&wg| {
+                        let d = wg + eff_lambda;
+                        if d > 0.0 {
+                            1.0 / d
+                        } else {
+                            0.0
+                        }
+                    })
+                    .collect();
+                let learner = PreparedLearner::DiagBrandom {
+                    group_idx: group_idx.clone(),
+                    n_levels: *n_levels,
+                    group_weights,
+                    inv_denom,
+                    lambda: eff_lambda,
+                    name: name.clone(),
+                    weights: weights.to_owned(),
+                    rhs_buf: vec![0.0; *n_levels],
+                    beta_buf: vec![0.0; *n_levels],
+                    pred_buf: Vec::new(),
+                };
+                Ok((
+                    learner,
+                    BasisInfo::Brandom {
+                        level_codes: level_codes.clone(),
+                        centering: vec![0.0; *n_levels],
+                        by: None,
                     },
                 ))
             }
@@ -4918,6 +5152,32 @@ pub enum PreparedLearner {
         /// Scratch buffer for fitted values, allocated lazily.
         pred_buf: Vec<f64>,
     },
+    /// Exact O(n + L) diagonal ridge learner for high-cardinality uncentered
+    /// `brandom` (`X'WX = diag(w_g)`, `K = I_L`). Mathematically identical to
+    /// `BlockBols` over a one-hot indicator matrix without allocating `(n, L)`
+    /// or `(L, L)` dense matrices.
+    DiagBrandom {
+        /// Per-observation level index in `0..n_levels`.
+        group_idx: Arc<[u32]>,
+        /// Number of distinct levels `L`.
+        n_levels: usize,
+        /// Per-level sum of observation weights `w_g`.
+        group_weights: Vec<f64>,
+        /// Precomputed `1 / (w_g + lambda)` per level.
+        inv_denom: Vec<f64>,
+        /// Effective ridge penalty `lambda`.
+        lambda: f64,
+        /// Formula name of the learner.
+        name: String,
+        /// Observation weights for this fit.
+        weights: Array1<f64>,
+        /// Scratch buffer for per-level `sum(w_i * u_i)`.
+        rhs_buf: Vec<f64>,
+        /// Scratch buffer for solved coefficients `beta_g`.
+        beta_buf: Vec<f64>,
+        /// Scratch buffer for fitted values, allocated lazily.
+        pred_buf: Vec<f64>,
+    },
     /// Multi-column bols: (n, p_j) design with ridge penalty matrix.
     /// Solved via GramSolver (Cholesky or LU fallback): (X'WX + λK)β = X'Wu
     BlockBols {
@@ -5442,12 +5702,12 @@ impl PreparedLearner {
 
     pub(crate) fn report_stats(&self) -> LearnerReportStats {
         let mut stats = match self {
-            PreparedLearner::ScalarBols { .. } | PreparedLearner::BinnedScalarBols { .. } => {
-                LearnerReportStats {
-                    scalar_learners: 1,
-                    ..LearnerReportStats::default()
-                }
-            }
+            PreparedLearner::ScalarBols { .. }
+            | PreparedLearner::BinnedScalarBols { .. }
+            | PreparedLearner::DiagBrandom { .. } => LearnerReportStats {
+                scalar_learners: 1,
+                ..LearnerReportStats::default()
+            },
             PreparedLearner::BlockBols { solver, .. }
             | PreparedLearner::BinnedBlockBols { solver, .. }
             | PreparedLearner::BspatialStreamed { solver, .. }
@@ -5517,6 +5777,25 @@ impl PreparedLearner {
                     + f64_bytes
                         * (bin_values.len()
                             + bin_weighted_u.capacity()
+                            + beta_buf.capacity()
+                            + pred_buf.capacity())
+            }
+            PreparedLearner::DiagBrandom {
+                group_idx,
+                group_weights,
+                inv_denom,
+                weights,
+                rhs_buf,
+                beta_buf,
+                pred_buf,
+                ..
+            } => {
+                std::mem::size_of_val(group_idx.as_ref())
+                    + f64_bytes
+                        * (group_weights.len()
+                            + inv_denom.len()
+                            + weights.len()
+                            + rhs_buf.capacity()
                             + beta_buf.capacity()
                             + pred_buf.capacity())
             }
@@ -5717,6 +5996,7 @@ impl PreparedLearner {
     pub fn n_parameters(&self) -> usize {
         match self {
             PreparedLearner::ScalarBols { .. } | PreparedLearner::BinnedScalarBols { .. } => 1,
+            PreparedLearner::DiagBrandom { n_levels, .. } => *n_levels,
             PreparedLearner::BinnedBlockBols { basis, .. } => basis.ncols(),
             PreparedLearner::BlockBols { design, .. }
             | PreparedLearner::BmonoBbs { design, .. } => design.ncols(),
@@ -5733,6 +6013,7 @@ impl PreparedLearner {
         match self {
             PreparedLearner::ScalarBols { design, .. } => design.len(),
             PreparedLearner::BinnedScalarBols { n_observations, .. } => *n_observations,
+            PreparedLearner::DiagBrandom { group_idx, .. } => group_idx.len(),
             PreparedLearner::BinnedBlockBols { n_observations, .. } => *n_observations,
             PreparedLearner::BlockBols { design, .. }
             | PreparedLearner::BmonoBbs { design, .. }
@@ -5749,6 +6030,7 @@ impl PreparedLearner {
     pub fn weights(&self) -> Option<&[f64]> {
         match self {
             PreparedLearner::ScalarBols { weights, .. }
+            | PreparedLearner::DiagBrandom { weights, .. }
             | PreparedLearner::BlockBols { weights, .. }
             | PreparedLearner::BspatialStreamed { weights, .. }
             | PreparedLearner::Btree { weights, .. }
@@ -5762,7 +6044,8 @@ impl PreparedLearner {
     pub fn name(&self) -> &str {
         match self {
             PreparedLearner::ScalarBols { name, .. }
-            | PreparedLearner::BinnedScalarBols { name, .. } => name,
+            | PreparedLearner::BinnedScalarBols { name, .. }
+            | PreparedLearner::DiagBrandom { name, .. } => name,
             PreparedLearner::BlockBols { name, .. } => name,
             PreparedLearner::BinnedBlockBols { name, .. } => name,
             PreparedLearner::BmonoBbs { name, .. } => name,
@@ -5855,6 +6138,36 @@ impl PreparedLearner {
                 }
                 for i in 0..*n_observations {
                     pred_buf[i] = bin_values[bin_index[i] as usize] * beta_val;
+                }
+                let sse = weighted_sse_slices(
+                    u.as_slice().expect("u contiguous"),
+                    pred_buf.as_slice(),
+                    weights.as_slice().expect("w contiguous"),
+                );
+                (beta_buf.as_slice(), pred_buf.as_slice(), sse)
+            }
+            PreparedLearner::DiagBrandom {
+                group_idx,
+                n_levels,
+                inv_denom,
+                rhs_buf,
+                beta_buf,
+                pred_buf,
+                ..
+            } => {
+                let n = group_idx.len();
+                rhs_buf.fill(0.0);
+                for i in 0..n {
+                    rhs_buf[group_idx[i] as usize] += weights[i] * u[i];
+                }
+                for g in 0..*n_levels {
+                    beta_buf[g] = rhs_buf[g] * inv_denom[g];
+                }
+                if pred_buf.len() != n {
+                    pred_buf.resize(n, 0.0);
+                }
+                for i in 0..n {
+                    pred_buf[i] = beta_buf[group_idx[i] as usize];
                 }
                 let sse = weighted_sse_slices(
                     u.as_slice().expect("u contiguous"),
@@ -6285,7 +6598,9 @@ impl PreparedLearner {
                 let sse = weighted_sse(u, pred.view(), weights);
                 (beta, pred, sse)
             }
-            PreparedLearner::BinnedScalarBols { .. } | PreparedLearner::BinnedBlockBols { .. } => {
+            PreparedLearner::BinnedScalarBols { .. }
+            | PreparedLearner::BinnedBlockBols { .. }
+            | PreparedLearner::DiagBrandom { .. } => {
                 let (beta, pred, sse) = self.fit_step_ref(u, weights);
                 (
                     Array1::from_vec(beta.to_vec()),
@@ -6542,6 +6857,34 @@ impl PreparedLearner {
                     wu2
                 };
                 (beta_buf.as_slice(), sse)
+            }
+            PreparedLearner::DiagBrandom {
+                group_idx,
+                n_levels,
+                inv_denom,
+                lambda,
+                rhs_buf,
+                beta_buf,
+                ..
+            } => {
+                let n = group_idx.len();
+                rhs_buf.fill(0.0);
+                for i in 0..n {
+                    rhs_buf[group_idx[i] as usize] += weights[i] * u[i];
+                }
+                let mut beta_dot_rhs = 0.0f64;
+                let mut beta_sq = 0.0f64;
+                for g in 0..*n_levels {
+                    let r = rhs_buf[g];
+                    let b = r * inv_denom[g];
+                    beta_buf[g] = b;
+                    beta_dot_rhs += b * r;
+                    beta_sq += b * b;
+                }
+                (
+                    beta_buf.as_slice(),
+                    wu2 - beta_dot_rhs - (*lambda) * beta_sq,
+                )
             }
             PreparedLearner::BlockBols {
                 solver,
@@ -6859,6 +7202,7 @@ impl PreparedLearner {
         match self {
             PreparedLearner::ScalarBols { beta_buf, .. }
             | PreparedLearner::BinnedScalarBols { beta_buf, .. }
+            | PreparedLearner::DiagBrandom { beta_buf, .. }
             | PreparedLearner::BinnedBlockBols { beta_buf, .. }
             | PreparedLearner::BlockBols { beta_buf, .. }
             | PreparedLearner::BmonoBbs { beta_buf, .. }
@@ -6895,6 +7239,13 @@ impl PreparedLearner {
                 debug_assert_eq!(out.len(), *n_observations);
                 for i in 0..*n_observations {
                     out[i] = bin_values[bin_index[i] as usize] * beta;
+                }
+            }
+            PreparedLearner::DiagBrandom { group_idx, .. } => {
+                let n = group_idx.len();
+                debug_assert_eq!(out.len(), n);
+                for i in 0..n {
+                    out[i] = beta[group_idx[i] as usize];
                 }
             }
             PreparedLearner::BinnedBlockBols {
@@ -7109,6 +7460,26 @@ impl PreparedLearner {
                     denom += weights[i] * value * value;
                 }
                 *scalar_denom = denom;
+            }
+            PreparedLearner::DiagBrandom {
+                group_idx,
+                n_levels,
+                group_weights,
+                inv_denom,
+                lambda,
+                weights: stored_w,
+                ..
+            } => {
+                let n = group_idx.len();
+                group_weights.fill(0.0);
+                for i in 0..n {
+                    group_weights[group_idx[i] as usize] += weights[i];
+                }
+                for g in 0..*n_levels {
+                    let d = group_weights[g] + *lambda;
+                    inv_denom[g] = if d > 0.0 { 1.0 / d } else { 0.0 };
+                }
+                *stored_w = weights.to_owned();
             }
             PreparedLearner::BinnedBlockBols {
                 bin_index,
@@ -7356,9 +7727,9 @@ impl PreparedLearner {
             // A hinge's basis is chosen per step, so it has no stable hat
             // matrix; it is an adaptive learner, like a tree.
             PreparedLearner::Bhinge { .. } => None,
-            PreparedLearner::BinnedScalarBols { .. } | PreparedLearner::BinnedBlockBols { .. } => {
-                None
-            }
+            PreparedLearner::BinnedScalarBols { .. }
+            | PreparedLearner::BinnedBlockBols { .. }
+            | PreparedLearner::DiagBrandom { .. } => None,
             PreparedLearner::BspatialStreamed { .. } => self.streamed_to_block_bols().hat_matrix(),
             // Kronecker array model: no simple per-observation hat matrix
             // (so AIC/df via the trace is unavailable, like btree/bmono).
@@ -7424,6 +7795,18 @@ impl PreparedLearner {
                         .collect(),
                 )
             }
+            PreparedLearner::DiagBrandom {
+                group_idx,
+                inv_denom,
+                weights,
+                ..
+            } => Some(
+                group_idx
+                    .iter()
+                    .zip(weights.iter())
+                    .map(|(&g, &w)| w * inv_denom[g as usize])
+                    .collect(),
+            ),
             PreparedLearner::BlockBols {
                 design,
                 solver,
@@ -7557,6 +7940,7 @@ impl PreparedLearner {
         match self {
             PreparedLearner::ScalarBols { design, .. } => design.len(),
             PreparedLearner::BinnedScalarBols { n_observations, .. } => *n_observations,
+            PreparedLearner::DiagBrandom { group_idx, .. } => group_idx.len(),
             PreparedLearner::BinnedBlockBols { n_observations, .. } => *n_observations,
             PreparedLearner::BlockBols { design, .. } => design.nrows(),
             PreparedLearner::BmonoBbs { design, .. } => design.nrows(),
@@ -7596,6 +7980,18 @@ impl PreparedLearner {
                 (*n_observations, basis.ncols()),
                 |(row, column)| basis[[bin_index[row] as usize, column]],
             )),
+            PreparedLearner::DiagBrandom {
+                group_idx,
+                n_levels,
+                ..
+            } => {
+                let n = group_idx.len();
+                let mut d = Array2::zeros((n, *n_levels));
+                for i in 0..n {
+                    d[[i, group_idx[i] as usize]] = 1.0;
+                }
+                Some(d)
+            }
             PreparedLearner::BlockBols { design, .. } => Some(design.clone()),
             PreparedLearner::BmonoBbs { design, .. } => Some(design.clone()),
             PreparedLearner::Btree { design, .. } => Some(design.clone()),
@@ -7663,6 +8059,9 @@ impl PreparedLearner {
             | PreparedLearner::BinnedScalarBols { penalty, .. } => {
                 Some(Array2::from_shape_vec((1, 1), vec![*penalty]).unwrap())
             }
+            PreparedLearner::DiagBrandom {
+                n_levels, lambda, ..
+            } => Some(Array2::from_diag(&Array1::from_elem(*n_levels, *lambda))),
             PreparedLearner::BlockBols { penalty, .. } => Some(penalty.clone()),
             PreparedLearner::BinnedBlockBols { penalty, .. } => Some(penalty.clone()),
             PreparedLearner::BspatialStreamed { penalty, .. } => Some(penalty.clone()),
@@ -7706,6 +8105,7 @@ impl PreparedLearner {
         match self {
             PreparedLearner::ScalarBols { penalty, .. }
             | PreparedLearner::BinnedScalarBols { penalty, .. } => Some(*penalty),
+            PreparedLearner::DiagBrandom { lambda, .. } => Some(*lambda),
             PreparedLearner::BlockBols { lambda, .. }
             | PreparedLearner::BinnedBlockBols { lambda, .. }
             | PreparedLearner::BspatialStreamed { lambda, .. } => *lambda,
@@ -7981,6 +8381,7 @@ impl PreparedLearner {
             PreparedLearner::BspatialStreamed { .. } => self.streamed_to_block_bols().hat_factor(),
             PreparedLearner::BinnedScalarBols { .. }
             | PreparedLearner::BinnedBlockBols { .. }
+            | PreparedLearner::DiagBrandom { .. }
             | PreparedLearner::BmonoBbs { .. }
             | PreparedLearner::Btree { .. }
             | PreparedLearner::Bhinge { .. }
@@ -9634,6 +10035,7 @@ pub fn pack_scalar_bols(
     let n = match learners.first()? {
         PreparedLearner::ScalarBols { design, .. } => design.len(),
         PreparedLearner::BinnedScalarBols { .. } => return None,
+        PreparedLearner::DiagBrandom { .. } => return None,
         PreparedLearner::BinnedBlockBols { .. } => return None,
         PreparedLearner::BlockBols { .. } => return None,
         PreparedLearner::BmonoBbs { .. } => return None,
@@ -9663,6 +10065,7 @@ pub fn pack_scalar_bols(
                 denoms[col] = *scalar_denom;
             }
             PreparedLearner::BinnedScalarBols { .. } => return None,
+            PreparedLearner::DiagBrandom { .. } => return None,
             PreparedLearner::BinnedBlockBols { .. } => return None,
             PreparedLearner::BlockBols { .. } => return None,
             PreparedLearner::BmonoBbs { .. } => return None,
@@ -9699,6 +10102,7 @@ pub fn pack_scalar_bols_partial(learners: &[PreparedLearner]) -> Option<PackedSc
     let n = match learners.first()? {
         PreparedLearner::ScalarBols { design, .. } => design.len(),
         PreparedLearner::BinnedScalarBols { n_observations, .. } => *n_observations,
+        PreparedLearner::DiagBrandom { group_idx, .. } => group_idx.len(),
         PreparedLearner::BinnedBlockBols { n_observations, .. } => *n_observations,
         PreparedLearner::BlockBols { design, .. } => design.nrows(),
         PreparedLearner::BmonoBbs { design, .. } => design.nrows(),
@@ -9775,6 +10179,137 @@ pub fn bspline_knots(boundary_knots: (f64, f64), n_inner: usize, degree: usize) 
     }
 
     knots
+}
+
+/// Build a clamped quantile-spaced B-spline knot sequence for O-splines.
+///
+/// Places up to `n_inner` interior knots at empirical quantiles of `x` strictly
+/// inside `(bk_lo, bk_hi)` (deduplicating ties and zero-inflated clusters) and
+/// clamps `degree + 1` knots at each boundary so the basis forms a partition of
+/// unity and reproduces all polynomials up to `degree` on `[bk_lo, bk_hi]`.
+pub fn bspline_quantile_knots(
+    x: &[f64],
+    boundary_knots: (f64, f64),
+    n_inner: usize,
+    degree: usize,
+) -> Vec<f64> {
+    let (bk_lo, bk_hi) = boundary_knots;
+    let mut sorted: Vec<f64> = x.iter().copied().filter(|v| v.is_finite()).collect();
+    sorted.sort_by(|a, b| a.total_cmp(b));
+    let tol = 1e-12 * (bk_hi - bk_lo);
+    let mut inner = Vec::with_capacity(n_inner);
+    if !sorted.is_empty() && n_inner > 0 {
+        let m = sorted.len();
+        let mut prev = bk_lo;
+        for k in 1..=n_inner {
+            let p = k as f64 / (n_inner + 1) as f64;
+            let pos = p * (m - 1) as f64;
+            let lo_i = pos.floor() as usize;
+            let hi_i = pos.ceil() as usize;
+            let frac = pos - lo_i as f64;
+            let q = sorted[lo_i] * (1.0 - frac) + sorted[hi_i] * frac;
+            if q > prev + tol && q < bk_hi - tol {
+                inner.push(q);
+                prev = q;
+            }
+        }
+    }
+    let dx_lo = inner.first().map(|&k| k - bk_lo).unwrap_or(bk_hi - bk_lo);
+    let dx_hi = inner.last().map(|&k| bk_hi - k).unwrap_or(bk_hi - bk_lo);
+    let mut knots = Vec::with_capacity(2 * (degree + 1) + inner.len());
+    for i in 0..=degree {
+        knots.push(bk_lo - (degree - i) as f64 * dx_lo);
+    }
+    knots.extend(inner);
+    for i in 0..=degree {
+        knots.push(bk_hi + i as f64 * dx_hi);
+    }
+    knots
+}
+
+/// Exact integrated second-derivative curvature penalty
+/// `K_ij = (b - a)^3 * integral_a^b B_i''(x) B_j''(x) dx` for an O-spline.
+///
+/// Uses 3-point Gauss-Legendre quadrature on each distinct knot sub-interval,
+/// which is exact for all B-spline degrees up to `degree = 4` (including cubic
+/// splines where `B_i'' B_j''` is piecewise quadratic).
+pub fn ospline_curvature_penalty(
+    knots: &[f64],
+    boundary_knots: (f64, f64),
+    degree: usize,
+) -> Array2<f64> {
+    let (bk_lo, bk_hi) = boundary_knots;
+    let p = knots.len().saturating_sub(degree + 1);
+    if p == 0 || degree < 2 || bk_hi <= bk_lo {
+        return Array2::zeros((p, p));
+    }
+    let tol = 1e-12 * (bk_hi - bk_lo);
+    let mut breaks = vec![bk_lo];
+    for &k in knots {
+        if k > *breaks.last().unwrap() + tol && k < bk_hi - tol {
+            breaks.push(k);
+        }
+    }
+    breaks.push(bk_hi);
+
+    // 3-point Gauss-Legendre nodes & weights on [-1, 1]
+    const GL_X: [f64; 3] = [-0.774_596_669_241_483_4, 0.0, 0.774_596_669_241_483_4];
+    const GL_W: [f64; 3] = [5.0 / 9.0, 8.0 / 9.0, 5.0 / 9.0];
+
+    let n_intervals = breaks.len() - 1;
+    let mut q_pts = Vec::with_capacity(n_intervals * 3);
+    let mut q_w = Vec::with_capacity(n_intervals * 3);
+    for idx in 0..n_intervals {
+        let a = breaks[idx];
+        let b = breaks[idx + 1];
+        let mid = 0.5 * (a + b);
+        let half = 0.5 * (b - a);
+        for g in 0..3 {
+            q_pts.push(mid + half * GL_X[g]);
+            q_w.push(half * GL_W[g]);
+        }
+    }
+
+    let d2 = bspline_basis_with_deriv(&q_pts, knots, degree, 2);
+    let scale = (bk_hi - bk_lo).powi(3);
+    let mut pen = Array2::zeros((p, p));
+    for r in 0..q_pts.len() {
+        let w = q_w[r] * scale;
+        let row = d2.row(r);
+        for i in 0..p {
+            let vi = row[i];
+            if vi == 0.0 {
+                continue;
+            }
+            let wvi = w * vi;
+            for j in i..p {
+                let vj = row[j];
+                if vj != 0.0 {
+                    pen[[i, j]] += wvi * vj;
+                }
+            }
+        }
+    }
+    for i in 0..p {
+        for j in (i + 1)..p {
+            pen[[j, i]] = pen[[i, j]];
+        }
+    }
+    pen
+}
+
+/// Exact O(L log L) `df_to_lambda` for a diagonal Gram `X'WX = diag(group_weights)`
+/// and identity penalty `K = I_L` (uncentered `brandom`).
+pub fn df_to_lambda_diag(group_weights: &[f64], df_target: f64) -> f64 {
+    if group_weights.is_empty() {
+        return 0.0;
+    }
+    let mut d: Vec<f64> = group_weights
+        .iter()
+        .map(|&wg| 1.0 / (wg.max(0.0) + MBOOST_EPS))
+        .collect();
+    d.sort_by(|a, b| a.total_cmp(b));
+    lambda_from_spectrum(&d, df_target, MBOOST_LAMBDA_MAX)
 }
 
 /// Evaluate B-spline basis matrix using the de Boor recursion.
@@ -12938,12 +13473,26 @@ fn fit_tree_with_sorted(
         .max()
         .unwrap_or(0);
     let max_levels = categorical.iter().copied().max().unwrap_or(0);
+    let mut col_offsets = Vec::with_capacity(p + 1);
+    let mut total_hist_slots = 0usize;
+    let mut all_hist_ready = p > 0;
+    for j in 0..p {
+        col_offsets.push(total_hist_slots);
+        let n_levels = categorical.get(j).copied().unwrap_or(0);
+        if n_levels > 0 {
+            total_hist_slots += n_levels;
+        } else if let Some(b) = binning.get(j).and_then(|b| b.as_ref()) {
+            total_hist_slots += b.effective;
+        } else {
+            all_hist_ready = false;
+        }
+    }
+    col_offsets.push(total_hist_slots);
     let use_hist_subtract = split_method == SplitMethod::Histogram
         && selection == SplitSelection::Sse
         && !need_sorted
-        && max_levels == 0
-        && hist_bins > 0
-        && p > 0;
+        && all_hist_ready
+        && total_hist_slots > 0;
     let mut work = TreeWork {
         n,
         rows: (0..n).collect(),
@@ -12956,15 +13505,31 @@ fn fit_tree_with_sorted(
         level_present: Vec::with_capacity(max_levels.max(hist_bins)),
     };
     if use_hist_subtract {
-        let mut root_hists = vec![(0.0f64, 0.0f64, 0usize); p * hist_bins];
+        let mut root_hists = vec![(0.0f64, 0.0f64, 0usize); total_hist_slots];
         build_node_hists(
             &spec,
             &work.rows[0..n],
             &work.wu,
-            hist_bins,
+            &col_offsets,
             &mut root_hists,
         );
-        build_tree_hist_subtract(&spec, &mut work, 0, n, 0, hist_bins, root_hists, &mut nodes);
+        let (root_w, root_wu) = work.rows[0..n]
+            .iter()
+            .fold((0.0f64, 0.0f64), |(tw, twu), &ii| {
+                (tw + weights[ii], twu + work.wu[ii])
+            });
+        build_tree_hist_subtract(
+            &spec,
+            &mut work,
+            0,
+            n,
+            0,
+            &col_offsets,
+            root_w,
+            root_wu,
+            root_hists,
+            &mut nodes,
+        );
     } else {
         build_tree_recursive(&spec, &mut work, 0, n, 0, &mut nodes);
     }
@@ -13137,30 +13702,57 @@ fn build_node_hists(
     spec: &TreeSpec<'_>,
     rows: &[usize],
     wu: &[f64],
-    hist_bins: usize,
+    col_offsets: &[usize],
     out: &mut [(f64, f64, usize)],
 ) {
     let weights = spec.weights;
-    for (j, bin_opt) in spec.binning.iter().enumerate() {
-        let Some(binning) = bin_opt.as_ref() else {
-            continue;
-        };
-        let effective = binning.effective;
-        let h = &mut out[j * hist_bins..j * hist_bins + effective];
+    let p = spec.design.ncols();
+    for j in 0..p {
+        let start = col_offsets[j];
+        let end = col_offsets[j + 1];
+        let h = &mut out[start..end];
         h.fill((0.0, 0.0, 0));
-        let index = &binning.index;
-        for &ii in rows {
-            let entry = &mut h[index[ii] as usize];
-            entry.0 += weights[ii];
-            entry.1 += wu[ii];
-            entry.2 += 1;
+        let n_levels = spec.categorical.get(j).copied().unwrap_or(0);
+        if n_levels > 0 {
+            let col = spec.design.column(j);
+            for &ii in rows {
+                let code = col[ii];
+                if code >= 0.0 && code < n_levels as f64 {
+                    let entry = &mut h[code as usize];
+                    entry.0 += weights[ii];
+                    entry.1 += wu[ii];
+                    entry.2 += 1;
+                }
+            }
+        } else if let Some(binning) = spec.binning[j].as_ref() {
+            let index = &binning.index;
+            for &ii in rows {
+                let entry = &mut h[index[ii] as usize];
+                entry.0 += weights[ii];
+                entry.1 += wu[ii];
+                entry.2 += 1;
+            }
         }
     }
 }
 
-/// Fast pure-histogram recursive builder using the parent-minus-small-child
-/// histogram subtraction trick: only the smaller child scans rows, and the
-/// larger child derives its histograms in O(p * bins) by subtraction.
+enum BestHistSplit {
+    Numeric {
+        var: usize,
+        point: f64,
+        last_left: usize,
+        bin: usize,
+    },
+    Levels {
+        var: usize,
+        left_levels: Vec<usize>,
+    },
+}
+
+/// Fast histogram recursive builder using the parent-minus-small-child
+/// histogram subtraction trick for both binned numeric and categorical columns:
+/// only the smaller child scans rows, and the larger child derives its
+/// histograms in O(total_slots) by subtraction.
 #[allow(clippy::too_many_arguments)]
 fn build_tree_hist_subtract(
     spec: &TreeSpec<'_>,
@@ -13168,20 +13760,14 @@ fn build_tree_hist_subtract(
     lo: usize,
     hi: usize,
     depth: usize,
-    hist_bins: usize,
+    col_offsets: &[usize],
+    total_w: f64,
+    total_wsum: f64,
     mut hists: Vec<(f64, f64, usize)>,
     nodes: &mut Vec<TreeNode>,
 ) -> usize {
     let n = hi - lo;
     let p = spec.design.ncols();
-
-    // Node totals come directly from column 0's histogram in O(bins).
-    let (mut total_w, mut total_wsum) = (0.0f64, 0.0f64);
-    let eff0 = spec.binning[0].as_ref().unwrap().effective;
-    for &(w, wsum, _) in &hists[0..eff0] {
-        total_w += w;
-        total_wsum += wsum;
-    }
 
     let make_leaf = |nodes: &mut Vec<TreeNode>| {
         let mean = if total_w > 0.0 {
@@ -13198,94 +13784,216 @@ fn build_tree_hist_subtract(
     }
 
     let minbucket = spec.minbucket as f64;
-    // Minimizing weighted SSE is identical to maximizing lws^2 / lw + rws^2 / rw.
     let mut best_gain = f64::NEG_INFINITY;
-    let mut best: Option<(usize, f64, usize, usize)> = None; // (var, point, last_left, bin)
+    let mut best: Option<BestHistSplit> = None;
 
     for j in 0..p {
-        let binning = spec.binning[j].as_ref().unwrap();
-        let effective = binning.effective;
-        let h = &hists[j * hist_bins..j * hist_bins + effective];
+        let start = col_offsets[j];
+        let end = col_offsets[j + 1];
+        let h = &hists[start..end];
+        let n_levels = spec.categorical.get(j).copied().unwrap_or(0);
         let present = &mut work.level_present;
         present.clear();
-        for (b, &(_, _, cnt)) in h.iter().enumerate() {
-            if cnt > 0 {
-                present.push(b);
+        if n_levels > 0 {
+            for (l, &(w, _, cnt)) in h.iter().enumerate() {
+                if cnt > 0 && w > 0.0 {
+                    present.push(l);
+                }
             }
-        }
-        let (mut lw, mut lws) = (0.0f64, 0.0f64);
-        let mut lcount = 0usize;
-        for idx in 0..present.len().saturating_sub(1) {
-            let b = present[idx];
-            let (bw, bws, bcnt) = h[b];
-            lw += bw;
-            lws += bws;
-            lcount += bcnt;
-            let rw = total_w - lw;
-            if lw < minbucket || rw < minbucket {
+            if present.len() < 2 {
                 continue;
             }
-            let rws = total_wsum - lws;
-            let gain = lws * lws / lw + rws * rws / rw;
-            if gain > best_gain {
-                best_gain = gain;
-                let next = present[idx + 1];
-                let point = (binning.values[b] + binning.values[next]) * 0.5;
-                best = Some((j, point, lcount - 1, b));
+            present.sort_by(|&a, &b| {
+                (h[a].1 / h[a].0)
+                    .partial_cmp(&(h[b].1 / h[b].0))
+                    .unwrap_or(std::cmp::Ordering::Equal)
+                    .then(a.cmp(&b))
+            });
+            let (mut lw, mut lws) = (0.0f64, 0.0f64);
+            let mut col_best_k: Option<usize> = None;
+            let mut col_best_gain = best_gain;
+            for k in 0..present.len() - 1 {
+                let (bw, bws, _) = h[present[k]];
+                lw += bw;
+                lws += bws;
+                let rw = total_w - lw;
+                if lw < minbucket || rw < minbucket {
+                    continue;
+                }
+                let rws = total_wsum - lws;
+                let gain = lws * lws / lw + rws * rws / rw;
+                if gain > col_best_gain {
+                    col_best_gain = gain;
+                    col_best_k = Some(k);
+                }
+            }
+            if let Some(k) = col_best_k {
+                best_gain = col_best_gain;
+                let mut left_levels = present[..=k].to_vec();
+                left_levels.sort_unstable();
+                best = Some(BestHistSplit::Levels {
+                    var: j,
+                    left_levels,
+                });
+            }
+        } else {
+            let binning = spec.binning[j].as_ref().unwrap();
+            for (b, &(_, _, cnt)) in h.iter().enumerate() {
+                if cnt > 0 {
+                    present.push(b);
+                }
+            }
+            let (mut lw, mut lws) = (0.0f64, 0.0f64);
+            let mut lcount = 0usize;
+            for idx in 0..present.len().saturating_sub(1) {
+                let b = present[idx];
+                let (bw, bws, bcnt) = h[b];
+                lw += bw;
+                lws += bws;
+                lcount += bcnt;
+                let rw = total_w - lw;
+                if lw < minbucket || rw < minbucket {
+                    continue;
+                }
+                let rws = total_wsum - lws;
+                let gain = lws * lws / lw + rws * rws / rw;
+                if gain > best_gain {
+                    best_gain = gain;
+                    let next = present[idx + 1];
+                    let point = (binning.values[b] + binning.values[next]) * 0.5;
+                    best = Some(BestHistSplit::Numeric {
+                        var: j,
+                        point,
+                        last_left: lcount - 1,
+                        bin: b,
+                    });
+                }
             }
         }
     }
 
-    let Some((var, point, last_left, best_bin)) = best else {
+    let Some(chosen) = best else {
         return make_leaf(nodes);
     };
 
-    let n_left = last_left + 1;
-    let n_right = n - n_left;
-    let split_idx = nodes.len();
-    nodes.push(TreeNode::Split {
-        var,
-        point,
-        left: 0,
-        right: 0,
-    });
-
-    // Partition work.rows[lo..hi] directly using the split column's bin codes.
-    {
-        let index = &spec.binning[var].as_ref().unwrap().index;
-        let TreeWork {
-            rows,
-            scratch,
-            goes_left,
-            ..
-        } = work;
-        for &ii in &rows[lo..hi] {
-            goes_left[ii] = (index[ii] as usize) <= best_bin;
+    let (split_idx, n_left, left_w, left_wu) = match chosen {
+        BestHistSplit::Numeric {
+            var,
+            point,
+            last_left,
+            bin: best_bin,
+        } => {
+            let idx = nodes.len();
+            nodes.push(TreeNode::Split {
+                var,
+                point,
+                left: 0,
+                right: 0,
+            });
+            let index = &spec.binning[var].as_ref().unwrap().index;
+            let TreeWork {
+                rows,
+                scratch,
+                goes_left,
+                wu,
+                ..
+            } = work;
+            let (mut lw, mut lwu) = (0.0f64, 0.0f64);
+            for &ii in &rows[lo..hi] {
+                let left = (index[ii] as usize) <= best_bin;
+                goes_left[ii] = left;
+                if left {
+                    lw += spec.weights[ii];
+                    lwu += wu[ii];
+                }
+            }
+            TreeWork::partition(&mut rows[lo..hi], scratch, goes_left);
+            (idx, last_left + 1, lw, lwu)
         }
-        TreeWork::partition(&mut rows[lo..hi], scratch, goes_left);
-    }
+        BestHistSplit::Levels {
+            var,
+            mut left_levels,
+        } => {
+            let col = spec.design.column(var);
+            let in_set = |levels: &[usize], ii: usize| {
+                let v = col[ii];
+                v >= 0.0 && levels.binary_search(&(v as usize)).is_ok()
+            };
+            let listed_weight: f64 = work.rows[lo..hi]
+                .iter()
+                .filter(|&&ii| in_set(&left_levels, ii))
+                .map(|&ii| spec.weights[ii])
+                .sum();
+            if listed_weight > total_w - listed_weight {
+                let mut other: Vec<usize> = work.rows[lo..hi]
+                    .iter()
+                    .filter(|&&ii| !in_set(&left_levels, ii))
+                    .filter_map(|&ii| {
+                        let v = col[ii];
+                        (v >= 0.0).then_some(v as usize)
+                    })
+                    .collect();
+                other.sort_unstable();
+                other.dedup();
+                left_levels = other;
+            }
+            let TreeWork {
+                rows,
+                scratch,
+                goes_left,
+                wu,
+                ..
+            } = work;
+            let mut n_l = 0usize;
+            let (mut lw, mut lwu) = (0.0f64, 0.0f64);
+            for &ii in &rows[lo..hi] {
+                let left = in_set(&left_levels, ii);
+                goes_left[ii] = left;
+                if left {
+                    n_l += 1;
+                    lw += spec.weights[ii];
+                    lwu += wu[ii];
+                }
+            }
+            TreeWork::partition(&mut rows[lo..hi], scratch, goes_left);
+            let idx = nodes.len();
+            nodes.push(TreeNode::SplitSet {
+                var,
+                left_levels,
+                left: 0,
+                right: 0,
+            });
+            (idx, n_l, lw, lwu)
+        }
+    };
 
+    let n_right = n - n_left;
+    let right_w = (total_w - left_w).max(0.0);
+    let right_wu = total_wsum - left_wu;
     let mid = lo + n_left;
+
     if depth + 1 >= spec.maxdepth {
-        // Both children are guaranteed leaves; skip building child histograms!
         let left_child = make_leaf_from_rows(spec, &work.rows[lo..mid], &work.wu, nodes);
         let right_child = make_leaf_from_rows(spec, &work.rows[mid..hi], &work.wu, nodes);
-        if let TreeNode::Split { left, right, .. } = &mut nodes[split_idx] {
-            *left = left_child;
-            *right = right_child;
+        match &mut nodes[split_idx] {
+            TreeNode::Split { left, right, .. } | TreeNode::SplitSet { left, right, .. } => {
+                *left = left_child;
+                *right = right_child;
+            }
+            TreeNode::Leaf { .. } => {}
         }
         return split_idx;
     }
 
-    // Build histograms only for the smaller child, and subtract from parent for the larger!
-    let mut small_hists = vec![(0.0f64, 0.0f64, 0usize); p * hist_bins];
+    let total_slots = *col_offsets.last().unwrap_or(&0);
+    let mut small_hists = vec![(0.0f64, 0.0f64, 0usize); total_slots];
     let left_is_smaller = n_left <= n_right;
     if left_is_smaller {
         build_node_hists(
             spec,
             &work.rows[lo..mid],
             &work.wu,
-            hist_bins,
+            col_offsets,
             &mut small_hists,
         );
     } else {
@@ -13293,7 +14001,7 @@ fn build_tree_hist_subtract(
             spec,
             &work.rows[mid..hi],
             &work.wu,
-            hist_bins,
+            col_offsets,
             &mut small_hists,
         );
     }
@@ -13308,21 +14016,36 @@ fn build_tree_hist_subtract(
     } else {
         (hists, small_hists)
     };
-    let left_child =
-        build_tree_hist_subtract(spec, work, lo, mid, depth + 1, hist_bins, left_hists, nodes);
+    let left_child = build_tree_hist_subtract(
+        spec,
+        work,
+        lo,
+        mid,
+        depth + 1,
+        col_offsets,
+        left_w,
+        left_wu,
+        left_hists,
+        nodes,
+    );
     let right_child = build_tree_hist_subtract(
         spec,
         work,
         mid,
         hi,
         depth + 1,
-        hist_bins,
+        col_offsets,
+        right_w,
+        right_wu,
         right_hists,
         nodes,
     );
-    if let TreeNode::Split { left, right, .. } = &mut nodes[split_idx] {
-        *left = left_child;
-        *right = right_child;
+    match &mut nodes[split_idx] {
+        TreeNode::Split { left, right, .. } | TreeNode::SplitSet { left, right, .. } => {
+            *left = left_child;
+            *right = right_child;
+        }
+        TreeNode::Leaf { .. } => {}
     }
     split_idx
 }

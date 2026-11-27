@@ -29,13 +29,14 @@ ConformalInterval(
     reference_distribution: str | None = None,
     zero_probability: float | None = None,
     reference_dispersion: float | None = None,
-    randomization_seed: int | None = None
+    randomization_seed: int | None = None,
+    reliability: dict | None = None
 ) -> None
 ```
 
 Prediction intervals with their calibration evidence attached.
 
-Source: [`python/mboostrs/conformal.py` lines 64-228](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/conformal.py#L64-L228)
+Source: [`python/mboostrs/conformal.py` lines 73-240](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/conformal.py#L73-L240)
 
 ## Members
 
@@ -60,7 +61,7 @@ ConformalInterval.width  # -> np.ndarray
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/conformal.py` lines 136-138](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/conformal.py#L136-L138)
+Source: [`python/mboostrs/conformal.py` lines 148-150](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/conformal.py#L148-L150)
 
 (conformalinterval-count_size)=
 ## `ConformalInterval.count_size`
@@ -73,7 +74,7 @@ ConformalInterval.count_size  # -> np.ndarray | None
 
 Number of nonnegative integers covered, including zero for empty sets.
 
-Source: [`python/mboostrs/conformal.py` lines 140-145](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/conformal.py#L140-L145)
+Source: [`python/mboostrs/conformal.py` lines 152-157](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/conformal.py#L152-L157)
 
 (conformalinterval-to_dict)=
 ## `ConformalInterval.to_dict`
@@ -91,7 +92,7 @@ use `to_json()` for strict JSON that distinguishes them from nulls. The
 `"provenance"` entry carries the library and environment; it has no
 data fingerprint because the interval holds no training rows.
 
-Source: [`python/mboostrs/conformal.py` lines 147-163](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/conformal.py#L147-L163)
+Source: [`python/mboostrs/conformal.py` lines 159-175](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/conformal.py#L159-L175)
 
 (conformalinterval-to_json)=
 ## `ConformalInterval.to_json`
@@ -108,7 +109,7 @@ Decode with `mboostrs.load_result_json`. The versioned envelope
 records nonfinite categories separately from its null placeholders.
 `include_arrays=True` includes row endpoints and predictions.
 
-Source: [`python/mboostrs/conformal.py` lines 165-174](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/conformal.py#L165-L174)
+Source: [`python/mboostrs/conformal.py` lines 177-186](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/conformal.py#L177-L186)
 
 (conformalinterval-contains)=
 ## `ConformalInterval.contains`
@@ -127,7 +128,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/conformal.py` lines 176-186](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/conformal.py#L176-L186)
+Source: [`python/mboostrs/conformal.py` lines 188-198](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/conformal.py#L188-L198)
 
 (conformalinterval-empirical_coverage)=
 ## `ConformalInterval.empirical_coverage`
@@ -140,7 +141,7 @@ ConformalInterval.empirical_coverage(observed) -> float
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/conformal.py` lines 188-189](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/conformal.py#L188-L189)
+Source: [`python/mboostrs/conformal.py` lines 200-201](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/conformal.py#L200-L201)
 
 (conformalinterval-to_frame)=
 ## `ConformalInterval.to_frame`
@@ -163,4 +164,4 @@ median. For split and CV+ it is the point function used for calibration;
 for CQR it is the midpoint of the calibrated band. Inverting a response
 transform does not in general produce a conditional mean or median.
 
-Source: [`python/mboostrs/conformal.py` lines 191-220](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/conformal.py#L191-L220)
+Source: [`python/mboostrs/conformal.py` lines 203-232](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/conformal.py#L203-L232)

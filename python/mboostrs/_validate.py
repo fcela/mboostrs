@@ -244,3 +244,21 @@ def _model_unseen_levels(model, value):
         return getattr(model, "_default_unseen_levels", "error")
     return value
 
+
+def _model_extrapolation(model, value):
+    """The spline extrapolation policy of a prediction call: ``value``, or when
+    it is ``None`` (the default) the model's own policy.
+
+    A direct ``gamboost`` / ``gamboostLSS`` model defaults to ``"warn"``
+    (preserving R ``mboost`` linear continuation with an ``ExtrapolationWarning``).
+    A model returned by ``mb.fit`` defaults to ``"clip"`` (holding spline terms
+    flat at their training boundary knots while ``bols`` linear terms still
+    continue linearly), preventing single out-of-range rows from blowing up
+    automated predictions. Callers can always override by passing an explicit
+    ``extrapolation=`` value.
+    """
+    if value is None:
+        return getattr(model, "_default_extrapolation", "warn")
+    return value
+
+

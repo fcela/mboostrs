@@ -50,4 +50,4 @@ Args:
         type="iterative" only.
     by: optional varying-coefficient variable name.
 
-Source: [`python/mboostrs/learners.py` lines 806-866](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L806-L866)
+Source: [`python/mboostrs/learners.py` lines 830-890](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L830-L890)

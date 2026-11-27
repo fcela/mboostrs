@@ -16,7 +16,10 @@ from mboostrs._control import as_control, step_kwargs
 from mboostrs._model_api import ModelAPIMixin, capture_fit_warnings
 from mboostrs._names import partition_tilde, quote_name
 from mboostrs._results import AicResult, provenance_from_model
-from mboostrs._validate import _model_unseen_levels
+from mboostrs._validate import (
+    _model_extrapolation,
+    _model_unseen_levels,
+)
 from mboostrs._weights import normalize_weights
 from mboostrs._workflow import call_fit, fit_checkpoint
 from mboostrs.cvrisk import (
@@ -2024,6 +2027,7 @@ class GAMBoostModel(ModelAPIMixin):
             that group's rows enter the fit with zero weight.
         """
         unseen_levels = _model_unseen_levels(self, unseen_levels)
+        extrapolation = _model_extrapolation(self, extrapolation)
         if type_was_default := type is _TYPE_DEFAULT:
             type = "link"
         if isinstance(mstop, numbers.Integral) and mstop > self.mstop:
@@ -2394,6 +2398,7 @@ class GAMBoostModel(ModelAPIMixin):
         with one column per position named ``mstop_<k>``.
         """
         unseen_levels = _model_unseen_levels(self, unseen_levels)
+        extrapolation = _model_extrapolation(self, extrapolation)
         unseen_levels = _check_unseen_levels(unseen_levels)
         positions = [int(value) for value in mstops]
         if not positions:
@@ -2501,6 +2506,7 @@ class GAMBoostModel(ModelAPIMixin):
             the prediction of every row with ``variable`` set to ``grid[k]``.
         """
         unseen_levels = _model_unseen_levels(self, unseen_levels)
+        extrapolation = _model_extrapolation(self, extrapolation)
         if type not in ("link", "response"):
             raise ValueError(f"type must be 'link' or 'response', got {type!r}")
         unseen_levels = _check_unseen_levels(unseen_levels)

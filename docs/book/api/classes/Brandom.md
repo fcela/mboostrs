@@ -29,4 +29,4 @@ Args:
         is absorbed into the intercept.
     by: optional varying-coefficient variable name.
 
-Source: [`python/mboostrs/learners.py` lines 556-593](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L556-L593)
+Source: [`python/mboostrs/learners.py` lines 580-617](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L580-L617)

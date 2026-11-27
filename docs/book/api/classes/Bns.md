@@ -29,4 +29,4 @@ Args:
     center: centre the design by spectral projection (default False).
     by: optional varying-coefficient variable name.
 
-Source: [`python/mboostrs/learners.py` lines 709-743](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L709-L743)
+Source: [`python/mboostrs/learners.py` lines 733-767](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L733-L767)

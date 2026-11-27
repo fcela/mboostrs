@@ -18,7 +18,7 @@ identity-link location minimizing the Weibull negative log-likelihood;
 its value can differ from the log-location initialization used by R's
 `gamboostLSS`.
 
-Source: [`python/mboostrs/gamlss.py` lines 2951-2980](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2951-L2980)
+Source: [`python/mboostrs/gamlss.py` lines 2955-2984](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2955-L2984)
 
 ## Members
 
@@ -43,4 +43,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2964-2970](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2964-L2970)
+Source: [`python/mboostrs/gamlss.py` lines 2968-2974](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2968-L2974)

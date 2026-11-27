@@ -45,26 +45,60 @@ class FastRadarResult:
 
 
 def _encode_matrix(data: Any, columns: list[Any]) -> tuple[np.ndarray, list[bool]]:
-    """Build a finite float64 matrix plus a boolean categorical mask."""
+    """Build a finite float64 matrix plus a boolean categorical mask.
+
+    Categoricals are safely encoded to integer codes ``0..K-1`` (capping high
+    cardinality at 250 levels so sklearn's HistGradientBoosting 255-category
+    limit is never exceeded) with missing entries set to ``np.nan`` (handled
+    natively by HistGradientBoosting).
+    """
     from mboostrs._frame import read_column
 
     n = len(read_column(data, columns[0].name).values)
     X = np.empty((n, len(columns)), dtype=np.float64)
     cat_mask: list[bool] = []
+    max_hgb_cats = 250
     for j, col in enumerate(columns):
         raw = read_column(data, col.name)
-        vals = np.asarray(raw.values, dtype=np.float64)
         is_cat = col.kind == "categorical"
         cat_mask.append(is_cat)
-        miss = ~np.isfinite(vals)
-        if miss.any():
-            if is_cat:
-                vals = np.where(miss, -1.0, vals)
-            else:
+        if is_cat:
+            arr = raw.values
+            listed = arr.tolist() if hasattr(arr, "tolist") else list(arr)
+            # Identify missing entries safely across numeric codes, strings, None, NaN.
+            codes = np.full(n, np.nan, dtype=np.float64)
+            counts: dict[Any, int] = {}
+            valid_pos: list[tuple[int, Any]] = []
+            for idx, v in enumerate(listed):
+                if v is None:
+                    continue
+                if isinstance(v, (float, np.floating)) and not np.isfinite(v):
+                    continue
+                if isinstance(v, str) and v == "":
+                    pass
+                counts[v] = counts.get(v, 0) + 1
+                valid_pos.append((idx, v))
+            if counts:
+                if len(counts) > max_hgb_cats:
+                    top = sorted(counts.items(), key=lambda kv: (-kv[1], str(kv[0])))[: max_hgb_cats - 1]
+                    mapping = {k: float(i) for i, (k, _) in enumerate(top)}
+                    other_code = float(max_hgb_cats - 1)
+                    for idx, v in valid_pos:
+                        codes[idx] = mapping.get(v, other_code)
+                else:
+                    ordered = sorted(counts.keys(), key=str)
+                    mapping = {k: float(i) for i, k in enumerate(ordered)}
+                    for idx, v in valid_pos:
+                        codes[idx] = mapping[v]
+            X[:, j] = codes
+        else:
+            vals = np.asarray(raw.values, dtype=np.float64)
+            miss = ~np.isfinite(vals)
+            if miss.any():
                 present = vals[~miss]
                 fill = float(np.median(present)) if present.size else 0.0
                 vals = np.where(miss, fill, vals)
-        X[:, j] = vals
+            X[:, j] = vals
     return X, cat_mask
 
 
@@ -283,15 +317,39 @@ def fast_radar(
 
     rng = np.random.default_rng(seed)
     if n_all > max_rows:
-        idx = np.sort(rng.choice(n_all, size=max_rows, replace=False))
+        if is_binary:
+            uniq = np.unique(y_all)
+            chosen = []
+            for cls in uniq:
+                cidx = np.flatnonzero(y_all == cls)
+                k = max(2, int(round(max_rows * cidx.size / float(n_all))))
+                k = min(k, cidx.size)
+                chosen.append(rng.choice(cidx, size=k, replace=False))
+            idx = np.sort(np.concatenate(chosen))[:max_rows]
+        else:
+            idx = np.sort(rng.choice(n_all, size=max_rows, replace=False))
         X_sub, y_sub = X_all[idx], y_all[idx]
     else:
         X_sub, y_sub = X_all, y_all
 
     n = X_sub.shape[0]
-    perm = rng.permutation(n)
-    cut = int(0.8 * n)
-    tr, va = perm[:cut], perm[cut:]
+    if is_binary:
+        tr_parts, va_parts = [], []
+        for cls in np.unique(y_sub):
+            cidx = rng.permutation(np.flatnonzero(y_sub == cls))
+            ccut = max(1, min(cidx.size - 1, int(round(0.8 * cidx.size))))
+            tr_parts.append(cidx[:ccut])
+            va_parts.append(cidx[ccut:])
+        tr = np.concatenate(tr_parts) if tr_parts else np.arange(int(0.8 * n))
+        va = np.concatenate(va_parts) if va_parts else np.arange(int(0.8 * n), n)
+        if tr.size < 10 or va.size < 5:
+            perm = rng.permutation(n)
+            cut = int(0.8 * n)
+            tr, va = perm[:cut], perm[cut:]
+    else:
+        perm = rng.permutation(n)
+        cut = int(0.8 * n)
+        tr, va = perm[:cut], perm[cut:]
     X_tr, y_tr = X_sub[tr], y_sub[tr]
     X_va, y_va = X_sub[va], y_sub[va]
 
@@ -306,94 +364,100 @@ def fast_radar(
     cat_arg = cat_mask if any(cat_mask) else None
     add_cst = [[j] for j in range(p)]
 
-    if is_binary:
-        from sklearn.linear_model import LogisticRegression
+    try:
+        if is_binary:
+            from sklearn.linear_model import LogisticRegression
 
-        def _logloss(yt, prob):
-            p_clip = np.clip(prob, 1e-7, 1.0 - 1e-7)
-            return float(-np.mean(yt * np.log(p_clip) + (1.0 - yt) * np.log(1.0 - p_clip)))
+            def _logloss(yt, prob):
+                p_clip = np.clip(prob, 1e-7, 1.0 - 1e-7)
+                return float(-np.mean(yt * np.log(p_clip) + (1.0 - yt) * np.log(1.0 - p_clip)))
 
-        p0 = float(np.clip(np.mean(y_tr), 1e-6, 1.0 - 1e-6))
-        val_null = _logloss(y_va, np.full_like(y_va, p0))
-        lin_tr_pred = np.full_like(y_tr, p0)
-        lin_va_pred = np.full_like(y_va, p0)
-        try:
-            lr = LogisticRegression(max_iter=200)
-            num_idx = [j for j, c in enumerate(cat_mask) if not c]
-            if num_idx:
-                mu = X_tr[:, num_idx].mean(axis=0)
-                sd = np.where(X_tr[:, num_idx].std(axis=0) > 1e-12, X_tr[:, num_idx].std(axis=0), 1.0)
-                lr.fit((X_tr[:, num_idx] - mu) / sd, y_tr.astype(int))
-                lin_tr_pred = lr.predict_proba((X_tr[:, num_idx] - mu) / sd)[:, 1]
-                lin_va_pred = lr.predict_proba((X_va[:, num_idx] - mu) / sd)[:, 1]
-                val_lin = _logloss(y_va, lin_va_pred)
-                tstats = np.zeros(p, dtype=np.float64)
-                for li, cj in enumerate(num_idx):
-                    tstats[cj] = abs(float(lr.coef_[0, li])) * 3.0
-            else:
+            p0 = float(np.clip(np.mean(y_tr), 1e-6, 1.0 - 1e-6))
+            val_null = _logloss(y_va, np.full_like(y_va, p0))
+            lin_tr_pred = np.full_like(y_tr, p0)
+            lin_va_pred = np.full_like(y_va, p0)
+            try:
+                lr = LogisticRegression(max_iter=200)
+                num_idx = [j for j, c in enumerate(cat_mask) if not c]
+                if num_idx:
+                    mu = X_tr[:, num_idx].mean(axis=0)
+                    sd = np.where(X_tr[:, num_idx].std(axis=0) > 1e-12, X_tr[:, num_idx].std(axis=0), 1.0)
+                    lr.fit((X_tr[:, num_idx] - mu) / sd, y_tr.astype(int))
+                    lin_tr_pred = lr.predict_proba((X_tr[:, num_idx] - mu) / sd)[:, 1]
+                    lin_va_pred = lr.predict_proba((X_va[:, num_idx] - mu) / sd)[:, 1]
+                    val_lin = _logloss(y_va, lin_va_pred)
+                    tstats = np.zeros(p, dtype=np.float64)
+                    for li, cj in enumerate(num_idx):
+                        tstats[cj] = abs(float(lr.coef_[0, li])) * 3.0
+                else:
+                    val_lin = val_null
+                    tstats = np.zeros(p, dtype=np.float64)
+            except Exception:
                 val_lin = val_null
                 tstats = np.zeros(p, dtype=np.float64)
-        except Exception:
-            val_lin = val_null
-            tstats = np.zeros(p, dtype=np.float64)
 
-        m_add = HistGradientBoostingClassifier(
-            max_iter=120, max_depth=3, learning_rate=0.12,
-            min_samples_leaf=20, l2_regularization=1.0,
-            interaction_cst=add_cst, categorical_features=cat_arg,
-            early_stopping=False, random_state=seed,
-        )
-        m_int = HistGradientBoostingClassifier(
-            max_iter=80, max_depth=4, learning_rate=0.1,
-            min_samples_leaf=20, l2_regularization=1.0,
-            categorical_features=cat_arg, early_stopping=False, random_state=seed,
-        )
-        m_add.fit(X_tr, y_tr.astype(int))
-        m_int.fit(X_tr, y_tr.astype(int))
-        val_add = _logloss(y_va, m_add.predict_proba(X_va)[:, 1])
-        val_int = _logloss(y_va, m_int.predict_proba(X_va)[:, 1])
+            m_add = HistGradientBoostingClassifier(
+                max_iter=120, max_depth=3, learning_rate=0.12,
+                min_samples_leaf=20, l2_regularization=1.0,
+                interaction_cst=add_cst, categorical_features=cat_arg,
+                early_stopping=False, random_state=seed,
+            )
+            m_int = HistGradientBoostingClassifier(
+                max_iter=80, max_depth=4, learning_rate=0.1,
+                min_samples_leaf=20, l2_regularization=1.0,
+                categorical_features=cat_arg, early_stopping=False, random_state=seed,
+            )
+            m_add.fit(X_tr, y_tr.astype(int))
+            m_int.fit(X_tr, y_tr.astype(int))
+            val_add = _logloss(y_va, m_add.predict_proba(X_va)[:, 1])
+            val_int = _logloss(y_va, m_int.predict_proba(X_va)[:, 1])
 
-        def _score_model(m, Xm):
-            return _logloss(y_va, m.predict_proba(Xm)[:, 1])
-    else:
-        val_null = float(np.mean((y_va - float(np.mean(y_tr))) ** 2))
-        val_lin, tstats, lin_va_pred = _fast_ridge(X_tr, y_tr, X_va, y_va, cat_mask)
-        # Reconstruct training predictions from the same ridge fit for residual screen if needed.
-        num_idx = [j for j, c in enumerate(cat_mask) if not c]
-        if num_idx:
-            Xn_tr = X_tr[:, num_idx]
-            mu = Xn_tr.mean(axis=0)
-            sd = np.where(Xn_tr.std(axis=0) > 1e-12, Xn_tr.std(axis=0), 1.0)
-            Z_tr = (Xn_tr - mu) / sd
-            yc = y_tr - float(np.mean(y_tr))
-            try:
-                beta_lin = np.linalg.solve(
-                    Z_tr.T @ Z_tr + max(1.0, len(y_tr) / 100.0) * np.eye(len(num_idx)),
-                    Z_tr.T @ yc,
-                )
-                lin_tr_pred = float(np.mean(y_tr)) + Z_tr @ beta_lin
-            except np.linalg.LinAlgError:
-                lin_tr_pred = np.full_like(y_tr, float(np.mean(y_tr)))
+            def _score_model(m, Xm):
+                return _logloss(y_va, m.predict_proba(Xm)[:, 1])
         else:
-            lin_tr_pred = np.full_like(y_tr, float(np.mean(y_tr)))
-        m_add = HistGradientBoostingRegressor(
-            max_iter=120, max_depth=3, learning_rate=0.12,
-            min_samples_leaf=20, l2_regularization=1.0,
-            interaction_cst=add_cst, categorical_features=cat_arg,
-            early_stopping=False, random_state=seed,
-        )
-        m_int = HistGradientBoostingRegressor(
-            max_iter=80, max_depth=4, learning_rate=0.1,
-            min_samples_leaf=20, l2_regularization=1.0,
-            categorical_features=cat_arg, early_stopping=False, random_state=seed,
-        )
-        m_add.fit(X_tr, y_tr)
-        m_int.fit(X_tr, y_tr)
-        val_add = float(np.mean((y_va - m_add.predict(X_va)) ** 2))
-        val_int = float(np.mean((y_va - m_int.predict(X_va)) ** 2))
+            val_null = float(np.mean((y_va - float(np.mean(y_tr))) ** 2))
+            val_lin, tstats, lin_va_pred = _fast_ridge(X_tr, y_tr, X_va, y_va, cat_mask)
+            # Reconstruct training predictions from the same ridge fit for residual screen if needed.
+            num_idx = [j for j, c in enumerate(cat_mask) if not c]
+            if num_idx:
+                Xn_tr = X_tr[:, num_idx]
+                mu = Xn_tr.mean(axis=0)
+                sd = np.where(Xn_tr.std(axis=0) > 1e-12, Xn_tr.std(axis=0), 1.0)
+                Z_tr = (Xn_tr - mu) / sd
+                yc = y_tr - float(np.mean(y_tr))
+                try:
+                    beta_lin = np.linalg.solve(
+                        Z_tr.T @ Z_tr + max(1.0, len(y_tr) / 100.0) * np.eye(len(num_idx)),
+                        Z_tr.T @ yc,
+                    )
+                    lin_tr_pred = float(np.mean(y_tr)) + Z_tr @ beta_lin
+                except np.linalg.LinAlgError:
+                    lin_tr_pred = np.full_like(y_tr, float(np.mean(y_tr)))
+            else:
+                lin_tr_pred = np.full_like(y_tr, float(np.mean(y_tr)))
+            m_add = HistGradientBoostingRegressor(
+                max_iter=120, max_depth=3, learning_rate=0.12,
+                min_samples_leaf=20, l2_regularization=1.0,
+                interaction_cst=add_cst, categorical_features=cat_arg,
+                early_stopping=False, random_state=seed,
+            )
+            m_int = HistGradientBoostingRegressor(
+                max_iter=80, max_depth=4, learning_rate=0.1,
+                min_samples_leaf=20, l2_regularization=1.0,
+                categorical_features=cat_arg, early_stopping=False, random_state=seed,
+            )
+            m_add.fit(X_tr, y_tr)
+            m_int.fit(X_tr, y_tr)
+            val_add = float(np.mean((y_va - m_add.predict(X_va)) ** 2))
+            val_int = float(np.mean((y_va - m_int.predict(X_va)) ** 2))
 
-        def _score_model(m, Xm):
-            return float(np.mean((y_va - m.predict(Xm)) ** 2))
+            def _score_model(m, Xm):
+                return float(np.mean((y_va - m.predict(Xm)) ** 2))
+    except Exception:
+        return _numpy_fallback_radar(
+            X_tr, y_tr, X_va, y_va, columns, cat_mask,
+            is_binary=is_binary, protected=protected, t0=t0,
+        )
 
     # Fast 1-pass held-out permutation importance on X_va (n_va <= 400).
     signal_add = max(1e-12, val_null - val_add)
@@ -401,13 +465,21 @@ def fast_radar(
     best_signal = max(signal_add, signal_int)
     perm_add = np.zeros(p, dtype=np.float64)
     perm_int = np.zeros(p, dtype=np.float64)
+    perm_add_rel = np.zeros(p, dtype=np.float64)
+    perm_int_rel = np.zeros(p, dtype=np.float64)
+    add_denom = max(val_add, 1e-9 * val_null)
+    int_denom = max(val_int, 1e-9 * val_null)
     X_buf = X_va.copy()
     perm_rng = np.random.default_rng(seed + 17)
     for j in range(p):
         orig_col = X_buf[:, j].copy()
         X_buf[:, j] = perm_rng.permutation(orig_col)
-        perm_add[j] = (_score_model(m_add, X_buf) - val_add) / max(1e-12, val_null)
-        perm_int[j] = (_score_model(m_int, X_buf) - val_int) / max(1e-12, val_null)
+        d_add = _score_model(m_add, X_buf) - val_add
+        d_int = _score_model(m_int, X_buf) - val_int
+        perm_add[j] = d_add / max(1e-12, val_null)
+        perm_int[j] = d_int / max(1e-12, val_null)
+        perm_add_rel[j] = d_add / add_denom
+        perm_int_rel[j] = d_int / int_denom
         X_buf[:, j] = orig_col
 
     col_scores = {
@@ -415,19 +487,24 @@ def fast_radar(
         for j, col in enumerate(columns)
     }
 
-    # Variable weeding: only drop clear noise on wider tables (p > 8).
+    # Variable weeding: only drop clear noise on wider tables (p > 8) with
+    # enough rows (n_all >= 250) for the 20% validation slice to be stable.
+    # On high-R^2 tables (e.g. near-exact physical systems), also keep any
+    # predictor whose permutation raises residual error by >= 1.5%.
     kept: list[str] = []
     dropped: list[str] = []
     has_signal = (val_null - min(val_lin, val_add, val_int)) / max(1e-12, val_null) >= 0.015
-    if p <= 8:
+    high_r2 = (min(val_lin, val_add, val_int) / max(1e-12, val_null)) < 0.05
+    if p <= 8 or n_all < 250:
         kept = [c.name for c in columns]
     else:
         for j, col in enumerate(columns):
             if (
                 col.name in protected
-                or perm_int[j] >= 0.002
-                or perm_add[j] >= 0.002
-                or (tstats[j] >= 2.8 and best_signal > 0.01 * val_null)
+                or perm_int[j] >= 0.0015
+                or perm_add[j] >= 0.0015
+                or (high_r2 and (perm_add_rel[j] >= 0.015 or perm_int_rel[j] >= 0.015))
+                or (tstats[j] >= 2.2 and best_signal > 0.01 * val_null)
             ):
                 kept.append(col.name)
             else:
@@ -471,9 +548,13 @@ def fast_radar(
             key=lambda j: perm_int[j],
             reverse=True,
         )
-        pos = [columns[j].name for j in ranked_int if perm_int[j] >= 0.003]
-        if len(pos) < 2:
-            pos = [columns[j].name for j in ranked_int[: min(len(ranked_int), 8)]]
+        if len(ranked_int) <= 6:
+            pos = [columns[j].name for j in ranked_int]
+        else:
+            inter_thresh = max(0.003, 0.006 * max(0.0, val_null - val_int) / max(1e-12, val_null))
+            pos = [columns[j].name for j in ranked_int if perm_int[j] >= inter_thresh]
+            if len(pos) < 2:
+                pos = [columns[j].name for j in ranked_int[: min(len(ranked_int), 8)]]
         inter_cols = tuple(pos[:16])
 
     # Column shapes (linear vs smooth) for kept numeric columns.

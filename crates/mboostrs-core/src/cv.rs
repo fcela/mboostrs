@@ -1106,6 +1106,11 @@ impl<F: Family + Clone> FoldRun<F> {
                         *fi += c * design[oi];
                     }
                 }
+                PreparedLearner::DiagBrandom { group_idx, .. } => {
+                    for (fi, &oi) in self.f_oob.iter_mut().zip(self.oob_idx.iter()) {
+                        *fi += nu * coef[group_idx[oi] as usize];
+                    }
+                }
                 PreparedLearner::BinnedScalarBols { .. }
                 | PreparedLearner::BinnedBlockBols { .. }
                 | PreparedLearner::BlockBols { .. }

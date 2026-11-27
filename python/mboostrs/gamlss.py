@@ -45,7 +45,10 @@ from mboostrs._model_api import capture_fit_warnings
 from mboostrs._names import partition_tilde, quote_name
 from mboostrs._output import export_result
 from mboostrs._results import MappingResultMixin, Provenance
-from mboostrs._validate import _model_unseen_levels
+from mboostrs._validate import (
+    _model_extrapolation,
+    _model_unseen_levels,
+)
 from mboostrs._weights import (
     WeightPolicyMixin,
     normalize_weights,
@@ -616,6 +619,7 @@ def learner_spec(learner, data, *, bols_form="block", kronecker_n_resp=None):
             ),
             deriv=int(learner.deriv),
             bins=learner.bins,
+            knot_placement=getattr(learner, "knot_placement", "equidistant"),
         )
     elif isinstance(learner, Bns):
         x_values = np.asarray(_extract_column(data, learner.name), dtype=np.float64)
@@ -3281,7 +3285,7 @@ class LSSModel(WeightPolicyMixin):
         return output_frame(rows, output)
 
     def predict_parameters(self, newdata=None, type=_TYPE_DEFAULT,
-                           extrapolation="warn", unseen_levels=None) -> dict:
+                           extrapolation=None, unseen_levels=None) -> dict:
         """Return response-scale predictions by distribution parameter.
 
         An LSS model returns ``{parameter: array}``. A standard model has
@@ -3466,7 +3470,7 @@ class LSSModel(WeightPolicyMixin):
         return np.asarray(response_forward(step, y), dtype=np.float64)
 
     def params(self, newdata=None, type="response", mstop=None, buser_newdata=None,
-               unseen_levels=None, extrapolation="warn"):
+               unseen_levels=None, extrapolation=None):
         """Predicted LSS parameters for all family parameters.
 
         ``type="response"`` returns distribution parameters such as ``sigma`` on
@@ -3497,7 +3501,7 @@ class LSSModel(WeightPolicyMixin):
         include_response=True,
         buser_newdata=None,
         unseen_levels=None,
-        extrapolation="warn",
+        extrapolation=None,
     ):
         """All-parameter prediction table, analogous to GAMLSS ``predictAll``.
 
@@ -5246,7 +5250,7 @@ class LSSModel(WeightPolicyMixin):
         mstop=None,
         buser_newdata=None,
         unseen_levels=None,
-        extrapolation="warn",
+        extrapolation=None,
     ):
         """Expected response under the fitted distribution.
 
@@ -5279,7 +5283,7 @@ class LSSModel(WeightPolicyMixin):
         mstop=None,
         buser_newdata=None,
         unseen_levels=None,
-        extrapolation="warn",
+        extrapolation=None,
     ):
         """Predictions for one distribution parameter, or for all of them.
 
@@ -5352,6 +5356,7 @@ class LSSModel(WeightPolicyMixin):
             or ``parameter`` is combined with ``type="mean"``.
         """
         unseen_levels = _model_unseen_levels(self, unseen_levels)
+        extrapolation = _model_extrapolation(self, extrapolation)
         from mboostrs._extrapolation import POLICIES
         from mboostrs.gamboost import _check_unseen_levels
 
@@ -6340,14 +6345,13 @@ def _lower_lss_factor_by(per_param_learners, data, factor_columns, interactions)
 def _retained_raw_inputs(formula, data, env, na_action):
     """The formula as written and the data before any transform, for a refit.
 
-    The transforms (medians, log floors, centres) are estimated from the rows
-    they are applied to, so a conformal refit on proper-training rows has to
-    start from these inputs to estimate them again. A fit with an
-    interaction (`%X%`) or an external matrix `env=` is not kept: a row
-    subset would misalign those matrices, so the refit cannot use them.
+    The transforms (medians, log floors, centres) and formula interactions
+    (`%X%`) are estimated from the rows they are applied to, so a conformal
+    refit on proper-training rows starts from these inputs and re-estimates
+    both. A fit with an external matrix `env=` is not kept: a row subset
+    would misalign those matrices, so the refit cannot use them.
     """
-    formulas = list(formula.values()) if isinstance(formula, dict) else [formula]
-    if env is not None or any("%X%" in f for f in formulas):
+    if env is not None:
         return None
     kept = dict(data) if isinstance(data, dict) else data
     return {"formula": formula, "data": kept, "na_action": na_action}

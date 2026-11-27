@@ -11,6 +11,7 @@ from __future__ import annotations
 
 from mboostrs._procedure._fit import Fit, fit
 from mboostrs._procedure._report import report
+from mboostrs._procedure._reproduce import ReproductionResult, reproduce
 from mboostrs._procedure._trail import DecisionTrail
 
-__all__ = ["DecisionTrail", "Fit", "fit", "report"]
+__all__ = ["DecisionTrail", "Fit", "ReproductionResult", "fit", "report", "reproduce"]

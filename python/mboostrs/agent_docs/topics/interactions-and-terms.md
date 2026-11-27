@@ -105,3 +105,32 @@ real. A flagged row with a small `type_z` proposes a smooth or tensor term
 instead. No flag means no screened evidence for a jump in these columns, and the
 `reference_gap` belongs to smooth or interaction structure: the negative
 is a reportable result. See `example:disc-screening` for the worked panel.
+
+## Skewed predictors: log/sqrt vs quantile O-splines vs rank transforms
+
+An equidistant P-spline places knots evenly from the column minimum to its
+maximum. On heavily right-skewed predictors (sample skewness > 2), most rows
+crowd into the first one or two knot intervals while sparse upper-tail values
+consume the rest. Three alternatives exist, each with different geometry:
+
+- **Domain-safe `log` / `sqrt` (default in `autospec` and `fit`).** Places the
+  smoothness prior on the multiplicative (`log`) or variance-stabilized (`sqrt`
+  when zeros appear) scale, aligning knot density, uniform curvature penalty,
+  log-linear null space, and logarithmic boundary extrapolation. Across 22
+  skewed real datasets in the held-out suite, domain-safe `log`/`sqrt` cut
+  geometric-mean test loss by **10.1%** vs equidistant `bbs` (15/22 wins,
+  worst-case 1.08×, zero domain failures). Automatically downgraded whenever
+  the full column violates domain positivity.
+- **`bbs(x, knot_placement="quantile")` (O-spline).** Places deduplicated
+  interior knots at empirical quantiles and penalizes integrated squared second
+  derivatives (Wand & Ormerod 2008), preserving exact raw-scale linearity in
+  the null space. Prefer this on **signed heavy-tailed predictors** where
+  `log`/`sqrt` do not apply or when raw-scale linear extrapolation is desired;
+  on positive right-skewed tables the inverse-cube interval-width weight can
+  over-smooth the dense bulk (+4.8% geomean vs equidistant across the 22 skewed
+  datasets, up to 2.43× on `cpu_activity`).
+- **Empirical-CDF / rank transform.** Uniform smoothness on the rank scale with
+  flat tails, breaking raw-scale linearity (+9.8% geomean, up to 5.04× on
+  `cpu_activity`); reserve for strictly rank-driven or heavily zero-inflated
+  curves.
+

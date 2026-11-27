@@ -21,7 +21,7 @@ by the corresponding Student-t probability, matching
 `mu` is a location parameter, not generally the response mean. Use
 quantiles and centile curves for interpretation; `mean` refuses.
 
-Source: [`python/mboostrs/gamlss.py` lines 2538-2635](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2538-L2635)
+Source: [`python/mboostrs/gamlss.py` lines 2542-2639](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2542-L2639)
 
 ## Members
 
@@ -51,7 +51,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `IndexError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2556-2562](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2556-L2562)
+Source: [`python/mboostrs/gamlss.py` lines 2560-2566](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2560-L2566)
 
 (bctlss-mean)=
 ## `BCTLSS.mean`
@@ -70,7 +70,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `NotImplementedError`
 
-Source: [`python/mboostrs/gamlss.py` lines 2564-2568](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2564-L2568)
+Source: [`python/mboostrs/gamlss.py` lines 2568-2572](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2568-L2572)
 
 (bctlss-pdf)=
 ## `BCTLSS.pdf`
@@ -83,7 +83,7 @@ BCTLSS.pdf(y, params) -> ndarray
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 2582-2606](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2582-L2606)
+Source: [`python/mboostrs/gamlss.py` lines 2586-2610](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2586-L2610)
 
 (bctlss-cdf)=
 ## `BCTLSS.cdf`
@@ -96,7 +96,7 @@ BCTLSS.cdf(y, params) -> ndarray
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 2608-2626](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2608-L2626)
+Source: [`python/mboostrs/gamlss.py` lines 2612-2630](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2612-L2630)
 
 (bctlss-quantile)=
 ## `BCTLSS.quantile`
@@ -109,7 +109,7 @@ BCTLSS.quantile(p, params) -> ndarray
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 2628-2629](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2628-L2629)
+Source: [`python/mboostrs/gamlss.py` lines 2632-2633](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2632-L2633)
 
 (bctlss-simulate)=
 ## `BCTLSS.simulate`
@@ -122,4 +122,4 @@ BCTLSS.simulate(params, rng=None, size=None) -> ndarray
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/gamlss.py` lines 2631-2635](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2631-L2635)
+Source: [`python/mboostrs/gamlss.py` lines 2635-2639](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L2635-L2639)

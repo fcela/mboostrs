@@ -326,6 +326,12 @@ class Bbs:
             function itself).
         bins: optional quantile-bin count. At least one bin per distinct value
             reproduces the exact design; smaller values approximate it.
+        knot_placement: how inner knots are placed, ``"equidistant"`` (default,
+            matching R ``mboost::bbs`` with a finite-difference penalty) or
+            ``"quantile"`` (an O-spline with deduplicated empirical-quantile
+            inner knots and an exact integrated second-derivative curvature
+            penalty ``integral B''(x) B''(x)^T dx`` that preserves raw-scale
+            linearity in the penalty null space).
     """
 
     #: Training range a Multinomial (Kronecker) fit places its knots over,
@@ -333,20 +339,37 @@ class Bbs:
     kronecker_boundary = None
 
     VALID_CONSTRAINTS = _SHAPE_CONSTRAINTS
+    VALID_KNOT_PLACEMENTS = ("equidistant", "quantile")
 
     def __init__(self, name, *, knots=20, degree=3, differences=2, df=4,
                  lambda_value=None, center=False, by=None,
                  cyclic=False, boundary_knots=None, constraint=None,
-                 deriv=0, bins=None):
+                 deriv=0, bins=None, knot_placement="equidistant"):
         # Numeric-argument validation, mirroring the checks `mboost::bbs`
         # performs at construction.
         knots = _count("knots", knots)
         degree = _count("degree", degree)
         differences = _count("differences", differences)
         deriv = _count("deriv", deriv)
+        if knot_placement not in self.VALID_KNOT_PLACEMENTS:
+            raise ValueError(
+                f"knot_placement must be one of {self.VALID_KNOT_PLACEMENTS}, "
+                f"got {knot_placement!r}"
+            )
+        if knot_placement == "quantile":
+            if degree < 2:
+                raise ValueError(
+                    f"knot_placement='quantile' (O-spline) requires degree >= 2, got {degree}"
+                )
+            if cyclic:
+                raise ValueError("knot_placement='quantile' cannot be combined with cyclic=True")
+            if bins is not None:
+                raise ValueError("knot_placement='quantile' cannot be combined with bins=")
+            if constraint is not None:
+                raise ValueError("knot_placement='quantile' does not yet support shape constraints")
         if df is not None:
             _positive("df", df)
-            _df_against_null_space(df, differences, center)
+            _df_against_null_space(df, 2 if knot_placement == "quantile" else differences, center)
         if lambda_value is not None:
             _nonnegative("lambda_value", lambda_value)
         self.name = _single_column_name("Bbs", name)
@@ -364,6 +387,7 @@ class Bbs:
         self.boundary_knots = check_boundary_knots("boundary_knots", boundary_knots)
         self.deriv = deriv
         self.bins = None if bins is None else _bins("bins", bins)
+        self.knot_placement = knot_placement
         if self.bins is not None and by is not None:
             raise ValueError("binned Bbs with by= is not implemented; omit bins to use the exact learner")
         if self.bins is not None and constraint is not None:

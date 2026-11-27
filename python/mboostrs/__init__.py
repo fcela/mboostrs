@@ -57,7 +57,7 @@ from mboostrs.causal import (
     rank_by_effect,
 )
 from mboostrs.compare import CompareReport, CompareSpec, compare_to_r
-from mboostrs.conformal import ConformalInterval, conformal_interval
+from mboostrs.conformal import ConformalInterval, ConformalReliabilityWarning, conformal_interval
 from mboostrs.cost import estimate_cost
 from mboostrs.cvrisk import CvReport, CvRiskResult, cv_weights, make_grid, weighted_median
 from mboostrs.declarations import DeclarationCheck, check_declarations
@@ -309,7 +309,7 @@ from mboostrs.transforms import imputation_diagnostics
 # (which some tests use) goes through `sys.modules` too. The one visible
 # consequence is that `import mboostrs.report; mboostrs.report` resolves to the
 # function; use `from mboostrs.report import ...` for the submodule's names.
-from mboostrs._procedure import DecisionTrail, Fit, fit, report
+from mboostrs._procedure import DecisionTrail, Fit, ReproductionResult, fit, report, reproduce
 
 # Importing public names from these submodules causes Python to bind the
 # submodule itself on the package.  They are implementation modules, not part
@@ -367,7 +367,9 @@ __all__ = [
     "install_skill",
     "fit",
     "report",
+    "reproduce",
     "Fit",
+    "ReproductionResult",
     "DecisionTrail",
     "Finding",
     "insights",
@@ -501,6 +503,7 @@ __all__ = [
     "SummaryTable",
     "validation_capabilities",
     "ConformalInterval",
+    "ConformalReliabilityWarning",
     "load_model",
     "save_model",
     "conformal_interval",

@@ -169,8 +169,10 @@ class RefitSpec:
         if arguments.get("env") is not None:
             arguments["env"] = _subset_tensor_designs(
                 arguments["env"], rows, _row_count(data))
+        sub_data = _subset_rows(data, rows)
+        formula, arguments = _guard_constant_spline_subset(formula, sub_data, arguments)
         return replace(
-            self, formula=formula, data=_subset_rows(data, rows), arguments=arguments,
+            self, formula=formula, data=sub_data, arguments=arguments,
             transform_recipe=None if refit_preprocessing else self.transform_recipe,
             response_transform=None if refit_preprocessing else self.response_transform,
             interactions=None if refit_preprocessing else self.interactions,
@@ -297,6 +299,96 @@ def _subset_rows(data, rows):
     return _take_rows(data, np.asarray(rows))
 
 
+def _column_constant_value(data, col: str) -> float | None:
+    """Return the unique finite scalar value if numeric `col` is constant on `data`."""
+    try:
+        if isinstance(data, dict):
+            if col not in data:
+                return None
+            raw = data[col]
+        elif hasattr(data, "columns"):
+            if col not in data.columns:
+                return None
+            raw = data[col]
+        else:
+            return None
+        arr = raw.to_numpy() if hasattr(raw, "to_numpy") else np.asarray(raw)
+        vals = np.asarray(arr, dtype=float)
+    except (TypeError, ValueError, KeyError):
+        return None
+    present = vals[np.isfinite(vals)]
+    if present.size == 0:
+        return None
+    lo, hi = float(np.min(present)), float(np.max(present))
+    return lo if lo == hi else None
+
+
+def _guard_formula_constant_bbs(formula: str, sub_data) -> str:
+    """Inject a leak-free boundary.knots pair when a row subset collapses a bbs column."""
+    import re
+
+    from mboostrs._names import partition_tilde, split_terms, unquote_name
+
+    lhs, sep, rhs = partition_tilde(formula)
+    if not sep or "bbs(" not in rhs:
+        return formula
+    terms = split_terms(rhs)
+    changed = False
+    new_terms = []
+    bbs_re = re.compile(r"^\s*bbs\(\s*(?:(log|sqrt)\(\s*([^)]+?)\s*\)|([^,)]+?))(?:\s*,\s*(.*))?\)\s*$")
+    for term in terms:
+        if "%X%" in term or "boundary.knots" in term or "boundary_knots" in term:
+            new_terms.append(term)
+            continue
+        m = bbs_re.match(term)
+        if not m:
+            new_terms.append(term)
+            continue
+        transform, tcol, rawcol, rest = m.groups()
+        col = unquote_name((tcol or rawcol).strip())
+        cval = _column_constant_value(sub_data, col)
+        if cval is None:
+            new_terms.append(term)
+            continue
+        if transform == "log" and cval > 0:
+            cval = float(np.log(cval))
+        elif transform == "sqrt" and cval >= 0:
+            cval = float(np.sqrt(cval))
+        bk = f"boundary.knots=c({cval!r}, {cval + 1.0!r})"
+        inner = f"{transform}({tcol.strip()})" if transform else rawcol.strip()
+        new_term = f"bbs({inner}, {rest.strip()}, {bk})" if (rest and rest.strip()) else f"bbs({inner}, {bk})"
+        new_terms.append(new_term)
+        changed = True
+    return f"{lhs.strip()} ~ " + " + ".join(new_terms) if changed else formula
+
+
+def _guard_constant_spline_subset(formula, sub_data, arguments: dict) -> tuple[Any, dict]:
+    """Keep row-subset refits (e.g. split conformal) valid when a rare-event spline column becomes constant."""
+    from copy import copy
+
+    learners = arguments.get("learners")
+    if learners:
+        new_learners = None
+        for idx, learner in enumerate(learners):
+            if type(learner).__name__ == "Bbs" and getattr(learner, "boundary_knots", None) is None:
+                cval = _column_constant_value(sub_data, learner.name)
+                if cval is not None:
+                    if new_learners is None:
+                        new_learners = list(learners)
+                    clone = copy(learner)
+                    clone.boundary_knots = (cval, cval + 1.0)
+                    new_learners[idx] = clone
+        if new_learners is not None:
+            arguments = {**arguments, "learners": new_learners}
+            return formula, arguments
+
+    if isinstance(formula, str):
+        return _guard_formula_constant_bbs(formula, sub_data), arguments
+    if isinstance(formula, dict):
+        return {k: _guard_formula_constant_bbs(v, sub_data) for k, v in formula.items()}, arguments
+    return formula, arguments
+
+
 def refit_spec(model) -> RefitSpec:
     """The refit specification for a fitted model.
 
@@ -319,12 +411,17 @@ def refit_spec(model) -> RefitSpec:
         # with `refit_preprocessing=True` estimates the transforms again on
         # its own rows from these.
         raw = getattr(model, "_raw_inputs", None) or {}
+        # Raw-input refits rebuild any `%X%` interaction matrices from `raw_data`
+        # and `raw_formula`, so the full fit's generated `env` must be omitted.
+        raw_args = (
+            {**{k: v for k, v in arguments.items() if k != "env"}, "na_action": raw["na_action"]}
+            if raw else None
+        )
         return RefitSpec(kind=kind, formula=formula, data=data,
                          arguments=arguments,
                          interactions=getattr(model, "_interactions", None),
                          raw_formula=raw.get("formula"), raw_data=raw.get("data"),
-                         raw_arguments=({**arguments, "na_action": raw["na_action"]}
-                                        if raw else None))
+                         raw_arguments=raw_args)
 
     bundle = getattr(model, "_refit_bundle", None)
     if bundle is None:

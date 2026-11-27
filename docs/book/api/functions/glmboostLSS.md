@@ -80,4 +80,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 - `RuntimeError`
 - `ValueError`
 
-Source: [`python/mboostrs/gamlss.py` lines 5964-6206](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5964-L6206)
+Source: [`python/mboostrs/gamlss.py` lines 5969-6211](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/gamlss.py#L5969-L6211)

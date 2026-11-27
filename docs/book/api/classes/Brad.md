@@ -54,7 +54,7 @@ Note this will not reproduce R's `brad` to machine precision: R selects
 centres with `fields::cover.design` and this uses greedy farthest-point
 selection. Both are space-filling; neither choice is canonical.
 
-Source: [`python/mboostrs/learners.py` lines 948-1047](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L948-L1047)
+Source: [`python/mboostrs/learners.py` lines 972-1071](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L972-L1071)
 
 ## Members
 
@@ -84,7 +84,7 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/learners.py` lines 1022-1031](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L1022-L1031)
+Source: [`python/mboostrs/learners.py` lines 1046-1055](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L1046-L1055)
 
 (brad-name)=
 ## `Brad.name`
@@ -97,7 +97,7 @@ Brad.name
 
 *No description in the docstring.*
 
-Source: [`python/mboostrs/learners.py` lines 1033-1035](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L1033-L1035)
+Source: [`python/mboostrs/learners.py` lines 1057-1059](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L1057-L1059)
 
 (brad-as_buser)=
 ## `Brad.as_buser`
@@ -116,4 +116,4 @@ Found by reading the function's `raise` statements; conditions are in the source
 
 - `ValueError`
 
-Source: [`python/mboostrs/learners.py` lines 1037-1047](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L1037-L1047)
+Source: [`python/mboostrs/learners.py` lines 1061-1071](https://github.com/fcela/mboostrs/blob/main/python/mboostrs/learners.py#L1061-L1071)

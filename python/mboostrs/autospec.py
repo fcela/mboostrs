@@ -893,6 +893,7 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
     folds_description = ""
     shared_scheme = None      # the FoldScheme, when the design carries a judge set
     shared_judge = None        # its judge mask, if it has one
+    held_out_group: str | None = None
     if folds is not None:
         folds_description = (f"supplied by the caller ({folds.scheme})"
                               if hasattr(folds, "scheme") else "supplied by the caller")
@@ -923,6 +924,22 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
         group_terms = sorted(
             {column.name for column, term in zip(modelled, terms, strict=True)
              if term.startswith(("brandom(", "bmrf("))})
+        integer_label_cols = {
+            h.column for h in hygiene if h.kind == "integer-labels"
+        }
+        # Only auto-switch to grouped folds (without an explicit groups= call)
+        # for integer-coded unit IDs (e.g. clinic/patient/child codes flagged
+        # as integer-labels) or spatial bmrf regions — NOT ordinary string or
+        # Categorical attributes like cap_color, occupation, or neighborhood,
+        # whose levels recur across i.i.d. train and test rows.
+        unit_candidates = [
+            name for name in group_terms
+            if name in integer_label_cols
+            or any(
+                col.name == name and term.startswith("bmrf(")
+                for col, term in zip(modelled, terms, strict=True)
+            )
+        ]
         shared_folds = None
         if detected_time is not None:
             try:
@@ -959,13 +976,14 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
             else:
                 scheme = grouped_folds(labels, B=min(5, distinct), seed=seed)
                 shared_folds = np.asarray(scheme, dtype=float)
+                held_out_group = declared_groups[0] if len(declared_groups) == 1 else None
                 folds_description = (
                     f"{shared_folds.shape[1]} grouped folds holding whole "
                     f"groups of {', '.join(declared_groups)} out (declare "
                     f"folds= for another design)")
-        elif group_terms and max(int(np.unique(read_column(data, name).values).size)
-                                 for name in group_terms) >= _MIN_UNIT_LEVELS:
-            unit = max(group_terms,
+        elif unit_candidates and max(int(np.unique(read_column(data, name).values).size)
+                                     for name in unit_candidates) >= _MIN_UNIT_LEVELS:
+            unit = max(unit_candidates,
                        key=lambda name: int(np.unique(
                            read_column(data, name).values).size))
             labels = read_column(data, unit).values
@@ -978,6 +996,7 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
             else:
                 scheme = grouped_folds(labels, B=min(5, distinct), seed=seed)
                 shared_folds = np.asarray(scheme, dtype=float)
+                held_out_group = unit
                 split = [name for name in group_terms if name != unit]
                 note = (f"; {', '.join(split)} are also fitted as groups "
                         f"but their rows are split, not held out whole"
@@ -991,9 +1010,9 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
             folds_description = "5 random folds (rows, not groups, are held out)"
             if group_terms:
                 folds_description += (
-                    f"; {', '.join(group_terms)} have fewer than {_MIN_UNIT_LEVELS} "
-                    f"levels, so they are fitted as categories whose levels all "
-                    f"appear in training; declare groups= to predict unseen groups")
+                    f"; {', '.join(group_terms)} are fitted as categorical "
+                    f"predictors whose levels appear in training; declare "
+                    f"groups= to predict unseen groups")
 
     def fold_matrix():
         if shared_folds is not None:
@@ -1039,7 +1058,9 @@ def _autospec_body(data, response, *, family, mstop, df, smooth, budget, folds, 
             na_action=na_action,
             treatment_columns=treatment_columns,
             response_column=response_column,
+            response_evidence=evidence.get("response"),
             coord_pair=coord_pair,
+            held_out_group=held_out_group,
         )
         if fast_rec is not None:
             return fast_rec
