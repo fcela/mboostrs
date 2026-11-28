@@ -347,7 +347,7 @@ for _submodule in (
     globals().pop(_submodule, None)
 del _submodule
 
-__version__ = "0.2.4"
+__version__ = "0.2.5"
 
 
 def __getattr__(name):

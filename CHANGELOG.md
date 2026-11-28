@@ -6,6 +6,80 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.2.5] - 2026-11-28
+
+### Added
+
+- **Binned O-splines & batched multi-fold CV (`mboostrs-core`, Python, R):**
+  - `LearnerBlueprint::bbs_ospline_binned` (`bbs(..., knot_placement="quantile", bins=256)`)
+    and non-Gram auto-binning for non-Gaussian families (`50k × 20` Binomial
+    `mb.fit` reduced from 128.7 s to 2.38 s, ~54× faster).
+  - `try_cvrisk_binned_multifold` with single-Gram template sharing
+    (`prepare_bbs_from_template`) and zero-allocation `FoldRun::walk` for
+    IEEE-754 bit-identical multi-fold binned cross-validation.
+- **Regularized & feature-subsampled trees (`btree`):**
+  - L2 leaf shrinkage (`lambda_leaf`), deterministic splitmix64 column
+    subsampling (`colsample`, `colsample_seed`), and binary Stage 2
+    `step="line_search"` in `autospec` (`Musk v2` log-loss reduced 59.5% from
+    0.208 to 0.0843 and runtime 7.0× faster from 151.3 s to 21.7 s).
+- **Simultaneous multi-quantile boosting (`mb.quantile_boost`, `MultiQuantileModel`):**
+  - Fits and cross-validates multiple conditional quantiles in a single parallel
+    Rayon Rust pass (`cv_and_fit_multi_quantile_specs`), with Chernozhukov
+    isotonic rearrangement (0 crossings) and conformalized quantile regression
+    intervals via `predict_interval(..., calibration=...)` (`superconductivity`
+    15-quantile 5-fold CV reduced from >3,600 s timeout to 18.6 s).
+- **Multi-family Stage 3 LSS challenger:**
+  - Support- and kurtosis-aware noncyclic distributional challengers
+    (`StudentTLSS`, `LogNormalLSS`, `BetaLSS`, `GaussianLSS`) selected by
+    out-of-fold CRPS and winsorized NLL (`LogNormalLSS` CRPS −10.9% vs Gaussian).
+- **Time-aware fitting & adaptive conformal inference:**
+  - `mb.fit(..., time=..., uncertainty=...)` and `Fit.predict_interval()`.
+  - `conformal_interval(..., method="adaptive")` with sample-size-safe
+    exponential decay (Barber et al., 2023) and `adaptive_conformal_stream()`
+    online ACI (Gibbs & Candès, 2021) (Beijing PM2.5 winter 80% coverage lifted
+    from 0.680 to 0.771).
+- **Causal inference upgrades:**
+  - `effect_model(..., interval_method="dr_orthogonal")` doubly-robust
+    orthogonal pointwise CATE intervals across `"smooth"`, `"stumps"`, and
+    `"joint"` models (90% Monte Carlo CATE coverage lifted from 0.61–0.66 to
+    0.895–0.935).
+  - `CausalSpec(..., estimand="ato")` overlap weights with zero propensity
+    clipping, plus automatic `AIPWResult.ato_companion` when >5% of units lie
+    outside the overlap region.
+  - Observation-frequency weighting on `effect_model` gain standard errors.
+- **Reproducibility, discoverability & R parity:**
+  - Container-agnostic `data.sha256`, `data.schema`, `provenance.environment`,
+    and `time=`/`uncertainty=` replay in `DecisionTrail` and `mb.reproduce`.
+  - `.digest()` / `mb.digest()` compact summary cards across all model and
+    result types, multi-topic `python -m mboostrs guide`, and organized
+    namespaces (`mb.families`, `mb.learners`, `mb.causal`, `mb.conformal`,
+    `mb.diagnostics`, `mb.quantile`).
+  - R package parity for `bbs(knot_placement, bins)`, `btree(split_method,
+    lambda_leaf, colsample)`, `conformal_interval(method = "adaptive")` +
+    `$reliability`, and `adaptive_conformal_stream()`.
+  - Canonical Scorecard 2.1 benchmark suite (`benches/scorecard_v21_suite.py`)
+    scoring all 12 dimensions (`5M × 3` rows fitted in 1.97 s).
+
+### Changed
+
+- Tightened `label_evidence` / `count_like` bounded-integer guards in
+  `mboostrs.terms` so bounded non-zero-origin integer measurements (e.g. age)
+  are treated as continuous smooth predictors rather than category labels or
+  counts (`Early Stage Diabetes` log-loss reduced 53.0% from 0.177 to 0.0832).
+- Modularized `mboostrs-core` (~18,500 lines extracted into
+  `engine/{gaussian_gram,test_suite}`, `families/test_suite`,
+  `lss/{gamlss_families,test_suite}`, and `learners/{tree_split,test_suite}`).
+
+### Fixed
+
+- Fixed binned out-of-bag projection in `crates/mboostrs-core/src/cv.rs` so
+  binned spline CV matches exact OOB predictions.
+- Preserved `stabilization` on `_SurvivalLSS.uncensored()`.
+- Fixed oversized Mermaid diagrams in the HTML book by emitting explicit
+  `0.8× viewBox` intrinsic pixel dimensions in `render_mermaid.mjs` and all 27
+  committed SVGs, adding responsive `max-width`/`max-height` CSS caps, and
+  enforcing a `width="100%"` guard in `docs/book/check_docs.py`.
+
 ## [0.2.4] - 2026-11-27
 
 ### Added
